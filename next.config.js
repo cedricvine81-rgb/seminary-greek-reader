@@ -44,6 +44,7 @@ const nextConfig = {
         'public/data/philo/**',
         'public/data/variants/**',
         'public/data/eusebius/**',
+        'public/data/clement/**',
         'public/data/justin/**',
         'public/data/pseudepigrapha/**',
         'public/data/pseudepigrapha-b/**',

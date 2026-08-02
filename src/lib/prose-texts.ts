@@ -26,7 +26,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -509,6 +509,122 @@ const EUSEBIUS_WORKS: ProseWork[] = EUSEBIUS_BOOKS.map(b => ({
 }))
 
 // Ids/names the catalog needs; preface books declare chapterNumbers so the reader queues ch. 0.
+// ── Clement of Alexandria ─────────────────────────────────────────────────────────────
+// The four major works, built by scripts/build-clement.py. The Greek comes from BOTH Greek
+// repositories, since neither has all of it: the Stromateis only from Perseus, the rest only
+// from First1KGreek. English is the Roberts–Donaldson ANF translation via New Advent.
+//
+// The English divides to chapter and the Stromateis Greek to section, so the chapter is the
+// parallel unit and the section numbers ride inline in the Greek — as in the Preparation for
+// the Gospel above. "Strom. 1.5.28" therefore opens book 1 chapter 5.
+//
+// STROMATEIS BOOK 3 IS GREEK-ONLY. The ANF translators refused to render it, printing Potter's
+// Latin instead, so there is no public-domain English to set beside it.
+const CLEMENT_WORKS_TABLE: { slug: string; name: string; noteBook: string; chapters: number; abbrevs: string[]; book?: number; greekOnly?: boolean }[] = [
+  { slug: 'clement-protrepticus', name: 'Clement of Alexandria, Exhortation to the Greeks', noteBook: 'ClemProtr', chapters: 12, abbrevs: ['Protr.', 'Protrepticus', 'Exhortation to the Greeks'] },
+  { slug: 'clement-paedagogus-1', name: 'Clement of Alexandria, The Instructor (Book 1)', noteBook: 'ClemPaed1', chapters: 13, abbrevs: ['Paed.', 'Paedagogus', 'The Instructor'], book: 1 },
+  { slug: 'clement-paedagogus-2', name: 'Clement of Alexandria, The Instructor (Book 2)', noteBook: 'ClemPaed2', chapters: 12, abbrevs: ['Paed.', 'Paedagogus', 'The Instructor'], book: 2 },
+  { slug: 'clement-paedagogus-3', name: 'Clement of Alexandria, The Instructor (Book 3)', noteBook: 'ClemPaed3', chapters: 12, abbrevs: ['Paed.', 'Paedagogus', 'The Instructor'], book: 3 },
+  { slug: 'clement-stromateis-1', name: 'Clement of Alexandria, Stromateis (Book 1)', noteBook: 'ClemStrom1', chapters: 29, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 1 },
+  { slug: 'clement-stromateis-2', name: 'Clement of Alexandria, Stromateis (Book 2)', noteBook: 'ClemStrom2', chapters: 23, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 2 },
+  { slug: 'clement-stromateis-3', name: 'Clement of Alexandria, Stromateis (Book 3)', noteBook: 'ClemStrom3', chapters: 18, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 3, greekOnly: true },
+  { slug: 'clement-stromateis-4', name: 'Clement of Alexandria, Stromateis (Book 4)', noteBook: 'ClemStrom4', chapters: 26, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 4 },
+  { slug: 'clement-stromateis-5', name: 'Clement of Alexandria, Stromateis (Book 5)', noteBook: 'ClemStrom5', chapters: 13, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 5 },
+  { slug: 'clement-stromateis-6', name: 'Clement of Alexandria, Stromateis (Book 6)', noteBook: 'ClemStrom6', chapters: 18, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 6 },
+  { slug: 'clement-stromateis-7', name: 'Clement of Alexandria, Stromateis (Book 7)', noteBook: 'ClemStrom7', chapters: 18, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 7 },
+  { slug: 'clement-stromateis-8', name: 'Clement of Alexandria, Stromateis (Book 8)', noteBook: 'ClemStrom8', chapters: 9, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 8 },
+  { slug: 'clement-quis-dives', name: 'Clement of Alexandria, Who is the Rich Man that Shall be Saved?', noteBook: 'ClemQuisDives', chapters: 42, abbrevs: ['Quis div.', 'Quis dives salvetur', 'Who is the Rich Man'] },
+]
+
+const CLEMENT_ATTRIB = 'Greek: Clement of Alexandria — the Stromateis from the Perseus Digital Library (CC-BY-SA 4.0), the rest from the First Thousand Years of Greek (CC BY-SA 4.0). English: the Roberts–Donaldson translation (Ante-Nicene Fathers, vol. 2, 1885), public domain, via newadvent.org. The English divides to chapter, so it stands beside the whole Greek chapter.'
+
+// "Clement, Strom. 1.5.28" → book 1 chapter 5; the section is read but not returned, a chapter
+// being one row here. A work without a book number ("Protr. 10") cites chapter directly.
+const clementCite = (abbrevs: string[], book?: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of [...abbrevs].sort((a, b) => b.length - a.length)) {
+    const lead = book === undefined ? '' : String(book) + '\\.'
+    const m = s.match(new RegExp('^Clement(?: of Alexandria)?,?\\s+' + ab.replace(/\./g, '\\.') + '\\s+' + lead + '(\\d+)'))
+    if (m) return { chapter: parseInt(m[1], 10) }
+  }
+  return null
+}
+
+const CLEMENT_WORKS: ProseWork[] = CLEMENT_WORKS_TABLE.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/clement/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: CLEMENT_ATTRIB,
+  parseCitation: clementCite(w.abbrevs, w.book),
+}))
+
+export const CLEMENT_CATALOG = CLEMENT_WORKS_TABLE.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+  greek: true, ...(w.greekOnly ? { greekOnly: true } : {}),
+}))
+
+// ── Eusebius, Preparation for the Gospel ──────────────────────────────────────────────
+// The Praeparatio Evangelica, in fifteen books — the richest surviving quarry of lost
+// Hellenistic and Jewish-Hellenistic writing, since Eusebius quotes Alexander Polyhistor,
+// Artapanus, Eupolemus, Aristobulus, Philo of Byblos, Numenius and Porphyry at length and for
+// most of them this is the only text there is. Built by scripts/build-eusebius-pe.py.
+//
+// Unlike the Ecclesiastical History, whose English (McGiffert) divides to section, Gifford's
+// 1903 translation divides only to chapter, so the chapter is the parallel unit: one row with
+// the whole English chapter beside the whole Greek chapter, the Greek carrying its section
+// numbers inline so "Praep. ev. 9.17.2" is still findable on the page. Books 2, 3, 6, 11 and 13
+// open with a preface, stored as chapter 0.
+const EUSEBIUS_PE_ATTRIBUTION = 'Greek: Eusebius, Praeparatio Evangelica (Gaisford), via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. English: E. H. Gifford’s translation (1903), public domain, transcribed by Roger Pearse (tertullian.org). The English divides only to chapter, so it stands beside the whole Greek chapter, whose section numbers are kept inline.'
+
+const EUSEBIUS_PE_BOOKS: { book: number; last: number; preface: boolean }[] = [
+  { book: 1, last: 10, preface: false },
+  { book: 2, last: 8, preface: true },
+  { book: 3, last: 17, preface: true },
+  { book: 4, last: 23, preface: false },
+  { book: 5, last: 36, preface: false },
+  { book: 6, last: 11, preface: true },
+  { book: 7, last: 22, preface: false },
+  { book: 8, last: 14, preface: false },
+  { book: 9, last: 42, preface: false },
+  { book: 10, last: 14, preface: false },
+  { book: 11, last: 38, preface: true },
+  { book: 12, last: 52, preface: false },
+  { book: 13, last: 21, preface: true },
+  { book: 14, last: 27, preface: false },
+  { book: 15, last: 62, preface: false },
+]
+
+// "Eusebius, Praep. ev. 9.17.2" → book 9, chapter 17. The section is read but not returned as a
+// verse: a chapter is one row here, so there is nothing finer to land on. Only Praep. ev.
+// matches, never Hist. eccl.
+const eusebiusPeCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp(`^Eusebius,\\s*(?:Praep(?:aratio)?\\.?\\s*(?:ev(?:angelica)?)?\\.?|P\\.E\\.)\\s+${book}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+
+const EUSEBIUS_PE_WORKS: ProseWork[] = EUSEBIUS_PE_BOOKS.map(b => ({
+  source: `eusebius-pe-${b.book}` as EmbeddedProseSource,
+  name: `Eusebius, Preparation for the Gospel (Book ${b.book})`,
+  noteBook: `EusebPE${b.book}`,
+  dataUrl: `/data/eusebius/pe-${b.book}.json`,
+  chapters: b.last + (b.preface ? 1 : 0),
+  attribution: EUSEBIUS_PE_ATTRIBUTION,
+  parseCitation: eusebiusPeCite(b.book),
+  chapterLabel: (ch: number) => (ch === 0 ? 'Preface' : `Chapter ${ch}`),
+}))
+
+export const EUSEBIUS_PE_CATALOG = EUSEBIUS_PE_BOOKS.map(b => ({
+  id: `eusebius-pe-${b.book}`,
+  source: `eusebius-pe-${b.book}` as EmbeddedProseSource,
+  name: `Eusebius, Preparation for the Gospel (Book ${b.book})`,
+  chapters: b.last + (b.preface ? 1 : 0),
+  greek: true,
+  ...(b.preface ? { chapterNumbers: Array.from({ length: b.last + 1 }, (_, i) => i) } : {}),
+}))
+
 export const EUSEBIUS_CATALOG = EUSEBIUS_BOOKS.map(b => ({
   id: `eusebius-he-${b.book}`,
   source: `eusebius-he-${b.book}` as EmbeddedProseSource,
@@ -1929,6 +2045,8 @@ export const PROSE_WORKS: ProseWork[] = [
   ...ANF_WORKS,
   ...JUSTIN_WORKS,
   ...EUSEBIUS_WORKS,
+  ...EUSEBIUS_PE_WORKS,
+  ...CLEMENT_WORKS,
   ...QUINTILIAN_WORKS,
   ...HOMER_WORKS,
   ...HESIOD_WORKS,
