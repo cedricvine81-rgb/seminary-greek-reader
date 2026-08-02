@@ -1696,6 +1696,29 @@ export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
     'It distinguishes possessing wealth from being possessed by it, and makes the disposition of the heart, not the size of the estate, the point of the command.',
     'The earliest sustained Christian exegesis of a Gospel passage that survives entire, and the standard reference for how the early church read Jesus’ sayings on riches; the closing story of John is one of the oldest pieces of extra-canonical tradition about an apostle.',
   ),
+  // The preface's slug ends in a word, so getTextSummary's trailing-number fallback cannot
+  // reach 'origen-celsus'; it is aliased below the shared entry.
+  'origen-celsus': S(
+    'By Origen of Alexandria (c. 185 – c. 253 CE), the most learned and most controversial biblical scholar of the early church, writing near the end of his life at Caesarea.',
+    'A reply, written about 248 CE at the request of his patron Ambrose, to The True Word — a systematic attack on Christianity published some seventy years earlier by the philosopher Celsus. Origen quotes Celsus at length before answering him, so the work preserves most of the lost original: it is the fullest surviving pagan critique of Christianity and the fullest Christian answer to one.',
+    'Eight books, preceded by a preface. Origen takes Celsus’ charges in order: that Christianity is a secret and illegal society, that it borrowed from Judaism and corrupted it, that Jesus was a magician and his resurrection a tale of hysterical women, that Christians are credulous and shun educated inquiry, that they refuse the civic duties on which the empire depends. Divided here one work per book, the preface separately.',
+    'Origen argues that faith and reason are allies, that the scriptures must often be read allegorically, and that the church can meet philosophy on its own ground — while insisting that the gospel’s power is shown in changed lives rather than in argument alone.',
+    'The single most important source for what an educated pagan of the second century actually thought about Jesus and the church, and for how a Christian scholar answered. Celsus’ objections to the resurrection accounts, the virgin birth and the Gospels’ discrepancies are the ancestors of the modern ones, and Origen’s replies are the first sustained Christian engagement with them.',
+  ),
+  'athanasius-incarnation': S(
+    'By Athanasius of Alexandria (c. 296 – 373 CE), deacon and later bishop, the central defender of Nicene orthodoxy through five exiles.',
+    'An early work, the second half of a two-part apology whose first part, Against the Heathen, refutes idolatry. Written for an educated enquirer who would find the cross an absurdity.',
+    'Fifty-seven chapters arguing why God the Word took a human body: creation and the fall, the divine dilemma of a God who cannot let his word of death be broken nor let his image perish, the fittingness of the death and specifically of the cross, the evidence of the resurrection, and replies to Jewish and Greek objections.',
+    'Its governing claim is that the Word became man so that we might be made divine — that the incarnation is not a rescue operation added to creation but the restoration of what creation was for. The argument that only the Creator can re-create is the seed of the Nicene case for the Son’s full divinity.',
+    'The classic early exposition of why the incarnation was necessary, and of the resurrection as publicly attested; its handling of the Old Testament as prophecy fulfilled in Christ shows how a fourth-century reader used the texts the New Testament cites.',
+  ),
+  'athanasius-arians': S(
+    'By Athanasius of Alexandria (c. 296 – 373 CE); the fourth Discourse is transmitted with the others but is not his, and is generally assigned to a later hand.',
+    'Written during or between his exiles, in the decades after the Council of Nicaea (325 CE), when the Arian position had recovered imperial favour and the Nicene formula was widely under attack.',
+    'Discourse 1 sets out the Arian case — quoting Arius’ own Thalia, one of the few places it survives — and argues that the Son is eternal, not made. Discourses 2 and 3 work through the scriptural texts the Arians relied on, above all Proverbs 8:22 ("the Lord created me"), Acts 2:36, Hebrews 1:4, Philippians 2:9 and John 14:28, and expound the unity of Father and Son. Discourse 4 is a shorter and separate treatment.',
+    'Athanasius argues that if the Son is a creature he cannot save, since only God can restore what God made; and that the texts which speak of Christ as made or exalted refer to his humanity, not his eternal being. This distinction between what is said of Christ as God and as man became a permanent tool of Christian exegesis.',
+    'The most sustained early exegesis of the New Testament passages that bear on Christ’s divinity, and the fullest surviving evidence for the Arian reading of those same texts — indispensable for seeing how the christological vocabulary of the creeds was worked out from scripture.',
+  ),
   'af-hermas': S(
     'By Hermas, a Christian of Rome; the Muratorian Fragment says he was the brother of Bishop Pius, placing him in the mid second century.',
     'Written for a Roman church troubled by wealth, worldliness, and believers who had denied the faith under pressure.',
@@ -1704,3 +1727,7 @@ export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
     'One of the most widely read early Christian works — some treated it as Scripture — and the fullest evidence for how the second-century church handled post-baptismal sin and the pastoral care of the wealthy.',
   ),
 }
+
+// Against Celsus' preface shares the work's summary; its slug has no trailing number for
+// getTextSummary to strip, so the alias is explicit.
+TEXT_SUMMARIES['origen-celsus-praef'] = TEXT_SUMMARIES['origen-celsus']

@@ -26,7 +26,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -509,6 +509,96 @@ const EUSEBIUS_WORKS: ProseWork[] = EUSEBIUS_BOOKS.map(b => ({
 }))
 
 // Ids/names the catalog needs; preface books declare chapterNumbers so the reader queues ch. 0.
+// ── Origen and Athanasius ─────────────────────────────────────────────────────────────
+// Built by scripts/build-origen-athanasius.py. Greek from First1KGreek; English from New
+// Advent — Crombie's Ante-Nicene Fathers for Origen, Robertson's Nicene and Post-Nicene
+// Fathers for Athanasius. Chapter-level pairing, as for the Preparation for the Gospel and
+// Clement, with any finer Greek section numbers carried inline.
+//
+// Against Celsus keeps its six-chapter preface as a separate Greek-only work: the ANF prints
+// the preface as one continuous block, which cannot be divided across Koetschau's six chapters.
+// Athanasius' fourth Discourse is transmitted with the other three but is not his.
+const ORIGEN_ATTRIB = 'Greek: Origen, Contra Celsum (Koetschau), via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. English: Frederick Crombie’s translation (Ante-Nicene Fathers, vol. 4, 1885), public domain, via newadvent.org. The English divides to chapter, so it stands beside the whole Greek chapter.'
+const ATHANASIUS_ATTRIB = 'Greek: Athanasius, via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. English: Archibald Robertson’s translation (Nicene and Post-Nicene Fathers, second series, vol. 4, 1892), public domain, via newadvent.org. The English divides to chapter, so it stands beside the whole Greek chapter.'
+
+const CELSUS_BOOKS = [
+  { book: 1, last: 71 }, { book: 2, last: 79 }, { book: 3, last: 81 }, { book: 4, last: 99 },
+  { book: 5, last: 65 }, { book: 6, last: 81 }, { book: 7, last: 70 }, { book: 8, last: 76 },
+]
+
+// "Origen, Cels. 1.9" / "Contra Celsum 1.9" / "Origen, Against Celsus 1.9".
+const celsusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp(`^(?:Origen,?\\s*)?(?:Cels\\.|Contra Celsum|Against Celsus|C\\. Cels\\.)\\s+${book}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+
+const ORIGEN_WORKS: ProseWork[] = [
+  {
+    source: 'origen-celsus-praef' as EmbeddedProseSource,
+    name: 'Origen, Against Celsus (Preface)',
+    noteBook: 'OrigCelsPraef',
+    dataUrl: '/data/fathers/origen-celsus-praef.json',
+    chapters: 6,
+    attribution: ORIGEN_ATTRIB,
+    parseCitation: (text: string) => {
+      const m = text.replace(/^cf\.\s*/, '').match(/^(?:Origen,?\s*)?(?:Cels\.|Contra Celsum|Against Celsus)\s+(?:praef|pref)\.?\s*(\d+)/i)
+      return m ? { chapter: parseInt(m[1], 10) } : null
+    },
+  },
+  ...CELSUS_BOOKS.map(b => ({
+    source: `origen-celsus-${b.book}` as EmbeddedProseSource,
+    name: `Origen, Against Celsus (Book ${b.book})`,
+    noteBook: `OrigCels${b.book}`,
+    dataUrl: `/data/fathers/origen-celsus-${b.book}.json`,
+    chapters: b.last,
+    attribution: ORIGEN_ATTRIB,
+    parseCitation: celsusCite(b.book),
+  })),
+]
+
+const ATHANASIUS_TABLE: { slug: string; name: string; noteBook: string; chapters: number; discourse?: number }[] = [
+  { slug: 'athanasius-incarnation', name: 'Athanasius, On the Incarnation of the Word', noteBook: 'AthanInc', chapters: 57 },
+  { slug: 'athanasius-arians-1', name: 'Athanasius, Against the Arians (Discourse 1)', noteBook: 'AthanAr1', chapters: 64, discourse: 1 },
+  { slug: 'athanasius-arians-2', name: 'Athanasius, Against the Arians (Discourse 2)', noteBook: 'AthanAr2', chapters: 82, discourse: 2 },
+  { slug: 'athanasius-arians-3', name: 'Athanasius, Against the Arians (Discourse 3)', noteBook: 'AthanAr3', chapters: 67, discourse: 3 },
+  { slug: 'athanasius-arians-4', name: 'Athanasius, Against the Arians (Discourse 4) [spurious]', noteBook: 'AthanAr4', chapters: 36, discourse: 4 },
+]
+
+// "Athanasius, Inc. 54" for the treatise; "Athanasius, C. Ar. 1.39" / "Or. c. Ar. 1.39" for a
+// Discourse, whose number precedes the chapter.
+const athanasiusCite = (discourse?: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = discourse === undefined
+    ? s.match(/^Athanasius,?\s*(?:Inc\.|De Incarnatione|On the Incarnation)\s+(\d+)/)
+    : s.match(new RegExp(`^Athanasius,?\\s*(?:C\\.\\s*Ar\\.|Or\\.\\s*c\\.\\s*Ar\\.|Contra Arianos|Against the Arians)\\s+${discourse}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+
+const ATHANASIUS_WORKS: ProseWork[] = ATHANASIUS_TABLE.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/fathers/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: ATHANASIUS_ATTRIB,
+  parseCitation: athanasiusCite(w.discourse),
+}))
+
+export const ORIGEN_CATALOG = [
+  { id: 'origen-celsus-praef', source: 'origen-celsus-praef' as EmbeddedProseSource, name: 'Origen, Against Celsus (Preface)', chapters: 6, greek: true, greekOnly: true },
+  ...CELSUS_BOOKS.map(b => ({
+    id: `origen-celsus-${b.book}`,
+    source: `origen-celsus-${b.book}` as EmbeddedProseSource,
+    name: `Origen, Against Celsus (Book ${b.book})`,
+    chapters: b.last, greek: true,
+  })),
+]
+
+export const ATHANASIUS_CATALOG = ATHANASIUS_TABLE.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
+}))
+
 // ── Clement of Alexandria ─────────────────────────────────────────────────────────────
 // The four major works, built by scripts/build-clement.py. The Greek comes from BOTH Greek
 // repositories, since neither has all of it: the Stromateis only from Perseus, the rest only
@@ -2047,6 +2137,8 @@ export const PROSE_WORKS: ProseWork[] = [
   ...EUSEBIUS_WORKS,
   ...EUSEBIUS_PE_WORKS,
   ...CLEMENT_WORKS,
+  ...ORIGEN_WORKS,
+  ...ATHANASIUS_WORKS,
   ...QUINTILIAN_WORKS,
   ...HOMER_WORKS,
   ...HESIOD_WORKS,

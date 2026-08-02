@@ -45,6 +45,7 @@ const nextConfig = {
         'public/data/variants/**',
         'public/data/eusebius/**',
         'public/data/clement/**',
+        'public/data/fathers/**',
         'public/data/justin/**',
         'public/data/pseudepigrapha/**',
         'public/data/pseudepigrapha-b/**',
