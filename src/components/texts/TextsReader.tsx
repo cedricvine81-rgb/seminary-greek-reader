@@ -1,6 +1,6 @@
 'use client'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { Search, ChevronDown, MoreVertical, X, Map as MapIcon} from 'lucide-react'
+import { Search, ChevronDown, MoreVertical, X} from 'lucide-react'
 import Link from 'next/link'
 import { betaCodeToGreek } from '@/lib/greek-translit'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
@@ -983,20 +983,6 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
       {menuOpen && (
         <div className="absolute left-0 top-full z-30 mt-1 w-64 max-h-[70vh] overflow-y-auto bg-popover border border-gray-200 rounded-lg shadow-lg py-1">
-          {/* The map is built from these texts, and this is the only route to it on a phone:
-              the header's Texts drop-down that also links to it is hidden below md. */}
-          {menuCat === null && (
-            <>
-              <Link
-                href="/map"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors"
-              >
-                <MapIcon size={14} className="text-gray-400" /> Map of places
-              </Link>
-              <div className="my-1 border-t border-gray-100" />
-            </>
-          )}
           {menuCat === null ? (
             TEXT_CATEGORIES.map(cat => {
               const isActive = !!work && cat.works.some(w => w.id === work.id)

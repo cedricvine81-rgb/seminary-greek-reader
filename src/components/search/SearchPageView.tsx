@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, ArrowUpRight, MoreVertical, Blocks } from 'lucide-react'
+import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, ArrowUpRight, MoreVertical, Blocks, Map as MapIcon} from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { FONT_SIZES, FONT_SIZE_MAP, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { TextSizeSlider } from '@/components/reader/TextSizeControls'
@@ -1008,6 +1008,14 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             <Link href="/search/construct" title="Find two or three words near each other by their grammar"
               className="inline-flex flex-none items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">
               <Blocks size={13} /> Construct
+            </Link>
+
+          {/* Searching the same texts by place rather than by word, so it belongs with the
+              other search modes. Full page only: in the side pane it wrapped the close button
+              onto a second row, and you would have come from the map to open the pane anyway. */}
+            <Link href="/map" title="Map the places these texts name"
+              className="inline-flex flex-none items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">
+              <MapIcon size={13} /> Map
             </Link>
 
           {/* Search types */}
