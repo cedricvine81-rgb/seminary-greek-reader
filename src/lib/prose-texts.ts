@@ -557,6 +557,57 @@ const ORIGEN_WORKS: ProseWork[] = [
   })),
 ]
 
+// Origen's works that have no public-domain English — the ANF volumes do not translate them —
+// shipped as Greek alone, which still carries the search, the parsing pane and the lexicon. The
+// Commentary on John is his largest surviving Greek work; its ANF chapters cannot be mapped onto
+// Preuschen's continuous section numbering without a concordance neither source supplies, so it
+// is not paired rather than paired by guesswork. Books 3, 7-9 and others are lost.
+const ORIGEN_GRC_ONLY_ATTRIB = 'Greek: Origen, via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. Greek only — the Ante-Nicene Fathers do not translate this work.'
+const ORIGEN_JOHN_ATTRIB = 'Greek: Origen, Commentarii in evangelium Joannis (Preuschen), via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. Greek only: the Ante-Nicene Fathers translation divides into chapters that cannot be mapped onto Preuschen’s section numbering, so no English is set beside it.'
+
+const ORIGEN_JOHN_BOOKS = [
+  { book: 1, last: 292 }, { book: 2, last: 229 }, { book: 4, last: 2 }, { book: 5, last: 8 },
+  { book: 6, last: 307 }, { book: 10, last: 323 }, { book: 13, last: 455 }, { book: 19, last: 160 },
+  { book: 20, last: 422 }, { book: 28, last: 249 }, { book: 32, last: 401 },
+]
+
+const ORIGEN_GREEK_ONLY: { slug: string; name: string; noteBook: string; chapters: number; abbrevs: string[]; attribution: string }[] = [
+  { slug: 'origen-prayer', name: 'Origen, On Prayer', noteBook: 'OrigOrat', chapters: 34, abbrevs: ['Orat.', 'De oratione', 'On Prayer'], attribution: ORIGEN_GRC_ONLY_ATTRIB },
+  { slug: 'origen-martyrdom', name: 'Origen, Exhortation to Martyrdom', noteBook: 'OrigMart', chapters: 51, abbrevs: ['Mart.', 'Exh. mart.', 'Exhortation to Martyrdom'], attribution: ORIGEN_GRC_ONLY_ATTRIB },
+  { slug: 'origen-philocalia', name: 'Origen, Philocalia', noteBook: 'OrigPhiloc', chapters: 27, abbrevs: ['Philoc.', 'Philocalia'], attribution: ORIGEN_GRC_ONLY_ATTRIB + ' Compiled by Basil the Great and Gregory of Nazianzus.' },
+]
+
+const ORIGEN_GREEK_ONLY_WORKS: ProseWork[] = [
+  ...ORIGEN_GREEK_ONLY.map(w => ({
+    source: w.slug as EmbeddedProseSource,
+    name: w.name,
+    noteBook: w.noteBook,
+    dataUrl: `/data/fathers/${w.slug}.json`,
+    chapters: w.chapters,
+    attribution: w.attribution,
+    parseCitation: (text: string) => {
+      const t = text.replace(/^cf\.\s*/, '')
+      for (const ab of [...w.abbrevs].sort((a, b) => b.length - a.length)) {
+        const m = t.match(new RegExp('^(?:Origen,?\\s*)?' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)'))
+        if (m) return { chapter: parseInt(m[1], 10) }
+      }
+      return null
+    },
+  })),
+  ...ORIGEN_JOHN_BOOKS.map(b => ({
+    source: `origen-john-${b.book}` as EmbeddedProseSource,
+    name: `Origen, Commentary on John (Book ${b.book})`,
+    noteBook: `OrigJo${b.book}`,
+    dataUrl: `/data/fathers/origen-john-${b.book}.json`,
+    chapters: b.last,
+    attribution: ORIGEN_JOHN_ATTRIB,
+    parseCitation: (text: string) => {
+      const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Origen,?\\s*)?(?:Comm\\.\\s*(?:in\\s*)?Jo(?:h|hn|ann)?\\.|Commentary on John)\\s+${b.book}\\.(\\d+)`))
+      return m ? { chapter: parseInt(m[1], 10) } : null
+    },
+  })),
+]
+
 const ATHANASIUS_TABLE: { slug: string; name: string; noteBook: string; chapters: number; discourse?: number }[] = [
   { slug: 'athanasius-incarnation', name: 'Athanasius, On the Incarnation of the Word', noteBook: 'AthanInc', chapters: 57 },
   { slug: 'athanasius-arians-1', name: 'Athanasius, Against the Arians (Discourse 1)', noteBook: 'AthanAr1', chapters: 64, discourse: 1 },
@@ -592,6 +643,19 @@ export const ORIGEN_CATALOG = [
     source: `origen-celsus-${b.book}` as EmbeddedProseSource,
     name: `Origen, Against Celsus (Book ${b.book})`,
     chapters: b.last, greek: true,
+  })),
+]
+
+export const ORIGEN_GREEK_ONLY_CATALOG = [
+  ...ORIGEN_GREEK_ONLY.map(w => ({
+    id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+    greek: true, greekOnly: true,
+  })),
+  ...ORIGEN_JOHN_BOOKS.map(b => ({
+    id: `origen-john-${b.book}`,
+    source: `origen-john-${b.book}` as EmbeddedProseSource,
+    name: `Origen, Commentary on John (Book ${b.book})`,
+    chapters: b.last, greek: true, greekOnly: true,
   })),
 ]
 
@@ -2138,6 +2202,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...EUSEBIUS_PE_WORKS,
   ...CLEMENT_WORKS,
   ...ORIGEN_WORKS,
+  ...ORIGEN_GREEK_ONLY_WORKS,
   ...ATHANASIUS_WORKS,
   ...QUINTILIAN_WORKS,
   ...HOMER_WORKS,

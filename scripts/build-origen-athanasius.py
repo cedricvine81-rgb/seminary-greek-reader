@@ -7,6 +7,16 @@
     Post-Nicene Fathers English (Archibald Robertson, 1892).
   · Athanasius, Four Discourses Against the Arians (tlg2035.tlg130/131/132/117), flat chapters.
 
+GREEK-ONLY ORIGEN. Four more works have Greek here but no public-domain English — the ANF
+volumes do not translate them — and are built with the Greek alone, which still gives the
+search, the parsing pane and the right-click lexicon:
+  · On Prayer (tlg008) and Exhortation to Martyrdom (tlg007)
+  · Commentary on John (tlg005), his largest surviving Greek work, 2,838 sections over eleven
+    books (3 and the rest are lost). The ANF does translate it, but its chapters cannot be
+    mapped onto Preuschen's continuous section numbering without a concordance that is not in
+    either source, so pairing them would be guesswork.
+  · The Philocalia (tlg019), the anthology of Origen made by Basil and Gregory of Nazianzus.
+
 NOT INCLUDED, deliberately:
   · De decretis. First1KGreek files tlg2035.tlg003 under that title, but the text is not the
     treatise — it is the documentary appendix, Constantine's letters against Eusebius and
@@ -82,9 +92,40 @@ def strip_text(el):
     return re.sub(r'\s+', ' ', ''.join(el.itertext())).strip()
 
 
+def drop_stray_closes(xml):
+    """Remove closing tags that close nothing, so a malformed TEI still parses. The Commentary
+    on John and the Philocalia are both unparseable as published. Same approach as
+    scripts/build-perseus.py, kept local rather than shared so the two build scripts stay
+    independent; a well-formed document is returned unchanged."""
+    stack, out = [], []
+    for tok in re.split(r'(</?[a-zA-Z][a-zA-Z0-9]*(?:\s[^>]*?)?/?>)', xml):
+        m = re.fullmatch(r'(?is)<(/?)([a-zA-Z][a-zA-Z0-9]*)(?:\s[^>]*?)?(/?)>', tok or '')
+        if m:
+            closing, name, self_closing = m.group(1), m.group(2).lower(), m.group(3)
+            if closing:
+                if name not in stack:
+                    continue
+                while stack and stack.pop() != name:
+                    pass
+            elif not self_closing:
+                stack.append(name)
+        out.append(tok)
+    return ''.join(out)
+
+
+# The Philocalia transcription prints 535 unicode escapes as literal text rather than as the
+# character — "θεοπνεύU+03F2του" for θεοπνεύϲτου, and a Hebrew aleph 360 times. Converted after
+# the markup is parsed, never before: three of them are U+003C, which would open a bogus tag.
+_ESCAPE = re.compile(r'U\+([0-9A-Fa-f]{4})')
+
+
+def unescape_codepoints(text):
+    return _ESCAPE.sub(lambda m: chr(int(m.group(1), 16)), text)
+
+
 def edition(xml_bytes):
     xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
-    return ET.fromstring(xml).find('.//t:body/t:div', NS)
+    return ET.fromstring(drop_stray_closes(xml)).find('.//t:body/t:div', NS)
 
 
 def chapters_with_sections(div):
@@ -216,6 +257,59 @@ def main():
         rows.append(write_work(f'athanasius-arians-{bk}', name, ATHAN_ATTRIB,
                                chapters_with_sections(ed),
                                newadvent_numbered(page, no_cache)))
+
+    # ── Origen without English ───────────────────────────────────────────────────────
+    ORIGEN_GRC_ONLY = ('Greek: Origen, via the First Thousand Years of Greek (Open Greek and '
+                       'Latin), CC BY-SA 4.0. Greek only — the Ante-Nicene Fathers do not '
+                       'translate this work.')
+
+    # On Prayer divides chapter → section; Exhortation to Martyrdom straight to chapter.
+    ed = edition(fetch(FIRST1K + 'tlg2042/tlg008/tlg2042.tlg008.perseus-grc1.xml',
+                       'orig-prayer.xml', no_cache))
+    rows.append(write_work('origen-prayer', 'Origen, On Prayer',
+                           ORIGEN_GRC_ONLY, chapters_with_sections(ed), None))
+    ed = edition(fetch(FIRST1K + 'tlg2042/tlg007/tlg2042.tlg007.perseus-grc1.xml',
+                       'orig-exhort.xml', no_cache))
+    rows.append(write_work('origen-martyrdom', 'Origen, Exhortation to Martyrdom',
+                           ORIGEN_GRC_ONLY, chapters_with_sections(ed), None))
+
+    # Commentary on John — one work per surviving book, the verse rows being Preuschen's
+    # sections. Books 3 and 7-9 and others are lost; only what survives is here.
+    ed = edition(fetch(FIRST1K + 'tlg2042/tlg005/tlg2042.tlg005.1st1K-grc1.xml',
+                       'orig-john.xml', no_cache))
+    john_attrib = ('Greek: Origen, Commentarii in evangelium Joannis (Preuschen), via the First '
+                   'Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. Greek only: '
+                   'the Ante-Nicene Fathers translation divides into chapters that cannot be '
+                   'mapped onto Preuschen’s section numbering, so no English is set beside it.')
+    for b in ed.findall('t:div', NS):
+        bn = b.get('n')
+        if not (bn or '').isdigit():
+            continue
+        secs = {int(sd.get('n')): strip_text(sd) for sd in b.findall('t:div', NS)
+                if (sd.get('n') or '').isdigit() and strip_text(sd)}
+        if secs:
+            rows.append(write_work(f'origen-john-{int(bn)}',
+                                   f'Origen, Commentary on John (Book {int(bn)})',
+                                   john_attrib, secs, None))
+
+    # The Philocalia — its 27 chapters sit under a div the edition labels book "2"; the "pr"
+    # book is the compilers' table of contents and is not part of the text.
+    ed = edition(fetch(FIRST1K + 'tlg2042/tlg019/tlg2042.tlg019.1st1K-grc1.xml',
+                       'orig-philoc.xml', no_cache))
+    philoc = {}
+    for b in ed.findall('t:div', NS):
+        if b.get('n') == 'pr':
+            continue
+        for c in b.findall('t:div', NS):
+            if (c.get('n') or '').isdigit():
+                secs = {int(sd.get('n')): strip_text(sd) for sd in c.findall('t:div', NS)
+                        if (sd.get('n') or '').isdigit() and strip_text(sd)}
+                text = ' '.join(secs[k] for k in sorted(secs)) if secs else strip_text(c)
+                if text:
+                    philoc[int(c.get('n'))] = unescape_codepoints(text)
+    rows.append(write_work('origen-philocalia', 'Origen, Philocalia',
+                           ORIGEN_GRC_ONLY + ' Compiled by Basil the Great and Gregory of '
+                           'Nazianzus.', philoc, None))
 
     print(f'{"work":32} {"chapters":>9} {"with English":>13}')
     for slug, nch, paired in rows:
