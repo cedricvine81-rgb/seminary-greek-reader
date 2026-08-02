@@ -634,6 +634,38 @@ const HERODOTUS_WORKS: ProseWork[] = HERODOTUS_BOOKS.map(b => ({
   chapterLabel: (ch: number) => `Chapter ${ch}`,
 }))
 
+// Thucydides — one work per book (chapter = Thucydides chapter, verse = section), the same shape
+// as Herodotus. Crawley's 1914 English divides exactly as the Greek does, so every one of the
+// 3,587 sections is parallel; Perseus' other English is Smith's Loeb, still in copyright.
+const THUCYDIDES_ATTRIB = 'Text: Thucydides, tr. Richard Crawley (1914), public domain; Greek ed. H. S. Jones. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+const THUCYDIDES_BOOKS: { book: number; last: number }[] = [
+  { book: 1, last: 146 }, { book: 2, last: 103 }, { book: 3, last: 116 }, { book: 4, last: 135 },
+  { book: 5, last: 116 }, { book: 6, last: 105 }, { book: 7, last: 87 }, { book: 8, last: 109 },
+]
+const thucydidesCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  // "Thucydides 1.22.1", "Thuc. 1.22.1", and the Latin title form "Thucydides, Hist. 1.22".
+  const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Thuc\\.|Thucydides,?)\\s+(?:Hist(?:oriae|ory|\\.)?\\s+)?${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+const THUCYDIDES_WORKS: ProseWork[] = THUCYDIDES_BOOKS.map(b => ({
+  source: `thucydides-war-${b.book}` as EmbeddedProseSource,
+  name: `Thucydides, History of the Peloponnesian War (Book ${b.book})`,
+  noteBook: `ThucWar${b.book}`,
+  dataUrl: `/data/greco/thucydides-war-${b.book}.json`,
+  chapters: b.last,
+  attribution: THUCYDIDES_ATTRIB,
+  parseCitation: thucydidesCite(b.book),
+  chapterLabel: (ch: number) => `Chapter ${ch}`,
+}))
+
+export const THUCYDIDES_CATALOG = THUCYDIDES_BOOKS.map(b => ({
+  id: `thucydides-war-${b.book}`,
+  source: `thucydides-war-${b.book}` as EmbeddedProseSource,
+  name: `Thucydides, History of the Peloponnesian War (Book ${b.book})`,
+  chapters: b.last,
+  greek: true,
+}))
+
 // Catalog ids/names, with the book-8 gap declared so the reader doesn't stall on chapter 140.
 export const HOMER_CATALOG = HOMER_WORKS.map(w => ({ id: w.source, source: w.source, name: w.name, chapters: 24, greek: true }))
 export const HESIOD_CATALOG = HESIOD_WORKS.map(w => ({ id: w.source, source: w.source, name: w.name, chapters: w.chapters, greek: true }))
@@ -1791,6 +1823,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...HOMER_WORKS,
   ...HESIOD_WORKS,
   ...HERODOTUS_WORKS,
+  ...THUCYDIDES_WORKS,
   ...MISHNAH_WORKS,
   ...YERUSHALMI_WORKS,
   ...BAVLI_WORKS,

@@ -9,6 +9,7 @@
 // before being relied on. Corrections welcome. Each has five sections: Authorship, Historical
 // Context, Contents, Theological Significance, and Relationship to New Testament.
 import { BACKGROUND_SUMMARIES } from './backgrounds-summaries'
+import { PLUTARCH_SUMMARIES } from './texts-summaries-plutarch'
 import type { CatalogWork } from './texts-catalog'
 
 export interface TextSummarySection { heading: string; body: string }
@@ -60,7 +61,10 @@ function S(authorship: string, context: string, contents: string, significance: 
 }
 
 // Authored summaries, keyed by CatalogWork.id, for works not covered by backgrounds-summaries.ts.
+// Plutarch's 148 works live in their own module; merged in here so getTextSummary has one
+// table to consult.
 export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
+  ...PLUTARCH_SUMMARIES,
   // ── Apocrypha (works without an existing summary) ──────────────────────────────
   EsthGr: S(
     'The Greek version of Esther expands the Hebrew book with six substantial "Additions" of unknown authorship. A colophon attributes the translation to a Lysimachus of Jerusalem, and the Additions were likely composed in the 2nd–1st century BCE.',
@@ -1493,27 +1497,6 @@ export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
     'It sets human affairs under divine envy and reversal, warning that great prosperity invites a fall.',
     'Its account of Egypt, Babylon and Persia is a primary source for the world of the later Old Testament, and its method of inquiry stands behind the historiographical tradition Luke works within.',
   ),
-  'plutarch-alexander': S(
-    'By Plutarch of Chaeronea (c. 46 – c. 120 CE), biographer and priest at Delphi.',
-    'One of the Parallel Lives, pairing a Greek and a Roman figure; Alexander is paired with Julius Caesar.',
-    'The life of Alexander the Great from his birth and education under Aristotle through his conquest of the Persian Empire to his death at Babylon in 323 BCE.',
-    'Plutarch states that he writes lives, not histories, seeking the revealing anecdote that discloses character rather than the full record of deeds.',
-    'Alexander’s conquests created the Hellenistic world of the New Testament; Plutarch’s biographical method — character shown through selected incident — is regularly compared with the Gospels.',
-  ),
-  'plutarch-antony': S(
-    'By Plutarch of Chaeronea (c. 46 – c. 120 CE).',
-    'One of the Parallel Lives, paired with Demetrius as a study of great gifts ruined.',
-    'The career of Mark Antony: his rise after Caesar’s assassination, his rule in the East, his relationship with Cleopatra, and his defeat at Actium and death.',
-    'It is a moral study of a capable man undone by appetite and infatuation.',
-    'It documents the Roman East a generation before Paul, including Ephesus, Tarsus, and the client-kingdoms, and illustrates the moral biography that shaped Greco-Roman expectations of a life story.',
-  ),
-  'plutarch-isis-osiris': S(
-    'By Plutarch of Chaeronea (c. 46 – c. 120 CE), writing as a priest of Apollo at Delphi.',
-    'Addressed to Clea, a priestess, at a time when Egyptian cults were spreading through the empire.',
-    'The myth of Isis, Osiris and Typhon, retold and then interpreted allegorically as a philosophical account of the divine, matter, and the soul.',
-    'It argues that the myths of the nations point, when rightly read, to one divine reality apprehended under many names.',
-    'The fullest ancient account of a mystery-cult myth, it is central to discussion of dying-and-rising deities and of the religious environment in which the early church proclaimed a risen Lord.',
-  ),
 
   // ── Epic and didactic poetry ────────────────────────────────────────────────────────
   'homer-iliad': S(
@@ -1649,6 +1632,13 @@ export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
     'Moses’ farewell prophecy to Joshua, surveying Israel’s history to the Hasmoneans and Herod, the persecution and the martyrdom of the righteous Taxo, and the coming appearance of God’s kingdom. The manuscript breaks off unfinished.',
     'It insists that deliverance comes from God alone, without human revolt, and that the righteous who suffer will be vindicated.',
     'Its lost ending is generally held to lie behind Jude 9, where Michael disputes with the devil over the body of Moses — the New Testament’s one clear allusion to this book.',
+  ),
+  'thucydides-war': S(
+    'By Thucydides son of Olorus (c. 460 – c. 400 BCE), an Athenian who commanded a fleet in the war he describes, was exiled for failing to save Amphipolis, and spent the exile gathering evidence from both sides.',
+    'Written during and after the war between Athens and Sparta (431–404 BCE) that ended Athenian supremacy. Thucydides states his method at the outset: he checked reports rather than taking the first account, gave speeches in the words he judged the occasion demanded while keeping to the general sense of what was actually said, and wrote for readers who wanted to understand rather than to be entertained.',
+    'Eight books, unfinished, breaking off in mid-narrative in 411 BCE. Book 1 traces the war’s causes and the growth of Athenian power; Book 2 contains Pericles’ Funeral Oration and the plague at Athens; Books 3–5 cover Mytilene, Plataea, Pylos and the Melian Dialogue; Books 6–7 the Sicilian expedition and its destruction; Book 8 the oligarchic revolution and the war in Ionia. This library divides it one work per book, cited book.chapter.section.',
+    'Thucydides writes without recourse to divine causation, explaining events by human calculation, fear, honour and interest — and shows in the plague at Athens and in the civil war at Corcyra how quickly law, piety and language itself decay under pressure. His analysis of how words change meaning in factional strife is among the most penetrating in ancient literature.',
+    'The founding text of critical historiography, and the standard against which the historical claims of the Gospels and Acts are assessed — his preface on sources and on the composition of speeches is quoted in nearly every discussion of the speeches in Acts. The Funeral Oration, the plague narrative and the Melian Dialogue are constant reference points for ancient views of the state, of suffering, and of power without justice.',
   ),
   'af-hermas': S(
     'By Hermas, a Christian of Rome; the Muratorian Fragment says he was the brother of Bishop Pius, placing him in the mid second century.',

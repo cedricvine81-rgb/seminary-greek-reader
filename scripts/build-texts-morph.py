@@ -157,6 +157,11 @@ def main():
     ap.add_argument('--testaments', action='store_true', help='Testaments of the Twelve Patriarchs')
     ap.add_argument('--eusebius', action='store_true', help='Eusebius, Ecclesiastical History')
     ap.add_argument('--only', default=None, help='restrict a dir run to one slug (debugging)')
+    ap.add_argument('--prefix', default=None,
+                    help='restrict a dir run to slugs starting with this (e.g. plutarch-), so '
+                         'adding a corpus does not re-tag the whole directory')
+    ap.add_argument('--skip-existing', action='store_true',
+                    help='leave works that already have a .morph.json sidecar alone')
     args = ap.parse_args()
 
     import stanza
@@ -175,6 +180,10 @@ def main():
             if f.stem.endswith('.morph'):
                 continue
             if args.only and f.stem != args.only:
+                continue
+            if args.prefix and not f.stem.startswith(args.prefix):
+                continue
+            if args.skip_existing and f.with_name(f'{f.stem}.morph.json').exists():
                 continue
             out = build_prose(nlp, f)  # None when the work has no parallel Greek
             if out is None:

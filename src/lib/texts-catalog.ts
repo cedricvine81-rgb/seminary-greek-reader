@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, YERUSHALMI_CATALOG, BAVLI_CATALOG, TOSEFTA_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, HOMER_CATALOG, HESIOD_CATALOG, HERODOTUS_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, YERUSHALMI_CATALOG, BAVLI_CATALOG, TOSEFTA_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, THUCYDIDES_CATALOG, HOMER_CATALOG, HESIOD_CATALOG, HERODOTUS_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -273,7 +273,7 @@ const RAW_CATEGORIES: TextCategory[] = [
         // directly from the public-domain Walz Greek (see scripts/theon-english.json).
         { id: 'theon-progymnasmata', name: 'Theon, Progymnasmata', source: 'theon-progymnasmata', chapters: 5, greek: true },
         { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
-        ...HOMER_CATALOG, ...HESIOD_CATALOG, ...HERODOTUS_CATALOG,
+        ...HOMER_CATALOG, ...HESIOD_CATALOG, ...HERODOTUS_CATALOG, ...THUCYDIDES_CATALOG,
         ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG, ...QUINTILIAN_CATALOG,
       ] as CatalogWork[]).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })),
     ],

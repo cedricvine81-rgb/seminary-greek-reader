@@ -271,6 +271,13 @@ BABBITT_ATTRIB = ('Text: Plutarch’s Moralia, tr. Frank Cole Babbitt (Loeb, 192
 # quietly shipping a translation we have no right to.
 PD_CUTOFF = 1930
 
+# English editions outside the Plutarch tables that check_licence() should also confirm, as
+# (urn dir, urn base, suffix). Perseus often carries an in-copyright Loeb of the same work under
+# a neighbouring suffix, so every choice made in main() belongs here.
+PD_ENGLISH_EDITIONS = [
+    ('tlg0003/tlg001', 'tlg0003.tlg001', 'eng6'),   # Thucydides — Crawley 1914 (not Smith's Loeb)
+]
+
 
 # Plutarch — the whole surviving corpus, built from Perseus' canonical TEI. Each row is
 #   (Perseus work id, slug suffix, English title, English edition suffix)
@@ -758,6 +765,9 @@ HOMER_ATTRIB = ('Greek: Homer, ed. D. B. Monro & T. W. Allen (OCT). English: A. 
 HESIOD_ATTRIB = ('Greek: Hesiod (Perseus). English: Hugh G. Evelyn-White (Loeb, 1914), public '
                  'domain, given per ~5-line group beside the Greek; cited by line. Digital '
                  'edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+THUCYDIDES_ATTRIB = ('Text: Thucydides, tr. Richard Crawley (1914), public domain; Greek ed. '
+                     'H. S. Jones. Digital edition: Perseus Digital Library, CC-BY-SA 4.0 '
+                     '(perseus.tufts.edu).')
 HERODOTUS_ATTRIB = ('Text: Herodotus, The Histories, tr. A. D. Godley (Loeb, 1920–1925), public '
                     'domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
                     'CC-BY-SA 4.0 (perseus.tufts.edu).')
@@ -1005,19 +1015,21 @@ def check_licence(no_cache):
     works alongside the public-domain ones, distinguished only by a suffix digit, so a typo in
     a table row is the difference between Goodwin 1874 and Cherniss 1957. This fails the build
     rather than letting that ship."""
-    rows = ([(w, e, 'Lives') for w, _s, _t, e in PLUTARCH_LIVES]
-            + [(w, e, 'Moralia') for w, _s, _t, _l, e, _a in PLUTARCH_MORALIA + PLUTARCH_MORALIA_CH]
-            + [(w, e, 'Moralia') for w, e in PLUTARCH_EXTRA_EDITIONS])
+    rows = ([(f'tlg0007/{w}', f'tlg0007.{w}', e) for w, _s, _t, e in PLUTARCH_LIVES]
+            + [(f'tlg0007/{w}', f'tlg0007.{w}', e)
+               for w, _s, _t, _l, e, _a in PLUTARCH_MORALIA + PLUTARCH_MORALIA_CH]
+            + [(f'tlg0007/{w}', f'tlg0007.{w}', e) for w, e in PLUTARCH_EXTRA_EDITIONS]
+            + PD_ENGLISH_EDITIONS)
     bad = []
-    for wid, suffix, _group in rows:
-        yr = edition_year(fetch(f'tlg0007/{wid}/tlg0007.{wid}.perseus-{suffix}.xml', no_cache))
+    for urn_dir, urn_base, suffix in rows:
+        yr = edition_year(fetch(f'{urn_dir}/{urn_base}.perseus-{suffix}.xml', no_cache))
         if yr is None or yr >= PD_CUTOFF:
-            bad.append((wid, suffix, yr))
-    print(f'\nLicence check: {len(rows)} Plutarch English editions, '
+            bad.append((urn_base, suffix, yr))
+    print(f'\nLicence check: {len(rows)} English editions, '
           f'{len(rows) - len(bad)} confirmed pre-{PD_CUTOFF}')
     if bad:
-        for wid, suffix, yr in bad:
-            print(f'   IN COPYRIGHT  tlg0007.{wid} {suffix} ({yr})')
+        for urn_base, suffix, yr in bad:
+            print(f'   IN COPYRIGHT  {urn_base} {suffix} ({yr})')
         sys.exit(f'refusing to build: {len(bad)} edition(s) are not public domain')
 
 
@@ -1190,6 +1202,12 @@ def main():
                                    'tlg0020/tlg002', 'tlg0020.tlg002', 'eng2', False, HESIOD_ATTRIB, no_cache)
     results += build_line_parallel('hesiod-shield', 'Hesiod, Shield of Heracles',
                                    'tlg0020/tlg003', 'tlg0020.tlg003', 'eng2', False, HESIOD_ATTRIB, no_cache)
+    # Thucydides, History of the Peloponnesian War — book→chapter→section, one work per book.
+    # Crawley's 1914 English divides exactly as the Greek does (3,587 sections either side);
+    # Perseus also carries Smith's Loeb, which is still in copyright. "Thuc. 1.22.1" → Book 1,
+    # chapter 22, section 1.
+    results += build_bcs('thucydides-war', lambda b: f'Thucydides, History of the Peloponnesian War (Book {b})',
+                         'tlg0003/tlg001', 'tlg0003.tlg001', 'eng6', THUCYDIDES_ATTRIB, no_cache)
     # Herodotus, The Histories — book→chapter→section, one work per book (Godley's Loeb English;
     # "Hdt. 1.1.1" → Book 1, chapter 1, section 1).
     results += build_bcs('herodotus-histories', lambda b: f'Herodotus, The Histories (Book {b})',
