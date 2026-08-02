@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { MapPin, Search, X, Loader2 } from 'lucide-react'
+import { openMasterSearch, hasMasterSearch } from '@/lib/master-search-bus'
 
 // A map of every place the Texts library's authors name, drawn as SVG from data built by
 // scripts/build-places.py. No tile server and no external request: the coastline ships with the
@@ -214,12 +215,26 @@ export function PlacesMap() {
                 </li>
               ))}
             </ul>
-            <Link
-              href={`/search?q=${encodeURIComponent(selected.n)}`}
-              className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 hover:underline"
-            >
-              <Search size={12} /> Find {selected.n} in the texts
-            </Link>
+            {/* Opens the app-wide search pane beside the map rather than navigating away from
+                it — globals.css squeezes #app-content, so the map stays visible on the left and
+                the passages appear on the right. Falls back to the search page where the pane
+                isn't mounted (it isn't during a lockdown exam). */}
+            {hasMasterSearch() ? (
+              <button
+                type="button"
+                onClick={() => openMasterSearch({ query: selected.n, scope: 'bg:all' })}
+                className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 hover:underline"
+              >
+                <Search size={12} /> Find {selected.n} in the texts
+              </button>
+            ) : (
+              <Link
+                href={`/search?q=${encodeURIComponent(selected.n)}&in=bg:all`}
+                className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 hover:underline"
+              >
+                <Search size={12} /> Find {selected.n} in the texts
+              </Link>
+            )}
           </div>
         )}
       </div>
