@@ -404,8 +404,12 @@ export const TOPICS: Topic[] = [
   { id: 'second-coming', label: 'The day of the Lord and the coming',
     blurb: 'God’s decisive arrival — the day of the Lord in the prophets, and the parousia the earliest Christians expected soon.',
     queries: [
-      q('parousia', /\bparousia\b|\bhis coming\b|\bcoming of the lord\b|\bappearing\b/, 4),
-      q('day-of-lord', /\bday of the lord\b|\bthat day\b(?=[^.]{0,60}\b(judg|wrath|come|lord)\b)|\bgreat day\b/, 4),
+      // "his coming" and "that day" are ordinary English and caught Esther's feast and Zorobabel
+      // arriving at the temple. Bare "appearing" is worse. Require the eschatological subject.
+      q('parousia', /\bparousia\b|\bcoming of the lord\b|\bhis (glorious )?appearing\b|\bhis coming\b(?=[^.]{0,60}\b(judg|glory|kingdom|end|world|again)\b)/, 4),
+      q('day-of-lord', /\bday of the lord\b|\bgreat day of\b|\bthat day\b(?=[^.]{0,60}\b(judg|wrath|end|world|come again)\b)/, 4),
+      q('come-again', /\bcome again\b|\bshall come with\b(?=[^.]{0,40}\b(glory|clouds|angels|power)\b)|\bdescend from heaven\b|\bcoming in glory\b/, 5),
+      q('trumpet-end', /\blast trump\b|\btrumpet shall sound\b|\bsummons of the trumpet\b/, 4),
       q('soon', /\bat hand\b|\bshortly\b(?=[^.]{0,40}\bcome\b)|\bnot delay\b|\bquickly\b(?=[^.]{0,30}\bcome\b)/, 3),
       q('signs', /\bsigns of\b(?=[^.]{0,40}\b(end|times|coming)\b)|\bbirth[- ]pangs\b|\bwars and rumou?rs\b/, 4),
       q('watch', /\bwatch (therefore|ye)\b|\bknow(eth)? not (the|what) (day|hour)\b|\bthief in the night\b/, 4),

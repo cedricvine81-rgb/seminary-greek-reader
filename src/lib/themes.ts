@@ -955,4 +955,60 @@ export const THEME_PAGES: TopicPage[] = [
         probe: 'if I had already given the book to the elders' },
     ],
   },
+  {
+    id: 'second-coming',
+    group: 'Last things',
+    label: 'The day of the Lord and the coming',
+    blurb:
+      'God’s decisive arrival. The Jewish sources here describe God himself coming to judge — '
+      + '1 Enoch has him come with ten thousands of his holy ones — and they reckon the times '
+      + 'carefully without ever expecting anyone to come BACK. A second coming needs a first, and '
+      + 'that premise is Christian; the difference between the two halves of this page is the point '
+      + 'of it.',
+    canonicalAnchors:
+      'The anchors are Joel 2, Amos 5:18–20 (“woe to you who desire the day of the Lord”), '
+      + 'Zechariah 14 and Daniel 7. The Christian expectation is worked out in the Gospels, 1 '
+      + 'Thessalonians and Revelation. All canonical, all outside this corpus.',
+    absences: [
+      'No Jewish source here expects a figure to RETURN. They expect God to come, or the day to '
+      + 'arrive; 1 Enoch 1:9 is the sharpest statement of it and the subject is the Lord himself. '
+      + 'The word “second” is doing real work in the Christian phrase, and it has no Jewish '
+      + 'counterpart in this library.',
+      'Nor is there a timetable. 4 Ezra insists the times are measured and numbered, and then '
+      + 'declines to say by how much; the calculating that later Christian writers go in for — '
+      + 'Barnabas already reckoning six thousand years — has no Jewish parallel here.',
+    ],
+    entries: [
+      { work: '1enoch', chapter: 1, verse: 9, tradition: 'second-temple',
+        summary: 'He comes with ten thousands of his holy ones',
+        probe: 'He cometh with ten thousands of His holy ones' },
+      { work: '2baruch', chapter: 13, verse: 3, tradition: 'second-temple',
+        summary: 'Preserved as a witness to the consummation',
+        probe: 'preserved to the consummation of the times' },
+      { work: '2esdras', chapter: 4, verse: 37, tradition: 'second-temple',
+        summary: 'The times measured and numbered, unmoved',
+        probe: 'By measure hath he measured the times' },
+      { work: '2esdras', chapter: 9, verse: 1, tradition: 'second-temple',
+        summary: 'Measure the time; watch the signs pass',
+        probe: 'Measure thou the time diligently in itself' },
+      { work: 'tg-isaiah', chapter: 18, verse: 3, tradition: 'rabbinic',
+        summary: 'The trumpet sounds; you shall hear redemption',
+        probe: 'the trumpet shall sound, ye shall hear of redemption' },
+      { work: 'af-didache', chapter: 16, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Be ready: you know not the hour',
+        probe: 'ye know not the hour in which our Lord cometh' },
+      { work: 'af-2clement', chapter: 12, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'We do not know the day of appearing',
+        probe: 'since we know not the day of God' },
+      { work: 'af-2clement', chapter: 17, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'He comes to gather nations and redeem',
+        probe: 'Herein He speaketh of the day of His appearing' },
+      { work: 'af-barnabas', chapter: 15, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Six thousand years: a day is a millennium',
+        probe: 'in six thousand years the Lord shall bring all things to an end' },
+      { work: 'eusebius-he-3', chapter: 31, verse: 3, tradition: 'church-fathers',
+        summary: 'The dead rise at the Lord’s coming in glory',
+        probe: 'which shall rise again on the last day, at the coming of the Lord' },
+    ],
+  },
 ]
