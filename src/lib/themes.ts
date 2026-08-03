@@ -457,4 +457,65 @@ export const THEME_PAGES: TopicPage[] = [
         probe: 'the greatest and most holy solemnity of the Jews' },
     ],
   },
+  {
+    id: 'law',
+    group: 'Law and practice',
+    label: 'Law and commandments',
+    blurb:
+      'Torah as gift, as wisdom, as a fence, and as something later Christians read straight past. '
+      + 'The question that divides these sources is not whether the law is good — they all say it '
+      + 'is — but what it is FOR, and who it binds. Read alongside Sabbath, which is the same '
+      + 'argument at close range.',
+    canonicalAnchors:
+      'The anchors are Exodus 19–24, Deuteronomy, and Psalm 119. The first-century controversy that '
+      + 'matters most — whether Gentiles must keep the law — is in Acts 15 and Galatians. All of '
+      + 'that is canonical and sits outside this corpus.',
+    absences: [
+      'The argument about Gentiles and the law is not here. This library shows what the law meant '
+      + 'to those who kept it, and what Christians said once they had stopped; the controversy '
+      + 'itself is in the New Testament. Nothing below is a party to it.',
+      'Nothing here is a law code. The Mishnah is one, and it is in the library — but it is second '
+      + 'century, so it shows the law as the rabbis settled it, not as anyone kept it while the '
+      + 'Temple stood.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: 'Sir', chapter: 24, verse: 23, tradition: 'second-temple',
+        summary: 'Wisdom identified outright with the law of Moses',
+        probe: 'the book of the covenant of the most high God' },
+      { work: 'aristeas', chapter: 1, verse: 139, tradition: 'second-temple',
+        summary: 'The Lawgiver fenced Israel round with ramparts',
+        probe: 'fenced us round with impregnable ramparts' },
+      { work: '4Macc', chapter: 5, verse: 17, tradition: 'second-temple',
+        summary: 'Not to transgress the law at any point',
+        probe: 'we ought not in any point to transgress the law' },
+      { work: 'philo-abraham', chapter: 1, verse: 275, tradition: 'second-temple',
+        summary: 'Abraham kept the law before it was written',
+        probe: 'this man fulfilled the divine law' },
+      { work: 'philo-husbandry', chapter: 1, verse: 31, tradition: 'second-temple',
+        summary: 'An unvarying law of nature governs the soul',
+        probe: 'the unvarying law of nature' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'm-avot', chapter: 1, verse: 1, tradition: 'rabbinic',
+        summary: 'Torah handed down; make a fence around it',
+        probe: 'Moses received the Torah at Sinai' },
+      { work: 'm-avot', chapter: 1, verse: 2, tradition: 'rabbinic',
+        summary: 'The world stands on Torah, service, piety',
+        probe: 'the world stands upon three things' },
+      { work: 'y-berakhot', chapter: 2, verse: 3, tradition: 'rabbinic',
+        summary: 'Kingdom of Heaven accepted before the commandments',
+        probe: 'accept the Kingdom of Heaven before he accepts the yoke' },
+      { work: 'tg-psj-deuteronomy', chapter: 4, verse: 2, tradition: 'rabbinic',
+        summary: 'Neither add to the commandments nor diminish',
+        probe: 'Ye shall not add to the words that I teach you' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-barnabas', chapter: 10, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Food laws meant morally, never about eating',
+        probe: 'it is not a commandment of God that they should not bite' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'justin-dialogue', chapter: 16, verse: 1, tradition: 'church-fathers',
+        summary: 'Circumcision of the heart urged against the flesh',
+        probe: 'circumcise the hardness of your hearts' },
+    ],
+  },
 ]

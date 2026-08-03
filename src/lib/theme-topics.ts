@@ -291,7 +291,16 @@ export const TOPICS: Topic[] = [
     blurb: 'Torah as gift, as burden, as wisdom, and as the thing Gentiles need not keep — the fault line the New Testament sits on.',
     queries: [
       q('law-of-moses', /\blaw of moses\b|\bthe law and the prophets\b|\btorah\b/, 4),
-      q('commandments', /\bcommandment[s]?\b|\bprecept[s]?\b|\bstatutes\b|\bordinances\b/, 3),
+      // "keep the commandments" is said everywhere by everyone and distinguishes nothing; at
+      // weight 3 it buried the passages where a position on Torah is actually being argued.
+      q('commandments', /\bcommandment[s]?\b|\bprecept[s]?\b|\bstatutes\b|\bordinances\b/, 1, true),
+      q('fence', /\bfence (about|around) the (law|torah)\b|\bhedge\b(?=[^.]{0,40}\blaw\b)|\bmake a fence\b/, 5),
+      q('whole-law', /\bthe whole law\b|\ball the law\b|\bevery commandment\b|\bleast of these\b/, 4),
+      q('law-and-prophets', /\blaw and the prophets\b/, 4),
+      q('unwritten-law', /\bunwritten law\b|\blaw of nature\b|\bliving law\b|\blaw unto themselves\b/, 5),
+      q('tradition-of-elders', /\btradition[s]? of the (elders|fathers)\b|\boral (law|torah)\b|\bmen of the great\b/, 5),
+      q('abolish-law', /\babolish(ed|ing)? the law\b|\bend of the law\b|\bdestroy the law\b|\bno longer under (the )?law\b|\blaw .{0,20}temporary\b/, 5),
+      q('law-before-moses', /\bbefore (the law|moses) was\b|\bkept the law before\b|\bpatriarchs .{0,30}law\b/, 5),
       q('keep-law', /\bkeep(ing)? the (law|commandments)\b|\bobserve the (law|commandments)\b|\bdoers of the law\b/, 4),
       q('law-eternal', /\blaw (is|shall be) eternal\b|\bnot one jot\b|\bnever pass away\b/, 4),
       q('yoke', /\byoke of the law\b|\byoke of bondage\b|\bburden\b(?=[^.]{0,50}\blaw\b)/, 4),
