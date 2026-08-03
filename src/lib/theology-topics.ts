@@ -8,6 +8,25 @@
 // Hebrew terms belong here too once the grc facet is wired in — noted per topic where they
 // would add reach.
 
+// ── ADDING A TOPIC ───────────────────────────────────────────────────────────────────────
+// 1. Write the query set here.  2. `npx tsx scripts/build-theology.ts --survey` to see what the
+// corpus holds per tradition.  3. `npx tsx scripts/build-theology.ts <id>` to read candidates.
+// 4. Curate entries into src/lib/theology.ts.  5. `--check` to prove every citation resolves.
+//
+// THE TRAP, which has caught this file twice: a word with a precise theological sense usually
+// also has a mundane one, and the corpus is full of the mundane one.
+//
+//   · "only begotten" gave the TRINITY 38 Second Temple Jewish hits. Every one was an ordinary
+//     only child — Tobit's Sarah, Josephus' Isaac. Those sources contain no Trinity at all, and
+//     the page would have taught that anachronism with a straight face.
+//   · "exile" and "captivity" gave ISRAEL 577 Greco-Roman hits: Danaus and Hercules, not Babylon.
+//
+// Both looked like healthy coverage in the survey, because a hit count cannot tell you a hit is
+// wrong. So: gate any everyday word with `needsContext`, make the `context` list specific to the
+// topic (never include the gated word itself — that is circular), and read a sample from EVERY
+// tradition before curating. A high count in a tradition you did not expect is a bug until
+// proven otherwise.
+
 export interface TopicQuery {
   label: string
   re: RegExp
@@ -293,13 +312,11 @@ export const TOPICS: Topic[] = [
       q('idol-food', /\bmeat[s]? (offered|sacrificed) (to|unto) idols\b|\bidol[- ]sacrifice/, 5),
     ], context: [], minScore: 4, perWorkCap: 6 },
 
-  { id: 'prayer-fasting', label: 'Prayer, fasting and almsgiving',
-    blurb: 'The three pillars of Jewish piety, taken over whole by the earliest Christians and then argued about.',
+  { id: 'fasting-almsgiving', label: 'Fasting and almsgiving',
+    blurb: 'Two of the three pillars of Jewish piety (prayer has its own page): how they are done, how publicly, and what they are thought to achieve.',
     queries: [
-      q('prayer', /\bpray(er|ed|ing|s)?\b/, 2, true),
       q('fasting', /\bfast(ing|ed|s)?\b(?=[^.]{0,60}\b(pray|day|week|humbl|afflict)\b)|\bfast twice\b/, 4),
       q('almsgiving', /\balms(giving|deeds)?\b|\bgive to the poor\b|\bcharity\b/, 4),
-      q('hours-of-prayer', /\bthree times a day\b|\bhour of prayer\b|\bmorning and evening\b/, 4),
       q('secret', /\bin secret\b(?=[^.]{0,60}\b(pray|alms|fast)\b)|\bnot .{0,20}as the hypocrites\b/, 4),
     ], context: [/\bgod\b/, /\blord\b/, /\bheaven\b/, /\bfast/, /\balms/], minScore: 4, perWorkCap: 6 },
 
@@ -357,7 +374,7 @@ export const TOPICS: Topic[] = [
       q('forgiveness-baptism', /\bbaptism .{0,30}(repentance|remission|forgiveness)\b/, 5),
     ], context: [], minScore: 4, perWorkCap: 6 },
 
-  { id: 'mission', label: 'The nations, mission and the proselyte',
+  { id: 'mission', label: 'Mission, the nations and the proselyte',
     blurb: 'Whether Israel’s God is for the nations too — pilgrimage of the Gentiles, active proselytising, and Christian sending.',
     queries: [
       q('nations', /\b(the )?nations\b|\bgentile[s]?\b|\bheathen\b/, 2, true),
@@ -410,4 +427,49 @@ export const TOPICS: Topic[] = [
       q('tribulation', /\btribulation\b|\btime of trouble\b|\bsuch as (was|has) not been\b|\bdistress of nations\b/, 4),
       q('deceiver', /\bdeceiv(e|er|ing) the (world|elect|many)\b|\bfalse (prophet|christ|messiah)/, 4),
     ], context: [], minScore: 4, perWorkCap: 6 },
+
+  // ── People, place and power ───────────────────────────────────────────────────────────
+  { id: 'israel', label: 'Israel: people, land and restoration',
+    blurb: 'Who Israel is and what is promised to it — the twelve tribes, the land, exile and regathering, the remnant, and the question of whether anyone else can be counted in. Distinct from Grace and election, which asks what being chosen secures; this asks who the chosen are.',
+    queries: [
+      q('twelve-tribes', /\btwelve tribes\b|\btribes of israel\b|\bten tribes\b|\bhouse of (israel|jacob|judah)\b/, 4),
+      q('my-people', /\bmy people\b|\bhis people\b|\bpeople of god\b|\bchosen (people|nation|race)\b/, 3),
+      q('the-land', /\bthe land\b(?=[^.]{0,70}\b(promis|inherit|give|possess|father)\b)|\bland of (your|their|our) (fathers|inheritance)\b|\binherit the land\b/, 4),
+      q('exile', /\bexile[ds]?\b|\bcaptivity\b|\bdispersion\b|\bdiaspora\b|\bscattered (among|abroad)\b/, 4, true),
+      q('restoration', /\bgather (them|you|the outcasts)\b|\bbring (them|you) back\b|\brestore (the fortunes|israel|the kingdom)\b|\bregather/, 4),
+      q('remnant-israel', /\bremnant of (israel|jacob|my people)\b|\bthose who (are )?left\b/, 4),
+      q('seed-of-abraham', /\bseed of abraham\b|\bchildren of abraham\b|\boffspring of abraham\b/, 4),
+      q('true-israel', /\bisrael of god\b|\btrue (israel|jew)\b|\bjew inwardly\b|\bnot all .{0,20}israel\b/, 5),
+      q('zion', /\bzion\b|\bjerusalem\b/, 1, true),
+    ], context: [/\bisrael\b/, /\bjacob\b/, /\bjudah\b/, /\bjerusalem\b/, /\bzion\b/, /\bbabylon\b/, /\bcovenant\b/, /\babraham\b/, /\bjews?\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'government', label: 'Rulers, empire and the state',
+    blurb: 'Living under power that is not your own: kingship, Rome, taxes and the census, obedience and its limits, prayer for the emperor, and the point at which the faithful refuse.',
+    queries: [
+      q('rulers', /\brulers?\b|\bmagistrate[s]?\b|\bgovernor[s]?\b|\bprocurator\b|\bprefect\b/, 3),
+      q('emperor', /\bcaesar\b|\bemperor\b|\baugustus\b|\btiberius\b|\bnero\b|\bthe senate\b/, 4),
+      q('kingship', /\bking(ship|dom)? of\b(?=[^.]{0,50}\b(earth|men|nations|this world)\b)|\banoint(ed)? .{0,15}king\b|\bset a king over\b/, 3),
+      q('authority-from-god', /\bpower[s]? that be\b|\bauthority .{0,25}(from|of) god\b|\bgod (gives|gave|appoints) .{0,25}(king|rule|power)\b|\bordained (of|by) god\b/, 5),
+      q('taxes', /\btribute\b|\btax(es|ation)?\b|\bcensus\b|\bpoll[- ]tax\b|\bcustom(s)?\b(?=[^.]{0,40}\b(pay|receiv|collect)\b)/, 4),
+      q('obedience', /\bsubject (to|unto) (the )?(higher|governing|ruling)\b|\bobey (the )?(king|ruler|magistrate|authorit)\b|\bhonou?r the king\b/, 5),
+      q('pray-for-rulers', /\bpray for (the )?(king|emperor|those in authority|rulers)\b|\bprayers .{0,25}for kings\b/, 5),
+      q('refusal', /\brefus(e|ed|ing) to (sacrifice|swear|worship)\b|\bwe (must|ought to) obey god rather\b|\bnot (worship|serve) the (image|emperor)\b/, 5),
+      q('tyranny', /\btyrant\b|\btyranny\b|\bdespot\b|\bunjust (rule|ruler|judge)\b/, 4),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'prayer', label: 'Prayer',
+    blurb: 'How prayer is made: fixed hours and postures, the Shema and the benedictions, intercession for others, and the argument over whether prayer replaces sacrifice once the Temple is gone.',
+    queries: [
+      q('shema', /\bhear,? o israel\b|\brecite the shema\b|\bthe shema\b/, 5),
+      q('benedictions', /\beighteen benedictions\b|\bthe amidah\b|\bstanding prayer\b|\bblessed art thou\b|\bbenediction[s]?\b/, 4),
+      q('hours', /\bthree times a day\b|\bhour of prayer\b|\bmorning and evening\b|\bninth hour\b|\bfixed (times|hours)\b/, 4),
+      q('posture', /\b(kneel|knelt|bow(ed)?)\b(?=[^.]{0,50}\bpray)/, 3),
+      q('toward-jerusalem', /\btoward[s]? jerusalem\b|\bfacing the (temple|sanctuary|holy)\b/, 4),
+      q('intercession', /\bpray(ed|s|ing)? for\b|\bmake supplication for\b|\bintercede\b/, 3),
+      q('house-of-prayer', /\bhouse of prayer\b/, 4),
+      q('our-father', /\bour father (which|who) art\b|\bwhen (ye|you) pray,? say\b|\bthe lord.{0,3}s prayer\b/, 5),
+      q('prayer-availeth', /\bprayer of (the|a) righteous\b|\bprayer availeth\b|\bheard (his|their|my) prayer\b/, 4),
+      q('prayer-not-sacrifice', /\bprayer .{0,30}instead of\b|\boffering of (the )?lips\b|\bsacrifice of praise\b|\bbetter than sacrifice\b/, 5),
+      q('pray', /\bpray(er|ers|ed|ing|s)?\b/, 1, true),
+    ], context: [/\bgod\b/, /\blord\b/, /\bheaven\b/, /\bsupplicat/, /\bworship\b/, /\bfast/], minScore: 4, perWorkCap: 6 },
 ]
