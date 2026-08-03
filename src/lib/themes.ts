@@ -7,6 +7,12 @@
 // resurrection --check` fails if a probe matches no passage, or matches one at a different
 // address. A citation here therefore cannot drift out of true silently when a corpus is rebuilt.
 //
+// PROBES MUST BE COPIED, NOT TYPED. The sources use straight apostrophes ("swine's flesh"); an
+// editor and a careless hand both produce curly ones, and the probe then matches nothing. This
+// has cost two build failures already — Sabbath and Purity. When a probe spans an apostrophe,
+// either paste the exact bytes or choose a span that avoids it. --check catches it every time,
+// which is the point, but it is cheaper not to write it.
+//
 // Summaries are SIX OR SEVEN WORDS on purpose. Long enough to say what the passage claims, too
 // short to be mistaken for the argument itself — the passage is the evidence, this is only the
 // finding aid. They describe what a source says; they do not adjudicate whether it is right.
@@ -734,6 +740,117 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-1clement', chapter: 7, verse: 4, tradition: 'apostolic-fathers',
         summary: 'The blood of Christ, shed for our salvation',
         probe: 'Let us fix our eyes on the blood of Christ' },
+    ],
+  },
+  {
+    id: 'circumcision',
+    group: 'Law and practice',
+    label: 'Circumcision and identity',
+    blurb:
+      'The covenant sign, and the question it forces: what must a Gentile who joins Israel actually '
+      + 'do? Josephus tells the story of King Izates, who asked two Jewish teachers and got two '
+      + 'opposite answers — which is the first-century argument of Acts 15 and Galatians, preserved '
+      + 'from the Jewish side by someone with no stake in the Christian outcome.',
+    canonicalAnchors:
+      'The anchors are Genesis 17 (the covenant in the flesh), Exodus 12:48 (the circumcised '
+      + 'stranger may keep Passover) and Deuteronomy 30:6 (circumcised hearts). The Christian '
+      + 'argument is Acts 15 and Galatians. All canonical, all outside this corpus.',
+    absences: [
+      'No source here spiritualises circumcision AND drops the practice. Jubilees has both the '
+      + 'flesh and the heart and means both; Barnabas is the first writer in this library to say '
+      + 'the physical rite is abolished, and he is a Christian writing after the fact.',
+      'The Izates story is the closest thing here to the Acts 15 debate, but it is one episode '
+      + 'reported by one historian. There is no Jewish text in this library setting out a general '
+      + 'rule for what a Gentile adherent must do.',
+    ],
+    entries: [
+      { work: 'jubilees', chapter: 15, verse: 12, tradition: 'second-temple',
+        summary: 'Circumcise on the eighth day, every generation',
+        probe: 'the child on the eighth day ye shall circumcise' },
+      { work: 'jubilees', chapter: 1, verse: 23, tradition: 'second-temple',
+        summary: 'God will circumcise the heart’s foreskin too',
+        probe: 'I will circumcise the foreskin of their heart' },
+      { work: '1Macc', chapter: 1, verse: 15, tradition: 'second-temple',
+        summary: 'They made themselves uncircumcised, forsaking the covenant',
+        probe: 'made themselves uncircumcised, and forsook the holy covenant' },
+      { work: '1Macc', chapter: 1, verse: 60, tradition: 'second-temple',
+        summary: 'Women executed for circumcising their children',
+        probe: 'they put to death certain women, that had caused their children to be circumcised' },
+      { work: 'antiquities', book: 1, chapter: 10, verse: 192, tradition: 'second-temple',
+        summary: 'Circumcision keeps Abraham’s posterity unmixed',
+        probe: 'in order to keep his posterity unmixed with others' },
+      { work: 'antiquities', book: 20, chapter: 2, verse: 38, tradition: 'second-temple',
+        summary: 'Izates assumes he must be circumcised to convert',
+        probe: 'he could not be thoroughly a Jew unless he were circumcised' },
+      { work: 'antiquities', book: 20, chapter: 2, verse: 42, tradition: 'second-temple',
+        summary: 'Ananias: God will forgive the omission',
+        probe: 'God would forgive him, though he did not perform the operation' },
+      { work: 'antiquities', book: 20, chapter: 2, verse: 44, tradition: 'second-temple',
+        summary: 'Eleazar: omitting it breaks the principal law',
+        probe: 'Thou dost not consider, O king! that thou unjustly breakest the principal of those laws' },
+      { work: 'philo-qg', chapter: 3, verse: 48, tradition: 'second-temple',
+        summary: 'Philo gives medical and moral reasons together',
+        probe: 'He orders the freeborn to be circumcised' },
+      { work: 'tg-psj-genesis', chapter: 17, verse: 11, tradition: 'rabbinic',
+        summary: 'A sign of the covenant between God’s Word and you',
+        probe: 'as a sign of the covenant between My Word and you' },
+      { work: 'tg-psj-exodus', chapter: 12, verse: 48, tradition: 'rabbinic',
+        summary: 'A proselyte must be circumcised to keep Passover',
+        probe: 'let every male belonging to him be circumcised' },
+      { work: 'af-barnabas', chapter: 9, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'It is the heart that God circumcised',
+        probe: 'it is our heart which He circumcised' },
+      { work: 'af-barnabas', chapter: 9, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'Fleshly circumcision abolished; an evil angel taught it',
+        probe: 'the circumcision, in which they have confidence, is abolished' },
+    ],
+  },
+  {
+    id: 'purity',
+    group: 'Law and practice',
+    label: 'Purity, food and the table',
+    blurb:
+      'Clean and unclean — what may be eaten, what defiles by contact, and who may eat with whom. '
+      + 'Under persecution this stops being housekeeping and becomes the thing people die over: '
+      + 'both Maccabean martyrdoms begin with a refusal to eat.',
+    canonicalAnchors:
+      'The anchors are Leviticus 11 (clean and unclean creatures), Leviticus 12–15 (bodily '
+      + 'impurity) and Numbers 19 (the red heifer). They are canonical and sit outside this corpus.',
+    absences: [
+      'Nothing here explains WHY contact transmits impurity. As with the scapegoat, the mechanism '
+      + 'is assumed rather than argued — the sources tell you what defiles, never how.',
+      'Purity law is worked out in detail only in the rabbinic material, which is second century '
+      + 'and later. For the first century the witnesses are crisis narratives and outsiders’ '
+      + 'descriptions, so what survives is the boundary under pressure rather than at rest.',
+    ],
+    entries: [
+      { work: '1Macc', chapter: 1, verse: 47, tradition: 'second-temple',
+        summary: 'Swine and unclean beasts ordered on altars',
+        probe: 'flesh, and unclean beasts' },
+      { work: '2Macc', chapter: 6, verse: 18, tradition: 'second-temple',
+        summary: 'Eleazar constrained to eat swine’s flesh',
+        probe: 'Eleazar, one of the principal scribes' },
+      { work: '2Macc', chapter: 7, verse: 1, tradition: 'second-temple',
+        summary: 'Seven brothers compelled to taste it',
+        probe: 'compelled by the king against the law to taste swine' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 203, tradition: 'second-temple',
+        summary: 'Bathing required after intercourse, soul and body',
+        probe: 'there is a defilement contracted thereby, both in soul and body' },
+      { work: 'philo-moses', chapter: 2, verse: 139, tradition: 'second-temple',
+        summary: 'The laver of mirrors: look into your mind',
+        probe: 'the materials of which this vessel was composed were mirrors' },
+      { work: 'm-eduyot', chapter: 5, verse: 3, tradition: 'rabbinic',
+        summary: 'Whether Ecclesiastes defiles the hands, disputed',
+        probe: 'The book of Ecclesiastes does not defile the hands' },
+      { work: 'm-chagigah', chapter: 3, verse: 8, tradition: 'rabbinic',
+        summary: 'Temple vessels immersed; beware touching the table',
+        probe: 'How did they undertake the purification of the Temple court' },
+      { work: 'tg-psj-numbers', chapter: 6, verse: 9, tradition: 'rabbinic',
+        summary: 'A sudden death defiles the Nazirite’s vow',
+        probe: 'he unawares defile the head of his vow' },
+      { work: 'af-didache', chapter: 6, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Bear what yoke of the Lord you can',
+        probe: 'if thou art able to bear the whole yoke of the Lord' },
     ],
   },
 ]
