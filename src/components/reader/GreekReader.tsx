@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import {
   MoreVertical, X, ChevronRight, Menu, Check,
   LayoutDashboard, BookOpen, BookMarked, Table2, PencilLine, ListTree, Library, StickyNote,
-  Settings, LogOut, LogIn, UserPlus,
+  Settings, LogOut, LogIn, UserPlus, Search,
 } from 'lucide-react'
 import { TextSizeSlider } from './TextSizeControls'
 import { OnOff } from '@/components/ui/OnOff'
@@ -1851,6 +1851,18 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                   The global header is hidden on phones, so it lives here. On desktop
                   the header provides navigation, so this whole block is hidden. */}
               <div className="lg:hidden -mt-2 space-y-0.5">
+                {/* Search first, and on its own. Below lg the global header is hidden entirely
+                    (globals.css, html[data-reader='on']), which takes the header's search icon
+                    and the account menu's search entry with it — so on a phone or an iPad this
+                    menu was the only surface left, and it had no way to search at all. */}
+                <button
+                  type="button"
+                  onClick={() => { setShowSettings(false); openMasterSearch() }}
+                  className="flex w-full items-center gap-2.5 py-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <Search size={16} className="text-gray-400 shrink-0" /> Search
+                </button>
+                <hr className="!my-2 border-gray-100" />
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 pt-1">Go to</p>
                 {readerNav.filter(i => !i.authOnly || menuAuthed).map(({ href, label, icon: Icon }) => (
                   <Link
