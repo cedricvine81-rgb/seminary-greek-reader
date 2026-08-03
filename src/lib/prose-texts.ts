@@ -26,7 +26,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'psalms-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -2359,6 +2359,12 @@ export const PROSE_WORKS: ProseWork[] = [
     dataUrl: '/data/pseudepigrapha-b/pseudo-philo.json', chapters: 65,
     attribution: 'Text: M. R. James’ translation of Pseudo-Philo, “The Biblical Antiquities of Philo”, 1917 (public domain). Source: sacred-texts.com.',
     parseCitation: cite(/^L\.A\.B\.\s+(\d+)(?::(\d+))?/) },
+  // Cited "PsSol 17:21" — the psalm is the chapter. Gray's edition prints his own verse numbers
+  // alongside the standard ones; the build follows the standard, which is what everyone cites.
+  { source: 'psalms-of-solomon', name: 'Psalms of Solomon', noteBook: 'PssSol',
+    dataUrl: '/data/pseudepigrapha-b/psalms-of-solomon.json', chapters: 18,
+    attribution: 'Text: G. Buchanan Gray’s translation of the Psalms of Solomon, in R. H. Charles, ed., “The Apocrypha and Pseudepigrapha of the Old Testament in English”, 1913 (public domain). Source: Wesley Center Online.',
+    parseCitation: cite(/^(?:Ps(?:alms?)?\.?\s*Sol|PsSol)\.?\s+(\d+)(?::(\d+))?/i) },
   { source: 'odes-of-solomon', name: 'Odes of Solomon', noteBook: 'OdesSol',
     dataUrl: '/data/pseudepigrapha-b/odes-of-solomon.json', chapters: 42,
     attribution: 'Text: J. Rendel Harris’ translation of the Odes of Solomon, from “The Forgotten Books of Eden”, 1926 (public domain). Source: sacred-texts.com.',

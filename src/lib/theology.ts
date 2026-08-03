@@ -192,10 +192,9 @@ export const THEOLOGY_PAGES: TopicPage[] = [
       + 'covenant), and Ezekiel 37. They are canonical and so sit outside this corpus, but every '
       + 'text below assumes them.',
     absences: [
-      'Psalms of Solomon 17 — the fullest Second Temple statement of national restoration under a '
-      + 'Davidic king, and the closest Jewish parallel to New Testament messianic hope — is not in '
-      + 'this library. Anything said here about first-century restoration hope is missing its most '
-      + 'important witness.',
+      'Restoration in these texts is national and territorial: a king, a land, tribes settled on '
+      + 'it. None of them describes it as the salvation of individuals out of the world, which is '
+      + 'how later Christian readers most often hear the word.',
       'No Second Temple Jewish source here spiritualises the land into a metaphor. That move is '
       + 'Christian and it is late: it appears in this corpus only with Barnabas and Justin.',
     ],
@@ -228,6 +227,18 @@ export const THEOLOGY_PAGES: TopicPage[] = [
       { work: 'antiquities', book: 8, chapter: 7, verse: 198, tradition: 'second-temple',
         summary: 'Ten tribes torn from the house of David',
         probe: 'he would give ten tribes to a servant' },
+      { work: 'psalms-of-solomon', chapter: 8, verse: 28, tradition: 'second-temple',
+        summary: 'Prayer that God gather Israel’s dispersed',
+        probe: 'Gather together the dispersed of Israel' },
+      { work: 'psalms-of-solomon', chapter: 11, verse: 2, tradition: 'second-temple',
+        summary: 'Good tidings in Jerusalem: God has visited',
+        probe: 'For God hath had pity on Israel in visiting them' },
+      { work: 'psalms-of-solomon', chapter: 17, verse: 26, tradition: 'second-temple',
+        summary: 'The king gathers and judges a holy people',
+        probe: 'he shall gather together a holy people' },
+      { work: 'psalms-of-solomon', chapter: 17, verse: 28, tradition: 'second-temple',
+        summary: 'Tribes resettled; no alien sojourns among them',
+        probe: 'divide them according to their tribes upon the land' },
       // ── Rabbinic ─────────────────────────────────────────────────────────────────────
       { work: 'tg-isaiah', chapter: 35, verse: 10, tradition: 'rabbinic',
         summary: 'The redeemed gathered from captivity to Zion',
