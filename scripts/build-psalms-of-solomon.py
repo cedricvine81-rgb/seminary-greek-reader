@@ -28,7 +28,15 @@
 # is printed, and a final check refuses to write the file if any psalm still has a duplicate or
 # out-of-order verse.
 #
-# Output: public/data/pseudepigrapha-b/psalms-of-solomon.json in the standard prose shape.
+# WHERE THIS LANDS, AND WHY. The Greek of the Psalms of Solomon was ALREADY in the library as the
+# LXX work PsSol — it simply had no English, because Brenton never translated it, so a search of
+# the English index found nothing and I wrongly concluded the work was absent. It was not; only
+# half of it was. So this writes the English into brenton/PsSol.json, the side-file the LXX reader
+# already uses for English, and the existing work gains a translation instead of gaining a twin.
+# The directory is named for the mechanism, not the translator: this is Gray, not Brenton.
+#
+# Output: public/data/brenton/PsSol.json (English side-file, keyed "PsSol.<chapter>.<verse>")
+#         public/data/pseudepigrapha-b/psalms-of-solomon.json (intermediate, kept for inspection)
 # Usage:  python3 scripts/build-psalms-of-solomon.py   (from the repo root)
 
 import html
@@ -183,6 +191,13 @@ def main() -> int:
             for c in chapters
         ],
     }, ensure_ascii=False, indent=1), encoding='utf-8')
+
+    # The file the app actually reads: English keyed to the LXX work's osisId.
+    side = {f"PsSol.{c['number']}.{v['number']}": v['text'] for c in chapters for v in c['verses']}
+    brenton = Path('public/data/brenton/PsSol.json')
+    brenton.parent.mkdir(parents=True, exist_ok=True)
+    brenton.write_text(json.dumps(side, ensure_ascii=False, indent=1), encoding='utf-8')
+    print(f'{brenton}: {len(side)} verses')
 
     total = sum(len(c['verses']) for c in chapters)
     print(f'{OUT}: {len(chapters)} psalms, {total} verses')

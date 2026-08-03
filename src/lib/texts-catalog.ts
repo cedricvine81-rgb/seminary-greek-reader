@@ -129,7 +129,10 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: 'Sus', name: 'Susanna', source: 'lxx', osisId: 'Sus', chapters: 1, english: 'brenton' },
       { id: 'Bel', name: 'Bel and the Dragon', source: 'lxx', osisId: 'Bel', chapters: 1, english: 'brenton' },
       { id: 'DanLXX', name: 'Daniel (LXX)', source: 'lxx', osisId: 'DanLXX', chapters: 12 },
-      { id: 'PsSol', name: 'Psalms of Solomon', source: 'lxx', osisId: 'PsSol', chapters: 18 },
+      // Greek from the LXX; English is G. Buchanan Gray's 1913 translation, written into the
+      // brenton/ side-file because that is the mechanism for LXX English — the directory name
+      // is not a claim about the translator.
+      { id: 'PsSol', name: 'Psalms of Solomon', source: 'lxx', osisId: 'PsSol', chapters: 18, english: 'brenton' },
       { id: 'Odes', name: 'Odes', source: 'lxx', osisId: 'Odes', chapters: 14 },
     ],
   },
@@ -221,7 +224,6 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14] },
       { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], greek: true, greekOnly: true, secondaryLabel: 'Latin' },
       { id: 'pseudo-philo', name: 'Pseudo-Philo (Biblical Antiquities / L.A.B.)', source: 'pseudo-philo', chapters: 65 },
-      { id: 'psalms-of-solomon', name: 'Psalms of Solomon', source: 'psalms-of-solomon', chapters: 18 },
       { id: 'odes-of-solomon', name: 'Odes of Solomon', source: 'odes-of-solomon', chapters: 42 },
       { id: 'ascension-of-isaiah', name: 'Ascension of Isaiah (with Martyrdom of Isaiah)', source: 'ascension-of-isaiah', chapters: 11 },
       // The Testaments of the Twelve Patriarchs (Ante-Nicene Fathers / Roberts-Donaldson).
