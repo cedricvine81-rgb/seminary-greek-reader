@@ -1011,4 +1011,58 @@ export const THEME_PAGES: TopicPage[] = [
         probe: 'which shall rise again on the last day, at the coming of the Lord' },
     ],
   },
+  {
+    id: 'judgment',
+    group: 'Last things',
+    label: 'Judgment',
+    blurb:
+      'The reckoning. These sources are far more interested in the verdict than the procedure: fire '
+      + 'for the ungodly, glory for the justified, and — in 2 Baruch — both sides visibly changed so '
+      + 'that each can see what the other has become. What almost none of them describe is how the '
+      + 'judging is actually done.',
+    canonicalAnchors:
+      'The anchors are Daniel 7:9–10 (the books opened), Malachi 3 and Psalm 1. They are canonical '
+      + 'and sit outside this corpus; the writers below assume them throughout.',
+    absences: [
+      'The fullest Second Temple judgment SCENE — the Testament of Abraham, with its scales, its '
+      + 'recording angels and its soul weighed in the balance — is not in this library. What '
+      + 'survives here is overwhelmingly the verdict rather than the machinery, and that is an '
+      + 'accident of what is held, not of what was written.',
+      'The criterion is deeds, stated flatly and without qualification by every source here. '
+      + 'Nothing in this library weighs faith, intention or status against them, or discusses what '
+      + 'happens when they conflict.',
+    ],
+    entries: [
+      { work: '1enoch', chapter: 10, verse: 6, tradition: 'second-temple',
+        summary: 'Cast into the fire on the great day',
+        probe: 'on the day of the great judgement he shall be cast into the fire' },
+      { work: 'Jdt', chapter: 16, verse: 17, tradition: 'second-temple',
+        summary: 'Fire and worms in their flesh, wept forever',
+        probe: 'in putting fire and worms in their flesh' },
+      { work: '2baruch', chapter: 51, verse: 1, tradition: 'second-temple',
+        summary: 'The condemned altered, the justified glorified',
+        probe: 'the aspect of those who are condemned be afterwards changed' },
+      { work: '2baruch', chapter: 51, verse: 5, tradition: 'second-temple',
+        summary: 'Each sees the other transformed, positions reversed',
+        probe: 'over whom they are now exalted' },
+      { work: 'jubilees', chapter: 3, verse: 10, tradition: 'second-temple',
+        summary: 'The commandment written on heavenly tablets',
+        probe: 'the commandment is written on the heavenly tablets' },
+      { work: 'philo-cherubim', chapter: 1, verse: 72, tradition: 'second-temple',
+        summary: 'Brought before the judgment-seat of God',
+        probe: 'being brought before the judgment-seat of God' },
+      { work: 'm-avot', chapter: 3, verse: 1, tradition: 'rabbinic',
+        summary: 'Know before whom you will give account',
+        probe: 'before whom you are destined to give an account' },
+      { work: 'tg-psj-deuteronomy', chapter: 5, verse: 11, tradition: 'rabbinic',
+        summary: 'False swearing unacquitted at the great judgment',
+        probe: 'in the day of the great judgment, will not acquit' },
+      { work: 'tg-psj-genesis', chapter: 38, verse: 25, tradition: 'rabbinic',
+        summary: 'Tamar implores mercy in her hour',
+        probe: 'Mercy I implore from Thee, O Lord' },
+      { work: 'af-polycarp', chapter: 6, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'All stand at the judgment-seat of Christ',
+        probe: 'we must all stand at the judgment-seat of Christ' },
+    ],
+  },
 ]
