@@ -27,6 +27,16 @@ export interface Topic {
   perWorkCap: number
 }
 
+const q = (label: string, re: RegExp, weight: number, needsContext = false): TopicQuery =>
+  ({ label, re, weight, needsContext })
+
+/** Death/afterlife words — the proximity gate for topics about what follows dying. */
+const DEATH = [/\bdead\b/, /\bdeath\b/, /\bdie[ds]?\b/, /\bgrave\b/, /\btomb\b/, /\bperish\b/, /\bmortal\b/]
+/** Divine-subject words — the gate for topics where a common noun needs God in view. */
+const DIVINE = [/\bgod\b/, /\blord\b/, /\bmost high\b/, /\balmighty\b/, /\bheaven\b/, /\bdivine\b/]
+/** Covenant/Israel words — the gate for topics about law, identity and practice. */
+const COVENANT = [/\bcovenant\b/, /\bisrael\b/, /\bmoses\b/, /\blaw\b/, /\bcommandment/, /\bfathers\b/]
+
 export const TOPICS: Topic[] = [
   {
     id: 'resurrection',
@@ -69,4 +79,335 @@ export const TOPICS: Topic[] = [
     minScore: 3,
     perWorkCap: 6,
   },
+
+  // ── God and the unseen world ──────────────────────────────────────────────────────────
+  { id: 'godhead', label: 'God, and whether God is one',
+    blurb: 'The oneness of God and how Jewish and Christian writers hold it while speaking of Word, Wisdom, Spirit and Son.',
+    queries: [
+      q('shema', /\bhear,? o israel\b|\bthe lord is one\b|\bone god\b|\bonly god\b/, 4),
+      q('monotheism', /\bthere is no other\b|\bbeside me there is none\b|\bno god but\b/, 4),
+      q('unbegotten', /\bunbegotten\b|\bingenerate\b|\bwithout beginning\b/, 3),
+      q('creator', /\bmaker of (all|heaven)\b|\bcreator of\b/, 2),
+      q('names-of-god', /\bmost high\b|\balmighty\b|\bineffable\b|\bunnameable\b/, 2),
+      q('two-powers', /\btwo powers\b|\bsecond god\b|\banother god\b/, 5),
+      q('god', /\bgod\b/, 1, true),
+    ], context: [/\bone\b/, /\balone\b/, /\bunity\b/, /\bnature\b/, /\bessence\b/, /\bsubstance\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'trinity', label: 'Father, Son and Spirit',
+    blurb: 'Triadic language before the creeds: how the earliest writers name Father, Son and Spirit together, and how far that is from Nicaea.',
+    queries: [
+      q('triad', /\bfather,? (the )?son,? and (the )?holy (spirit|ghost)\b|\bfather and (the )?son and\b/, 5),
+      q('same-substance', /\bconsubstantial\b|\bof one substance\b|\bhomoousi/, 5),
+      q('begotten', /\bonly[- ]begotten (son|god)\b|\bbegotten (of|from) the father\b|\bonly[- ]begotten\b(?=[^.]{0,40}\b(god|father|christ|lord)\b)/, 4),
+      q('proceeds', /\bproceed(s|eth|ing) from the father\b/, 4),
+      q('three', /\btrinity\b|\bthree persons\b|\bthreefold\b/, 5),
+      q('spirit-and-son', /\bspirit\b/, 1, true),
+    ], context: [/\bfather\b/, /\bson\b/, /\bword\b/, /\bdivin/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'holy-spirit', label: 'The Spirit of God',
+    blurb: 'The Spirit as God’s power, as prophetic inspiration, and as a person — three uses that do not always sit together.',
+    queries: [
+      q('holy-spirit', /\bholy (spirit|ghost)\b/, 4),
+      q('spirit-of-god', /\bspirit of (the )?(god|lord|the most high)\b/, 4),
+      q('spirit-rested', /\bspirit (rested|came|fell) upon\b|\bfilled with the spirit\b/, 4),
+      q('prophetic-spirit', /\bprophetic spirit\b|\bspirit of prophecy\b/, 4),
+      q('gifts', /\bgifts of the spirit\b|\bspiritual gifts\b/, 3),
+      q('spirit', /\bspirit\b/, 1, true),
+    ], context: [/\bgod\b/, /\bprophe/, /\bpour/, /\bholy\b/, /\binspir/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'angels', label: 'Angels and the heavenly court',
+    blurb: 'Named angels, the hosts, the watchers, and the council around God’s throne — thickest in the Pseudepigrapha, thinnest in the rabbis.',
+    queries: [
+      q('archangels', /\bmichael\b|\bgabriel\b|\braphael\b|\buriel\b|\bphanuel\b/, 4),
+      q('watchers', /\bwatchers\b|\bsons of god\b|\bgiants\b|\bnephilim\b/, 4),
+      q('host', /\bhost of heaven\b|\bheavenly host\b|\barmies of heaven\b/, 3),
+      q('ranks', /\bcherubim\b|\bseraphim\b|\bthrones\b|\bprincipalities\b|\barchangel/, 3),
+      q('angel', /\bangel[s]?\b/, 2),
+      q('throne', /\bthrone of (god|glory|the most high)\b|\bcouncil\b/, 2),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'satan-evil', label: 'Satan and the origin of evil',
+    blurb: 'Where evil came from: fallen watchers, Adam’s sin, an evil inclination, or an adversary — the sources answer differently.',
+    queries: [
+      q('satan', /\bsatan\b|\bbeliar\b|\bbelial\b|\bmastema\b|\bsammael\b|\bazazel\b/, 5),
+      q('devil', /\bdevil\b|\bthe evil one\b|\btempter\b/, 4),
+      q('demons', /\bdemon[s]?\b|\bunclean spirit/, 3),
+      q('fall-of-angels', /\bfell from heaven\b|\bcast (down|out) (of|from) heaven\b|\bfallen angels\b/, 4),
+      q('evil-inclination', /\bevil inclination\b|\byetzer\b|\bevil heart\b/, 4),
+      q('origin-of-sin', /\bwhence (came|comes) evil\b|\borigin of (sin|evil)\b/, 4),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  // ── Christ ────────────────────────────────────────────────────────────────────────────
+  { id: 'messiah', label: 'Messiah and messianic expectation',
+    blurb: 'What was hoped for before it was claimed: an anointed king, a priest, two messiahs, or a heavenly figure.',
+    queries: [
+      q('messiah', /\bmessiah\b|\banointed one\b|\bchrist\b/, 4),
+      q('branch', /\bbranch of david\b|\broot of jesse\b|\bshoot\b|\bsceptre\b/, 4),
+      q('son-of-david', /\bson of david\b|\bthrone of david\b|\bkingdom of david\b/, 4),
+      q('two-messiahs', /\bmessiah of aaron\b|\bmessiah of israel\b|\banointed priest\b/, 5),
+      q('star', /\bstar (shall|will) (come|rise)\b|\bstar out of jacob\b/, 4),
+      q('expectation', /\bhe (that|who) (is|was) to come\b|\bawait(ing)? the\b/, 2, true),
+    ], context: [/\bdeliver/, /\bredeem/, /\bking\b/, /\bkingdom\b/, /\bisrael\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'son-of-man', label: 'The Son of Man',
+    blurb: 'The heavenly figure of Daniel 7 and the Enochic parables, and the ordinary Semitic idiom it also is.',
+    queries: [
+      q('son-of-man', /\bson of man\b/, 5),
+      q('clouds', /\bclouds of heaven\b|\bcoming (with|on) the clouds\b/, 4),
+      q('elect-one', /\bthe elect one\b|\bthe righteous one\b|\bthat son of man\b/, 5),
+      q('ancient-of-days', /\bancient of days\b|\bhead of days\b/, 5),
+      q('enthroned', /\bseated on the throne of (his )?glory\b|\bsit upon the throne\b/, 3),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'wisdom-logos', label: 'Wisdom, Word and pre-existence',
+    blurb: 'Wisdom present at creation, Philo’s Logos, and how Jewish speech about God’s agent shaped Christian speech about Christ.',
+    queries: [
+      q('logos', /\blogos\b|\bthe word of god\b|\bdivine word\b/, 4),
+      q('wisdom-personified', /\bwisdom (was|is) (created|with|beside)\b|\bwisdom (cried|calleth|sayeth)\b/, 5),
+      q('before-creation', /\bbefore the (world|ages|foundation)\b|\bfrom the beginning\b|\bpre[- ]?exist/, 4),
+      q('firstborn', /\bfirstborn of (all )?creation\b|\bfirst[- ]?begotten\b/, 4),
+      q('image', /\bimage of (the invisible )?god\b|\beffulgence\b|\bbrightness of\b/, 3),
+      q('craftsman', /\bmaster (workman|craftsman)\b|\bfashioner\b|\barchetyp/, 3),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  // ── Sin, salvation and the human condition ────────────────────────────────────────────
+  { id: 'atonement', label: 'Atonement and sacrifice',
+    blurb: 'How sin is dealt with: blood, the Day of Atonement, the death of the righteous, and whether any of it transfers.',
+    queries: [
+      q('atonement', /\batonement\b|\bexpiat/, 5),
+      q('day-of-atonement', /\bday of atonement\b|\byom kippur\b|\bscapegoat\b|\bmercy[- ]seat\b|\bpropitiat/, 5),
+      q('blood', /\bblood of the\b|\bsprinkl(e|ed|ing) (the )?blood\b|\bshedding of blood\b/, 3),
+      q('sin-offering', /\bsin[- ]offering\b|\bburnt offering\b|\bwhole burnt\b|\bsacrifice for sin\b/, 4),
+      q('vicarious', /\bdied for\b|\bgave himself for\b|\bransom for\b|\bin their stead\b|\bbear the sins\b/, 4),
+      q('sacrifice', /\bsacrific/, 1, true),
+    ], context: [/\bsin\b/, /\batone/, /\bforgiv/, /\bcleans/, /\bpriest\b/, /\baltar\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'redemption', label: 'Redemption and ransom',
+    blurb: 'Being bought back — from Egypt, from exile, from death, from the powers. The metaphor is legal and commercial before it is theological.',
+    queries: [
+      q('redeem', /\bredeem(ed|er|s|eth|ing)?\b|\bredemption\b/, 4),
+      q('ransom', /\bransom(ed)?\b|\bprice\b(?=[^.]{0,60}\b(bought|paid|redeem)\b)/, 4),
+      q('deliverance', /\bdeliver(ed|ance|er)\b/, 2, true),
+      q('bought', /\bbought with a price\b|\bpurchased\b/, 3),
+      q('exodus-pattern', /\bout of (the land of )?egypt\b|\bhouse of bondage\b|\bwith a mighty hand\b/, 3),
+      q('captivity', /\bset (the )?captives? free\b|\brelease\b(?=[^.]{0,50}\bcaptiv)/, 3),
+    ], context: [/\bsin\b/, /\bslav/, /\bbond/, /\bsav/, /\bfree\b/, /\blord\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'sin-fall', label: 'Sin and the fall',
+    blurb: 'Whether Adam’s sin is inherited, imitated, or beside the point; and whether the flood watchers explain evil better than Eden does.',
+    queries: [
+      q('adams-sin', /\bsin of adam\b|\btransgression of adam\b|\badam.{0,25}(sinned|fell|transgressed)\b/, 5),
+      q('fall', /\bfell from\b(?=[^.]{0,50}\b(grace|glory|paradise)\b)|\b(expelled|cast|driven) (out )?(from|out of) (the garden|paradise|eden)\b/, 3),
+      q('serpent', /\bserpent\b|\bdeceived (the woman|eve)\b|\bbeguiled\b/, 3),
+      q('forbidden-tree', /\btree of (the )?knowledge\b|\bforbidden (fruit|tree)\b|\beat of the tree\b/, 4),
+      q('death-entered', /\bdeath (entered|came) (into )?the world\b|\bbrought death\b|\bcause of death\b/, 5),
+      q('all-sinned', /\ball (have )?sinned\b|\bno one (is )?righteous\b|\bborn (in|of) sin\b|\bconceived in\b/, 4),
+      q('inherited', /\bevery one .{0,30}(is|becomes) (the )?adam\b|\beach of us .{0,25}his own adam\b|\bfrom him .{0,30}(sin|death) (came|passed)\b/, 5),
+      q('transgression', /\btransgress(ion|ed|or)\b|\biniquit/, 2, true),
+      q('sin', /\bsin(s|ned|ful|ner)?\b/, 1, true),
+      q('inclination', /\bevil inclination\b|\bevil heart\b|\bhard heart\b/, 4),
+    ], context: [/\badam\b/, /\beve\b/, /\bparadise\b/, /\bdeath\b/, /\bcommandment/, /\bserpent\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'free-will', label: 'Free will and providence',
+    blurb: 'How much is fate and how much is choice — the question Josephus uses to sort the Jewish parties, and the Fathers use against the Gnostics.',
+    queries: [
+      q('fate', /\bfate\b|\bdestiny\b|\bnecessity\b(?=[^.]{0,60}\b(choice|will|action)\b)/, 4),
+      q('free-choice', /\bfree will\b|\bfree choice\b|\bin (their|our|his) own power\b|\bat men.{0,3} own choice\b/, 5),
+      q('two-ways', /\btwo ways\b|\bway of life and .{0,15}death\b|\bset before (you|him|them) (life|good)\b/, 4),
+      q('providence', /\bprovidence\b|\bforeknow/, 3),
+      q('predestined', /\bpredestin/, 4),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'repentance', label: 'Repentance and forgiveness',
+    blurb: 'Turning, confession and pardon — how forgiveness is sought where the Temple stands and where it no longer does.',
+    queries: [
+      q('repent', /\brepent(ance|ed|s|eth)?\b|\bturn(ed|ing)? (back |again )?to (the )?(lord|god)\b/, 4),
+      q('forgive', /\bforgive(n|ness|th)?\b|\bpardon(ed)?\b|\bremission of sins\b/, 4),
+      q('confess', /\bconfess(ed|ion|ing)?\b(?=[^.]{0,60}\bsin)/, 4),
+      q('mercy', /\bmercy\b|\bcompassion\b|\bslow to anger\b/, 2, true),
+      q('cleanse', /\bcleanse(d)? (from|of) (all )?(sin|unrighteous)/, 4),
+      q('return', /\bturn from (his|their|your) (wicked )?way\b|\bamend (your|their) ways\b/, 3),
+    ], context: [/\bsin\b/, /\btransgress/, /\bgod\b/, /\blord\b/, /\biniquit/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'justification', label: 'Righteousness, works and covenant',
+    blurb: 'What makes a person righteous before God — the question behind “works of the law”, read from the Jewish side.',
+    queries: [
+      q('justified', /\bjustifi(ed|cation|es)\b|\breckoned .{0,20}righteousness\b|\bcounted .{0,20}righteousness\b/, 5),
+      q('works-of-law', /\bworks of the law\b|\bdeeds of the law\b/, 5),
+      q('righteous-by', /\brighteous before god\b|\bfound righteous\b|\bdeclared righteous\b/, 4),
+      q('faith', /\bfaith\b|\bfaithfulness\b/, 1, true),
+      q('merit', /\bmerit(s)?\b|\breward according to\b|\bweighed in the balance\b/, 3),
+      q('covenant-membership', /\bcovenant\b/, 1, true),
+    ], context: [/\brighteous/, /\blaw\b/, /\bworks\b/, /\bjustif/, /\bgod\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'grace-election', label: 'Grace, election and the chosen',
+    blurb: 'Being chosen: Israel, the remnant, the elect, and what election is understood to guarantee.',
+    queries: [
+      q('elect', /\belect\b|\bthe chosen\b|\bchosen (people|race|nation|ones)\b/, 4),
+      q('remnant', /\bremnant\b/, 4),
+      q('grace', /\bgrace\b|\bunmerited\b|\bfavou?r (of|with) god\b/, 3),
+      q('called', /\bcalled\b(?=[^.]{0,50}\b(god|lord|name)\b)|\bcalling\b/, 2, true),
+      q('foreknown', /\bfrom the foundation of the world\b|\bbefore (they|he|we) (were|was)\b/, 3),
+    ], context: [/\bgod\b/, /\bisrael\b/, /\bpeople\b/, /\bcovenant\b/], minScore: 4, perWorkCap: 6 },
+
+  // ── Law, practice and identity ────────────────────────────────────────────────────────
+  { id: 'sabbath', label: 'Sabbath',
+    blurb: 'The seventh day: how it is kept, how strictly, what counts as work, and how Greek and Roman writers saw it from outside.',
+    queries: [
+      q('sabbath', /\bsabbath[s]?\b/, 4),
+      q('seventh-day', /\bseventh day\b|\bday of rest\b/, 4),
+      q('sabbath-work', /\bwork on the sabbath\b|\bprofane the sabbath\b|\bbreak(ing)? the sabbath\b|\bkeep the sabbath\b/, 5),
+      q('sabbath-limit', /\bsabbath day.{0,3}s journey\b|\bthirty[- ]nine\b|\bprimary (labours|categories)\b/, 5),
+      q('rest', /\brest(ed)? (on|from)\b/, 2, true),
+      q('outsider-view', /\bevery seventh day\b|\bidleness\b(?=[^.]{0,60}\bjew)/, 3),
+    ], context: [/\bsabbath/, /\bseventh\b/, /\bday\b/, /\bwork\b/, /\bcommandment/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'law', label: 'Law and commandments',
+    blurb: 'Torah as gift, as burden, as wisdom, and as the thing Gentiles need not keep — the fault line the New Testament sits on.',
+    queries: [
+      q('law-of-moses', /\blaw of moses\b|\bthe law and the prophets\b|\btorah\b/, 4),
+      q('commandments', /\bcommandment[s]?\b|\bprecept[s]?\b|\bstatutes\b|\bordinances\b/, 3),
+      q('keep-law', /\bkeep(ing)? the (law|commandments)\b|\bobserve the (law|commandments)\b|\bdoers of the law\b/, 4),
+      q('law-eternal', /\blaw (is|shall be) eternal\b|\bnot one jot\b|\bnever pass away\b/, 4),
+      q('yoke', /\byoke of the law\b|\byoke of bondage\b|\bburden\b(?=[^.]{0,50}\blaw\b)/, 4),
+      q('written-in-heart', /\bwritten (up)?on (their|the) hearts?\b|\bunwritten law\b|\blaw of nature\b/, 4),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'circumcision', label: 'Circumcision and identity',
+    blurb: 'The covenant sign: what it marks, whether it can be spiritualised, and what a Gentile who wants in must do.',
+    queries: [
+      q('circumcision', /\bcircumcis(e|ed|ion)\b|\buncircumcis/, 5),
+      q('covenant-sign', /\bsign of the covenant\b|\bcovenant in (your|the) flesh\b|\beighth day\b/, 4),
+      q('circumcision-of-heart', /\bcircumcis(e|ed|ion) of the heart\b|\bcircumcise (your|the) heart\b/, 5),
+      q('proselyte', /\bproselyte[s]?\b|\bbecome a jew\b|\bjudaiz/, 4),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'purity', label: 'Purity, food and the table',
+    blurb: 'Clean and unclean: food laws, washing, corpse impurity, and who may eat with whom — the practical shape of separation.',
+    queries: [
+      q('clean-unclean', /\b(un)?clean(ness)?\b(?=[^.]{0,60}\b(eat|food|touch|defil|pure)\b)|\bdefile(d|ment)?\b/, 4),
+      q('food-laws', /\bforbidden (food|meat)\b|\bswine.{0,3}s? flesh\b|\bthings strangled\b|\bkosher\b|\beat no\b/, 4),
+      q('washing', /\bwash(ing|ed)? (their|the|his) hands\b|\bpurificat/, 4),
+      q('corpse-impurity', /\btouch(es|ed|ing)? (a|the) (dead|corpse)\b|\bred heifer\b|\bwater of purification\b/, 4),
+      q('table-fellowship', /\beat with\b(?=[^.]{0,50}\b(gentile|sinner|greek)\b)|\bat table with\b/, 4),
+      q('idol-food', /\bmeat[s]? (offered|sacrificed) (to|unto) idols\b|\bidol[- ]sacrifice/, 5),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'prayer-fasting', label: 'Prayer, fasting and almsgiving',
+    blurb: 'The three pillars of Jewish piety, taken over whole by the earliest Christians and then argued about.',
+    queries: [
+      q('prayer', /\bpray(er|ed|ing|s)?\b/, 2, true),
+      q('fasting', /\bfast(ing|ed|s)?\b(?=[^.]{0,60}\b(pray|day|week|humbl|afflict)\b)|\bfast twice\b/, 4),
+      q('almsgiving', /\balms(giving|deeds)?\b|\bgive to the poor\b|\bcharity\b/, 4),
+      q('hours-of-prayer', /\bthree times a day\b|\bhour of prayer\b|\bmorning and evening\b/, 4),
+      q('secret', /\bin secret\b(?=[^.]{0,60}\b(pray|alms|fast)\b)|\bnot .{0,20}as the hypocrites\b/, 4),
+    ], context: [/\bgod\b/, /\blord\b/, /\bheaven\b/, /\bfast/, /\balms/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'wealth', label: 'Wealth, poverty and possessions',
+    blurb: 'Riches as blessing and as danger; the poor as pious; and the community of goods some groups actually practised.',
+    queries: [
+      q('rich-warning', /\bwoe (unto|to) (you|the) rich\b|\brich man\b(?=[^.]{0,60}\b(hard|kingdom|judg)\b)|\blove of money\b/, 4),
+      q('poor-pious', /\bthe poor\b(?=[^.]{0,60}\b(righteous|god|blessed|humble)\b)|\bpoor and needy\b/, 3),
+      q('community-of-goods', /\ball things (in )?common\b|\bcommon (purse|stock|fund)\b|\bdespise riches\b/, 5),
+      q('mammon', /\bmammon\b|\btreasure (in|upon) (heaven|earth)\b/, 4),
+      q('usury', /\busury\b|\blend(ing)?\b(?=[^.]{0,40}\binterest\b)/, 3),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  // ── Temple, priesthood and community ──────────────────────────────────────────────────
+  { id: 'temple', label: 'Temple and sanctuary',
+    blurb: 'The house on the mount, the heavenly pattern behind it, the community imagined as a temple, and what its destruction meant.',
+    queries: [
+      q('temple', /\btemple\b|\bsanctuary\b|\bholy place\b|\bholy of holies\b/, 4),
+      q('tabernacle', /\btabernacle\b|\btent of (meeting|witness)\b/, 4),
+      q('heavenly-temple', /\btemple (in|of) heaven\b|\bheavenly (temple|sanctuary)\b|\bpattern (shown|showed)\b/, 5),
+      q('community-temple', /\b(ye|you) are (the |a )?temple\b|\btemple of god\b(?=[^.]{0,60}\b(ye|you|we|us)\b)|\bspiritual house\b/, 5),
+      q('destruction', /\bdestroy(ed)? the temple\b|\bburn(ed|t) the (temple|house)\b|\bnot one stone\b/, 4),
+      q('veil', /\bveil\b(?=[^.]{0,40}\b(temple|sanctuary|holy)\b)|\bcurtain\b/, 3),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'priesthood', label: 'Priesthood and mediation',
+    blurb: 'Who stands between God and Israel: the Aaronic line, Melchizedek, the high priest, and a priesthood of all.',
+    queries: [
+      q('high-priest', /\bhigh[- ]priest\b/, 4),
+      q('priesthood', /\bpriesthood\b|\bpriestly\b|\bsons of aaron\b|\blevites?\b/, 4),
+      q('melchizedek', /\bmelchizedek\b|\bmelchisedec\b/, 5),
+      q('intercede', /\bintercede\b|\bintercession\b|\bmake atonement for the people\b/, 4),
+      q('royal-priesthood', /\broyal priesthood\b|\bkingdom of priests\b|\ba priest for ever\b/, 5),
+      q('priest', /\bpriest[s]?\b/, 1, true),
+    ], context: [/\baltar\b/, /\bsacrific/, /\btemple\b/, /\batone/, /\boffering\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'assembly', label: 'The assembly: church and synagogue',
+    blurb: 'How the gathered community describes itself — ekklēsia, synagogue, the many, the holy ones — and how it orders itself.',
+    queries: [
+      q('church', /\bchurch(es)?\b|\bekklesia\b|\bassembly of (god|the lord|the saints)\b/, 4),
+      q('synagogue', /\bsynagogue[s]?\b|\bhouse of (prayer|study)\b/, 4),
+      q('congregation', /\bcongregation\b|\bthe many\b|\bcommunity\b(?=[^.]{0,50}\b(rule|order|member)\b)/, 3),
+      q('offices', /\bbishop[s]?\b|\bpresbyter[s]?\b|\belder[s]?\b|\bdeacon[s]?\b|\boverseer[s]?\b/, 4),
+      q('saints', /\bthe saints\b|\bholy ones\b|\bbrethren\b/, 2, true),
+      q('unity', /\bone body\b|\bmembers (of|one)\b|\bschism\b|\bdivision[s]? among\b/, 3),
+    ], context: [/\bgod\b/, /\bchrist\b/, /\bgather/, /\bassembl/, /\bchurch\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'baptism', label: 'Baptism and ritual washing',
+    blurb: 'Immersion before and after John: proselyte washing, the mikveh, daily ablution, and Christian initiation.',
+    queries: [
+      q('baptism', /\bbaptism\b|\bbaptiz(e|ed|ing)\b|\bbaptist\b/, 5),
+      q('immersion', /\bimmers(e|ed|ion)\b|\bplunge(d)? into\b|\bdip(ped)? (himself|in)\b/, 4),
+      q('ritual-bath', /\bbath(e|ed|ing)\b(?=[^.]{0,60}\b(pure|purif|holy|water)\b)|\bwater[s]? of purification\b|\bliving water\b/, 4),
+      q('washing-regeneration', /\bwashing of regeneration\b|\bborn (again|of water)\b|\bnew birth\b/, 5),
+      q('forgiveness-baptism', /\bbaptism .{0,30}(repentance|remission|forgiveness)\b/, 5),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'mission', label: 'The nations, mission and the proselyte',
+    blurb: 'Whether Israel’s God is for the nations too — pilgrimage of the Gentiles, active proselytising, and Christian sending.',
+    queries: [
+      q('nations', /\b(the )?nations\b|\bgentile[s]?\b|\bheathen\b/, 2, true),
+      q('light-to-nations', /\blight (to|of|unto) the (nations|gentiles)\b|\bsalvation .{0,25}ends of the earth\b/, 5),
+      q('pilgrimage', /\bnations shall (come|flow|stream)\b|\ball nations shall\b|\bcome up to jerusalem\b/, 4),
+      q('proselytise', /\bcompass sea and land\b|\bmake one proselyte\b|\bwin (over|them)\b|\bconvert(ed|ing)? (the )?(gentile|greek|nation)/, 5),
+      q('sent', /\bsent (them |us |me )?(out |forth )?(to|unto|into)\b(?=[^.]{0,50}\b(nation|world|gentile)\b)|\bpreach(ed|ing)? .{0,20}to (all|every)\b/, 4),
+      q('god-fearers', /\bgod[- ]fearing\b|\bworshipp?ers of god\b|\bdevout (greeks|men)\b/, 4),
+    ], context: [/\bgod\b/, /\bisrael\b/, /\blord\b/, /\bnation/, /\bgentile/], minScore: 4, perWorkCap: 6 },
+
+  // ── Last things ───────────────────────────────────────────────────────────────────────
+  { id: 'second-coming', label: 'The day of the Lord and the coming',
+    blurb: 'God’s decisive arrival — the day of the Lord in the prophets, and the parousia the earliest Christians expected soon.',
+    queries: [
+      q('parousia', /\bparousia\b|\bhis coming\b|\bcoming of the lord\b|\bappearing\b/, 4),
+      q('day-of-lord', /\bday of the lord\b|\bthat day\b(?=[^.]{0,60}\b(judg|wrath|come|lord)\b)|\bgreat day\b/, 4),
+      q('soon', /\bat hand\b|\bshortly\b(?=[^.]{0,40}\bcome\b)|\bnot delay\b|\bquickly\b(?=[^.]{0,30}\bcome\b)/, 3),
+      q('signs', /\bsigns of\b(?=[^.]{0,40}\b(end|times|coming)\b)|\bbirth[- ]pangs\b|\bwars and rumou?rs\b/, 4),
+      q('watch', /\bwatch (therefore|ye)\b|\bknow(eth)? not (the|what) (day|hour)\b|\bthief in the night\b/, 4),
+    ], context: [], minScore: 4, perWorkCap: 6 },
+
+  { id: 'judgment', label: 'Judgment',
+    blurb: 'The books opened, the balance, the fire — who judges, when, and on what basis.',
+    queries: [
+      q('great-judgment', /\bgreat judg(e)?ment\b|\bday of judg(e)?ment\b|\bjudg(e)?ment[- ]seat\b/, 5),
+      q('books-opened', /\bbooks were opened\b|\bbook of life\b|\bwritten in the book\b|\brecord(ed)? .{0,25}deeds\b/, 5),
+      q('weighed', /\bweighed in the balance\b|\bscales\b(?=[^.]{0,40}\b(judg|deed|righteous)\b)/, 4),
+      q('fire', /\beternal fire\b|\bunquenchable fire\b|\bfurnace\b|\blake of fire\b/, 4),
+      q('recompense', /\baccording to (his|their) (works|deeds)\b|\brender to (each|every)\b|\brewards? and punishments?\b/, 4),
+      q('judge', /\bjudg(e|es|ed|ing|ment)\b/, 1, true),
+    ], context: [/\bgod\b/, /\blord\b/, /\brighteous/, /\bwicked\b/, /\bdeed/, /\bsin\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'kingdom', label: 'The kingdom of God',
+    blurb: 'God’s reign: present or coming, earthly or heavenly, national or universal.',
+    queries: [
+      q('kingdom-of-god', /\bkingdom of (god|heaven|the most high)\b/, 5),
+      q('reign', /\bthe lord (shall|will) reign\b|\bhis kingdom\b(?=[^.]{0,50}\b(everlasting|for ever|eternal)\b)|\beverlasting kingdom\b/, 4),
+      q('messianic-age', /\bmessianic\b|\bdays of the messiah\b|\bthousand years\b|\bmillenni/, 4),
+      q('banquet', /\bfeast\b(?=[^.]{0,50}\b(kingdom|abraham|messiah)\b)|\bsit down with abraham\b|\bmessianic banquet\b/, 4),
+      q('kingdom', /\bkingdom\b/, 1, true),
+    ], context: [/\bgod\b/, /\bheaven\b/, /\blord\b/, /\bmessiah\b/, /\breign\b/], minScore: 4, perWorkCap: 6 },
+
+  { id: 'antichrist', label: 'Antichrist, tribulation and the end',
+    blurb: 'The last adversary and the distress before the end — Beliar, the man of lawlessness, the abomination, the beast.',
+    queries: [
+      q('antichrist', /\bantichrist\b|\bman of (sin|lawlessness)\b|\bson of perdition\b/, 5),
+      q('beliar-end', /\bbeliar\b|\bbelial\b(?=[^.]{0,80}\b(come|last|end|king)\b)/, 4),
+      q('abomination', /\babomination of desolation\b|\bdesolating sacrilege\b/, 5),
+      q('beast', /\bthe beast\b|\bfour beasts\b|\blittle horn\b/, 4),
+      q('tribulation', /\btribulation\b|\btime of trouble\b|\bsuch as (was|has) not been\b|\bdistress of nations\b/, 4),
+      q('deceiver', /\bdeceiv(e|er|ing) the (world|elect|many)\b|\bfalse (prophet|christ|messiah)/, 4),
+    ], context: [], minScore: 4, perWorkCap: 6 },
 ]

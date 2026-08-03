@@ -116,7 +116,7 @@ function main() {
   console.log(`\nwrote ${kept.length} candidates`)
 }
 
-if (!process.argv.includes('--check')) main()
+if (!process.argv.includes('--check') && !process.argv.includes('--survey')) main()
 
 // ── Validation ───────────────────────────────────────────────────────────────────────────
 // Run with --check. Every curated entry must resolve: its `probe` phrase has to occur in the
@@ -150,3 +150,51 @@ export function check(topicId: string): number {
 }
 
 if (process.argv.includes('--check')) process.exit(check(process.argv[2]))
+
+// ── Survey ───────────────────────────────────────────────────────────────────────────────
+// Run with --survey. Scores every topic against the whole corpus and reports what is actually
+// there, per tradition. This runs BEFORE curation, not after, because it answers the question
+// that decides where the effort goes: which topics can this library support, and which are
+// anachronistic for the Jewish sources however much they matter to Christian theology? A topic
+// with 200 hits in the Fathers and 3 in Second Temple Judaism is not a failure — it is a finding,
+// and the page should say so rather than pad the thin half.
+export function survey() {
+  const { TOPICS } = require('../src/lib/theology-topics') as typeof import('../src/lib/theology-topics')
+  const index = loadIndex()
+  const JEWISH = new Set(['pseudepigrapha', 'apocrypha', 'josephus', 'philo', 'septuagint'])
+  const CHRISTIAN = new Set(['apostolic-fathers', 'church-fathers', 'nt-apocrypha'])
+  console.log('topic'.padEnd(16), 'total'.padStart(6), '2ndT'.padStart(6), 'rabb'.padStart(6), 'chrn'.padStart(6), 'g-r'.padStart(6), '  works  verdict')
+  for (const topic of TOPICS) {
+    const kept: { cat: string; g: string }[] = []
+    const perWork = new Map<string, number>()
+    const rows = index
+      .filter(e => WORK_BY_ID.has(e.g))
+      .map(e => ({ e, s: score(e.t, topic).score }))
+      .filter(r => r.s >= topic.minScore)
+      .sort((a, b) => b.s - a.s)
+    for (const r of rows) {
+      const n = perWork.get(r.e.g) ?? 0
+      if (n >= topic.perWorkCap) continue
+      perWork.set(r.e.g, n + 1)
+      kept.push({ cat: WORK_BY_ID.get(r.e.g)!.category, g: r.e.g })
+    }
+    const n = (pred: (c: string) => boolean) => kept.filter(k => pred(k.cat)).length
+    const jew = n(c => JEWISH.has(c)), rab = n(c => c === 'rabbinic' || c === 'targums')
+    const chr = n(c => CHRISTIAN.has(c)), gr = n(c => c === 'greco-roman')
+    // These are RECALL numbers. Nothing here measures precision, and the gap is not academic:
+    // "only begotten" is an ordinary idiom for an only child, and before it was gated on a
+    // divine subject it manufactured 38 Second Temple Jewish hits for the Trinity — a topic
+    // those sources do not contain at all. So no row here says "ready"; it says how much there
+    // is to read, and a sample must be read before any topic is curated.
+    const verdict = kept.length < 40 ? 'thin — widen the queries first'
+      : jew < 15 ? 'lopsided Christian — check the Jewish hits are real'
+      : chr < 10 ? 'lopsided Jewish — expected for practice topics'
+      : 'enough to sample'
+    console.log(
+      topic.id.padEnd(16), String(kept.length).padStart(6), String(jew).padStart(6),
+      String(rab).padStart(6), String(chr).padStart(6), String(gr).padStart(6),
+      String(perWork.size).padStart(7), '  ' + verdict)
+  }
+}
+
+if (process.argv.includes('--survey')) { survey(); process.exit(0) }
