@@ -518,4 +518,74 @@ export const THEME_PAGES: TopicPage[] = [
         probe: 'circumcise the hardness of your hearts' },
     ],
   },
+  {
+    id: 'temple',
+    group: 'Temple and community',
+    label: 'Temple and sanctuary',
+    blurb:
+      'The house on the mount — and what people said about it once it was gone. Two moves run '
+      + 'through these texts, and both start before 70 CE: the real temple is the one in heaven, '
+      + 'of which this is a copy; and the real temple is the community, or the human heart. '
+      + 'Barnabas 16 puts both together and draws the conclusion.',
+    canonicalAnchors:
+      'The anchors are 1 Kings 6–8 (Solomon builds it), Ezekiel 40–48 (the visionary temple) and '
+      + 'Isaiah 66:1–2 (“what house will you build for me?”). They are canonical and sit outside '
+      + 'this corpus; the writers below all quote or assume them.',
+    absences: [
+      'The temple’s measurements and its daily service are set out in the Mishnah tractates Middot '
+      + 'and Tamid, which this library does not hold. The rabbinic entries here are Yoma — the Day '
+      + 'of Atonement — and the Targums, so what survives is the ritual of one day rather than the '
+      + 'ordinary working of the place.',
+      'After Barnabas the Christian writers largely stop arguing about the building. They move to '
+      + 'sacrifice and priesthood instead, which are separate questions and belong on their own '
+      + 'pages; that is why the later Christian section here is empty rather than thin.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: '2baruch', chapter: 4, verse: 3, tradition: 'second-temple',
+        summary: 'The true building was prepared before Paradise',
+        probe: 'This building now built in your midst is not that which is revealed with Me' },
+      { work: '2baruch', chapter: 6, verse: 7, tradition: 'second-temple',
+        summary: 'Vessels removed from the Holy of Holies beforehand',
+        probe: 'take from there the veil, and holy ark' },
+      { work: 'Wis', chapter: 9, verse: 8, tradition: 'second-temple',
+        summary: 'The temple copies a tabernacle prepared from the beginning',
+        probe: 'a resemblance of the holy tabernacle' },
+      { work: 'Jdt', chapter: 9, verse: 8, tradition: 'second-temple',
+        summary: 'Enemies purpose to defile the sanctuary',
+        probe: 'they have purposed to defile thy sanctuary' },
+      { work: 'philo-spec-laws', chapter: 1, verse: 66, tradition: 'second-temple',
+        summary: 'The universe itself is the truest temple',
+        probe: 'the universal world as the highest and truest temple of God' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 12, tradition: 'second-temple',
+        summary: 'Josephus dates the first tabernacle against a critic',
+        probe: 'is manifest from the works of Moses' },
+      { work: 'jewish-war', book: 1, chapter: 1, verse: 28, tradition: 'second-temple',
+        summary: 'The temple burnt, against Caesar’s own consent',
+        probe: 'how the temple was burnt, against the consent of Caesar' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'y-yoma', chapter: 1, verse: 1, tradition: 'rabbinic',
+        summary: 'High priest isolated seven days beforehand',
+        probe: 'Seven days before the Day of Atonement one isolates the High Priest' },
+      { work: 'y-yoma', chapter: 1, verse: 5, tradition: 'rabbinic',
+        summary: 'The elders adjure the high priest before entry',
+        probe: 'They adjure him; this finishes their task' },
+      { work: 'tg-psj-exodus', chapter: 28, verse: 43, tradition: 'rabbinic',
+        summary: 'Vestments required on pain of flaming fire',
+        probe: 'that they may not receive the punishment of flaming fire' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-barnabas', chapter: 6, verse: 15, tradition: 'apostolic-fathers',
+        summary: 'The holy temple is the heart’s abode',
+        probe: 'a holy temple unto the Lord, my brethren, is the abode of our heart' },
+      { work: 'af-barnabas', chapter: 16, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Hope set on the building, not its maker',
+        probe: 'set their hope on the building, and not on their God' },
+      { work: 'af-barnabas', chapter: 16, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Pulled down because they went to war',
+        probe: 'for because they went to war it was pulled down' },
+      { work: 'af-barnabas', chapter: 16, verse: 9, tradition: 'apostolic-fathers',
+        summary: 'God now dwells within the believer’s habitation',
+        probe: 'God dwelleth truly in our habitation within us' },
+    ],
+  },
 ]
