@@ -588,4 +588,85 @@ export const THEME_PAGES: TopicPage[] = [
         probe: 'God dwelleth truly in our habitation within us' },
     ],
   },
+  {
+    id: 'priesthood',
+    group: 'Temple and community',
+    label: 'Priesthood and mediation',
+    blurb:
+      'Who stands between God and the people. Three strands run here and they do not quite meet: '
+      + 'the Aaronic line and its vestments; Melchizedek, a priest with no genealogy who fascinated '
+      + 'Philo and Josephus alike; and the Christian ordering of ministry, which borrows the '
+      + 'Levitical pattern for its shape while pointedly not calling anyone a priest.',
+    canonicalAnchors:
+      'The anchors are Exodus 28–29 and Leviticus 8–9 (Aaron consecrated), Numbers 16–18, and '
+      + 'Psalm 110:4 — “a priest for ever after the order of Melchizedek” — which is the verse the '
+      + 'whole Melchizedek strand hangs on. The Christian argument is worked out in Hebrews. All of '
+      + 'that is canonical and sits outside this corpus.',
+    absences: [
+      'No source here calls a Christian minister a priest. 1 Clement reaches for the Levitical '
+      + 'pattern — high priest, priests, levites, layman — but to argue for ORDER, not to claim the '
+      + 'office; Ignatius has bishop, presbytery and deacons and never uses priestly language of '
+      + 'them. Whatever happened later, it has not happened yet in these texts.',
+      'Nor is there a priesthood here without a sanctuary to serve in. Even the writers arguing '
+      + 'that the temple is finished keep reasoning from the Levitical pattern rather than '
+      + 'discarding it.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: 'Sir', chapter: 45, verse: 7, tradition: 'second-temple',
+        summary: 'Everlasting covenant of priesthood given to Aaron',
+        probe: 'gave him the priesthood among the people' },
+      { work: 'Sir', chapter: 50, verse: 1, tradition: 'second-temple',
+        summary: 'Simon the high priest repairs the house',
+        probe: 'Simon the high priest, the son of Onias' },
+      { work: 'tp-levi', chapter: 5, verse: 2, tradition: 'second-temple',
+        summary: 'Priesthood granted to Levi until God comes',
+        probe: 'I have given thee the blessings of the priesthood' },
+      { work: 'tp-levi', chapter: 8, verse: 10, tradition: 'second-temple',
+        summary: 'Diadem and incense: Levi invested in vision',
+        probe: 'placed on my head a diadem of priesthood' },
+      { work: 'philo-alleg-interp', chapter: 3, verse: 79, tradition: 'second-temple',
+        summary: 'Melchizedek made high priest with no antecedent',
+        probe: 'his own high Priest' },
+      { work: 'philo-alleg-interp', chapter: 3, verse: 82, tradition: 'second-temple',
+        summary: 'Melchizedek brings wine instead of water',
+        probe: 'Melchisedek shall bring forward wine instead of water' },
+      { work: 'jewish-war', book: 6, chapter: 10, verse: 438, tradition: 'second-temple',
+        summary: 'Melchizedek: righteous king and first priest',
+        probe: 'called [Melchisedek], the Righteous King' },
+      { work: 'antiquities', book: 11, chapter: 3, verse: 62, tradition: 'second-temple',
+        summary: 'A king funds the priests’ sacred garments',
+        probe: 'those sacred garments wherein they used to worship God' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'm-yoma', chapter: 3, verse: 9, tradition: 'rabbinic',
+        summary: 'High priest flanked by deputy and family head',
+        probe: 'the deputy high priest at his right' },
+      { work: 'm-sotah', chapter: 7, verse: 6, tradition: 'rabbinic',
+        summary: 'Priestly blessing said differently inside the Temple',
+        probe: 'In the province (outside of the Temple) it was said as three blessings' },
+      { work: 'y-megillah', chapter: 1, verse: 10, tradition: 'rabbinic',
+        summary: 'Anointed and merely invested high priests distinguished',
+        probe: 'a High Priest anointed with the anointing oil and one invested' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-1clement', chapter: 40, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Offerings at fixed times, never in disorder',
+        probe: 'not to be done rashly or in disorder' },
+      { work: 'af-1clement', chapter: 40, verse: 5, tradition: 'apostolic-fathers',
+        summary: 'High priest, priests, levites, layman: each bound',
+        probe: 'The layman is bound by the layman' },
+      { work: 'af-ign-ephesians', chapter: 4, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'The presbytery attuned to the bishop like strings',
+        probe: 'your honourable presbytery, which is worthy of God, is attuned to the bishop' },
+      { work: 'af-ign-polycarp', chapter: 6, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Heed bishop, presbyters and deacons together',
+        probe: 'I am devoted to those who are subject to the bishop' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'athanasius-arians-2', chapter: 8, verse: 1, tradition: 'church-fathers',
+        summary: 'Aaron read as a shadow of Christ',
+        probe: 'this Aaron shadowed out according to the Law' },
+      { work: 'eusebius-he-1', chapter: 3, verse: 1, tradition: 'church-fathers',
+        summary: 'Moses called the high priest “Christ”, anointed',
+        probe: 'Moses was the first to make known the name of Christ' },
+    ],
+  },
 ]
