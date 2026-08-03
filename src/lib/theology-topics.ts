@@ -163,7 +163,13 @@ export const TOPICS: Topic[] = [
       q('messiah', /\bmessiah\b|\banointed one\b|\bchrist\b/, 4),
       q('branch', /\bbranch of david\b|\broot of jesse\b|\bshoot\b|\bsceptre\b/, 4),
       q('son-of-david', /\bson of david\b|\bthrone of david\b|\bkingdom of david\b/, 4),
-      q('two-messiahs', /\bmessiah of aaron\b|\bmessiah of israel\b|\banointed priest\b/, 5),
+      // "anointed priest" is the CULTIC high priest of Leviticus 4 and Mishnah Zevachim, not a
+      // messiah — weighted at 5 it buried Psalms of Solomon 17 under Leviticus and Horayot. The
+      // two-messiahs idea proper (Aaron and Israel) is Qumran's, and this library has no Dead Sea
+      // Scrolls, so only the named forms stay.
+      q('two-messiahs', /\bmessiah of aaron\b|\bmessiah of israel\b|\btwo messiahs\b/, 5),
+      q('lords-anointed', /\banointed of the lord\b|\bthe lord.{0,3}s anointed\b|\bhis anointed\b/, 5),
+      q('king-messiah', /\btheir king,? the son of david\b|\brighteous king\b|\bking messiah\b/, 5),
       q('star', /\bstar (shall|will) (come|rise)\b|\bstar out of jacob\b/, 4),
       q('expectation', /\bhe (that|who) (is|was) to come\b|\bawait(ing)? the\b/, 2, true),
     ], context: [/\bdeliver/, /\bredeem/, /\bking\b/, /\bkingdom\b/, /\bisrael\b/], minScore: 4, perWorkCap: 6 },

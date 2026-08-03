@@ -268,4 +268,83 @@ export const THEOLOGY_PAGES: TopicPage[] = [
         probe: 'the Holy One of Israel, who have made known Israel your King' },
     ],
   },
+  {
+    id: 'messiah',
+    label: 'Messiah and messianic expectation',
+    blurb:
+      'What was hoped for, before anyone claimed it had arrived. These sources do not describe one '
+      + 'expectation but several: a Davidic king who clears Jerusalem of foreign rule, a priestly '
+      + 'figure alongside him, a star, a hidden man revealed at the end — and in 4 Ezra a messiah '
+      + 'who reigns four hundred years and then dies. Read them before reading the Gospels, not after.',
+    canonicalAnchors:
+      'The anchors are Numbers 24:17 (a star out of Jacob), 2 Samuel 7 (the promise to David), '
+      + 'Isaiah 11, Psalm 2 and Psalm 110. They are canonical and sit outside this corpus; every '
+      + 'text below is working from them.',
+    absences: [
+      'Nothing here makes the messiah divine, or has him die for sin. 4 Ezra does have him die — '
+      + 'but at the close of his reign, as the age ends, and nothing is said to be achieved by it. '
+      + 'A student looking for a suffering, atoning messiah in Second Temple Judaism will not find '
+      + 'one in this library.',
+      'The expectation of TWO messiahs, one of Aaron and one of Israel, is known mainly from the '
+      + 'Dead Sea Scrolls, which this library does not yet hold. The Testaments below hint at a '
+      + 'priestly figure beside the king, but the full picture is missing.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: 'psalms-of-solomon', chapter: 17, verse: 21, tradition: 'second-temple',
+        summary: 'Raise up their king, the son of David',
+        probe: 'raise up unto them their king, the son of David' },
+      { work: 'psalms-of-solomon', chapter: 17, verse: 30, tradition: 'second-temple',
+        summary: 'He purges Jerusalem; the nations serve him',
+        probe: 'he shall have the heathen nations to serve him under his yoke' },
+      { work: 'psalms-of-solomon', chapter: 17, verse: 32, tradition: 'second-temple',
+        summary: 'A righteous king, taught of God, Lord’s anointed',
+        probe: 'he (shall be) a righteous king, taught of God' },
+      { work: 'psalms-of-solomon', chapter: 17, verse: 34, tradition: 'second-temple',
+        summary: 'The Lord Himself is the messiah’s king',
+        probe: 'The Lord Himself is his king' },
+      { work: '2esdras', chapter: 7, verse: 28, tradition: 'second-temple',
+        summary: 'A messiah revealed, reigning four hundred years',
+        probe: 'shall rejoice them that remain four hundred years' },
+      { work: '2baruch', chapter: 70, verse: 9, tradition: 'second-temple',
+        summary: 'Survivors delivered to God’s servant the Messiah',
+        probe: 'delivered into the hands of My servant Messiah' },
+      { work: 'tp-judah', chapter: 24, verse: 1, tradition: 'second-temple',
+        summary: 'A star arises from Jacob in peace',
+        probe: 'shall a star arise to you from Jacob in peace' },
+      { work: 'tp-judah', chapter: 24, verse: 6, tradition: 'second-temple',
+        summary: 'A rod of righteousness reaching the Gentiles',
+        probe: 'shall grow a rod of righteousness to the Gentiles' },
+      { work: 'tp-levi', chapter: 8, verse: 14, tradition: 'second-temple',
+        summary: 'A king in Judah establishing a new priesthood',
+        probe: 'a king shall arise in Judah, and shall establish a new priesthood' },
+      { work: 'jewish-war', book: 6, chapter: 5, verse: 312, tradition: 'second-temple',
+        summary: 'An ambiguous oracle: a world ruler from Judaea',
+        probe: 'one from their country should become governor of the habitable earth' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'tg-isaiah', chapter: 4, verse: 2, tradition: 'rabbinic',
+        summary: 'The Messiah of the Lord: joy and glory',
+        probe: 'shall the Messiah of the Lord be for joy and for glory' },
+      { work: 'tg-isaiah', chapter: 9, verse: 5, tradition: 'rabbinic',
+        summary: 'The child of Isaiah 9 read messianically',
+        probe: 'The prophet said to the house of David' },
+      { work: 'tg-isaiah', chapter: 10, verse: 27, tradition: 'rabbinic',
+        summary: 'The nations broken before the Messiah',
+        probe: 'the nations shall be broken from before the Messiah' },
+      { work: 'tg-isaiah', chapter: 11, verse: 6, tradition: 'rabbinic',
+        summary: 'Peace multiplied in the days of Messiah',
+        probe: 'In the days of the Messiah of Israel peace shall be multiplied' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-barnabas', chapter: 12, verse: 10, tradition: 'apostolic-fathers',
+        summary: 'Denies the messiah is David’s son merely',
+        probe: 'Christ is the son of David' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'justin-dialogue', chapter: 49, verse: 1, tradition: 'church-fathers',
+        summary: 'Trypho: anointed by election, then became Christ',
+        probe: 'to have been anointed by election' },
+      { work: 'justin-dialogue', chapter: 52, verse: 1, tradition: 'church-fathers',
+        summary: 'Two advents argued from Jacob’s blessing',
+        probe: 'there would be two advents of Christ' },
+    ],
+  },
 ]
