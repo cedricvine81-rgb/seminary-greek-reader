@@ -300,7 +300,10 @@ export const THEME_PAGES: TopicPage[] = [
       'Nothing here makes the messiah divine, or has him die for sin. 4 Ezra does have him die — '
       + 'but at the close of his reign, as the age ends, and nothing is said to be achieved by it. '
       + 'A student looking for a suffering, atoning messiah in Second Temple Judaism will not find '
-      + 'one in this library.',
+      + 'one in this library. Note carefully what that does NOT mean: atoning death itself is here, '
+      + 'stated plainly in 4 Maccabees, where the martyrs\u2019 blood is a purification and a '
+      + 'propitiation for the nation. The idea existed; it was simply not attached to the messiah. '
+      + 'The Atonement page sets those passages out.',
       'The expectation of TWO messiahs, one of Aaron and one of Israel, is known mainly from the '
       + 'Dead Sea Scrolls, which this library does not yet hold. The Testaments of the Twelve '
       + 'Patriarchs — a set of farewell speeches attributed to Jacob\u2019s sons, cited here as '
@@ -667,6 +670,70 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'eusebius-he-1', chapter: 3, verse: 1, tradition: 'church-fathers',
         summary: 'Moses called the high priest “Christ”, anointed',
         probe: 'Moses was the first to make known the name of Christ' },
+    ],
+  },
+  {
+    id: 'atonement',
+    group: 'Sin and salvation',
+    label: 'Atonement and sacrifice',
+    blurb:
+      'How sin is dealt with. The ritual answer is the Day of Atonement, described here by Philo, '
+      + 'Josephus, the Targums and the rabbis. The other answer is the one a reader of the New '
+      + 'Testament will not expect to find in Jewish sources at all: in 4 Maccabees the deaths of '
+      + 'the martyrs are a purification and a propitiation for the nation.',
+    canonicalAnchors:
+      'The anchors are Leviticus 16 (the Day of Atonement and the two goats), Leviticus 17:11 '
+      + '(“the life of the flesh is in the blood”) and Isaiah 53. They are canonical and sit '
+      + 'outside this corpus; every text below is working from them.',
+    absences: [
+      'The scapegoat is described again and again and explained nowhere. Not one source here says '
+      + 'HOW the sin gets onto the goat, or why sending it away removes anything. The mechanism a '
+      + 'modern reader wants is simply not a question these writers ask.',
+      'Vicarious atoning death is here — but it belongs to MARTYRS, not to a messiah. 4 Maccabees '
+      + 'says the blood of the pious saved Israel; no Jewish source in this library says anything '
+      + 'of the kind about an anointed king. That distinction is the whole point, and the Messiah '
+      + 'page makes the same one from the other side.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: '4Macc', chapter: 6, verse: 29, tradition: 'second-temple',
+        summary: 'Let my blood be their purification, my life recompense',
+        probe: 'Let my blood be a purification for them' },
+      { work: '4Macc', chapter: 17, verse: 22, tradition: 'second-temple',
+        summary: 'The martyrs’ propitiatory death saved Israel',
+        probe: 'the blood of those pious ones, and their propitiatory death' },
+      { work: '2Macc', chapter: 7, verse: 38, tradition: 'second-temple',
+        summary: 'In us may the Almighty’s wrath cease',
+        probe: 'the wrath of the Almighty, which is justly brought upon all our nation, may cease' },
+      { work: 'antiquities', book: 3, chapter: 10, verse: 241, tradition: 'second-temple',
+        summary: 'The scapegoat, an expiation for the whole multitude',
+        probe: 'to be an expiation for the sins of the whole multitude' },
+      { work: 'philo-planter', chapter: 1, verse: 61, tradition: 'second-temple',
+        summary: 'Two goats cast by lot each year',
+        probe: 'to take by lot two goats' },
+      { work: 'Sir', chapter: 7, verse: 31, tradition: 'second-temple',
+        summary: 'Honour the priest; give the trespass offering',
+        probe: 'Fear the Lord, and honour the priest' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'tg-psj-exodus', chapter: 30, verse: 10, tradition: 'rabbinic',
+        summary: 'Aaron expiates the altar’s horns once yearly',
+        probe: 'once in the year shall he make atonement upon it' },
+      { work: 'm-shevuot', chapter: 1, verse: 3, tradition: 'rabbinic',
+        summary: 'Goat and Day of Atonement together bring atonement',
+        probe: 'together with the day of atonement bring atonement' },
+      { work: 'y-shevuot', chapter: 1, verse: 7, tradition: 'rabbinic',
+        summary: 'The bull’s blood atones for the priests alone',
+        probe: 'the blood of the bull atones for Cohanim' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-barnabas', chapter: 2, verse: 5, tradition: 'apostolic-fathers',
+        summary: 'God declares he is full of burnt offerings',
+        probe: 'What to Me is the multitude of your sacrifices' },
+      { work: 'af-barnabas', chapter: 7, verse: 6, tradition: 'apostolic-fathers',
+        summary: 'Two goats, fair and alike, read typologically',
+        probe: 'Take two goats, fair and alike' },
+      { work: 'af-1clement', chapter: 7, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'The blood of Christ, shed for our salvation',
+        probe: 'Let us fix our eyes on the blood of Christ' },
     ],
   },
 ]
