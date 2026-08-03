@@ -2,15 +2,15 @@
 //
 // The summaries on the page are written from passages these queries return; the queries decide
 // what a student sees. A model is never asked to recall which passages discuss a topic — see the
-// header of scripts/build-theology.ts for why that distinction is load-bearing.
+// header of scripts/build-themes.ts for why that distinction is load-bearing.
 //
 // Terms are English because the retrieval facet is English (backgrounds-search-en). Greek and
 // Hebrew terms belong here too once the grc facet is wired in — noted per topic where they
 // would add reach.
 
 // ── ADDING A TOPIC ───────────────────────────────────────────────────────────────────────
-// 1. Write the query set here.  2. `npx tsx scripts/build-theology.ts --survey` to see what the
-// corpus holds per tradition.  3. `npx tsx scripts/build-theology.ts <id>` to read candidates.
+// 1. Write the query set here.  2. `npx tsx scripts/build-themes.ts --survey` to see what the
+// corpus holds per tradition.  3. `npx tsx scripts/build-themes.ts <id>` to read candidates.
 // 4. Curate entries into src/lib/theology.ts.  5. `--check` to prove every citation resolves.
 //
 // THE TRAP, which has caught this file twice: a word with a precise theological sense usually

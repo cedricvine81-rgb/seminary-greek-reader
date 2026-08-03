@@ -8,13 +8,13 @@
 // retrieval actually returned. Every entry therefore has a real address by construction, and
 // the whole index is re-runnable as the corpus grows.
 //
-//   npx tsx scripts/build-theology.ts <topic-id>        # dump ranked candidates for review
-//   npx tsx scripts/build-theology.ts <topic-id> --emit # write the data file
+//   npx tsx scripts/build-themes.ts <topic-id>        # dump ranked candidates for review
+//   npx tsx scripts/build-themes.ts <topic-id> --emit # write the data file
 import fs from 'node:fs'
 import path from 'node:path'
 import zlib from 'node:zlib'
 import { TEXT_CATEGORIES, type CatalogWork } from '../src/lib/texts-catalog'
-import { TOPICS, type Topic } from '../src/lib/theology-topics'
+import { TOPICS, type Topic } from '../src/lib/theme-topics'
 
 interface Entry { g: string; s: string; o?: string; w?: string; b?: number; c: number; v: number; t: string }
 
@@ -110,7 +110,7 @@ function main() {
   }
 
   fs.writeFileSync(
-    path.join(DATA, 'theology', `${topic.id}.candidates.json`),
+    path.join(DATA, 'themes', `${topic.id}.candidates.json`),
     JSON.stringify(kept.map(k => ({ ...k.e, score: k.score, hits: k.hits })), null, 1),
   )
   console.log(`\nwrote ${kept.length} candidates`)
@@ -125,8 +125,8 @@ if (!process.argv.includes('--check') && !process.argv.includes('--survey')) mai
 // renumbering (Josephus was renumbered by Niese section once already) turns into a failed build
 // instead of a link that quietly lands in the wrong chapter.
 export function check(topicId: string): number {
-  const { THEOLOGY_PAGES } = require('../src/lib/theology') as typeof import('../src/lib/theology')
-  const page = THEOLOGY_PAGES.find(p => p.id === topicId)
+  const { THEME_PAGES } = require('../src/lib/themes') as typeof import('../src/lib/themes')
+  const page = THEME_PAGES.find(p => p.id === topicId)
   if (!page) { console.error(`no curated page for "${topicId}"`); return 1 }
   const index = loadIndex()
   let bad = 0
@@ -159,7 +159,7 @@ if (process.argv.includes('--check')) process.exit(check(process.argv[2]))
 // with 200 hits in the Fathers and 3 in Second Temple Judaism is not a failure — it is a finding,
 // and the page should say so rather than pad the thin half.
 export function survey() {
-  const { TOPICS } = require('../src/lib/theology-topics') as typeof import('../src/lib/theology-topics')
+  const { TOPICS } = require('../src/lib/theme-topics') as typeof import('../src/lib/theme-topics')
   const index = loadIndex()
   const JEWISH = new Set(['pseudepigrapha', 'apocrypha', 'josephus', 'philo', 'septuagint'])
   const CHRISTIAN = new Set(['apostolic-fathers', 'church-fathers', 'nt-apocrypha'])

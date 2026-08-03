@@ -1,10 +1,10 @@
 // Dump a topic's top candidates grouped by tradition, for curation. Read-only.
-//   npx tsx scripts/theology-review.ts <topic-id> [perTradition]
+//   npx tsx scripts/themes-review.ts <topic-id> [perTradition]
 import fs from 'node:fs'
 import path from 'node:path'
 import zlib from 'node:zlib'
 import { TEXT_CATEGORIES } from '../src/lib/texts-catalog'
-import { TOPICS } from '../src/lib/theology-topics'
+import { TOPICS } from '../src/lib/theme-topics'
 
 const TRADITION_OF: Record<string, string> = {
   pseudepigrapha: 'Second Temple', apocrypha: 'Second Temple', josephus: 'Second Temple',

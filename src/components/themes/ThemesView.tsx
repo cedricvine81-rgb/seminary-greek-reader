@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { BookOpen, ExternalLink, Info } from 'lucide-react'
 import { openMasterSearch, hasMasterSearch } from '@/lib/master-search-bus'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
-import { THEOLOGY_PAGES, TRADITIONS, type TopicEntry } from '@/lib/theology'
+import { THEME_PAGES, THEME_GROUPS, TRADITIONS, type TopicEntry } from '@/lib/themes'
 
 // A topic index over the Texts library — the third way in, beside author (the Texts menu) and
 // word (search). A student who asks "what did Second Temple Judaism think about resurrection?"
@@ -19,9 +19,23 @@ import { THEOLOGY_PAGES, TRADITIONS, type TopicEntry } from '@/lib/theology'
 //   2. Sources are grouped by tradition AND dated. A flat list putting the Mishnah (c. 200 CE)
 //      beside Jubilees (2nd c. BCE) beside Irenaeus actively teaches bad method.
 
-export function TheologyView({ topicId }: { topicId: string }) {
-  const page = THEOLOGY_PAGES.find(p => p.id === topicId) ?? THEOLOGY_PAGES[0]
+export function ThemesView({ topicId }: { topicId: string }) {
+  // Switching theme is local state, not navigation: every page is already in the bundle, so a
+  // click should paint immediately rather than round-trip. The URL is kept in step by hand so
+  // deep links and the back button still work.
+  const [current, setCurrent] = useState(topicId)
+  const page = THEME_PAGES.find(p => p.id === current) ?? THEME_PAGES[0]
   const [openedProbe, setOpenedProbe] = useState<string | null>(null)
+
+  function choose(id: string) {
+    setCurrent(id)
+    setOpenedProbe(null)
+    window.history.replaceState(null, '', `/themes?topic=${id}`)
+  }
+
+  const grouped = THEME_GROUPS
+    .map(g => ({ group: g, pages: THEME_PAGES.filter(p => p.group === g) }))
+    .filter(g => g.pages.length > 0)
 
   // Display names live in the catalog, so a renamed work renames here too — nothing duplicated.
   const workName = useMemo(() => {
@@ -54,23 +68,50 @@ export function TheologyView({ topicId }: { topicId: string }) {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6">
-      {/* Only CURATED topics appear. A query set exists for thirty more, but a topic with no
-          written entries is not a page — listing it would promise something that isn't there. */}
-      {THEOLOGY_PAGES.length > 1 && (
-        <nav className="mb-4 flex flex-wrap gap-1.5">
-          {THEOLOGY_PAGES.map(p => (
-            <Link key={p.id} href={`/theology?topic=${p.id}`}
-              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
-                p.id === page.id
-                  ? 'border-brand-300 bg-brand-50 font-medium text-brand-700'
-                  : 'border-gray-200 text-gray-600 hover:bg-brand-50 hover:text-brand-700'}`}>
-              {p.label}
-            </Link>
+    <div className="mx-auto flex w-full max-w-6xl gap-8 px-4 py-6">
+      {/* Sidebar, not a dropdown: with thirty-odd themes the list is the map of the subject, and
+          a student is helped by seeing that Sabbath sits beside Law and Purity. A dropdown hides
+          exactly that. Only CURATED themes appear — a query set exists for thirty more, but a
+          theme with no written entries is not a page, and listing it would promise what isn't
+          there. Below lg it collapses to a select, since a sidebar would eat a phone screen. */}
+      <nav className="hidden w-52 shrink-0 lg:block">
+        <div className="sticky top-20">
+          {grouped.map(({ group, pages }) => (
+            <div key={group} className="mb-4">
+              <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-gray-400">{group}</p>
+              <ul className="space-y-0.5">
+                {pages.map(p => (
+                  <li key={p.id}>
+                    <button
+                      type="button"
+                      onClick={() => choose(p.id)}
+                      className={`w-full rounded-lg px-2 py-1.5 text-left text-sm leading-snug transition-colors ${
+                        p.id === page.id
+                          ? 'bg-brand-50 font-medium text-brand-700'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+                    >
+                      {p.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </nav>
-      )}
+        </div>
+      </nav>
 
+      <div className="min-w-0 flex-1">
+        <div className="mb-4 lg:hidden">
+          <label htmlFor="theme-pick" className="sr-only">Theme</label>
+          <select id="theme-pick" value={page.id} onChange={e => choose(e.target.value)}
+            className="w-full rounded-lg border border-gray-200 bg-surface px-3 py-2 text-sm">
+            {grouped.map(({ group, pages }) => (
+              <optgroup key={group} label={group}>
+                {pages.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
+              </optgroup>
+            ))}
+          </select>
+        </div>
       <h1 className="text-2xl font-semibold text-gray-900">{page.label}</h1>
       <p className="mt-2 text-sm leading-relaxed text-gray-600">{page.blurb}</p>
 
@@ -83,7 +124,7 @@ export function TheologyView({ topicId }: { topicId: string }) {
           wrong, and it answers "who cares about this?" before any reading happens. */}
       <div className="mt-5 flex flex-wrap gap-1.5">
         {TRADITIONS.filter(t => byTradition.has(t.id)).map(t => (
-          <span key={t.id} className="rounded-full border border-gray-200 bg-surface px-2.5 py-1 text-xs text-gray-600">
+          <span key={t.id} className="rounded-lg border border-gray-200 bg-surface px-2.5 py-1 text-xs text-gray-600">
             {t.label} <span className="tabular-nums font-medium text-gray-800">{byTradition.get(t.id)!.length}</span>
           </span>
         ))}
@@ -103,7 +144,7 @@ export function TheologyView({ topicId }: { topicId: string }) {
                 <button
                   type="button"
                   onClick={() => open(e)}
-                  className={`group flex w-full items-baseline gap-3 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-brand-50 ${
+                  className={`group flex w-full items-baseline gap-3 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-brand-50 ${
                     openedProbe === e.probe ? 'bg-brand-50' : ''}`}
                 >
                   <span className="w-52 shrink-0 text-xs font-medium text-brand-700 group-hover:underline">
@@ -139,6 +180,7 @@ export function TheologyView({ topicId }: { topicId: string }) {
           </Link>
         )}
       </p>
+      </div>
     </div>
   )
 }

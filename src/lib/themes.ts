@@ -1,9 +1,9 @@
-// The Theology page's curated content. Retrieval (scripts/build-theology.ts) decides what is
+// The Theology page's curated content. Retrieval (scripts/build-themes.ts) decides what is
 // POSSIBLE to cite; this file decides what is WORTH citing, and says what each passage says.
 //
 // Every entry carries a `probe`: an exact phrase from the passage. It does two jobs. It is what
 // the side pane searches for, so a click lands on the passage itself rather than a topic search;
-// and it is the build-time proof that the citation is real — `npx tsx scripts/build-theology.ts
+// and it is the build-time proof that the citation is real — `npx tsx scripts/build-themes.ts
 // resurrection --check` fails if a probe matches no passage, or matches one at a different
 // address. A citation here therefore cannot drift out of true silently when a corpus is rebuilt.
 //
@@ -64,9 +64,22 @@ export interface TopicEntry {
   probe: string
 }
 
+/** Sidebar sections, in reading order — roughly the order a systematic theology would take. */
+export const THEME_GROUPS = [
+  'God and the unseen',
+  'Christ',
+  'Sin and salvation',
+  'Law and practice',
+  'People and power',
+  'Temple and community',
+  'Last things',
+] as const
+
 export interface TopicPage {
   id: string
   label: string
+  /** Which sidebar section this sits under. */
+  group: (typeof THEME_GROUPS)[number]
   blurb: string
   /** What the sources do NOT say — as much a finding as what they do. */
   absences: string[]
@@ -75,9 +88,10 @@ export interface TopicPage {
   entries: TopicEntry[]
 }
 
-export const THEOLOGY_PAGES: TopicPage[] = [
+export const THEME_PAGES: TopicPage[] = [
   {
     id: 'resurrection',
+    group: 'Last things',
     label: 'Resurrection and the afterlife',
     blurb:
       'What happens after death. These sources do not agree, and the disagreement is the point: '
@@ -93,7 +107,7 @@ export const THEOLOGY_PAGES: TopicPage[] = [
       + 'not raised, the writers say so plainly (4 Maccabees, Philo), and they are drawing on Greek '
       + 'philosophy when they do.',
       'The Sadducees left no writings. Everything known about their denial comes from people arguing '
-      + 'against them — Josephus below, and the New Testament.',
+      + 'against them: Josephus in Antiquities 18.1.16, cited above, and the New Testament.',
     ],
     entries: [
       // ── Second Temple Jewish ─────────────────────────────────────────────────────────
@@ -181,6 +195,7 @@ export const THEOLOGY_PAGES: TopicPage[] = [
   },
   {
     id: 'israel',
+    group: 'People and power',
     label: 'Israel: people, land and restoration',
     blurb:
       'Who Israel is and what is promised to it. Two arguments run through these texts: the hope '
@@ -270,6 +285,7 @@ export const THEOLOGY_PAGES: TopicPage[] = [
   },
   {
     id: 'messiah',
+    group: 'Christ',
     label: 'Messiah and messianic expectation',
     blurb:
       'What was hoped for, before anyone claimed it had arrived. These sources do not describe one '
@@ -286,8 +302,10 @@ export const THEOLOGY_PAGES: TopicPage[] = [
       + 'A student looking for a suffering, atoning messiah in Second Temple Judaism will not find '
       + 'one in this library.',
       'The expectation of TWO messiahs, one of Aaron and one of Israel, is known mainly from the '
-      + 'Dead Sea Scrolls, which this library does not yet hold. The Testaments below hint at a '
-      + 'priestly figure beside the king, but the full picture is missing.',
+      + 'Dead Sea Scrolls, which this library does not yet hold. The Testaments of the Twelve '
+      + 'Patriarchs — a set of farewell speeches attributed to Jacob\u2019s sons, cited here as '
+      + 'Testament of Judah and Testament of Levi \u2014 hint at a priestly figure beside the king '
+      + '(Testament of Levi 8:14), but the full picture is missing.',
     ],
     entries: [
       // ── Second Temple Jewish ─────────────────────────────────────────────────────────
@@ -349,6 +367,7 @@ export const THEOLOGY_PAGES: TopicPage[] = [
   },
   {
     id: 'sabbath',
+    group: 'Law and practice',
     label: 'Sabbath',
     blurb:
       'The seventh day: who keeps it, how strictly, what counts as work, and what happens when '
@@ -363,7 +382,7 @@ export const THEOLOGY_PAGES: TopicPage[] = [
       'No source here argues about WHICH day the Sabbath falls on. The seventh day is assumed by '
       + 'every writer, Jewish and Christian alike. Where the Christian writers part company they '
       + 'stop keeping it rather than move it — Ignatius sets the Lord’s day beside it, not over it.',
-      'The rabbinic material below is Mishnaic and Talmudic, so second century and later. For '
+      'The rabbinic material here \u2014 the Yerushalmi and the Targums \u2014 is second century and later. For '
       + 'first-century practice the witnesses are Jubilees, the Maccabean books, Philo and '
       + 'Josephus, and they are far thinner on the detail of what counts as work.',
     ],
