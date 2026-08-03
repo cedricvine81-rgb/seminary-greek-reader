@@ -853,4 +853,106 @@ export const THEME_PAGES: TopicPage[] = [
         probe: 'if thou art able to bear the whole yoke of the Lord' },
     ],
   },
+  {
+    id: 'free-will',
+    group: 'Sin and salvation',
+    label: 'Free will and providence',
+    blurb:
+      'How much is fate and how much is choice. Josephus sorts the three Jewish parties by exactly '
+      + 'this question — it is the same passage that divides them over resurrection — and Sirach and '
+      + '2 Baruch answer it as directly as any ancient text does: a man is left in the hand of his '
+      + 'own counsel, and each of us is the Adam of his own soul.',
+    canonicalAnchors:
+      'The anchors are Deuteronomy 30:19 (“I have set before you life and death — choose life”) and '
+      + 'Genesis 4:7. They are canonical and sit outside this corpus; Sirach in particular is '
+      + 'writing straight out of them.',
+    absences: [
+      'Qumran’s determinism — the two spirits, the lot of light and the lot of darkness — is the '
+      + 'sharpest Jewish position on this question and it is absent, because this library holds no '
+      + 'Dead Sea Scrolls. Josephus says the Essenes made everything the work of fate; we cannot '
+      + 'read them saying it themselves.',
+      'No source here separates the question from responsibility. Nobody argues that fate excuses '
+      + 'anyone; even the most deterministic account reported by Josephus is offered as a party '
+      + 'position, not as a defence.',
+    ],
+    entries: [
+      { work: 'Sir', chapter: 15, verse: 14, tradition: 'second-temple',
+        summary: 'God left man in the hand of his counsel',
+        probe: 'left him in the hand of his counsel' },
+      { work: 'Sir', chapter: 15, verse: 16, tradition: 'second-temple',
+        summary: 'Fire and water set before you: choose',
+        probe: 'He hath set fire and water before thee' },
+      { work: '2baruch', chapter: 54, verse: 15, tradition: 'second-temple',
+        summary: 'Adam sinned first, but each prepares his own',
+        probe: 'Each one of them has prepared for his own soul torment to come' },
+      { work: '2baruch', chapter: 54, verse: 19, tradition: 'second-temple',
+        summary: 'Each of us is the Adam of his soul',
+        probe: 'each of us has been the Adam of his own soul' },
+      { work: 'antiquities', book: 13, chapter: 5, verse: 171, tradition: 'second-temple',
+        summary: 'Three sects differing on human action',
+        probe: 'three sects among the Jews, who had different opinions concerning human actions' },
+      { work: 'antiquities', book: 13, chapter: 5, verse: 172, tradition: 'second-temple',
+        summary: 'Pharisees: some acts fated, some ours',
+        probe: 'some actions, but not all, are the work of fate' },
+      { work: 'antiquities', book: 13, chapter: 5, verse: 173, tradition: 'second-temple',
+        summary: 'Sadducees deny fate outright, all being ours',
+        probe: 'they take away fate, and say there is no such thing' },
+      { work: 'af-didache', chapter: 1, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Two ways, one of life, one of death',
+        probe: 'There are two ways, one of life and one of death' },
+      { work: 'af-didache', chapter: 5, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'The way of death set out in full',
+        probe: 'But the way of death is this' },
+    ],
+  },
+  {
+    id: 'assembly',
+    group: 'Temple and community',
+    label: 'The assembly: church and synagogue',
+    blurb:
+      'How the gathered community describes and orders itself. Both the Greek words behind “church” '
+      + 'and “synagogue” simply mean an assembly, and in these sources they are not yet two '
+      + 'institutions — Pseudo-Philo has a synagogue praying with one accord, and Philo has Jews '
+      + 'meeting on the seventh day in places he calls by the same name.',
+    canonicalAnchors:
+      'The anchors are Deuteronomy 23 and Numbers 16 for the assembly of Israel, and Acts and the '
+      + 'letters for the Christian one. All canonical, all outside this corpus.',
+    absences: [
+      'The separation of church from synagogue is not described anywhere in this library. Ignatius '
+      + 'assumes it and Barnabas argues past it, but no text narrates it happening — the parting of '
+      + 'the ways is visible here only in its results.',
+      'The rabbinic entries describe the synagogue as a BUILDING with rules attached, which is '
+      + 'second-century evidence. How a first-century synagogue actually met is shown here only '
+      + 'from outside, by Philo and by Josephus on the Essenes.',
+    ],
+    entries: [
+      { work: 'philo-good-person', chapter: 1, verse: 81, tradition: 'second-temple',
+        summary: 'Seventh-day meetings in places called synagogues',
+        probe: 'frequent the sacred places which are cal' },
+      { work: 'pseudo-philo', chapter: 25, verse: 6, tradition: 'second-temple',
+        summary: 'Elders and the whole synagogue pray together',
+        probe: 'all the elders and the whole synagogue prayed with one accord' },
+      { work: '1Macc', chapter: 14, verse: 28, tradition: 'second-temple',
+        summary: 'A great congregation of priests, people, elders',
+        probe: 'in the great congregation of the priests, and people, and rulers' },
+      { work: 'philo-flaccus', chapter: 1, verse: 74, tradition: 'second-temple',
+        summary: 'Thirty-eight elders of the Jewish council arrested',
+        probe: 'thirty-eight members of our council of elders' },
+      { work: 'jewish-war', book: 2, chapter: 8, verse: 122, tradition: 'second-temple',
+        summary: 'Essenes hold everything in common, despising riches',
+        probe: 'These men are despisers of riches' },
+      { work: 'm-eruvin', chapter: 10, verse: 10, tradition: 'rabbinic',
+        summary: 'A ruling recalled from a synagogue in Tiberias',
+        probe: 'It happened in a synagogue in Tiberias' },
+      { work: 'm-sotah', chapter: 9, verse: 15, tradition: 'rabbinic',
+        summary: 'What ceased in Israel as each teacher died',
+        probe: 'When Rabbi Meir died, the composers of fables ceased' },
+      { work: 'af-hermas', chapter: 6, verse: 6, tradition: 'apostolic-fathers',
+        summary: 'The elders of the Church told to walk rightly',
+        probe: 'say unto the elders of the Church' },
+      { work: 'af-hermas', chapter: 8, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'The book to be given to the elders',
+        probe: 'if I had already given the book to the elders' },
+    ],
+  },
 ]
