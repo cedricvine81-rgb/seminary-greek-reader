@@ -179,4 +179,82 @@ export const THEOLOGY_PAGES: TopicPage[] = [
         probe: 'as if the soul were immortal' },
     ],
   },
+  {
+    id: 'israel',
+    label: 'Israel: people, land and restoration',
+    blurb:
+      'Who Israel is and what is promised to it. Two arguments run through these texts: the hope '
+      + 'that the scattered tribes will be gathered back to the land, and — once Christians are '
+      + 'writing — the claim that the covenant has changed hands. The second is stated most '
+      + 'bluntly by Barnabas, and it is worth reading him next to Tobit rather than on his own.',
+    canonicalAnchors:
+      'The anchors are Deuteronomy 30:1–5 (scattering and regathering), Jeremiah 31 (the new '
+      + 'covenant), and Ezekiel 37. They are canonical and so sit outside this corpus, but every '
+      + 'text below assumes them.',
+    absences: [
+      'Psalms of Solomon 17 — the fullest Second Temple statement of national restoration under a '
+      + 'Davidic king, and the closest Jewish parallel to New Testament messianic hope — is not in '
+      + 'this library. Anything said here about first-century restoration hope is missing its most '
+      + 'important witness.',
+      'No Second Temple Jewish source here spiritualises the land into a metaphor. That move is '
+      + 'Christian and it is late: it appears in this corpus only with Barnabas and Justin.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: 'Tob', chapter: 13, verse: 3, tradition: 'second-temple',
+        summary: 'Scattered among the nations as God’s discipline',
+        probe: 'for he hath scattered us among them' },
+      { work: 'Tob', chapter: 13, verse: 5, tradition: 'second-temple',
+        summary: 'God will gather them from all nations',
+        probe: 'will gather us out of all nations' },
+      { work: 'Tob', chapter: 14, verse: 5, tradition: 'second-temple',
+        summary: 'A second temple, lesser than the first',
+        probe: 'bring them again into the land' },
+      { work: 'tp-naphtali', chapter: 5, verse: 8, tradition: 'second-temple',
+        summary: 'The twelve tribes carried off by empires',
+        probe: 'shall possess in captivity the twelve tribes' },
+      { work: 'assumption-moses', chapter: 2, verse: 1, tradition: 'second-temple',
+        summary: 'The land promised and given to the fathers',
+        probe: 'into the land which He determined and promised to give to their fathers' },
+      { work: 'pseudo-philo', chapter: 19, verse: 10, tradition: 'second-temple',
+        summary: 'The land shown to Moses, promised to Israel',
+        probe: 'This is the land which I will give to my people' },
+      { work: '2baruch', chapter: 5, verse: 1, tradition: 'second-temple',
+        summary: 'God’s own inheritance led away captive',
+        probe: 'lead your inheritance into captivity' },
+      { work: '2esdras', chapter: 1, verse: 24, tradition: 'second-temple',
+        summary: 'God turns from Jacob to other nations',
+        probe: 'I will turn me to other nations' },
+      { work: 'antiquities', book: 8, chapter: 7, verse: 198, tradition: 'second-temple',
+        summary: 'Ten tribes torn from the house of David',
+        probe: 'he would give ten tribes to a servant' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'tg-isaiah', chapter: 35, verse: 10, tradition: 'rabbinic',
+        summary: 'The redeemed gathered from captivity to Zion',
+        probe: 'they shall be gathered from the midst of their captivity' },
+      { work: 'tg-isaiah', chapter: 51, verse: 11, tradition: 'rabbinic',
+        summary: 'Everlasting joy for those brought back',
+        probe: 'shall be gathered together out of their captivity' },
+      { work: 'tg-psj-exodus', chapter: 12, verse: 42, tradition: 'rabbinic',
+        summary: 'Four nights of redemption written before God',
+        probe: 'Four nights are there written in the Book of Memorials' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-1clement', chapter: 8, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Israel called to repent and be forgiven',
+        probe: 'Repent ye, O house of Israel' },
+      { work: 'af-barnabas', chapter: 4, verse: 7, tradition: 'apostolic-fathers',
+        summary: 'The covenant is ours; Israel lost it',
+        probe: 'Ours it is; but they lost it in this way for ever' },
+      { work: 'af-barnabas', chapter: 4, verse: 8, tradition: 'apostolic-fathers',
+        summary: 'Israel forfeited the covenant at the calf',
+        probe: 'But they lost it by turning unto idols' },
+      { work: 'af-hermas', chapter: 94, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Twelve tribes read as the world’s nations',
+        probe: 'These twelve tribes which inhabit the whole world are twelve nations' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'justin-dialogue', chapter: 135, verse: 1, tradition: 'church-fathers',
+        summary: 'Christ named Israel; Christians the true race',
+        probe: 'the Holy One of Israel, who have made known Israel your King' },
+    ],
+  },
 ]

@@ -55,6 +55,22 @@ export function TheologyView({ topicId }: { topicId: string }) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6">
+      {/* Only CURATED topics appear. A query set exists for thirty more, but a topic with no
+          written entries is not a page — listing it would promise something that isn't there. */}
+      {THEOLOGY_PAGES.length > 1 && (
+        <nav className="mb-4 flex flex-wrap gap-1.5">
+          {THEOLOGY_PAGES.map(p => (
+            <Link key={p.id} href={`/theology?topic=${p.id}`}
+              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                p.id === page.id
+                  ? 'border-brand-300 bg-brand-50 font-medium text-brand-700'
+                  : 'border-gray-200 text-gray-600 hover:bg-brand-50 hover:text-brand-700'}`}>
+              {p.label}
+            </Link>
+          ))}
+        </nav>
+      )}
+
       <h1 className="text-2xl font-semibold text-gray-900">{page.label}</h1>
       <p className="mt-2 text-sm leading-relaxed text-gray-600">{page.blurb}</p>
 
