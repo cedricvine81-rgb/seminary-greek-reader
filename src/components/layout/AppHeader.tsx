@@ -4,7 +4,7 @@ import { AccountMenu } from './AccountMenu'
 import { MasterSearchButton } from '@/components/search/MasterSearchButton'
 import { PageGuideButton } from '@/components/help/PageGuideButton'
 import { TextsNavMenu } from './TextsNavMenu'
-import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
+import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard, Church } from 'lucide-react'
 import { getServerT } from '@/lib/i18n/server'
 
 interface AppHeaderProps {
@@ -52,6 +52,11 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
             <Scroll size={18} /> <span className="hidden md:inline">{t('nav.exegesis')}</span>
           </Link>
           <TextsNavMenu />
+          {/* Between Texts and Dashboard: it indexes the Texts corpora by subject, so it belongs
+              beside them rather than with the course-admin links. */}
+          <Link href="/theology" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <Church size={18} /> <span className="hidden md:inline">{t('nav.theology')}</span>
+          </Link>
           {isAuthenticated && (userRole === 'INSTRUCTOR' || userRole === 'STUDENT' || userRole === 'ADMIN') && (
             <Link
               href={userRole === 'INSTRUCTOR' ? '/instructor' : userRole === 'ADMIN' ? '/admin' : '/student'}
