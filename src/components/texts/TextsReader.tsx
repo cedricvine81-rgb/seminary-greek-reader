@@ -1384,7 +1384,14 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                         // paints the Greek offsets over the English text.
                         const layer = isGreek ? 'grc' : 'en'
                         const verseHighlights = highlights.forVerse(noteBook, section.chapter, row.num, layer)
-                        const greekHighlights = greekProse ? highlights.forVerse(noteBook, section.chapter, row.num, 'grc') : verseHighlights
+                        // Hebrew-script prose (Bavli, Tosefta) renders its Aramaic in the ORIGINAL
+                        // column and anchors it on 'grc' like any other original text, so it must
+                        // be read back from 'grc' too — `layer` above is 'en' for these works
+                        // because they are not source==='lxx', and looking them up by it finds
+                        // nothing.
+                        const greekHighlights = greekProse || hebrewProse
+                          ? highlights.forVerse(noteBook, section.chapter, row.num, 'grc')
+                          : verseHighlights
                         const englishHighlights = layer === 'en' ? verseHighlights
                           : highlights.forVerse(noteBook, section.chapter, row.num, 'en')
                         return (
@@ -1446,17 +1453,27 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                             ) : hebrewProse ? (
                               <span dir="rtl" lang="he" className="font-hebrew block" style={{ fontSize: 'var(--tx-fs, 1.35rem)' }}
                                 {...verseAnchorProps(noteBook, section.chapter, row.num, 'grc')}>
-                                {(row.greek ?? '').split(/(\s+)/).map((tok, ti) => {
+                                {/* Offsets are tracked across the split so an existing highlight
+                                    can be painted. Drag-selection already WORKED on these works —
+                                    the verse carries data-hl-* like every other surface — but the
+                                    saved highlight was then invisible, because this branch alone
+                                    never looked one up. Creating something you cannot see is worse
+                                    than not offering it, so the two halves now match. */}
+                                {(() => { let pos = 0; return (row.greek ?? '').split(/(\s+)/).map((tok, ti) => {
+                                  const start = pos
+                                  pos += tok.length
                                   if (!tok.trim()) return tok
                                   const key = `${section.key}.${row.num}.${ti}`
                                   const select = () => { setSelectedInfo(jastrowInfo(tok, citeFor(row))); setSelectedKey(key) }
+                                  const hl = !q ? highlightAt(start, start + tok.length, greekHighlights) : undefined
                                   return (
                                     <span key={ti} onMouseEnter={select} onClick={select}
-                                      className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
+                                      {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': noteBook, 'data-hl-chapter': section.chapter, 'data-hl-color': hl.color } : {})}
+                                      className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}>
                                       {tok}
                                     </span>
                                   )
-                                })}
+                                }) })()}
                               </span>
                             ) : greekProse ? (
                               <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
