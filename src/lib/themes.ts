@@ -1691,6 +1691,158 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
+    id: 'sin-fall',
+    group: 'Sin and salvation',
+    label: 'Sin and the fall',
+    blurb:
+      'Did what Adam did change what we are? Two Jewish apocalypses written within a generation of '
+      + 'each other answer opposite ways — and one of them answers both ways. 4 Ezra says an evil '
+      + 'heart grew in us from the first Adam and has taken nearly everyone; 2 Baruch cries “O Adam, '
+      + 'what have you done to all those who are born from you”, and then, thirty chapters later, '
+      + 'says Adam is the cause of nobody’s soul but his own and each of us is his own Adam. Sirach '
+      + 'blames Eve in one chapter and pride in another. The Targums make the whole thing a lesson '
+      + 'about keeping commandments. Then Irenaeus reads it as one man’s disobedience undone by one '
+      + 'man’s obedience, and Athanasius argues from the Wisdom of Solomon.',
+    canonicalAnchors:
+      'The anchors are Genesis 2–3, Genesis 6:5, Psalm 51:5 and Ecclesiastes 7:20. They are '
+      + 'canonical and sit outside this corpus. Romans 5:12–21 and 1 Corinthians 15:21–22 are the '
+      + 'New Testament texts this material is usually read against, and Irenaeus below is quoting '
+      + 'the first of them almost verbatim.',
+    absences: [
+      'The phrase “original sin” does not occur anywhere in this corpus — not once in some 118,000 '
+      + 'indexed passages. The doctrine under that name is Augustine’s, from the fifth century and '
+      + 'in Latin, and no text here formulates it. 4 Ezra comes closest, and 2 Baruch contradicts '
+      + 'it. A student should not read the later category back into these sentences; they are '
+      + 'earlier than it and less settled than it.',
+      'The two texts carrying the argument are at a distance from their originals. 4 Ezra — chapters '
+      + '3–14 of 2 Esdras — survives in Latin, translated from a Greek that is lost, itself made '
+      + 'from a Hebrew or Aramaic that is lost. 2 Baruch survives in Syriac, in essentially one '
+      + 'manuscript. Both are read here in R. H. Charles’ English. Where a single word carries the '
+      + 'weight of an argument, that is four languages of distance.',
+      'The other Jewish answer is not on this page. Much of this corpus explains wrongdoing by an '
+      + 'evil inclination present in everyone rather than by anything Adam did, which makes the '
+      + 'fall largely beside the point. Those passages — the Mishnah, the Testaments — are set out '
+      + 'under Satan and the origin of evil.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // The 2 Baruch pair is the centre of the page and the two verses are thirty chapters apart
+      // in the SAME book. Do not harmonise them; the tension is what the sources actually contain.
+      { work: '2baruch', chapter: 48, verse: 42, tradition: 'second-temple',
+        summary: 'O Adam, what have you done to everyone?',
+        probe: 'O Adam, what have you done to all those who are born from you' },
+      { work: '2baruch', chapter: 54, verse: 19, tradition: 'second-temple',
+        summary: 'Each of us has been his own Adam',
+        probe: 'each of us has been the Adam of his own soul' },
+      { work: '2esdras', chapter: 3, verse: 21, tradition: 'second-temple',
+        summary: 'The first Adam’s wicked heart, and his descendants',
+        probe: 'For the first Adam bearing a wicked heart transgressed' },
+      { work: '2esdras', chapter: 7, verse: 48, tradition: 'second-temple',
+        summary: 'An evil heart in us, in nearly all',
+        probe: 'For an evil heart hath grown up in us' },
+      { work: '2esdras', chapter: 7, verse: 11, tradition: 'second-temple',
+        summary: 'Adam transgressed, and the world was judged',
+        probe: 'when Adam transgressed my statutes' },
+      { work: '2baruch', chapter: 17, verse: 2, tradition: 'second-temple',
+        summary: 'Nine hundred years, and it profited nothing',
+        probe: 'transgressed that which he was commanded' },
+      { work: '2baruch', chapter: 23, verse: 4, tradition: 'second-temple',
+        summary: 'Adam sinned; death decreed on the unborn',
+        probe: 'when Adam sinned and death was decreed' },
+      // Sirach gives two different beginnings of sin in one book, and blames Eve for one of them.
+      { work: 'Sir', chapter: 25, verse: 24, tradition: 'second-temple',
+        summary: 'From the woman sin began; we all die',
+        probe: 'Of the woman came the beginning of sin' },
+      { work: 'Sir', chapter: 10, verse: 13, tradition: 'second-temple',
+        summary: 'Pride, elsewhere, is the beginning of sin',
+        probe: 'For pride is the beginning of sin' },
+      { work: 'apocmoses', chapter: 32, verse: 2, tradition: 'second-temple',
+        summary: 'Eve confesses: all sin began through me',
+        probe: 'all sin hath begun through my doing in the creation' },
+      { work: 'lae', chapter: 44, verse: 2, tradition: 'second-temple',
+        summary: 'Adam to Eve: sin for all our generations',
+        probe: 'transgression and sin for all our generations' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // Pseudo-Jonathan turns Eden into a case about commandment-keeping — including at 3:15,
+      // where whether the woman's offspring crush the serpent depends on whether they keep Torah.
+      // On this reading nothing was permanently altered; something was demonstrated.
+      { work: 'tg-psj-genesis', chapter: 3, verse: 22, tradition: 'rabbinic',
+        summary: 'Had he kept them, he would have lived',
+        probe: 'Had he kept the commandments which I appointed to him' },
+      { work: 'tg-psj-genesis', chapter: 3, verse: 15, tradition: 'rabbinic',
+        summary: 'Crushing the serpent depends on keeping Torah',
+        probe: 'when the sons of the woman keep the commandments of the law' },
+      { work: 'tg-psj-genesis', chapter: 3, verse: 19, tradition: 'rabbinic',
+        summary: 'Dust — and from dust, raised for judgement',
+        probe: 'to render judgment and reckoning for all that thou hast done' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'anf-irenaeus-3', chapter: 21, verse: 10, tradition: 'church-fathers',
+        summary: 'One man’s disobedience, one man’s obedience',
+        probe: 'disobedience sin entered, and death obtained' },
+      { work: 'anf-irenaeus-3', chapter: 23, verse: 1, tradition: 'church-fathers',
+        summary: 'Recapitulation reaching back to save Adam',
+        probe: 'should save that very man who had been created after His image' },
+      { work: 'athanasius-incarnation', chapter: 5, verse: 1, tradition: 'church-fathers',
+        summary: 'Corruption gained more than its natural power',
+        probe: 'corruption thence-forward prevailed against them' },
+      { work: 'athanasius-incarnation', chapter: 3, verse: 1, tradition: 'church-fathers',
+        summary: 'A law in the garden, with death attached',
+        probe: 'if they transgressed and turned back, and became evil' },
+    ],
+  },
+  {
+    id: 'free-will',
+    group: 'Sin and salvation',
+    label: 'Free will and providence',
+    blurb:
+      'How much is fate and how much is choice. Josephus sorts the three Jewish parties by exactly '
+      + 'this question — it is the same passage that divides them over resurrection — and Sirach and '
+      + '2 Baruch answer it as directly as any ancient text does: a man is left in the hand of his '
+      + 'own counsel, and each of us is the Adam of his own soul.',
+    canonicalAnchors:
+      'The anchors are Deuteronomy 30:19 (“I have set before you life and death — choose life”) and '
+      + 'Genesis 4:7. They are canonical and sit outside this corpus; Sirach in particular is '
+      + 'writing straight out of them.',
+    absences: [
+      'Qumran’s determinism — the two spirits, the lot of light and the lot of darkness — is the '
+      + 'sharpest Jewish position on this question and it is absent, because this library holds no '
+      + 'Dead Sea Scrolls. Josephus says the Essenes made everything the work of fate; we cannot '
+      + 'read them saying it themselves.',
+      'No source here separates the question from responsibility. Nobody argues that fate excuses '
+      + 'anyone; even the most deterministic account reported by Josephus is offered as a party '
+      + 'position, not as a defence.',
+    ],
+    entries: [
+      { work: 'Sir', chapter: 15, verse: 14, tradition: 'second-temple',
+        summary: 'God left man in the hand of his counsel',
+        probe: 'left him in the hand of his counsel' },
+      { work: 'Sir', chapter: 15, verse: 16, tradition: 'second-temple',
+        summary: 'Fire and water set before you: choose',
+        probe: 'He hath set fire and water before thee' },
+      { work: '2baruch', chapter: 54, verse: 15, tradition: 'second-temple',
+        summary: 'Adam sinned first, but each prepares his own',
+        probe: 'Each one of them has prepared for his own soul torment to come' },
+      { work: '2baruch', chapter: 54, verse: 19, tradition: 'second-temple',
+        summary: 'Each of us is the Adam of his soul',
+        probe: 'each of us has been the Adam of his own soul' },
+      { work: 'antiquities', book: 13, chapter: 5, verse: 171, tradition: 'second-temple',
+        summary: 'Three sects differing on human action',
+        probe: 'three sects among the Jews, who had different opinions concerning human actions' },
+      { work: 'antiquities', book: 13, chapter: 5, verse: 172, tradition: 'second-temple',
+        summary: 'Pharisees: some acts fated, some ours',
+        probe: 'some actions, but not all, are the work of fate' },
+      { work: 'antiquities', book: 13, chapter: 5, verse: 173, tradition: 'second-temple',
+        summary: 'Sadducees deny fate outright, all being ours',
+        probe: 'they take away fate, and say there is no such thing' },
+      { work: 'af-didache', chapter: 1, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Two ways, one of life, one of death',
+        probe: 'There are two ways, one of life and one of death' },
+      { work: 'af-didache', chapter: 5, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'The way of death set out in full',
+        probe: 'But the way of death is this' },
+    ],
+  },
+  {
     id: 'atonement',
     group: 'Sin and salvation',
     label: 'Atonement and sacrifice',
@@ -1752,6 +1904,205 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-1clement', chapter: 7, verse: 4, tradition: 'apostolic-fathers',
         summary: 'The blood of Christ, shed for our salvation',
         probe: 'Let us fix our eyes on the blood of Christ' },
+    ],
+  },
+  {
+    id: 'redemption',
+    group: 'Sin and salvation',
+    label: 'Redemption and ransom',
+    blurb:
+      'This is a word from the slave market before it is a word from theology, and in this corpus '
+      + 'it mostly still is. Ptolemy pays twenty drachmae a head to free Jewish captives; Herod '
+      + 'refuses to accept a price of redemption and takes his prisoners anyway; an unclean animal '
+      + 'is redeemed at valuation plus a fifth. Philo keeps the shape when he turns it inward — the '
+      + 'Levites are the ransom of the firstborn, the half-shekel the ransom of a soul, and one '
+      + 'wise man the ransom for a worthless one. When God is the redeemer it is the exodus that '
+      + 'supplies the picture: an owner recovering people who were his. Irenaeus then asks the '
+      + 'question the metaphor invites — paid to whom, and by what right — and his answer is that '
+      + 'nobody was bought off, because nothing was ever legitimately owned by the other side.',
+    canonicalAnchors:
+      'The anchors are Exodus 6:6 and 15:13, Deuteronomy 7:8, Leviticus 25 (the kinsman-redeemer '
+      + 'and the jubilee), Ruth 4, Isaiah 43:1 and Psalm 49:7–8. They are canonical and sit outside '
+      + 'this corpus; the Targums below are translating two of them, and Leviticus 25 is why the '
+      + 'commercial sense never quite goes away.',
+    absences: [
+      'Nobody here says what the ransom is paid TO. The metaphor implies a recipient — Philo’s '
+      + 'ransoms all have one, and so do Ptolemy’s — and every theological use in this library '
+      + 'leaves the slot empty. Irenaeus is the first writer below to notice the problem, and he '
+      + 'solves it by denying that the captor had any right in the first place. The later Christian '
+      + 'answers that the price was paid to the devil, and the reaction against them, are outside '
+      + 'this corpus in both directions.',
+      'The jubilee is missing as an event. Josephus sets out the procedure below in careful detail, '
+      + 'and the Mishnah legislates around it — a Hebrew slave goes free at the jubilee whatever his '
+      + 'contract says. But every text in this library describes the rule, and none describes an '
+      + 'occasion. Whether the fiftieth year was ever actually kept, nothing here records either '
+      + 'way, which leaves the most concrete redemption institution in the law with no attested '
+      + 'instance behind it.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // The commercial passages are first because they are what the word MEANT. Read Aristeas and
+      // Josephus before reading Philo, and his "ransom for our souls" stops sounding metaphorical
+      // and starts sounding like an argument by analogy from something everyone had seen done.
+      { work: 'aristeas', chapter: 1, verse: 20, tradition: 'second-temple',
+        summary: 'Twenty drachmae a head for each slave',
+        probe: 'twenty drachmae should be paid to the owners for every slave' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 45, tradition: 'second-temple',
+        summary: 'Ptolemy freed captives and paid their ransom',
+        probe: 'did frequently give money [for their ransom]' },
+      { work: 'antiquities', book: 15, chapter: 5, verse: 156, tradition: 'second-temple',
+        summary: 'Herod refuses any price of redemption',
+        probe: 'he would admit of no ambassadors, of no price of redemption' },
+      { work: 'antiquities', book: 3, chapter: 12, verse: 282, tradition: 'second-temple',
+        summary: 'Every fiftieth year: debts freed, slaves released',
+        probe: 'that fiftieth year is called by the Hebrews The Jubilee' },
+      { work: 'antiquities', book: 3, chapter: 12, verse: 283, tradition: 'second-temple',
+        summary: 'Buyer and seller meet and reckon the fruits',
+        probe: 'which name denotes liberty' },
+      { work: 'philo-sacrifices', chapter: 1, verse: 118, tradition: 'second-temple',
+        summary: 'Levites taken as the ransom of Israel',
+        probe: 'were the ransom of all the rest of the Israelites' },
+      { work: 'philo-heir', chapter: 1, verse: 186, tradition: 'second-temple',
+        summary: 'Half a shekel, offered as a soul’s ransom',
+        probe: 'offering it as the ransom for our souls' },
+      { work: 'philo-sacrifices', chapter: 1, verse: 121, tradition: 'second-temple',
+        summary: 'Every wise man ransoms a worthless one',
+        probe: 'every wise man is a ransom for a worthless one' },
+      { work: '3Macc', chapter: 7, verse: 23, tradition: 'second-temple',
+        summary: 'Blessed be the Redeemer of Israel',
+        probe: 'Blessed be the Redeemer of Israel' },
+      { work: 'PsSol', chapter: 9, verse: 1, tradition: 'second-temple',
+        summary: 'They fell away from the Lord who redeemed them',
+        probe: 'When they fell away from the Lord who redeemed them' },
+      { work: 'tp-levi', chapter: 2, verse: 10, tradition: 'second-temple',
+        summary: 'Proclaim the one who will redeem Israel',
+        probe: 'proclaim concerning Him that shall redeem Israel' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'tg-psj-leviticus', chapter: 27, verse: 27, tradition: 'rabbinic',
+        summary: 'Redeem at valuation, plus a fifth',
+        probe: 'he shall redeem it according to its valuation, and add a fifth' },
+      { work: 'm-kiddushin', chapter: 1, verse: 2, tradition: 'rabbinic',
+        summary: 'A Hebrew slave goes free at the jubilee',
+        probe: 'acquires himself by years, by Jubilee' },
+      { work: 'tg-psj-exodus', chapter: 12, verse: 42, tradition: 'rabbinic',
+        summary: 'Four nights; the fourth is the liberation',
+        probe: 'Four nights are there written in the Book of Memorials' },
+      { work: 'tg-isaiah', chapter: 11, verse: 11, tradition: 'rabbinic',
+        summary: 'A second time, to redeem the remnant',
+        probe: 'the Lord shall add a second time His might to redeem the remnant' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // Barnabas keeps the transaction entirely intact and has the believer pay it himself, with
+      // manual labour. Whatever redemption had become by the fourth century, it is not that here.
+      { work: 'af-barnabas', chapter: 19, verse: 10, tradition: 'apostolic-fathers',
+        summary: 'Work with your hands: a ransom for sins',
+        probe: 'thou shalt work with thy hands for a ransom for thy sins' },
+      { work: 'af-2clement', chapter: 17, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'He will redeem each according to his works',
+        probe: 'He shall come and redeem us, each man according to his works' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'anf-irenaeus-5', chapter: 1, verse: 1, tradition: 'church-fathers',
+        summary: 'He gave himself as redemption for the captives',
+        probe: 'gave Himself as a redemption for those who had been led into captivity' },
+      { work: 'anf-irenaeus-5', chapter: 2, verse: 1, tradition: 'church-fathers',
+        summary: 'Not another’s property seized, but his own',
+        probe: 'not snatching away by stratagem the property of another' },
+    ],
+  },
+  {
+    id: 'justification',
+    group: 'Sin and salvation',
+    label: 'Righteousness, works and covenant',
+    blurb:
+      'The antithesis most readers bring to this material is not the one the material is arranged '
+      + 'around. Genesis 15:6 is quoted here repeatedly, and 1 Maccabees reads it as Abraham being '
+      + 'found FAITHFUL under testing; Philo reads it as trust rather than reasoning; Sirach says '
+      + 'in the same breath that he kept the law and was found faithful. 4 Ezra says the just draw '
+      + 'their reward out of their own deeds — and then, three verses later, that God’s '
+      + 'righteousness will be shown precisely in having mercy on people with no store of good '
+      + 'works at all. 1 Clement does the same thing in adjacent chapters: not justified through '
+      + 'our own works but through faith, and then, immediately, so must we stop doing good? Never. '
+      + 'Nobody here is choosing between the two.',
+    canonicalAnchors:
+      'The anchor is Genesis 15:6 — Abraham believed God, and it was reckoned to him as '
+      + 'righteousness — which nearly every text below is quoting or arguing from. Habakkuk 2:4, '
+      + 'Deuteronomy 6:25 and Psalm 106:31 stand behind it. They are canonical and sit outside this '
+      + 'corpus, as do Romans 4, Galatians 3 and James 2, which are the readings usually set '
+      + 'against each other; the point of this page is what the readings looked like around them.',
+    absences: [
+      'The phrase “works of the law” is not Jewish vocabulary anywhere in this library. It occurs '
+      + 'twice in some 118,000 indexed passages, and both times it is a Christian writer quoting '
+      + 'Galatians. The only other ancient occurrence known is at Qumran, in the document called '
+      + '4QMMT — literally “some works of the law” — and that text is not here, since no '
+      + 'public-domain or openly licensed English of the scrolls exists. So the phrase whose sense '
+      + 'the whole modern argument turns on cannot be studied in its non-Pauline setting from this '
+      + 'corpus.',
+      'Nobody here is answering Paul. The Jewish texts below were written without reference to him '
+      + 'and mostly before him, and the rabbinic ones come from a world that had stopped reading '
+      + 'him; the Christian ones quote him without anyone pushing back. A reader looking for the '
+      + 'other side of the first-century argument will not find it, because as far as these sources '
+      + 'go there was no argument — there were people saying various things about righteousness, '
+      + 'and Paul was one of them.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Three readings of Genesis 15:6, none of which is the Reformation's and none of which is
+      // its opposite: faithfulness under testing, keeping the law, and trusting rather than
+      // calculating. The verse was contested long before anyone framed it as faith versus works.
+      { work: '1Macc', chapter: 2, verse: 52, tradition: 'second-temple',
+        summary: 'Found faithful when tested; reckoned righteousness',
+        probe: 'Was not Abraham found faithful in temptation' },
+      { work: 'Sir', chapter: 44, verse: 20, tradition: 'second-temple',
+        summary: 'He kept the law and was found faithful',
+        probe: 'who kept the law of the most High' },
+      { work: 'philo-alleg-interp', chapter: 3, verse: 228, tradition: 'second-temple',
+        summary: 'Trust God, not uncertain reasonings',
+        probe: 'It is best, therefore, to trust in God, and not in uncertain reasonings' },
+      // The 4 Ezra pair, three verses apart. Quoting either one alone misrepresents the book.
+      { work: '2esdras', chapter: 8, verse: 33, tradition: 'second-temple',
+        summary: 'The just receive reward out of their deeds',
+        probe: 'shall out of their own deeds receive reward' },
+      { work: '2esdras', chapter: 8, verse: 36, tradition: 'second-temple',
+        summary: 'Mercy to those with no store of works',
+        probe: 'if thou be merciful unto them which have not the confidence of good works' },
+      { work: '2baruch', chapter: 14, verse: 12, tradition: 'second-temple',
+        summary: 'A store of works kept for them in treasuries',
+        probe: 'they have with you a store of works preserved in treasuries' },
+      { work: '2baruch', chapter: 51, verse: 7, tradition: 'second-temple',
+        summary: 'Those who have been saved by their works',
+        probe: 'those who have been saved by their works' },
+      { work: 'PsSol', chapter: 9, verse: 2, tradition: 'second-temple',
+        summary: 'That you, God, may be justified — not us',
+        probe: 'That Thou mightest be justified, O God, in Thy righteousness' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // Note where the rabbinic frame actually starts: not with an individual's ledger but with
+      // "all Israel", membership assumed and forfeited only by specific denials. The accounting
+      // language exists too, and the two sit together without embarrassment.
+      { work: 'm-sanhedrin', chapter: 10, verse: 1, tradition: 'rabbinic',
+        summary: 'All Israel have a portion, with named exceptions',
+        probe: 'All Israel have a portion in the world to come' },
+      { work: 'm-avot', chapter: 3, verse: 16, tradition: 'rabbinic',
+        summary: 'The ledger is open and the hand writes',
+        probe: 'the ledger is open and the hand writes' },
+      { work: 'y-peah', chapter: 1, verse: 1, tradition: 'rabbinic',
+        summary: 'Deeds whose capital remains for the future',
+        probe: 'whose capital remains for him in the future world' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // 32:4 and 33:1 are consecutive chapters of one letter. Anyone quoting the first as evidence
+      // of an early "faith alone" should read the second, and anyone quoting the second as
+      // evidence that Clement did not mean it should read the first.
+      { work: 'af-1clement', chapter: 32, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Not justified through our works, but faith',
+        probe: 'are not justified through ourselves' },
+      { work: 'af-1clement', chapter: 33, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Then must we stop doing good? Never',
+        probe: 'Must we idly abstain from doing good' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'anf-irenaeus-4', chapter: 21, verse: 1, tradition: 'church-fathers',
+        summary: 'Abraham the prophet of faith, quoting Galatians',
+        probe: 'by the works of the law, or by the hearing of faith' },
+      { work: 'clement-stromateis-1', chapter: 26, verse: 1, tradition: 'church-fathers',
+        summary: 'The law a schoolmaster; Moses a living law',
+        probe: 'the law was a schoolmaster to bring us to Christ' },
     ],
   },
   {
@@ -1866,55 +2217,103 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
-    id: 'free-will',
+    id: 'grace-election',
     group: 'Sin and salvation',
-    label: 'Free will and providence',
+    label: 'Grace, election and the chosen',
     blurb:
-      'How much is fate and how much is choice. Josephus sorts the three Jewish parties by exactly '
-      + 'this question — it is the same passage that divides them over resurrection — and Sirach and '
-      + '2 Baruch answer it as directly as any ancient text does: a man is left in the hand of his '
-      + 'own counsel, and each of us is the Adam of his own soul.',
+      'Being chosen is not, in these texts, a comfortable thing to hold. Jubilees has God separate '
+      + 'a people for himself and write Jacob down as his firstborn. 4 Ezra turns the same idea '
+      + 'into a complaint: of every wood one vine, of all peoples one people — so why are we the '
+      + 'ones being trampled? And then, four chapters later, the sharpest statement of grace in the '
+      + 'corpus, that God will be called merciful precisely by us, who have no works of '
+      + 'righteousness. The Targum, translating a verse where the Hebrew declines to give a reason '
+      + 'for the choice, supplies one anyway. 1 Clement takes the same vocabulary — an elect '
+      + 'portion, a special possession — and applies it without argument to a Gentile church.',
     canonicalAnchors:
-      'The anchors are Deuteronomy 30:19 (“I have set before you life and death — choose life”) and '
-      + 'Genesis 4:7. They are canonical and sit outside this corpus; Sirach in particular is '
-      + 'writing straight out of them.',
+      'The anchors are Deuteronomy 7:6–8 (not because you were more numerous, for you were the '
+      + 'fewest), Deuteronomy 14:2, Isaiah 41:8–9 and Amos 3:2 — chosen, and therefore punished. '
+      + 'They are canonical and sit outside this corpus. The Targum below is translating the first '
+      + 'of them, and what it does to “the fewest of all peoples” is the most interesting thing on '
+      + 'this page.',
     absences: [
-      'Qumran’s determinism — the two spirits, the lot of light and the lot of darkness — is the '
-      + 'sharpest Jewish position on this question and it is absent, because this library holds no '
-      + 'Dead Sea Scrolls. Josephus says the Essenes made everything the work of fate; we cannot '
-      + 'read them saying it themselves.',
-      'No source here separates the question from responsibility. Nobody argues that fate excuses '
-      + 'anyone; even the most deterministic account reported by Josephus is offered as a party '
-      + 'position, not as a defence.',
+      'Nobody here asks whether an individual is elect. The question in these texts is always about '
+      + 'a people — which nation, which remnant, whose covenant — and the later Christian question '
+      + 'of whether a particular person is among the chosen, with the machinery of predestination '
+      + 'and assurance that goes with it, is simply not being asked. Reading it into 1 Enoch’s '
+      + '“the elect” or 1 Clement’s “elect portion” imports a question from the fifth century and '
+      + 'later.',
+      'The Qumran community understood itself as the elect remnant WITHIN Israel, which is the '
+      + 'position missing from this page: not Israel against the nations, and not the church '
+      + 'against Israel, but a group inside the covenant people claiming to be the true part of it. '
+      + 'No public-domain or openly licensed English of the scrolls exists, so the one body of '
+      + 'evidence for that third option is absent.',
     ],
     entries: [
-      { work: 'Sir', chapter: 15, verse: 14, tradition: 'second-temple',
-        summary: 'God left man in the hand of his counsel',
-        probe: 'left him in the hand of his counsel' },
-      { work: 'Sir', chapter: 15, verse: 16, tradition: 'second-temple',
-        summary: 'Fire and water set before you: choose',
-        probe: 'He hath set fire and water before thee' },
-      { work: '2baruch', chapter: 54, verse: 15, tradition: 'second-temple',
-        summary: 'Adam sinned first, but each prepares his own',
-        probe: 'Each one of them has prepared for his own soul torment to come' },
-      { work: '2baruch', chapter: 54, verse: 19, tradition: 'second-temple',
-        summary: 'Each of us is the Adam of his soul',
-        probe: 'each of us has been the Adam of his own soul' },
-      { work: 'antiquities', book: 13, chapter: 5, verse: 171, tradition: 'second-temple',
-        summary: 'Three sects differing on human action',
-        probe: 'three sects among the Jews, who had different opinions concerning human actions' },
-      { work: 'antiquities', book: 13, chapter: 5, verse: 172, tradition: 'second-temple',
-        summary: 'Pharisees: some acts fated, some ours',
-        probe: 'some actions, but not all, are the work of fate' },
-      { work: 'antiquities', book: 13, chapter: 5, verse: 173, tradition: 'second-temple',
-        summary: 'Sadducees deny fate outright, all being ours',
-        probe: 'they take away fate, and say there is no such thing' },
-      { work: 'af-didache', chapter: 1, verse: 1, tradition: 'apostolic-fathers',
-        summary: 'Two ways, one of life, one of death',
-        probe: 'There are two ways, one of life and one of death' },
-      { work: 'af-didache', chapter: 5, verse: 1, tradition: 'apostolic-fathers',
-        summary: 'The way of death set out in full',
-        probe: 'But the way of death is this' },
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: 'jubilees', chapter: 2, verse: 19, tradition: 'second-temple',
+        summary: 'A people separated out, marked by Sabbath',
+        probe: 'I will separate unto Myself a people from among all the peoples' },
+      { work: 'jubilees', chapter: 2, verse: 20, tradition: 'second-temple',
+        summary: 'Jacob chosen, written down as firstborn son',
+        probe: 'have written him down as My first-born son' },
+      { work: 'Sir', chapter: 47, verse: 22, tradition: 'second-temple',
+        summary: 'He will not abolish the seed of his elect',
+        probe: 'neither will he abolish the posterity of his elect' },
+      { work: 'Wis', chapter: 3, verse: 9, tradition: 'second-temple',
+        summary: 'Grace and mercy are for his elect',
+        probe: 'grace and mercy is to his saints, and he hath care for his elect' },
+      { work: '1enoch', chapter: 1, verse: 8, tradition: 'second-temple',
+        summary: 'He will protect the elect and show mercy',
+        probe: 'And will protect the elect, And mercy shall be upon them' },
+      { work: 'PsSol', chapter: 9, verse: 9, tradition: 'second-temple',
+        summary: 'Chose Abraham’s seed; will not reject for ever',
+        probe: 'Thou didst choose the seed of Abraham before all the nations' },
+      // 4 Ezra uses election twice and in opposite directions — first as the ground of a grievance
+      // (chapters 5-6), then as the ground of hope for people with nothing to show (chapter 8).
+      { work: '2esdras', chapter: 5, verse: 23, tradition: 'second-temple',
+        summary: 'Of every wood, you chose one vine',
+        probe: 'thou hast chosen thee one only vine' },
+      { work: '2esdras', chapter: 5, verse: 27, tradition: 'second-temple',
+        summary: 'Of all peoples, you got yourself one',
+        probe: 'thou hast gotten thee one people' },
+      { work: '2esdras', chapter: 6, verse: 59, tradition: 'second-temple',
+        summary: 'If made for us, why do we not possess it?',
+        probe: 'why do we not possess an inheritance with the world' },
+      { work: '2esdras', chapter: 8, verse: 31, tradition: 'second-temple',
+        summary: 'Because of us sinners you are called merciful',
+        probe: 'because of us sinners thou shalt be called merciful' },
+      { work: '2esdras', chapter: 8, verse: 32, tradition: 'second-temple',
+        summary: 'Mercy to us, who have no works of righteousness',
+        probe: 'to us namely, that have no works of righteousness' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // Deuteronomy 7:7 gives the choice no reason beyond God's love, and calls Israel the fewest
+      // of all peoples. Pseudo-Jonathan converts the smallness into a virtue — poor in spirit,
+      // more humble than the nations — and so answers a question the Hebrew leaves standing.
+      { work: 'tg-psj-deuteronomy', chapter: 7, verse: 7, tradition: 'rabbinic',
+        summary: 'Chosen not for excellence but for humility',
+        probe: 'but because you were poor in spirit, and more humble than all the nations' },
+      { work: 'tg-psj-deuteronomy', chapter: 7, verse: 6, tradition: 'rabbinic',
+        summary: 'A people more beloved than all peoples',
+        probe: 'a people more beloved before Him than all the peoples' },
+      { work: 'm-avot', chapter: 3, verse: 14, tradition: 'rabbinic',
+        summary: 'Beloved Israel — and told that they are',
+        probe: 'Beloved are Israel in that they were called children to the All-Present' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // The Odes of Solomon are not one of the Apostolic Fathers, but they are Christian hymns of
+      // about the same date and sit in the same slot here: earliest Christian writing outside the
+      // New Testament.
+      { work: 'af-1clement', chapter: 29, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'He made us an elect portion for himself',
+        probe: 'who made us an elect portion unto Himself' },
+      { work: 'af-1clement', chapter: 30, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Being the special portion, act like it',
+        probe: 'Seeing then that we are the special portion of a Holy God' },
+      { work: 'af-barnabas', chapter: 6, verse: 19, tradition: 'apostolic-fathers',
+        summary: 'That we may become heirs of the covenant',
+        probe: 'we may become heirs of the covenant of the Lord' },
+      { work: 'odes-of-solomon', chapter: 23, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Grace belongs to those who trusted from the start',
+        probe: 'Grace is of the elect' },
     ],
   },
   {

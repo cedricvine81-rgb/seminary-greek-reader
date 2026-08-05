@@ -124,6 +124,9 @@ if (!process.argv.includes('--check') && !process.argv.includes('--survey')) mai
 // makes a hand-written citation trustworthy — and it re-runs whenever a corpus is rebuilt, so a
 // renumbering (Josephus was renumbered by Niese section once already) turns into a failed build
 // instead of a link that quietly lands in the wrong chapter.
+/** Lowercase, and fold curly quotes to straight — used ONLY to explain a failure, never to pass one. */
+const flatten = (s: string) => s.toLowerCase().replace(/[’‘]/g, "'").replace(/[“”]/g, '"')
+
 export function check(topicId: string): number {
   const { THEME_PAGES } = require('../src/lib/themes') as typeof import('../src/lib/themes')
   const page = THEME_PAGES.find(p => p.id === topicId)
@@ -134,7 +137,20 @@ export function check(topicId: string): number {
     const needle = e.probe.toLowerCase()
     const matches = index.filter(x => x.t.toLowerCase().includes(needle))
     const label = `${e.work} ${e.book ? `${e.book}.` : ''}${e.chapter}:${e.verse}`
-    if (matches.length === 0) { console.log(`  NO MATCH   ${label} — probe "${e.probe}"`); bad++; continue }
+    if (matches.length === 0) {
+      // By far the commonest cause of a failed probe is a curly apostrophe or quote where the
+      // source has a straight one — an editor, or a hand, silently substitutes them. It has cost
+      // five probes so far. Say WHICH problem it is rather than making the curator hunt for it.
+      const quotes = /['’‘"“”]/
+      if (quotes.test(e.probe) && index.some(x => flatten(x.t).includes(flatten(e.probe)))) {
+        console.log(`  SMART QUOTE ${label} — probe matches only with quotes normalised; `
+          + `copy the exact characters from the passage, or pick a span without them`)
+      } else {
+        console.log(`  NO MATCH   ${label} — probe "${e.probe}"`)
+      }
+      bad++
+      continue
+    }
     const exact = matches.find(m =>
       m.g === e.work && m.c === e.chapter && m.v === e.verse && (e.book === undefined || m.b === e.book))
     if (!exact) {
