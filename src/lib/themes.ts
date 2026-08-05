@@ -1375,6 +1375,88 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
+    id: 'temple',
+    group: 'Temple and community',
+    label: 'Temple and sanctuary',
+    blurb:
+      'The house on the mount — and what people said about it once it was gone. Two moves run '
+      + 'through these texts, and both start before 70 CE: the real temple is the one in heaven, '
+      + 'of which this is a copy; and the real temple is the community, or the human heart. '
+      + 'Barnabas 16 puts both together and draws the conclusion.',
+    canonicalAnchors:
+      'The anchors are 1 Kings 6–8 (Solomon builds it), Ezekiel 40–48 (the visionary temple) and '
+      + 'Isaiah 66:1–2 (“what house will you build for me?”). They are canonical and sit outside '
+      + 'this corpus; the writers below all quote or assume them.',
+    absences: [
+      'Middot describes the building in the present tense — the Temple Mount five hundred cubits '
+      + 'square, five gates, an altar of thirty-two — but it was compiled generations after 70 CE '
+      + 'and its authors never saw it standing. Read it as a memory reconstructed from tradition '
+      + 'and scripture, not as a survey.',
+      'After Barnabas the Christian writers largely stop arguing about the building. They move to '
+      + 'sacrifice and priesthood instead, which are separate questions and belong on their own '
+      + 'pages; that is why the later Christian section here is empty rather than thin.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: '2baruch', chapter: 4, verse: 3, tradition: 'second-temple',
+        summary: 'The true building was prepared before Paradise',
+        probe: 'This building now built in your midst is not that which is revealed with Me' },
+      { work: '2baruch', chapter: 6, verse: 7, tradition: 'second-temple',
+        summary: 'Vessels removed from the Holy of Holies beforehand',
+        probe: 'take from there the veil, and holy ark' },
+      { work: 'Wis', chapter: 9, verse: 8, tradition: 'second-temple',
+        summary: 'The temple copies a tabernacle prepared from the beginning',
+        probe: 'a resemblance of the holy tabernacle' },
+      { work: 'Jdt', chapter: 9, verse: 8, tradition: 'second-temple',
+        summary: 'Enemies purpose to defile the sanctuary',
+        probe: 'they have purposed to defile thy sanctuary' },
+      { work: 'philo-spec-laws', chapter: 1, verse: 66, tradition: 'second-temple',
+        summary: 'The universe itself is the truest temple',
+        probe: 'the universal world as the highest and truest temple of God' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 12, tradition: 'second-temple',
+        summary: 'Josephus dates the first tabernacle against a critic',
+        probe: 'is manifest from the works of Moses' },
+      { work: 'jewish-war', book: 1, chapter: 1, verse: 28, tradition: 'second-temple',
+        summary: 'The temple burnt, against Caesar’s own consent',
+        probe: 'how the temple was burnt, against the consent of Caesar' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'y-yoma', chapter: 1, verse: 1, tradition: 'rabbinic',
+        summary: 'High priest isolated seven days beforehand',
+        probe: 'Seven days before the Day of Atonement one isolates the High Priest' },
+      { work: 'y-yoma', chapter: 1, verse: 5, tradition: 'rabbinic',
+        summary: 'The elders adjure the high priest before entry',
+        probe: 'They adjure him; this finishes their task' },
+      { work: 'tg-psj-exodus', chapter: 28, verse: 43, tradition: 'rabbinic',
+        summary: 'Vestments required on pain of flaming fire',
+        probe: 'that they may not receive the punishment of flaming fire' },
+      { work: 'm-middot', chapter: 1, verse: 3, tradition: 'rabbinic',
+        summary: 'Five gates counted round the Temple Mount',
+        probe: 'There were five gates to the Temple Mount' },
+      { work: 'm-middot', chapter: 2, verse: 1, tradition: 'rabbinic',
+        summary: 'The Mount measured five hundred cubits square',
+        probe: 'The Temple Mount was five hundred cubits by five hundred cubits' },
+      { work: 'm-middot', chapter: 3, verse: 1, tradition: 'rabbinic',
+        summary: 'The altar thirty-two cubits, stepped inward',
+        probe: 'The altar was thirty-two cubits by thirty-two' },
+      { work: 'm-tamid', chapter: 1, verse: 1, tradition: 'rabbinic',
+        summary: 'Priests keep watch in three places nightly',
+        probe: 'In three places the priests keep watch in the Temple' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-barnabas', chapter: 6, verse: 15, tradition: 'apostolic-fathers',
+        summary: 'The holy temple is the heart’s abode',
+        probe: 'a holy temple unto the Lord, my brethren, is the abode of our heart' },
+      { work: 'af-barnabas', chapter: 16, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Hope set on the building, not its maker',
+        probe: 'set their hope on the building, and not on their God' },
+      { work: 'af-barnabas', chapter: 16, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Pulled down because they went to war',
+        probe: 'for because they went to war it was pulled down' },
+      { work: 'af-barnabas', chapter: 16, verse: 9, tradition: 'apostolic-fathers',
+        summary: 'God now dwells within the believer’s habitation',
+        probe: 'God dwelleth truly in our habitation within us' },
+    ],
+  },
+  {
     id: 'sabbath',
     group: 'Law and practice',
     label: 'Sabbath',
@@ -1528,85 +1610,207 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
-    id: 'temple',
-    group: 'Temple and community',
-    label: 'Temple and sanctuary',
+    id: 'circumcision',
+    group: 'Law and practice',
+    label: 'Circumcision and identity',
     blurb:
-      'The house on the mount — and what people said about it once it was gone. Two moves run '
-      + 'through these texts, and both start before 70 CE: the real temple is the one in heaven, '
-      + 'of which this is a copy; and the real temple is the community, or the human heart. '
-      + 'Barnabas 16 puts both together and draws the conclusion.',
+      'The covenant sign, and the question it forces: what must a Gentile who joins Israel actually '
+      + 'do? Josephus tells the story of King Izates, who asked two Jewish teachers and got two '
+      + 'opposite answers — which is the first-century argument of Acts 15 and Galatians, preserved '
+      + 'from the Jewish side by someone with no stake in the Christian outcome.',
     canonicalAnchors:
-      'The anchors are 1 Kings 6–8 (Solomon builds it), Ezekiel 40–48 (the visionary temple) and '
-      + 'Isaiah 66:1–2 (“what house will you build for me?”). They are canonical and sit outside '
-      + 'this corpus; the writers below all quote or assume them.',
+      'The anchors are Genesis 17 (the covenant in the flesh), Exodus 12:48 (the circumcised '
+      + 'stranger may keep Passover) and Deuteronomy 30:6 (circumcised hearts). The Christian '
+      + 'argument is Acts 15 and Galatians. All canonical, all outside this corpus.',
     absences: [
-      'Middot describes the building in the present tense — the Temple Mount five hundred cubits '
-      + 'square, five gates, an altar of thirty-two — but it was compiled generations after 70 CE '
-      + 'and its authors never saw it standing. Read it as a memory reconstructed from tradition '
-      + 'and scripture, not as a survey.',
-      'After Barnabas the Christian writers largely stop arguing about the building. They move to '
-      + 'sacrifice and priesthood instead, which are separate questions and belong on their own '
-      + 'pages; that is why the later Christian section here is empty rather than thin.',
+      'No source here spiritualises circumcision AND drops the practice. Jubilees has both the '
+      + 'flesh and the heart and means both; Barnabas is the first writer in this library to say '
+      + 'the physical rite is abolished, and he is a Christian writing after the fact.',
+      'The Izates story is the closest thing here to the Acts 15 debate, but it is one episode '
+      + 'reported by one historian. There is no Jewish text in this library setting out a general '
+      + 'rule for what a Gentile adherent must do.',
+    ],
+    entries: [
+      { work: 'jubilees', chapter: 15, verse: 12, tradition: 'second-temple',
+        summary: 'Circumcise on the eighth day, every generation',
+        probe: 'the child on the eighth day ye shall circumcise' },
+      { work: 'jubilees', chapter: 1, verse: 23, tradition: 'second-temple',
+        summary: 'God will circumcise the heart’s foreskin too',
+        probe: 'I will circumcise the foreskin of their heart' },
+      { work: '1Macc', chapter: 1, verse: 15, tradition: 'second-temple',
+        summary: 'They made themselves uncircumcised, forsaking the covenant',
+        probe: 'made themselves uncircumcised, and forsook the holy covenant' },
+      { work: '1Macc', chapter: 1, verse: 60, tradition: 'second-temple',
+        summary: 'Women executed for circumcising their children',
+        probe: 'they put to death certain women, that had caused their children to be circumcised' },
+      { work: 'antiquities', book: 1, chapter: 10, verse: 192, tradition: 'second-temple',
+        summary: 'Circumcision keeps Abraham’s posterity unmixed',
+        probe: 'in order to keep his posterity unmixed with others' },
+      { work: 'antiquities', book: 20, chapter: 2, verse: 38, tradition: 'second-temple',
+        summary: 'Izates assumes he must be circumcised to convert',
+        probe: 'he could not be thoroughly a Jew unless he were circumcised' },
+      { work: 'antiquities', book: 20, chapter: 2, verse: 42, tradition: 'second-temple',
+        summary: 'Ananias: God will forgive the omission',
+        probe: 'God would forgive him, though he did not perform the operation' },
+      { work: 'antiquities', book: 20, chapter: 2, verse: 44, tradition: 'second-temple',
+        summary: 'Eleazar: omitting it breaks the principal law',
+        probe: 'Thou dost not consider, O king! that thou unjustly breakest the principal of those laws' },
+      { work: 'philo-qg', chapter: 3, verse: 48, tradition: 'second-temple',
+        summary: 'Philo gives medical and moral reasons together',
+        probe: 'He orders the freeborn to be circumcised' },
+      { work: 'tg-psj-genesis', chapter: 17, verse: 11, tradition: 'rabbinic',
+        summary: 'A sign of the covenant between God’s Word and you',
+        probe: 'as a sign of the covenant between My Word and you' },
+      { work: 'tg-psj-exodus', chapter: 12, verse: 48, tradition: 'rabbinic',
+        summary: 'A proselyte must be circumcised to keep Passover',
+        probe: 'let every male belonging to him be circumcised' },
+      { work: 'af-barnabas', chapter: 9, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'It is the heart that God circumcised',
+        probe: 'it is our heart which He circumcised' },
+      { work: 'af-barnabas', chapter: 9, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'Fleshly circumcision abolished; an evil angel taught it',
+        probe: 'the circumcision, in which they have confidence, is abolished' },
+    ],
+  },
+  {
+    id: 'purity',
+    group: 'Law and practice',
+    label: 'Purity, food and the table',
+    blurb:
+      'Clean and unclean — what may be eaten, what defiles by contact, and who may eat with whom. '
+      + 'Under persecution this stops being housekeeping and becomes the thing people die over: '
+      + 'both Maccabean martyrdoms begin with a refusal to eat.',
+    canonicalAnchors:
+      'The anchors are Leviticus 11 (clean and unclean creatures), Leviticus 12–15 (bodily '
+      + 'impurity) and Numbers 19 (the red heifer). They are canonical and sit outside this corpus.',
+    absences: [
+      'Nothing here explains WHY contact transmits impurity. As with the scapegoat, the mechanism '
+      + 'is assumed rather than argued — the sources tell you what defiles, never how.',
+      'Purity law is worked out in detail only in the rabbinic material, which is second century '
+      + 'and later. For the first century the witnesses are crisis narratives and outsiders’ '
+      + 'descriptions, so what survives is the boundary under pressure rather than at rest.',
+    ],
+    entries: [
+      { work: '1Macc', chapter: 1, verse: 47, tradition: 'second-temple',
+        summary: 'Swine and unclean beasts ordered on altars',
+        probe: 'flesh, and unclean beasts' },
+      { work: '2Macc', chapter: 6, verse: 18, tradition: 'second-temple',
+        summary: 'Eleazar constrained to eat swine’s flesh',
+        probe: 'Eleazar, one of the principal scribes' },
+      { work: '2Macc', chapter: 7, verse: 1, tradition: 'second-temple',
+        summary: 'Seven brothers compelled to taste it',
+        probe: 'compelled by the king against the law to taste swine' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 203, tradition: 'second-temple',
+        summary: 'Bathing required after intercourse, soul and body',
+        probe: 'there is a defilement contracted thereby, both in soul and body' },
+      { work: 'philo-moses', chapter: 2, verse: 139, tradition: 'second-temple',
+        summary: 'The laver of mirrors: look into your mind',
+        probe: 'the materials of which this vessel was composed were mirrors' },
+      { work: 'm-eduyot', chapter: 5, verse: 3, tradition: 'rabbinic',
+        summary: 'Whether Ecclesiastes defiles the hands, disputed',
+        probe: 'The book of Ecclesiastes does not defile the hands' },
+      { work: 'm-chagigah', chapter: 3, verse: 8, tradition: 'rabbinic',
+        summary: 'Temple vessels immersed; beware touching the table',
+        probe: 'How did they undertake the purification of the Temple court' },
+      { work: 'tg-psj-numbers', chapter: 6, verse: 9, tradition: 'rabbinic',
+        summary: 'A sudden death defiles the Nazirite’s vow',
+        probe: 'he unawares defile the head of his vow' },
+      { work: 'af-didache', chapter: 6, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Bear what yoke of the Lord you can',
+        probe: 'if thou art able to bear the whole yoke of the Lord' },
+    ],
+  },
+  {
+    id: 'fasting-almsgiving',
+    group: 'Law and practice',
+    label: 'Fasting and almsgiving',
+    blurb:
+      'These belong together because the sources put them together, and because both are treated as '
+      + 'things that DO something to sin. Tobit says alms delivers from death and purges away sin; '
+      + 'Sirach says alms makes atonement, as water quenches fire; 2 Clement ranks them — fasting '
+      + 'better than prayer, almsgiving better than both — and says almsgiving lifts the burden of '
+      + 'sin off you. The prophetic objection is here too: Barnabas quotes Isaiah 58 to say the '
+      + 'fast God chose was feeding people, and Hermas is told his fasting is worthless, then given '
+      + 'a rule that converts it into alms by arithmetic — work out what the food would have cost '
+      + 'and give that to a widow.',
+    canonicalAnchors:
+      'The anchors are Leviticus 16:29–31 (the one fast the law commands), Isaiah 58, Joel 2:12, '
+      + 'Deuteronomy 15:7–11 and Proverbs 19:17. They are canonical and sit outside this corpus; '
+      + 'Barnabas below is quoting Isaiah 58 nearly whole, and Josephus is describing Leviticus 16 '
+      + 'as it was actually kept.',
+    absences: [
+      'The Jewish custom the Didache rejects is not attested here in a Jewish source. Fasting on '
+      + '“the second and the fifth day” means Monday and Thursday, and the Yerushalmi below shows '
+      + 'those were the marked weekdays — courts sat, the Torah was read — but no text in this '
+      + 'library describes a Jewish twice-weekly fast on them. The Didache itself, and Luke 18:12, '
+      + 'are the evidence. A Christian document rejecting a practice is our witness that the '
+      + 'practice existed.',
+      'Almost nothing here is written from the receiving end. Alms is valued throughout by what it '
+      + 'does for the giver — it atones, it delivers from death, it lifts a burden, it is recorded. '
+      + 'What it does for the person who gets it is barely discussed, and no text in this library '
+      + 'is written by anyone who needed it. Philo describes the destitute of Alexandria begging, '
+      + 'and even that is an outsider’s account of a catastrophe, not a poor man’s account of alms.',
     ],
     entries: [
       // ── Second Temple Jewish ─────────────────────────────────────────────────────────
-      { work: '2baruch', chapter: 4, verse: 3, tradition: 'second-temple',
-        summary: 'The true building was prepared before Paradise',
-        probe: 'This building now built in your midst is not that which is revealed with Me' },
-      { work: '2baruch', chapter: 6, verse: 7, tradition: 'second-temple',
-        summary: 'Vessels removed from the Holy of Holies beforehand',
-        probe: 'take from there the veil, and holy ark' },
-      { work: 'Wis', chapter: 9, verse: 8, tradition: 'second-temple',
-        summary: 'The temple copies a tabernacle prepared from the beginning',
-        probe: 'a resemblance of the holy tabernacle' },
-      { work: 'Jdt', chapter: 9, verse: 8, tradition: 'second-temple',
-        summary: 'Enemies purpose to defile the sanctuary',
-        probe: 'they have purposed to defile thy sanctuary' },
-      { work: 'philo-spec-laws', chapter: 1, verse: 66, tradition: 'second-temple',
-        summary: 'The universe itself is the truest temple',
-        probe: 'the universal world as the highest and truest temple of God' },
-      { work: 'against-apion', book: 2, chapter: 1, verse: 12, tradition: 'second-temple',
-        summary: 'Josephus dates the first tabernacle against a critic',
-        probe: 'is manifest from the works of Moses' },
-      { work: 'jewish-war', book: 1, chapter: 1, verse: 28, tradition: 'second-temple',
-        summary: 'The temple burnt, against Caesar’s own consent',
-        probe: 'how the temple was burnt, against the consent of Caesar' },
+      { work: 'Tob', chapter: 4, verse: 10, tradition: 'second-temple',
+        summary: 'Alms delivers from death and from darkness',
+        probe: 'because alms delivereth from death' },
+      { work: 'Tob', chapter: 12, verse: 9, tradition: 'second-temple',
+        summary: 'Alms purges away all sin',
+        probe: 'alms doth deliver from death, and shall purge away all sin' },
+      { work: 'Tob', chapter: 12, verse: 8, tradition: 'second-temple',
+        summary: 'Prayer with fasting and alms and righteousness',
+        probe: 'Prayer is good with fasting and alms' },
+      { work: 'Sir', chapter: 3, verse: 30, tradition: 'second-temple',
+        summary: 'As water quenches fire, alms atones',
+        probe: 'Water will quench a flaming fire; and alms maketh an atonement' },
+      { work: 'Sir', chapter: 7, verse: 10, tradition: 'second-temple',
+        summary: 'Do not be fainthearted; do not neglect alms',
+        probe: 'Be not fainthearted when thou makest thy prayer' },
+      { work: '1Macc', chapter: 3, verse: 47, tradition: 'second-temple',
+        summary: 'Fasting, sackcloth and ashes before battle',
+        probe: 'Then they fasted that day, and put on sackcloth' },
+      { work: 'antiquities', book: 3, chapter: 10, verse: 240, tradition: 'second-temple',
+        summary: 'The tenth day: they fast till evening',
+        probe: 'they fast till the evening' },
+      { work: '2esdras', chapter: 6, verse: 31, tradition: 'second-temple',
+        summary: 'Fast seven days and be told more',
+        probe: 'If thou wilt pray yet more, and fast seven days again' },
+      // Josephus, on a fast proclaimed to get a political rival out of the way. Worth having: the
+      // sources are not uniformly pious about the practice.
+      { work: 'life', book: 1, chapter: 1, verse: 290, tradition: 'second-temple',
+        summary: 'A public fast proclaimed as a political manoeuvre',
+        probe: 'a general religious fast should be appointed the next day' },
       // ── Rabbinic ─────────────────────────────────────────────────────────────────────
-      { work: 'y-yoma', chapter: 1, verse: 1, tradition: 'rabbinic',
-        summary: 'High priest isolated seven days beforehand',
-        probe: 'Seven days before the Day of Atonement one isolates the High Priest' },
-      { work: 'y-yoma', chapter: 1, verse: 5, tradition: 'rabbinic',
-        summary: 'The elders adjure the high priest before entry',
-        probe: 'They adjure him; this finishes their task' },
-      { work: 'tg-psj-exodus', chapter: 28, verse: 43, tradition: 'rabbinic',
-        summary: 'Vestments required on pain of flaming fire',
-        probe: 'that they may not receive the punishment of flaming fire' },
-      { work: 'm-middot', chapter: 1, verse: 3, tradition: 'rabbinic',
-        summary: 'Five gates counted round the Temple Mount',
-        probe: 'There were five gates to the Temple Mount' },
-      { work: 'm-middot', chapter: 2, verse: 1, tradition: 'rabbinic',
-        summary: 'The Mount measured five hundred cubits square',
-        probe: 'The Temple Mount was five hundred cubits by five hundred cubits' },
-      { work: 'm-middot', chapter: 3, verse: 1, tradition: 'rabbinic',
-        summary: 'The altar thirty-two cubits, stepped inward',
-        probe: 'The altar was thirty-two cubits by thirty-two' },
-      { work: 'm-tamid', chapter: 1, verse: 1, tradition: 'rabbinic',
-        summary: 'Priests keep watch in three places nightly',
-        probe: 'In three places the priests keep watch in the Temple' },
+      { work: 'm-taanit', chapter: 1, verse: 4, tradition: 'rabbinic',
+        summary: 'No rain by Marheshvan: individuals fast three days',
+        probe: 'individuals begin to fast three fasts' },
+      { work: 'm-taanit', chapter: 4, verse: 3, tradition: 'rabbinic',
+        summary: 'Not Friday or Sunday, out of Sabbath respect',
+        probe: 'they did not fast on Friday out of respect for Shabbat' },
+      { work: 'y-megillah', chapter: 4, verse: 1, tradition: 'rabbinic',
+        summary: 'Monday, Thursday and Sabbath: the reading days',
+        probe: 'On Monday, Thursday and Sabbath afternoon three' },
       // ── Apostolic Fathers ────────────────────────────────────────────────────────────
-      { work: 'af-barnabas', chapter: 6, verse: 15, tradition: 'apostolic-fathers',
-        summary: 'The holy temple is the heart’s abode',
-        probe: 'a holy temple unto the Lord, my brethren, is the abode of our heart' },
-      { work: 'af-barnabas', chapter: 16, verse: 1, tradition: 'apostolic-fathers',
-        summary: 'Hope set on the building, not its maker',
-        probe: 'set their hope on the building, and not on their God' },
-      { work: 'af-barnabas', chapter: 16, verse: 4, tradition: 'apostolic-fathers',
-        summary: 'Pulled down because they went to war',
-        probe: 'for because they went to war it was pulled down' },
-      { work: 'af-barnabas', chapter: 16, verse: 9, tradition: 'apostolic-fathers',
-        summary: 'God now dwells within the believer’s habitation',
-        probe: 'God dwelleth truly in our habitation within us' },
+      // Hermas is told twice over that fasting as he understands it is worth nothing, and is then
+      // given a rule that turns the saved food into money and the money into alms. The two halves
+      // of this page are joined there, in a sentence of household accounting.
+      { work: 'af-didache', chapter: 8, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Fast Wednesday and Friday, not with the hypocrites',
+        probe: 'for they fast on the second and the fifth day of the week' },
+      { work: 'af-2clement', chapter: 16, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Almsgiving beats fasting; it lifts sin’s burden',
+        probe: 'Fasting is better than prayer, but almsgiving better than both' },
+      { work: 'af-barnabas', chapter: 3, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'The chosen fast: feed, clothe, shelter, release',
+        probe: 'this is the fast which I have chosen' },
+      { work: 'af-hermas', chapter: 54, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'You do not know how to fast at all',
+        probe: 'this unprofitable fast which ye make unto Him' },
+      { work: 'af-hermas', chapter: 56, verse: 7, tradition: 'apostolic-fathers',
+        summary: 'Reckon the cost of the meal; give it away',
+        probe: 'shalt give it to a widow, or an orphan, or to one in want' },
     ],
   },
   {
@@ -1688,6 +1892,89 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'eusebius-he-1', chapter: 3, verse: 1, tradition: 'church-fathers',
         summary: 'Moses called the high priest “Christ”, anointed',
         probe: 'Moses was the first to make known the name of Christ' },
+    ],
+  },
+  {
+    id: 'baptism',
+    group: 'Temple and community',
+    label: 'Washing, immersion and baptism',
+    blurb:
+      'Water rites in this world are ordinary, repeated and about purity. The Essenes bathe in cold '
+      + 'water before every midday meal; Banus does it night and day in the desert; a mourner '
+      + 'immerses so that he may eat the Passover, and a convert who converts on Passover eve '
+      + 'immerses and eats it that evening. Against all that, Josephus describes John’s baptism as '
+      + 'something else — and describes it in a way that does not match the Gospels: the washing '
+      + 'was for the body, he says, on the understanding that righteousness had already purified '
+      + 'the soul. Christian baptism then becomes unrepeatable. The Didache legislates the water; '
+      + 'Hermas says a man is simply dead until he has received the seal; and in the Acts of Paul '
+      + 'and Thecla a woman about to be thrown to the beasts baptises herself in the arena.',
+    canonicalAnchors:
+      'The anchors are Leviticus 14–15 and Numbers 19 (the washings the law requires), Ezekiel '
+      + '36:25 and Isaiah 1:16. They are canonical and sit outside this corpus. Mark 1:4 — “a '
+      + 'baptism of repentance for the forgiveness of sins” — is the sentence Josephus below should '
+      + 'be read against, since he appears to deny exactly that.',
+    absences: [
+      'Nobody here is arguing with anybody. Josephus, the Didache, Hermas and Thecla give four '
+      + 'different accounts of what water does, and not one of them responds to another; the '
+      + 'differences below are juxtaposed by us, not debated by them. So the page can show you that '
+      + 'the practice varied and cannot show you anyone defending a position, which is a real limit '
+      + 'on what may be concluded from it.',
+      'The Qumran material is missing again, and here it matters as much as anywhere: that '
+      + 'community tied its washings to entry into a covenant, which is the one Jewish practice '
+      + 'structurally like Christian baptism rather than like a purity bath. Its rule book says '
+      + 'plainly that no one is cleansed by water while refusing the discipline. No open English '
+      + 'translation of the scrolls exists, so that comparison cannot be made from this library.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // 18.5:117 is the crux of the page and should be read slowly. Josephus says the washing was
+      // NOT for the remission of sins but for the body, the soul having been purified already by
+      // righteousness — which is close to the opposite of Mark 1:4. He is a hostile-neutral witness
+      // writing sixty years later; that does not settle which account is right, and the
+      // disagreement is the evidence.
+      { work: 'antiquities', book: 18, chapter: 5, verse: 116, tradition: 'second-temple',
+        summary: 'Herod’s defeat blamed on killing John the Baptist',
+        probe: 'as a punishment of what he did against John' },
+      { work: 'antiquities', book: 18, chapter: 5, verse: 117, tradition: 'second-temple',
+        summary: 'For the body — the soul cleansed already by righteousness',
+        probe: 'not in order to the putting away' },
+      { work: 'jewish-war', book: 2, chapter: 8, verse: 129, tradition: 'second-temple',
+        summary: 'Daily: white veils, cold water, then the meal',
+        probe: 'they then bathe their bodies in cold water' },
+      { work: 'jewish-war', book: 2, chapter: 8, verse: 138, tradition: 'second-temple',
+        summary: 'Admitted to the waters after a year’s trial',
+        probe: 'is made a partaker of the waters of purification' },
+      { work: 'life', book: 1, chapter: 1, verse: 11, tradition: 'second-temple',
+        summary: 'Banus in the desert, bathing night and day',
+        probe: 'bathed himself in cold water frequently, both by night and by day' },
+      { work: 'josaseneth', chapter: 15, verse: 26, tradition: 'second-temple',
+        summary: 'Born again this day, and quickened anew',
+        probe: 'Thou art born again this very day' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // Immersion here is a gate to eating, not to membership — with one exception, the convert,
+      // and the schools disagree about him.
+      { work: 'm-pesachim', chapter: 8, verse: 8, tradition: 'rabbinic',
+        summary: 'A convert immerses and eats the Passover',
+        probe: 'A convert who converts on the eve of Pesah' },
+      { work: 'y-pesachim', chapter: 8, verse: 8, tradition: 'rabbinic',
+        summary: 'The schools divide over the new proselyte',
+        probe: 'A proselyte who converted on Passover eve' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-didache', chapter: 7, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Running water; failing that, whatever there is',
+        probe: 'But if thou hast not living water, then baptize in other water' },
+      { work: 'af-hermas', chapter: 93, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'Before the seal a man is dead',
+        probe: 'when he has received the seal, he layeth aside his deadness' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // Thecla is second-century apocryphal narrative rather than a Father, and sits in this slot
+      // by date. It is also the only baptism in this library that anybody actually performs.
+      { work: 'justin-1apology', chapter: 61, verse: 1, tradition: 'church-fathers',
+        summary: 'Taught, fasting, then brought to the water',
+        probe: 'they are brought by us where there is water' },
+      { work: 'paul-and-thecla', chapter: 1, verse: 34, tradition: 'church-fathers',
+        summary: 'In the arena, she baptises herself',
+        probe: 'In the name of Jesus Christ do I baptize myself' },
     ],
   },
   {
@@ -2106,114 +2393,183 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
-    id: 'circumcision',
+    id: 'wealth',
     group: 'Law and practice',
-    label: 'Circumcision and identity',
+    label: 'Wealth, poverty and possessions',
     blurb:
-      'The covenant sign, and the question it forces: what must a Gentile who joins Israel actually '
-      + 'do? Josephus tells the story of King Izates, who asked two Jewish teachers and got two '
-      + 'opposite answers — which is the first-century argument of Acts 15 and Galatians, preserved '
-      + 'from the Jewish side by someone with no stake in the Christian outcome.',
+      'Three incompatible positions, and one of them was actually put into practice. Sirach treats '
+      + 'money as morally neutral and almost nobody as able to survive it — blessed is the rich man '
+      + 'found without blemish, which is offered as a rarity. 1 Enoch drops the qualification '
+      + 'entirely and pronounces woes on the rich as such. And the Essenes, described independently '
+      + 'by Philo and Josephus, abolished private property: one store, common expenses, and no one '
+      + 'permitted to own a house. Then the Christian texts pull apart the same way. Barnabas says '
+      + 'call nothing your own; Hermas makes the rich man’s money and the poor man’s prayer '
+      + 'mutually necessary; and Clement of Alexandria, writing for a wealthy congregation, '
+      + 'explains that “sell your possessions” was never about the possessions.',
     canonicalAnchors:
-      'The anchors are Genesis 17 (the covenant in the flesh), Exodus 12:48 (the circumcised '
-      + 'stranger may keep Passover) and Deuteronomy 30:6 (circumcised hearts). The Christian '
-      + 'argument is Acts 15 and Galatians. All canonical, all outside this corpus.',
+      'The anchors are Deuteronomy 15, Proverbs 30:8–9, Amos 8:4–6 and Isaiah 5:8. They are '
+      + 'canonical and sit outside this corpus. Clement below is expounding Mark 10:17–31, and the '
+      + 'community of goods in Acts 2 and 4 is the passage the Essene descriptions are always read '
+      + 'against — though nothing here connects the two, and the resemblance may be a resemblance '
+      + 'and nothing more.',
     absences: [
-      'No source here spiritualises circumcision AND drops the practice. Jubilees has both the '
-      + 'flesh and the heart and means both; Barnabas is the first writer in this library to say '
-      + 'the physical rite is abolished, and he is a Christian writing after the fact.',
-      'The Izates story is the closest thing here to the Acts 15 debate, but it is one episode '
-      + 'reported by one historian. There is no Jewish text in this library setting out a general '
-      + 'rule for what a Gentile adherent must do.',
+      'No Essene wrote any of this. Philo and Josephus are both outsiders describing a group '
+      + 'admiringly and at a distance, to Greek-speaking audiences, and both had reasons to present '
+      + 'Judaism as producing philosophers. Their two accounts agree closely, which is usually taken '
+      + 'to mean a shared source rather than two independent observations. The community’s own rule '
+      + 'book survives — at Qumran — and cannot be read here for want of an open English '
+      + 'translation.',
+      'Nobody here argues for wealth. Every position on this page runs from “dangerous” to '
+      + '“abolish it”, and the nearest thing to a defence is Clement explaining that a rich '
+      + 'Christian need not be poor to be saved — a case made in the third century, for a church '
+      + 'that by then had wealthy members to reassure. What a first-century wealthy Jew or Christian '
+      + 'thought he was doing, in his own words, is not preserved.',
     ],
     entries: [
-      { work: 'jubilees', chapter: 15, verse: 12, tradition: 'second-temple',
-        summary: 'Circumcise on the eighth day, every generation',
-        probe: 'the child on the eighth day ye shall circumcise' },
-      { work: 'jubilees', chapter: 1, verse: 23, tradition: 'second-temple',
-        summary: 'God will circumcise the heart’s foreskin too',
-        probe: 'I will circumcise the foreskin of their heart' },
-      { work: '1Macc', chapter: 1, verse: 15, tradition: 'second-temple',
-        summary: 'They made themselves uncircumcised, forsaking the covenant',
-        probe: 'made themselves uncircumcised, and forsook the holy covenant' },
-      { work: '1Macc', chapter: 1, verse: 60, tradition: 'second-temple',
-        summary: 'Women executed for circumcising their children',
-        probe: 'they put to death certain women, that had caused their children to be circumcised' },
-      { work: 'antiquities', book: 1, chapter: 10, verse: 192, tradition: 'second-temple',
-        summary: 'Circumcision keeps Abraham’s posterity unmixed',
-        probe: 'in order to keep his posterity unmixed with others' },
-      { work: 'antiquities', book: 20, chapter: 2, verse: 38, tradition: 'second-temple',
-        summary: 'Izates assumes he must be circumcised to convert',
-        probe: 'he could not be thoroughly a Jew unless he were circumcised' },
-      { work: 'antiquities', book: 20, chapter: 2, verse: 42, tradition: 'second-temple',
-        summary: 'Ananias: God will forgive the omission',
-        probe: 'God would forgive him, though he did not perform the operation' },
-      { work: 'antiquities', book: 20, chapter: 2, verse: 44, tradition: 'second-temple',
-        summary: 'Eleazar: omitting it breaks the principal law',
-        probe: 'Thou dost not consider, O king! that thou unjustly breakest the principal of those laws' },
-      { work: 'philo-qg', chapter: 3, verse: 48, tradition: 'second-temple',
-        summary: 'Philo gives medical and moral reasons together',
-        probe: 'He orders the freeborn to be circumcised' },
-      { work: 'tg-psj-genesis', chapter: 17, verse: 11, tradition: 'rabbinic',
-        summary: 'A sign of the covenant between God’s Word and you',
-        probe: 'as a sign of the covenant between My Word and you' },
-      { work: 'tg-psj-exodus', chapter: 12, verse: 48, tradition: 'rabbinic',
-        summary: 'A proselyte must be circumcised to keep Passover',
-        probe: 'let every male belonging to him be circumcised' },
-      { work: 'af-barnabas', chapter: 9, verse: 1, tradition: 'apostolic-fathers',
-        summary: 'It is the heart that God circumcised',
-        probe: 'it is our heart which He circumcised' },
-      { work: 'af-barnabas', chapter: 9, verse: 3, tradition: 'apostolic-fathers',
-        summary: 'Fleshly circumcision abolished; an evil angel taught it',
-        probe: 'the circumcision, in which they have confidence, is abolished' },
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: 'Sir', chapter: 34, verse: 8, tradition: 'second-temple',
+        summary: 'Blessed is the rich man found without blemish',
+        probe: 'Blessed is the rich that is found without blemish' },
+      { work: 'Sir', chapter: 34, verse: 6, tradition: 'second-temple',
+        summary: 'Gold has been the ruin of many',
+        probe: 'Gold hath been the ruin of many' },
+      { work: 'Sir', chapter: 14, verse: 3, tradition: 'second-temple',
+        summary: 'Riches are wasted on a miser',
+        probe: 'Riches are not comely for a niggard' },
+      // 1 Enoch attaches no conditions at all. Read straight after Sirach, the difference is not
+      // one of degree: there is no rich man who is exempt.
+      { work: '1enoch', chapter: 94, verse: 8, tradition: 'second-temple',
+        summary: 'Woe to the rich; from your riches you depart',
+        probe: 'Woe to you, ye rich, for ye have trusted in your riches' },
+      { work: '1enoch', chapter: 96, verse: 4, tradition: 'second-temple',
+        summary: 'Riches make you look like the righteous',
+        probe: 'your riches make you appear like the righteous' },
+      { work: '1enoch', chapter: 97, verse: 8, tradition: 'second-temple',
+        summary: 'Woe to those who got everything they wanted',
+        probe: 'We have become rich with riches and have possessions' },
+      { work: 'philo-good-person', chapter: 1, verse: 86, tradition: 'second-temple',
+        summary: 'One store, common purse, common clothing',
+        probe: 'there is one magazine among them all' },
+      { work: 'philo-good-person', chapter: 1, verse: 87, tradition: 'second-temple',
+        summary: 'The sick are kept, though they contribute nothing',
+        probe: 'those who are sick are not neglected because they are unable to contribute' },
+      { work: 'philo-hypothetica', chapter: 4, verse: 4, tradition: 'second-temple',
+        summary: 'None ventures to own house, land or flock',
+        probe: 'no one among them ventures at all to acquire any property whatever of his own' },
+      { work: 'jewish-war', book: 5, chapter: 13, verse: 558, tradition: 'second-temple',
+        summary: 'Greed outlasting even the fear of punishment',
+        probe: 'the love of money was too hard for all their dread of punishment' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'm-avot', chapter: 4, verse: 1, tradition: 'rabbinic',
+        summary: 'Who is rich? He who rejoices in his lot',
+        probe: 'Who is rich? He who rejoices in his lot' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-barnabas', chapter: 19, verse: 8, tradition: 'apostolic-fathers',
+        summary: 'Share everything; call nothing your own',
+        probe: 'shalt not say that anything is thine own' },
+      { work: 'af-hermas', chapter: 51, verse: 5, tradition: 'apostolic-fathers',
+        summary: 'Rich in money, poor in intercession',
+        probe: 'the rich man hath much wealth, but in the things of the Lord he is poor' },
+      { work: 'af-hermas', chapter: 51, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Elm and vine: neither bears fruit alone',
+        probe: 'Thou seest then that the elm also beareth' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // The moment the demand is reinterpreted. Whether Clement is reading Mark rightly or
+      // reading his congregation rightly is the question worth putting to students; he is the
+      // first writer here with an obvious institutional interest in the answer.
+      { work: 'clement-quis-dives', chapter: 11, verse: 1, tradition: 'church-fathers',
+        summary: 'Not the property — the notions about it',
+        probe: 'bids him banish from his soul his notions about wealth' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      { work: 'greco-diogenes-laertius', chapter: 10, verse: 130, tradition: 'greco-roman',
+        summary: 'Contentment with little, not the use of little',
+        probe: 'so as to be contented with little if we have not much' },
     ],
   },
   {
-    id: 'purity',
+    id: 'prayer',
     group: 'Law and practice',
-    label: 'Purity, food and the table',
+    label: 'Prayer',
     blurb:
-      'Clean and unclean — what may be eaten, what defiles by contact, and who may eat with whom. '
-      + 'Under persecution this stops being housekeeping and becomes the thing people die over: '
-      + 'both Maccabean martyrdoms begin with a refusal to eat.',
+      'Two arguments run under all of this. The first is fixity: the Mishnah sets the hours for '
+      + 'each prayer and then, three rulings later, says that whoever makes his prayer fixed is not '
+      + 'really praying — and the Didache, having given the Lord’s Prayer, tells you to say it '
+      + 'three times a day, which is the Jewish rhythm with different words. The second is who '
+      + 'carries it. Sirach has the prayer of the humble go straight up and pierce the clouds; '
+      + 'Tobit has an archangel present it, and names him; 1 Enoch has the whole heavenly court '
+      + 'petitioning on the martyrs’ behalf. Nobody here treats the question as settled.',
     canonicalAnchors:
-      'The anchors are Leviticus 11 (clean and unclean creatures), Leviticus 12–15 (bodily '
-      + 'impurity) and Numbers 19 (the red heifer). They are canonical and sit outside this corpus.',
+      'The anchors are Deuteronomy 6:4–9 (the Shema, which the Mishnah below regulates the saying '
+      + 'of), 1 Kings 8, Daniel 6:10 — three times a day, towards Jerusalem — and the Psalms as a '
+      + 'whole. They are canonical and sit outside this corpus. Matthew 6:5–13 is what the Didache '
+      + 'is quoting, and what it means by praying “as the hypocrites”.',
     absences: [
-      'Nothing here explains WHY contact transmits impurity. As with the scapegoat, the mechanism '
-      + 'is assumed rather than argued — the sources tell you what defiles, never how.',
-      'Purity law is worked out in detail only in the rabbinic material, which is second century '
-      + 'and later. For the first century the witnesses are crisis narratives and outsiders’ '
-      + 'descriptions, so what survives is the boundary under pressure rather than at rest.',
+      'The central Jewish prayer is regulated here and never printed. The Yerushalmi below debates '
+      + 'whether you must say all eighteen benedictions or merely something like them, and explains '
+      + 'why there are eighteen — without giving the words of any of them. The same is true of the '
+      + 'Mishnah: it tells you when to pray, how late you may leave it, and what to do if a snake '
+      + 'is on your foot, and it assumes throughout that you already know the text. No prayer book '
+      + 'from this period survives, and none is in this library.',
+      'What ordinary people said is mostly gone. The prayers preserved below are literary — Tobit’s '
+      + 'and Manasseh’s were composed for the books they sit in — and the ones that were actually '
+      + 'in daily use went unwritten, because everyone knew them. The Qumran hymn collections are '
+      + 'the nearest thing to a real prayer book from this world, and no open English translation '
+      + 'of them exists.',
     ],
     entries: [
-      { work: '1Macc', chapter: 1, verse: 47, tradition: 'second-temple',
-        summary: 'Swine and unclean beasts ordered on altars',
-        probe: 'flesh, and unclean beasts' },
-      { work: '2Macc', chapter: 6, verse: 18, tradition: 'second-temple',
-        summary: 'Eleazar constrained to eat swine’s flesh',
-        probe: 'Eleazar, one of the principal scribes' },
-      { work: '2Macc', chapter: 7, verse: 1, tradition: 'second-temple',
-        summary: 'Seven brothers compelled to taste it',
-        probe: 'compelled by the king against the law to taste swine' },
-      { work: 'against-apion', book: 2, chapter: 1, verse: 203, tradition: 'second-temple',
-        summary: 'Bathing required after intercourse, soul and body',
-        probe: 'there is a defilement contracted thereby, both in soul and body' },
-      { work: 'philo-moses', chapter: 2, verse: 139, tradition: 'second-temple',
-        summary: 'The laver of mirrors: look into your mind',
-        probe: 'the materials of which this vessel was composed were mirrors' },
-      { work: 'm-eduyot', chapter: 5, verse: 3, tradition: 'rabbinic',
-        summary: 'Whether Ecclesiastes defiles the hands, disputed',
-        probe: 'The book of Ecclesiastes does not defile the hands' },
-      { work: 'm-chagigah', chapter: 3, verse: 8, tradition: 'rabbinic',
-        summary: 'Temple vessels immersed; beware touching the table',
-        probe: 'How did they undertake the purification of the Temple court' },
-      { work: 'tg-psj-numbers', chapter: 6, verse: 9, tradition: 'rabbinic',
-        summary: 'A sudden death defiles the Nazirite’s vow',
-        probe: 'he unawares defile the head of his vow' },
-      { work: 'af-didache', chapter: 6, verse: 1, tradition: 'apostolic-fathers',
-        summary: 'Bear what yoke of the Lord you can',
-        probe: 'if thou art able to bear the whole yoke of the Lord' },
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Sirach and Tobit disagree about the route. In Sirach nothing stands between the humble man
+      // and God; in Tobit the prayer is carried, and the carrier introduces himself by name.
+      { work: 'Sir', chapter: 32, verse: 17, tradition: 'second-temple',
+        summary: 'The humble man’s prayer pierces the clouds',
+        probe: 'The prayer of the humble pierceth the clouds' },
+      { work: 'Tob', chapter: 3, verse: 16, tradition: 'second-temple',
+        summary: 'Two prayers, far apart, heard together',
+        probe: 'So the prayers of them both were heard' },
+      { work: 'Tob', chapter: 12, verse: 12, tradition: 'second-temple',
+        summary: 'He carried the remembrance of their prayers up',
+        probe: 'I did bring the remembrance of your prayers before the Holy One' },
+      { work: 'Tob', chapter: 12, verse: 15, tradition: 'second-temple',
+        summary: 'Raphael, one of seven who present prayers',
+        probe: 'which present the prayers of the saints' },
+      { work: '1enoch', chapter: 47, verse: 1, tradition: 'second-temple',
+        summary: 'The prayer of the righteous ascends with their blood',
+        probe: 'shall have ascended the prayer of the righteous' },
+      { work: '1enoch', chapter: 47, verse: 2, tradition: 'second-temple',
+        summary: 'Heaven petitions on the martyrs’ behalf',
+        probe: 'Shall unite with one voice And supplicate and pray' },
+      { work: 'Odes', chapter: 12, verse: 11, tradition: 'second-temple', citeAs: 'Prayer of Manasseh 11',
+        summary: 'A prayer preserved: the knee of the heart',
+        probe: 'Now therefore I bow the knee of mine heart' },
+      { work: 'antiquities', book: 10, chapter: 3, verse: 41, tradition: 'second-temple',
+        summary: 'Manasseh in chains; God heard him',
+        probe: 'God heard his prayer, and granted him' },
+      { work: '1Macc', chapter: 7, verse: 37, tradition: 'second-temple',
+        summary: 'A house of prayer and petition for the people',
+        probe: 'to be a house of prayer and petition for thy people' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // 4:1 and 4:4 are three rulings apart in one chapter. The first fixes the hours; the second
+      // says that a man whose prayer is fixed is not supplicating. Both are the tradition.
+      { work: 'm-berakhot', chapter: 4, verse: 1, tradition: 'rabbinic',
+        summary: 'Morning until midday; evening has no limit',
+        probe: 'The morning Tefillah (Shacharit) is until midday' },
+      { work: 'm-berakhot', chapter: 4, verse: 4, tradition: 'rabbinic',
+        summary: 'Fixed prayer is not true supplication',
+        probe: 'if a man makes his prayers fixed, it is not [true] supplication' },
+      { work: 'y-berakhot', chapter: 4, verse: 3, tradition: 'rabbinic',
+        summary: 'Eighteen benedictions, or something like them',
+        probe: 'if he is fluent in his prayer then he prays eighteen benedictions' },
+      { work: 'y-berakhot', chapter: 5, verse: 1, tradition: 'rabbinic',
+        summary: 'An hour to settle; not even for a snake',
+        probe: 'Even if a snake is wound around one’s heel' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-didache', chapter: 8, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'This prayer, three times every day',
+        probe: 'Three times in the day pray ye so' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'clement-stromateis-7', chapter: 7, verse: 1, tradition: 'church-fathers',
+        summary: 'Not on set days — continually, in everything',
+        probe: 'not on special days, as some others, but doing this continually' },
     ],
   },
   {
