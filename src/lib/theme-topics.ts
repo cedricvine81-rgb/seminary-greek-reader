@@ -184,6 +184,52 @@ export const TOPICS: Topic[] = [
       q('enthroned', /\bseated on the throne of (his )?glory\b|\bsit upon the throne\b/, 3),
     ], context: [], minScore: 4, perWorkCap: 6 },
 
+  // The next three sit beside 'messiah' and must not simply repeat it. Each asks a narrower
+  // question that the sources answer differently: WHO IS ENTITLED to rule (son-of-david), what
+  // actual kingship looked like and whether Israel should have one at all (king-of-israel), and
+  // who gets called God's son (son-of-god) — which in this corpus is mostly not the messiah.
+  { id: 'son-of-david', label: 'Son of David',
+    blurb: 'The dynastic claim: the promise to David, who was entitled to the throne, and the '
+      + 'awkward fact that nobody ruling Judaea in this period descended from him.',
+    queries: [
+      q('son-of-david', /\bson of david\b|\bseed of david\b|\boffspring of david\b/, 5),
+      q('house-of-david', /\bhouse of david\b|\bthrone of david\b|\bkingdom of david\b/, 4),
+      q('branch', /\bbranch\b|\broot of jesse\b|\bstem of jesse\b/, 3, true),
+      q('covenant-with-david', /\bcovenant (with|unto) david\b|\bsware unto david\b|\bpromised to david\b/, 5),
+      q('david', /\bdavid\b/, 1, true),
+    ],
+    // Not the mundane David: the gate wants dynasty and succession, not the harp or Goliath.
+    context: [/\bking\b/, /\bthrone\b/, /\bseed\b/, /\breign\b/, /\banointed\b/, /\bmessiah\b/, /\bkingdom\b/],
+    minScore: 4, perWorkCap: 6 },
+
+  { id: 'king-of-israel', label: 'Kingship over Israel',
+    blurb: 'Whether Israel should have a king at all, what the law allows him, and what the '
+      + 'Hasmoneans and Herod actually did with the title.',
+    queries: [
+      q('king-of-israel', /\bking of (the )?(jews|israel)\b|\bkings of israel\b/, 5),
+      q('law-of-the-king', /\bthe king (must|shall) not multiply\b|\blaw of the king\b|\bset a king over\b/, 5),
+      q('crown-taken', /\bassumed the (crown|diadem)\b|\bput on the (crown|diadem)\b|\bproclaimed king\b|\btook the title of king\b/, 5),
+      q('theocracy', /\btheocracy\b|\baristocracy\b|\bno king but\b|\bgod (alone )?(is|be) (their|our) king\b/, 5),
+      q('high-priest-and-king', /\bhigh priest and king\b|\bboth (king and|priest and)\b/, 4),
+      q('reign', /\breigned\b|\bkingship\b/, 1, true),
+    ],
+    context: [/\bisrael\b/, /\bjews\b/, /\bjudaea\b/, /\bjerusalem\b/, /\blaw\b/, /\bpriest/],
+    minScore: 4, perWorkCap: 6 },
+
+  { id: 'son-of-god', label: 'Son of God',
+    blurb: 'Who is called God’s son here — Israel, the king, the righteous sufferer, the angels — '
+      + 'and how much distance there is between any of that and a divine Christ.',
+    queries: [
+      q('son-of-god', /\bson of (the )?(god|most high)\b|\bsons of (the )?(living )?god\b/, 5),
+      q('my-son', /\bthou art my son\b|\bhe shall be (to me )?(a|my) son\b|\bcall me[,]? my father\b/, 5),
+      q('firstborn-son', /\bmy (firstborn|first-born) son\b|\bisrael is my son\b/, 5),
+      q('children-of-god', /\bchildren of god\b|\bsons of the most high\b/, 3),
+      q('boast-god-his-father', /\bboasteth that god is his father\b|\bgod (is|be) his father\b/, 5),
+      q('begotten', /\bbegotten\b/, 1, true),
+    ],
+    context: [/\bfather\b/, /\bgod\b/, /\bmost high\b/, /\bdivin/],
+    minScore: 4, perWorkCap: 6 },
+
   { id: 'wisdom-logos', label: 'Wisdom, Word and pre-existence',
     blurb: 'Wisdom present at creation, Philo’s Logos, and how Jewish speech about God’s agent shaped Christian speech about Christ.',
     queries: [

@@ -891,6 +891,374 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
+    id: 'son-of-david',
+    group: 'Christ',
+    label: 'Son of David',
+    blurb:
+      'A claim that grew louder as it became less plausible. Sirach states the dynastic principle — '
+      + 'the kingship belongs to David’s posterity alone, as the priesthood does to Aaron’s — and '
+      + 'Josephus then counts the kings of David’s line and stops. After the exile the only Davidide '
+      + 'in office is Zerubbabel. The Psalms of Solomon pray for a son of David precisely because '
+      + 'the throne has been taken by people with no right to it; and when the last Hasmonean '
+      + 'objects to Herod, he appeals to his own family, not to David’s. Herod then burns the '
+      + 'genealogical archives. By the time Christians assert the descent, nobody could have checked '
+      + 'it — and Barnabas says it does not matter anyway.',
+    canonicalAnchors:
+      'The anchors are 2 Samuel 7:12–16 (your throne shall be established for ever), Isaiah 11:1 '
+      + '(a shoot from the stump of Jesse), Jeremiah 23:5 and 33:17, and — pulling the other way — '
+      + 'Jeremiah 22:24–30, the curse on Jechoniah, which Irenaeus below has to argue around. The '
+      + 'two genealogies of Jesus, Matthew 1 and Luke 3, are likewise canonical and sit outside '
+      + 'this corpus; Eusebius below is trying to reconcile them.',
+    absences: [
+      'No text in this library contains an actual Davidic pedigree. Everyone asserts the descent and '
+      + 'nobody sets out the line — which is exactly what Eusebius’ report of the burned archives '
+      + 'would predict, and it means the claim cannot be tested from any source here. What survives '
+      + 'is assertion, an argument about two conflicting lists, and a family of smallholders in '
+      + 'Galilee who said yes when an emperor asked them.',
+      'The other side of the question is missing. The clearest ancient Jewish arguments AGAINST '
+      + 'Jesus’ Davidic descent are quoted only by the Christians answering them — Trypho in Justin '
+      + 'concedes the messiah will be Davidic and disputes almost everything else — and no Jewish '
+      + 'text in this corpus engages the claim directly.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: 'Sir', chapter: 45, verse: 25, tradition: 'second-temple',
+        summary: 'Kingship to David’s posterity as priesthood to Aaron’s',
+        probe: 'the inheritance of the king should be to his posterity alone' },
+      { work: 'Sir', chapter: 48, verse: 15, tradition: 'second-temple',
+        summary: 'After the exile, a ruler still in David’s house',
+        probe: 'there remained a small people, and a ruler in the house of David' },
+      { work: '1Esd', chapter: 5, verse: 5, tradition: 'second-temple',
+        summary: 'Zerubbabel, of the house of David, returning',
+        probe: 'the son of Salathiel, of the house of David' },
+      { work: 'PsSol', chapter: 17, verse: 4, tradition: 'second-temple',
+        summary: 'God swore David’s kingdom would never fail',
+        probe: 'swaredst to him touching his seed that never should his kingdom fail' },
+      { work: 'PsSol', chapter: 17, verse: 6, tradition: 'second-temple',
+        summary: 'Usurpers laid waste the throne of David',
+        probe: 'They laid waste the throne of David in tumultuous arrogance' },
+      { work: 'PsSol', chapter: 17, verse: 21, tradition: 'second-temple',
+        summary: 'Raise up their king, the son of David',
+        probe: 'raise up unto them their king, the son of David' },
+      // Josephus closes the dynasty in a sentence, and then reports the objection to Herod — which
+      // is NOT that he is not a Davidide. Antigonus wants the throne for the Hasmoneans, his own
+      // house, which had no Davidic claim either. Nobody in the room is arguing from 2 Samuel 7.
+      { work: 'antiquities', book: 10, chapter: 8, verse: 143, tradition: 'second-temple',
+        summary: 'Twenty-one kings of David’s race, then none',
+        probe: 'ended their lives, being in number twenty-one' },
+      { work: 'antiquities', book: 14, chapter: 15, verse: 403, tradition: 'second-temple',
+        summary: 'Herod objected to as a private man, half-Jew',
+        probe: 'who was no more than a private man, and an Idumean' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'tg-isaiah', chapter: 9, verse: 6, tradition: 'rabbinic',
+        summary: 'No end to the throne of David',
+        probe: 'There shall be no end to the throne of David' },
+      { work: 'tg-isaiah', chapter: 22, verse: 22, tradition: 'rabbinic',
+        summary: 'The key of David’s house placed in his hand',
+        probe: 'the government of the house of David, in his hand' },
+      { work: 'tg-isaiah', chapter: 8, verse: 6, tradition: 'rabbinic',
+        summary: 'The people refuse the house of David’s rule',
+        probe: 'this people refuseth the kingdom of the house of David' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-ign-ephesians', chapter: 18, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Of David’s seed and of the Holy Spirit',
+        probe: 'of the seed of David but also of the Holy Ghost' },
+      { work: 'af-ign-romans', chapter: 7, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'The bread of God: flesh of David’s seed',
+        probe: 'the flesh of Christ who was of the seed of David' },
+      { work: 'af-barnabas', chapter: 12, verse: 10, tradition: 'apostolic-fathers',
+        summary: 'Calling him David’s son is the error',
+        probe: 'Since then men will say that Christ is the son of David' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // Hegesippus' story, in Eusebius, is the only place in this library where anybody's Davidic
+      // descent is put to anyone in authority — and the answer is thirty-nine acres and calluses.
+      { work: 'eusebius-he-3', chapter: 20, verse: 1, tradition: 'church-fathers',
+        summary: 'Domitian questions Jude’s grandsons, sees their hands',
+        probe: 'Information was given that they belonged to the family of David' },
+      { work: 'eusebius-he-1', chapter: 7, verse: 1, tradition: 'church-fathers',
+        summary: 'Herod burned the archives, hiding ignoble extraction',
+        probe: 'burned all the genealogical records' },
+      { work: 'anf-irenaeus-3', chapter: 21, verse: 9, tradition: 'church-fathers',
+        summary: 'Jechoniah’s curse: Joseph’s son could not inherit',
+        probe: 'if indeed He had been the son of Joseph, He could not' },
+    ],
+  },
+  {
+    id: 'king-of-israel',
+    group: 'Christ',
+    label: 'Kingship over Israel',
+    blurb:
+      'Almost nobody here is comfortable with a king. Josephus coins a word — theocracy — to say '
+      + 'that Israel’s constitution has no room for one, and dates the monarchy from the moment the '
+      + 'aristocracy ended. The Hasmoneans are made rulers “until there should arise a faithful '
+      + 'prophet”, a clause that concedes the arrangement is provisional; a generation later '
+      + 'Aristobulus puts on a diadem anyway. Rome then imposes an aristocracy, Herod takes the '
+      + 'title by grant of the Senate, and the rabbis write a law of the king centuries after there '
+      + 'is one to apply it to — a law made mostly of restrictions. The Psalms of Solomon want a '
+      + 'king, but are careful to say who his king is.',
+    canonicalAnchors:
+      'The anchors are 1 Samuel 8 (Israel asks for a king and is warned what he will take), '
+      + 'Deuteronomy 17:14–20 (the law of the king, which the Mishnah below is expounding), and '
+      + 'Judges 8:23, where Gideon refuses: “the LORD shall rule over you.” They are canonical and '
+      + 'sit outside this corpus, but the ambivalence they contain is the whole of this page.',
+    absences: [
+      'The kings themselves left nothing. Everything below is written about the Hasmoneans and '
+      + 'Herod by people who came after them or disliked them — Josephus above all, writing under '
+      + 'Roman patronage a century later. No Hasmonean or Herodian document survives in this '
+      + 'library, and their coins and inscriptions, which are the one contemporary evidence for how '
+      + 'they styled themselves, are not texts and are not collected here.',
+      'The fourth sect below is missing in its own voice. Josephus is the only reason we know that '
+      + 'a party existed holding that God alone was ruler and that Roman tribute was therefore '
+      + 'apostasy — and he blames them for the destruction of the country. Nothing they wrote '
+      + 'survives anywhere. The one position on this page that had to be argued at the cost of a '
+      + 'war is known solely through its most hostile witness.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Against Apion 2:165 is where the word "theocracy" enters any language. Josephus is
+      // inventing a term because the Greek political vocabulary — monarchy, oligarchy, democracy,
+      // which Herodotus lays out below — has no slot for what he wants to claim about Israel.
+      { work: 'against-apion', book: 2, chapter: 1, verse: 165, tradition: 'second-temple',
+        summary: 'A new word coined for it: theocracy',
+        probe: 'may be termed a Theocracy' },
+      { work: 'antiquities', book: 6, chapter: 12, verse: 268, tradition: 'second-temple',
+        summary: 'Saul: first king once the aristocracy ended',
+        probe: 'the first king who reigned after our aristocracy' },
+      { work: '1Macc', chapter: 14, verse: 41, tradition: 'second-temple',
+        summary: 'Simon rules until a faithful prophet arises',
+        probe: 'until there should arise a faithful prophet' },
+      { work: 'antiquities', book: 13, chapter: 11, verse: 301, tradition: 'second-temple',
+        summary: 'Aristobulus puts a diadem on his head',
+        probe: 'first of all put a diadem on his head' },
+      { work: 'jewish-war', book: 1, chapter: 8, verse: 169, tradition: 'second-temple',
+        summary: 'Rome reorganises the government as an aristocracy',
+        probe: 'ordained the other political government to be by an aristocracy' },
+      { work: 'antiquities', book: 18, chapter: 1, verse: 23, tradition: 'second-temple',
+        summary: 'A fourth sect: God is their only ruler',
+        probe: 'say that God is to be their only Ruler and Lord' },
+      { work: 'PsSol', chapter: 17, verse: 42, tradition: 'second-temple',
+        summary: 'The king of Israel whom God knows',
+        probe: 'This (will be) the majesty of the king of Israel' },
+      { work: 'PsSol', chapter: 17, verse: 34, tradition: 'second-temple',
+        summary: 'And the Lord himself is his king',
+        probe: 'The Lord Himself is his king' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // A complete constitutional law for an office that had not existed for well over a century,
+      // and the memorable provisions are all limits — including the one that puts him outside the
+      // courts in both directions.
+      { work: 'm-sanhedrin', chapter: 2, verse: 2, tradition: 'rabbinic',
+        summary: 'The king neither judges nor is judged',
+        probe: 'The king can neither judge nor be judged' },
+      { work: 'm-sanhedrin', chapter: 2, verse: 4, tradition: 'rabbinic',
+        summary: 'Eighteen wives; his road has no limit',
+        probe: 'The king’s road has no limit' },
+      { work: 'm-sanhedrin', chapter: 2, verse: 5, tradition: 'rabbinic',
+        summary: 'Nobody may see him bathing, or use his sceptre',
+        probe: 'none may sit on his throne and none may make use of his scepter' },
+      { work: 'y-sanhedrin', chapter: 10, verse: 2, tradition: 'rabbinic',
+        summary: 'Three kings excluded from the world to come',
+        probe: 'Three kings and four private persons have no part in the Future World' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'justin-1apology', chapter: 11, verse: 1, tradition: 'church-fathers',
+        summary: 'Our kingdom is not the one you fear',
+        probe: 'you suppose, without making any inquiry, that we speak of a human kingdom' },
+      { work: 'eusebius-he-3', chapter: 20, verse: 1, tradition: 'church-fathers',
+        summary: 'Peasant heirs: the kingdom is not earthly',
+        probe: 'it was not a temporal nor an earthly kingdom' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Herodotus stages the argument Josephus is refusing to have. Three Persians debate which
+      // constitution is best and monarchy wins — on the grounds that one excellent man is better
+      // than any assembly. Josephus' answer is that the one is not a man.
+      { work: 'herodotus-histories-3', chapter: 80, verse: 3, tradition: 'greco-roman',
+        summary: 'Monarchy corrupts even the best man alive',
+        probe: 'How can monarchy be a fit thing' },
+      { work: 'herodotus-histories-3', chapter: 82, verse: 1, tradition: 'greco-roman',
+        summary: 'Darius replies that monarchy is best',
+        probe: 'I hold that monarchy is' },
+    ],
+  },
+  {
+    id: 'son-of-man',
+    group: 'Christ',
+    label: 'The Son of Man',
+    blurb:
+      'Two quite different things share these words. Ordinarily “son of man” is Semitic for a human '
+      + 'being, and usually a frail one — Sirach uses it to say we are not immortal, Judith to say '
+      + 'God is not the sort of thing that wavers. Then in the Parables of Enoch it becomes a title '
+      + 'for somebody: a definite figure, always “that Son of Man”, hidden with God before creation, '
+      + 'seated on the throne of glory, given the judgement, worshipped by kings. 4 Ezra sees the '
+      + 'same figure rise out of the sea and God calls him “my Son”. And then Enoch’s own book, at '
+      + 'the very end, tells Enoch that he is the man.',
+    canonicalAnchors:
+      'Everything here comes out of Daniel 7:13–14 — one like a son of man, coming with the clouds, '
+      + 'given dominion — read alongside Psalm 8:4 and Ezekiel, where God addresses the prophet as '
+      + '“son of man” about ninety times and means simply “mortal”. Daniel is canonical and sits '
+      + 'outside this corpus. Note that it is also one of the two biblical books for which no Targum '
+      + 'was ever made, so there is no ancient Jewish translation of that verse to consult.',
+    absences: [
+      'The dating problem is the thing to know, and it is a gap in the evidence rather than in this '
+      + 'library. The Parables of Enoch — chapters 37–71, the whole of the Son of Man material below '
+      + '— are the ONE section of 1 Enoch of which no copy was found at Qumran, while every other '
+      + 'section was. So we cannot show that this figure was being read in the first century, and '
+      + 'scholars date the Parables anywhere from the first century BCE to the end of the first CE. '
+      + 'Whether they are background to the Gospels or a parallel to them is genuinely open.',
+      'The rabbis do not use it as a title. There is one further discussion, of Daniel 7:13 and how '
+      + 'a second throne could stand beside God’s, in the Babylonian Talmud at Sanhedrin 98a — which '
+      + 'is in this library in Aramaic only, its English being non-commercially licensed. The '
+      + 'Targum passages below show the ordinary idiom surviving, and nothing more than that.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // The two idiom passages come FIRST on purpose. A student who meets 1 Enoch 46 cold will
+      // read a title into every occurrence of the phrase, in this corpus and in the Gospels;
+      // seeing Sirach use it to mean "we die" is the cheapest correction available.
+      { work: 'Sir', chapter: 17, verse: 30, tradition: 'second-temple',
+        summary: 'Plain idiom: the son of man is mortal',
+        probe: 'because the son of man is not immortal' },
+      { work: 'Jdt', chapter: 8, verse: 16, tradition: 'second-temple',
+        summary: 'God is not a son of man, to waver',
+        probe: 'neither is he as the son of man, that he should be wavering' },
+      { work: '1enoch', chapter: 46, verse: 2, tradition: 'second-temple',
+        summary: 'Who is that Son of Man, and whence?',
+        probe: 'concerning that Son of Man, who he was, and whence he was' },
+      { work: '1enoch', chapter: 46, verse: 4, tradition: 'second-temple',
+        summary: 'He unseats kings and breaks the strong',
+        probe: 'Shall raise up the kings and the mighty from their seats' },
+      { work: '1enoch', chapter: 48, verse: 2, tradition: 'second-temple',
+        summary: 'Named before the Head of Days',
+        probe: 'that Son of Man was named In the presence of the Lord of Spirits' },
+      { work: '1enoch', chapter: 62, verse: 7, tradition: 'second-temple',
+        summary: 'Hidden from the beginning, revealed to the elect',
+        probe: 'from the beginning the Son of Man was hidden' },
+      { work: '1enoch', chapter: 62, verse: 5, tradition: 'second-temple',
+        summary: 'Seen on the throne of his glory',
+        probe: 'When they see that Son of Man Sitting on the throne of his glory' },
+      { work: '1enoch', chapter: 62, verse: 9, tradition: 'second-temple',
+        summary: 'Kings fall down, worship, and beg mercy',
+        probe: 'And worship and set their hope upon that Son of Man' },
+      { work: '1enoch', chapter: 69, verse: 27, tradition: 'second-temple',
+        summary: 'The sum of judgement handed to him',
+        probe: 'the sum of judgement was given unto the Son of Man' },
+      // The identification. Everything above reads as a heavenly being distinct from Enoch — and
+      // then the angel tells Enoch it is him. Whether 71 belongs with 37–70 is disputed, which is
+      // exactly why the passage is here rather than tidied away.
+      { work: '1enoch', chapter: 71, verse: 14, tradition: 'second-temple',
+        summary: 'The angel tells Enoch: this is you',
+        probe: 'This is the Son of Man who is born unto righteousness' },
+      { work: '2esdras', chapter: 13, verse: 3, tradition: 'second-temple',
+        summary: 'A man from the sea, flying with clouds',
+        probe: 'that man waxed strong with the thousands of heaven' },
+      { work: '2esdras', chapter: 13, verse: 32, tradition: 'second-temple',
+        summary: 'God calls the ascending man “my Son”',
+        probe: 'then shall my Son be declared, whom thou sawest as a man ascending' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'tg-isaiah', chapter: 51, verse: 12, tradition: 'rabbinic',
+        summary: 'Idiom intact: a son of man, like grass',
+        probe: 'of a mortal man or of a son of man, who is counted like grass' },
+      { work: 'tg-isaiah', chapter: 56, verse: 2, tradition: 'rabbinic',
+        summary: 'The son of man who keeps the Sabbath',
+        probe: 'the son of man that layeth hold on it' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // Barnabas refuses the phrase as a title outright, which shows it was not obvious to every
+      // early Christian that it was one. Ignatius, at the same date, is happy to use both.
+      { work: 'af-barnabas', chapter: 12, verse: 10, tradition: 'apostolic-fathers',
+        summary: 'Not a son of man, but the Son of God',
+        probe: 'it is Jesus, not a son of man, but the Son of God' },
+      { work: 'af-ign-ephesians', chapter: 20, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Of David’s race, Son of Man and Son of God',
+        probe: 'who is Son of Man and Son of God' },
+    ],
+  },
+  {
+    id: 'son-of-god',
+    group: 'Christ',
+    label: 'Son of God',
+    blurb:
+      'In the Jewish sources this is a relationship, and it is offered widely. Israel is God’s '
+      + 'firstborn son; the man who provides for orphans becomes “as the son of the Most High”; '
+      + 'anyone who lives virtuously is among the sons of God; the angels are sons of God in '
+      + 'Genesis 6, which is how 1 Enoch reads them. Philo, reaching for something more, gives the '
+      + 'title to the Logos and immediately concedes that no human being may be worthy of it. '
+      + 'The one text that comes close to the Gospels’ use is Wisdom 2, where the righteous man '
+      + 'calls God his father and his enemies decide to test whether God will in fact rescue him. '
+      + 'Christian writers then make it a title for one person — and spend the next three centuries '
+      + 'explaining how that differs from everyone else being called it.',
+    canonicalAnchors:
+      'The anchors are Exodus 4:22 (Israel is my firstborn son), 2 Samuel 7:14 and Psalm 2:7 (“you '
+      + 'are my son, today I have begotten you” — said to the king at his enthronement), Hosea 11:1, '
+      + 'and Genesis 6:2. They are canonical and sit outside this corpus. 1 Clement below quotes '
+      + 'Psalm 2:7 straight, which is worth noticing: the verse it applies to Christ was originally '
+      + 'a coronation formula for a man.',
+    absences: [
+      'The closest verbal parallel to the Gospels is at Qumran and is not here. 4Q246, an Aramaic '
+      + 'fragment, says of a coming figure that “he shall be called the Son of God, and they shall '
+      + 'call him the son of the Most High” — the same pair of phrases, in the same order, as Luke '
+      + '1:32–35. Whether its subject is a messiah or a foreign king is still argued. No '
+      + 'public-domain or openly licensed English of the scrolls exists, so the text a student most '
+      + 'needs for this topic is the one they cannot read here.',
+      'Beware of 2 Esdras on this page. Its chapters 3–14 are a Jewish apocalypse of about 100 CE, '
+      + 'but chapters 1–2 and 15–16 are later Christian additions, and it is in chapter 2 that the '
+      + 'phrase “the Son of God, whom they have confessed in the world” appears. Quoted as Jewish '
+      + 'evidence it would prove the opposite of what it seems to. Nothing from those chapters is '
+      + 'cited below.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Wisdom 2 first: it is the passage a reader of the passion narrative will recognise, and
+      // its "son of God" is a righteous man being taunted, not a divine being.
+      { work: 'Wis', chapter: 2, verse: 16, tradition: 'second-temple',
+        summary: 'He boasts that God is his father',
+        probe: 'maketh his boast that God is his father' },
+      { work: 'Wis', chapter: 2, verse: 18, tradition: 'second-temple',
+        summary: 'If he is God’s son, God will rescue him',
+        probe: 'For if the just man be the son of God, he will help him' },
+      { work: 'Sir', chapter: 4, verse: 10, tradition: 'second-temple',
+        summary: 'Care for orphans and become the Most High’s son',
+        probe: 'so shalt thou be as the son of the most High' },
+      { work: 'philo-spec-laws', chapter: 1, verse: 318, tradition: 'second-temple',
+        summary: 'Those who live virtuously are sons of God',
+        probe: 'those who do what is pleasing to nature and virtuous are the sons of God' },
+      // Philo gives the title to the Logos and, in the next sentence, doubts that any human
+      // qualifies for it. Both halves matter, which is why both verses are here.
+      { work: 'philo-confusion', chapter: 1, verse: 146, tradition: 'second-temple',
+        summary: 'None worthy yet; be shaped by his firstborn Word',
+        probe: 'any one who is worthy to be called a son of God' },
+      { work: 'philo-confusion', chapter: 1, verse: 147, tradition: 'second-temple',
+        summary: 'Not yet sons of God — children, at least',
+        probe: 'if we are not yet suitable to be called the sons of God' },
+      { work: '1enoch', chapter: 106, verse: 5, tradition: 'second-temple',
+        summary: 'Noah’s birth: resembling the sons of heaven',
+        probe: 'resembling the sons of the God of heaven' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // Two hits in the whole rabbinic corpus here, and this is the usable one. The sonship is
+      // corporate: it belongs to Israel, and the Targum keeps it there.
+      { work: 'tg-psj-exodus', chapter: 4, verse: 22, tradition: 'rabbinic',
+        summary: 'Israel is my firstborn son',
+        probe: 'Israel is My first-born son' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-1clement', chapter: 36, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Psalm 2 applied: today I have begotten you',
+        probe: 'Thou art My Son, I this day have begotten thee' },
+      { work: 'af-ign-ephesians', chapter: 20, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Son of Man and Son of God together',
+        probe: 'who is Son of Man and Son of God' },
+      // Hermas asks the question out loud, which no later writer could have done so casually.
+      { work: 'af-hermas', chapter: 58, verse: 5, tradition: 'apostolic-fathers',
+        summary: 'Why is the Son of God shown as a servant?',
+        probe: 'is the Son of God represented in the parable in the guise of a servant' },
+      { work: 'af-mart-polycarp', chapter: 17, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'Him we adore; the martyrs we merely cherish',
+        probe: 'For Him, being the Son of God, we adore' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'origen-celsus-8', chapter: 14, verse: 1, tradition: 'church-fathers',
+        summary: 'Celsus: drop the Son, worship the Father only',
+        probe: 'If you should tell them that Jesus is not the Son of God' },
+      { work: 'athanasius-arians-2', chapter: 59, verse: 1, tradition: 'church-fathers',
+        summary: 'Made sons by calling; he is Son by nature',
+        probe: 'God not only created them to be men, but called them to be sons' },
+    ],
+  },
+  {
     id: 'sabbath',
     group: 'Law and practice',
     label: 'Sabbath',
