@@ -541,10 +541,10 @@ export const THEME_PAGES: TopicPage[] = [
       + 'Isaiah 66:1–2 (“what house will you build for me?”). They are canonical and sit outside '
       + 'this corpus; the writers below all quote or assume them.',
     absences: [
-      'The temple’s measurements and its daily service are set out in the Mishnah tractates Middot '
-      + 'and Tamid, which this library does not hold. The rabbinic entries here are Yoma — the Day '
-      + 'of Atonement — and the Targums, so what survives is the ritual of one day rather than the '
-      + 'ordinary working of the place.',
+      'Middot describes the building in the present tense — the Temple Mount five hundred cubits '
+      + 'square, five gates, an altar of thirty-two — but it was compiled generations after 70 CE '
+      + 'and its authors never saw it standing. Read it as a memory reconstructed from tradition '
+      + 'and scripture, not as a survey.',
       'After Barnabas the Christian writers largely stop arguing about the building. They move to '
       + 'sacrifice and priesthood instead, which are separate questions and belong on their own '
       + 'pages; that is why the later Christian section here is empty rather than thin.',
@@ -582,6 +582,18 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'tg-psj-exodus', chapter: 28, verse: 43, tradition: 'rabbinic',
         summary: 'Vestments required on pain of flaming fire',
         probe: 'that they may not receive the punishment of flaming fire' },
+      { work: 'm-middot', chapter: 1, verse: 3, tradition: 'rabbinic',
+        summary: 'Five gates counted round the Temple Mount',
+        probe: 'There were five gates to the Temple Mount' },
+      { work: 'm-middot', chapter: 2, verse: 1, tradition: 'rabbinic',
+        summary: 'The Mount measured five hundred cubits square',
+        probe: 'The Temple Mount was five hundred cubits by five hundred cubits' },
+      { work: 'm-middot', chapter: 3, verse: 1, tradition: 'rabbinic',
+        summary: 'The altar thirty-two cubits, stepped inward',
+        probe: 'The altar was thirty-two cubits by thirty-two' },
+      { work: 'm-tamid', chapter: 1, verse: 1, tradition: 'rabbinic',
+        summary: 'Priests keep watch in three places nightly',
+        probe: 'In three places the priests keep watch in the Temple' },
       // ── Apostolic Fathers ────────────────────────────────────────────────────────────
       { work: 'af-barnabas', chapter: 6, verse: 15, tradition: 'apostolic-fathers',
         summary: 'The holy temple is the heart’s abode',

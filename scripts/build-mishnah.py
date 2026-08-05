@@ -37,6 +37,11 @@ MISHNAH = [
     ('keritot',   'Mishnah Keritot',   'Mishnah Keritot',   ['m. Ker.']),
     ('kiddushin', 'Mishnah Kiddushin', 'Mishnah Kiddushin', ['m. Qidd.']),
     ('tamid',     'Mishnah Tamid',     'Mishnah Tamid',     ['m. Tamid']),
+    # Added for the Themes 'Temple' page: Middot is the tractate that gives the building's
+    # measurements and layout, which nothing else in the library supplies. Kulp covers it
+    # under the same CC-BY as the rest; the Sefaria API otherwise defaults to the Davidson
+    # edition, which is CC-BY-NC and therefore unusable here — VERSION above pins Kulp.
+    ('middot',    'Mishnah Middot',    'Mishnah Middot',    ['m. Mid.', 'm. Middot']),
     ('nazir',     'Mishnah Nazir',     'Mishnah Nazir',     ['m. Naz.']),
     ('yevamot',   'Mishnah Yevamot',   'Mishnah Yevamot',   ['m. Yebam.', 'm. Yeb.']),
     ('temurah',   'Mishnah Temurah',   'Mishnah Temurah',   ['m. Temurah']),

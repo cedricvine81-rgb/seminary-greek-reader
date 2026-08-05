@@ -1286,6 +1286,7 @@ const MISHNAH: { slug: string; name: string; noteBook: string; chapters: number;
   { slug: 'm-keritot', name: 'm. Keritot (Excisions)', noteBook: 'MishKeritot', chapters: 6, abbrevs: ['m. Ker.'] },
   { slug: 'm-kiddushin', name: 'm. Kiddushin (Betrothals)', noteBook: 'MishKiddushin', chapters: 4, abbrevs: ['m. Qidd.'] },
   { slug: 'm-tamid', name: 'm. Tamid (The Daily Offering)', noteBook: 'MishTamid', chapters: 7, abbrevs: ['m. Tamid'] },
+  { slug: 'm-middot', name: 'm. Middot (Measurements of the Temple)', noteBook: 'MishMiddot', chapters: 5, abbrevs: ['m. Mid.', 'm. Middot'] },
   { slug: 'm-nazir', name: 'm. Nazir (The Nazirite)', noteBook: 'MishNazir', chapters: 9, abbrevs: ['m. Naz.'] },
   { slug: 'm-yevamot', name: 'm. Yevamot (Levirate Marriages)', noteBook: 'MishYevamot', chapters: 16, abbrevs: ['m. Yebam.', 'm. Yeb.'] },
   { slug: 'm-temurah', name: 'm. Temurah (Substitution)', noteBook: 'MishTemurah', chapters: 7, abbrevs: ['m. Temurah'] },
