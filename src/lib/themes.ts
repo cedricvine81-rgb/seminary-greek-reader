@@ -1444,11 +1444,13 @@ export const THEME_PAGES: TopicPage[] = [
       + 'read as the incarnation, and which every reader should check in context: the next lines '
       + 'identify what appeared as the book of the commandments. Baruch is doing what Sirach 24 '
       + 'does, and saying that Wisdom came down as the Law.',
-      'Targum Neofiti is not in this library and it is the text most often quoted in this argument. '
-      + 'Its Genesis 1:1 opens “from the beginning, by Wisdom, the Word of the Lord created”, which '
-      + 'is as close to John 1:1 as any Jewish sentence gets. Neofiti and Onkelos have no '
-      + 'public-domain English on Sefaria, so what is here is Pseudo-Jonathan and Isaiah only — '
-      + 'good enough to show the Memra habit, not the one verse everybody cites.',
+      'Targum Neofiti is not in this library, and it is the text most often quoted in this argument: '
+      + 'its Genesis 1:1 reads “In the beginning and in great wisdom, God created and finished the '
+      + 'heavens and the earth” — as close to John 1:1 as any Jewish sentence gets, and the reason '
+      + 'people reach for it. Only eight verses of Neofiti exist in any openly licensed English '
+      + '(that one among them, in Sefaria’s CC0 community translation); the rest, and all of '
+      + 'Onkelos, are available only under licences this app cannot use. So what is here is '
+      + 'Pseudo-Jonathan and Isaiah — enough to show the Memra habit, not the verse everybody cites.',
     ],
     entries: [
       // ── Second Temple Jewish ─────────────────────────────────────────────────────────
