@@ -1036,10 +1036,10 @@ export const THEME_PAGES: TopicPage[] = [
       'The anchors are Daniel 7:9–10 (the books opened), Malachi 3 and Psalm 1. They are canonical '
       + 'and sit outside this corpus; the writers below assume them throughout.',
     absences: [
-      'The fullest Second Temple judgment SCENE — the Testament of Abraham, with its scales, its '
-      + 'recording angels and its soul weighed in the balance — is not in this library. What '
-      + 'survives here is overwhelmingly the verdict rather than the machinery, and that is an '
-      + 'accident of what is held, not of what was written.',
+      'Only ONE text here describes the machinery at all. The Testament of Abraham has the '
+      + 'balance, the angels who write down sins and righteous deeds, and the fiery test; every '
+      + 'other source on this page gives the verdict and stops. One witness is not a consensus, '
+      + 'and the scene should not be read back into writers who never describe it.',
       'The criterion is deeds, stated flatly and without qualification by every source here. '
       + 'Nothing in this library weighs faith, intention or status against them, or discusses what '
       + 'happens when they conflict.',
@@ -1060,6 +1060,15 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'jubilees', chapter: 3, verse: 10, tradition: 'second-temple',
         summary: 'The commandment written on heavenly tablets',
         probe: 'the commandment is written on the heavenly tablets' },
+      { work: 'testament-of-abraham-a', chapter: 12, verse: 1, tradition: 'second-temple',
+        summary: 'A balance, a fire, a throne between gates',
+        probe: 'holding in his hand a balance' },
+      { work: 'testament-of-abraham-a', chapter: 13, verse: 1, tradition: 'second-temple',
+        summary: 'Two angels write down sins and righteousness',
+        probe: 'these are they that write down the sins' },
+      { work: 'testament-of-abraham-b', chapter: 12, verse: 1, tradition: 'second-temple',
+        summary: 'Abraham shown the place of judgment itself',
+        probe: 'after Abraham had seen the place of judgment' },
       { work: 'philo-cherubim', chapter: 1, verse: 72, tradition: 'second-temple',
         summary: 'Brought before the judgment-seat of God',
         probe: 'being brought before the judgment-seat of God' },

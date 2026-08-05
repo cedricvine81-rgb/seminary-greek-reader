@@ -26,7 +26,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'testament-of-abraham-a' | 'testament-of-abraham-b' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -2360,6 +2360,17 @@ export const PROSE_WORKS: ProseWork[] = [
     dataUrl: '/data/pseudepigrapha-b/pseudo-philo.json', chapters: 65,
     attribution: 'Text: M. R. James’ translation of Pseudo-Philo, “The Biblical Antiquities of Philo”, 1917 (public domain). Source: sacred-texts.com.',
     parseCitation: cite(/^L\.A\.B\.\s+(\d+)(?::(\d+))?/) },
+  // Cited by chapter alone ("T. Abr. A 12"): Craigie's public-domain English has no verse
+  // numbers, and the ones modern editions use come from the Greek. Two works, not one — the
+  // recensions are different books and are cited apart.
+  { source: 'testament-of-abraham-a', name: 'Testament of Abraham (Recension A)', noteBook: 'TAbrA',
+    dataUrl: '/data/pseudepigrapha-b/testament-of-abraham-a.json', chapters: 20,
+    attribution: 'Text: W. A. Craigie’s translation of the Testament of Abraham, in “The Ante-Nicene Fathers” vol. IX, 1896 (public domain). Source: Wikisource.',
+    parseCitation: cite(/^T\.?\s*Abr\.?\s*A\.?\s+(\d+)(?::(\d+))?/i) },
+  { source: 'testament-of-abraham-b', name: 'Testament of Abraham (Recension B)', noteBook: 'TAbrB',
+    dataUrl: '/data/pseudepigrapha-b/testament-of-abraham-b.json', chapters: 14,
+    attribution: 'Text: W. A. Craigie’s translation of the Testament of Abraham, in “The Ante-Nicene Fathers” vol. IX, 1896 (public domain). Source: Wikisource.',
+    parseCitation: cite(/^T\.?\s*Abr\.?\s*B\.?\s+(\d+)(?::(\d+))?/i) },
   { source: 'odes-of-solomon', name: 'Odes of Solomon', noteBook: 'OdesSol',
     dataUrl: '/data/pseudepigrapha-b/odes-of-solomon.json', chapters: 42,
     attribution: 'Text: J. Rendel Harris’ translation of the Odes of Solomon, from “The Forgotten Books of Eden”, 1926 (public domain). Source: sacred-texts.com.',

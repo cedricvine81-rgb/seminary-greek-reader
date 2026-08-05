@@ -224,6 +224,8 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14] },
       { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], greek: true, greekOnly: true, secondaryLabel: 'Latin' },
       { id: 'pseudo-philo', name: 'Pseudo-Philo (Biblical Antiquities / L.A.B.)', source: 'pseudo-philo', chapters: 65 },
+      { id: 'testament-of-abraham-a', name: 'Testament of Abraham (Recension A)', source: 'testament-of-abraham-a', chapters: 20 },
+      { id: 'testament-of-abraham-b', name: 'Testament of Abraham (Recension B)', source: 'testament-of-abraham-b', chapters: 14 },
       { id: 'odes-of-solomon', name: 'Odes of Solomon', source: 'odes-of-solomon', chapters: 42 },
       { id: 'ascension-of-isaiah', name: 'Ascension of Isaiah (with Martyrdom of Isaiah)', source: 'ascension-of-isaiah', chapters: 11 },
       // The Testaments of the Twelve Patriarchs (Ante-Nicene Fathers / Roberts-Donaldson).
