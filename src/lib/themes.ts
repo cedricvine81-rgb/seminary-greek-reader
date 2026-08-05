@@ -806,6 +806,164 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
+    id: 'mission',
+    group: 'People and power',
+    label: 'The nations, conversion and mission',
+    blurb:
+      'The direction of travel is the thing to notice. In the Jewish texts the nations COME — from '
+      + 'the ends of the earth, to Jerusalem, bringing gifts, at the end of days — and nobody is '
+      + 'sent anywhere. Conversion nevertheless happened, and Josephus shows how: a Jewish merchant '
+      + 'gets talking to the women of a foreign court, and a king ends up circumcised after two '
+      + 'Jewish teachers give him opposite advice about whether he needs to be. Josephus also '
+      + 'claims the Sabbath and the food laws had reached every city on earth without anyone being '
+      + 'commissioned to take them. Then the Christian texts have people leaving home on purpose, '
+      + 'and by the time of the Didache the traffic already needs regulating: an apostle may stay '
+      + 'one day, two at a push, and may accept bread but not money.',
+    canonicalAnchors:
+      'The anchors are Isaiah 2:2–4 and 60 (the nations streaming to Zion), Isaiah 42:6 and 49:6 '
+      + '(a light to the Gentiles), Zechariah 8:20–23 and Malachi 1:11 — all of them describing '
+      + 'movement inward. They are canonical and sit outside this corpus. Matthew 28:19 and Romans '
+      + '15 point the other way, and are the reason the pattern below is worth noticing at all.',
+    absences: [
+      'No text in this library commands a Jew to go out and make converts. That is not the same as '
+      + 'saying it never happened — Izates below was converted by people who plainly tried, and '
+      + 'Josephus says Jewish practice had spread everywhere — but the sending is missing. Whether '
+      + 'Second Temple Judaism was in any organised sense a missionary religion is a real and '
+      + 'unsettled scholarly argument, and what this corpus supplies is evidence of movement '
+      + 'inward, plus anecdotes.',
+      'The converts and adherents left nothing. Gentiles who kept the Sabbath without becoming '
+      + 'Jews are described by Josephus, mocked by Roman satirists and named in synagogue '
+      + 'inscriptions, and no text in this library was written by one. Everything below is about '
+      + 'them, by people already inside.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Every one of these has the nations arriving. Nobody departs.
+      { work: 'Tob', chapter: 13, verse: 11, tradition: 'second-temple',
+        summary: 'Nations coming from far, gifts in hand',
+        probe: 'Many nations shall come from far to the name of the Lord' },
+      { work: 'Tob', chapter: 14, verse: 6, tradition: 'second-temple',
+        summary: 'All nations turn and bury their idols',
+        probe: 'And all nations shall turn, and fear the Lord God truly' },
+      { work: 'PsSol', chapter: 17, verse: 31, tradition: 'second-temple',
+        summary: 'They come from the ends of the earth',
+        probe: 'nations shall come from the ends of the earth to see his glory' },
+      { work: '1enoch', chapter: 10, verse: 21, tradition: 'second-temple',
+        summary: 'All nations adore; all become righteous',
+        probe: 'all nations shall offer adoration and shall praise Me' },
+      { work: '1enoch', chapter: 48, verse: 4, tradition: 'second-temple',
+        summary: 'He shall be the light of the Gentiles',
+        probe: 'And he shall be the light of the Gentiles' },
+      // The Izates narrative, which is the only conversion in this library reported at length.
+      // Note that BOTH advisers are Jewish and they disagree flatly: Ananias says circumcision is
+      // unnecessary, Eleazar tells him to go and read the law. The Gentile question was contested
+      // inside Judaism before it was contested inside the church.
+      { work: 'antiquities', book: 20, chapter: 2, verse: 34, tradition: 'second-temple',
+        summary: 'A merchant teaches the court women to worship',
+        probe: 'taught them to worship God according to the Jewish religion' },
+      { work: 'antiquities', book: 20, chapter: 2, verse: 41, tradition: 'second-temple',
+        summary: 'Ananias: he may worship without circumcision',
+        probe: 'he might worship God without being circumcised' },
+      { work: 'antiquities', book: 20, chapter: 2, verse: 45, tradition: 'second-temple',
+        summary: 'Eleazar: how long will you stay uncircumcised?',
+        probe: 'How long wilt thou continue uncircumcised' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 282, tradition: 'second-temple',
+        summary: 'The Sabbath has reached every city on earth',
+        probe: 'our custom of resting on the seventh day hath not come' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 283, tradition: 'second-temple',
+        summary: 'They imitate our concord and our charity',
+        probe: 'they also endeavor to imitate our mutual concord' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // Mission as an administrative problem: how long may he stay, and what may he take.
+      { work: 'af-didache', chapter: 11, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'One day, two at need; three makes him false',
+        probe: 'he shall not abide more than a single day' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'eusebius-he-3', chapter: 37, verse: 2, tradition: 'church-fathers',
+        summary: 'They gave away their goods and left home',
+        probe: 'Then starting out upon long journeys they performed the office of evangelists' },
+      { work: 'eusebius-he-5', chapter: 10, verse: 2, tradition: 'church-fathers',
+        summary: 'Pantaenus sent as far as India',
+        probe: 'was sent as far as India' },
+    ],
+  },
+  {
+    id: 'government',
+    group: 'People and power',
+    label: 'Rulers, empire and obedience',
+    blurb:
+      'The working arrangement was prayer and sacrifice for the ruler, offered by people who did '
+      + 'not worship him. Baruch tells the exiles to pray for the life of Nebuchadnezzar; the '
+      + 'temple offered sacrifice for Caesar twice a day, and the Jews told Petronius that if he '
+      + 'wanted images in the temple he would have to kill the nation first. Then in 66 the '
+      + 'captain of the temple stopped accepting the emperor’s sacrifice, and Josephus says flatly '
+      + 'that this was the beginning of the war. Rabbi Hanina, who had been vice-high priest, said '
+      + 'afterwards that you should pray for the government, because without the fear it inspires '
+      + 'men would swallow each other alive. The Christian texts arrive at the same arrangement '
+      + 'independently: pay the taxes, obey the laws, pray for the emperor’s health — and do not '
+      + 'call him lord.',
+    canonicalAnchors:
+      'The anchors are Jeremiah 29:7 (seek the peace of the city where I have sent you, and pray '
+      + 'for it), Daniel 2 and 4, Romans 13:1–7 and 1 Peter 2:13–17. They are canonical and sit '
+      + 'outside this corpus; Baruch below is written as a companion to Jeremiah 29, and 1 Clement '
+      + 'is praying almost exactly what Romans 13 prescribes.',
+    absences: [
+      'The refusers are missing in their own voice. Somebody argued that the sacrifice for Caesar '
+      + 'should stop, and won the argument in 66; Josephus records the decision and blames it for '
+      + 'the destruction of the country, and nothing survives that anyone on that side wrote. The '
+      + 'same is true of the fourth sect he describes elsewhere. Every text below is by someone who '
+      + 'accommodated, which is largely why those texts were copied.',
+      'There is no Christian text here from after the persecutions stopped. Everything below is '
+      + 'written by a minority with no power, asking to be left alone and offering taxes and '
+      + 'prayers in exchange. What Christians said about government once they had some of it — '
+      + 'Eusebius on Constantine is the turn — is barely represented, and the political theology '
+      + 'that follows lies outside this corpus entirely.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // The three Josephus passages are one story in sequence: the daily sacrifice for Caesar, the
+      // threat that made it a test, and the day it was refused. Read 2.10:197 and 2.17:409 together
+      // and the whole political settlement can be seen working and then breaking.
+      { work: 'Bar', chapter: 1, verse: 11, tradition: 'second-temple',
+        summary: 'Pray for the life of Nebuchadnezzar the king',
+        probe: 'pray for the life of Nabuchodonosor king of Babylon' },
+      { work: 'jewish-war', book: 2, chapter: 10, verse: 197, tradition: 'second-temple',
+        summary: 'Sacrifices twice daily for Caesar — but no image',
+        probe: 'We offer sacrifices twice every day for Caesar' },
+      { work: 'jewish-war', book: 2, chapter: 17, verse: 409, tradition: 'second-temple',
+        summary: 'They refuse Caesar’s sacrifice; the war begins',
+        probe: 'this was the true beginning of our war with the Romans' },
+      { work: 'philo-flaccus', chapter: 1, verse: 105, tradition: 'second-temple',
+        summary: 'Governors converting office into tyranny',
+        probe: 'seeking to convert their governorship and viceroyalty into a sovereignty' },
+      { work: 'antiquities', book: 12, chapter: 3, verse: 142, tradition: 'second-temple',
+        summary: 'A charter: live by your own ancestral laws',
+        probe: 'let all of that nation live according to the laws of their own country' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // Hanina had been vice-high priest, so he had watched the alternative from close up.
+      { work: 'm-avot', chapter: 3, verse: 2, tradition: 'rabbinic',
+        summary: 'Without its fear, men would swallow each other',
+        probe: 'pray for the welfare of the government' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // 1 Clement is a church in Rome praying for the Roman government, in the reign of an emperor
+      // under whom Christians had lately died. Note what it asks for: health, peace, stability,
+      // and that they may govern well.
+      { work: 'af-1clement', chapter: 61, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'You gave them sovereignty; grant them stability',
+        probe: 'Grant unto them therefore, O Lord, health peace, concord, stability' },
+      { work: 'af-1clement', chapter: 60, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Obedience to God, and to our rulers on earth',
+        probe: 'and to our rulers and governors upon the earth' },
+      { work: 'af-diognetus', chapter: 5, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'They obey the laws and outdo them',
+        probe: 'They obey the established laws, and they surpass the laws' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'justin-1apology', chapter: 17, verse: 1, tradition: 'church-fathers',
+        summary: 'We pay the taxes more readily than anyone',
+        probe: 'endeavour to pay to those appointed by you the taxes' },
+    ],
+  },
+  {
     id: 'messiah',
     group: 'Christ',
     label: 'Messiah and messianic expectation',
@@ -2776,6 +2934,159 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'eusebius-he-3', chapter: 31, verse: 3, tradition: 'church-fathers',
         summary: 'The dead rise at the Lord’s coming in glory',
         probe: 'which shall rise again on the last day, at the coming of the Lord' },
+    ],
+  },
+  {
+    id: 'kingdom',
+    group: 'Last things',
+    label: 'The kingdom of God',
+    blurb:
+      'At least three different things go by this name here, and they are not stages of one idea. '
+      + 'For the Assumption of Moses God’s kingdom does not begin — it APPEARS, throughout his '
+      + 'creation, and Satan simply ceases. For 2 Baruch there is a messianic reign that is '
+      + 'explicitly temporary, standing until the world of corruption ends. For the rabbis the '
+      + 'kingdom of heaven is a yoke you accept, twice a day, by saying the Shema — the Yerushalmi '
+      + 'can tell that a teacher is doing it because he covers his face with his hand. And in the '
+      + 'Didache it is somewhere the church is gathered INTO, prayed for over bread, with a request '
+      + 'that this world pass away. Irenaeus, later, expects it on this earth, with vines bearing '
+      + 'ten thousand branches.',
+    canonicalAnchors:
+      'The anchors are Daniel 2:44 and 7:14, Psalm 145:13, Obadiah 21 and Zechariah 14:9. They are '
+      + 'canonical and sit outside this corpus. The Synoptic Gospels are what makes this a topic at '
+      + 'all — see the first absence, which is about them.',
+    absences: [
+      'The phrase is not a Jewish slogan waiting to be picked up. Across this whole corpus “kingdom '
+      + 'of God” occurs 77 times and “kingdom of heaven” 63 — and of those, exactly one of each is '
+      + 'in a Second Temple Jewish text. Everything else is Christian. The one Jewish “kingdom of '
+      + 'God” is Wisdom 10:10, where it means the vision Jacob saw at Bethel and is not '
+      + 'eschatological at all. The IDEA that God reigns is everywhere in this literature; the '
+      + 'phrase that dominates the Synoptics is not.',
+      'Nothing here dates it. The apocalypses describe the kingdom at length and none of the texts '
+      + 'below tells you when it comes, except by the sequence of visions, which resists being '
+      + 'turned into a calendar. Irenaeus is the first writer on the page to reach for arithmetic — '
+      + 'six days of creation, six thousand years — and he is doing something the Jewish sources '
+      + 'here do not attempt.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // The Assumption of Moses is the purest statement: nothing is established, something becomes
+      // visible. Set beside 2 Baruch, where the Messiah's reign has a stated end, the two are not
+      // early and late versions of one belief.
+      { work: 'assumption-moses', chapter: 10, verse: 1, tradition: 'second-temple',
+        summary: 'His kingdom appears; Satan is no more',
+        probe: 'And then His kingdom shall appear throughout all His creation' },
+      { work: '2baruch', chapter: 39, verse: 7, tradition: 'second-temple',
+        summary: 'The Messiah’s rule revealed as the last empire falls',
+        probe: 'then the principate of My Messiah will be revealed' },
+      { work: '2baruch', chapter: 40, verse: 3, tradition: 'second-temple',
+        summary: 'It stands until corruption itself is ended',
+        probe: 'And his principate will stand for ever, until the world of corruption is at an end' },
+      // The single Jewish "kingdom of God" in the corpus — and it is Jacob's ladder, not the end
+      // of days. Worth clicking through to see how ordinary the phrase is here.
+      { work: 'Wis', chapter: 10, verse: 10, tradition: 'second-temple',
+        summary: 'Wisdom showed the fugitive the kingdom of God',
+        probe: 'shewed him the kingdom of God' },
+      { work: '3baruch', chapter: 11, verse: 1, tradition: 'second-temple',
+        summary: 'Michael holds the keys of the kingdom',
+        probe: 'until Michael comes, who holds the keys' },
+      { work: '1Macc', chapter: 2, verse: 57, tradition: 'second-temple',
+        summary: 'David got the throne of an everlasting kingdom',
+        probe: 'David for being merciful possessed the throne of an everlasting kingdom' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // Not future, not territorial, and observable: you can see a man accepting it.
+      { work: 'y-berakhot', chapter: 2, verse: 1, tradition: 'rabbinic',
+        summary: 'The yoke accepted behind a covering hand',
+        probe: 'he accepts the yoke of the Kingdom of Heaven' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-didache', chapter: 9, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Scattered grain gathered, church into kingdom',
+        probe: 'so may Thy Church be gathered together from the ends of the earth into Thy kingdom' },
+      { work: 'af-didache', chapter: 10, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Let grace come and this world pass away',
+        probe: 'May grace come and may this world pass away' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'anf-irenaeus-5', chapter: 33, verse: 3, tradition: 'church-fathers',
+        summary: 'Vines of ten thousand branches, on this earth',
+        probe: 'vines shall grow, each having ten thousand branches' },
+      { work: 'anf-irenaeus-5', chapter: 28, verse: 3, tradition: 'church-fathers',
+        summary: 'Six days of creation, six thousand years',
+        probe: 'in so many thousand years shall it be concluded' },
+    ],
+  },
+  {
+    id: 'antichrist',
+    group: 'Last things',
+    label: 'The adversary at the end',
+    blurb:
+      'The figure is older than the word. What the Jewish sources supply is a pattern drawn from '
+      + 'events — a foreign king who stops the sacrifices and sets up something abominable on the '
+      + 'altar, which is what Antiochus actually did — and then a last empire in the apocalypses, '
+      + 'imagined as a beast or an eagle. The Christian texts turn that into a person: a '
+      + 'world-deceiver who appears as a son of God and works signs, a lawless king who says “I am '
+      + 'God and before me there has been none.” And then Irenaeus, who has more to say about him '
+      + 'than anyone else here, spends his last chapters warning against being confident who he is.',
+    canonicalAnchors:
+      'The anchors are Daniel 7, 9:27 and 11:31 (the abomination that makes desolate), Ezekiel '
+      + '38–39, and on the Christian side 2 Thessalonians 2, 1 John 2:18 — where the word first '
+      + 'appears — and Revelation 13. They are canonical and sit outside this corpus. 1 Maccabees '
+      + 'below is describing the event Daniel is usually taken to mean.',
+    absences: [
+      'The word is Christian and only Christian. “Antichrist” occurs 27 times in this whole corpus '
+      + 'and every occurrence is in a Christian writer — eight of them in one book of Irenaeus. '
+      + 'Not once in any Jewish text here, and not once in the rabbinic corpus. The Jewish material '
+      + 'below contributes the raw material — a desecrating king, a final beast — and never the '
+      + 'figure or the name.',
+      'Nothing here identifies him. That is worth stating plainly, because the temptation to do it '
+      + 'has been constant ever since: Irenaeus, who had the number from Revelation and lists '
+      + 'candidate names that fit it, refuses to choose between them and says so at length. The '
+      + 'later history of confident identification is outside this corpus, and the earliest '
+      + 'sustained treatment in it argues against the practice.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // The pattern comes from something that happened, in December 167 BCE. Everything
+      // apocalyptic on this page is downstream of it.
+      { work: '1Macc', chapter: 1, verse: 54, tradition: 'second-temple',
+        summary: 'The abomination of desolation set on the altar',
+        probe: 'they set up the abomination of desolation upon the altar' },
+      { work: '2esdras', chapter: 11, verse: 39, tradition: 'second-temple',
+        summary: 'The eagle: last of the four beasts',
+        probe: 'Art not thou it that remainest of the four beasts' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // The Ascension of Isaiah is composite, and the chapters used here (3:13–4:22) are the
+      // Christian part, written around 90–120 — so it sits with the earliest Christian writing
+      // rather than with the Jewish sources. Its lawless king who murdered his mother is Nero.
+      { work: 'ascension-of-isaiah', chapter: 4, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Beliar descends as a man: the matricide king',
+        probe: 'in the likeness of a man, a lawless king, the slayer of his mother' },
+      { work: 'ascension-of-isaiah', chapter: 4, verse: 6, tradition: 'apostolic-fathers',
+        summary: 'He will speak like the Beloved: I am God',
+        probe: 'I am God and before me there has been none' },
+      { work: 'af-didache', chapter: 16, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'The world-deceiver appears as a son of God',
+        probe: 'then the world-deceiver shall appear as a son of God' },
+      { work: 'af-barnabas', chapter: 15, verse: 5, tradition: 'apostolic-fathers',
+        summary: 'The Son abolishes the time of the Lawless One',
+        probe: 'shall abolish the time of the Lawless One' },
+      { work: 'af-polycarp', chapter: 7, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Whoever denies the flesh is antichrist',
+        probe: 'is come in the flesh, is antichrist' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // Irenaeus is the fullest treatment in this library and the most cautious. He has the
+      // number, he knows names that fit it, and he argues that guessing is more dangerous than
+      // waiting — because a wrong guess leaves you unguarded against the real one.
+      { work: 'anf-irenaeus-5', chapter: 28, verse: 2, tradition: 'church-fathers',
+        summary: 'All apostasy gathered up into one man',
+        probe: 'For when he (Antichrist) is come' },
+      { work: 'anf-irenaeus-5', chapter: 30, verse: 1, tradition: 'church-fathers',
+        summary: 'Guess the name and he will slip past you',
+        probe: 'those who falsely presume that they know the name of Antichrist' },
+      { work: 'anf-irenaeus-5', chapter: 30, verse: 3, tradition: 'church-fathers',
+        summary: 'Safer to await it than to cast about',
+        probe: 'more certain, and less hazardous, to await the fulfilment of the prophecy' },
+      { work: 'anf-irenaeus-5', chapter: 30, verse: 4, tradition: 'church-fathers',
+        summary: 'The name withheld as unworthy of proclamation',
+        probe: 'the name, however, is suppressed' },
     ],
   },
   {
