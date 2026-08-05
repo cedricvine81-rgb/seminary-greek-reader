@@ -60,6 +60,7 @@ export function WordSearchProvider() {
   }
   const w = menu.surface
   const isGreek = menu.kind === 'greek'
+  const isHebrew = menu.kind === 'hebrew'
   const transLabel = TRANS_LABEL[menu.transLang ?? 'en'] ?? 'this translation'
   // Book name for the "this book" scope, derived from the reference (e.g. "Matthew 5:44" → "Matthew").
   const bookLabel = menu.reference ? menu.reference.replace(/\s*\d.*$/, '').trim() : null
@@ -99,10 +100,22 @@ export function WordSearchProvider() {
         )}
       </div>
 
-      <div className={`truncate text-sm font-semibold text-brand-800 ${isGreek ? 'font-reading' : ''}`}>{w}</div>
+      <div dir={isHebrew ? 'rtl' : undefined} lang={isHebrew ? 'he' : undefined}
+        className={`truncate text-sm font-semibold text-brand-800 ${isGreek ? 'font-reading' : ''} ${isHebrew ? 'font-hebrew text-base' : ''}`}>{w}</div>
 
       <div className="space-y-1.5">
-        {isGreek ? (
+        {isHebrew ? (
+          <>
+            <button type="button" className={btn}
+              onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: 'hebrew:MT' }) }}>
+              Hebrew Bible <span className="text-gray-400">· all occurrences</span>
+            </button>
+            <p className="px-0.5 text-[10px] leading-snug text-gray-400">
+              The rabbinic works have no English and are not in the search index, so this word can
+              only be looked for in the Hebrew Bible.
+            </p>
+          </>
+        ) : isGreek ? (
           <>
             <div className="grid grid-cols-2 gap-1.5">
               <button type="button" className={btn}

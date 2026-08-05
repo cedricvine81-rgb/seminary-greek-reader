@@ -15,6 +15,9 @@ import { HebrewSearchResults } from './HebrewSearchResults'
 import { ParsingDock } from './ParsingDock'
 import { markScrollRestore } from '@/lib/scroll-restore'
 import { findProseWork } from '@/lib/prose-texts'
+import { noteBookFor } from '@/lib/note-book'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
@@ -630,6 +633,69 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       setTimeout(() => setCopiedKey(k => (k === key ? null : k)), 1500)
     } catch {}
   }
+  // ── Notes on search results ──────────────────────────────────────────────────────────
+  // A result knows exactly which verse it found, so it can carry the same note button the
+  // reader has; without it the only way to note a passage you just searched for was to open
+  // it first. The note key comes from the SHARED resolver, so a note made here is the same
+  // note the reader shows — see src/lib/note-book.ts.
+  const [notedMap, setNotedMap] = useState<Record<string, Set<number>>>({})
+
+  const hitNoteKey = useCallback((t: OpenInTextsTarget): string | null =>
+    noteBookFor(t.source as string, { osisId: t.osisId, workDir: t.workDir, book: t.book }), [])
+
+  const loadNoted = useCallback(async (pairs: [string, number][]) => {
+    if (!isAuthenticated || !pairs.length) return
+    const results = await Promise.all(pairs.map(async ([book, ch]) => {
+      try {
+        const r = await fetch(`/api/notes?book=${encodeURIComponent(book)}&chapter=${ch}&verseStart=1&verseEnd=700`)
+        const d = await r.json()
+        return [`${book}.${ch}`, new Set<number>((d.notes ?? []).map((n: { verse: number }) => n.verse))] as const
+      } catch { return null }
+    }))
+    setNotedMap(prev => {
+      const next = { ...prev }
+      for (const r of results) if (r) next[r[0]] = r[1]
+      return next
+    })
+  }, [isAuthenticated])
+
+  // The distinct (noteBook, chapter) pairs currently on screen, capped so a large result set
+  // cannot fan out into hundreds of requests.
+  const shownNotePairs = useMemo(() => {
+    const seen = new Map<string, [string, number]>()
+    const hits = displayBg ? (displayBg.mode === 'flat' ? displayBg.hits.map(x => x.h) : displayBg.groups.flatMap(g => g.hits)) : []
+    for (const h of hits) {
+      const book = hitNoteKey(h.target)
+      const ch = h.target.chapter
+      if (!book || ch == null) continue
+      const key = `${book}.${ch}`
+      if (!seen.has(key)) seen.set(key, [book, ch])
+      if (seen.size >= 40) break
+    }
+    return Array.from(seen.values())
+  }, [displayBg, hitNoteKey])
+
+  useEffect(() => { void loadNoted(shownNotePairs) }, [shownNotePairs, loadNoted])
+  useEffect(() => onNotesChanged(() => void loadNoted(shownNotePairs)), [shownNotePairs, loadNoted])
+
+  // The note button for one hit, or nothing when signed out / the work has no note key.
+  function hitNote(h: BgHit): ReactNode {
+    if (!isAuthenticated) return null
+    const book = hitNoteKey(h.target)
+    const ch = h.target.chapter
+    const v = h.target.verse
+    // A background hit always resolves to a chapter and verse; the target type allows them to
+    // be absent for other openers, so bail rather than key a note on undefined.
+    if (!book || ch == null || v == null) return null
+    return (
+      <span className="font-sans align-middle mr-1" onClick={e => e.stopPropagation()}>
+        <VerseNoteButton book={book} chapter={ch} verse={v}
+          noted={!!notedMap[`${book}.${ch}`]?.has(v)}
+          onChanged={() => void loadNoted([[book, ch]])} />
+      </span>
+    )
+  }
+
   function openBackground(target: OpenInTextsTarget) {
     pushRecent(query)
     const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined }
@@ -1239,16 +1305,18 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               <div className="divide-y divide-gray-100">
                 {displayBg.hits.map(({ h, work }, i) => bg.lang === 'grc' ? (
                   <div key={i} className="py-2.5 px-2">
+                    {hitNote(h)}
                     <button onClick={() => openBackground(h.target)} className="text-xs font-medium text-brand-600 hover:underline">{h.ref}</button>
                     <span className="text-xs text-gray-400"> · {work}</span>
                     {bgHitText(h, `f.${i}`)}
                   </div>
                 ) : (
-                  <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
-                    <span className="text-xs font-medium text-brand-600">{h.ref}</span>
+                  <div key={i} className="py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
+                    {hitNote(h)}
+                    <button onClick={() => openBackground(h.target)} className="text-left text-xs font-medium text-brand-600 hover:underline">{h.ref}</button>
                     <span className="text-xs text-gray-400"> · {work}</span>
-                    {bgHitText(h, `f.${i}`)}
-                  </button>
+                    <span onClick={() => openBackground(h.target)} className="block cursor-pointer">{bgHitText(h, `f.${i}`)}</span>
+                  </div>
                 ))}
               </div>
             ) : (
@@ -1259,14 +1327,16 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                   <div className="divide-y divide-gray-100">
                     {g.hits.map((h, i) => bg.lang === 'grc' ? (
                       <div key={i} className="py-2.5 px-2">
+                        {hitNote(h)}
                         <button onClick={() => openBackground(h.target)} className="text-xs font-medium text-brand-600 hover:underline">{h.ref}</button>
                         {bgHitText(h, `${g.gid}.${i}`)}
                       </div>
                     ) : (
-                      <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
-                        <span className="text-xs font-medium text-brand-600">{h.ref}</span>
-                        {bgHitText(h, `${g.gid}.${i}`)}
-                      </button>
+                      <div key={i} className="py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
+                        {hitNote(h)}
+                        <button onClick={() => openBackground(h.target)} className="text-left text-xs font-medium text-brand-600 hover:underline">{h.ref}</button>
+                        <span onClick={() => openBackground(h.target)} className="block cursor-pointer">{bgHitText(h, `${g.gid}.${i}`)}</span>
+                      </div>
                     ))}
                   </div>
                 </div>

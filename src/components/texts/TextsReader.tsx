@@ -11,6 +11,7 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 import { loadJastrow, lookupAramaic, strippedLabel, type JastrowData } from '@/lib/jastrow'
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 import { getTextSummary } from '@/lib/texts-summaries'
+import { noteBookFor as sharedNoteBookFor } from '@/lib/note-book'
 import { findProseWork } from '@/lib/prose-texts'
 import { FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { TextSizeSlider } from '@/components/reader/TextSizeControls'
@@ -126,11 +127,11 @@ function buildQueue(w: CatalogWork): QueueItem[] {
 function sameItem(a: QueueItem, book: number | undefined, chapter: number) {
   return a.chapter === chapter && (a.book ?? null) === (book ?? null)
 }
+// Delegates to the shared resolver so a note made here and one made from a search result
+// land on the same key. See src/lib/note-book.ts.
 function noteBookFor(w: CatalogWork, item: QueueItem): string {
-  if (w.source === 'lxx') return w.osisId!
-  const prose = findProseWork(w.source)
-  if (prose) return prose.noteBook
-  return `${JOS_SHORT[w.work!] ?? w.work}.${item.book}`
+  return sharedNoteBookFor(w.source, { osisId: w.osisId, workDir: w.work, book: item.book })
+    ?? `${JOS_SHORT[w.work!] ?? w.work}.${item.book}`
 }
 function refLabelFor(w: CatalogWork, item: QueueItem): string {
   // Callers append `:${section}`, so Josephus reads "<name> <book>:<§>" (pure Niese, e.g.
@@ -1465,9 +1466,22 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                   if (!tok.trim()) return tok
                                   const key = `${section.key}.${row.num}.${ti}`
                                   const select = () => { setSelectedInfo(jastrowInfo(tok, citeFor(row))); setSelectedKey(key) }
-                                  const hl = !q ? highlightAt(start, start + tok.length, greekHighlights) : undefined
+                                  const end = start + tok.length
+                                  const hl = !q ? highlightAt(start, end, greekHighlights) : undefined
                                   return (
                                     <span key={ti} onMouseEnter={select} onClick={select}
+                                      onContextMenu={e => {
+                                        e.preventDefault()
+                                        const existing = greekHighlights.find(h => start < h.endOffset && end > h.startOffset)
+                                        openWordSearch({
+                                          x: e.clientX, y: e.clientY, surface: tok, reference: citeFor(row), kind: 'hebrew',
+                                          highlight: isAuthenticated ? {
+                                            activeColor: existing?.color ?? null,
+                                            onPick: c => existing ? void highlights.recolor(existing.id, noteBook, section.chapter, c) : void highlights.create(noteBook, section.chapter, row.num, start, end, c, 'grc'),
+                                            onRemove: () => { if (existing) void highlights.remove(existing.id, noteBook, section.chapter) },
+                                          } : undefined,
+                                        })
+                                      }}
                                       {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': noteBook, 'data-hl-chapter': section.chapter, 'data-hl-color': hl.color } : {})}
                                       className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}>
                                       {tok}

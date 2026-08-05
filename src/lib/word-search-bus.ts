@@ -18,7 +18,11 @@ export interface WordSearchPayload {
   surface: string
   lemma?: string | null
   reference?: string | null           // e.g. "Matt 5:44", for the Copy row
-  kind: 'greek' | 'translation'
+  // 'hebrew' is for Hebrew/Aramaic script words — the Bavli and Tosefta in the Texts reader.
+  // Its menu is deliberately short: those works are in no search facet (they have no English,
+  // and the grc facet excludes Hebrew script), so the only corpus a word from them can be
+  // searched against is the Hebrew Bible. Offering a collection search would return nothing.
+  kind: 'greek' | 'translation' | 'hebrew'
   greekCorpus?: 'GNT' | 'LXX'         // default scope for Greek words
   transLang?: string                  // language code for translation words (en, es, …)
   book?: string                       // current book's osisId — enables the "this book" scope
