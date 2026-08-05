@@ -109,6 +109,509 @@ export interface TopicPage {
 
 export const THEME_PAGES: TopicPage[] = [
   {
+    id: 'godhead',
+    group: 'God and the unseen',
+    label: 'God, and whether God is one',
+    blurb:
+      'Everyone here says God is one. They do not agree on what that rules out. Aristeas has a Jewish '
+      + 'courtier tell the king that Greeks worship the same God under the name of Zeus; Josephus, on '
+      + 'the same shelf, mocks the Greek gods as smiths and weavers. And the oneness has seams in it '
+      + 'from the start: Philo finds two powers in it, the Targum puts the Word inside the very verse '
+      + 'that denies any other God, and the Yerushalmi silences a prayer for implying two. Justin then '
+      + 'says out loud what that liturgy was silencing — “another God and Lord”, subordinate to the '
+      + 'Maker. Nothing here is yet a doctrine of the Trinity; that page is separate.',
+    canonicalAnchors:
+      'The anchors are Deuteronomy 6:4 (“Hear, O Israel: the LORD our God, the LORD is one”), '
+      + 'Deuteronomy 32:39 and Isaiah 45:5–7. They are canonical and sit outside this corpus, but the '
+      + 'Targums below are translating them, and almost everything else is arguing from them.',
+    absences: [
+      'The classic rabbinic discussion of “two powers in heaven” is in the Babylonian Talmud, at '
+      + 'Sanhedrin 38b — where the angel Metatron is the problem — and Ḥagigah 14a. The Bavli is in '
+      + 'this library and those pages are there, but in Aramaic only: the available English '
+      + 'translation is licensed non-commercially and this app cannot use it. So they can be read '
+      + 'in Texts by someone who reads Aramaic, and they are invisible to this page and to search, '
+      + 'both of which are built from the English. What is left here is the Yerushalmi ruling below, '
+      + 'where a prayer is silenced and the reason given runs to two words.',
+      'Nobody on this page argues the other side in their own voice. Irenaeus is refuting people who '
+      + 'held that the world was made by a lesser god than the Father, and he is the only reason we '
+      + 'know what they said: no Marcionite or Valentinian text is in this library, and none was ever '
+      + 'copied by the church that kept these manuscripts. Every two-gods position here is quoted by '
+      + 'its opponent.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Aristeas and Josephus are the poles. Both are Jewish, both are addressing Greeks, and they
+      // take opposite views of whether the Greek gods are the same God misnamed or no gods at all.
+      { work: 'sibylline', chapter: 3, verse: 12, tradition: 'second-temple',
+        summary: 'God is one: sovereign, ineffable, dwelling in heaven',
+        probe: 'Of the immortal Maker? God is one' },
+      { work: 'aristeas', chapter: 1, verse: 15, tradition: 'second-temple',
+        summary: 'Greeks worship the same God, calling him Zeus',
+        probe: 'They worship the same God' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 242, tradition: 'second-temple',
+        summary: 'Gods who are smiths, weavers, warriors, harpers',
+        probe: 'that one god is a smith, and another goddess is a weaver' },
+      { work: '4Macc', chapter: 5, verse: 24, tradition: 'second-temple',
+        summary: 'The law teaches worship of one only God',
+        probe: 'we worship the one only God becomingly' },
+      { work: 'antiquities', book: 3, chapter: 5, verse: 91, tradition: 'second-temple',
+        summary: 'First commandment: one God, worship him only',
+        probe: 'there is but one God, and that we ought to worship him only' },
+      { work: 'against-apion', book: 2, chapter: 1, verse: 193, tradition: 'second-temple',
+        summary: 'One temple for one God, common to all',
+        probe: 'There ought also to be but one temple for one God' },
+      { work: '2enoch', chapter: 33, verse: 9, tradition: 'second-temple',
+        summary: 'Creator of all things; no other God',
+        probe: 'how there is no other God but me' },
+      { work: 'philo-flight', chapter: 1, verse: 71, tradition: 'second-temple',
+        summary: '“Let us make man” — plural speech, single Creator',
+        probe: 'as if speaking to several persons' },
+      { work: 'philo-abraham', chapter: 1, verse: 145, tradition: 'second-temple',
+        summary: 'Two powers in God: beneficent and chastising',
+        probe: 'of the two powers of God, one is a beneficent power' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'tg-psj-deuteronomy', chapter: 26, verse: 17, tradition: 'rabbinic',
+        summary: 'Israel confesses the Lord with one confession',
+        probe: 'The Lord have you confessed with one confession' },
+      { work: 'tg-psj-deuteronomy', chapter: 32, verse: 39, tradition: 'rabbinic',
+        summary: 'No other God beside me — I, in my Word',
+        probe: 'there is no other God beside Me: I, in My Word' },
+      { work: 'y-megillah', chapter: 4, verse: 10, tradition: 'rabbinic',
+        summary: 'A prayer silenced: it implies two powers',
+        probe: 'may the good ones bless You, is the way of heretics' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-1clement', chapter: 46, verse: 6, tradition: 'apostolic-fathers',
+        summary: 'One God, one Christ, one Spirit of grace',
+        probe: 'Have we not one God and one Christ and one Spirit' },
+      { work: 'af-2clement', chapter: 20, verse: 5, tradition: 'apostolic-fathers',
+        summary: 'To the only God invisible, Father of truth',
+        probe: 'To the only God invisible, the Father of truth' },
+      { work: 'af-ign-magnesians', chapter: 8, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'One God, manifested through his Son, his Word',
+        probe: 'there is one God who manifested Himself through Jesus Christ His Son' },
+      { work: 'af-ign-ephesians', chapter: 7, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'One physician: generate and ingenerate, God in man',
+        probe: 'generate and ingenerate, God in man' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // Justin says plainly what the Yerushalmi ruling above was closing off, and he says it TO a
+      // Jew, in a dialogue. Whether "another God and Lord subject to the Maker" is compatible with
+      // Deuteronomy 6:4 is precisely what is being argued, and neither side here concedes.
+      { work: 'justin-dialogue', chapter: 56, verse: 3, tradition: 'church-fathers',
+        summary: 'Another God and Lord, subject to the Maker',
+        probe: 'another God and Lord subject to the Maker of all things' },
+      { work: 'anf-irenaeus-1', chapter: 22, verse: 1, tradition: 'church-fathers',
+        summary: 'Rule of truth: one God, making by his Word',
+        probe: 'there is one God Almighty, who made all things by His Word' },
+      { work: 'anf-irenaeus-4', chapter: 32, verse: 1, tradition: 'church-fathers',
+        summary: 'Both testaments come from one and the same God',
+        probe: 'proving that both were truly from one and the same God' },
+      { work: 'athanasius-arians-3', chapter: 4, verse: 1, tradition: 'church-fathers',
+        summary: 'Identity of Godhead, unity of essence, two persons',
+        probe: 'the identity of Godhead and the unity of Essence' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Word for word, the Stoic and Plutarchan claim is Aristeas' claim: one god, many names. It
+      // is not the same religion. Neither of these excludes the temples, and that is the difference
+      // the Jewish sources above are all insisting on.
+      { work: 'greco-diogenes-laertius', chapter: 7, verse: 135, tradition: 'greco-roman',
+        summary: 'God one with Reason, Fate and Zeus',
+        probe: 'God is one and the same with Reason, Fate, and Zeus' },
+      { work: 'plutarch-isis-osiris', chapter: 67, verse: 1, tradition: 'greco-roman',
+        summary: 'One ordering reason, named differently by each nation',
+        probe: 'have different names in different nations' },
+    ],
+  },
+  {
+    id: 'trinity',
+    group: 'God and the unseen',
+    label: 'Father, Son and Spirit',
+    blurb:
+      'Triadic language before the creeds. Read in order, these passages show a formula arriving '
+      + 'long before a doctrine: the Didache and 1 Clement name the three and explain nothing, '
+      + 'Justin ranks them — and puts the angels in the list, between the Son and the Spirit — and '
+      + 'only with Athanasius does the vocabulary of essence and origin appear. What almost nobody '
+      + 'here does is claim the three are one God in the sense Nicaea will mean; that is being '
+      + 'worked out, in public, against opponents.',
+    canonicalAnchors:
+      'The anchors are Matthew 28:19 (“baptising them in the name of the Father and of the Son and '
+      + 'of the Holy Spirit”), 2 Corinthians 13:14 and 1 Corinthians 12:4–6. They are canonical and '
+      + 'sit outside this corpus, and the Didache below is quoting the first of them almost word for '
+      + 'word — which is the point: what the earliest writers have is that sentence, not a theory '
+      + 'about it.',
+    absences: [
+      'There is no Jewish or rabbinic material on this page, and that is a result rather than a gap '
+      + 'in the search. Querying this corpus for triadic language returns plenty of Second Temple '
+      + 'and rabbinic hits, and every one of them is counting to three about something else — a '
+      + 'threefold table in Josephus, three men who may say grace together in the Mishnah, Philo on '
+      + 'the properties of the number three. The single passage below is the closest thing the '
+      + 'Jewish sources hold, and it is a prayer about how anyone could know God’s counsel, not a '
+      + 'statement about God’s inner life.',
+      'The two texts that made this a doctrine are not in this library. Theophilus of Antioch is the '
+      + 'first writer known to use the word τριάς of God (To Autolycus 2.15), and Tertullian’s '
+      + 'Against Praxeas is the first sustained argument for three persons in one substance — the '
+      + 'formula the Latin church kept. Both are public domain and both are simply not here yet.',
+      'Nothing here is the Nicene Creed. Athanasius is arguing his way toward it and against Arius, '
+      + 'but the conciliar texts themselves — Nicaea in 325, Constantinople in 381 — belong to a '
+      + 'genre this library does not collect.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // ONE entry, deliberately. See the first absence: the corpus returns dozens of Jewish "three"
+      // passages and they are all arithmetic. This is the only place where God, wisdom and holy
+      // spirit act together in a Jewish text, and it is still not a Trinity — wisdom and spirit are
+      // what God GIVES and SENDS, which is a claim about revelation, not about God's own being.
+      { work: 'Wis', chapter: 9, verse: 17, tradition: 'second-temple',
+        summary: 'God gives wisdom and sends his Spirit',
+        probe: 'except thou give wisdom, and send thy Holy Spirit from above' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-didache', chapter: 7, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Baptise into Father, Son and Holy Spirit',
+        probe: 'baptize in the name of the Father and of the Son and of the Holy Spirit' },
+      { work: 'af-1clement', chapter: 58, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'An oath sworn by all three together',
+        probe: 'as God liveth, and the Lord Jesus Christ liveth, and the Holy Spirit' },
+      { work: 'af-ign-magnesians', chapter: 13, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'In the Son and Father and the Spirit',
+        probe: 'in the Son and Father and in the Spirit' },
+      { work: 'af-mart-polycarp', chapter: 14, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'Dying prayer: glory through, with, and Spirit',
+        probe: 'through whom with Him and the Holy Spirit be glory' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // Justin 6 is the passage that will not fit a later scheme and should not be smoothed over:
+      // the list runs Father, Son, "the host of the other good angels", and then the prophetic
+      // Spirit. Whatever he means by it, he is not reciting a creed he already has.
+      { work: 'justin-1apology', chapter: 6, verse: 1, tradition: 'church-fathers',
+        summary: 'Worship of Father, Son, angels, and prophetic Spirit',
+        probe: 'the host of the other good angels who follow and are made like to Him' },
+      { work: 'justin-1apology', chapter: 61, verse: 1, tradition: 'church-fathers',
+        summary: 'Washing in the name of all three',
+        probe: 'and of our Saviour Jesus Christ, and of the Holy Spirit' },
+      { work: 'origen-celsus-8', chapter: 12, verse: 1, tradition: 'church-fathers',
+        summary: 'Celsus: you honour a servant beside God',
+        probe: 'they think it no offense against God if they worship also His servant' },
+      { work: 'eusebius-pe-11', chapter: 20, verse: 1, tradition: 'church-fathers',
+        summary: 'The Spirit ranked third, likened to Plato’s third',
+        probe: 'class the Holy Spirit in the third place' },
+      { work: 'athanasius-arians-3', chapter: 15, verse: 1, tradition: 'church-fathers',
+        summary: 'Not three origins: sun and its radiance',
+        probe: 'we do not introduce three Origins or three Fathers' },
+      { work: 'athanasius-arians-1', chapter: 6, verse: 1, tradition: 'church-fathers',
+        summary: 'Arius: the Word is God in name',
+        probe: 'He, as others, is God only in name' },
+    ],
+  },
+  {
+    id: 'holy-spirit',
+    group: 'God and the unseen',
+    label: 'The Spirit of God',
+    blurb:
+      'The same words cover several different things here, and telling them apart is most of the '
+      + 'work. The Spirit seizes a prophet and puts words in his mouth; it also makes a craftsman '
+      + 'good at his craft, flees from a dishonest thought, rests on the coming king, and — in one '
+      + 'rabbinic ladder — is a rung you climb to. The Targums narrow it deliberately, translating '
+      + 'the divine Spirit as the “spirit of prophecy”, a phrase with no Hebrew original. What is '
+      + 'hardest to find anywhere before the Christian writers is the Spirit as someone rather than '
+      + 'something.',
+    canonicalAnchors:
+      'The anchors are Numbers 11:25–29, Isaiah 11:2 and 61:1, Joel 2:28–29 and Psalm 51:11. They '
+      + 'are canonical and sit outside this corpus; the Targums below are translating two of them, '
+      + 'and Barnabas is quoting a third.',
+    absences: [
+      'The rabbinic statement that everyone quotes — that when the last prophets, Haggai, Zechariah '
+      + 'and Malachi, died, the Holy Spirit ceased from Israel — is in this library and cannot be '
+      + 'read on this page. It is Tosefta Sotah 13, and the Tosefta is here in Hebrew only: the '
+      + 'available English is a partial community translation under a licence this app cannot use. '
+      + 'The same sentence recurs in the Babylonian Talmud (Yoma 9b, Sanhedrin 11a), which is here '
+      + 'in Aramaic only for the same reason. So the corpus holds the text and this page cannot '
+      + 'quote it — which is why nothing below says the Spirit ever stopped.',
+      'Qumran is missing, and for this topic that is the largest gap of all. The Community Rule '
+      + 'sets out two spirits, of truth and of falsehood, given to every person in measure, and the '
+      + 'Thanksgiving Hymns speak of a holy spirit in the speaker himself. No public-domain or '
+      + 'openly licensed English of the scrolls exists, so nothing of it is here.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Note the range this covers, and resist harmonising it. Philo's Bezaleel gets the Holy
+      // Spirit in order to do metalwork; Josephus' Balaam is overpowered by it and cannot keep
+      // quiet; Wisdom's flees a dishonest thought. These are not three descriptions of one thing.
+      { work: 'philo-giants', chapter: 1, verse: 23, tradition: 'second-temple',
+        summary: 'Bezaleel filled with the Spirit — for craftsmanship',
+        probe: 'filled him with his Holy Spirit, and with wisdom' },
+      { work: 'philo-giants', chapter: 1, verse: 19, tradition: 'second-temple',
+        summary: 'The Spirit does not remain among the fleshly',
+        probe: 'My spirit shall not remain among men for ever' },
+      { work: 'antiquities', book: 4, chapter: 6, verse: 119, tradition: 'second-temple',
+        summary: 'Balaam: seized, words not his own',
+        probe: 'when the Spirit of God seizes upon us' },
+      { work: 'Wis', chapter: 1, verse: 5, tradition: 'second-temple',
+        summary: 'The holy spirit flees deceit and unrighteousness',
+        probe: 'For the holy spirit of discipline will flee deceit' },
+      { work: 'Wis', chapter: 9, verse: 17, tradition: 'second-temple',
+        summary: 'God’s counsel unknown unless he sends it',
+        probe: 'except thou give wisdom, and send thy Holy Spirit from above' },
+      { work: 'Sir', chapter: 39, verse: 6, tradition: 'second-temple',
+        summary: 'The scribe filled with a spirit of understanding',
+        probe: 'he shall be filled with the spirit of understanding' },
+      { work: 'Sus', chapter: 1, verse: 45, tradition: 'second-temple',
+        summary: 'God raises the holy spirit of a boy',
+        probe: 'the Lord raised up the holy spirit of a young youth' },
+      { work: 'PsSol', chapter: 17, verse: 37, tradition: 'second-temple',
+        summary: 'The coming king made mighty by holy spirit',
+        probe: 'God will make him mighty by means of (His) holy spirit' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // The targumic pattern is measurable rather than impressionistic: across 7,108 verses of
+      // Targum in this library, "Holy Spirit" occurs 17 times and "spirit of prophecy" 15 — and
+      // the second phrase renders no Hebrew expression. It is the translator's gloss, and it
+      // decides what the Spirit is for.
+      { work: 'tg-isaiah', chapter: 40, verse: 13, tradition: 'rabbinic',
+        summary: 'Who directed the Spirit in the prophets’ mouths?',
+        probe: 'Who hath directed the Holy Spirit in the mouth of all the prophets' },
+      { work: 'tg-isaiah', chapter: 11, verse: 2, tradition: 'rabbinic',
+        summary: 'Spirit of prophecy resting on the branch',
+        probe: 'there shall dwell upon him the spirit of prophecy' },
+      { work: 'tg-psj-numbers', chapter: 11, verse: 25, tradition: 'rabbinic',
+        summary: 'Shared with seventy, and Moses loses nothing',
+        probe: 'so that Mosheh lost nothing thereof' },
+      { work: 'tg-psj-exodus', chapter: 33, verse: 16, tradition: 'rabbinic',
+        summary: 'Withheld from the nations — Israel’s distinguishing mark',
+        probe: 'in the withholdment of the Spirit of prophecy from the nations' },
+      { work: 'tg-psj-genesis', chapter: 27, verse: 5, tradition: 'rabbinic',
+        summary: 'Rebekah overhears by the Holy Spirit',
+        probe: 'And Rivekah heard by the Holy Spirit' },
+      { work: 'y-sotah', chapter: 5, verse: 4, tradition: 'rabbinic',
+        summary: 'At the sea, the least sang like Moses',
+        probe: 'Even the most insignificant in Israel sang the song just as Moses did' },
+      { work: 'm-sotah', chapter: 9, verse: 15, tradition: 'rabbinic',
+        summary: 'A ladder of virtues, the Spirit near the top',
+        probe: 'piety leads to the Holy Spirit' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // Hermas is the interesting one: the Spirit lodges in a person and can be crowded out by a
+      // bad temper, which is nearer to Wisdom 1:5 above than to anything creedal — and at 43:9 the
+      // agent who fills the prophet is an ANGEL of the prophetic spirit.
+      { work: 'af-1clement', chapter: 2, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'An abundant outpouring fell upon all',
+        probe: 'An abundant outpouring also of the Holy Spirit fell upon all' },
+      { work: 'af-barnabas', chapter: 14, verse: 9, tradition: 'apostolic-fathers',
+        summary: 'The Spirit is upon me: anointed to preach',
+        probe: 'The Spirit of the Lord is upon Me, wherefore He anointed Me' },
+      { work: 'af-hermas', chapter: 33, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'A bad temper darkens the indwelling Spirit',
+        probe: 'not being darkened by another evil spirit' },
+      { work: 'af-hermas', chapter: 43, verse: 9, tradition: 'apostolic-fathers',
+        summary: 'An angel of the prophetic spirit fills him',
+        probe: 'the angel of the prophetic spirit, who is attached to him' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'justin-dialogue', chapter: 88, verse: 1, tradition: 'church-fathers',
+        summary: 'Women and men among us hold the gifts',
+        probe: 'women and men who possess gifts of the Spirit of God' },
+      { work: 'anf-irenaeus-4', chapter: 20, verse: 8, tradition: 'church-fathers',
+        summary: 'The Spirit showed the prophets things to come',
+        probe: 'the Spirit of God pointed out by the prophets things to come' },
+    ],
+  },
+  {
+    id: 'angels',
+    group: 'God and the unseen',
+    label: 'Angels and the heavenly court',
+    blurb:
+      'Angels get names, ranks, jobs and a history here that the Hebrew Bible never gives them, and '
+      + 'the sources are unembarrassed about where that came from: a rabbi in the Yerushalmi says '
+      + 'flatly that the names came up from Babylonia with the exiles. 1 Enoch supplies the story '
+      + 'everyone else is reacting to — two hundred of them come down, marry, teach metalwork and '
+      + 'cosmetics and astrology, and their dead offspring become the demons. Jubilees sorts the '
+      + 'angels into departments on the first day of creation and puts one over every nation except '
+      + 'Israel. And in Origen a pagan critic is already asking the awkward question: if you honour '
+      + 'these beings, how many gods do you have?',
+    canonicalAnchors:
+      'The anchors are Genesis 6:1–4, Deuteronomy 32:8 (in the Greek, “according to the number of '
+      + 'the angels of God”), Daniel 10 and 12:1, and Isaiah 6. They are canonical and sit outside '
+      + 'this corpus; 1 Enoch is expanding the first, Jubilees the second, and Daniel is where '
+      + 'Michael and Gabriel get their names in scripture at all.',
+    absences: [
+      'What you are reading of 1 Enoch is a translation of a translation. The Book of the Watchers '
+      + 'was written in Aramaic, was read in Greek by the writers of the New Testament, and survives '
+      + 'complete only in Ge‘ez — Ethiopic — from which R. H. Charles made the English below. The '
+      + 'Aramaic is fragments from Qumran and the Greek is partial. Where a phrase matters, it is '
+      + 'worth remembering how far it has travelled.',
+      'The angelic liturgy is missing. The Songs of the Sabbath Sacrifice, from Qumran, are the one '
+      + 'text that shows what the heavenly court was imagined to be DOING — priestly angels serving '
+      + 'in a heavenly sanctuary, week by week — and no public-domain or openly licensed English of '
+      + 'the scrolls exists. Everything below sees angels from the earth looking up.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: '1enoch', chapter: 6, verse: 2, tradition: 'second-temple',
+        summary: 'Angels see the daughters of men, descend',
+        probe: 'Come, let us choose us wives from among the children of men' },
+      { work: '1enoch', chapter: 8, verse: 1, tradition: 'second-temple',
+        summary: 'Azazel taught weapons, metals, jewellery, eye-paint',
+        probe: 'Azâzêl taught men to make swords, and knives, and shields' },
+      { work: '1enoch', chapter: 9, verse: 1, tradition: 'second-temple',
+        summary: 'Four archangels look down and see bloodshed',
+        probe: 'Michael, Uriel, Raphael, and Gabriel looked down from heaven' },
+      { work: '1enoch', chapter: 20, verse: 1, tradition: 'second-temple',
+        summary: 'A list: the names of the watching angels',
+        probe: 'these are the names of the holy angels who watch' },
+      { work: '1enoch', chapter: 15, verse: 8, tradition: 'second-temple',
+        summary: 'Dead giants become the evil spirits here',
+        probe: 'shall be called evil spirits upon the earth' },
+      { work: 'jubilees', chapter: 2, verse: 2, tradition: 'second-temple',
+        summary: 'Created day one: angels of fire, wind, cloud',
+        probe: 'the angels of the presence, and the angels of sanctification' },
+      { work: 'jubilees', chapter: 15, verse: 31, tradition: 'second-temple',
+        summary: 'Spirits set over the nations, to mislead them',
+        probe: 'over all hath He placed spirits in authority to lead them astray' },
+      { work: 'jubilees', chapter: 15, verse: 32, tradition: 'second-temple',
+        summary: 'Over Israel no angel: God rules directly',
+        probe: 'over Israel He did not appoint any angel or spirit' },
+      { work: 'Tob', chapter: 5, verse: 4, tradition: 'second-temple',
+        summary: 'Raphael hired as a travelling companion, unrecognised',
+        probe: 'he found Raphael that was an angel' },
+      { work: 'testament-of-abraham-a', chapter: 10, verse: 1, tradition: 'second-temple',
+        summary: 'Michael flies Abraham on a cherub chariot',
+        probe: 'took Abraham upon a chariot of the cherubim' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // Resh Laqish's remark is the most self-aware sentence on this page. He is not denying the
+      // angels; he is dating their NAMES, and dating them to the exile.
+      { work: 'y-rosh-hashanah', chapter: 1, verse: 2, tradition: 'rabbinic',
+        summary: 'The angels’ names came up from Babylonia',
+        probe: 'the names of angels were in their hands from Babylonia' },
+      { work: 'tg-psj-exodus', chapter: 24, verse: 1, tradition: 'rabbinic',
+        summary: 'Michael, Prince of Wisdom, speaks for God',
+        probe: 'And Michael, the Prince of Wisdom, said to Mosheh' },
+      { work: 'tg-psj-genesis', chapter: 32, verse: 25, tradition: 'rabbinic',
+        summary: 'The wrestler argues about an unpaid tithe',
+        probe: 'an Angel contended with him in the likeness of a man' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-hermas', chapter: 69, verse: 3, tradition: 'apostolic-fathers',
+        summary: 'Michael puts the law in believers’ hearts',
+        probe: 'the great and glorious angel is Michael, who hath the power over this people' },
+      { work: 'af-ign-trallians', chapter: 5, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'He knows the ranks, and claims no standing',
+        probe: 'the arrays of the angels and the musterings of the principalities' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'origen-celsus-8', chapter: 13, verse: 1, tradition: 'church-fathers',
+        summary: 'Whether Gabriel and Michael may be worshipped',
+        probe: 'to Gabriel and Michael, and the other angels and archangels' },
+      { work: 'athanasius-arians-3', chapter: 14, verse: 1, tradition: 'church-fathers',
+        summary: 'When the Father works, no angel works',
+        probe: 'it is not that any Angel works' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Same word, different world. Hesiod's watchers are Zeus' inspectors of human justice, and
+      // they never fall, never marry, and teach nobody anything. The overlap is the surveillance,
+      // not the story.
+      { work: 'hesiod-works-and-days', chapter: 2, verse: 250, tradition: 'greco-roman',
+        summary: 'Thirty thousand spirits watching mortals’ crooked judgements',
+        probe: 'thrice ten thousand spirits, watchers of mortal men' },
+    ],
+  },
+  {
+    id: 'satan-evil',
+    group: 'God and the unseen',
+    label: 'Satan and the origin of evil',
+    blurb:
+      'Four different answers, and they do not combine. Evil came down from outside, when the '
+      + 'watchers fell (1 Enoch, Jubilees). It came from Adam, and we inherit it as a wicked heart '
+      + '(4 Ezra). It is a faculty inside each person, the evil inclination, with a good one beside '
+      + 'it (the Mishnah, the Testaments). Or it began in envy — the devil was expelled for refusing '
+      + 'to bow to Adam, and has hated him since (the Life of Adam and Eve). Sirach rules out the '
+      + 'lot of them in two lines: do not say the Lord made you fall. And Celsus, from outside, '
+      + 'thinks the whole apparatus is an admission that your God cannot cope.',
+    canonicalAnchors:
+      'The anchors are Genesis 3, Genesis 6:1–4, Job 1–2, Zechariah 3:1–2 and 1 Chronicles 21:1 — '
+      + 'where “Satan” incites David, against 2 Samuel 24:1, where it is the LORD’s own anger. They '
+      + 'are canonical and sit outside this corpus. Job is the pattern Jubilees is rewriting below, '
+      + 'with Mastema taking the accuser’s part and proposing the sacrifice of Isaac.',
+    absences: [
+      'The Testament of Solomon is not in this library, and it is the text a student of demonology '
+      + 'would want first: a catalogue of individual demons, each interrogated by Solomon, each '
+      + 'giving its name, the ailment it causes and the angel who thwarts it. It is public domain in '
+      + 'F. C. Conybeare’s 1898 translation and is simply not here yet.',
+      'Nothing on this page is a system. Every text below answers the question in passing, while '
+      + 'telling a story or ruling on a case, and none of them sets out to reconcile its answer with '
+      + 'anyone else’s. The first Christian writer to treat the fall of the devil as a doctrine to '
+      + 'be argued rather than a story to be told is Origen in On First Principles — of which this '
+      + 'library has only Against Celsus.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Grouped by ANSWER, not by date: watchers, then inherited heart, then inclination, then
+      // envy. Reading them in a block is what shows they are alternatives rather than a sequence.
+      { work: 'jubilees', chapter: 10, verse: 6, tradition: 'second-temple',
+        summary: 'Mastema bargains to keep a tenth',
+        probe: 'let some of them remain before me, and let them harken to my voice' },
+      { work: 'jubilees', chapter: 17, verse: 16, tradition: 'second-temple',
+        summary: 'Mastema proposes the sacrifice of Isaac',
+        probe: 'And the prince Mastema came and said before God' },
+      { work: '2enoch', chapter: 31, verse: 4, tradition: 'second-temple',
+        summary: 'Satanail thrown out; his intelligence unchanged',
+        probe: 'The devil is the evil spirit of the lower places' },
+      { work: '1enoch', chapter: 54, verse: 6, tradition: 'second-temple',
+        summary: 'The four archangels cast them into the furnace',
+        probe: 'cast them on that day into the burning furnace' },
+      { work: '2esdras', chapter: 3, verse: 21, tradition: 'second-temple',
+        summary: 'Adam’s wicked heart, and all born after',
+        probe: 'For the first Adam bearing a wicked heart transgressed' },
+      { work: '2esdras', chapter: 7, verse: 118, tradition: 'second-temple',
+        summary: 'You sinned, and the evil fell on everyone',
+        probe: 'the evil is not fallen on thee alone, but upon all of us' },
+      { work: 'tp-asher', chapter: 1, verse: 8, tradition: 'second-temple',
+        summary: 'Inclining to the evil inclination, ruled by Beliar',
+        probe: 'But if it incline to the evil inclination' },
+      { work: 'lae', chapter: 14, verse: 3, tradition: 'second-temple',
+        summary: 'I will not worship a younger, inferior being',
+        probe: 'I will not worship an inferior and younger being' },
+      { work: 'lae', chapter: 12, verse: 1, tradition: 'second-temple',
+        summary: 'All my hostility and envy is for you',
+        probe: 'all my hostility, envy, and sorrow is for thee' },
+      { work: 'Wis', chapter: 2, verse: 24, tradition: 'second-temple',
+        summary: 'Death entered the world through the devil’s envy',
+        probe: 'through envy of the devil came death into the world' },
+      // Sirach is here to be disagreed with. He is the oldest voice on the page and he refuses
+      // every externalising answer the others give — including, two verses later, the one about
+      // being left in the hand of your own counsel.
+      { work: 'Sir', chapter: 15, verse: 11, tradition: 'second-temple',
+        summary: 'Do not say the Lord made you fall',
+        probe: 'Say not thou, It is through the Lord that I fell away' },
+      { work: 'Sir', chapter: 15, verse: 14, tradition: 'second-temple',
+        summary: 'Left from the beginning in his own counsel',
+        probe: 'left him in the hand of his counsel' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'm-avot', chapter: 2, verse: 11, tradition: 'rabbinic',
+        summary: 'Evil eye, evil inclination, hatred: three destroyers',
+        probe: 'an evil eye, the evil inclination, and hatred for humankind' },
+      { work: 'tg-psj-genesis', chapter: 3, verse: 6, tradition: 'rabbinic',
+        summary: 'Eve sees Sammael, the angel of death',
+        probe: 'And the woman beheld Sammael, the angel of death' },
+      { work: 'tg-psj-leviticus', chapter: 16, verse: 8, tradition: 'rabbinic',
+        summary: 'One lot for the Name, one for Azazel',
+        probe: 'one lot for the Name of the Lord, and one lot for Azazel' },
+      { work: 'm-yoma', chapter: 4, verse: 1, tradition: 'rabbinic',
+        summary: 'The urn, the two lots, the goat',
+        probe: 'On one was inscribed: “For the Name”, and on the other: “For Azazel.”' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-barnabas', chapter: 18, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Two ways, with angels stationed on each',
+        probe: 'on the other the angels of Satan' },
+      { work: 'af-ign-ephesians', chapter: 13, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Meeting together throws down Satan’s powers',
+        probe: 'the powers of Satan are cast down' },
+      { work: 'af-polycarp', chapter: 7, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Denying the cross makes you of the devil',
+        probe: 'whosoever shall not confess the testimony of the Cross, is of the devil' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'origen-celsus-6', chapter: 42, verse: 1, tradition: 'church-fathers',
+        summary: 'Celsus: an adversary means your God is helpless',
+        probe: 'creating an adversary to God , the devil' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // The Persian scheme Plutarch reports is the nearest thing in the Greek world to what the
+      // Jewish texts above are doing, and the difference is exact: Horomazes and Arimanius are two
+      // gods of equal standing. Mastema has to ask permission.
+      { work: 'plutarch-isis-osiris', chapter: 46, verse: 1, tradition: 'greco-roman',
+        summary: 'Zoroaster’s two gods: light against pitchy darkness',
+        probe: 'two rival workmen, the one whereof they make to be the maker of good things' },
+    ],
+  },
+  {
     id: 'resurrection',
     group: 'Last things',
     label: 'Resurrection and the afterlife',
