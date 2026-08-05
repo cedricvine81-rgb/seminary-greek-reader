@@ -133,7 +133,11 @@ const RAW_CATEGORIES: TextCategory[] = [
       // brenton/ side-file because that is the mechanism for LXX English — the directory name
       // is not a claim about the translator.
       { id: 'PsSol', name: 'Psalms of Solomon', source: 'lxx', osisId: 'PsSol', chapters: 18, english: 'brenton' },
-      { id: 'Odes', name: 'Odes', source: 'lxx', osisId: 'Odes', chapters: 14 },
+      // English here covers ODE 12 ONLY — the Prayer of Manasseh, in the KJV Apocrypha. The other
+      // thirteen Odes are canticles lifted from books that already have English elsewhere in the
+      // library (Exodus 15, Deuteronomy 32, Jonah 2, Habakkuk 3 …); the prayer is the one Ode that
+      // is not a quotation, so it was the only part of this work no English reader could reach.
+      { id: 'Odes', name: 'Odes', source: 'lxx', osisId: 'Odes', chapters: 14, english: 'brenton' },
     ],
   },
   {

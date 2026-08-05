@@ -143,6 +143,14 @@ export function check(topicId: string): number {
       bad++
       continue
     }
+    // A citeAs entry shows the reader a citation that is NOT the address the link uses, so the
+    // two can drift apart without anything failing. Require the verse number to appear in it —
+    // enough to catch "Prayer of Manasseh 7" left behind on the entry for verse 8.
+    if (e.citeAs && !new RegExp(`(^|\\D)${e.verse}(\\D|$)`).test(e.citeAs)) {
+      console.log(`  CITE DRIFT ${label} — shown as "${e.citeAs}", which does not name verse ${e.verse}`)
+      bad++
+      continue
+    }
     if (matches.length > 3) console.log(`  (probe for ${label} is not distinctive: ${matches.length} passages)`)
   }
   console.log(`\n${page.entries.length} entries checked, ${bad} unresolved`)

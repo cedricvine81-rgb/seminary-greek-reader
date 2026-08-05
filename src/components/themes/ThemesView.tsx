@@ -55,6 +55,7 @@ export function ThemesView({ topicId }: { topicId: string }) {
   }, [page])
 
   function cite(e: TopicEntry) {
+    if (e.citeAs) return e.citeAs
     const name = workName.get(e.work) ?? e.work
     return e.book ? `${name} ${e.book}.${e.chapter}.${e.verse}` : `${name} ${e.chapter}:${e.verse}`
   }

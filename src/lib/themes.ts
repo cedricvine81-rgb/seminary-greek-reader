@@ -68,6 +68,19 @@ export interface TopicEntry {
   summary: string
   /** Exact phrase from the passage: what the pane searches, and what the build validates. */
   probe: string
+  /**
+   * The complete citation to show, replacing the usual "<work> <chapter>:<verse>".
+   *
+   * Only for a named text that sits INSIDE a larger work, where both the standard citation and
+   * the address in this library are true and neither alone is usable. The Prayer of Manasseh is
+   * the case: everyone cites it "Prayer of Manasseh 7", but it lives here as Odes 12:7, because
+   * that is where the Septuagint manuscripts put it. Rendering the address would name a work the
+   * reader does not recognise; rendering the standard citation as "Prayer of Manasseh 12:7"
+   * would invent a chapter 12 of a fifteen-verse prayer.
+   *
+   * `work`/`chapter`/`verse` are untouched, so the link and --check still use the real address.
+   */
+  citeAs?: string
 }
 
 /** Sidebar sections, in reading order — roughly the order a systematic theology would take. */
@@ -1094,21 +1107,47 @@ export const THEME_PAGES: TopicPage[] = [
       'Turning back, and whether there is a limit to how often you may. Sirach says do not put it '
       + 'off; Wisdom says God gives room for it on purpose; the Mishnah rules that saying “I shall '
       + 'sin and repent” forfeits the chance. Then Hermas draws a line no Jewish source here draws, '
-      + 'allowing the baptised one further repentance and no more.',
+      + 'allowing the baptised one further repentance and no more. The Prayer of Manasseh belongs '
+      + 'to a different order from all of these: everything else on this page talks about repentance, '
+      + 'and the prayer performs it, in the voice of the penitent himself.',
     canonicalAnchors:
       'The anchors are Ezekiel 18 and 33, Hosea 14, Joel 2:12–13 and Jonah 3. They are canonical '
-      + 'and sit outside this corpus; Sirach and 1 Clement are both arguing straight out of them.',
+      + 'and sit outside this corpus; Sirach and 1 Clement are both arguing straight out of them. '
+      + 'The Prayer of Manasseh has a narrative anchor rather than a doctrinal one: 2 Chronicles '
+      + '33:12–13 says the captive king prayed and was heard, without saying what he prayed. The '
+      + 'prayer supplies the missing words, which is why it exists.',
     absences: [
-      'The Prayer of Manasseh cannot be read here yet, though the library does hold it: it is Ode '
-      + '12 of the Septuagint Odes, in Greek, with no English translation attached. That matters '
-      + 'here more than it would anywhere else, because every text below talks ABOUT repentance '
-      + 'while Manasseh is the one that performs it, in the voice of the penitent himself.',
       'Nobody here argues back against Hermas. Limiting the baptised to a single further repentance '
       + 'is the sharpest position anyone on this page takes, and the controversy it caused belongs '
       + 'to the century after this corpus ends.',
+      'The Qumran material is missing, and it is the one body of evidence that would show repentance '
+      + 'as a communal rite rather than an individual act — the covenant-renewal confession of the '
+      + 'Community Rule, where the whole assembly says together that they have done wickedly. No '
+      + 'public-domain or openly licensed English translation of the scrolls exists, so the Dead Sea '
+      + 'Scrolls shelf of this library is still empty.',
     ],
     entries: [
       // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // The Prayer of Manasseh leads because it is the only text here in the first person, and
+      // because it says something none of the others do: that repentance was appointed for
+      // sinners and NOT for the righteous patriarchs (12:8). Read next to 1 Clement 7:5 below —
+      // repentance offered to every generation — the two are not saying the same thing.
+      // It is Ode 12 of the Septuagint Odes, which is where the manuscripts put it.
+      { work: 'Odes', chapter: 12, verse: 7, tradition: 'second-temple', citeAs: 'Prayer of Manasseh 7',
+        summary: 'Repentance appointed for sinners, that they be saved',
+        probe: 'hast appointed repentance unto sinners, that they may be saved' },
+      { work: 'Odes', chapter: 12, verse: 8, tradition: 'second-temple', citeAs: 'Prayer of Manasseh 8',
+        summary: 'Not appointed for the just, but for me',
+        probe: 'hast not appointed repentance to the just' },
+      { work: 'Odes', chapter: 12, verse: 9, tradition: 'second-temple', citeAs: 'Prayer of Manasseh 9',
+        summary: 'Sins outnumbering the sands of the sea',
+        probe: 'I have sinned above the number of the sands of the sea' },
+      { work: 'Odes', chapter: 12, verse: 11, tradition: 'second-temple', citeAs: 'Prayer of Manasseh 11',
+        summary: 'Bowing the knee of the heart, begging grace',
+        probe: 'Now therefore I bow the knee of mine heart' },
+      { work: 'Odes', chapter: 12, verse: 13, tradition: 'second-temple', citeAs: 'Prayer of Manasseh 13',
+        summary: 'Forgive; do not reserve evil; God of penitents',
+        probe: 'thou art the God, even the God of them that repent' },
       { work: 'Sir', chapter: 5, verse: 7, tradition: 'second-temple',
         summary: 'Do not put off turning to the Lord',
         probe: 'Make no tarrying to turn to the Lord' },

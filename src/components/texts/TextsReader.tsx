@@ -62,11 +62,34 @@ const JOS_SHORT: Record<string, string> = { antiquities: 'Ant', 'jewish-war': 'J
 
 // Display names for the parallel translations a Greek work can show alongside it.
 const TRANSLATION_LABELS: Record<string, string> = { brenton: 'Brenton (1851)', bsb: 'Berean Standard Bible' }
+
+// brenton/ is the MECHANISM by which an LXX work gets English — a side-file keyed by osisId — and
+// NOT a claim about who translated it. Brenton did not translate either of the works below (the
+// Psalms of Solomon and the Odes are absent from his 1851 Septuagint), so naming him on their
+// English would be a false attribution. They name their own translator instead.
+const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapNote?: string }> = {
+  PsSol: {
+    label: 'Gray (1913)',
+    attribution: 'English: G. Buchanan Gray’s translation in R. H. Charles, ed., “The Apocrypha and '
+      + 'Pseudepigrapha of the Old Testament in English” (Oxford, 1913); public domain. Verses are '
+      + 'numbered in the standard versification, not Gray’s own line numbering.',
+  },
+  Odes: {
+    label: 'King James (1611)',
+    attribution: 'English: the Prayer of Manasseh (Ode 12) in the Authorised (King James) Version '
+      + 'of 1611, Apocrypha; public domain. The other Odes are canticles quoted from books that can '
+      + 'be read in English elsewhere in this library, and appear here in Greek only.',
+    gapNote: 'This Ode is a canticle quoted from the Old Testament, and is read in English there. '
+      + 'Only Ode 12, the Prayer of Manasseh, is not a quotation, and it is the one carrying English here.',
+  },
+}
+
 // The parallel translations available for a work. Only Greek (LXX) works carry one, and
 // each currently provides a single option; returning a list keeps the menu ready for more.
 function translationsFor(w: CatalogWork | null): { id: string; label: string }[] {
   if (!w || w.source !== 'lxx' || !w.english) return []
-  return [{ id: w.english, label: TRANSLATION_LABELS[w.english] ?? w.english }]
+  const own = w.osisId ? ENGLISH_BY_WORK[w.osisId] : undefined
+  return [{ id: w.english, label: own?.label ?? TRANSLATION_LABELS[w.english] ?? w.english }]
 }
 
 const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
@@ -486,7 +509,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   useEffect(() => {
     if (!work) { onAttribution?.(''); return }
     const parts = work.source === 'lxx' ? ['Greek text: Rahlfs’ Septuagint (1935) and Nestle 1904, both public domain.'] : []
-    if (work.english === 'brenton') parts.push('English: Brenton’s 1851 English Septuagint (public domain).')
+    const ownEnglish = work.osisId ? ENGLISH_BY_WORK[work.osisId] : undefined
+    if (work.english === 'brenton') parts.push(ownEnglish?.attribution
+      ?? 'English: Brenton’s 1851 English Septuagint (public domain).')
     if (work.english === 'bsb') parts.push('English: the Berean Standard Bible (public domain).')
     const prose = findProseWork(work.source)
     if (prose) parts.push(prose.attribution)
@@ -1338,6 +1363,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 // 172a" rather than "…172:1").
                 const citeFor = (row: Row): string => row.ref ? `${work.name} ${row.ref}` : `${refLabel}:${row.num}`
                 const notedKeys = notedMap[`${noteBook}.${section.chapter}`] ?? new Set<number>()
+                // A translation can cover only PART of a work — the Odes carry English for Ode 12
+                // alone. Per verse, a missing translation is an em dash; a whole chapter of them is
+                // a column of dashes that reads as a broken page. So when NOTHING in the chapter is
+                // translated, say so once at the top and leave the rest of the column empty.
+                const sectionUntranslated = !section.rows.some(r => !!r.english)
                 return (
                   <div key={section.key} ref={el => { if (el) sectionRefs.current[section.key] = el }}>
                     {/* Daf sides are written lowercase ("28b"), so the Talmud opts out of the
@@ -1480,7 +1510,14 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
                                          remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />)
-                                : <span className="text-gray-300 italic">—</span>}
+                                : !sectionUntranslated
+                                ? <span className="text-gray-300 italic">—</span>
+                                : row.num === filteredRows[0]?.num
+                                ? (<span className="text-xs text-gray-400 italic font-sans">
+                                    {(work.osisId && ENGLISH_BY_WORK[work.osisId]?.gapNote)
+                                      ?? 'No English translation is available for this chapter.'}
+                                  </span>)
+                                : null}
                             </p>
                           )}
                         </div>
