@@ -26,7 +26,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'testament-of-abraham-a' | 'testament-of-abraham-b' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'testament-of-abraham-a' | 'testament-of-abraham-b' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `tert-${string}` | `theophilus-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -417,9 +417,57 @@ const ANF_WORKS: ProseWork[] = ANF.map(w => ({
 }))
 
 // Ids/names the catalog needs to list the Ante-Nicene Fathers under one Texts category.
-export const ANF_CATALOG = ANF.map(w => ({
+const IRENAEUS_CATALOG = ANF.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
+
+// ── Tertullian and Theophilus of Antioch (ANF, public domain) ─────────────────────────
+// Built by scripts/build-tertullian.py from Wikisource (the Apology's chapter 1 from New
+// Advent, which Wikisource omits). Chapter → paragraph: both are cited by chapter alone
+// ("Adv. Prax. 2", "Autol. 2.15"), so a citation with one number resolves to the chapter and
+// the paragraph is this app's locator — the same arrangement as Irenaeus above.
+const TERT_ATTRIBUTION = 'Text: Tertullian in the Ante-Nicene Fathers (ed. Roberts & Donaldson, 1885), public domain. Source: Wikisource; the Apology’s chapter 1 from newadvent.org, which Wikisource omits.'
+const THEOPHILUS_ATTRIBUTION = 'Text: Theophilus of Antioch, To Autolycus, tr. Marcus Dods, in the Ante-Nicene Fathers (1885), public domain. Source: Wikisource.'
+
+// Matches "Tertullian, Apol. 40" / "Tertullian, Adv. Prax. 2.1" and the Theophilus equivalent.
+const fatherCite = (core: string) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp('^' + core.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s+(\\d+)(?:[.:](\\d+))?'))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+
+const FATHERS_B: { slug: string; name: string; noteBook: string; chapters: number; cite: string; attribution: string }[] = [
+  { slug: 'tert-apology', name: 'Tertullian, Apology', noteBook: 'TertApol', chapters: 50, cite: 'Tertullian, Apol.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-praxeas', name: 'Tertullian, Against Praxeas', noteBook: 'TertPrax', chapters: 31, cite: 'Tertullian, Adv. Prax.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-baptism', name: 'Tertullian, On Baptism', noteBook: 'TertBapt', chapters: 20, cite: 'Tertullian, Bapt.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-prayer', name: 'Tertullian, On Prayer', noteBook: 'TertOrat', chapters: 29, cite: 'Tertullian, Or.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-repentance', name: 'Tertullian, On Repentance', noteBook: 'TertPaen', chapters: 12, cite: 'Tertullian, Paen.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-patience', name: 'Tertullian, On Patience', noteBook: 'TertPat', chapters: 16, cite: 'Tertullian, Pat.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-resurrection', name: 'Tertullian, On the Resurrection of the Flesh', noteBook: 'TertRes', chapters: 63, cite: 'Tertullian, Res.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-prescription', name: 'Tertullian, The Prescription Against Heretics', noteBook: 'TertPraescr', chapters: 44, cite: 'Tertullian, Praescr.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-jews', name: 'Tertullian, An Answer to the Jews', noteBook: 'TertJud', chapters: 14, cite: 'Tertullian, Adv. Jud.', attribution: TERT_ATTRIBUTION },
+  { slug: 'tert-soul', name: 'Tertullian, A Treatise on the Soul', noteBook: 'TertAn', chapters: 58, cite: 'Tertullian, An.', attribution: TERT_ATTRIBUTION },
+  { slug: 'theophilus-1', name: 'Theophilus, To Autolycus (Book 1)', noteBook: 'TheoAut1', chapters: 14, cite: 'Theophilus, Autol. 1', attribution: THEOPHILUS_ATTRIBUTION },
+  { slug: 'theophilus-2', name: 'Theophilus, To Autolycus (Book 2)', noteBook: 'TheoAut2', chapters: 38, cite: 'Theophilus, Autol. 2', attribution: THEOPHILUS_ATTRIBUTION },
+  { slug: 'theophilus-3', name: 'Theophilus, To Autolycus (Book 3)', noteBook: 'TheoAut3', chapters: 30, cite: 'Theophilus, Autol. 3', attribution: THEOPHILUS_ATTRIBUTION },
+]
+
+const FATHERS_B_WORKS: ProseWork[] = FATHERS_B.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/anf/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: w.attribution,
+  // Theophilus is cited "Autol. 2.15", so the book is part of the prefix and the chapter is
+  // the first number after it — fatherCite handles both shapes.
+  parseCitation: fatherCite(w.cite),
+}))
+
+export const ANF_CATALOG = [
+  ...IRENAEUS_CATALOG,
+  ...FATHERS_B.map(w => ({ id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters })),
+]
 
 // Justin Martyr (Roberts-Donaldson / ANF, from newadvent.org — cleaner chapter markup than
 // the earlychristianwritings copy). Chapter-level ("Dial. 32.1" → chapter 32; the ANF
@@ -2409,6 +2457,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...AF_WORKS,
   ...TG_WORKS,
   ...ANF_WORKS,
+  ...FATHERS_B_WORKS,
   ...JUSTIN_WORKS,
   ...EUSEBIUS_WORKS,
   ...EUSEBIUS_PE_WORKS,
