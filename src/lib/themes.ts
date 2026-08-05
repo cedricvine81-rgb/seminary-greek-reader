@@ -1065,4 +1065,73 @@ export const THEME_PAGES: TopicPage[] = [
         probe: 'we must all stand at the judgment-seat of Christ' },
     ],
   },
+  {
+    id: 'repentance',
+    group: 'Sin and salvation',
+    label: 'Repentance and forgiveness',
+    blurb:
+      'Turning back, and whether there is a limit to how often you may. Sirach says do not put it '
+      + 'off; Wisdom says God gives room for it on purpose; the Mishnah rules that saying “I shall '
+      + 'sin and repent” forfeits the chance. Then Hermas draws a line no Jewish source here draws, '
+      + 'allowing the baptised one further repentance and no more.',
+    canonicalAnchors:
+      'The anchors are Ezekiel 18 and 33, Hosea 14, Joel 2:12–13 and Jonah 3. They are canonical '
+      + 'and sit outside this corpus; Sirach and 1 Clement are both arguing straight out of them.',
+    absences: [
+      'The Prayer of Manasseh is not in this library — checked against the catalogue by name, not '
+      + 'by searching the text, which is the lesson of an earlier mistake on this project. Its '
+      + 'absence matters here more than anywhere: every text below talks ABOUT repentance, while '
+      + 'Manasseh is the one that performs it, in the voice of the penitent himself.',
+      'Nobody here argues back against Hermas. Limiting the baptised to a single further repentance '
+      + 'is the sharpest position anyone on this page takes, and the controversy it caused belongs '
+      + 'to the century after this corpus ends.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      { work: 'Sir', chapter: 5, verse: 7, tradition: 'second-temple',
+        summary: 'Do not put off turning to the Lord',
+        probe: 'Make no tarrying to turn to the Lord' },
+      { work: 'Sir', chapter: 17, verse: 25, tradition: 'second-temple',
+        summary: 'Return, forsake sins, pray before his face',
+        probe: 'Return unto the Lord, and forsake thy sins' },
+      { work: 'Wis', chapter: 12, verse: 10, tradition: 'second-temple',
+        summary: 'Judging slowly, God gave room to repent',
+        probe: 'thou gavest them place of repentance' },
+      { work: 'josaseneth', chapter: 10, verse: 16, tradition: 'second-temple',
+        summary: 'Aseneth in sackcloth, sprinkled with ashes',
+        probe: 'she took sackcloth and wrapped it round her waist' },
+      { work: 'philo-rewards', chapter: 1, verse: 15, tradition: 'second-temple',
+        summary: 'Repentance contends for a prize of its own',
+        probe: 'another contest in which repentance contends for the prize' },
+      { work: 'philo-rewards', chapter: 1, verse: 169, tradition: 'second-temple',
+        summary: 'God defends the fortunes of those repenting',
+        probe: 'God will nourish the virtues against the enemies of those who have repented' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      { work: 'm-yoma', chapter: 8, verse: 8, tradition: 'rabbinic',
+        summary: 'Repentance atones for the lighter transgressions',
+        probe: 'Repentance effects atonement for light transgressions' },
+      { work: 'm-yoma', chapter: 8, verse: 9, tradition: 'rabbinic',
+        summary: 'Planning to sin and repent forfeits repentance',
+        probe: 'I shall sin and repent, sin and repent' },
+      { work: 'tg-isaiah', chapter: 6, verse: 10, tradition: 'rabbinic',
+        summary: 'Hearts made dull lest they turn and heal',
+        probe: 'lest they see with their eyes' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-1clement', chapter: 7, verse: 5, tradition: 'apostolic-fathers',
+        summary: 'Every generation given a place for repentance',
+        probe: 'hath given a place for repentance unto them that desire to turn' },
+      { work: 'af-1clement', chapter: 7, verse: 6, tradition: 'apostolic-fathers',
+        summary: 'Noah preached it; the obedient were saved',
+        probe: 'Noah preached repentance' },
+      { work: 'af-2clement', chapter: 16, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Opportunity remains while there is still time',
+        probe: 'we have found no small opportunity for repentance' },
+      { work: 'af-hermas', chapter: 29, verse: 8, tradition: 'apostolic-fathers',
+        summary: 'The repentant received, but not often',
+        probe: 'one who hath sinned and repented must be received' },
+      { work: 'af-hermas', chapter: 110, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'The shepherd names himself angel of repentance',
+        probe: 'I, the shepherd, the angel of repentance' },
+    ],
+  },
 ]
