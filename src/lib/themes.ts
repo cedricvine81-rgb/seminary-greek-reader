@@ -1078,10 +1078,10 @@ export const THEME_PAGES: TopicPage[] = [
       'The anchors are Ezekiel 18 and 33, Hosea 14, Joel 2:12–13 and Jonah 3. They are canonical '
       + 'and sit outside this corpus; Sirach and 1 Clement are both arguing straight out of them.',
     absences: [
-      'The Prayer of Manasseh is not in this library — checked against the catalogue by name, not '
-      + 'by searching the text, which is the lesson of an earlier mistake on this project. Its '
-      + 'absence matters here more than anywhere: every text below talks ABOUT repentance, while '
-      + 'Manasseh is the one that performs it, in the voice of the penitent himself.',
+      'The Prayer of Manasseh cannot be read here yet, though the library does hold it: it is Ode '
+      + '12 of the Septuagint Odes, in Greek, with no English translation attached. That matters '
+      + 'here more than it would anywhere else, because every text below talks ABOUT repentance '
+      + 'while Manasseh is the one that performs it, in the voice of the penitent himself.',
       'Nobody here argues back against Hermas. Limiting the baptised to a single further repentance '
       + 'is the sharpest position anyone on this page takes, and the controversy it caused belongs '
       + 'to the century after this corpus ends.',
