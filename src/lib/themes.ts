@@ -1259,6 +1259,122 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
+    id: 'wisdom-logos',
+    group: 'Christ',
+    label: 'Wisdom, Word and pre-existence',
+    blurb:
+      'Four traditions, working separately, each arrive at something between God and the world. '
+      + 'Jewish wisdom poetry makes Wisdom a person who was there at creation — and then splits: '
+      + 'Sirach settles her in Jacob and says plainly that she is the Torah, while 1 Enoch says she '
+      + 'looked for somewhere to live among human beings, found nowhere, and went back to the '
+      + 'angels. Philo calls the Logos God’s instrument, his image, his firstborn son, his high '
+      + 'priest, and twice “the second god”. The Targums put the Word of the Lord where the Hebrew '
+      + 'has God himself, in more than four hundred verses of this library alone. The Stoics say '
+      + 'the active principle in matter is reason, and reason is God. Justin then gathers every one '
+      + 'of these titles into a single figure and tells the Greeks their philosophers had a share '
+      + 'of the same Logos. Almost everything in John 1 is lying about in this material — with one '
+      + 'thing missing, which is in the absences below.',
+    canonicalAnchors:
+      'The anchors are Proverbs 8:22–31 (Wisdom possessed at the beginning of his way, beside him '
+      + 'as a master workman), Job 28, Psalm 33:6 and Genesis 1:3. They are canonical and sit '
+      + 'outside this corpus; Sirach 24 below is written as a deliberate sequel to Proverbs 8, and '
+      + 'the whole page is argument about what that chapter licensed.',
+    absences: [
+      'Nothing here says Wisdom or the Word became a human being. That is the one move John 1:14 '
+      + 'makes which no Jewish text in this library makes. The closest is Baruch 3:37 below — '
+      + '“afterward did he shew himself upon earth, and conversed with men” — which the Fathers '
+      + 'read as the incarnation, and which every reader should check in context: the next lines '
+      + 'identify what appeared as the book of the commandments. Baruch is doing what Sirach 24 '
+      + 'does, and saying that Wisdom came down as the Law.',
+      'Targum Neofiti is not in this library and it is the text most often quoted in this argument. '
+      + 'Its Genesis 1:1 opens “from the beginning, by Wisdom, the Word of the Lord created”, which '
+      + 'is as close to John 1:1 as any Jewish sentence gets. Neofiti and Onkelos have no '
+      + 'public-domain English on Sefaria, so what is here is Pseudo-Jonathan and Isaiah only — '
+      + 'good enough to show the Memra habit, not the one verse everybody cites.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // Sirach 24 and 1 Enoch 42 are the two endings of the same story, and they exclude each
+      // other. Read 24:8 with 24:23 — the point of settling Wisdom in Jacob is that she turns out
+      // to be the Torah, which is precisely what stops her being a second divine person.
+      { work: 'Sir', chapter: 1, verse: 4, tradition: 'second-temple',
+        summary: 'Wisdom created before all other things',
+        probe: 'Wisdom hath been created before all things' },
+      { work: 'Sir', chapter: 24, verse: 3, tradition: 'second-temple',
+        summary: 'I came out of the mouth of the Most High',
+        probe: 'I came out of the mouth of the most High' },
+      { work: 'Sir', chapter: 24, verse: 8, tradition: 'second-temple',
+        summary: 'Commanded to pitch her tent in Jacob',
+        probe: 'Let thy dwelling be in Jacob' },
+      { work: 'Sir', chapter: 24, verse: 23, tradition: 'second-temple',
+        summary: 'All this is the law Moses commanded',
+        probe: 'even the law which Moses commanded for an heritage' },
+      { work: '1enoch', chapter: 42, verse: 2, tradition: 'second-temple',
+        summary: 'No room among people; back to the angels',
+        probe: 'Wisdom returned to her place, And took her seat among the angels' },
+      { work: 'Wis', chapter: 9, verse: 9, tradition: 'second-temple',
+        summary: 'Present with you when you made the world',
+        probe: 'was present when thou madest the world' },
+      { work: 'Wis', chapter: 7, verse: 25, tradition: 'second-temple',
+        summary: 'Breath of God’s power, flowing from his glory',
+        probe: 'she is the breath of the power of God' },
+      { work: 'Wis', chapter: 7, verse: 26, tradition: 'second-temple',
+        summary: 'Brightness, unspotted mirror, image of goodness',
+        probe: 'the unspotted mirror of the power of God' },
+      { work: 'Bar', chapter: 3, verse: 37, tradition: 'second-temple',
+        summary: 'Afterward he appeared on earth among men',
+        probe: 'Afterward did he shew himself upon earth' },
+      // Philo. The second-god passages belong here as much as on the Godhead page: this is where
+      // that language comes from, and it is exegesis of a preposition — man is made after the
+      // image OF God, so the image is a third thing.
+      { work: 'philo-alleg-interp', chapter: 3, verse: 96, tradition: 'second-temple',
+        summary: 'The Word: God’s instrument in making the world',
+        probe: 'the shadow of God is his word, which he used like an instrument' },
+      { work: 'philo-flight', chapter: 1, verse: 101, tradition: 'second-temple',
+        summary: 'Image of God, nearest him, charioteer of powers',
+        probe: 'the most ancient of all the objects of intellect' },
+      { work: 'philo-dreams', chapter: 1, verse: 215, tradition: 'second-temple',
+        summary: 'High priest of the world, his firstborn son',
+        probe: 'the high priest is the divine word, his own firstborn son' },
+      { work: 'philo-qg', chapter: 2, verse: 62, tradition: 'second-temple',
+        summary: 'Made after the second deity, God’s Word',
+        probe: 'the pattern of the second deity, who is the Word' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // The Memra is a translator's habit before it is a doctrine: where the Hebrew has God doing
+      // something, the Aramaic often has his Word doing it. Whether that protects God's
+      // transcendence or creates a second figure is the whole question.
+      { work: 'tg-psj-genesis', chapter: 3, verse: 8, tradition: 'rabbinic',
+        summary: 'The Word of the Lord walking in the garden',
+        probe: 'the voice of the Word of the Lord God walking in the garden' },
+      { work: 'tg-psj-deuteronomy', chapter: 4, verse: 7, tradition: 'rabbinic',
+        summary: 'The Word enthroned, and hearing our prayer',
+        probe: 'the Word of the Lord sitteth upon His throne high and lifted up' },
+      { work: 'tg-isaiah', chapter: 12, verse: 2, tradition: 'rabbinic',
+        summary: 'By his Word he has become my salvation',
+        probe: 'He hath spoken by His word, and He is become my salvation' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // Dialogue 61 is the hinge of the whole page. Justin lists the titles — Glory, Son, Wisdom,
+      // Angel, God, Lord, Logos — and treats them as names for one thing. Every one of them has
+      // been used separately above, by people who were not talking about the same figure.
+      { work: 'justin-dialogue', chapter: 61, verse: 1, tradition: 'church-fathers',
+        summary: 'Glory, Son, Wisdom, Angel, God, Lord, Logos',
+        probe: 'now the Glory of the Lord, now the Son, again Wisdom, again an Angel' },
+      { work: 'justin-1apology', chapter: 46, verse: 1, tradition: 'church-fathers',
+        summary: 'Socrates and Abraham lived by the Word',
+        probe: 'He is the Word of whom every race of men were partakers' },
+      { work: 'justin-2apology', chapter: 13, verse: 1, tradition: 'church-fathers',
+        summary: 'Each spoke well by his share of the seed',
+        probe: 'in proportion to the share he had of the spermatic word' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // The Stoic logos is not a person and not beside God: it IS God, considered as the reason
+      // running through matter. Justin is borrowing the word from these people and using it for
+      // something they would not have recognised.
+      { work: 'greco-diogenes-laertius', chapter: 7, verse: 134, tradition: 'greco-roman',
+        summary: 'The active principle is reason, and God',
+        probe: 'the active is the reason inherent in this substance, that is God' },
+    ],
+  },
+  {
     id: 'sabbath',
     group: 'Law and practice',
     label: 'Sabbath',
