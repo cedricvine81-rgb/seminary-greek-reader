@@ -551,10 +551,12 @@ export const THEME_PAGES: TopicPage[] = [
       + 'are canonical and sit outside this corpus. Job is the pattern Jubilees is rewriting below, '
       + 'with Mastema taking the accuser’s part and proposing the sacrifice of Isaac.',
     absences: [
-      'The Testament of Solomon is not in this library, and it is the text a student of demonology '
-      + 'would want first: a catalogue of individual demons, each interrogated by Solomon, each '
-      + 'giving its name, the ailment it causes and the angel who thwarts it. It is public domain in '
-      + 'F. C. Conybeare’s 1898 translation and is simply not here yet.',
+      'The Testament of Solomon, below, is the odd one out on this page and worth reading as such. '
+      + 'It does not ask where evil came from at all. It assumes a populated world of named demons '
+      + 'and asks operational questions instead — what is your business, under what star do you '
+      + 'travel, which angel frustrates you — and every answer is a countermeasure. Its date is '
+      + 'genuinely uncertain (anywhere from the first century to the fifth) and its interest is '
+      + 'magical rather than theological, so it sits beside the others rather than among them.',
       'Nothing on this page is a system. Every text below answers the question in passing, while '
       + 'telling a story or ruling on a case, and none of them sets out to reconcile its answer with '
       + 'anyone else’s. The first Christian writer to treat the fall of the devil as a doctrine to '
@@ -574,6 +576,17 @@ export const THEME_PAGES: TopicPage[] = [
       { work: '2enoch', chapter: 31, verse: 4, tradition: 'second-temple',
         summary: 'Satanail thrown out; his intelligence unchanged',
         probe: 'The devil is the evil spirit of the lower places' },
+      // The Testament of Solomon's method in three passages: get the name, get the harm, get
+      // the angel who stops it. Note what is NOT asked — where any of them came from.
+      { work: 'testament-of-solomon', chapter: 22, verse: 1, tradition: 'second-temple',
+        summary: 'Asmodeus names himself and states his business',
+        probe: 'I am called Asmodeus among mortals' },
+      { work: 'testament-of-solomon', chapter: 24, verse: 1, tradition: 'second-temple',
+        summary: 'Raphael frustrates him — and a fish’s liver',
+        probe: 'Fear God, Asmodeus, and tell me by what angel thou art frustrated' },
+      { work: 'testament-of-solomon', chapter: 35, verse: 1, tradition: 'second-temple',
+        summary: 'Deception, first of seven, weaving snares',
+        probe: 'I am Deception, I deceive and weave snares' },
       { work: '1enoch', chapter: 54, verse: 6, tradition: 'second-temple',
         summary: 'The four archangels cast them into the furnace',
         probe: 'cast them on that day into the burning furnace' },
