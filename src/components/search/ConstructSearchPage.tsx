@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Check, ChevronDown, Library, Lightbulb, Link2, Loader2, Plus, Search } from 'lucide-react'
+import { Check, ChevronDown, Library, Lightbulb, Link2, Loader2, Plus, Search } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructTermCard } from './ConstructTermCard'
 import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
@@ -270,11 +270,6 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
-      <button type="button" onClick={() => router.push('/search')}
-        className="mb-3 inline-flex items-center gap-1.5 text-sm text-brand-600 transition-colors hover:text-brand-800">
-        <ArrowLeft size={16} /> Back to Search
-      </button>
-
       <div className="mb-1 flex flex-wrap items-baseline justify-between gap-2">
         <h1 className="text-lg font-semibold text-gray-900">Construct search</h1>
         {/* Which Greek text. One at a time — see ConstructCorpus. Switching corpus keeps the
