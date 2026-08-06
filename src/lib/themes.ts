@@ -1474,6 +1474,13 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'athanasius-arians-2', chapter: 59, verse: 1, tradition: 'church-fathers',
         summary: 'Made sons by calling; he is Son by nature',
         probe: 'God not only created them to be men, but called them to be sons' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // The Stoic version of the claim: kinship with God is universal and argued from nature, so
+      // "son of God" is what any human being may say of himself. Neither the Jewish texts above
+      // nor the Christian ones are working from that premise.
+      { work: 'greco-epictetus-discourses-1', chapter: 9, verse: 1, tradition: 'greco-roman',
+        summary: 'Philosophers say God and man are kin',
+        probe: 'the kinship between God and man' },
     ],
   },
   {
@@ -1674,6 +1681,13 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-barnabas', chapter: 16, verse: 9, tradition: 'apostolic-fathers',
         summary: 'God now dwells within the believer’s habitation',
         probe: 'God dwelleth truly in our habitation within us' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // A Greek temple as sanctuary, and what followed when the asylum was violated: the city
+      // carried the pollution for generations. The categories — sacred space, refuge, defilement
+      // incurred by the whole community — are the ones the texts above are working with.
+      { work: 'plutarch-solon', chapter: 12, verse: 1, tradition: 'greco-roman',
+        summary: 'Suppliants dragged from sanctuary; the city polluted',
+        probe: 'who had taken sanctuary in the temple of Athena' },
     ],
   },
   {
@@ -1827,6 +1841,14 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'justin-dialogue', chapter: 16, verse: 1, tradition: 'church-fathers',
         summary: 'Circumcision of the heart urged against the flesh',
         probe: 'circumcise the hardness of your hearts' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Aristotle divides law exactly where the Jewish sources will not: into what holds
+      // everywhere by nature and what holds because it was settled one way rather than another.
+      // Nothing above accepts that division for Torah — which is what makes the distinction
+      // worth putting beside it.
+      { work: 'aristotle-nicomachean-ethics', chapter: 5, verse: 7, tradition: 'greco-roman',
+        summary: 'Justice natural and justice merely conventional',
+        probe: 'Political Justice is of two kinds, one natural, the other conventional' },
     ],
   },
   {
@@ -1890,6 +1912,17 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-barnabas', chapter: 9, verse: 3, tradition: 'apostolic-fathers',
         summary: 'Fleshly circumcision abolished; an evil angel taught it',
         probe: 'the circumcision, in which they have confidence, is abolished' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Herodotus, writing while the second temple stood, knows circumcision as an EGYPTIAN
+      // custom kept for hygiene, and lists the nations that practise it without mentioning the
+      // Jews at all. Read against the texts above, in which the same act is the covenant itself,
+      // it shows how invisible that meaning was from outside.
+      { work: 'herodotus-histories-2', chapter: 36, verse: 3, tradition: 'greco-roman',
+        summary: 'Only Egyptians and their pupils practise it',
+        probe: 'are the only people who practise circumcision' },
+      { work: 'herodotus-histories-2', chapter: 104, verse: 2, tradition: 'greco-roman',
+        summary: 'Egyptians, Colchians, Ethiopians — no Jews named',
+        probe: 'are the only nations that have from the first practised circumcision' },
     ],
   },
   {
@@ -1938,6 +1971,18 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-didache', chapter: 6, verse: 1, tradition: 'apostolic-fathers',
         summary: 'Bear what yoke of the Lord you can',
         probe: 'if thou art able to bear the whole yoke of the Lord' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Two outside views, and they differ from each other. Plutarch's diners take the Jewish
+      // avoidance of pork as a puzzle worth solving and propose reasons for it; the Pythagoreans
+      // had their own food rule, and Diogenes preserves the reasoning offered for it — flatulence,
+      // the breath of life, untroubled dreams. Neither is a covenant, and both are explanations
+      // of a kind the Jewish texts above never give.
+      { work: 'plutarch-table-talk-4', chapter: 5, verse: 1, tradition: 'greco-roman',
+        summary: 'A symposium asks why Jews refuse pork',
+        probe: 'that they abstain from the most lawful flesh' },
+      { work: 'greco-diogenes-laertius', chapter: 8, verse: 24, tradition: 'greco-roman',
+        summary: 'Pythagoras on beans: reasons, not command',
+        probe: 'To abstain from beans because they are flatulent' },
     ],
   },
   {
@@ -2825,6 +2870,12 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'clement-stromateis-7', chapter: 7, verse: 1, tradition: 'church-fathers',
         summary: 'Not on set days — continually, in everything',
         probe: 'not on special days, as some others, but doing this continually' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Socrates prays as he takes the hemlock — and asks only that the journey go well, which is
+      // close to the shape of the Jewish prayers above and remote from their content.
+      { work: 'plato-phaedo', chapter: 117, verse: 3, tradition: 'greco-roman',
+        summary: 'Socrates prays that his departure go well',
+        probe: 'I may and must pray to the gods that my departure hence be a fortunate one' },
     ],
   },
   {
@@ -2975,6 +3026,14 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-hermas', chapter: 8, verse: 2, tradition: 'apostolic-fathers',
         summary: 'The book to be given to the elders',
         probe: 'if I had already given the book to the elders' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // A hostile outsider describing a Christian assembly around AD 165 — and the only
+      // description on this page by someone with no stake in it. What he notices is the offices
+      // and the readiness to be imposed upon, which is worth setting against the self-portraits
+      // above.
+      { work: 'lucian-peregrinus', chapter: 11, verse: 1, tradition: 'greco-roman',
+        summary: 'A satirist on their prophets, elders and books',
+        probe: 'prophet, elder, ruler of the Synagogue' },
     ],
   },
   {
@@ -3031,6 +3090,13 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'eusebius-he-3', chapter: 31, verse: 3, tradition: 'church-fathers',
         summary: 'The dead rise at the Lord’s coming in glory',
         probe: 'which shall rise again on the last day, at the coming of the Lord' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // The nearest Greek thing to this hope runs the other way. Hesiod's golden race is BEHIND
+      // us, under a king who has already been deposed, and the ages decline from it — where every
+      // text above expects the good age to arrive. Same furniture, opposite direction of travel.
+      { work: 'hesiod-works-and-days', chapter: 1, verse: 110, tradition: 'greco-roman',
+        summary: 'A golden race, already lost, under Cronos',
+        probe: 'made a golden race of mortal men' },
     ],
   },
   {
@@ -3247,6 +3313,16 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-polycarp', chapter: 6, verse: 2, tradition: 'apostolic-fathers',
         summary: 'All stand at the judgment-seat of Christ',
         probe: 'we must all stand at the judgment-seat of Christ' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Plato's judgment myth has the machinery the apocalypses have — a tribunal, a road that
+      // divides, two destinations — and reaches it from an argument about justice rather than a
+      // vision. Note the detail he insists on: the soul is stripped, and so is the judge.
+      { work: 'plato-gorgias', chapter: 523, verse: 5, tradition: 'greco-roman',
+        summary: 'Judged naked and dead, soul beholding soul',
+        probe: 'they must stand their trial dead' },
+      { work: 'plato-gorgias', chapter: 524, verse: 1, tradition: 'greco-roman',
+        summary: 'A meadow where the road divides in two',
+        probe: 'shall give judgement in the meadow at the dividing of the road' },
     ],
   },
   {
