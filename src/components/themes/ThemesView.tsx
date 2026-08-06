@@ -76,7 +76,13 @@ export function ThemesView({ topicId }: { topicId: string }) {
           theme with no written entries is not a page, and listing it would promise what isn't
           there. Below lg it collapses to a select, since a sidebar would eat a phone screen. */}
       <nav className="hidden w-52 shrink-0 lg:block">
-        <div className="sticky top-20">
+        {/* Scrolls on its own. Sticky alone was not enough: the list is thirty-odd themes in
+            seven groups and is taller than most screens, so its foot sat below the viewport and
+            could not be reached at all — the page scrolled the article instead. Capping it to
+            the viewport (less the header offset above and a little air below) and letting it
+            overflow means the menu and the page move independently, which is what a map of the
+            subject has to do to stay usable. */}
+        <div className="sticky top-20 max-h-[calc(100vh-6.5rem)] overflow-y-auto overscroll-contain pr-1">
           {grouped.map(({ group, pages }) => (
             <div key={group} className="mb-4">
               <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-gray-400">{group}</p>
