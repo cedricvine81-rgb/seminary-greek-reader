@@ -6,6 +6,7 @@ import { BookOpen, ExternalLink, Info } from 'lucide-react'
 import { openMasterSearch, hasMasterSearch } from '@/lib/master-search-bus'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS, type TopicEntry } from '@/lib/themes'
+import { workDate } from '@/lib/work-dates'
 
 // A topic index over the Texts library — the third way in, beside author (the Texts menu) and
 // word (search). A student who asks "what did Second Temple Judaism think about resurrection?"
@@ -83,12 +84,26 @@ export function ThemesView({ topicId }: { topicId: string }) {
 
   const absencesRef = useRef<HTMLElement>(null)
 
+  // Grouped by tradition and, within a group, ORDERED BY DATE. Grouping alone stops the worst
+  // error (reading the Mishnah as first-century evidence); it does not stop Sirach appearing
+  // after 4 Ezra, which hides the one thing a student most needs to see — that these ideas
+  // moved. Undated works keep their curated position at the end rather than sorting to 0 and
+  // landing among the oldest.
   const byTradition = useMemo(() => {
     const m = new Map<string, TopicEntry[]>()
     for (const e of page.entries) {
       const list = m.get(e.tradition) ?? []
       list.push(e)
       m.set(e.tradition, list)
+    }
+    for (const list of Array.from(m.values())) {
+      list.sort((a, b) => {
+        const da = workDate(a.work)?.sort, db = workDate(b.work)?.sort
+        if (da == null && db == null) return 0
+        if (da == null) return 1
+        if (db == null) return -1
+        return da - db
+      })
     }
     return m
   }, [page])
@@ -193,8 +208,11 @@ export function ThemesView({ topicId }: { topicId: string }) {
                   className={`group flex w-full items-baseline gap-3 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-brand-50 ${
                     openedProbe === e.probe ? 'bg-brand-50' : ''}`}
                 >
-                  <span className="w-52 shrink-0 text-xs font-medium text-brand-700 group-hover:underline">
-                    {cite(e)}
+                  <span className="w-52 shrink-0">
+                    <span className="text-xs font-medium text-brand-700 group-hover:underline">{cite(e)}</span>
+                    {workDate(e.work) && (
+                      <span className="ml-1.5 whitespace-nowrap text-[10px] text-gray-400">{workDate(e.work)!.label}</span>
+                    )}
                   </span>
                   <span className="flex-1 text-sm text-gray-700">{e.summary}</span>
                 </button>
@@ -219,7 +237,9 @@ export function ThemesView({ topicId }: { topicId: string }) {
       <p className="mt-6 flex items-center gap-2 text-xs text-gray-500">
         <BookOpen size={13} className="text-gray-400" />
         Summaries are machine-drafted from the passage and hand-checked; every citation is verified
-        against the corpus at build time. Click any reference to read the passage itself.
+        against the corpus at build time. Dates are conventional approximations and several are
+        contested — they order the list, they do not settle anything. Click any reference to read
+        the passage itself.
         {!hasMasterSearch() && (
           <Link href="/search" className="text-brand-700 hover:underline">
             Open search <ExternalLink size={11} className="inline" />
