@@ -743,6 +743,9 @@ export const THEME_PAGES: TopicPage[] = [
         summary: 'Denying resurrection forfeits the world to come',
         probe: 'resurrection is not a biblical doctrine' },
       // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'tert-resurrection', chapter: 63, verse: 2, tradition: 'church-fathers',
+        summary: 'The same flesh, entire, in its own identity',
+        probe: 'wholly in every man, in its own identity' },
       { work: 'af-1clement', chapter: 24, verse: 1, tradition: 'apostolic-fathers',
         summary: 'Christ raised as firstfruit of the resurrection',
         probe: 'He made the Lord Jesus Christ the firstfruit' },
@@ -2312,7 +2315,10 @@ export const THEME_PAGES: TopicPage[] = [
       'How much is fate and how much is choice. Josephus sorts the three Jewish parties by exactly '
       + 'this question — it is the same passage that divides them over resurrection — and Sirach and '
       + '2 Baruch answer it as directly as any ancient text does: a man is left in the hand of his '
-      + 'own counsel, and each of us is the Adam of his own soul.',
+      + 'own counsel, and each of us is the Adam of his own soul. Read those beside Epictetus, who '
+      + 'is not arguing with them and reaches the sharpest formulation of all: nothing whatever is '
+      + 'ours except the use we make of what happens. Origen, writing the first Christian treatise '
+      + 'on the question, arrives at almost the same distinction by another road.',
     canonicalAnchors:
       'The anchors are Deuteronomy 30:19 (“I have set before you life and death — choose life”) and '
       + 'Genesis 4:7. They are canonical and sit outside this corpus; Sirach in particular is '
@@ -2351,6 +2357,25 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-didache', chapter: 1, verse: 1, tradition: 'apostolic-fathers',
         summary: 'Two ways, one of life, one of death',
         probe: 'There are two ways, one of life and one of death' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // Origen wrote the first sustained treatise on the question, and III.1.3 arrives at almost
+      // exactly Epictetus' distinction below — what reaches us is not in our power, what we make
+      // of it is — by a different route and for a different reason.
+      { work: 'origen-principles-3', chapter: 1, verse: 1, tradition: 'church-fathers',
+        summary: 'Judgment presupposes it is in our power',
+        probe: 'it is within our own power to devote ourselves' },
+      { work: 'origen-principles-3', chapter: 1, verse: 3, tradition: 'church-fathers',
+        summary: 'The impression comes unbidden; the use is ours',
+        probe: 'it is not within our own power to prevent their coming' },
+      { work: 'tert-soul', chapter: 21, verse: 1, tradition: 'church-fathers',
+        summary: 'Free will can change a settled character',
+        probe: 'Free-Will Actuates an Individual' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // The Stoic answer, and the one the Jewish and Christian texts are arguing beside rather
+      // than against: nothing is ours except the use we make of what happens.
+      { work: 'greco-epictetus-discourses-1', chapter: 1, verse: 1, tradition: 'greco-roman',
+        summary: 'Only the use of appearances is in our power',
+        probe: 'the only thing which the gods have placed in our power' },
       { work: 'af-didache', chapter: 5, verse: 1, tradition: 'apostolic-fathers',
         summary: 'The way of death set out in full',
         probe: 'But the way of death is this' },
@@ -2794,6 +2819,9 @@ export const THEME_PAGES: TopicPage[] = [
         summary: 'This prayer, three times every day',
         probe: 'Three times in the day pray ye so' },
       // ── Later Christian writers ──────────────────────────────────────────────────────
+      { work: 'tert-prayer', chapter: 1, verse: 1, tradition: 'church-fathers',
+        summary: 'A new form of prayer for a new covenant',
+        probe: 'has determined for us, the disciples of the New Testament, a new form of prayer' },
       { work: 'clement-stromateis-7', chapter: 7, verse: 1, tradition: 'church-fathers',
         summary: 'Not on set days — continually, in everything',
         probe: 'not on special days, as some others, but doing this continually' },
@@ -3239,9 +3267,12 @@ export const THEME_PAGES: TopicPage[] = [
       + '33:12–13 says the captive king prayed and was heard, without saying what he prayed. The '
       + 'prayer supplies the missing words, which is why it exists.',
     absences: [
-      'Nobody here argues back against Hermas. Limiting the baptised to a single further repentance '
-      + 'is the sharpest position anyone on this page takes, and the controversy it caused belongs '
-      + 'to the century after this corpus ends.',
+      'Nobody CONTEMPORARY answers Hermas. Limiting the baptised to a single further repentance is '
+      + 'the sharpest position anyone here takes, and the reply on this page comes a lifetime later '
+      + 'from Tertullian, who argues the same restriction rather than disputing it. The writers who '
+      + 'thought the church could forgive more freely — the controversy that followed the '
+      + 'persecutions, and Tertullian’s own later, harder position — are outside this corpus in '
+      + 'both directions.',
       'The Qumran material is missing, and it is the one body of evidence that would show repentance '
       + 'as a communal rite rather than an individual act — the covenant-renewal confession of the '
       + 'Community Rule, where the whole assembly says together that they have done wickedly. No '
@@ -3314,6 +3345,12 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-hermas', chapter: 110, verse: 1, tradition: 'apostolic-fathers',
         summary: 'The shepherd names himself angel of repentance',
         probe: 'I, the shepherd, the angel of repentance' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // Hermas' one-further-repentance is not argued for; Tertullian argues it, and the second
+      // absence on this page — that nobody answers Hermas — is answered a century later.
+      { work: 'tert-repentance', chapter: 6, verse: 2, tradition: 'church-fathers',
+        summary: 'Laying hold of repentance once for all',
+        probe: 'laying hold of repentance once for all' },
     ],
   },
 ]
