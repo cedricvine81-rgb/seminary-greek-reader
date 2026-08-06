@@ -1020,6 +1020,14 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'justin-1apology', chapter: 17, verse: 1, tradition: 'church-fathers',
         summary: 'We pay the taxes more readily than anyone',
         probe: 'endeavour to pay to those appointed by you the taxes' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // A Greek telling Greeks how to hold local office under Roman power, and reaching the same
+      // settlement as Baruch and 1 Clement from none of their premises: keep yourself and your
+      // city blameless before the prince, and keep a friend high up. Accommodation was the common
+      // sense of the age, not a specifically Jewish or Christian compromise.
+      { work: 'plutarch-precepts-of-statecraft', chapter: 18, verse: 1, tradition: 'greco-roman',
+        summary: 'Stay blameless before the prince; keep a patron',
+        probe: 'blameless to the prince' },
     ],
   },
   {
@@ -2076,6 +2084,13 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-hermas', chapter: 56, verse: 7, tradition: 'apostolic-fathers',
         summary: 'Reckon the cost of the meal; give it away',
         probe: 'shalt give it to a widow, or an orphan, or to one in want' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Public giving was a Greek virtue too, and Aristotle's account of it shows how differently
+      // it was reckoned: magnificence is spending on a scale that becomes the giver, judged by
+      // taste and proportion. Nothing in it touches sin, and nobody is delivered from death by it.
+      { work: 'aristotle-nicomachean-ethics', chapter: 4, verse: 2, tradition: 'greco-roman',
+        summary: 'Magnificence: spending that becomes the giver',
+        probe: 'proper to discuss Magnificence' },
     ],
   },
   {
@@ -2157,6 +2172,13 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'eusebius-he-1', chapter: 3, verse: 1, tradition: 'church-fathers',
         summary: 'Moses called the high priest “Christ”, anointed',
         probe: 'Moses was the first to make known the name of Christ' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Rome's chief priesthood was an elected office that men campaigned for — Caesar stood for
+      // it against two former consuls and won. Set that beside the texts above, where the office
+      // is inherited, cannot be sought, and is forfeited by descent rather than by defeat.
+      { work: 'plutarch-caesar', chapter: 7, verse: 1, tradition: 'greco-roman',
+        summary: 'The high priesthood contested at an election',
+        probe: 'candidates for the priesthood, which was an object of great ambition' },
     ],
   },
   {
@@ -2250,6 +2272,17 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'tert-baptism', chapter: 18, verse: 2, tradition: 'church-fathers',
         summary: 'Better to wait — above all with little children',
         probe: 'the delay of baptism is preferable' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Initiation into the mysteries also required washing first, and Plato reports the claim
+      // the rite carried — that the uninitiated lie in the mire hereafter and the purified dwell
+      // with the gods. He then says what he thinks it really means, which is the move Philo makes
+      // about the laver and Hermas about the seal.
+      { work: 'plato-phaedo', chapter: 69, verse: 3, tradition: 'greco-roman',
+        summary: 'Uninitiated in the mire; the purified with gods',
+        probe: 'whoever goes uninitiated and unsanctified to the other world will lie in the mire' },
+      { work: 'plutarch-theseus', chapter: 30, verse: 5, tradition: 'greco-roman',
+        summary: 'Heracles purified before initiation at Eleusis',
+        probe: 'and purified before his initiation' },
     ],
   },
   {
@@ -2350,6 +2383,17 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'athanasius-incarnation', chapter: 3, verse: 1, tradition: 'church-fathers',
         summary: 'A law in the garden, with death attached',
         probe: 'if they transgressed and turned back, and became evil' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // The closest thing the Greek world has to Eve, and the resemblance is uncomfortably
+      // exact: a woman made on purpose, a container she is not to open, and a world that had
+      // been free of ills until she did. What is absent is any covenant, any command from a God
+      // who is wronged, and any question of inheritance — Pandora explains suffering, not sin.
+      { work: 'hesiod-works-and-days', chapter: 1, verse: 80, tradition: 'greco-roman',
+        summary: 'Pandora made and given as a plague to men',
+        probe: 'a plague to men who eat bread' },
+      { work: 'hesiod-works-and-days', chapter: 1, verse: 90, tradition: 'greco-roman',
+        summary: 'She lifts the lid; before that, no ills',
+        probe: 'the woman took off the great lid of the jar' },
     ],
   },
   {
@@ -2488,6 +2532,14 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'af-1clement', chapter: 7, verse: 4, tradition: 'apostolic-fathers',
         summary: 'The blood of Christ, shed for our salvation',
         probe: 'Let us fix our eyes on the blood of Christ' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // The Greek city had its own remedy for corporate guilt: a person made καθαρμός for the
+      // country and killed. Herodotus reports it as a standing custom of one family's line, not
+      // as myth. Read it beside 4 Maccabees, where the martyrs' death purifies the nation — the
+      // logic is the same one, and only one of the two is usually called primitive.
+      { work: 'herodotus-histories-7', chapter: 197, verse: 3, tradition: 'greco-roman',
+        summary: 'A man made scapegoat for the country, and sacrificed',
+        probe: 'a scapegoat for their country and were about to sacrifice him' },
     ],
   },
   {
@@ -3427,6 +3479,13 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'tert-repentance', chapter: 6, verse: 2, tradition: 'church-fathers',
         summary: 'Laying hold of repentance once for all',
         probe: 'laying hold of repentance once for all' },
+      // ── Greek and Roman ──────────────────────────────────────────────────────────────
+      // Aristotle analyses the same experience and values it oppositely: regret afterwards marks
+      // the man who could not hold to his choice, and the thoroughly bad man feels none. Nothing
+      // here treats it as a road back — that is what the texts above add.
+      { work: 'aristotle-nicomachean-ethics', chapter: 7, verse: 8, tradition: 'greco-roman',
+        summary: 'Regret marks weakness, not the way back',
+        probe: 'The profligate, as we said, does not feel remorse' },
     ],
   },
 ]
