@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "node scripts/i18n-guard.mjs --keys && prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "prisma generate",
@@ -15,7 +15,9 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "data:nestle1904": "node scripts/import-nestle1904.js",
-    "build:construct": "node scripts/build-construct-index.mjs"
+    "build:construct": "node scripts/build-construct-index.mjs",
+    "i18n:keys": "node scripts/i18n-guard.mjs --keys",
+    "i18n:snapshot": "node scripts/i18n-guard.mjs --snapshot"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.6.4",

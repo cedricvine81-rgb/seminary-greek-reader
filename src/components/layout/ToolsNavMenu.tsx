@@ -15,9 +15,9 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 // landing page, which is still what a click on the header item opens, carries the descriptions
 // and the live counts; a menu is for getting somewhere.
 const TOOLS = [
-  { href: '/themes', name: 'Themes' },
-  { href: '/map', name: 'Places' },
-  { href: '/search/construct', name: 'Construct search' },
+  { href: '/themes', key: 'tools.themes' },
+  { href: '/map', key: 'tools.places' },
+  { href: '/search/construct', key: 'tools.construct' },
 ]
 
 export function ToolsNavMenu() {
@@ -49,7 +49,7 @@ export function ToolsNavMenu() {
                 onClick={() => setOpen(false)}
                 className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors"
               >
-                {tool.name}
+                {t(tool.key)}
               </Link>
             ))}
           </div>
