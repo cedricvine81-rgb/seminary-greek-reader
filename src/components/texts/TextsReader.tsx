@@ -12,6 +12,7 @@ import { loadJastrow, lookupAramaic, strippedLabel, type JastrowData } from '@/l
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 import { getTextSummary } from '@/lib/texts-summaries'
 import { noteBookFor as sharedNoteBookFor } from '@/lib/note-book'
+import { themesCiting, type ThemeBacklink } from '@/lib/theme-backlinks'
 import { findProseWork } from '@/lib/prose-texts'
 import { FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { TextSizeSlider } from '@/components/reader/TextSizeControls'
@@ -1552,6 +1553,25 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                             </p>
                           )}
                         </div>
+                        {/* Themes cite this passage. The index runs the other way from the Themes
+                            pages (src/lib/theme-backlinks.ts): those 588 citations were reachable
+                            only by starting at Themes, so a reader meeting the passage itself was
+                            never told it is part of an argument elsewhere in the app. */}
+                        {(() => {
+                          const cited = themesCiting(work.id, section.chapter, row.num, section.book)
+                          if (!cited.length) return null
+                          return (
+                            <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-gray-400">
+                              <span className="uppercase tracking-wide">Theme{cited.length > 1 ? 's' : ''}</span>
+                              {cited.map((b: ThemeBacklink) => (
+                                <Link key={b.id} href={`/themes?topic=${b.id}`} title={b.summary}
+                                  className="rounded-md border border-gray-200 px-1.5 py-0.5 text-gray-500 transition-colors hover:border-brand-300 hover:text-brand-700">
+                                  {b.label}
+                                </Link>
+                              ))}
+                            </p>
+                          )
+                        })()}
                         </div>
                       )})}
                     </div>
