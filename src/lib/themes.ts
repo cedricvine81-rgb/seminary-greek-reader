@@ -226,11 +226,15 @@ export const THEME_PAGES: TopicPage[] = [
     label: 'Father, Son and Spirit',
     blurb:
       'Triadic language before the creeds. Read in order, these passages show a formula arriving '
-      + 'long before a doctrine: the Didache and 1 Clement name the three and explain nothing, '
-      + 'Justin ranks them — and puts the angels in the list, between the Son and the Spirit — and '
-      + 'only with Athanasius does the vocabulary of essence and origin appear. What almost nobody '
-      + 'here does is claim the three are one God in the sense Nicaea will mean; that is being '
-      + 'worked out, in public, against opponents.',
+      + 'long before a doctrine: the Didache and 1 Clement name the three and explain nothing; '
+      + 'Justin ranks them — and puts the angels in the list, between the Son and the Spirit; '
+      + 'Theophilus is the first writer anywhere to call them a τριάς, and does it while explaining '
+      + 'the first three days of creation; Tertullian then has to argue the thing out against '
+      + 'people who held that the Father himself was born and died, and reports that ordinary '
+      + 'believers found the whole idea alarming. Only with Athanasius is the vocabulary of essence '
+      + 'and origin being used as settled coin. What almost nobody here does is claim the three are '
+      + 'one God in the sense Nicaea will mean; that is being worked out, in public, against '
+      + 'opponents.',
     canonicalAnchors:
       'The anchors are Matthew 28:19 (“baptising them in the name of the Father and of the Son and '
       + 'of the Holy Spirit”), 2 Corinthians 13:14 and 1 Corinthians 12:4–6. They are canonical and '
@@ -245,10 +249,12 @@ export const THEME_PAGES: TopicPage[] = [
       + 'the properties of the number three. The single passage below is the closest thing the '
       + 'Jewish sources hold, and it is a prayer about how anyone could know God’s counsel, not a '
       + 'statement about God’s inner life.',
-      'The two texts that made this a doctrine are not in this library. Theophilus of Antioch is the '
-      + 'first writer known to use the word τριάς of God (To Autolycus 2.15), and Tertullian’s '
-      + 'Against Praxeas is the first sustained argument for three persons in one substance — the '
-      + 'formula the Latin church kept. Both are public domain and both are simply not here yet.',
+      'Nobody here is arguing for the doctrine in the terms a creed would use. Tertullian below '
+      + 'comes closest and is doing something different from Athanasius: he is defending a '
+      + 'dispensation — an οἰκονομία, an arrangement — against people who thought the Father '
+      + 'himself was born and suffered, and his own account of why they thought so is that the '
+      + 'unity is what most believers had been taught to guard. The vocabulary of person and '
+      + 'substance is being assembled here, in an argument, and not yet inherited.',
       'Nothing here is the Nicene Creed. Athanasius is arguing his way toward it and against Arius, '
       + 'but the conciliar texts themselves — Nicaea in 325, Constantinople in 381 — belong to a '
       + 'genre this library does not collect.',
@@ -285,6 +291,29 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'justin-1apology', chapter: 61, verse: 1, tradition: 'church-fathers',
         summary: 'Washing in the name of all three',
         probe: 'and of our Saviour Jesus Christ, and of the Holy Spirit' },
+      // The first surviving use of the word, and note what it is doing: Theophilus is expounding
+      // the days of creation, and the triad he names is God, his Word and his WISDOM — not yet
+      // Father, Son and Spirit. The term arrives before the persons it will later fix.
+      { work: 'theophilus-2', chapter: 15, verse: 1, tradition: 'church-fathers',
+        summary: 'Three days as types of God, Word, wisdom',
+        probe: 'are types of the Trinity, of God, and His Word, and His wisdom' },
+      // Tertullian is arguing, not reciting, and against a specific position: that the Father
+      // himself was born and suffered. 3:1 is the most human sentence on this page — he grants
+      // that most believers find the arithmetic alarming, and says why.
+      { work: 'tert-praxeas', chapter: 2, verse: 1, tradition: 'church-fathers',
+        summary: 'One God under a dispensation — an οἰκονομία',
+        probe: 'but under the following dispensation' },
+      { work: 'tert-praxeas', chapter: 3, verse: 1, tradition: 'church-fathers',
+        summary: 'Ordinary believers are startled by the arithmetic',
+        probe: 'are startled at the dispensation' },
+      { work: 'tert-praxeas', chapter: 9, verse: 2, tradition: 'church-fathers',
+        summary: 'Inseparable, and yet distinct from each other',
+        probe: 'the Father, and the Son, and the Spirit are inseparable from each other' },
+      // The same verse Philo reads as plural speech by a single Creator and Justin reads as
+      // evidence of a second God — see the Godhead page. Three readings, one sentence.
+      { work: 'tert-praxeas', chapter: 12, verse: 2, tradition: 'church-fathers',
+        summary: '“Let us make man” — why the plural at all?',
+        probe: 'If the number of the Trinity also offends you' },
       { work: 'origen-celsus-8', chapter: 12, verse: 1, tradition: 'church-fathers',
         summary: 'Celsus: you honour a servant beside God',
         probe: 'they think it no offense against God if they worship also His servant' },
@@ -2074,11 +2103,12 @@ export const THEME_PAGES: TopicPage[] = [
       + 'baptism of repentance for the forgiveness of sins” — is the sentence Josephus below should '
       + 'be read against, since he appears to deny exactly that.',
     absences: [
-      'Nobody here is arguing with anybody. Josephus, the Didache, Hermas and Thecla give four '
-      + 'different accounts of what water does, and not one of them responds to another; the '
-      + 'differences below are juxtaposed by us, not debated by them. So the page can show you that '
-      + 'the practice varied and cannot show you anyone defending a position, which is a real limit '
-      + 'on what may be concluded from it.',
+      'Only one text here is arguing with anybody. Josephus, the Didache, Hermas and Thecla give '
+      + 'four different accounts of what water does and none of them responds to another; those '
+      + 'differences are juxtaposed by us, not debated by them. Tertullian is the exception, and he '
+      + 'names his opponent in his first paragraph — a teacher of the Cainite school who had '
+      + 'persuaded a great many people that baptism does nothing. Everything he writes is shaped by '
+      + 'her, and she left nothing of her own; we have the rebuttal and not the case.',
       'The Qumran material is missing again, and here it matters as much as anywhere: that '
       + 'community tied its washings to entry into a covenant, which is the one Jewish practice '
       + 'structurally like Christian baptism rather than like a purity bath. Its rule book says '
@@ -2135,6 +2165,14 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'paul-and-thecla', chapter: 1, verse: 34, tradition: 'church-fathers',
         summary: 'In the arena, she baptises herself',
         probe: 'In the name of Jesus Christ do I baptize myself' },
+      // The earliest treatise on baptism in any language, and the first evidence that infants
+      // were being baptised at all — which survives because Tertullian is arguing against it.
+      { work: 'tert-baptism', chapter: 1, verse: 1, tradition: 'church-fathers',
+        summary: 'Written against a teacher who denied baptism',
+        probe: 'making it her first aim to destroy baptism' },
+      { work: 'tert-baptism', chapter: 18, verse: 2, tradition: 'church-fathers',
+        summary: 'Better to wait — above all with little children',
+        probe: 'the delay of baptism is preferable' },
     ],
   },
   {
