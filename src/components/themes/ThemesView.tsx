@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { BookOpen, ExternalLink, Info } from 'lucide-react'
 import { openMasterSearch, hasMasterSearch } from '@/lib/master-search-bus'
@@ -43,6 +43,45 @@ export function ThemesView({ topicId }: { topicId: string }) {
     for (const c of TEXT_CATEGORIES as any[]) for (const w of c.works) m.set(w.id, w.name)
     return m
   }, [])
+
+
+  // Pages argue with one another — Messiah defers to Atonement over 4 Maccabees, Atonement
+  // answers back, Satan points at Sin and the fall — and those sentences were plain text, so the
+  // argument could be read but not followed.
+  //
+  // ONLY the explicit gesture is linked: the prose has to say "the Atonement page". Matching bare
+  // labels was tried first and is wrong in both directions — it turns every ordinary occurrence of
+  // "Sabbath", "Prayer" or "Israel" into a link (they are page labels AND common words), while
+  // missing every real cross-reference, since those are written with the word "page" attached.
+  const findPage = useMemo(() => (name: string) => {
+    const n = name.trim().toLowerCase()
+    return THEME_PAGES.find(p => p.label.toLowerCase() === n)
+      ?? THEME_PAGES.find(p => p.label.toLowerCase().startsWith(n))
+      ?? THEME_PAGES.find(p => p.id === n.replace(/\s+/g, '-'))
+  }, [])
+
+  function withPageLinks(text: string): ReactNode[] {
+    const out: ReactNode[] = []
+    let last = 0
+    // matchAll's iterator needs downlevelIteration under this tsconfig; exec in a loop does not.
+    const re = /\b[Tt]he ([A-Z][A-Za-z’',/ ]{2,45}?) page\b/g
+    let m: RegExpExecArray | null
+    while ((m = re.exec(text)) !== null) {
+      const target = findPage(m[1])
+      if (!target || target.id === page.id) continue
+      if (m.index > last) out.push(text.slice(last, m.index))
+      out.push(
+        <button key={`${target.id}-${m.index}`} type="button" onClick={() => choose(target.id)}
+          className="text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-500">
+          {m[0]}
+        </button>)
+      last = m.index + m[0].length
+    }
+    if (last < text.length) out.push(text.slice(last))
+    return out
+  }
+
+  const absencesRef = useRef<HTMLElement>(null)
 
   const byTradition = useMemo(() => {
     const m = new Map<string, TopicEntry[]>()
@@ -120,12 +159,22 @@ export function ThemesView({ topicId }: { topicId: string }) {
           </select>
         </div>
       <h1 className="text-2xl font-semibold text-gray-900">{page.label}</h1>
-      <p className="mt-2 text-sm leading-relaxed text-gray-600">{page.blurb}</p>
+      <p className="mt-2 text-sm leading-relaxed text-gray-600">{withPageLinks(page.blurb)}</p>
 
       <p className="mt-3 flex gap-2 rounded-lg border border-gray-200 bg-surface p-3 text-xs leading-relaxed text-gray-600">
         <Info size={14} className="mt-0.5 shrink-0 text-gray-400" />
-        <span>{page.canonicalAnchors}</span>
+        <span>{withPageLinks(page.canonicalAnchors)}</span>
       </p>
+
+      {/* The absences are at the foot, where they belong — they read as a conclusion — but they
+          are also the part a student is most likely to miss, so the top of the page says they are
+          there and how many. */}
+      <button type="button"
+        onClick={() => absencesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        className="mt-2 text-xs text-gray-500 underline decoration-gray-300 underline-offset-2 hover:text-brand-700">
+        This page also records {page.absences.length} thing{page.absences.length === 1 ? '' : 's'} the
+        sources do not say ↓
+      </button>
 
       {TRADITIONS.filter(t => byTradition.has(t.id)).map(t => (
         <section key={t.id} className="mt-7">
@@ -158,11 +207,11 @@ export function ThemesView({ topicId }: { topicId: string }) {
       {/* Absence is a finding. A topic page that only ever says "here is a source for that"
           teaches students to expect one, and to go looking until they can force a text to
           supply it. */}
-      <section className="mt-8 rounded-xl border border-gray-200 bg-surface p-4">
+      <section ref={absencesRef} className="mt-8 scroll-mt-20 rounded-xl border border-gray-200 bg-surface p-4">
         <h2 className="text-sm font-semibold text-gray-800">What the sources don’t say</h2>
         <ul className="mt-2 space-y-2">
           {page.absences.map((a, i) => (
-            <li key={i} className="text-xs leading-relaxed text-gray-600">{a}</li>
+            <li key={i} className="text-xs leading-relaxed text-gray-600">{withPageLinks(a)}</li>
           ))}
         </ul>
       </section>

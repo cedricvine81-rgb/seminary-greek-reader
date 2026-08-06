@@ -119,7 +119,8 @@ export const THEME_PAGES: TopicPage[] = [
       + 'from the start: Philo finds two powers in it, the Targum puts the Word inside the very verse '
       + 'that denies any other God, and the Yerushalmi silences a prayer for implying two. Justin then '
       + 'says out loud what that liturgy was silencing — “another God and Lord”, subordinate to the '
-      + 'Maker. Nothing here is yet a doctrine of the Trinity; that page is separate.',
+      + 'Maker. Nothing here is yet a doctrine of the Trinity — for that, see the Father, Son and '
+      + 'Spirit page.',
     canonicalAnchors:
       'The anchors are Deuteronomy 6:4 (“Hear, O Israel: the LORD our God, the LORD is one”), '
       + 'Deuteronomy 32:39 and Isaiah 45:5–7. They are canonical and sit outside this corpus, but the '
@@ -1314,7 +1315,8 @@ export const THEME_PAGES: TopicPage[] = [
       + '— are the ONE section of 1 Enoch of which no copy was found at Qumran, while every other '
       + 'section was. So we cannot show that this figure was being read in the first century, and '
       + 'scholars date the Parables anywhere from the first century BCE to the end of the first CE. '
-      + 'Whether they are background to the Gospels or a parallel to them is genuinely open.',
+      + 'Whether they are background to the Gospels or a parallel to them is genuinely open. The '
+      + 'Messiah and messianic expectation page covers what was hoped for without this figure.',
       'The rabbis do not use it as a title. There is one further discussion, of Daniel 7:13 and how '
       + 'a second throne could stand beside God’s, in the Babylonian Talmud at Sanhedrin 98a — which '
       + 'is in this library in Aramaic only, its English being non-commercially licensed. The '
@@ -2125,7 +2127,8 @@ export const THEME_PAGES: TopicPage[] = [
       + 'and Thecla a woman about to be thrown to the beasts baptises herself in the arena.',
     canonicalAnchors:
       'The anchors are Leviticus 14–15 and Numbers 19 (the washings the law requires), Ezekiel '
-      + '36:25 and Isaiah 1:16. They are canonical and sit outside this corpus. Mark 1:4 — “a '
+      + '36:25 and Isaiah 1:16. They are canonical and sit outside this corpus, and the Purity, food '
+      + 'and the table page has the washings these texts assume. Mark 1:4 — “a '
       + 'baptism of repentance for the forgiveness of sins” — is the sentence Josephus below should '
       + 'be read against, since he appears to deny exactly that.',
     absences: [
@@ -2233,7 +2236,7 @@ export const THEME_PAGES: TopicPage[] = [
       'The other Jewish answer is not on this page. Much of this corpus explains wrongdoing by an '
       + 'evil inclination present in everyone rather than by anything Adam did, which makes the '
       + 'fall largely beside the point. Those passages — the Mishnah, the Testaments — are set out '
-      + 'under Satan and the origin of evil.',
+      + 'on the Satan and the origin of evil page.',
     ],
     entries: [
       // ── Second Temple Jewish ─────────────────────────────────────────────────────────
