@@ -557,11 +557,13 @@ export const THEME_PAGES: TopicPage[] = [
       + 'travel, which angel frustrates you — and every answer is a countermeasure. Its date is '
       + 'genuinely uncertain (anywhere from the first century to the fifth) and its interest is '
       + 'magical rather than theological, so it sits beside the others rather than among them.',
-      'Nothing on this page is a system. Every text below answers the question in passing, while '
-      + 'telling a story or ruling on a case, and none of them sets out to reconcile its answer with '
-      + 'anyone else’s. The first Christian writer to treat the fall of the devil as a doctrine to '
-      + 'be argued rather than a story to be told is Origen in On First Principles — of which this '
-      + 'library has only Against Celsus.',
+      'Everything here except Origen answers the question in passing — while telling a story or '
+      + 'ruling on a case — and none of those texts sets out to reconcile its answer with anyone '
+      + 'else’s. Origen is the first to argue it as a doctrine, and the difference in method is '
+      + 'plain: he starts from a premise about rational creatures, applies it to the devil like any '
+      + 'other case, and reaches the fall as a conclusion rather than reporting it as an event. '
+      + 'Read him last, and notice that a caution attaches — most of On First Principles survives '
+      + 'only in Rufinus’ Latin, and Rufinus said he softened what he judged heretical.',
     ],
     entries: [
       // ── Second Temple Jewish ─────────────────────────────────────────────────────────
@@ -644,6 +646,17 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'origen-celsus-6', chapter: 42, verse: 1, tradition: 'church-fathers',
         summary: 'Celsus: an adversary means your God is helpless',
         probe: 'creating an adversary to God , the devil' },
+      // Origen argues it instead of narrating it: rational creatures may fall, the devil is a
+      // rational creature, therefore the devil fell — and Isaiah 14 is read as the record of it.
+      { work: 'origen-principles-1', chapter: 5, verse: 2, tradition: 'church-fathers',
+        summary: 'The rule applies to the devil like anyone',
+        probe: 'this also is to be held as applying to the devil himself' },
+      { work: 'origen-principles-1', chapter: 5, verse: 5, tradition: 'church-fathers',
+        summary: 'Isaiah’s Lucifer read as the fall itself',
+        probe: 'How is Lucifer, who used to arise in the morning, fallen from heaven' },
+      { work: 'origen-principles-1', chapter: 8, verse: 3, tradition: 'church-fathers',
+        summary: 'Able to admit evil is not being evil',
+        probe: 'there is no rational creature which is not capable both of good and evil' },
       // ── Greek and Roman ──────────────────────────────────────────────────────────────
       // The Persian scheme Plutarch reports is the nearest thing in the Greek world to what the
       // Jewish texts above are doing, and the difference is exact: Horomazes and Arimanius are two

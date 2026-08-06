@@ -26,7 +26,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'testament-of-abraham-a' | 'testament-of-abraham-b' | 'testament-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `tert-${string}` | `theophilus-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'testament-of-abraham-a' | 'testament-of-abraham-b' | 'testament-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `tert-${string}` | `theophilus-${string}` | `origen-principles-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -462,6 +462,41 @@ const FATHERS_B_WORKS: ProseWork[] = FATHERS_B.map(w => ({
   // Theophilus is cited "Autol. 2.15", so the book is part of the prefix and the chapter is
   // the first number after it — fatherCite handles both shapes.
   parseCitation: fatherCite(w.cite),
+}))
+
+
+// ── Origen, On First Principles (ANF, public domain) ──────────────────────────────────
+// Built by scripts/build-origen-principles.py from newadvent.org. Books 1-3 are chapter →
+// numbered section ("De Princ. 1.5.2"). Book 4 has no chapters and is cited by section, and
+// the ANF prints it TWICE — Rufinus' Latin paraphrase, then the same treatise translated
+// literally from the Greek of the Philocalia. Since the rest of the work survives only through
+// Rufinus, who admitted softening what he thought heretical, the one place he can be checked
+// is kept as its own work rather than merged away.
+const ORIGEN_PRINC_ATTRIBUTION = 'Text: Origen, De Principiis, tr. Frederick Crombie in “The Ante-Nicene Fathers” (1885); public domain. Source: newadvent.org. Almost the whole work survives only in Rufinus’ Latin paraphrase, which he stated he had softened where he judged it heretical.'
+
+const ORIGEN_PRINC: { slug: string; name: string; noteBook: string; chapters: number; book: string }[] = [
+  { slug: 'origen-principles-1', name: 'Origen, On First Principles (Book 1)', noteBook: 'OrigPrinc1', chapters: 8, book: '1' },
+  { slug: 'origen-principles-2', name: 'Origen, On First Principles (Book 2)', noteBook: 'OrigPrinc2', chapters: 11, book: '2' },
+  { slug: 'origen-principles-3', name: 'Origen, On First Principles (Book 3)', noteBook: 'OrigPrinc3', chapters: 6, book: '3' },
+  { slug: 'origen-principles-4', name: 'Origen, On First Principles (Book 4, Rufinus\u2019 Latin)', noteBook: 'OrigPrinc4', chapters: 23, book: '4' },
+  { slug: 'origen-principles-4g', name: 'Origen, On First Principles (Book 4, from the Greek)', noteBook: 'OrigPrinc4G', chapters: 37, book: '4' },
+]
+
+const ORIGEN_PRINC_WORKS: ProseWork[] = ORIGEN_PRINC.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/anf/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: ORIGEN_PRINC_ATTRIBUTION,
+  parseCitation: (text: string) => {
+    const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^Origen, De Princ\\. ${w.book}\\.(\\d+)(?:\\.(\\d+))?`))
+    return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+  },
+}))
+
+export const ORIGEN_PRINC_CATALOG = ORIGEN_PRINC.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
 
 export const ANF_CATALOG = [
@@ -2466,6 +2501,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...TG_WORKS,
   ...ANF_WORKS,
   ...FATHERS_B_WORKS,
+  ...ORIGEN_PRINC_WORKS,
   ...JUSTIN_WORKS,
   ...EUSEBIUS_WORKS,
   ...EUSEBIUS_PE_WORKS,
