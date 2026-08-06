@@ -1028,6 +1028,18 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'plutarch-precepts-of-statecraft', chapter: 18, verse: 1, tradition: 'greco-roman',
         summary: 'Stay blameless before the prince; keep a patron',
         probe: 'blameless to the prince' },
+      // Wisdom addresses rulers directly, and grants them their authority in the same breath as
+      // it threatens them with an audit — which is the position Romans 13 is usually read as
+      // introducing. Sirach makes the same point about the timing of appointments.
+      { work: 'Wis', chapter: 6, verse: 3, tradition: 'second-temple',
+        summary: 'Your power is given you — and will be examined',
+        probe: 'For power is given you of the Lord' },
+      { work: 'Wis', chapter: 6, verse: 4, tradition: 'second-temple',
+        summary: 'Ministers of his kingdom who judged wrongly',
+        probe: 'being ministers of his kingdom, ye have not judged aright' },
+      { work: 'Sir', chapter: 10, verse: 4, tradition: 'second-temple',
+        summary: 'He sets the useful ruler up in due time',
+        probe: 'The power of the earth is in the hand of the Lord' },
     ],
   },
   {
@@ -1991,6 +2003,13 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'greco-diogenes-laertius', chapter: 8, verse: 24, tradition: 'greco-roman',
         summary: 'Pythagoras on beans: reasons, not command',
         probe: 'To abstain from beans because they are flatulent' },
+      // The system is GRADED, and this is the ruling that shows it: ordinary food, tithe and
+      // heave-offering are handled with washed hands, sacred food requires immersion. Purity here
+      // is not one line between clean and unclean but a series of thresholds, which is what makes
+      // the table-fellowship disputes of the period intelligible.
+      { work: 'm-chagigah', chapter: 2, verse: 5, tradition: 'rabbinic',
+        summary: 'Washing for common food, immersion for holy',
+        probe: 'But for sacred food they must immerse' },
     ],
   },
   {
@@ -3086,6 +3105,32 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'lucian-peregrinus', chapter: 11, verse: 1, tradition: 'greco-roman',
         summary: 'A satirist on their prophets, elders and books',
         probe: 'prophet, elder, ruler of the Synagogue' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      // Ignatius is where the offices harden. 1 Clement still argues that order is natural and
+      // apostolic; Ignatius simply requires it, and makes the bishop the test of whether a
+      // gathering counts as the church at all — which is a different kind of claim, made within
+      // twenty years.
+      { work: 'af-1clement', chapter: 41, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Each in his own order, keeping the rule',
+        probe: 'in his own order give thanks unto God' },
+      { work: 'af-1clement', chapter: 42, verse: 4, tradition: 'apostolic-fathers',
+        summary: 'Apostles appointed bishops and deacons everywhere',
+        probe: 'to be bishops and deacons unto them that should believe' },
+      { work: 'af-ign-magnesians', chapter: 7, verse: 2, tradition: 'apostolic-fathers',
+        summary: 'Come together as to one temple, one altar',
+        probe: 'Hasten to come together all of you, as to one temple' },
+      { work: 'af-ign-smyrnaeans', chapter: 8, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Nothing pertaining to the Church without the bishop',
+        probe: 'Let no man do aught of things pertaining to the Church apart from the bishop' },
+      // ── Later Christian writers ──────────────────────────────────────────────────────
+      // The only description in this library of what actually happened at a Christian meeting,
+      // written for outsiders and therefore explaining what everyone inside already knew.
+      { work: 'justin-1apology', chapter: 67, verse: 1, tradition: 'church-fathers',
+        summary: 'Sunday: all gather, and the memoirs are read',
+        probe: 'all who live in cities or in the country gather together to one place' },
+      { work: 'anf-irenaeus-3', chapter: 11, verse: 8, tradition: 'church-fathers',
+        summary: 'One church scattered through the whole world',
+        probe: 'the Church is scattered throughout all the world' },
     ],
   },
   {
@@ -3149,6 +3194,12 @@ export const THEME_PAGES: TopicPage[] = [
       { work: 'hesiod-works-and-days', chapter: 1, verse: 110, tradition: 'greco-roman',
         summary: 'A golden race, already lost, under Cronos',
         probe: 'made a golden race of mortal men' },
+      { work: '1enoch', chapter: 25, verse: 3, tradition: 'second-temple',
+        summary: 'He will come down to visit the earth in goodness',
+        probe: 'when He shall come down to visit the earth with goodness' },
+      { work: '2esdras', chapter: 13, verse: 30, tradition: 'second-temple',
+        summary: 'He comes to the astonishment of the earth',
+        probe: 'he shall come to the astonishment of them that dwell on the earth' },
     ],
   },
   {
