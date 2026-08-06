@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRef, useState } from 'react'
-import { Wrench, Church, Map as MapIcon, Blocks } from 'lucide-react'
+import { Wrench } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
 // The header "Tools" destination with a hover menu, matching TextsNavMenu — same open/close
@@ -11,12 +11,13 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 // fly-outs: the whole point of the menu is that three tools which used to be buried are now
 // one hover away.
 //
-// The landing page stays, and is still what a click on the header item opens. It carries the
-// descriptions and live counts that will not fit in a menu row.
+// Titles only, exactly as the Texts menu lists its works — no icons, no descriptions. The
+// landing page, which is still what a click on the header item opens, carries the descriptions
+// and the live counts; a menu is for getting somewhere.
 const TOOLS = [
-  { href: '/themes', icon: Church, name: 'Themes', hint: 'The library by subject' },
-  { href: '/map', icon: MapIcon, name: 'Places', hint: 'Where things happened' },
-  { href: '/search/construct', icon: Blocks, name: 'Construct search', hint: 'Search by grammar' },
+  { href: '/themes', name: 'Themes' },
+  { href: '/map', name: 'Places' },
+  { href: '/search/construct', name: 'Construct search' },
 ]
 
 export function ToolsNavMenu() {
@@ -40,19 +41,15 @@ export function ToolsNavMenu() {
       {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap. */}
       {open && (
         <div className="hidden md:block absolute right-0 top-full pt-1 z-50">
-          <div className="w-60 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
+          <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
             {TOOLS.map(tool => (
               <Link
                 key={tool.href}
                 href={tool.href}
                 onClick={() => setOpen(false)}
-                className="flex items-start gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors"
               >
-                <tool.icon size={15} className="mt-0.5 shrink-0 text-gray-400" />
-                <span className="min-w-0">
-                  <span className="block leading-snug">{tool.name}</span>
-                  <span className="block text-[11px] leading-snug text-gray-400">{tool.hint}</span>
-                </span>
+                {tool.name}
               </Link>
             ))}
           </div>
