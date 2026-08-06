@@ -127,16 +127,6 @@ export function ThemesView({ topicId }: { topicId: string }) {
         <span>{page.canonicalAnchors}</span>
       </p>
 
-      {/* Counts are DERIVED, not written — a table of what the corpus actually holds can't be
-          wrong, and it answers "who cares about this?" before any reading happens. */}
-      <div className="mt-5 flex flex-wrap gap-1.5">
-        {TRADITIONS.filter(t => byTradition.has(t.id)).map(t => (
-          <span key={t.id} className="rounded-lg border border-gray-200 bg-surface px-2.5 py-1 text-xs text-gray-600">
-            {t.label} <span className="tabular-nums font-medium text-gray-800">{byTradition.get(t.id)!.length}</span>
-          </span>
-        ))}
-      </div>
-
       {TRADITIONS.filter(t => byTradition.has(t.id)).map(t => (
         <section key={t.id} className="mt-7">
           <div className="flex flex-wrap items-baseline gap-x-2 border-b border-gray-100 pb-1.5">
