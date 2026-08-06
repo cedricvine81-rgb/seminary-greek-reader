@@ -222,6 +222,97 @@ export const THEME_PAGES: TopicPage[] = [
     ],
   },
   {
+    id: 'character-of-god',
+    group: 'God and the unseen',
+    label: 'The character of God',
+    blurb:
+      'Exodus 34:6–7 is the sentence the rest of the Bible keeps quoting back — merciful, '
+      + 'gracious, slow to anger, forgiving iniquity, and yet by no means clearing the guilty — '
+      + 'and the sources here do not smooth it out. 4 Ezra takes the attributes one at a time and '
+      + 'gives a reason for each, then says that on the day of judgment compassion will pass away '
+      + 'and longsuffering be withdrawn: both, in one book. Sirach turns the formula into a '
+      + 'warning, because a man who knows God is patient may decide to trade on it. Philo calls '
+      + 'God merciful and gracious in the same sentence in which he has him destroy a king. And '
+      + 'in the Mishnah the words have hardened into a NAME: you can swear by the Gracious and '
+      + 'Merciful, as you would swear by the Almighty.',
+    canonicalAnchors:
+      'The anchor is Exodus 34:6–7, the thirteen attributes, proclaimed as the LORD passes before '
+      + 'Moses. It is quoted or echoed all over the canon — Numbers 14:18, Joel 2:13, Jonah 4:2, '
+      + 'Psalm 86:15, Nehemiah 9:17 — and the Targum below is translating it directly. It is '
+      + 'canonical and sits outside this corpus; everything here is working from it.',
+    absences: [
+      'Nobody here resolves the tension, and the page is arranged so that you can see them '
+      + 'declining to. Exodus 34 promises forgiveness and refuses to acquit in one breath, and the '
+      + 'sources reproduce that rather than choosing: 4 Ezra affirms both a chapter apart, Sirach '
+      + 'sets mercy and wrath side by side as coming from the same God, and the Prayer of Manasseh '
+      + 'simply appeals to the first half. The systematic question — how a God can be both — is '
+      + 'raised here and answered nowhere.',
+      'The Greek and Roman world is missing from this page, and its absence is the point. '
+      + 'Philosophical theology in that world argued about whether God can feel anything at all, '
+      + 'and a God who is provoked, relents, and is described by a list of moral dispositions had '
+      + 'no place in it. There is no pagan text in this library that could sit under these; the '
+      + 'nearest is the Stoic identification of God with reason, which is on the Godhead page.',
+    ],
+    entries: [
+      // ── Second Temple Jewish ─────────────────────────────────────────────────────────
+      // 4 Ezra is the spine: chapter 7 takes the attributes one at a time and gives a reason for
+      // each — and a hundred verses earlier says they are suspended at the judgment. Read 7:33
+      // last, deliberately.
+      { work: 'Sir', chapter: 2, verse: 11, tradition: 'second-temple',
+        summary: 'Full of compassion, longsuffering, forgiving sins',
+        probe: 'the Lord is full of compassion and mercy, longsuffering' },
+      { work: 'Sir', chapter: 5, verse: 4, tradition: 'second-temple',
+        summary: 'Do not say: he is patient, nothing happened',
+        probe: 'Say not, I have sinned, and what harm hath happened unto me' },
+      { work: 'Sir', chapter: 5, verse: 6, tradition: 'second-temple',
+        summary: 'Mercy and wrath both come from him',
+        probe: 'for mercy and wrath come from him' },
+      { work: 'Odes', chapter: 12, verse: 7, tradition: 'second-temple', citeAs: 'Prayer of Manasseh 7',
+        summary: 'Great compassion, longsuffering, repenting of evils',
+        probe: 'of great compassion, longsuffering, very merciful' },
+      { work: 'philo-abraham', chapter: 1, verse: 96, tradition: 'second-temple',
+        summary: 'The merciful God, chastising in a moment',
+        probe: 'And the merciful and gracious God, who takes compassion on the stranger' },
+      { work: '2baruch', chapter: 75, verse: 5, tradition: 'second-temple',
+        summary: 'Who could hope, but for mercy and grace?',
+        probe: 'Unless he is one to whom you are merciful and gracious' },
+      { work: '2esdras', chapter: 7, verse: 132, tradition: 'second-temple',
+        summary: 'Merciful — to those not yet born',
+        probe: 'the Most High is now called merciful' },
+      { work: '2esdras', chapter: 7, verse: 134, tradition: 'second-temple',
+        summary: 'Longsuffering — he bears with his own creatures',
+        probe: 'and longsuffering, for that he long suffereth those that have sinned' },
+      { work: '2esdras', chapter: 7, verse: 138, tradition: 'second-temple',
+        summary: 'Forgiving — or scarcely anyone would remain',
+        probe: 'and one that forgiveth, for if he did not forgive of his goodness' },
+      { work: '2esdras', chapter: 7, verse: 139, tradition: 'second-temple',
+        summary: 'And a judge — in the same list',
+        probe: 'and a judge, for if he did not pardon them' },
+      { work: '2esdras', chapter: 7, verse: 33, tradition: 'second-temple',
+        summary: 'At the judgment, compassion passes away',
+        probe: 'compassion shall pass away, and longsuffering shall be withdrawn' },
+      // ── Rabbinic ─────────────────────────────────────────────────────────────────────
+      // The Targum renders the formula itself; the Mishnah shows what became of it. By then the
+      // words are a divine title you can swear by — the attributes have become a name.
+      { work: 'tg-psj-exodus', chapter: 34, verse: 6, tradition: 'rabbinic',
+        summary: 'The Shekinah passes: merciful, gracious, longsuffering',
+        probe: 'The Lord, the Lord God, merciful and gracious, long-suffering' },
+      { work: 'm-shevuot', chapter: 4, verse: 13, tradition: 'rabbinic',
+        summary: 'Swearing “by the Gracious and Merciful”',
+        probe: 'By Alef Daleth' },
+      { work: 'y-shevuot', chapter: 4, verse: 10, tradition: 'rabbinic',
+        summary: 'The same oath, argued in the Yerushalmi',
+        probe: 'by the Gracious and Merciful' },
+      // ── Apostolic Fathers ────────────────────────────────────────────────────────────
+      { work: 'af-1clement', chapter: 23, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Pitiful in all things, ready to do good',
+        probe: 'The Father, who is pitiful in all things, and ready to do good' },
+      { work: 'af-1clement', chapter: 60, verse: 1, tradition: 'apostolic-fathers',
+        summary: 'Faithful through all generations, righteous in judgment',
+        probe: 'faithful throughout all generations, righteous in Thy judgments' },
+    ],
+  },
+  {
     id: 'trinity',
     group: 'God and the unseen',
     label: 'Father, Son and Spirit',
