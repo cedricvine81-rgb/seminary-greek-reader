@@ -144,7 +144,9 @@ function build() {
 // ── --audit ───────────────────────────────────────────────────────────────────────────
 function audit() {
   const items = allItems()
-  const words = (s: string) => s.trim().split(/\s+/).length
+  // `''.split(/\s+/)` is [''], not [], so an empty remainder must report 0 and not 1 —
+  // a completion report that cannot say "done" is worse than no report.
+  const words = (s: string) => (s.trim() ? s.trim().split(/\s+/).length : 0)
   for (const loc of LOCALES) {
     const t = translations(loc)
     // Recompute rather than importing the catalogue, so the audit reports on the JSON the
