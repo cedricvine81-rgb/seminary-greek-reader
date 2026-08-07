@@ -85,8 +85,26 @@ function list(name: string) {
 }
 
 // ── --build ───────────────────────────────────────────────────────────────────────────
+/**
+ * Cross-page markers in translations must name a real page. A typo'd [[Atonment]] does not
+ * error at runtime — withPageLinks simply leaves the marker unmatched, and the reader is shown
+ * literal brackets in the middle of a sentence. Catching it here is the only place it is cheap.
+ */
+function checkMarkers(loc: Loc, text: string, key: string, bad: string[]) {
+  const re = /\[\[([^\]]{2,45})\]\]/g
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    const n = m[1].trim().toLowerCase()
+    const hit = THEME_PAGES.find(p => p.label.toLowerCase() === n)
+      ?? THEME_PAGES.find(p => p.label.toLowerCase().startsWith(n))
+      ?? THEME_PAGES.find(p => p.id === n.replace(/\s+/g, '-'))
+    if (!hit) bad.push(`${loc} ${key}: [[${m[1]}]] matches no theme page`)
+  }
+}
+
 /** One generated file per (locale, source), because they are loaded one surface at a time. */
 function build() {
+  const badMarkers: string[] = []
   for (const loc of LOCALES) {
     for (const [name, fn] of Object.entries(SOURCES)) {
       const byKey = new Map(fn().map(i => [i.key, i.english]))
@@ -98,6 +116,7 @@ function build() {
         // A key with no English behind it means the source string was deleted or renamed.
         // Dropping it is right — carrying it would put text on screen matching nothing.
         if (english === undefined) { orphans++; continue }
+        checkMarkers(loc, text, key, badMarkers)
         lines.push(`  ${JSON.stringify(key)}: { fp: ${JSON.stringify(fingerprint(english))}, `
           + `text: ${JSON.stringify(text)} },`)
       }
@@ -114,6 +133,11 @@ function build() {
       console.log(`${loc}.${name}.ts: ${lines.length} strings`
         + (orphans ? ` (${orphans} orphaned key(s) dropped)` : ''))
     }
+  }
+  if (badMarkers.length) {
+    badMarkers.forEach(b => console.error('  ' + b))
+    console.error(`${badMarkers.length} unresolvable cross-page marker(s)`)
+    process.exit(1)
   }
 }
 
