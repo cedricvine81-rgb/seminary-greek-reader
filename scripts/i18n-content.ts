@@ -15,6 +15,7 @@
  */
 import fs from 'node:fs'
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS } from '../src/lib/themes'
+import { workDate } from '../src/lib/work-dates'
 import { fingerprint } from '../src/lib/i18n/content'
 
 const LOCALES = ['es'] as const
@@ -44,6 +45,17 @@ export function themeItems(): Item[] {
     items.push({ key: `themes.tradition.${tr.id}.label`, english: tr.label })
     items.push({ key: `themes.tradition.${tr.id}.dates`, english: tr.dates })
     items.push({ key: `themes.tradition.${tr.id}.note`, english: tr.note })
+  }
+  // The date chips beside each citation. Keyed by the English label itself, and DISTINCT ones
+  // only — 47 labels cover 131 works. Keying by label rather than by work means a new work
+  // sharing an existing date needs no new translation, and an unfamiliar date shape falls back
+  // to English rather than being mangled by a transform.
+  const dates = new Set<string>()
+  for (const p of THEME_PAGES) for (const e of p.entries) {
+    const d = workDate(e.work); if (d) dates.add(d.label)
+  }
+  for (const label of Array.from(dates).sort()) {
+    items.push({ key: `themes.date.${label}`, english: label })
   }
   for (const p of THEME_PAGES) {
     items.push({ key: `themes.${p.id}.label`, english: p.label })

@@ -243,7 +243,7 @@ export function ThemesView(
                   <span className="w-52 shrink-0">
                     <span className="text-xs font-medium text-brand-700 group-hover:underline">{cite(e)}</span>
                     {workDate(e.work) && (
-                      <span className="ml-1.5 whitespace-nowrap text-[10px] text-gray-400">{workDate(e.work)!.label}</span>
+                      <span className="ml-1.5 whitespace-nowrap text-[10px] text-gray-400">{content(translations, `themes.date.${workDate(e.work)!.label}`, workDate(e.work)!.label)}</span>
                     )}
                   </span>
                   <span className="flex-1 text-sm text-gray-700">{content(translations, `themes.${page.id}.sum.${e.work}.${e.chapter}.${e.verse}`, e.summary)}</span>
