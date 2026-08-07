@@ -257,6 +257,35 @@ const en: Catalogue = {
     + 'approximations and several are contested — they order the list, they do not settle '
     + 'anything. Click any reference to read the passage itself.',
   'themes.openSearch': 'Open search',
+
+  // The Rhetoric tab (Exegesis). Figure names and definitions are curated CONTENT and live in
+  // the content catalogue; only this furniture is interface chrome.
+  'rhetoric.idle': 'Enter a New Testament passage to see its rhetorical figures.',
+  'rhetoric.nonNTPre': 'Rhetoric data covers the',
+  'rhetoric.nonNTPost': 'Try e.g.',
+  'rhetoric.newTestament': 'New Testament',
+  'rhetoric.loading': 'Loading…',
+  'rhetoric.loadFailed': 'Couldn\u2019t load {ref}.',
+  'rhetoric.devicesPresent': 'Devices present',
+  'rhetoric.allFigures': 'All figures',
+  'rhetoric.inThisPassage': 'In this passage',
+  'rhetoric.loadingCatalogue': 'Loading the full catalogue…',
+  'rhetoric.noneHere': 'No catalogued figures in this passage yet.',
+  'rhetoric.figure': 'Figure',
+  'rhetoric.explanation': 'Explanation',
+  'rhetoric.clickPrompt': 'Click a device to see what it is and how it works here.',
+  'rhetoric.editorial': 'Editorial',
+  'rhetoric.editorialNote': 'editorially identified (AI-assisted, reviewed), not from a printed source.',
+  'rhetoric.gnomon': 'Bengel\u2019s Gnomon',
+  'rhetoric.noGnomon': 'No Gnomon note for this verse.',
+  'rhetoric.alsoAppearsIn': 'Also appears in',
+  'rhetoric.closePreview': 'Close preview',
+  'rhetoric.loadingTranslation': 'Loading translation…',
+  'rhetoric.intro': 'Rhetorical figures are the patterns of language — comparison, word-play, '
+    + 'repetition, structure — that give a text its force. Each verse\u2019s figures appear below, '
+    + 'colour-coded by category; click one to see what it is and how it works here. Switch to '
+    + '\u201cAll figures\u201d to browse every figure by category, read its definition, and jump to each of '
+    + 'its examples across the New Testament.',
   'nav.dashboard': 'Dashboard',
   'nav.navigation': 'Navigation',
   'nav.morphology': 'Morphology',
@@ -569,6 +598,33 @@ const es: Catalogue = {
     + 'convencionales y varias están en disputa: ordenan la lista, no zanjan nada. Haz clic en '
     + 'cualquier referencia para leer el pasaje mismo.',
   'themes.openSearch': 'Abrir la búsqueda',
+
+  'rhetoric.idle': 'Escribe un pasaje del Nuevo Testamento para ver sus figuras retóricas.',
+  'rhetoric.nonNTPre': 'Los datos de retórica cubren el',
+  'rhetoric.nonNTPost': 'Prueba, por ejemplo,',
+  'rhetoric.newTestament': 'Nuevo Testamento',
+  'rhetoric.loading': 'Cargando…',
+  'rhetoric.loadFailed': 'No se pudo cargar {ref}.',
+  'rhetoric.devicesPresent': 'Figuras presentes',
+  'rhetoric.allFigures': 'Todas las figuras',
+  'rhetoric.inThisPassage': 'En este pasaje',
+  'rhetoric.loadingCatalogue': 'Cargando el catálogo completo…',
+  'rhetoric.noneHere': 'Todavía no hay figuras catalogadas en este pasaje.',
+  'rhetoric.figure': 'Figura',
+  'rhetoric.explanation': 'Explicación',
+  'rhetoric.clickPrompt': 'Haz clic en una figura para ver qué es y cómo funciona aquí.',
+  'rhetoric.editorial': 'Editorial',
+  'rhetoric.editorialNote': 'identificada editorialmente (con ayuda de IA, revisada), no tomada de una fuente impresa.',
+  'rhetoric.gnomon': 'Gnomon de Bengel',
+  'rhetoric.noGnomon': 'No hay nota del Gnomon para este versículo.',
+  'rhetoric.alsoAppearsIn': 'También aparece en',
+  'rhetoric.closePreview': 'Cerrar la vista previa',
+  'rhetoric.loadingTranslation': 'Cargando la traducción…',
+  'rhetoric.intro': 'Las figuras retóricas son los patrones del lenguaje —comparación, juego de '
+    + 'palabras, repetición, estructura— que dan fuerza a un texto. Las figuras de cada versículo '
+    + 'aparecen abajo, con un color por categoría; haz clic en una para ver qué es y cómo funciona '
+    + 'aquí. Cambia a «Todas las figuras» para recorrer cada figura por categoría, leer su '
+    + 'definición y saltar a cada uno de sus ejemplos en el Nuevo Testamento.',
   'nav.dashboard': 'Panel',
   'nav.navigation': 'Navegación',
   'nav.morphology': 'Morfología',

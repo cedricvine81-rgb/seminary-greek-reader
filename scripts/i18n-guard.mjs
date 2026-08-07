@@ -47,6 +47,7 @@ const ROUTES = [
   '/themes?topic=character-of-god',
   '/texts?work=tert-praxeas',
   '/search/construct',
+  '/exegesis?tab=rhetoric',
   '/map',
   '/grammar',
   '/vocab',

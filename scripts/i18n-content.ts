@@ -16,6 +16,7 @@
 import fs from 'node:fs'
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS } from '../src/lib/themes'
 import { workDate } from '../src/lib/work-dates'
+import { DEVICES, GROUP_LABEL, GROUP_DESC } from '../src/lib/rhetoric-devices'
 import { fingerprint } from '../src/lib/i18n/content'
 
 const LOCALES = ['es'] as const
@@ -72,7 +73,55 @@ export function themeItems(): Item[] {
   return items
 }
 
-const SOURCES: Record<string, () => Item[]> = { themes: themeItems }
+/**
+ * The Rhetoric tab's catalogue of figures: the six group labels and glosses, and for each device
+ * its name, its definition, and the one-line note on every occurrence.
+ *
+ * Not translated: the `greek` field (ὁμοίωσις and the rest are the technical names and stay
+ * Greek in any language) and `ref`, which is a machine-parsed verse address — translating
+ * "Matt 10:16" would break the lookup that turns it into a passage.
+ */
+export function rhetoricItems(): Item[] {
+  const items: Item[] = []
+  for (const [g, label] of Object.entries(GROUP_LABEL)) {
+    items.push({ key: `rhetoric.group.${g}.label`, english: label })
+  }
+  for (const [g, desc] of Object.entries(GROUP_DESC)) {
+    items.push({ key: `rhetoric.group.${g}.desc`, english: desc })
+  }
+  // The per-book Bullinger datasets (public/data/rhetoric/devices/*.json) add 67 further figures
+  // that the curated list does not carry. They share the key space, because RhetoricView merges
+  // them into one catalogue and cannot tell which layer a device came from.
+  //
+  // Their occurrence notes are NOT enumerated here. There are 2,081 of them, some 47,000 words —
+  // a surface in its own right, and larger than the whole Themes corpus. Adding them silently
+  // would turn "translate the Rhetoric tab" into a job several times its stated size. They fall
+  // back to English until they are taken on deliberately.
+  const seen = new Set(DEVICES.map(d => d.id))
+  const dir = 'public/data/rhetoric/devices'
+  for (const f of fs.existsSync(dir) ? fs.readdirSync(dir).sort() : []) {
+    const parsed = JSON.parse(fs.readFileSync(`${dir}/${f}`, 'utf8')) as
+      { devices?: { id: string; name?: string; definition?: string }[] }
+    for (const d of parsed.devices ?? []) {
+      if (seen.has(d.id)) continue
+      seen.add(d.id)
+      if (d.name) items.push({ key: `rhetoric.${d.id}.name`, english: d.name })
+      if (d.definition) items.push({ key: `rhetoric.${d.id}.definition`, english: d.definition })
+    }
+  }
+  for (const d of DEVICES) {
+    items.push({ key: `rhetoric.${d.id}.name`, english: d.name })
+    items.push({ key: `rhetoric.${d.id}.definition`, english: d.definition })
+    for (const o of d.occurrences) {
+      // Keyed by the verse reference, which is the occurrence's stable identity — the list is
+      // curated and reordered, so an index would reattach notes to the wrong verses.
+      if (o.note) items.push({ key: `rhetoric.${d.id}.occ.${o.ref}`, english: o.note })
+    }
+  }
+  return items
+}
+
+const SOURCES: Record<string, () => Item[]> = { themes: themeItems, rhetoric: rhetoricItems }
 
 function allItems(): Item[] {
   return Object.values(SOURCES).flatMap(f => f())

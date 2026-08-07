@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { DEVICES, GROUP_LABEL, GROUP_COLOR, GROUP_DESC, GROUP_ORDER, type Device, type DeviceGroup, type Occurrence } from '@/lib/rhetoric-devices'
 import { X } from 'lucide-react'
+import { useTc } from '@/lib/i18n/ContentProvider'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { TransWords } from '@/components/highlights/TransWords'
@@ -115,12 +117,6 @@ function loadFullCatalogue(): Promise<Device[]> {
   return fullInflight
 }
 
-const RHETORIC_INTRO = 'Rhetorical figures are the patterns of language — comparison, word-play, '
-  + 'repetition, structure — that give a text its force. Each verse’s figures appear below, '
-  + 'colour-coded by category; click one to see what it is and how it works here. Switch to '
-  + '“All figures” to browse every figure by category, read its definition, and jump to each of '
-  + 'its examples across the New Testament.'
-
 const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech Used in the Bible (1898). '
   + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857), via Biblehub. Both public domain. '
   + 'Entries marked “Editorial” are identified editorially (AI-assisted, reviewed), not drawn from a printed source.'
@@ -176,6 +172,20 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   onAttribution?: (a: string) => void
   onNavigate?: (ref: string) => void   // jump the shared passage box to a ref (stays on this tab)
 }) {
+  // The figure catalogue is curated English (rhetoric-devices.ts) and is translated per string,
+  // so a device with no Spanish yet shows its English name and definition rather than nothing.
+  // Under no provider — or in English — tc returns the English it is handed.
+  const tc = useTc()
+  const ui = useT()
+  const groupLabel = (g: DeviceGroup) => tc(`rhetoric.group.${g}.label`, GROUP_LABEL[g])
+  const groupDesc = (g: DeviceGroup) => tc(`rhetoric.group.${g}.desc`, GROUP_DESC[g])
+  const deviceName = (d: Device) => tc(`rhetoric.${d.id}.name`, d.name)
+  const deviceDef = (d: Device) => tc(`rhetoric.${d.id}.definition`, d.definition)
+  // Occurrence notes are keyed by device AND verse: the same verse can illustrate two figures
+  // with a different note under each.
+  const occNote = (d: Device | null | undefined, ref: string, note?: string) =>
+    note && d ? tc(`rhetoric.${d.id}.occ.${ref}`, note) : note
+
   const parsed = useMemo(() => parseRef(controlledPassage ?? ''), [controlledPassage])
   const [version, setVersion] = useState('na1904')
   const [bengel, setBengel] = useState<Record<string, string>>(bengelCache ?? {})
@@ -395,10 +405,10 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
 
   return (
     <div className="h-full flex flex-col min-h-0" style={{ '--rh-fs': '1.45rem' } as CSSProperties}>
-      {status === 'idle' && <p className="text-gray-400 text-sm mt-6 text-center">Enter a New Testament passage to see its rhetorical figures.</p>}
-      {status === 'nonNT' && <p className="text-gray-500 text-sm mt-6 text-center">Rhetoric data covers the <b>New Testament</b>. Try e.g. <span className="font-medium">Romans 8:31-39</span>.</p>}
-      {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">Loading…</p>}
-      {status === 'missing' && <p className="text-gray-500 text-sm mt-6 text-center">Couldn’t load {parsed?.name} {parsed?.chapter}.</p>}
+      {status === 'idle' && <p className="text-gray-400 text-sm mt-6 text-center">{ui('rhetoric.idle')}</p>}
+      {status === 'nonNT' && <p className="text-gray-500 text-sm mt-6 text-center">{ui('rhetoric.nonNTPre')} <b>{ui('rhetoric.newTestament')}</b>. {ui('rhetoric.nonNTPost')} <span className="font-medium">Romans 8:31-39</span>.</p>}
+      {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">{ui('rhetoric.loading')}</p>}
+      {status === 'missing' && <p className="text-gray-500 text-sm mt-6 text-center">{ui('rhetoric.loadFailed', { ref: `${parsed?.name} ${parsed?.chapter}` })}</p>}
 
       {status === 'ok' && (
         <div ref={highlightPaneRef} className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
@@ -471,31 +481,32 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
           {/* Column 2 — figures: in this passage, or the whole-NT browser */}
           <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
             <div className="flex items-center justify-between gap-2 mb-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{mode === 'browse' ? 'All figures' : 'Devices present'}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{ui(mode === 'browse' ? 'rhetoric.allFigures' : 'rhetoric.devicesPresent')}</p>
               <div className="flex rounded-lg border border-gray-200 overflow-hidden text-[10px] shrink-0">
-                <button type="button" onClick={() => setMode('passage')} className={`px-2 py-0.5 transition-colors ${mode === 'passage' ? 'bg-brand-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}>In this passage</button>
-                <button type="button" onClick={() => setMode('browse')} className={`px-2 py-0.5 transition-colors ${mode === 'browse' ? 'bg-brand-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}>All figures</button>
+                <button type="button" onClick={() => setMode('passage')} className={`px-2 py-0.5 transition-colors ${mode === 'passage' ? 'bg-brand-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}>{ui('rhetoric.inThisPassage')}</button>
+                <button type="button" onClick={() => setMode('browse')} className={`px-2 py-0.5 transition-colors ${mode === 'browse' ? 'bg-brand-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}>{ui('rhetoric.allFigures')}</button>
               </div>
             </div>
 
             {mode === 'browse' ? (
               <div className="space-y-3">
-                <p className="text-[11px] text-gray-500 leading-relaxed">{RHETORIC_INTRO}</p>
-                {!fullCat && <p className="text-xs text-gray-400 italic">Loading the full catalogue…</p>}
+                <p className="text-[11px] text-gray-500 leading-relaxed">{ui('rhetoric.intro')}</p>
+                {!fullCat && <p className="text-xs text-gray-400 italic">{ui('rhetoric.loadingCatalogue')}</p>}
                 {GROUP_ORDER.map(g => {
-                  const devs = catalogue.filter(d => d.group === g && d.occurrences.length).sort((a, b) => a.name.localeCompare(b.name))
+                  const devs = catalogue.filter(d => d.group === g && d.occurrences.length)
+                    .sort((a, b) => deviceName(a).localeCompare(deviceName(b)))
                   if (!devs.length) return null
                   return (
                     <div key={g}>
                       <div className={`rounded-lg border px-2 py-1 ${GROUP_COLOR[g]}`}>
-                        <p className="text-[11px] font-semibold uppercase tracking-wide">{GROUP_LABEL[g]}</p>
-                        <p className="text-[10px] opacity-80 leading-snug">{GROUP_DESC[g]}</p>
+                        <p className="text-[11px] font-semibold uppercase tracking-wide">{groupLabel(g)}</p>
+                        <p className="text-[10px] opacity-80 leading-snug">{groupDesc(g)}</p>
                       </div>
                       <div className="mt-1.5 flex flex-wrap gap-1.5">
                         {devs.map(d => (
                           <button key={d.id} type="button" onClick={() => setBrowseId(d.id)}
                             className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition ${GROUP_COLOR[d.group]} ${browseId === d.id ? 'ring-2 ring-brand-400' : 'hover:brightness-95'}`}>
-                            {d.name} <span className="opacity-60">{d.occurrences.length}</span>
+                            {deviceName(d)} <span className="opacity-60">{d.occurrences.length}</span>
                           </button>
                         ))}
                       </div>
@@ -506,7 +517,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
             ) : (
               <>
                 {versesWithDevices.length === 0 ? (
-                  <p className="text-sm text-gray-400">No catalogued figures in this passage yet.</p>
+                  <p className="text-sm text-gray-400">{ui('rhetoric.noneHere')}</p>
                 ) : (
                   <div className="space-y-3">
                     {versesWithDevices.map(v => (
@@ -521,9 +532,9 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                                 type="button"
                                 onClick={() => setSelected({ id: h.device.id, ref: h.ref })}
                                 className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition ${GROUP_COLOR[h.device.group]} ${h.source === 'editorial' ? 'border-dashed' : ''} ${on ? 'ring-2 ring-brand-400' : 'hover:brightness-95'}`}
-                                title={h.note}
+                                title={occNote(h.device, h.ref, h.note)}
                               >
-                                {h.device.name}
+                                {deviceName(h.device)}
                               </button>
                             )
                           })}
@@ -536,7 +547,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                 {groupsPresent.length > 0 && (
                   <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-1.5">
                     {groupsPresent.map(g => (
-                      <span key={g} title={GROUP_DESC[g]} className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium cursor-help ${GROUP_COLOR[g]}`}>{GROUP_LABEL[g]}</span>
+                      <span key={g} title={groupDesc(g)} className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium cursor-help ${GROUP_COLOR[g]}`}>{groupLabel(g)}</span>
                     ))}
                   </div>
                 )}
@@ -546,17 +557,17 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
 
           {/* Column 3 — explanation of the selected device (+Bengel), or the browsed device's examples */}
           <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">{browseDevice ? 'Figure' : 'Explanation'}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">{ui(browseDevice ? 'rhetoric.figure' : 'rhetoric.explanation')}</p>
             {browseDevice ? (
               <div className="space-y-3">
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-base font-semibold text-gray-800">{browseDevice.name}</span>
+                    <span className="text-base font-semibold text-gray-800">{deviceName(browseDevice)}</span>
                     {browseDevice.greek && <span className="font-greek text-sm text-gray-500">{browseDevice.greek}</span>}
-                    <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[browseDevice.group]}`}>{GROUP_LABEL[browseDevice.group]}</span>
+                    <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[browseDevice.group]}`}>{groupLabel(browseDevice.group)}</span>
                   </div>
-                  <p className="text-[11px] text-gray-500 mt-0.5">{GROUP_DESC[browseDevice.group]}</p>
-                  <p className="font-reading text-gray-700 leading-relaxed mt-1.5" style={READING_FS}>{browseDevice.definition}</p>
+                  <p className="text-[11px] text-gray-500 mt-0.5">{groupDesc(browseDevice.group)}</p>
+                  <p className="font-reading text-gray-700 leading-relaxed mt-1.5" style={READING_FS}>{deviceDef(browseDevice)}</p>
                 </div>
                 <div className="pt-2 border-t border-gray-100">
                   <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-gray-400 mb-1.5">
@@ -567,7 +578,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                       <p className="text-[10px] font-semibold text-gray-500 mb-1">{bookName}</p>
                       <div className="flex flex-wrap gap-1">
                         {occs.map(o => (
-                          <button key={o.ref} type="button" onClick={() => openExample(o.ref)} title={o.note}
+                          <button key={o.ref} type="button" onClick={() => openExample(o.ref)} title={occNote(browseDevice, o.ref, o.note)}
                             className={`rounded border px-1.5 py-0.5 text-[11px] font-mono transition hover:bg-brand-50 hover:border-brand-300 ${previewRef === o.ref ? 'ring-2 ring-brand-400' : ''} ${o.source === 'editorial' ? 'border-dashed border-amber-300 text-amber-700' : 'border-gray-200 text-gray-600'}`}>
                             {o.ref.replace(/^.*?\s(\d)/, '$1')}
                           </button>
@@ -578,17 +589,17 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                 </div>
               </div>
             ) : !sel ? (
-              <p className="text-sm text-gray-400">Click a device to see what it is and how it works here.</p>
+              <p className="text-sm text-gray-400">{ui('rhetoric.clickPrompt')}</p>
             ) : (
               <div className="space-y-3">
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-base font-semibold text-gray-800">{sel.name}</span>
+                    <span className="text-base font-semibold text-gray-800">{deviceName(sel)}</span>
                     {sel.greek && <span className="font-greek text-sm text-gray-500">{sel.greek}</span>}
-                    <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[sel.group]}`}>{GROUP_LABEL[sel.group]}</span>
+                    <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[sel.group]}`}>{groupLabel(sel.group)}</span>
                   </div>
-                  <p className="text-[11px] text-gray-500 mt-0.5">{GROUP_DESC[sel.group]}</p>
-                  <p className="font-reading text-gray-700 leading-relaxed mt-1.5" style={READING_FS}>{sel.definition}</p>
+                  <p className="text-[11px] text-gray-500 mt-0.5">{groupDesc(sel.group)}</p>
+                  <p className="font-reading text-gray-700 leading-relaxed mt-1.5" style={READING_FS}>{deviceDef(sel)}</p>
                 </div>
 
                 {/* the note for this specific occurrence, plus an editorial caveat if needed */}
@@ -598,28 +609,28 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                     <div className="space-y-2">
                       {occ?.source === 'editorial' && (
                         <p className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5">
-                          <span className="font-semibold uppercase tracking-wide">Editorial</span> — editorially identified (AI-assisted, reviewed), not from a printed source.
+                          <span className="font-semibold uppercase tracking-wide">{ui('rhetoric.editorial')}</span> — {ui('rhetoric.editorialNote')}
                         </p>
                       )}
-                      {occ?.note && <p className="font-reading text-gray-700 bg-gray-50 rounded-lg px-2.5 py-1.5 leading-relaxed" style={READING_FS}><b className="font-mono text-[0.8em] text-gray-500">{selected!.ref}</b> — {occ.note}</p>}
+                      {occ?.note && <p className="font-reading text-gray-700 bg-gray-50 rounded-lg px-2.5 py-1.5 leading-relaxed" style={READING_FS}><b className="font-mono text-[0.8em] text-gray-500">{selected!.ref}</b> — {occNote(sel, occ.ref, occ.note)}</p>}
                     </div>
                   )
                 })()}
 
                 {/* Bengel's Gnomon on this verse */}
                 <div>
-                  <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-500 mb-1">Bengel’s Gnomon · {selected!.ref}</p>
+                  <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-500 mb-1">{ui('rhetoric.gnomon')} · {selected!.ref}</p>
                   {bengel[selected!.ref] ? (
                     <p className="font-reading text-gray-700 leading-relaxed whitespace-pre-line" style={READING_FS}>{tidyBengel(bengel[selected!.ref])}</p>
                   ) : (
-                    <p className="text-xs text-gray-400 italic">No Gnomon note for this verse.</p>
+                    <p className="text-xs text-gray-400 italic">{ui('rhetoric.noGnomon')}</p>
                   )}
                 </div>
 
                 {/* other occurrences of this figure */}
                 {sel.occurrences.length > 1 && (
                   <div className="pt-2 border-t border-gray-100">
-                    <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-gray-400 mb-1">Also appears in</p>
+                    <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-gray-400 mb-1">{ui('rhetoric.alsoAppearsIn')}</p>
                     <div className="flex flex-wrap gap-1">
                       {sel.occurrences.map(o => (
                         <span key={o.ref} className="text-[11px] font-mono text-gray-500">{o.ref}</span>
@@ -646,8 +657,8 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
             return (
               <div className="min-h-0 overflow-y-auto rounded-xl border border-brand-200 bg-brand-50/20 p-3">
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{p?.name} {p?.chapter}:{p?.vStart} · {browseDevice!.name}</p>
-                  <button type="button" onClick={() => setPreviewRef(null)} className="text-gray-400 hover:text-gray-700 shrink-0" title="Close preview"><X size={15} /></button>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{p?.name} {p?.chapter}:{p?.vStart} · {deviceName(browseDevice!)}</p>
+                  <button type="button" onClick={() => setPreviewRef(null)} className="text-gray-400 hover:text-gray-700 shrink-0" title={ui('rhetoric.closePreview')}><X size={15} /></button>
                 </div>
                 {text ? (
                   <p className={`leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={READING_FS}>
@@ -711,23 +722,23 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                           </span>
                         </p>
                       ) : (
-                        <p className="text-xs text-gray-400 italic">Loading translation…</p>
+                        <p className="text-xs text-gray-400 italic">{ui('rhetoric.loadingTranslation')}</p>
                       )}
                     </div>
                   )
                 })()}
                 {occ?.source === 'editorial' && (
                   <p className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5 mt-2">
-                    <span className="font-semibold uppercase tracking-wide">Editorial</span> — editorially identified (AI-assisted, reviewed), not from a printed source.
+                    <span className="font-semibold uppercase tracking-wide">{ui('rhetoric.editorial')}</span> — {ui('rhetoric.editorialNote')}
                   </p>
                 )}
-                {occ?.note && <p className="font-reading text-gray-700 bg-white/70 rounded-lg px-2.5 py-1.5 leading-relaxed mt-2" style={READING_FS}>{occ.note}</p>}
+                {occ?.note && <p className="font-reading text-gray-700 bg-white/70 rounded-lg px-2.5 py-1.5 leading-relaxed mt-2" style={READING_FS}>{occNote(browseDevice!, occ.ref, occ.note)}</p>}
                 <div className="mt-3">
                   <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-500 mb-1">Bengel’s Gnomon · {previewRef}</p>
                   {gnomon ? (
                     <p className="font-reading text-gray-700 leading-relaxed whitespace-pre-line" style={READING_FS}>{tidyBengel(gnomon)}</p>
                   ) : (
-                    <p className="text-xs text-gray-400 italic">No Gnomon note for this verse.</p>
+                    <p className="text-xs text-gray-400 italic">{ui('rhetoric.noGnomon')}</p>
                   )}
                 </div>
                 {onNavigate && (
