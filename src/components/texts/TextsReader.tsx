@@ -11,6 +11,8 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 import { loadJastrow, lookupAramaic, strippedLabel, type JastrowData } from '@/lib/jastrow'
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 import { getTextSummary } from '@/lib/texts-summaries'
+import { useTc } from '@/lib/i18n/ContentProvider'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { noteBookFor as sharedNoteBookFor } from '@/lib/note-book'
 import { themesCiting, type ThemeBacklink } from '@/lib/theme-backlinks'
 import { findProseWork } from '@/lib/prose-texts'
@@ -186,6 +188,22 @@ function fetchWorkJson(url: string): Promise<unknown | null> {
 }
 
 export function TextsReader({ isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, openRequest, initialWorkId }: TextsReaderProps) {
+  // The Summary popover's five sections are curated content; the popover's own furniture is
+  // chrome. Both fall back to English, so an untranslated work reads as English rather than
+  // showing nothing.
+  const tc = useTc()
+  const t = useT()
+  const SUMMARY_HEADING_SLUG: Record<string, string> = {
+    'Authorship': 'authorship', 'Historical Context': 'context', 'Contents': 'contents',
+    'Theological Significance': 'significance', 'Relationship to New Testament': 'nt',
+  }
+  const headingSlug = (h: string) => SUMMARY_HEADING_SLUG[h] ?? h.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  const summaryHeading = (h: string) => tc(`summary.heading.${headingSlug(h)}`, h)
+  // Keyed by THIS work's id: several catalog works share a summary, and the build fans the one
+  // translation out to every id that uses it, so the lookup here never has to know that.
+  const summaryBody = (workId: string, heading: string, body: string) =>
+    tc(`summary.${workId}.${headingSlug(heading)}`, body)
+
   const isFontSizeControlled = onFontSize !== undefined
   const [internalFontSize, pickFontSize] = usePref<PhraseFontSize>('texts-font-size', FONT_SIZES, 'lg')
   const fontSize = isFontSizeControlled ? (controlledFontSize ?? 'lg') : internalFontSize
@@ -1166,19 +1184,19 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     onClick={() => setInfoPanel(p => (p === 'summary' ? null : 'summary'))}
                     className={`text-xs font-medium transition-colors ${infoPanel === 'summary' ? 'text-brand-700' : 'text-gray-500 hover:text-brand-700'}`}
                   >
-                    Summary
+                    {t('texts.summary')}
                   </button>
                   {infoPanel === 'summary' && (
                     <div className="absolute left-0 top-full z-30 mt-1 w-96 max-w-[90vw] max-h-[60vh] overflow-y-auto rounded-lg border border-gray-200 bg-popover shadow-lg p-3 space-y-2.5">
                       {summary.sections.map((s, i) => (
                         <div key={i}>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">{s.heading}</p>
-                          <p className="text-sm leading-relaxed text-gray-700">{s.body}</p>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">{summaryHeading(s.heading)}</p>
+                          <p className="text-sm leading-relaxed text-gray-700">{summaryBody(work.id, s.heading, s.body)}</p>
                         </div>
                       ))}
                       {summary.aiDrafted && (
                         <p className="pt-1.5 border-t border-gray-100 text-[11px] italic text-gray-400">
-                          AI-drafted overview reflecting general scholarship — not verified against sources; please double-check before relying on it.
+                          {t('texts.aiDraftedCaveat')}
                         </p>
                       )}
                     </div>

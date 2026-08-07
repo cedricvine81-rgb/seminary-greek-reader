@@ -17,6 +17,8 @@ import fs from 'node:fs'
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS } from '../src/lib/themes'
 import { workDate } from '../src/lib/work-dates'
 import { DEVICES, GROUP_LABEL, GROUP_DESC } from '../src/lib/rhetoric-devices'
+import { getTextSummary } from '../src/lib/texts-summaries'
+import { TEXT_CATEGORIES } from '../src/lib/texts-catalog'
 import { fingerprint } from '../src/lib/i18n/content'
 
 const LOCALES = ['es'] as const
@@ -121,7 +123,83 @@ export function rhetoricItems(): Item[] {
   return items
 }
 
-const SOURCES: Record<string, () => Item[]> = { themes: themeItems, rhetoric: rhetoricItems }
+/**
+ * The "Summary" popover beside an open work's title: five fixed sections (Authorship, Historical
+ * Context, Contents, Theological Significance, Relationship to New Testament) for 692 of the 848
+ * catalog works.
+ *
+ * SHARING IS THE WHOLE PROBLEM HERE. Herodotus' nine catalog entries share one summary, as do
+ * Quintilian's twelve and Eusebius' ten, and many works reuse a vetted Backgrounds summary. Of
+ * 3,460 rendered sections only 1,762 are distinct. Keying by work id alone would ask for the same
+ * paragraph to be translated nine times and let the nine copies drift apart.
+ *
+ * So there are two key spaces. The translator writes against a CANONICAL key — the first work id,
+ * in sorted order, that resolves to that body — and the build fans each translation out to every
+ * work id sharing it, each with its own fingerprint. The renderer only ever looks up its own
+ * work's key and needs to know nothing about any of this.
+ */
+function summaryBodies(): { canonical: string; heading: string; body: string; workIds: string[] }[] {
+  const byBody = new Map<string, { heading: string; workIds: string[] }>()
+  for (const c of TEXT_CATEGORIES as any[]) {
+    for (const w of c.works) {
+      const sum = getTextSummary(w)
+      if (!sum) continue
+      for (const sec of sum.sections) {
+        const k = `${sec.heading}\u0000${sec.body}`
+        const hit = byBody.get(k)
+        if (hit) hit.workIds.push(w.id)
+        else byBody.set(k, { heading: sec.heading, workIds: [w.id] })
+      }
+    }
+  }
+  return Array.from(byBody.entries()).map(([k, v]) => ({
+    canonical: v.workIds.slice().sort()[0],
+    heading: v.heading,
+    body: k.slice(k.indexOf('\u0000') + 1),
+    workIds: v.workIds,
+  }))
+}
+
+const HEADING_SLUG: Record<string, string> = {
+  'Authorship': 'authorship',
+  'Historical Context': 'context',
+  'Contents': 'contents',
+  'Theological Significance': 'significance',
+  'Relationship to New Testament': 'nt',
+}
+const slug = (h: string) => HEADING_SLUG[h] ?? h.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+
+/** What the TRANSLATOR writes against: one entry per distinct body. */
+export function summaryItems(): Item[] {
+  const items: Item[] = []
+  // The five section headings, which are the same for every work.
+  for (const [h, sl] of Object.entries(HEADING_SLUG)) {
+    items.push({ key: `summary.heading.${sl}`, english: h })
+  }
+  for (const b of summaryBodies()) {
+    items.push({ key: `summary.${b.canonical}.${slug(b.heading)}`, english: b.body })
+  }
+  return items
+}
+
+/** What the RENDERER looks up: one entry per work id, fanned out from the canonical translation. */
+function summaryFanOut(t: Record<string, string>): { key: string; english: string; text: string }[] {
+  const out: { key: string; english: string; text: string }[] = []
+  for (const b of summaryBodies()) {
+    const text = t[`summary.${b.canonical}.${slug(b.heading)}`]
+    if (!text) continue
+    for (const id of b.workIds) out.push({ key: `summary.${id}.${slug(b.heading)}`, english: b.body, text })
+  }
+  return out
+}
+
+const SOURCES: Record<string, () => Item[]> = {
+  themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
+}
+/** Sources whose generated catalogue is expanded from the translated one. */
+const FAN_OUT: Record<string, (t: Record<string, string>) => { key: string; english: string; text: string }[]> = {
+  summaries: summaryFanOut,
+}
 
 function allItems(): Item[] {
   return Object.values(SOURCES).flatMap(f => f())
@@ -172,14 +250,30 @@ function build() {
       const t = readJson(loc, name)
       const lines: string[] = []
       let orphans = 0
-      for (const [key, text] of Object.entries(t)) {
-        const english = byKey.get(key)
-        // A key with no English behind it means the source string was deleted or renamed.
-        // Dropping it is right — carrying it would put text on screen matching nothing.
-        if (english === undefined) { orphans++; continue }
+      const emit = (key: string, english: string, text: string) => {
         checkMarkers(loc, text, key, badMarkers)
         lines.push(`  ${JSON.stringify(key)}: { fp: ${JSON.stringify(fingerprint(english))}, `
           + `text: ${JSON.stringify(text)} },`)
+      }
+      const fan = FAN_OUT[name]
+      if (fan) {
+        // The heading keys are ordinary; only the bodies fan out.
+        for (const [key, text] of Object.entries(t)) {
+          if (!key.startsWith('summary.heading.')) continue
+          const english = byKey.get(key)
+          if (english === undefined) { orphans++; continue }
+          emit(key, english, text)
+        }
+        for (const e of fan(t)) emit(e.key, e.english, e.text)
+        orphans += Object.keys(t).filter(k => !k.startsWith('summary.heading.') && !byKey.has(k)).length
+      } else {
+        for (const [key, text] of Object.entries(t)) {
+          const english = byKey.get(key)
+          // A key with no English behind it means the source string was deleted or renamed.
+          // Dropping it is right — carrying it would put text on screen matching nothing.
+          if (english === undefined) { orphans++; continue }
+          emit(key, english, text)
+        }
       }
       lines.sort()
       const varName = `${loc.toUpperCase()}_${name.toUpperCase()}`

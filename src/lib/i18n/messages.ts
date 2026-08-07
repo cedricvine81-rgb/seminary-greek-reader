@@ -246,6 +246,9 @@ const en: Catalogue = {
 
   // The Themes page's own furniture. The method note is long, and deliberately so — it is the
   // sentence that stops a student quoting a six-word summary as if it were the source.
+  'texts.summary': 'Summary',
+  'texts.aiDraftedCaveat': 'AI-drafted overview reflecting general scholarship — not verified '
+    + 'against sources; please double-check before relying on it.',
   'themes.pickerLabel': 'Theme',
   'themes.absencesLink': {
     one: 'This page also records {count} thing the sources do not say ↓',
@@ -587,6 +590,9 @@ const es: Catalogue = {
   'tools.places': 'Lugares',
   'tools.construct': 'Búsqueda de construcciones',
 
+  'texts.summary': 'Resumen',
+  'texts.aiDraftedCaveat': 'Panorama redactado por IA que refleja el estado general de la '
+    + 'investigación; no está verificado contra fuentes. Conviene comprobarlo antes de apoyarse en él.',
   'themes.pickerLabel': 'Tema',
   'themes.absencesLink': {
     one: 'Esta página también registra {count} cosa que las fuentes no dicen ↓',
