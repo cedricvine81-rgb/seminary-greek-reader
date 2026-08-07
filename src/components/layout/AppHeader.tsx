@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { AccountMenu } from './AccountMenu'
 import { MasterSearchButton } from '@/components/search/MasterSearchButton'
 import { PageGuideButton } from '@/components/help/PageGuideButton'
+import { LanguageMenu } from '@/components/layout/LanguageMenu'
 import { ToolsNavMenu } from '@/components/layout/ToolsNavMenu'
 import { TextsNavMenu } from './TextsNavMenu'
 import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
@@ -72,6 +73,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
         <div className="flex items-center gap-1">
           <PageGuideButton />
           <MasterSearchButton />
+          <LanguageMenu />
           <AccountMenu isAuthenticated={isAuthenticated} userRole={userRole} userName={userName} />
         </div>
       </div>
