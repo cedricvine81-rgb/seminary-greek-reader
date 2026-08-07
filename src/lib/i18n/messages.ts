@@ -243,6 +243,20 @@ const en: Catalogue = {
   'tools.themes': 'Themes',
   'tools.places': 'Places',
   'tools.construct': 'Construct search',
+
+  // The Themes page's own furniture. The method note is long, and deliberately so — it is the
+  // sentence that stops a student quoting a six-word summary as if it were the source.
+  'themes.pickerLabel': 'Theme',
+  'themes.absencesLink': {
+    one: 'This page also records {count} thing the sources do not say ↓',
+    other: 'This page also records {count} things the sources do not say ↓',
+  },
+  'themes.absencesHeading': 'What the sources don\u2019t say',
+  'themes.methodNote': 'Summaries are machine-drafted from the passage and hand-checked; every '
+    + 'citation is verified against the corpus at build time. Dates are conventional '
+    + 'approximations and several are contested — they order the list, they do not settle '
+    + 'anything. Click any reference to read the passage itself.',
+  'themes.openSearch': 'Open search',
   'nav.dashboard': 'Dashboard',
   'nav.navigation': 'Navigation',
   'nav.morphology': 'Morphology',
@@ -543,6 +557,18 @@ const es: Catalogue = {
   'tools.themes': 'Temas',
   'tools.places': 'Lugares',
   'tools.construct': 'Búsqueda de construcciones',
+
+  'themes.pickerLabel': 'Tema',
+  'themes.absencesLink': {
+    one: 'Esta página también registra {count} cosa que las fuentes no dicen ↓',
+    other: 'Esta página también registra {count} cosas que las fuentes no dicen ↓',
+  },
+  'themes.absencesHeading': 'Lo que las fuentes no dicen',
+  'themes.methodNote': 'Los resúmenes los redacta una máquina a partir del pasaje y se revisan '
+    + 'a mano; cada cita se verifica contra el corpus al compilar. Las fechas son aproximaciones '
+    + 'convencionales y varias están en disputa: ordenan la lista, no zanjan nada. Haz clic en '
+    + 'cualquier referencia para leer el pasaje mismo.',
+  'themes.openSearch': 'Abrir la búsqueda',
   'nav.dashboard': 'Panel',
   'nav.navigation': 'Navegación',
   'nav.morphology': 'Morfología',

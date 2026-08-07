@@ -17,7 +17,9 @@
     "data:nestle1904": "node scripts/import-nestle1904.js",
     "build:construct": "node scripts/build-construct-index.mjs",
     "i18n:keys": "node scripts/i18n-guard.mjs --keys",
-    "i18n:snapshot": "node scripts/i18n-guard.mjs --snapshot"
+    "i18n:snapshot": "node scripts/i18n-guard.mjs --snapshot",
+    "i18n:content": "tsx scripts/i18n-content.ts --build",
+    "i18n:audit": "tsx scripts/i18n-content.ts --audit"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.6.4",

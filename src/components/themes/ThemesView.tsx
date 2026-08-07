@@ -7,6 +7,8 @@ import { openMasterSearch, hasMasterSearch } from '@/lib/master-search-bus'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS, type TopicEntry } from '@/lib/themes'
 import { workDate } from '@/lib/work-dates'
+import { content, NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 // A topic index over the Texts library — the third way in, beside author (the Texts menu) and
 // word (search). A student who asks "what did Second Temple Judaism think about resurrection?"
@@ -20,13 +22,27 @@ import { workDate } from '@/lib/work-dates'
 //   2. Sources are grouped by tradition AND dated. A flat list putting the Mishnah (c. 200 CE)
 //      beside Jubilees (2nd c. BCE) beside Irenaeus actively teaches bad method.
 
-export function ThemesView({ topicId }: { topicId: string }) {
+export function ThemesView(
+  { topicId, translations = NO_CONTENT }:
+  { topicId: string; translations?: ContentCatalogue },
+) {
   // Switching theme is local state, not navigation: every page is already in the bundle, so a
   // click should paint immediately rather than round-trip. The URL is kept in step by hand so
   // deep links and the back button still work.
   const [current, setCurrent] = useState(topicId)
   const page = THEME_PAGES.find(p => p.id === current) ?? THEME_PAGES[0]
   const [openedProbe, setOpenedProbe] = useState<string | null>(null)
+
+  // The curated prose is translated per string, so a page that is half-done reads as English
+  // where the Spanish is missing rather than breaking. In English `tr` returns its argument
+  // untouched, which is what keeps this conversion incapable of changing the English rendering.
+  const tr = (key: string, english: string) =>
+    content(translations, `themes.${page.id}.${key}`, english)
+  // The page's own furniture — headings, the method note — is interface chrome and lives in
+  // messages.ts, where the --keys guard can see it. Only the curated prose goes through `tr`.
+  const ui = useT()
+  const groupLabel = (g: string) =>
+    content(translations, `themes.group.${g.toLowerCase().replace(/\s+/g, '-')}`, g)
 
   function choose(id: string) {
     setCurrent(id)
@@ -61,20 +77,33 @@ export function ThemesView({ topicId }: { topicId: string }) {
       ?? THEME_PAGES.find(p => p.id === n.replace(/\s+/g, '-'))
   }, [])
 
+  /** A page's own title, translated. */
+  const pageLabel = (p: { id: string; label: string }) =>
+    content(translations, `themes.${p.id}.label`, p.label)
+
   function withPageLinks(text: string): ReactNode[] {
     const out: ReactNode[] = []
     let last = 0
+    // Two forms. The English prose says "the Atonement page", and that phrasing is what gets
+    // matched — see findPage above for why bare labels are not.
+    //
+    // Translations use an explicit [[Atonement]] marker instead, because "the X page" is an
+    // English shape: Spanish says "la página X" with nothing after X to close the match, and
+    // every further language would need its own pattern. The marker names the target directly
+    // and is written the same way in all of them. It cannot fire on English, which contains no
+    // "[[" anywhere in themes.ts.
     // matchAll's iterator needs downlevelIteration under this tsconfig; exec in a loop does not.
-    const re = /\b[Tt]he ([A-Z][A-Za-z’',/ ]{2,45}?) page\b/g
+    const re = /\b[Tt]he ([A-Z][A-Za-z’',/ ]{2,45}?) page\b|\[\[([^\]]{2,45})\]\]/g
     let m: RegExpExecArray | null
     while ((m = re.exec(text)) !== null) {
-      const target = findPage(m[1])
+      const marked = m[2] !== undefined
+      const target = findPage(m[1] ?? m[2])
       if (!target || target.id === page.id) continue
       if (m.index > last) out.push(text.slice(last, m.index))
       out.push(
         <button key={`${target.id}-${m.index}`} type="button" onClick={() => choose(target.id)}
           className="text-brand-700 underline decoration-brand-200 underline-offset-2 hover:decoration-brand-500">
-          {m[0]}
+          {marked ? pageLabel(target) : m[0]}
         </button>)
       last = m.index + m[0].length
     }
@@ -139,7 +168,7 @@ export function ThemesView({ topicId }: { topicId: string }) {
         <div className="sticky top-20 max-h-[calc(100vh-6.5rem)] overflow-y-auto overscroll-contain pr-1">
           {grouped.map(({ group, pages }) => (
             <div key={group} className="mb-4">
-              <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-gray-400">{group}</p>
+              <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-gray-400">{groupLabel(group)}</p>
               <ul className="space-y-0.5">
                 {pages.map(p => (
                   <li key={p.id}>
@@ -151,7 +180,7 @@ export function ThemesView({ topicId }: { topicId: string }) {
                           ? 'bg-brand-50 font-medium text-brand-700'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
                     >
-                      {p.label}
+                      {pageLabel(p)}
                     </button>
                   </li>
                 ))}
@@ -163,22 +192,22 @@ export function ThemesView({ topicId }: { topicId: string }) {
 
       <div className="min-w-0 flex-1">
         <div className="mb-4 lg:hidden">
-          <label htmlFor="theme-pick" className="sr-only">Theme</label>
+          <label htmlFor="theme-pick" className="sr-only">{ui('themes.pickerLabel')}</label>
           <select id="theme-pick" value={page.id} onChange={e => choose(e.target.value)}
             className="w-full rounded-lg border border-gray-200 bg-surface px-3 py-2 text-sm">
             {grouped.map(({ group, pages }) => (
-              <optgroup key={group} label={group}>
-                {pages.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
+              <optgroup key={group} label={groupLabel(group)}>
+                {pages.map(p => <option key={p.id} value={p.id}>{pageLabel(p)}</option>)}
               </optgroup>
             ))}
           </select>
         </div>
-      <h1 className="text-2xl font-semibold text-gray-900">{page.label}</h1>
-      <p className="mt-2 text-sm leading-relaxed text-gray-600">{withPageLinks(page.blurb)}</p>
+      <h1 className="text-2xl font-semibold text-gray-900">{pageLabel(page)}</h1>
+      <p className="mt-2 text-sm leading-relaxed text-gray-600">{withPageLinks(tr('blurb', page.blurb))}</p>
 
       <p className="mt-3 flex gap-2 rounded-lg border border-gray-200 bg-surface p-3 text-xs leading-relaxed text-gray-600">
         <Info size={14} className="mt-0.5 shrink-0 text-gray-400" />
-        <span>{withPageLinks(page.canonicalAnchors)}</span>
+        <span>{withPageLinks(tr('anchors', page.canonicalAnchors))}</span>
       </p>
 
       {/* The absences are at the foot, where they belong — they read as a conclusion — but they
@@ -187,17 +216,20 @@ export function ThemesView({ topicId }: { topicId: string }) {
       <button type="button"
         onClick={() => absencesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
         className="mt-2 text-xs text-gray-500 underline decoration-gray-300 underline-offset-2 hover:text-brand-700">
-        This page also records {page.absences.length} thing{page.absences.length === 1 ? '' : 's'} the
-        sources do not say ↓
+        {ui('themes.absencesLink', { count: page.absences.length })}
       </button>
 
       {TRADITIONS.filter(t => byTradition.has(t.id)).map(t => (
         <section key={t.id} className="mt-7">
           <div className="flex flex-wrap items-baseline gap-x-2 border-b border-gray-100 pb-1.5">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-800">{t.label}</h2>
-            <span className="text-xs tabular-nums text-gray-400">{t.dates}</span>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-800">
+              {content(translations, `themes.tradition.${t.id}.label`, t.label)}
+            </h2>
+            <span className="text-xs tabular-nums text-gray-400">
+              {content(translations, `themes.tradition.${t.id}.dates`, t.dates)}
+            </span>
           </div>
-          <p className="mt-1.5 text-xs italic leading-relaxed text-gray-500">{t.note}</p>
+          <p className="mt-1.5 text-xs italic leading-relaxed text-gray-500">{content(translations, `themes.tradition.${t.id}.note`, t.note)}</p>
 
           <ul className="mt-2.5 space-y-0.5">
             {byTradition.get(t.id)!.map(e => (
@@ -214,7 +246,7 @@ export function ThemesView({ topicId }: { topicId: string }) {
                       <span className="ml-1.5 whitespace-nowrap text-[10px] text-gray-400">{workDate(e.work)!.label}</span>
                     )}
                   </span>
-                  <span className="flex-1 text-sm text-gray-700">{e.summary}</span>
+                  <span className="flex-1 text-sm text-gray-700">{content(translations, `themes.${page.id}.sum.${e.work}.${e.chapter}.${e.verse}`, e.summary)}</span>
                 </button>
               </li>
             ))}
@@ -226,23 +258,20 @@ export function ThemesView({ topicId }: { topicId: string }) {
           teaches students to expect one, and to go looking until they can force a text to
           supply it. */}
       <section ref={absencesRef} className="mt-8 scroll-mt-20 rounded-xl border border-gray-200 bg-surface p-4">
-        <h2 className="text-sm font-semibold text-gray-800">What the sources don’t say</h2>
+        <h2 className="text-sm font-semibold text-gray-800">{ui('themes.absencesHeading')}</h2>
         <ul className="mt-2 space-y-2">
           {page.absences.map((a, i) => (
-            <li key={i} className="text-xs leading-relaxed text-gray-600">{withPageLinks(a)}</li>
+            <li key={i} className="text-xs leading-relaxed text-gray-600">{withPageLinks(tr(`absence.${i}`, a))}</li>
           ))}
         </ul>
       </section>
 
       <p className="mt-6 flex items-center gap-2 text-xs text-gray-500">
         <BookOpen size={13} className="text-gray-400" />
-        Summaries are machine-drafted from the passage and hand-checked; every citation is verified
-        against the corpus at build time. Dates are conventional approximations and several are
-        contested — they order the list, they do not settle anything. Click any reference to read
-        the passage itself.
+        {ui('themes.methodNote')}
         {!hasMasterSearch() && (
           <Link href="/search" className="text-brand-700 hover:underline">
-            Open search <ExternalLink size={11} className="inline" />
+            {ui('themes.openSearch')} <ExternalLink size={11} className="inline" />
           </Link>
         )}
       </p>

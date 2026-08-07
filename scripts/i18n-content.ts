@@ -1,0 +1,167 @@
+/**
+ * Generates the translated-content catalogues from plain key→text JSON, and reports what is
+ * missing or stale.
+ *
+ * The translator edits JSON — src/lib/i18n/es/themes.json — which holds nothing but keys and
+ * Spanish. Fingerprints of the English are computed HERE, from the live source, and written into
+ * the generated catalogue. That is deliberate: a fingerprint typed or pasted by hand is a
+ * fingerprint that can be wrong, and a wrong fingerprint is the one failure this design must not
+ * have — it would let a stale translation pass as current.
+ *
+ * Usage:
+ *   npx tsx scripts/i18n-content.ts --list themes            # keys + English, to translate from
+ *   npx tsx scripts/i18n-content.ts --build                  # regenerate src/lib/i18n/content-es.ts
+ *   npx tsx scripts/i18n-content.ts --audit                  # coverage, and what went stale
+ */
+import fs from 'node:fs'
+import { THEME_PAGES, THEME_GROUPS, TRADITIONS } from '../src/lib/themes'
+import { fingerprint } from '../src/lib/i18n/content'
+
+const LOCALES = ['es'] as const
+type Loc = typeof LOCALES[number]
+
+export interface Item { key: string; english: string }
+
+/**
+ * Every translatable string of the Themes pages, with the key it is stored under.
+ *
+ * Keys are built from STABLE identities — the page id, and for an entry its work/chapter/verse —
+ * never from an array index. Entries get reordered constantly (they sort by date, and the
+ * curation adds to the middle of a list), and an index-keyed catalogue would silently reattach
+ * every translation to the wrong passage the first time one was inserted.
+ */
+export function themeItems(): Item[] {
+  const items: Item[] = []
+  // The sidebar sections, keyed by a slug of the English rather than by position — the groups
+  // get reordered, and their names are the identity that survives that.
+  for (const g of THEME_GROUPS) {
+    items.push({ key: `themes.group.${g.toLowerCase().replace(/\s+/g, '-')}`, english: g })
+  }
+  // The tradition bands. Their notes are the page's method teaching — "later than the New
+  // Testament; evidence for how Judaism settled" — and are the last thing that should stay in a
+  // language the reader cannot read.
+  for (const tr of TRADITIONS) {
+    items.push({ key: `themes.tradition.${tr.id}.label`, english: tr.label })
+    items.push({ key: `themes.tradition.${tr.id}.dates`, english: tr.dates })
+    items.push({ key: `themes.tradition.${tr.id}.note`, english: tr.note })
+  }
+  for (const p of THEME_PAGES) {
+    items.push({ key: `themes.${p.id}.label`, english: p.label })
+    items.push({ key: `themes.${p.id}.blurb`, english: p.blurb })
+    items.push({ key: `themes.${p.id}.anchors`, english: p.canonicalAnchors })
+    p.absences.forEach((a, i) => items.push({ key: `themes.${p.id}.absence.${i}`, english: a }))
+    for (const e of p.entries) {
+      items.push({
+        key: `themes.${p.id}.sum.${e.work}.${e.chapter}.${e.verse}`,
+        english: e.summary,
+      })
+    }
+  }
+  return items
+}
+
+const SOURCES: Record<string, () => Item[]> = { themes: themeItems }
+
+function allItems(): Item[] {
+  return Object.values(SOURCES).flatMap(f => f())
+}
+
+function readJson(loc: Loc, name: string): Record<string, string> {
+  const f = `src/lib/i18n/${loc}/${name}.json`
+  return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : {}
+}
+
+function translations(loc: Loc): Record<string, string> {
+  return Object.assign({}, ...Object.keys(SOURCES).map(n => readJson(loc, n)))
+}
+
+// ── --list ────────────────────────────────────────────────────────────────────────────
+function list(name: string) {
+  const items = SOURCES[name]?.() ?? []
+  const have = translations('es')
+  const todo = items.filter(i => !have[i.key])
+  console.log(JSON.stringify(Object.fromEntries(todo.map(i => [i.key, i.english])), null, 2))
+  console.error(`${todo.length} untranslated of ${items.length}`)
+}
+
+// ── --build ───────────────────────────────────────────────────────────────────────────
+/** One generated file per (locale, source), because they are loaded one surface at a time. */
+function build() {
+  for (const loc of LOCALES) {
+    for (const [name, fn] of Object.entries(SOURCES)) {
+      const byKey = new Map(fn().map(i => [i.key, i.english]))
+      const t = readJson(loc, name)
+      const lines: string[] = []
+      let orphans = 0
+      for (const [key, text] of Object.entries(t)) {
+        const english = byKey.get(key)
+        // A key with no English behind it means the source string was deleted or renamed.
+        // Dropping it is right — carrying it would put text on screen matching nothing.
+        if (english === undefined) { orphans++; continue }
+        lines.push(`  ${JSON.stringify(key)}: { fp: ${JSON.stringify(fingerprint(english))}, `
+          + `text: ${JSON.stringify(text)} },`)
+      }
+      lines.sort()
+      const varName = `${loc.toUpperCase()}_${name.toUpperCase()}`
+      const out = `// GENERATED by scripts/i18n-content.ts — do not edit.\n`
+        + `// Translations live in src/lib/i18n/${loc}/${name}.json; run \`npm run i18n:content\`.\n`
+        + `// \`fp\` fingerprints the English this was translated from; if the English has since\n`
+        + `// changed, the reader is given the English rather than a stale translation.\n`
+        + `import type { ContentCatalogue } from '../content'\n\n`
+        + `export const ${varName}: ContentCatalogue = {\n${lines.join('\n')}\n}\n`
+      fs.mkdirSync('src/lib/i18n/generated', { recursive: true })
+      fs.writeFileSync(`src/lib/i18n/generated/${loc}.${name}.ts`, out)
+      console.log(`${loc}.${name}.ts: ${lines.length} strings`
+        + (orphans ? ` (${orphans} orphaned key(s) dropped)` : ''))
+    }
+  }
+}
+
+// ── --audit ───────────────────────────────────────────────────────────────────────────
+function audit() {
+  const items = allItems()
+  const words = (s: string) => s.trim().split(/\s+/).length
+  for (const loc of LOCALES) {
+    const t = translations(loc)
+    // Recompute rather than importing the catalogue, so the audit reports on the JSON the
+    // translator is editing and not on a stale generated file.
+    const missing = items.filter(i => !t[i.key])
+    const stale = items.filter(i => {
+      const gen = generatedFp(loc, i.key)
+      return t[i.key] && gen !== undefined && gen !== fingerprint(i.english)
+    })
+    const done = items.length - missing.length
+    const pct = ((done / items.length) * 100).toFixed(1)
+    console.log(`${loc}: ${done}/${items.length} strings (${pct}%), `
+      + `${words(missing.map(m => m.english).join(' '))} English words left`)
+    if (stale.length) {
+      console.log(`  ${stale.length} STALE — the English changed after these were translated:`)
+      stale.slice(0, 20).forEach(s => console.log('    ' + s.key))
+    }
+  }
+}
+
+/** The fp recorded in the generated catalogue, if it has been built. */
+const genCache: Partial<Record<Loc, Record<string, string>>> = {}
+function generatedFp(loc: Loc, key: string): string | undefined {
+  if (!genCache[loc]) {
+    const files = Object.keys(SOURCES).map(n => `src/lib/i18n/generated/${loc}.${n}.ts`)
+    const map: Record<string, string> = {}
+    for (const f of files) {
+      if (!fs.existsSync(f)) continue
+      // exec in a loop, not matchAll: its iterator needs downlevelIteration under this tsconfig.
+      const src = fs.readFileSync(f, 'utf8')
+      const re = /"([^"]+)": \{ fp: "([^"]+)"/g
+      let m: RegExpExecArray | null
+      while ((m = re.exec(src)) !== null) map[m[1]] = m[2]
+    }
+    genCache[loc] = map
+  }
+  return genCache[loc]![key]
+}
+
+const args = process.argv.slice(2)
+if (args[0] === '--list') list(args[1] ?? 'themes')
+else if (args[0] === '--audit') audit()
+else if (args[0] === '--build') build()
+else { console.error('usage: --list <source> | --build | --audit'); process.exit(1) }
