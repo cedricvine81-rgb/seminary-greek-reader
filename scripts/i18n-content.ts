@@ -24,7 +24,12 @@ import { fingerprint } from '../src/lib/i18n/content'
 const LOCALES = ['es'] as const
 type Loc = typeof LOCALES[number]
 
-export interface Item { key: string; english: string }
+export interface Item {
+  key: string
+  english: string
+  /** For a SPLIT source, which output file this string belongs in. See `build()`. */
+  bucket?: string
+}
 
 /**
  * Every translatable string of the Themes pages, with the key it is stored under.
@@ -95,10 +100,8 @@ export function rhetoricItems(): Item[] {
   // that the curated list does not carry. They share the key space, because RhetoricView merges
   // them into one catalogue and cannot tell which layer a device came from.
   //
-  // Their occurrence notes are NOT enumerated here. There are 2,081 of them, some 47,000 words —
-  // a surface in its own right, and larger than the whole Themes corpus. Adding them silently
-  // would turn "translate the Rhetoric tab" into a job several times its stated size. They fall
-  // back to English until they are taken on deliberately.
+  // Their 2,081 OCCURRENCE NOTES are a source of their own — `rhetoricNoteItems` below — because
+  // they are ~47,000 words and must not be loaded with this catalogue. See its comment.
   const seen = new Set(DEVICES.map(d => d.id))
   const dir = 'public/data/rhetoric/devices'
   for (const f of fs.existsSync(dir) ? fs.readdirSync(dir).sort() : []) {
@@ -118,6 +121,52 @@ export function rhetoricItems(): Item[] {
       // Keyed by the verse reference, which is the occurrence's stable identity — the list is
       // curated and reordered, so an index would reattach notes to the wrong verses.
       if (o.note) items.push({ key: `rhetoric.${d.id}.occ.${o.ref}`, english: o.note })
+    }
+  }
+  return items
+}
+
+/**
+ * Bullinger's own note on each figure-occurrence, from the per-book datasets — 2,081 of them,
+ * some 47,000 words. They are the tooltip text under a figure like Metonymy or Epistrophe:
+ * "Here the Greek word house is rendered household: i.e., family."
+ *
+ * WHY THIS IS A SOURCE OF ITS OWN, AND SPLIT PER BOOK. Every other catalogue is handed to the
+ * page as a prop, which means it is serialized into that page's payload. Doing that here would
+ * put 47,000 words of Spanish into every load of /exegesis — six times the rest of the Rhetoric
+ * catalogue put together — to show the handful of notes on one open chapter. The data it
+ * translates is already per book, and RhetoricView already fetches one book at a time, so the
+ * translation is fetched the same way: `public/data/rhetoric/notes-<loc>/<Osis>.json`, alongside
+ * the English it belongs to, and only for the book being read. Matthew is 331 notes; the other
+ * 26 books cost nothing until opened.
+ *
+ * The 58 refs that the CURATED list also carries are skipped. Both layers key by device+verse,
+ * but `mergeDevices` keeps the curated note when they collide, so the curated note is the one on
+ * screen and the Bullinger wording for those verses is never rendered. Emitting it would attach
+ * a second translation to a key that already has one, and the fingerprint would decide which
+ * survived — a coin toss between two different English sentences.
+ */
+export function rhetoricNoteItems(): Item[] {
+  const curated = new Set<string>()
+  for (const d of DEVICES) for (const o of d.occurrences) {
+    if (o.note) curated.add(`rhetoric.${d.id}.occ.${o.ref}`)
+  }
+  const items: Item[] = []
+  const seen = new Set<string>()
+  const dir = 'public/data/rhetoric/devices'
+  for (const f of fs.existsSync(dir) ? fs.readdirSync(dir).sort() : []) {
+    if (!f.endsWith('.json')) continue
+    const osis = f.replace(/\.json$/, '')
+    const parsed = JSON.parse(fs.readFileSync(`${dir}/${f}`, 'utf8')) as
+      { devices?: { id: string; occurrences?: { ref: string; note?: string }[] }[] }
+    for (const d of parsed.devices ?? []) {
+      for (const o of d.occurrences ?? []) {
+        if (!o.note) continue
+        const key = `rhetoric.${d.id}.occ.${o.ref}`
+        if (curated.has(key) || seen.has(key)) continue
+        seen.add(key)
+        items.push({ key, english: o.note, bucket: osis })
+      }
     }
   }
   return items
@@ -195,6 +244,16 @@ function summaryFanOut(t: Record<string, string>): { key: string; english: strin
 
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
+  rhetoricNotes: rhetoricNoteItems,
+}
+/**
+ * Sources emitted as per-bucket JSON under public/ and fetched by the client, instead of as one
+ * TS module imported on the server. For a corpus too big to sit in a page payload but naturally
+ * divided — one file per book — this keeps the reader's cost proportional to what they opened.
+ */
+type SplitPath = (loc: Loc, bucket: string) => string
+const SPLIT: Record<string, SplitPath | undefined> = {
+  rhetoricNotes: (loc, osis) => `public/data/rhetoric/notes-${loc}/${osis}.json`,
 }
 /** Sources whose generated catalogue is expanded from the translated one. */
 const FAN_OUT: Record<string, (t: Record<string, string>) => { key: string; english: string; text: string }[]> = {
@@ -215,12 +274,38 @@ function translations(loc: Loc): Record<string, string> {
 }
 
 // ── --list ────────────────────────────────────────────────────────────────────────────
-function list(name: string) {
-  const items = SOURCES[name]?.() ?? []
+/**
+ * `--list <source> [bucket]` — the untranslated keys with their English, ready to translate from.
+ *
+ * The optional bucket narrows a SPLIT source to one file's worth (`--list rhetoricNotes Matt`).
+ * A 2,000-string source dumped whole is not a work unit anybody can hold; a book is.
+ */
+function list(name: string, bucket?: string) {
+  let items = SOURCES[name]?.() ?? []
+  if (bucket) items = items.filter(i => i.bucket === bucket)
   const have = translations('es')
   const todo = items.filter(i => !have[i.key])
   console.log(JSON.stringify(Object.fromEntries(todo.map(i => [i.key, i.english])), null, 2))
-  console.error(`${todo.length} untranslated of ${items.length}`)
+  console.error(`${todo.length} untranslated of ${items.length}`
+    + (bucket ? ` in ${bucket}` : ''))
+}
+
+/** `--buckets <source>` — how much is left in each bucket, to pick the next one to do. */
+function buckets(name: string) {
+  const items = SOURCES[name]?.() ?? []
+  const have = translations('es')
+  const tally = new Map<string, { done: number; total: number; words: number }>()
+  for (const i of items) {
+    const b = i.bucket ?? '—'
+    const t = tally.get(b) ?? { done: 0, total: 0, words: 0 }
+    t.total++
+    if (have[i.key]) t.done++; else t.words += i.english.trim().split(/\s+/).length
+    tally.set(b, t)
+  }
+  for (const [b, t] of Array.from(tally.entries()).sort((a, b2) => b2[1].total - a[1].total)) {
+    console.log(`${b.padEnd(10)} ${String(t.done).padStart(4)}/${String(t.total).padEnd(5)}`
+      + (t.done === t.total ? ' done' : ` — ${t.words} English words left`))
+  }
 }
 
 // ── --build ───────────────────────────────────────────────────────────────────────────
@@ -246,12 +331,24 @@ function build() {
   const badMarkers: string[] = []
   for (const loc of LOCALES) {
     for (const [name, fn] of Object.entries(SOURCES)) {
-      const byKey = new Map(fn().map(i => [i.key, i.english]))
+      const items = fn()
+      const byKey = new Map(items.map(i => [i.key, i.english]))
+      const bucketOf = new Map(items.map(i => [i.key, i.bucket]))
       const t = readJson(loc, name)
       const lines: string[] = []
+      const split = SPLIT[name]
+      const byBucket = new Map<string, Record<string, { fp: string; text: string }>>()
       let orphans = 0
       const emit = (key: string, english: string, text: string) => {
         checkMarkers(loc, text, key, badMarkers)
+        if (split) {
+          const b = bucketOf.get(key)
+          if (!b) return   // unbucketed key in a split source: nowhere to put it
+          const into = byBucket.get(b) ?? {}
+          into[key] = { fp: fingerprint(english), text }
+          byBucket.set(b, into)
+          return
+        }
         lines.push(`  ${JSON.stringify(key)}: { fp: ${JSON.stringify(fingerprint(english))}, `
           + `text: ${JSON.stringify(text)} },`)
       }
@@ -275,6 +372,23 @@ function build() {
           emit(key, english, text)
         }
       }
+      if (split) {
+        // Every bucket gets a file, including the ones with nothing translated yet: a 404 and an
+        // empty catalogue mean the same thing to the reader, but only one of them is silent in
+        // the network tab, and a missing file is indistinguishable from a build that failed.
+        let written = 0
+        for (const i of items) if (!byBucket.has(i.bucket ?? '')) byBucket.set(i.bucket!, {})
+        for (const [b, entries] of Array.from(byBucket.entries()).sort()) {
+          const f = split(loc, b)
+          fs.mkdirSync(f.replace(/\/[^/]+$/, ''), { recursive: true })
+          const sorted = Object.fromEntries(Object.keys(entries).sort().map(k => [k, entries[k]]))
+          fs.writeFileSync(f, JSON.stringify(sorted))
+          written += Object.keys(entries).length
+        }
+        console.log(`${name} → ${byBucket.size} files: ${written} strings`
+          + (orphans ? ` (${orphans} orphaned key(s) dropped)` : ''))
+        continue
+      }
       lines.sort()
       const varName = `${loc.toUpperCase()}_${name.toUpperCase()}`
       const out = `// GENERATED by scripts/i18n-content.ts — do not edit.\n`
@@ -291,7 +405,7 @@ function build() {
   }
   if (badMarkers.length) {
     badMarkers.forEach(b => console.error('  ' + b))
-    console.error(`${badMarkers.length} unresolvable cross-page marker(s)`)
+    console.error(`${badMarkers.length} translation(s) rejected — nothing was written for them`)
     process.exit(1)
   }
 }
@@ -326,8 +440,21 @@ function audit() {
 const genCache: Partial<Record<Loc, Record<string, string>>> = {}
 function generatedFp(loc: Loc, key: string): string | undefined {
   if (!genCache[loc]) {
-    const files = Object.keys(SOURCES).map(n => `src/lib/i18n/generated/${loc}.${n}.ts`)
+    const files = Object.keys(SOURCES).filter(n => !SPLIT[n])
+      .map(n => `src/lib/i18n/generated/${loc}.${n}.ts`)
     const map: Record<string, string> = {}
+    // Split sources emit JSON under public/ rather than a generated module, but their
+    // fingerprints are the same evidence of staleness and the audit has to see them.
+    for (const path of Object.values(SPLIT)) {
+      if (!path) continue
+      const dir = path(loc, 'x').replace(/\/[^/]+$/, '')
+      if (!fs.existsSync(dir)) continue
+      for (const f of fs.readdirSync(dir)) {
+        if (!f.endsWith('.json')) continue
+        const j = JSON.parse(fs.readFileSync(`${dir}/${f}`, 'utf8')) as Record<string, { fp: string }>
+        for (const [k, v] of Object.entries(j)) map[k] = v.fp
+      }
+    }
     for (const f of files) {
       if (!fs.existsSync(f)) continue
       // exec in a loop, not matchAll: its iterator needs downlevelIteration under this tsconfig.
@@ -342,7 +469,11 @@ function generatedFp(loc: Loc, key: string): string | undefined {
 }
 
 const args = process.argv.slice(2)
-if (args[0] === '--list') list(args[1] ?? 'themes')
+if (args[0] === '--list') list(args[1] ?? 'themes', args[2])
+else if (args[0] === '--buckets') buckets(args[1] ?? 'rhetoricNotes')
 else if (args[0] === '--audit') audit()
 else if (args[0] === '--build') build()
-else { console.error('usage: --list <source> | --build | --audit'); process.exit(1) }
+else {
+  console.error('usage: --list <source> [bucket] | --buckets <source> | --build | --audit')
+  process.exit(1)
+}
