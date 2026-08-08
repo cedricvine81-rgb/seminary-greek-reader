@@ -22,7 +22,6 @@ import { TEXT_CATEGORIES } from '../src/lib/texts-catalog'
 import { fingerprint } from '../src/lib/i18n/content'
 import { serialize, greekRuns } from '../src/lib/i18n/morph-markup'
 import { fieldsOf, FIELD_COMPONENTS } from '../src/lib/i18n/morph-fields'
-import { Gk, Term } from '../src/components/morphology/shared'
 
 const LOCALES = ['es'] as const
 type Loc = typeof LOCALES[number]
@@ -155,6 +154,24 @@ export function morphologyItems(): Item[] {
     const mod = require(`../${dir}/${chapter}`) as Record<string, unknown>
     for (const exported of Object.values(mod)) collect(exported, items, chapter)
   }
+
+  // The "Getting started" note at the top of every chapter lives in a different file, keyed by
+  // tab. That key IS the chapter name, so each note is bucketed into its own chapter's catalogue
+  // and arrives on the one fetch the chapter already makes.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const exp = require('../src/components/vocab/morphology-explanations') as {
+    TAB_EXPLANATIONS: Record<string, { beginning?: unknown; intermediate?: unknown }>
+    ESS_EXPLANATIONS: Record<string, { beginning?: unknown; intermediate?: unknown }>
+  }
+  for (const [tab, e] of Object.entries(exp.TAB_EXPLANATIONS ?? {})) {
+    collect(e?.beginning, items, tab)
+    collect(e?.intermediate, items, tab)
+  }
+  // The Minimums sub-sections are keyed 1–8 but all render under the one 'essentials' tab.
+  for (const e of Object.values(exp.ESS_EXPLANATIONS ?? {})) {
+    collect(e?.beginning, items, 'essentials')
+    collect(e?.intermediate, items, 'essentials')
+  }
   return items
 }
 
@@ -188,7 +205,7 @@ function collect(node: unknown, items: Item[], chapter: string) {
       for (const v of Object.values(props)) if (v && typeof v === 'object') collect(v, items, chapter)
       return
     }
-    const english = serialize(props.children as never, { Gk, Term })
+    const english = serialize(props.children as never)
     if (english === null) {
       console.error(`  ${chapter}: ${id} — markup not representable; left English`)
     } else if (!english.trim()) {

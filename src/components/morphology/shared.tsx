@@ -14,7 +14,7 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
 import { NO_CONTENT, content, fingerprint, type ContentCatalogue } from '@/lib/i18n/content'
-import { serialize, parse } from '@/lib/i18n/morph-markup'
+import { serialize, parse, type MarkupComponents } from '@/lib/i18n/morph-markup'
 import { K } from '@/lib/i18n/morph-fields'
 import { openTranslationWorkbench, type WorkbenchSentence } from '@/lib/translation-workbench-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
@@ -248,9 +248,9 @@ export function Gk({ children }: { children: React.ReactNode }) {
   return <span className="normal-case font-medium text-gray-800">{children}</span>
 }
 
-// Read by morph-markup's serializer when identity matching cannot apply. A string literal, so
-// the production minifier preserves it where it renames the function itself.
-Gk.displayName = 'Gk'
+// Declares what this component IS to the translation serializer. A string literal, so the
+// production minifier preserves it where it renames the function itself.
+Gk.i18nRole = 'greek' as const
 
 /** An example line in an aside: Greek → English. */
 export function Ex({ grc, en }: { grc: React.ReactNode; en: React.ReactNode }) {
@@ -300,13 +300,19 @@ export function useTm(): (key: string, english: string) => string {
   return useMemo(() => (key: string, english: string) => content(cat, key, english), [cat])
 }
 
-export function Tr({ id, children }: { id: string; children: React.ReactNode }) {
+export function Tr({ id, comps, children }: {
+  id: string
+  /** Which components a translated {…} / [k:x] renders as. Defaults to this module's own —
+   *  the Getting Started notes override it so their Greek keeps its own styling. */
+  comps?: MarkupComponents
+  children: React.ReactNode
+}) {
   const cat = useContext(MorphContent)
   const entry = cat[id]
   if (!entry) return <>{children}</>
-  const english = serialize(children, { Gk, Term })
+  const english = serialize(children)
   if (english === null || entry.fp !== fingerprint(english)) return <>{children}</>
-  return <>{parse(entry.text, { Gk, Term })}</>
+  return <>{parse(entry.text, comps ?? { Gk, Term })}</>
 }
 
 /* ─── Textbook components ───────────────────── */
@@ -369,7 +375,7 @@ export function Term({ t, children }: { t: string; children?: React.ReactNode })
   )
 }
 
-Term.displayName = 'Term'
+Term.i18nRole = 'term' as const
 
 /** An exercise block with tap-to-reveal answers.
  *  Practice blocks are drill material from the Beginning course, so by default

@@ -17,6 +17,7 @@
 
 import React from 'react'
 import { ChevronRight } from 'lucide-react'
+import { Tr, Term } from '@/components/morphology/shared'
 
 export type MorphLevel = 'beginning' | 'intermediate'
 
@@ -47,6 +48,15 @@ function Eg({ children }: { children: React.ReactNode }) {
  *  but this keeps intent explicit and future-proofs against style changes). */
 function G({ children }: { children: React.ReactNode }) {
   return <span className="normal-case">{children}</span>
+}
+// This file marks Greek with its own `G`, not the chapters' `Gk` — same job, lighter styling.
+// The role is what the translation serializer reads, so both are recognised without either
+// component knowing about the other. See morph-markup.tsx.
+G.i18nRole = 'greek' as const
+
+/** Translatable prose in these notes, rendering {…} back as this file's own G. */
+function T({ id, children }: { id: string; children: React.ReactNode }) {
+  return <Tr id={id} comps={{ Gk: G, Term }}>{children}</Tr>
 }
 
 /** A memory hook — the kind of "How to remember" mnemonic used in class. */
@@ -582,14 +592,14 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   liquids: {
     beginning: (
       <Note>
-        <P><strong>Liquid verbs</strong> have stems ending in the flowing consonants <G>λ, μ, ν, ρ</G> — sounds that refuse to sit next to <G>σ</G>. So their future and aorist form <em>without</em> the σ: future <G>μενῶ</G> "I will remain," aorist <G>ἔμεινα</G> "I remained."</P>
-        <Hook>In liquid verbs there is <strong>no σ in the future or aorist</strong>. The future wears φιλέω-style contract endings — often only the <em>accent</em> separates <G>μένω</G> "I remain" from <G>μενῶ</G> "I will remain."</Hook>
-        <Eg><G>ἀποστέλλω → ἀπέστειλα</G> "I sent" — double λ slims to one, stem vowel stretches.</Eg>
+        <P><T id="liquids.exp.b.intro"><strong>Liquid verbs</strong> have stems ending in the flowing consonants <G>λ, μ, ν, ρ</G> — sounds that refuse to sit next to <G>σ</G>. So their future and aorist form <em>without</em> the σ: future <G>μενῶ</G> "I will remain," aorist <G>ἔμεινα</G> "I remained."</T></P>
+        <Hook><T id="liquids.exp.b.hook">In liquid verbs there is <strong>no σ in the future or aorist</strong>. The future wears φιλέω-style contract endings — often only the <em>accent</em> separates <G>μένω</G> "I remain" from <G>μενῶ</G> "I will remain."</T></Hook>
+        <Eg><T id="liquids.exp.b.eg"><G>ἀποστέλλω → ἀπέστειλα</G> "I sent" — double λ slims to one, stem vowel stretches.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The stem-stretch (<G>μεν → μειν</G>) is <em>compensatory lengthening</em> — the lost σ's weight preserved in the vowel. Distinguish the liquid 1st aorist (<G>ἔκρινα</G>, α-endings) from the imperfect (<G>ἔκρινον</G>) by the ending vowel.</P>
+        <P><T id="liquids.exp.i.main">The stem-stretch (<G>μεν → μειν</G>) is <em>compensatory lengthening</em> — the lost σ's weight preserved in the vowel. Distinguish the liquid 1st aorist (<G>ἔκρινα</G>, α-endings) from the imperfect (<G>ἔκρινον</G>) by the ending vowel.</T></P>
       </Note>
     ),
   },

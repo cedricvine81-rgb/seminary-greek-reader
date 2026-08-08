@@ -12,13 +12,11 @@
   "liquids.p.meno": "*μένω en Juan.* «Permaneced en mí»: la teología juanina de la unión descansa en este verbo líquido (40 veces en el Evangelio, 27 en las cartas). Solo Juan 15 contrapone formas de presente («seguid permaneciendo») a formas de aoristo en una meditación sostenida; atender al aspecto de cada forma de {μένω} es la mitad de la exégesis del capítulo.",
   "liquids.p.egeiro": "*ἐγείρω y ἀνίστημι.* El NT dice «levantar» de dos maneras: el líquido {ἐγείρω} (normalmente transitivo: Dios levanta a Jesús; pasiva {ἠγέρθη}) y el verbo μι {ἀνίστημι} (a menudo intransitivo: «resucitó»). Marcos los alterna con libertad; la pasiva divina {ἠγέρθη} «fue levantado [por Dios]» atribuye calladamente la obra al Padre a lo largo del kerigma.",
   "liquids.p.apostello": "*ἀποστέλλω y «apóstol».* El sustantivo {ἀπόστολος} es este verbo líquido sustantivado: un «enviado». El Evangelio de Juan explota sin descanso la cadena del envío: como el Padre me _envió_, así yo os _envío_ (Juan 20:21) — gramática de la misión construida sobre una raíz líquida.",
-
   "liquids.a1.label": "Presente frente a futuro",
   "liquids.a1.e1": "permanezco (presente)",
   "liquids.a1.e2": "permaneceré (futuro — ¡circunflejo!)",
   "liquids.a1.e3": "juzga / juzgará",
   "liquids.a1.int": "Históricamente {μενέσω} → la σ cayó entre vocales → {μενέω} → contracción → {μενῶ}. La misma historia de la σ que en las desinencias medias de 2.ª sg.: las sigmas desaparecidas del griego explican la mitad de sus «irregularidades».",
-
   "liquids.t1.title": "Futuro líquido — μενῶ (como el presente de φιλέω)",
   "liquids.t1.h1": "Pers.",
   "liquids.t1.h2": "Forma",
@@ -29,18 +27,15 @@
   "liquids.t1.c3.3": "permaneceremos",
   "liquids.t1.c4.3": "permaneceréis",
   "liquids.t1.c5.3": "permanecerán",
-
   "liquids.d1.title": "Práctica — ¿presente o futuro?",
   "liquids.d1.intro": "En el futuro líquido no hay σ: solo cambia el acento.",
   "liquids.d1.o0": "Presente",
   "liquids.d1.o1": "Futuro — el circunflejo lo delata",
-
   "liquids.a2.label": "El patrón",
   "liquids.a2.e1": "permanecí (μεν → μειν)",
   "liquids.a2.e2": "levanté",
   "liquids.a2.e3": "envié (στελλ → στειλ)",
   "liquids.a2.note": "Aumento + raíz alargada + desinencias en α, sin σ.",
-
   "liquids.t2.title": "Verbos líquidos frecuentes",
   "liquids.t2.h0": "Presente",
   "liquids.t2.h1": "Futuro",
@@ -53,7 +48,6 @@
   "liquids.t2.c4.3": "enviar",
   "liquids.t2.c5.3": "matar",
   "liquids.t2.c6.3": "sembrar",
-
   "liquids.d2.title": "Práctica — el aoristo sin σ",
   "liquids.d2.intro": "Vocal de la raíz alargada en lugar de σ.",
   "liquids.d2.o0": "μένω — «permanecí»",
@@ -62,20 +56,17 @@
   "liquids.d2.o3": "ἀποστέλλω — «enviaron»",
   "liquids.d2.o4": "ἐγείρω — «levantó»",
   "liquids.d2.o5": "ἀπαγγέλλω — «anunció»",
-
   "liquids.wo.0": "{μένω / μενῶ}, {κρίνει / κρινεῖ} — presente frente a futuro solo por el acento. En contextos sin acentos (o leyendo de prisa), lo decide la lógica temporal del entorno.",
   "liquids.wo.1": "{ἔκρινα} (aoristo primero líquido) frente a {ἔκρινον} (imperfecto) — desinencias en α frente a desinencias en ο/ε.",
   "liquids.wo.2": "La consonante doble se simplifica en el aoristo: {ἀποστέλλω → ἀπέστειλα} (y el aumento va después de la preposición, como siempre en los compuestos).",
   "liquids.wo.3": "{βάλλω} es un líquido _con aoristo segundo_ ({ἔβαλον}) — los grupos se solapan; cuál le tocó a cada verbo lo dice la lista, no la lógica.",
   "liquids.wo.4": "La pasiva {ἠγέρθη} de {ἐγείρω} («fue levantado») está entre las formas de mayor peso teológico del NT: analízala con cuidado.",
-
   "liquids.pr.title": "Práctica — analiza y traduce",
   "liquids.pr.a0": "«Permaneced en mí» — imperativo aoristo de μένω (Juan 15:4): la raíz alargada μειν-, sin σ.",
   "liquids.pr.a1": "«Os enviaré profetas» — futuro líquido de ἀποστέλλω (¡una sola λ!), cf. Lucas 11:49.",
   "liquids.pr.a2": "«No juzguéis, para que no seáis juzgados» (Mateo 7:1) — imperativo presente + subjuntivo aoristo pasivo de κρίνω.",
   "liquids.pr.a3": "«Dios lo levantó» — aoristo líquido de ἐγείρω (la fórmula de la resurrección en Hechos).",
   "liquids.pr.a4": "«El sembrador sembrará la palabra» — participio presente + futuro líquido de σπείρω.",
-
   "liquids.cs.lesson": "Lección 6 · Futuros y aoristos líquidos",
   "liquids.cs.s0": "Enviaremos mensajeros a la ciudad, pero no permanecerán allí.",
   "liquids.cs.s0.note": "Ambos futuros son líquidos: sin σ, con desinencias contractas. Solo el acento distingue μενοῦσιν (futuro) de μένουσιν (presente).",
@@ -102,10 +93,13 @@
   "liquids.cs.s2.w1.gloss": "los",
   "liquids.cs.s2.w2.gloss": "muertos",
   "liquids.cs.s2.w2.syntax": "Objeto directo",
-
   "liquids.le.intro": "Cuatro verbos líquidos que llevan resurrección, misión, juicio y permanencia.",
   "liquids.le.l0": "Todas las formas de {ἐγείρω} — levantar / levantarse",
   "liquids.le.l1": "Todas las formas de {ἀποστέλλω} — enviar (el verbo del apóstol)",
   "liquids.le.l2": "Todas las formas de {κρίνω} — juzgar",
-  "liquids.le.l3": "Todas las formas de {μένω} — permanecer (la palabra clave de Juan)"
+  "liquids.le.l3": "Todas las formas de {μένω} — permanecer (la palabra clave de Juan)",
+  "liquids.exp.b.intro": "Los *verbos líquidos* tienen la raíz terminada en las consonantes fluidas {λ, μ, ν, ρ}: sonidos que se niegan a colocarse junto a {σ}. Por eso forman su futuro y su aoristo _sin_ la σ: futuro {μενῶ} «permaneceré», aoristo {ἔμεινα} «permanecí».",
+  "liquids.exp.b.hook": "En los verbos líquidos *no hay σ en el futuro ni en el aoristo*. El futuro lleva desinencias contractas al estilo de φιλέω, y a menudo solo el _acento_ separa {μένω} «permanezco» de {μενῶ} «permaneceré».",
+  "liquids.exp.b.eg": "{ἀποστέλλω → ἀπέστειλα} «envié»: la doble λ se reduce a una y la vocal de la raíz se alarga.",
+  "liquids.exp.i.main": "El alargamiento de la raíz ({μεν → μειν}) es un _alargamiento compensatorio_: el peso de la σ perdida se conserva en la vocal. Distingue el aoristo primero líquido ({ἔκρινα}, desinencias en α) del imperfecto ({ἔκρινον}) por la vocal de la desinencia."
 }
