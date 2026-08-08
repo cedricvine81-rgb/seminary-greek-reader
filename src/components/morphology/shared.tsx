@@ -9,10 +9,13 @@
    (Term glossary tooltips, Practice exercises, LiveExamples corpus links).
 ───────────────────────────────────────────── */
 
-import { useState, useEffect, useContext, useRef, createContext } from 'react'
+import { useState, useEffect, useContext, useMemo, useRef, createContext } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
+import { NO_CONTENT, content, fingerprint, type ContentCatalogue } from '@/lib/i18n/content'
+import { serialize, parse } from '@/lib/i18n/morph-markup'
+import { K } from '@/lib/i18n/morph-fields'
 import { openTranslationWorkbench, type WorkbenchSentence } from '@/lib/translation-workbench-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { encodeConstruct, type ConstructQuery } from '@/lib/construct-query'
@@ -25,6 +28,10 @@ export const LevelContext = createContext<MorphLevel>('beginning')
 /* ─── Paradigm tables ───────────────────────── */
 
 interface MorphTableProps {
+  /** Makes the table's prose translatable; keys derive from K in morph-fields.ts. */
+  id?: string
+  /** Column indexes whose cells are prose, not Greek or paradigm slots. */
+  tCols?: number[]
   title?: React.ReactNode
   headers: string[]
   rows: (string | null | undefined)[][]
@@ -83,8 +90,19 @@ function renderCell(cell: string): React.ReactNode {
   )
 }
 
-export function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false }: MorphTableProps) {
+export function MorphTable({ id, tCols, title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false }: MorphTableProps) {
   const divSet = new Set(dividerRows)
+  const tm = useTm()
+  if (id) {
+    // A translated title may contain Greek (the paradigm it names), so it goes through gt().
+    if (typeof title === 'string') title = gt(tm(K.title(id), title))
+    if (note) note = tm(K.note(id), note)
+    headers = headers.map((h, i) => (h ? tm(K.header(id, i), h) : h))
+    if (tCols?.length) {
+      rows = rows.map((row, r) => row.map((cell, c) =>
+        (tCols.includes(c) && cell) ? tm(K.cell(id, r, c), cell) : cell))
+    }
+  }
   return (
     <div className={flush ? '' : 'mb-5'}>
       {title && (
@@ -246,15 +264,61 @@ export function AsideLabel({ children }: { children: React.ReactNode }) {
   return <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{children}</p>
 }
 
+/* ─── Translation ───────────────────────────── */
+
+/**
+ * The chapter's translated prose, or the empty catalogue. Provided by MorphologyView from a
+ * catalogue the server picked for the reader's language, exactly as the other surfaces do — so
+ * an English reader is given NO_CONTENT and every lookup below reduces to its own children.
+ */
+const MorphContent = createContext<ContentCatalogue>(NO_CONTENT)
+export const MorphContentProvider = MorphContent.Provider
+
+/**
+ * Marks a run of chapter prose as translatable, under a STABLE hand-written id.
+ *
+ * Ids are written into the chapter source rather than derived from position, for the reason the
+ * rest of this codebase keys by identity: paragraphs get inserted, reordered and split as the
+ * teaching is revised, and an index-keyed catalogue would silently reattach every translation to
+ * the wrong paragraph the first time that happened.
+ *
+ * If the English has been edited since it was translated, the fingerprint no longer matches and
+ * the reader gets the English — the same fall-back-never-mislead rule as every other surface.
+ */
+/**
+ * Look up a translated STRING PROP — a table header, a drill option, a sentence gloss.
+ *
+ * The companion to `Tr`, which can only reach JSX children. Keys always come from `K` in
+ * morph-fields.ts, never hand-built, so the build script and this lookup cannot drift.
+ */
+export function useTm(): (key: string, english: string) => string {
+  const cat = useContext(MorphContent)
+  return useMemo(() => (key: string, english: string) => content(cat, key, english), [cat])
+}
+
+export function Tr({ id, children }: { id: string; children: React.ReactNode }) {
+  const cat = useContext(MorphContent)
+  const entry = cat[id]
+  if (!entry) return <>{children}</>
+  const english = serialize(children)
+  if (english === null || entry.fp !== fingerprint(english)) return <>{children}</>
+  return <>{parse(entry.text, { Gk, Term })}</>
+}
+
 /* ─── Textbook components ───────────────────── */
 
-/** A paragraph of chapter prose, width-capped for comfortable reading. */
-export function P({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm leading-relaxed text-gray-700 max-w-3xl mb-3">{children}</p>
+/** A paragraph of chapter prose, width-capped for comfortable reading.
+ *  `id` makes the paragraph translatable; without one it stays English in every language. */
+export function P({ id, children }: { id?: string; children: React.ReactNode }) {
+  return (
+    <p className="text-sm leading-relaxed text-gray-700 max-w-3xl mb-3">
+      {id ? <Tr id={id}>{children}</Tr> : children}
+    </p>
+  )
 }
 
 /** Numbered section heading inside a chapter. */
-export function SectionHeading({ n, children }: { n?: number; children: React.ReactNode }) {
+export function SectionHeading({ n, id, children }: { n?: number; id?: string; children: React.ReactNode }) {
   return (
     <h3 className="mt-8 mb-3 flex items-center gap-2 text-base font-semibold text-gray-900">
       {n != null && (
@@ -262,7 +326,7 @@ export function SectionHeading({ n, children }: { n?: number; children: React.Re
           {n}
         </span>
       )}
-      {children}
+      {id ? <Tr id={id}>{children}</Tr> : children}
     </h3>
   )
 }
@@ -305,13 +369,16 @@ export function Term({ t, children }: { t: string; children?: React.ReactNode })
  *  Practice blocks are drill material from the Beginning course, so by default
  *  they render only at the Beginning level — the Intermediate view keeps just
  *  the tables and the intermediate notes. Pass level="both" to show anyway. */
-export function Practice({ title = 'Try it', intro, items, level = 'beginning' }: {
+export function Practice({ id, title = 'Try it', intro, items, level = 'beginning' }: {
+  id?: string
   title?: string
   intro?: React.ReactNode
   items: { q: React.ReactNode; a: React.ReactNode }[]
   level?: MorphLevel | 'both'
 }) {
   const cur = useContext(LevelContext)
+  const tm = useTm()
+  if (id) title = tm(K.title(id), title)
   if (level !== 'both' && cur !== level) return null
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5">
@@ -400,7 +467,8 @@ export function GuidedExample({ title = 'Together: work it through', sentence, s
  * wrong, shows the correct answer. `options` is the shared dropdown list; an item can
  * override it with its own.
  */
-export function DropdownPractice({ title = 'Practice', intro, options, items, level = 'beginning' }: {
+export function DropdownPractice({ id, title = 'Practice', intro, options, items, level = 'beginning' }: {
+  id?: string
   title?: string
   intro?: React.ReactNode
   options: string[]
@@ -409,6 +477,19 @@ export function DropdownPractice({ title = 'Practice', intro, options, items, le
   level?: MorphLevel | 'both'
 }) {
   const curLevel = useContext(LevelContext)
+  const tm = useTm()
+  if (id) {
+    // An item's `answer` is matched against `options` by value, so both must move together.
+    // Translating the options and mapping each answer through the same table keeps them in step
+    // without asking the translator to keep two lists identical by hand.
+    const en = options
+    const es = options.map((o, i) => tm(K.option(id, i), o))
+    const map = new Map(en.map((o, i) => [o, es[i]] as const))
+    title = tm(K.title(id), title)
+    options = es
+    items = items.map(it => ({ ...it, answer: map.get(it.answer) ?? it.answer,
+      options: it.options?.map(o => map.get(o) ?? o) }))
+  }
   const [chosen, setChosen] = useState<Record<number, string>>({})
   // Quiz-from-memory mode (for in-class use): "Quiz me" BLANKS the table this practice
   // drills (the nearest preceding table on the page), answers give no feedback until
@@ -580,7 +661,8 @@ export function DropdownPractice({ title = 'Practice', intro, options, items, le
  * student clicks each word and enters its parsing, syntax and translation.
  * A "Show translation" fallback keeps the block usable as plain reading.
  */
-export function ClassSentences({ lesson, intro, items, level = 'beginning' }: {
+export function ClassSentences({ id, lesson, intro, items, level = 'beginning' }: {
+  id?: string
   /** Which deck these mirror, e.g. "Lesson 3 · Prepositions". */
   lesson: string
   intro?: React.ReactNode
@@ -589,6 +671,21 @@ export function ClassSentences({ lesson, intro, items, level = 'beginning' }: {
   level?: MorphLevel | 'both'
 }) {
   const cur = useContext(LevelContext)
+  const tm = useTm()
+  if (id) {
+    lesson = tm(K.lesson(id), lesson)
+    items = items.map((it, s) => ({
+      ...it,
+      translation: it.translation ? tm(K.sentence(id, s), it.translation) : it.translation,
+      note: it.note ? tm(K.sentNote(id, s), it.note) : it.note,
+      // `parsing` is left English on purpose — see morph-fields.ts.
+      words: it.words?.map((w, i) => ({
+        ...w,
+        gloss: w.gloss ? tm(K.gloss(id, s, i), w.gloss) : w.gloss,
+        syntax: w.syntax ? tm(K.syntax(id, s, i), w.syntax) : w.syntax,
+      })),
+    }))
+  }
   if (level !== 'both' && cur !== level) return null
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-brand-200 bg-brand-50/40 px-4 py-3.5">

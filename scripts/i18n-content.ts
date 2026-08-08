@@ -20,6 +20,8 @@ import { DEVICES, GROUP_LABEL, GROUP_DESC } from '../src/lib/rhetoric-devices'
 import { getTextSummary } from '../src/lib/texts-summaries'
 import { TEXT_CATEGORIES } from '../src/lib/texts-catalog'
 import { fingerprint } from '../src/lib/i18n/content'
+import { serialize, greekRuns } from '../src/lib/i18n/morph-markup'
+import { fieldsOf, FIELD_COMPONENTS } from '../src/lib/i18n/morph-fields'
 
 const LOCALES = ['es'] as const
 type Loc = typeof LOCALES[number]
@@ -124,6 +126,79 @@ export function rhetoricItems(): Item[] {
     }
   }
   return items
+}
+
+/**
+ * The morphology textbook: teaching prose from the 21 chapter components.
+ *
+ * UNLIKE EVERY OTHER SOURCE HERE, this one does not read a data file — the chapters have no data
+ * file. It imports each chapter's exported React tree and walks it, which works because those
+ * exports are plain element trees (`export const LIQUIDS_CONTENT = (<>…</>)`), not components:
+ * building the tree runs no hooks and touches no browser.
+ *
+ * The point of importing rather than parsing the .tsx is that the SAME `serialize` the browser
+ * uses produces the English here. A separate build-time parser would be a second implementation
+ * of the format, and the first time the two disagreed every fingerprint would mismatch and the
+ * whole surface would fall silently back to English — a failure that looks exactly like "not
+ * translated yet." One function, no drift.
+ *
+ * Only nodes carrying an `id` are collected; prose without one is deliberately left English.
+ */
+export function morphologyItems(): Item[] {
+  const items: Item[] = []
+  const dir = 'src/components/morphology/chapters'
+  for (const f of fs.existsSync(dir) ? fs.readdirSync(dir).sort() : []) {
+    if (!f.endsWith('.tsx')) continue
+    const chapter = f.replace(/\.tsx$/, '')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod = require(`../${dir}/${chapter}`) as Record<string, unknown>
+    for (const exported of Object.values(mod)) collect(exported, items, chapter)
+  }
+  return items
+}
+
+/**
+ * Walk a React tree, collecting every `id`-bearing node.
+ *
+ * An `id` means one of two things, decided by what the component is:
+ *   · on prose (P, SectionHeading, Tr) — serialize my CHILDREN to a markup template;
+ *   · on a table, drill or sentence set — enumerate my string PROPS, per morph-fields.ts.
+ * Either way the keys come from the same module the components read, so neither side can drift.
+ */
+function collect(node: unknown, items: Item[], chapter: string) {
+  if (!node || typeof node !== 'object') return
+  if (Array.isArray(node)) { for (const n of node) collect(n, items, chapter); return }
+  const el = node as { type?: unknown; props?: Record<string, unknown> }
+  const props = el.props
+  if (!props) {
+    // A plain data object, not an element — a Practice item {q, a}, a LiveExamples link
+    // {label, lemma}. Its values routinely hold JSX, so they have to be walked too.
+    for (const v of Object.values(node as Record<string, unknown>)) collect(v, items, chapter)
+    return
+  }
+
+  const id = props.id
+  if (typeof id === 'string') {
+    const name = typeof el.type === 'function' ? ((el.type as { name?: string }).name ?? '') : ''
+    if (FIELD_COMPONENTS.has(name)) {
+      for (const f of fieldsOf(name, props)) items.push({ ...f, bucket: chapter })
+      // Do NOT stop here: these components also carry JSX in their props — a drill's `intro`, a
+      // Practice item's answer — and those are <Tr>-marked prose the field list knows nothing of.
+      for (const v of Object.values(props)) if (v && typeof v === 'object') collect(v, items, chapter)
+      return
+    }
+    const english = serialize(props.children as never)
+    if (english === null) {
+      console.error(`  ${chapter}: ${id} — markup not representable; left English`)
+    } else if (!english.trim()) {
+      console.error(`  ${chapter}: ${id} — empty`)
+    } else {
+      items.push({ key: id, english, bucket: chapter })
+    }
+    return   // nested ids inside a translated block would never be reached at runtime
+  }
+  // Asides and drills pass JSX through props, not children — walk those too.
+  for (const v of Object.values(props)) if (v && typeof v === 'object') collect(v, items, chapter)
 }
 
 /**
@@ -244,7 +319,7 @@ function summaryFanOut(t: Record<string, string>): { key: string; english: strin
 
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
-  rhetoricNotes: rhetoricNoteItems,
+  rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems,
 }
 /**
  * Sources emitted as per-bucket JSON under public/ and fetched by the client, instead of as one
@@ -254,6 +329,11 @@ const SOURCES: Record<string, () => Item[]> = {
 type SplitPath = (loc: Loc, bucket: string) => string
 const SPLIT: Record<string, SplitPath | undefined> = {
   rhetoricNotes: (loc, osis) => `public/data/rhetoric/notes-${loc}/${osis}.json`,
+  // The chapters are ~47,000 words complete — the same class of size as the Bullinger notes, and
+  // far too much for a page payload. They are also read one chapter at a time, and the grammar
+  // panel is mounted in the root layout, where a server-loaded catalogue would ride along with
+  // every page in the app. Fetched per chapter instead, by the chapter that needs it.
+  morphology: (loc, chapter) => `public/data/morphology/${loc}/${chapter}.json`,
 }
 /** Sources whose generated catalogue is expanded from the translated one. */
 const FAN_OUT: Record<string, (t: Record<string, string>) => { key: string; english: string; text: string }[]> = {
@@ -326,6 +406,25 @@ function checkMarkers(loc: Loc, text: string, key: string, bad: string[]) {
   }
 }
 
+/**
+ * A morphology translation must carry every Greek run through untouched, in order.
+ *
+ * This is the one error the format can hide. A dropped or "corrected" Greek form still renders as
+ * perfectly fluent Spanish, so nothing looks wrong — but the paradigm the sentence is teaching is
+ * gone, or worse, altered. Comparing the {…} runs is cheap and catches it before it ships.
+ */
+function checkGreek(loc: Loc, english: string, text: string, key: string, bad: string[]) {
+  // Compared as a MULTISET, not in order. Translation legitimately reorders — English's
+  // "{ἐγείρω}'s passive {ἠγέρθη}" becomes Spanish's "la pasiva {ἠγέρθη} de {ἐγείρω}" — and
+  // demanding the original order would buy nothing but force stilted Spanish. Dropping, adding
+  // or altering a form, which is what actually damages the teaching, is still caught.
+  const want = greekRuns(english).slice().sort()
+  const got = greekRuns(text).slice().sort()
+  const missing = want.filter(w => { const i = got.indexOf(w); if (i >= 0) { got.splice(i, 1); return false } return true })
+  missing.forEach(w => bad.push(`${loc} ${key}: Greek missing or altered — {${w}} is not in the translation`))
+  got.forEach(g => bad.push(`${loc} ${key}: Greek not in the English — {${g}}`))
+}
+
 /** One generated file per (locale, source), because they are loaded one surface at a time. */
 function build() {
   const badMarkers: string[] = []
@@ -341,6 +440,7 @@ function build() {
       let orphans = 0
       const emit = (key: string, english: string, text: string) => {
         checkMarkers(loc, text, key, badMarkers)
+        if (name === 'morphology') checkGreek(loc, english, text, key, badMarkers)
         if (split) {
           const b = bucketOf.get(key)
           if (!b) return   // unbucketed key in a split source: nowhere to put it
