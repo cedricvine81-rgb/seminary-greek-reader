@@ -424,13 +424,13 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   imperatives: {
     beginning: (
       <Note>
-        <P>The <strong>imperative</strong> is the command mood ("Loose!" "Believe!"). Greek has both 2nd-person ("you, do this") and 3rd-person imperatives (literally "let him do this"), which English lacks. You mainly memorize the 2nd-person forms plus the endings <G>‑τω</G> (3rd sg.) and <G>‑τωσαν</G> (3rd pl.). Aorist imperatives have the <G>σ</G> but no augment.</P>
-        <Eg><G>πίστευε</G> = "Believe!" (present — "keep on believing").</Eg>
+        <P><T id="imperatives.exp.p.imperative-command-mood">The <strong>imperative</strong> is the command mood ("Loose!" "Believe!"). Greek has both 2nd-person ("you, do this") and 3rd-person imperatives (literally "let him do this"), which English lacks. You mainly memorize the 2nd-person forms plus the endings <G>‑τω</G> (3rd sg.) and <G>‑τωσαν</G> (3rd pl.). Aorist imperatives have the <G>σ</G> but no augment.</T></P>
+        <Eg><T id="imperatives.exp.eg.believe-present-keep"><G>πίστευε</G> = "Believe!" (present — "keep on believing").</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Present vs. aorist imperative is <strong>aspect</strong>: present = ongoing / general ("make it your practice to…"), aorist = a specific, whole action ("do it"). The aorist is the more common of the two, so take note when the <em>present</em> imperative is chosen. These are its <strong>Essential Syntax Categories</strong> (after Wallace).</P>
+        <P><T id="imperatives.exp.p.present-aorist-imperative">Present vs. aorist imperative is <strong>aspect</strong>: present = ongoing / general ("make it your practice to…"), aorist = a specific, whole action ("do it"). The aorist is the more common of the two, so take note when the <em>present</em> imperative is chosen. These are its <strong>Essential Syntax Categories</strong> (after Wallace).</T></P>
         <CatGroup>
           <Cat name="Command" eg="“Go and make disciples”" ex={[{ g: "πορευθέντες μαθητεύσατε πάντα τὰ ἔθνη", e: "go and make disciples of all nations", r: "Matt 28:19" }, { g: "ἀκολούθει μοι", e: "follow me", r: "Matt 9:9" }]}>a straightforward order, usually superior to inferior</Cat>
           <Cat name="Prohibition" eg="“do not fear”" ex={[{ g: "μὴ φοβοῦ, μόνον πίστευε", e: "do not fear, only believe", r: "Mark 5:36" }, { g: "μὴ κρίνετε, ἵνα μὴ κριθῆτε", e: "do not judge, so that you may not be judged", r: "Matt 7:1" }]}><G>μή</G> + imperative forbids an action</Cat>
@@ -438,8 +438,8 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
           <Cat name="Permissive" ex={[{ g: "ὃ ποιεῖς ποίησον τάχιον", e: "what you do, do quickly", r: "John 13:27" }, { g: "εἰ ὁ ἄπιστος χωρίζεται, χωριζέσθω", e: "if the unbeliever separates, let it be so", r: "1 Cor 7:15" }]}>allows or tolerates an action ("let him do it")</Cat>
           <Cat name="Conditional" ex={[{ g: "λύσατε τὸν ναὸν τοῦτον, καὶ ἐγερῶ αὐτόν", e: "destroy this temple, and I will raise it up", r: "John 2:19" }, { g: "ἐγγίσατε τῷ θεῷ, καὶ ἐγγιεῖ ὑμῖν", e: "draw near to God, and he will draw near to you", r: "Jas 4:8" }]}>an imperative that states a condition ("do X, and Y will follow")</Cat>
         </CatGroup>
-        <Hook>Prohibitions split by aspect: <G>μή</G> + <strong>present</strong> imperative = "stop / don't keep doing," while <G>μή</G> + <strong>aorist</strong> subjunctive = "don't start / don't ever."</Hook>
-        <Hook>It's easy to confuse the <strong>future indicative</strong> and the <strong>aorist imperative</strong> — both have a <G>σ</G> and no augment. The <em>endings</em> decide: <G>πίστευσον</G> "Believe!" (aor. imperative) vs. <G>πιστεύσομεν</G> "we will believe" (fut. indicative).</Hook>
+        <Hook><T id="imperatives.exp.hook.prohibitions-split-aspect">Prohibitions split by aspect: <G>μή</G> + <strong>present</strong> imperative = "stop / don't keep doing," while <G>μή</G> + <strong>aorist</strong> subjunctive = "don't start / don't ever."</T></Hook>
+        <Hook><T id="imperatives.exp.hook.it's-easy-confuse">It's easy to confuse the <strong>future indicative</strong> and the <strong>aorist imperative</strong> — both have a <G>σ</G> and no augment. The <em>endings</em> decide: <G>πίστευσον</G> "Believe!" (aor. imperative) vs. <G>πιστεύσομεν</G> "we will believe" (fut. indicative).</T></Hook>
       </Note>
     ),
   },
@@ -563,29 +563,29 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   relatives: {
     beginning: (
       <Note>
-        <P>The <strong>relative pronoun</strong> <G>ὅς, ἥ, ὅ</G> ("who, which, that") folds one clause inside another: <G>ὁ ἀνὴρ ὃν εἶδον</G>, "the man whom I saw." It looks like the article without the <G>τ</G> — but always with a rough breathing <em>and</em> an accent.</P>
-        <Hook>A very short word with a rough breathing and an accent is almost certainly a relative pronoun (<G>ἥ</G> ≠ <G>ἡ</G>, <G>οἵ</G> ≠ <G>οἱ</G>).</Hook>
-        <Eg>Gender &amp; number come from the noun it points back to; its <em>case</em> comes from its own job in its clause.</Eg>
+        <P><T id="relatives.exp.p.relative-pronoun-who">The <strong>relative pronoun</strong> <G>ὅς, ἥ, ὅ</G> ("who, which, that") folds one clause inside another: <G>ὁ ἀνὴρ ὃν εἶδον</G>, "the man whom I saw." It looks like the article without the <G>τ</G> — but always with a rough breathing <em>and</em> an accent.</T></P>
+        <Hook><T id="relatives.exp.hook.very-short-word">A very short word with a rough breathing and an accent is almost certainly a relative pronoun (<G>ἥ</G> ≠ <G>ἡ</G>, <G>οἵ</G> ≠ <G>οἱ</G>).</T></Hook>
+        <Eg><T id="relatives.exp.eg.gender-amp-number">Gender &amp; number come from the noun it points back to; its <em>case</em> comes from its own job in its clause.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The agreement rule ("gender/number backward, case inward") bends under <strong>attraction</strong> — a genitive or dative antecedent often pulls the relative into its own case ("Going deeper" below shows it in action). <G>ὃς ἄν</G> + subjunctive generalizes: "whoever."</P>
+        <P><T id="relatives.exp.p.agreement-rule-gender">The agreement rule ("gender/number backward, case inward") bends under <strong>attraction</strong> — a genitive or dative antecedent often pulls the relative into its own case ("Going deeper" below shows it in action). <G>ὃς ἄν</G> + subjunctive generalizes: "whoever."</T></P>
       </Note>
     ),
   },
   'contract-verbs': {
     beginning: (
       <Note>
-        <P><strong>Contract verbs</strong> have stems ending in <G>ε, α,</G> or <G>ο</G>, which fuse with the connecting vowel — like English "do not → don't": <G>φιλέ‑ομεν → φιλοῦμεν</G>. Dictionaries list the uncontracted form (<G>φιλέω</G>), but texts always show the contracted one (<G>φιλῶ</G>).</P>
-        <Hook>A <strong>circumflex</strong> on a present-tense ending (<G>ποιεῖ, ἀγαπᾷ, πληροῖ</G>) is contraction's scar — you're looking at a contract verb.</Hook>
-        <Eg>Outside the present/imperfect the stem vowel just lengthens (<G>ἀγαπάω → ἠγάπησα</G>) and the verb behaves like <G>λύω</G>.</Eg>
+        <P><T id="contract-verbs.exp.p.contract-verbs-stems"><strong>Contract verbs</strong> have stems ending in <G>ε, α,</G> or <G>ο</G>, which fuse with the connecting vowel — like English "do not → don't": <G>φιλέ‑ομεν → φιλοῦμεν</G>. Dictionaries list the uncontracted form (<G>φιλέω</G>), but texts always show the contracted one (<G>φιλῶ</G>).</T></P>
+        <Hook><T id="contract-verbs.exp.hook.circumflex-present-tense">A <strong>circumflex</strong> on a present-tense ending (<G>ποιεῖ, ἀγαπᾷ, πληροῖ</G>) is contraction's scar — you're looking at a contract verb.</T></Hook>
+        <Eg><T id="contract-verbs.exp.eg.outside-present-imperfect">Outside the present/imperfect the stem vowel just lengthens (<G>ἀγαπάω → ἠγάπησα</G>) and the verb behaves like <G>λύω</G>.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Only the present and imperfect actually contract — every other tense lengthens the stem vowel and regularizes. (The vowel-merge shortcuts sit beside the contraction table below.)</P>
-        <P>Exceptions worth flagging: <G>καλέω</G> refuses to lengthen (<G>ἐκάλεσα</G>), <G>ζάω</G> contracts with η (<G>ζῇ</G>), and liquid futures mimic -έω presents (see Liquid Verbs).</P>
+        <P><T id="contract-verbs.exp.p.only-present-imperfect">Only the present and imperfect actually contract — every other tense lengthens the stem vowel and regularizes. (The vowel-merge shortcuts sit beside the contraction table below.)</T></P>
+        <P><T id="contract-verbs.exp.p.exceptions-worth-flagging">Exceptions worth flagging: <G>καλέω</G> refuses to lengthen (<G>ἐκάλεσα</G>), <G>ζάω</G> contracts with η (<G>ζῇ</G>), and liquid futures mimic -έω presents (see Liquid Verbs).</T></P>
       </Note>
     ),
   },

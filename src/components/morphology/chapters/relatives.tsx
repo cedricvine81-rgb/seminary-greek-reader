@@ -7,21 +7,21 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  DropdownPractice, ClassSentences,
+  DropdownPractice, ClassSentences,  Tr,
 } from '../shared'
 
 export const RELATIVES_CONTENT = (
   <>
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
-      <SectionHeading>Start with English: the who/which clauses</SectionHeading>
-      <P>
+      <SectionHeading id="relatives.h.start-english-who">Start with English: the who/which clauses</SectionHeading>
+      <P id="relatives.p.man-who-came">
         "The man <em>who came to dinner</em> stayed a month." English folds one sentence inside another
         with <em>who, which, that</em> — the <strong>relative pronouns</strong>. The folded-in part
         ("who came to dinner") is a relative <Term t="clause">clause</Term>, and it describes a noun in the
         main sentence — its <strong>antecedent</strong> ("the man").
       </P>
-      <P>
+      <P id="relatives.p.english-relatives-barely">
         English relatives barely change form (who/whom/whose, and even "whom" is dying). Greek's relative
         <Gk> ὅς, ἥ, ὅ</Gk> declines fully — and that is a gift, because its endings encode exactly how the
         clause hangs together. One rule governs everything: the relative takes its <strong>gender and
@@ -32,23 +32,23 @@ export const RELATIVES_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · Forms ──────────────────────────────────────── */}
-    <SectionHeading>The forms: small words, sharp accents</SectionHeading>
-    <P>
+    <SectionHeading id="relatives.h.forms-small-words">The forms: small words, sharp accents</SectionHeading>
+    <P id="relatives.p.relative-looks-like">
       The relative looks like the article stripped of its <Gk>τ</Gk> — but with a rough breathing and an
       accent on every form. Those two marks are how you tell <Gk>ὅ</Gk> from <Gk>ὁ</Gk>:
     </P>
     <TableAside
       beginning={<>
-        <AsideLabel>Spot the difference</AsideLabel>
-        <Ex grc="ὁ λόγος" en="the word (article — no accent)" />
-        <Ex grc="ὃν εἶδον" en="whom I saw (relative — accented)" />
-        <p>A very short word with a rough breathing <em>and</em> an accent is almost certainly a relative pronoun.</p>
+        <AsideLabel><Tr id="relatives.al.spot-difference">Spot the difference</Tr></AsideLabel>
+        <Ex grc="ὁ λόγος" en={<Tr id="relatives.ex.word-article-accent">the word (article — no accent)</Tr>} />
+        <Ex grc="ὃν εἶδον" en={<Tr id="relatives.ex.whom-saw-relative">whom I saw (relative — accented)</Tr>} />
+        <p><Tr id="relatives.as.very-short-word">A very short word with a rough breathing <em>and</em> an accent is almost certainly a relative pronoun.</Tr></p>
       </>}
       intermediate={<>
-        <p>Compare the pairs students confuse: <Gk>ἥ</Gk> (rel. "who," fem.) vs. <Gk>ἡ</Gk> (article); <Gk>οἵ</Gk> (rel. pl.) vs. <Gk>οἱ</Gk> (article); <Gk>ᾧ</Gk> "to whom" vs. nothing else — the iota-subscripted relative datives are unmistakable.</p>
+        <p><Tr id="relatives.as.compare-pairs-students">Compare the pairs students confuse: <Gk>ἥ</Gk> (rel. "who," fem.) vs. <Gk>ἡ</Gk> (article); <Gk>οἵ</Gk> (rel. pl.) vs. <Gk>οἱ</Gk> (article); <Gk>ᾧ</Gk> "to whom" vs. nothing else — the iota-subscripted relative datives are unmistakable.</Tr></p>
       </>}
     >
-      <MorphTable flush title={gt("ὅς, ἥ, ὅ — who, which, that")} headers={['','','Masc.','Fem.','Neut.']}
+      <MorphTable id="relatives.t1" flush title="ὅς, ἥ, ὅ — who, which, that" headers={['','','Masc.','Fem.','Neut.']}
         rows={[
           ['Sg.','Nom.','ὅς','ἥ','ὅ'],
           ['','Gen.','οὗ','ἧς','οὗ'],
@@ -63,9 +63,9 @@ export const RELATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 3 · The agreement rule ─────────────────────────── */}
-    <DropdownPractice
+    <DropdownPractice id="relatives.d1"
       title="Practice — parse the relative"
-      intro={<>Small words, sharp accents — every form carries one.</>}
+      intro={<Tr id="relatives.intro.small-words-sharp">Small words, sharp accents — every form carries one.</Tr>}
       options={["Acc Sg Fem — \"whom/which\"", "Gen Sg Masc/Neut — \"whose/of which\"", "Dat Pl Masc/Neut — \"to whom\"", "Nom/Acc Pl Neut — \"which (things)\"", "Gen Sg Fem — \"whose\"", "Acc Sg Masc — \"whom\""]}
       items={[
         { q: <span className="normal-case">ἥν</span>, answer: "Acc Sg Fem — \"whom/which\"" },
@@ -77,24 +77,24 @@ export const RELATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading>The one rule, worked</SectionHeading>
-    <P>
+    <SectionHeading id="relatives.h.one-rule-worked">The one rule, worked</SectionHeading>
+    <P id="relatives.p.gender-number-look">
       Gender and number look <em>backward</em> to the antecedent; case looks <em>inward</em> to the
       relative's own clause. Watch it decide a form:
     </P>
     <TableAside
       beginning={<>
-        <AsideLabel>Step by step</AsideLabel>
-        <p><Gk>ὁ ἀνὴρ ὃν εἶδον</Gk> — "the man whom I saw."</p>
-        <p><strong>1.</strong> Antecedent <Gk>ἀνήρ</Gk>: masculine singular → the relative is masc. sg.</p>
-        <p><strong>2.</strong> Inside its clause, "I saw <em>him</em>" → direct object → accusative.</p>
-        <p><strong>3.</strong> Masc. sg. acc. = <Gk>ὅν</Gk>. Done.</p>
+        <AsideLabel><Tr id="relatives.al.step-step">Step by step</Tr></AsideLabel>
+        <p><Tr id="relatives.as.man-whom-saw"><Gk>ὁ ἀνὴρ ὃν εἶδον</Gk> — "the man whom I saw."</Tr></p>
+        <p><Tr id="relatives.as.antecedent-masculine-singular"><strong>1.</strong> Antecedent <Gk>ἀνήρ</Gk>: masculine singular → the relative is masc. sg.</Tr></p>
+        <p><Tr id="relatives.as.inside-clause-saw"><strong>2.</strong> Inside its clause, "I saw <em>him</em>" → direct object → accusative.</Tr></p>
+        <p><Tr id="relatives.as.masc-acc-done"><strong>3.</strong> Masc. sg. acc. = <Gk>ὅν</Gk>. Done.</Tr></p>
       </>}
       intermediate={<>
-        <p>The relative clause itself then behaves like a big adjective (modifying the antecedent) or — with no antecedent — like a noun: <Gk>ὃς ἔχει ὦτα</Gk>, "<em>whoever</em> has ears." Headless relatives are common and translate as "the one who / whatever."</p>
+        <p><Tr id="relatives.as.relative-clause-itself">The relative clause itself then behaves like a big adjective (modifying the antecedent) or — with no antecedent — like a noun: <Gk>ὃς ἔχει ὦτα</Gk>, "<em>whoever</em> has ears." Headless relatives are common and translate as "the one who / whatever."</Tr></p>
       </>}
     >
-      <MorphTable flush title="Deciding a relative's form" headers={['Question', 'Looks to', 'Answer']} firstColIsData
+      <MorphTable id="relatives.t2" tCols={[0, 1, 2]} flush title="Deciding a relative's form" headers={['Question', 'Looks to', 'Answer']} firstColIsData
         rows={[
           ['Gender?', 'the antecedent', 'match it'],
           ['Number?', 'the antecedent', 'match it'],
@@ -104,7 +104,7 @@ export const RELATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Indefinite relatives ───────────────────────── */}
-    <ClassSentences
+    <ClassSentences id="relatives.cs1"
       lesson="The relative in action"
       items={[
         { words: [
@@ -131,8 +131,8 @@ export const RELATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading>"Whoever": the indefinite relatives</SectionHeading>
-    <P>
+    <SectionHeading id="relatives.h.whoever-indefinite-relatives">"Whoever": the indefinite relatives</SectionHeading>
+    <P id="relatives.p.add-subjunctive-relative">
       Add <Gk>ἄν</Gk> (with a subjunctive) and the relative goes generic: <Gk>ὃς ἂν ἀκούσῃ</Gk>,
       "<em>whoever</em> hears" — you met this pattern in the Subjunctives chapter. Greek also has a
       compound indefinite relative <Gk>ὅστις, ἥτις, ὅτι</Gk> ("whoever, anyone who"), common in the
@@ -140,7 +140,7 @@ export const RELATIVES_CONTENT = (
     </P>
 
     {/* ── 5 · Watch out ──────────────────────────────────── */}
-    <DropdownPractice
+    <DropdownPractice id="relatives.d2"
       title="Practice — the indefinite relatives"
       options={["whoever", "whatever", "whoever (qualitative — \"anyone of the sort who\")", "as many as / all who"]}
       items={[
@@ -151,62 +151,62 @@ export const RELATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading>Watch out</SectionHeading>
+    <SectionHeading id="relatives.h.watch-out">Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
-        <li>Article vs. relative: <Gk>ἡ / ἥ</Gk>, <Gk>οἱ / οἵ</Gk>, <Gk>ὁ / ὅ</Gk> — breathing + accent decide. Slow down on one-letter words.</li>
-        <li>Neuter relative <Gk>ὅ</Gk> vs. conjunction <Gk>ὅτι</Gk> "that/because" — and the indefinite neuter <Gk>ὅτι</Gk> ("whatever") looks identical to the conjunction; context separates them.</li>
-        <li>The relative clause often sits <em>between</em> article and noun in English order — untangle by finding the main verb first.</li>
-        <li>A relative's antecedent may be a whole idea, not a noun: <Gk>ὅ</Gk> "which (fact)…"</li>
+        <li><Tr id="relatives.wo.article-relative-breathing">Article vs. relative: <Gk>ἡ / ἥ</Gk>, <Gk>οἱ / οἵ</Gk>, <Gk>ὁ / ὅ</Gk> — breathing + accent decide. Slow down on one-letter words.</Tr></li>
+        <li><Tr id="relatives.wo.neuter-relative-conjunction">Neuter relative <Gk>ὅ</Gk> vs. conjunction <Gk>ὅτι</Gk> "that/because" — and the indefinite neuter <Gk>ὅτι</Gk> ("whatever") looks identical to the conjunction; context separates them.</Tr></li>
+        <li><Tr id="relatives.wo.relative-clause-often">The relative clause often sits <em>between</em> article and noun in English order — untangle by finding the main verb first.</Tr></li>
+        <li><Tr id="relatives.wo.relative's-antecedent-may">A relative's antecedent may be a whole idea, not a noun: <Gk>ὅ</Gk> "which (fact)…"</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
-    <Practice
+    <LevelOnly level="beginning"><SectionHeading id="relatives.h.try">Try it</SectionHeading></LevelOnly>
+    <Practice id="relatives.pr1"
       title="Practice — parse the relative and translate"
-      intro={<>For each relative: gender/number (from what antecedent?) and case (what job?).</>}
+      intro={<Tr id="relatives.intro.each-relative-gender">For each relative: gender/number (from what antecedent?) and case (what job?).</Tr>}
       items={[
         { q: <span className="normal-case">ὁ λόγος ὃν ἤκουσας</span>,
-          a: <>"The word which you heard" — ὅν: masc. sg. (from λόγος), accusative (object of ἤκουσας).</> },
+          a: <Tr id="relatives.pa.word-which-heard">"The word which you heard" — ὅν: masc. sg. (from λόγος), accusative (object of ἤκουσας).</Tr>},
         { q: <span className="normal-case">ἡ γυνὴ ἧς ἡ θυγάτηρ ἠσθένει</span>,
-          a: <>"The woman whose daughter was sick" — ἧς: fem. sg., genitive (possessing the daughter).</> },
+          a: <Tr id="relatives.pa.woman-whose-daughter">"The woman whose daughter was sick" — ἧς: fem. sg., genitive (possessing the daughter).</Tr>},
         { q: <span className="normal-case">ὁ προφήτης ᾧ ἐπίστευσαν</span>,
-          a: <>"The prophet whom they believed" — ᾧ: dative, because πιστεύω takes the dative.</> },
+          a: <Tr id="relatives.pa.prophet-whom-believed">"The prophet whom they believed" — ᾧ: dative, because πιστεύω takes the dative.</Tr>},
         { q: <span className="normal-case">ἃ εἶδον, μαρτυροῦσιν.</span>,
-          a: <>"What (the things which) they saw, they testify" — headless neuter plural ἅ.</> },
+          a: <Tr id="relatives.pa.what-things-which">"What (the things which) they saw, they testify" — headless neuter plural ἅ.</Tr>},
         { q: <span className="normal-case">ὃς ἂν ποιήσῃ τὸ θέλημα τοῦ θεοῦ…</span>,
-          a: <>"Whoever does the will of God…" — indefinite relative + ἄν + aorist subjunctive (Mark 3:35).</> },
+          a: <Tr id="relatives.pa.whoever-does-will">"Whoever does the will of God…" — indefinite relative + ἄν + aorist subjunctive (Mark 3:35).</Tr>},
       ]}
     />
 
     {/* ── 7 · See it in the NT ───────────────────────────── */}
     <LiveExamples
-      intro={<>Relatives stitch the NT's sentences together — and open some of its greatest hymns.</>}
+      intro={<Tr id="relatives.intro.relatives-stitch-nt's">Relatives stitch the NT's sentences together — and open some of its greatest hymns.</Tr>}
       links={[
-        { label: <>Every form of <span className="normal-case">ὅς</span> — the relative at work</>, lemma: 'ὅς' },
-        { label: <>Every <span className="normal-case">ὅστις</span> — "whoever" clauses</>, lemma: 'ὅστις' },
+        { label: <Tr id="relatives.le.every-form-relative">Every form of <span className="normal-case">ὅς</span> — the relative at work</Tr>, lemma: 'ὅς' },
+        { label: <Tr id="relatives.le.every-whoever-clauses">Every <span className="normal-case">ὅστις</span> — "whoever" clauses</Tr>, lemma: 'ὅστις' },
       ]}
     />
 
     {/* ── 8 · Going deeper (Intermediate only) ───────────── */}
     <LevelOnly level="intermediate">
-      <SectionHeading>Going deeper: attraction and the hymnic relative</SectionHeading>
-      <P>
+      <SectionHeading id="relatives.h.going-deeper-attraction">Going deeper: attraction and the hymnic relative</SectionHeading>
+      <P id="relatives.p.case-attraction-greek">
         <strong>Case attraction.</strong> Greek sometimes lets the antecedent pull the relative into its
         own case, especially genitive/dative: <Gk>περὶ πάντων ὧν ἐποίησεν</Gk> — "concerning all
         [the things] <em>that</em> he did" (Luke 3:19), where strict grammar expects accusative <Gk>ἅ</Gk>
         but the genitive <Gk>πάντων</Gk> attracted it to <Gk>ὧν</Gk>. Luke and John do this constantly;
         recognize it and refuse to panic when the case rule seems "broken."
       </P>
-      <P>
+      <P id="relatives.p.hymnic-relative-several">
         <strong>The hymnic relative.</strong> Several passages scholars identify as early christological
         hymns open with a bare relative: <Gk>ὅς ἐστιν εἰκὼν τοῦ θεοῦ</Gk>, "<em>who</em> is the image of
         the invisible God" (Col 1:15); <Gk>ὃς ἐν μορφῇ θεοῦ ὑπάρχων</Gk> (Phil 2:6); <Gk>ὃς ἐφανερώθη ἐν
         σαρκί</Gk> (1 Tim 3:16). The dangling "who…" suggests quoted material whose antecedent lived in
         the original setting — a grammatical fingerprint of quotation.
       </P>
-      <P>
+      <P id="relatives.p.relative-article-participle">
         <strong>Relative vs. article + participle.</strong> Greek has two ways to say "the one who
         believes": <Gk>ὃς πιστεύει</Gk> and <Gk>ὁ πιστεύων</Gk>. John prefers the participle for timeless
         characterization, the relative for specific reference — a stylistic dial worth watching when both
