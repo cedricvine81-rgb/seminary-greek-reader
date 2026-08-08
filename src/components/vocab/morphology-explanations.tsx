@@ -520,28 +520,28 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   '2nd-aorists': {
     beginning: (
       <Note>
-        <P>The <strong>aorist</strong> (simple past, "he did") normally shows a <G>‑σα‑</G> marker (1st aorist). But some verbs form their aorist a different way — by <strong>changing the stem itself</strong> — and these are called <strong>2nd</strong> (or "strong") aorists. They use the same endings as the imperfect, but with a changed stem and no <G>‑σα</G>. You basically memorize them as vocabulary.</P>
-        <Eg><G>λαμβάνω</G> "I take" → <G>ἔλαβον</G> "I took" (stem changed <G>λαμβαν‑</G> → <G>λαβ‑</G>).</Eg>
+        <P><T id="2nd-aorists.exp.p.aorist-simple-past">The <strong>aorist</strong> (simple past, "he did") normally shows a <G>‑σα‑</G> marker (1st aorist). But some verbs form their aorist a different way — by <strong>changing the stem itself</strong> — and these are called <strong>2nd</strong> (or "strong") aorists. They use the same endings as the imperfect, but with a changed stem and no <G>‑σα</G>. You basically memorize them as vocabulary.</T></P>
+        <Eg><T id="2nd-aorists.exp.eg.take-took-stem"><G>λαμβάνω</G> "I take" → <G>ἔλαβον</G> "I took" (stem changed <G>λαμβαν‑</G> → <G>λαβ‑</G>).</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>A 2nd aorist is identified by three clues <em>together</em>: an augment, a stem different from the present, and no <G>σα/θη</G> marker. The meaning is the ordinary aorist (perfective aspect) — only the way the form is built differs, like English <em>go → went</em> vs. <em>walk → walked</em>.</P>
-        <P>Some verbs are <strong>suppletive</strong>, borrowing a totally different root for the aorist (<G>λέγω → εἶπον</G>, <G>ὁράω → εἶδον</G>). Learn the aorist stem as one of the verb's <em>principal parts</em> so you can trace an unfamiliar form back to its lexical form.</P>
+        <P><T id="2nd-aorists.exp.p.aorist-identified-three">A 2nd aorist is identified by three clues <em>together</em>: an augment, a stem different from the present, and no <G>σα/θη</G> marker. The meaning is the ordinary aorist (perfective aspect) — only the way the form is built differs, like English <em>go → went</em> vs. <em>walk → walked</em>.</T></P>
+        <P><T id="2nd-aorists.exp.p.some-verbs-suppletive">Some verbs are <strong>suppletive</strong>, borrowing a totally different root for the aorist (<G>λέγω → εἶπον</G>, <G>ὁράω → εἶδον</G>). Learn the aorist stem as one of the verb's <em>principal parts</em> so you can trace an unfamiliar form back to its lexical form.</T></P>
       </Note>
     ),
   },
   deponents: {
     beginning: (
       <Note>
-        <P>A <strong>deponent</strong> verb looks middle or passive (its ending is <G>‑ομαι</G>, not <G>‑ω</G>) but means something <strong>active</strong>. It has "laid aside" (deponent = "putting off") its active forms. So <G>ἔρχομαι</G> looks passive but simply means "I come / go." You just translate it actively; the middle/passive form is its normal, only form, and its dictionary form ends in <G>‑ομαι</G>.</P>
-        <Hook>The vast majority of the time you meet a <strong>middle</strong> form, it is simply a deponent verb carrying an active meaning — so reach for "deponent" first.</Hook>
-        <Eg><G>ἀποκρίνομαι</G> = "I answer" — active meaning, middle/passive form.</Eg>
+        <P><T id="deponents.exp.p.deponent-verb-looks">A <strong>deponent</strong> verb looks middle or passive (its ending is <G>‑ομαι</G>, not <G>‑ω</G>) but means something <strong>active</strong>. It has "laid aside" (deponent = "putting off") its active forms. So <G>ἔρχομαι</G> looks passive but simply means "I come / go." You just translate it actively; the middle/passive form is its normal, only form, and its dictionary form ends in <G>‑ομαι</G>.</T></P>
+        <Hook><T id="deponents.exp.hook.vast-majority-time">The vast majority of the time you meet a <strong>middle</strong> form, it is simply a deponent verb carrying an active meaning — so reach for "deponent" first.</T></Hook>
+        <Eg><T id="deponents.exp.eg.answer-active-meaning"><G>ἀποκρίνομαι</G> = "I answer" — active meaning, middle/passive form.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Parse a deponent exactly as you would any middle/passive form (tense, person, number), but translate with the <em>active</em> gloss your lexicon gives. Some are middle in the future/aorist; others are passive in the aorist (<G>ἀποκρίνομαι → ἀπεκρίθην</G>).</P>
+        <P><T id="deponents.exp.p.parse-deponent-exactly">Parse a deponent exactly as you would any middle/passive form (tense, person, number), but translate with the <em>active</em> gloss your lexicon gives. Some are middle in the future/aorist; others are passive in the aorist (<G>ἀποκρίνομαι → ἀπεκρίθην</G>).</T></P>
       </Note>
     ),
   },

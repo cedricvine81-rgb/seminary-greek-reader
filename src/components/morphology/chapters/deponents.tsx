@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences, DropdownPractice,
+  ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 
@@ -20,13 +20,13 @@ export const DEPONENTS_CONTENT = (
   <>
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
-      <SectionHeading>Start with English: forms that don't mean what they look like</SectionHeading>
-      <P>
+      <SectionHeading id="deponents.h.start-english-forms">Start with English: forms that don't mean what they look like</SectionHeading>
+      <P id="deponents.p.english-verbs-whose">
         English has verbs whose form and meaning part company. "I <em>was born</em> in June" — passive in
         form, but you aren't picturing anyone doing the "borning"; it just tells what happened to you.
         Nobody is misled, because you learned the expression whole.
       </P>
-      <P>
+      <P id="deponents.p.greek-whole-club">
         Greek has a whole club like that: verbs that wear <strong>middle/passive endings</strong>
         (their dictionary form ends in <Gk>‑ομαι</Gk>, not <Gk>‑ω</Gk>) but carry a plain
         <strong> active meaning</strong>. <Gk>ἔρχομαι</Gk> <em>looks</em> like "I am being come" — it just
@@ -37,8 +37,8 @@ export const DEPONENTS_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · Spotting them ──────────────────────────────── */}
-    <SectionHeading>How you spot one</SectionHeading>
-    <P>
+    <SectionHeading id="deponents.h.how-spot-one">How you spot one</SectionHeading>
+    <P id="deponents.p.dictionary-form-tells">
       The dictionary form tells you. A normal verb's lexical form ends in <Gk>‑ω</Gk> (<Gk>λύω</Gk>); a
       deponent's ends in <Gk>‑ομαι</Gk> (<Gk>ἔρχομαι, γίνομαι, δύναμαι</Gk>). And frequency is on your
       side — a handful of deponents are among the most common verbs in the entire New Testament:
@@ -46,12 +46,12 @@ export const DEPONENTS_CONTENT = (
     <TableAside
       sticky
       beginning={<>
-        <p>A <strong>deponent</strong> looks middle/passive (ending in <Gk>‑ομαι</Gk>) but means something <em>active</em>. Just translate it actively — the middle/passive form is its only form.</p>
-        <Ex grc="ἔρχομαι" en="I come / go" />
-        <Ex grc="ἀποκρίνομαι" en="I answer" />
+        <p><Tr id="deponents.as.deponent-looks-middle">A <strong>deponent</strong> looks middle/passive (ending in <Gk>‑ομαι</Gk>) but means something <em>active</em>. Just translate it actively — the middle/passive form is its only form.</Tr></p>
+        <Ex grc="ἔρχομαι" en={<Tr id="deponents.ex.come">I come / go</Tr>} />
+        <Ex grc="ἀποκρίνομαι" en={<Tr id="deponents.ex.answer">I answer</Tr>} />
       </>}
     >
-    <MorphTable striped
+    <MorphTable id="deponents.t1" tCols={[3]} striped
       flush
       title="40 Most Common Deponent Verbs"
       headers={['Pres. (1st sg.)', 'Fut.', 'Aor.', 'Definition']}
@@ -103,9 +103,9 @@ export const DEPONENTS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Middle vs passive deponents ────────────────── */}
-    <DropdownPractice
+    <DropdownPractice id="deponents.d1"
       title="Practice — deponent or not?"
-      intro={<>Middle/passive form; does the verb have an active form in use?</>}
+      intro={<Tr id="deponents.intro.middle-passive-form">Middle/passive form; does the verb have an active form in use?</Tr>}
       options={["Deponent — translate as active", "Ordinary middle/passive"]}
       items={[
         { q: <span className="normal-case">ἔρχεται</span>, answer: "Deponent — translate as active", note: <>"He comes" — ἔρχομαι has no active form.</> },
@@ -117,8 +117,8 @@ export const DEPONENTS_CONTENT = (
       ]}
     />
 
-    <SectionHeading>Two sub-clubs: middle and passive deponents</SectionHeading>
-    <P>
+    <SectionHeading id="deponents.h.two-sub-clubs">Two sub-clubs: middle and passive deponents</SectionHeading>
+    <P id="deponents.p.deponents-split-which">
       Deponents split by which non-active forms they use in the aorist. <strong>Middle deponents</strong> take
       middle aorists: <Gk>ἐδεξάμην</Gk> "I received." <strong>Passive deponents</strong> take passive-looking
       aorists — with the <Gk>θη</Gk> marker — still meaning active: <Gk>ἀπεκρίθη</Gk> "he answered,"
@@ -127,14 +127,14 @@ export const DEPONENTS_CONTENT = (
     </P>
     <TableAside
       beginning={<>
-        <Ex grc="ἀπεκρίθη ὁ Ἰησοῦς" en="Jesus answered (not “was answered”!)" />
-        <Ex grc="ἐπορεύθησαν" en="they went / journeyed" />
+        <Ex grc="ἀπεκρίθη ὁ Ἰησοῦς" en={<Tr id="deponents.ex.jesus-answered-was">Jesus answered (not “was answered”!)</Tr>} />
+        <Ex grc="ἐπορεύθησαν" en={<Tr id="deponents.ex.went-journeyed">they went / journeyed</Tr>} />
       </>}
       intermediate={<>
-        <p>Oddities worth knowing: <Gk>ἔρχομαι</Gk> is deponent in the present but its aorist <Gk>ἦλθον</Gk> is a plain 2nd-aorist <em>active</em>; and <Gk>θέλω</Gk> is active in the present but deponent-futured. "Semi-deponent" covers these mixed careers.</p>
+        <p><Tr id="deponents.as.oddities-worth-knowing">Oddities worth knowing: <Gk>ἔρχομαι</Gk> is deponent in the present but its aorist <Gk>ἦλθον</Gk> is a plain 2nd-aorist <em>active</em>; and <Gk>θέλω</Gk> is active in the present but deponent-futured. "Semi-deponent" covers these mixed careers.</Tr></p>
       </>}
     >
-      <MorphTable flush title="The two sub-clubs" headers={['Type', 'Aorist looks', 'Example', 'Means']} firstColIsData
+      <MorphTable id="deponents.t2" tCols={[0, 1, 3]} flush title="The two sub-clubs" headers={['Type', 'Aorist looks', 'Example', 'Means']} firstColIsData
         rows={[
           ['Middle deponent', 'middle (‑σάμην)', 'ἐδεξάμην', 'I received'],
           ['Passive deponent', 'passive (‑θην)', 'ἀπεκρίθην', 'I answered'],
@@ -143,7 +143,7 @@ export const DEPONENTS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Watch out ──────────────────────────────────── */}
-    <ClassSentences
+    <ClassSentences id="deponents.cs1"
       lesson="Deponents in the text"
       items={[
         { words: [
@@ -168,38 +168,38 @@ export const DEPONENTS_CONTENT = (
       ]}
     />
 
-    <SectionHeading>Watch out</SectionHeading>
+    <SectionHeading id="deponents.h.watch-out">Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
-        <li>Not every <Gk>‑ομαι</Gk> form is deponent! <Gk>λύομαι</Gk> is the genuine middle/passive of <Gk>λύω</Gk>. The test is the <em>lexicon</em>: if no active form exists, it's deponent.</li>
-        <li>A <Gk>θη</Gk> aorist from a passive deponent means <em>active</em>: <Gk>ἀπεκρίθη</Gk> "he answered." Don't force "was answered."</li>
-        <li><Gk>ἐγένετο</Gk> (from <Gk>γίνομαι</Gk>) is everywhere: "became, happened, came to be, was." Small verb, wide range.</li>
-        <li>Deponent participles keep the <Gk>‑μεν‑</Gk>/middle look with active meaning: <Gk>ἐρχόμενος</Gk> "coming," <Gk>πορευθέντες</Gk> "having gone" (Matt 28:19!).</li>
-        <li>Semi-deponents change club mid-career: active present, deponent future (<Gk>λαμβάνω → λήμψομαι</Gk>; <Gk>γινώσκω → γνώσομαι</Gk>).</li>
+        <li><Tr id="deponents.wo.every-form-deponent">Not every <Gk>‑ομαι</Gk> form is deponent! <Gk>λύομαι</Gk> is the genuine middle/passive of <Gk>λύω</Gk>. The test is the <em>lexicon</em>: if no active form exists, it's deponent.</Tr></li>
+        <li><Tr id="deponents.wo.aorist-passive-deponent">A <Gk>θη</Gk> aorist from a passive deponent means <em>active</em>: <Gk>ἀπεκρίθη</Gk> "he answered." Don't force "was answered."</Tr></li>
+        <li><Tr id="deponents.wo.everywhere-became-happened"><Gk>ἐγένετο</Gk> (from <Gk>γίνομαι</Gk>) is everywhere: "became, happened, came to be, was." Small verb, wide range.</Tr></li>
+        <li><Tr id="deponents.wo.deponent-participles-keep">Deponent participles keep the <Gk>‑μεν‑</Gk>/middle look with active meaning: <Gk>ἐρχόμενος</Gk> "coming," <Gk>πορευθέντες</Gk> "having gone" (Matt 28:19!).</Tr></li>
+        <li><Tr id="deponents.wo.semi-deponents-change">Semi-deponents change club mid-career: active present, deponent future (<Gk>λαμβάνω → λήμψομαι</Gk>; <Gk>γινώσκω → γνώσομαι</Gk>).</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
-    <Practice
+    <LevelOnly level="beginning"><SectionHeading id="deponents.h.try">Try it</SectionHeading></LevelOnly>
+    <Practice id="deponents.pr1"
       title="Practice — parse and translate"
-      intro={<>Parse the form honestly (middle/passive!), then translate actively.</>}
+      intro={<Tr id="deponents.intro.parse-form-honestly">Parse the form honestly (middle/passive!), then translate actively.</Tr>}
       items={[
         { q: <span className="normal-case">ἔρχεται πρὸς αὐτόν.</span>,
-          a: <>"He comes to him" — present deponent, 3rd sg.</> },
+          a: <Tr id="deponents.pa.comes-him-present">"He comes to him" — present deponent, 3rd sg.</Tr>},
         { q: <span className="normal-case">ἀπεκρίθη αὐτοῖς ὁ Ἰησοῦς.</span>,
-          a: <>"Jesus answered them" — aorist <em>passive in form</em> (θη), active in meaning: passive deponent.</> },
+          a: <Tr id="deponents.pa.jesus-answered-them">"Jesus answered them" — aorist <em>passive in form</em> (θη), active in meaning: passive deponent.</Tr>},
         { q: <span className="normal-case">οὐ δύναμαι ποιεῖν οὐδέν.</span>,
-          a: <>"I can do nothing" — δύναμαι + infinitive (John 5:30; note the stacked negatives reinforcing, not cancelling).</> },
+          a: <Tr id="deponents.pa.can-nothing-infinitive">"I can do nothing" — δύναμαι + infinitive (John 5:30; note the stacked negatives reinforcing, not cancelling).</Tr>},
         { q: <span className="normal-case">ἐγένετο ἄνθρωπος ἀπεσταλμένος παρὰ θεοῦ.</span>,
-          a: <>"There came (arose) a man sent from God" — ἐγένετο, aorist middle deponent (John 1:6).</> },
+          a: <Tr id="deponents.pa.there-came-arose">"There came (arose) a man sent from God" — ἐγένετο, aorist middle deponent (John 1:6).</Tr>},
         { q: <span className="normal-case">προσηύξατο τῷ θεῷ.</span>,
-          a: <>"He prayed to God" — aorist middle of the deponent προσεύχομαι.</> },
+          a: <Tr id="deponents.pa.prayed-god-aorist">"He prayed to God" — aorist middle of the deponent προσεύχομαι.</Tr>},
       ]}
     />
 
     {/* ── 6 · See it in the NT ───────────────────────────── */}
-    <ClassSentences
+    <ClassSentences id="deponents.cs2"
       lesson="Lesson 5 · Middles and deponents"
       items={[
         { words: [
@@ -241,7 +241,7 @@ export const DEPONENTS_CONTENT = (
     {/* Syntax is a relation between words, which the one-word morphology search can't express;
         these open Construct search instead. */}
     <LiveExamples
-      intro={<>Deponency itself can't be searched — the corpus records the form (middle or passive), not the category — so these show the forms of verbs that are deponent:</>}
+      intro={<Tr id="deponents.intro.deponency-itself-can't">Deponency itself can't be searched — the corpus records the form (middle or passive), not the category — so these show the forms of verbs that are deponent:</Tr>}
       links={DEPONENT_SEARCHES.map(pr => ({
         label: <>{pr.label} <span className="text-gray-400">— {pr.approx.toLocaleString()} in the NT</span></>,
         construct: pr.query,
@@ -249,19 +249,19 @@ export const DEPONENTS_CONTENT = (
     />
 
     <LiveExamples
-      intro={<>Four deponents you cannot read a page without.</>}
+      intro={<Tr id="deponents.intro.four-deponents-cannot">Four deponents you cannot read a page without.</Tr>}
       links={[
-        { label: <>Every form of <span className="normal-case">γίνομαι</span> — become / happen / be</>, lemma: 'γίνομαι' },
-        { label: <>Every form of <span className="normal-case">ἔρχομαι</span> — come / go (with its compounds)</>, lemma: 'ἔρχομαι' },
-        { label: <>Every form of <span className="normal-case">ἀποκρίνομαι</span> — the Gospels' "answered"</>, lemma: 'ἀποκρίνομαι' },
-        { label: <>Every form of <span className="normal-case">πορεύομαι</span> — go / journey</>, lemma: 'πορεύομαι' },
+        { label: <Tr id="deponents.le.every-form-become">Every form of <span className="normal-case">γίνομαι</span> — become / happen / be</Tr>, lemma: 'γίνομαι' },
+        { label: <Tr id="deponents.le.every-form-come">Every form of <span className="normal-case">ἔρχομαι</span> — come / go (with its compounds)</Tr>, lemma: 'ἔρχομαι' },
+        { label: <Tr id="deponents.le.every-form-gospels'">Every form of <span className="normal-case">ἀποκρίνομαι</span> — the Gospels' "answered"</Tr>, lemma: 'ἀποκρίνομαι' },
+        { label: <Tr id="deponents.le.every-form-journey">Every form of <span className="normal-case">πορεύομαι</span> — go / journey</Tr>, lemma: 'πορεύομαι' },
       ]}
     />
 
     {/* ── 7 · Going deeper (Intermediate only) ───────────── */}
     <LevelOnly level="intermediate">
-      <SectionHeading>Going deeper: is "deponent" the right name?</SectionHeading>
-      <P>
+      <SectionHeading id="deponents.h.going-deeper-deponent">Going deeper: is "deponent" the right name?</SectionHeading>
+      <P id="deponents.p.middle-voice-reappraisal">
         <strong>The middle-voice reappraisal.</strong> A growing consensus in Greek linguistics holds that
         most "deponents" never laid anything aside — their middle form fits their meaning. Verbs of motion
         (<Gk>ἔρχομαι, πορεύομαι</Gk>), emotion (<Gk>φοβέομαι</Gk>), perception, and self-involving action
@@ -270,13 +270,13 @@ export const DEPONENTS_CONTENT = (
         defect in the Greek. For translation nothing changes; for feel, much does — <Gk>δέχομαι</Gk> "I
         receive (into my own hands)" is middle to its bones.
       </P>
-      <P>
+      <P id="deponents.p.full-stretch-one">
         <strong>γίνομαι at full stretch.</strong> One verb spans "be born," "become," "happen," "come to
         be," even "be" — John 1:14's <Gk>ὁ λόγος σὰρξ ἐγένετο</Gk>, "the Word <em>became</em> flesh," leans
         on the verb's sense of entering a new state, deliberately unlike the <Gk>ἦν</Gk> ("was") of 1:1.
         The contrast between εἰμί and γίνομαι carries the prologue's theology.
       </P>
-      <P>
+      <P id="deponents.p.watch-passive-functions">
         <strong>Watch σώζομαι.</strong> The passive of <Gk>σῴζω</Gk> functions almost as a deponent in
         texts like Acts 2:47 ("those being saved") — but here the passive is real and theological: God is
         the unstated saver. Divine passive and deponency can look identical; the lexicon and context
