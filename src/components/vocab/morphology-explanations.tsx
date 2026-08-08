@@ -606,14 +606,14 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   'principal-parts': {
     beginning: (
       <Note>
-        <P>Greek dictionaries describe a verb by its six <strong>principal parts</strong> — like English "sing, sang, sung," but six slots: present, future, aorist, perfect active, perfect middle/passive, aorist passive (<G>λύω, λύσω, ἔλυσα, λέλυκα, λέλυμαι, ἐλύθην</G>). Every form you will ever meet descends from one of the six.</P>
-        <Hook>Learn a rebel verb's row as a <strong>chant</strong>, left to right — <G>λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην</G> — exactly as you learned <em>sing, sang, sung</em>.</Hook>
-        <Eg>Regular verbs are predictable; memorize only the rebels (<G>ἔρχομαι, ὁράω, φέρω</G>…) — which are the very verbs on every page.</Eg>
+        <P><T id="principal-parts.exp.b.intro">Greek dictionaries describe a verb by its six <strong>principal parts</strong> — like English "sing, sang, sung," but six slots: present, future, aorist, perfect active, perfect middle/passive, aorist passive (<G>λύω, λύσω, ἔλυσα, λέλυκα, λέλυμαι, ἐλύθην</G>). Every form you will ever meet descends from one of the six.</T></P>
+        <Hook><T id="principal-parts.exp.b.hook">Learn a rebel verb's row as a <strong>chant</strong>, left to right — <G>λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην</G> — exactly as you learned <em>sing, sang, sung</em>.</T></Hook>
+        <Eg><T id="principal-parts.exp.b.eg">Regular verbs are predictable; memorize only the rebels (<G>ἔρχομαι, ὁράω, φέρω</G>…) — which are the very verbs on every page.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Think in <strong>tense-systems</strong>, not tenses: each part's stem serves every mood of its system. The asides beside the grid map which endings and moods belong to which part, and "Going deeper" below follows the idea further.</P>
+        <P><T id="principal-parts.exp.i.main">Think in <strong>tense-systems</strong>, not tenses: each part's stem serves every mood of its system. The asides beside the grid map which endings and moods belong to which part, and "Going deeper" below follows the idea further.</T></P>
       </Note>
     ),
   },
