@@ -342,14 +342,14 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   'conj-adv': {
     beginning: (
       <Note>
-        <P><strong>Conjunctions</strong> are joining words. <em>Coordinating</em> conjunctions link equal parts and often begin a main clause (<G>καί</G> "and," <G>ἀλλά</G> "but," <G>οὖν</G> "therefore"). <em>Subordinating</em> conjunctions start a dependent clause that cannot stand alone (<G>ὅτι</G> "that / because," <G>ἵνα</G> "in order that," <G>εἰ</G> "if"). <strong>Adverbs</strong> are different — they modify a verb, telling <em>how, when,</em> or <em>where</em> (<G>οὕτως</G> "thus," <G>τότε</G> "then," <G>ἐκεῖ</G> "there").</P>
-        <Hook>Greek words ending in <G>‑ως</G> are usually <strong>adverbs</strong> — <G>καλῶς</G> "well," <G>οὕτως</G> "thus," <G>ὁμοίως</G> "likewise" (compare the adjective <G>καλός</G> "good"). Because word order is flexible, these connectors are your key to a sentence's logic.</Hook>
+        <P><T id="conj-adv.exp.p.conjunctions-joining-words"><strong>Conjunctions</strong> are joining words. <em>Coordinating</em> conjunctions link equal parts and often begin a main clause (<G>καί</G> "and," <G>ἀλλά</G> "but," <G>οὖν</G> "therefore"). <em>Subordinating</em> conjunctions start a dependent clause that cannot stand alone (<G>ὅτι</G> "that / because," <G>ἵνα</G> "in order that," <G>εἰ</G> "if"). <strong>Adverbs</strong> are different — they modify a verb, telling <em>how, when,</em> or <em>where</em> (<G>οὕτως</G> "thus," <G>τότε</G> "then," <G>ἐκεῖ</G> "there").</T></P>
+        <Hook><T id="conj-adv.exp.hook.greek-words-ending">Greek words ending in <G>‑ως</G> are usually <strong>adverbs</strong> — <G>καλῶς</G> "well," <G>οὕτως</G> "thus," <G>ὁμοίως</G> "likewise" (compare the adjective <G>καλός</G> "good"). Because word order is flexible, these connectors are your key to a sentence's logic.</T></Hook>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Conjunctions are the backbone of <strong>discourse analysis</strong>: they signal continuation (<G>καί, δέ</G>), contrast (<G>ἀλλά</G>), inference (<G>οὖν, διό</G>), and ground / explanation (<G>γάρ</G>), letting you trace an author's argument clause by clause.</P>
-        <P>Some conjunctions predict the verb's mood — <G>ἵνα, ἐάν, ὅταν, ὅπως</G> typically take the subjunctive; <G>ὅτι, εἰ, καθώς</G> typically the indicative — so the conjunction previews the grammar. Set phrases like <G>διὰ τοῦτο</G> ("for this reason") or <G>διὰ τί</G> ("why?") often work as fixed discourse markers opening a new thought.</P>
+        <P><T id="conj-adv.exp.p.conjunctions-backbone-discourse">Conjunctions are the backbone of <strong>discourse analysis</strong>: they signal continuation (<G>καί, δέ</G>), contrast (<G>ἀλλά</G>), inference (<G>οὖν, διό</G>), and ground / explanation (<G>γάρ</G>), letting you trace an author's argument clause by clause.</T></P>
+        <P><T id="conj-adv.exp.p.some-conjunctions-predict">Some conjunctions predict the verb's mood — <G>ἵνα, ἐάν, ὅταν, ὅπως</G> typically take the subjunctive; <G>ὅτι, εἰ, καθώς</G> typically the indicative — so the conjunction previews the grammar. Set phrases like <G>διὰ τοῦτο</G> ("for this reason") or <G>διὰ τί</G> ("why?") often work as fixed discourse markers opening a new thought.</T></P>
       </Note>
     ),
   },

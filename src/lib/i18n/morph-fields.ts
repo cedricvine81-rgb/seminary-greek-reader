@@ -46,6 +46,9 @@ export function fieldsOf(name: string, props: Props): Field[] {
   const add = (key: string, english: unknown) => { if (str(english)) out.push({ key, english }) }
 
   switch (name) {
+    // ColsTable is MorphTable's sibling for parallel lists; its cells are ReactNode, so only the
+    // ones that are actually strings can be enumerated here — JSX cells need <Tr> in the source.
+    case 'ColsTable':
     case 'MorphTable': {
       add(K.title(id), props.title)
       add(K.note(id), props.note)
@@ -88,4 +91,4 @@ export function fieldsOf(name: string, props: Props): Field[] {
 }
 
 /** Components whose `id` means "enumerate my props", not "serialize my children". */
-export const FIELD_COMPONENTS = new Set(['MorphTable', 'DropdownPractice', 'Practice', 'ClassSentences'])
+export const FIELD_COMPONENTS = new Set(['MorphTable', 'ColsTable', 'DropdownPractice', 'Practice', 'ClassSentences'])

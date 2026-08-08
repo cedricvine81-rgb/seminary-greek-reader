@@ -156,12 +156,26 @@ export function InfoBox({ title, children }: { title?: string; children: React.R
  * How/When/Where, semantic labels). Unlike MorphTable, every cell is plain
  * left-aligned data and cells may be React nodes (for sub-headings).
  */
-export function ColsTable({ title, headers, rows, note }: {
+export function ColsTable({ id, tCols, title, headers, rows, note }: {
+  /** Makes the table's prose translatable; keys derive from K in morph-fields.ts. */
+  id?: string
+  /** Column indexes whose cells are prose, not Greek or paradigm slots. */
+  tCols?: number[]
   title?: React.ReactNode
   headers: string[]
   rows: React.ReactNode[][]
   note?: string
 }) {
+  const tm = useTm()
+  if (id) {
+    if (typeof title === 'string') title = gt(tm(K.title(id), title))
+    if (note) note = tm(K.note(id), note)
+    headers = headers.map((h, i) => (h ? tm(K.header(id, i), h) : h))
+    if (tCols?.length) {
+      rows = rows.map((row, r) => row.map((cell, c) =>
+        (tCols.includes(c) && typeof cell === 'string' && cell) ? tm(K.cell(id, r, c), cell) : cell))
+    }
+  }
   return (
     <div className="mb-5">
       {title && (
