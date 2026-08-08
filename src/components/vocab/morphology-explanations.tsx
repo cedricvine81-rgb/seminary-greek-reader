@@ -326,16 +326,16 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   conjunctions: {
     beginning: (
       <Note>
-        <P>A <strong>conditional sentence</strong> has an "if" part (the <strong>protasis</strong>) and a "then" part (the <strong>apodosis</strong>). Greek uses different words and moods to show how likely the "if" is. <strong>First class</strong> (<G>εἰ</G> + indicative) assumes it is true for the sake of argument. <strong>Second class</strong> (<G>εἰ</G> + indicative … <G>ἄν</G>) is "contrary to fact." <strong>Third class</strong> (<G>ἐάν</G> + subjunctive) is the "maybe / future" condition.</P>
-        <Hook>1st class = <G>εἰ</G> = <strong>One Word</strong> · 2nd class = <G>εἰ + ἄν</G> = <strong>Two Words</strong> · 3rd class = <G>ἐάν</G> = <strong>Three Letters</strong>.</Hook>
-        <Eg>1st: "<em>If</em> you like Greek, you are wise" (says nothing about whether you actually do — <em>if</em> it's true, <em>then</em> the result follows). 3rd: "<em>If</em> you like Greek, you <em>will</em> learn it."</Eg>
+        <P><T id="conjunctions.exp.p.conditional-sentence-part">A <strong>conditional sentence</strong> has an "if" part (the <strong>protasis</strong>) and a "then" part (the <strong>apodosis</strong>). Greek uses different words and moods to show how likely the "if" is. <strong>First class</strong> (<G>εἰ</G> + indicative) assumes it is true for the sake of argument. <strong>Second class</strong> (<G>εἰ</G> + indicative … <G>ἄν</G>) is "contrary to fact." <strong>Third class</strong> (<G>ἐάν</G> + subjunctive) is the "maybe / future" condition.</T></P>
+        <Hook><T id="conjunctions.exp.hook.class-one-word">1st class = <G>εἰ</G> = <strong>One Word</strong> · 2nd class = <G>εἰ + ἄν</G> = <strong>Two Words</strong> · 3rd class = <G>ἐάν</G> = <strong>Three Letters</strong>.</T></Hook>
+        <Eg><T id="conjunctions.exp.eg.like-greek-wise">1st: "<em>If</em> you like Greek, you are wise" (says nothing about whether you actually do — <em>if</em> it's true, <em>then</em> the result follows). 3rd: "<em>If</em> you like Greek, you <em>will</em> learn it."</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Classify by the <strong>protasis</strong>: 1st class <G>εἰ</G> + indicative (assumed true <em>for the argument</em>, not necessarily factually true); 2nd class <G>εἰ</G> + past indicative with <G>ἄν</G> in the apodosis (contrary to fact — "if he were… but he isn't"); 3rd class <G>ἐάν</G> + subjunctive (probable / uncertain future, or a general truth).</P>
-        <P>The class describes the speaker's <em>rhetorical stance</em>, not objective reality — a first-class condition can frame something the speaker knows is false, purely for argument.</P>
-        <Hook>In English, a <strong>contrary-to-fact</strong> (2nd class) condition is marked by "<strong>would</strong>" in the apodosis: "If you had liked Greek, you <em>would</em> have learnt it." The <G>ἄν</G> is its Greek signal.</Hook>
+        <P><T id="conjunctions.exp.p.classify-protasis-class">Classify by the <strong>protasis</strong>: 1st class <G>εἰ</G> + indicative (assumed true <em>for the argument</em>, not necessarily factually true); 2nd class <G>εἰ</G> + past indicative with <G>ἄν</G> in the apodosis (contrary to fact — "if he were… but he isn't"); 3rd class <G>ἐάν</G> + subjunctive (probable / uncertain future, or a general truth).</T></P>
+        <P><T id="conjunctions.exp.p.class-describes-speaker's">The class describes the speaker's <em>rhetorical stance</em>, not objective reality — a first-class condition can frame something the speaker knows is false, purely for argument.</T></P>
+        <Hook><T id="conjunctions.exp.hook.english-contrary-fact">In English, a <strong>contrary-to-fact</strong> (2nd class) condition is marked by "<strong>would</strong>" in the apodosis: "If you had liked Greek, you <em>would</em> have learnt it." The <G>ἄν</G> is its Greek signal.</T></Hook>
       </Note>
     ),
   },

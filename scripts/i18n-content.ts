@@ -144,6 +144,16 @@ export function rhetoricItems(): Item[] {
  *
  * Only nodes carrying an `id` are collected; prose without one is deliberately left English.
  */
+/**
+ * Where a chapter file's strings must live: the TAB ID MorphologyView fetches by, which is not
+ * always the file name. Get this wrong and the fetch 404s, the catalogue comes back empty, and the
+ * chapter silently renders English — indistinguishable from "not translated yet".
+ */
+const CHAPTER_TAB: Record<string, string> = {
+  'second-aorists': '2nd-aorists',
+  conditionals: 'conjunctions',
+}
+
 export function morphologyItems(): Item[] {
   const items: Item[] = []
   const dir = 'src/components/morphology/chapters'
@@ -152,7 +162,7 @@ export function morphologyItems(): Item[] {
     const chapter = f.replace(/\.tsx$/, '')
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const mod = require(`../${dir}/${chapter}`) as Record<string, unknown>
-    for (const exported of Object.values(mod)) collect(exported, items, chapter)
+    for (const exported of Object.values(mod)) collect(exported, items, CHAPTER_TAB[chapter] ?? chapter)
   }
 
   // The "Getting started" note at the top of every chapter lives in a different file, keyed by
@@ -171,6 +181,19 @@ export function morphologyItems(): Item[] {
   for (const e of Object.values(exp.ESS_EXPLANATIONS ?? {})) {
     collect(e?.beginning, items, 'essentials')
     collect(e?.intermediate, items, 'essentials')
+  }
+
+  // Every bucket must be a real tab, because the bucket IS the filename the view fetches. The tab
+  // ids are exactly the TAB_EXPLANATIONS keys, so they make an authoritative cross-check — and
+  // without it, a chapter whose file name differs from its tab (see CHAPTER_TAB) writes a
+  // catalogue nobody ever requests and stays English with nothing reported.
+  const tabs = new Set([...Object.keys(exp.TAB_EXPLANATIONS ?? {}), 'essentials'])
+  const stray = Array.from(new Set(items.map(i => i.bucket!).filter(b => !tabs.has(b))))
+  if (stray.length) {
+    console.error(`morphology: ${stray.length} bucket(s) are not tab ids — their catalogues would`
+      + ` never be fetched: ${stray.join(', ')}`)
+    console.error('  add the file → tab mapping to CHAPTER_TAB in this script.')
+    process.exit(1)
   }
   return items
 }
