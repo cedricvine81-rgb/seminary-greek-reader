@@ -39,18 +39,22 @@ export interface MarkupComponents {
 /** Collapse JSX's incidental whitespace (newlines + indentation) the way a browser would. */
 const squash = (s: string) => s.replace(/\s+/g, ' ')
 
-function nodeName(type: unknown): string {
-  if (typeof type === 'string') return type
-  if (typeof type === 'function') return (type as { name?: string }).name ?? ''
-  return ''
-}
+/**
+ * Components are matched BY IDENTITY, never by `Function.name`.
+ *
+ * Names do not survive a production build: `function Gk(…)` ships as `function W(e)`, so a
+ * name-based check quietly stops recognising Greek, `serialize` returns null, and every paragraph
+ * containing Greek falls back to English — while headings, having no component children, keep
+ * translating. That mixture is exactly what it looks like, and it cannot happen in dev, which is
+ * what made it costly. Identity is invariant under minification.
+ */
 
 /**
  * Flatten React children to a template string, or null if they contain anything the format
  * cannot round-trip. Null is not a failure to report — it is the honest answer that this block
  * is not translatable in place, and the renderer keeps its English.
  */
-export function serialize(node: ReactNode): string | null {
+export function serialize(node: ReactNode, c: MarkupComponents): string | null {
   if (node === null || node === undefined || node === false || node === true) return ''
   if (typeof node === 'string') return squash(node)
   if (typeof node === 'number') return String(node)
@@ -58,7 +62,7 @@ export function serialize(node: ReactNode): string | null {
   if (Array.isArray(node)) {
     const parts: string[] = []
     for (const child of node) {
-      const s = serialize(child)
+      const s = serialize(child, c)
       if (s === null) return null
       parts.push(s)
     }
@@ -68,8 +72,7 @@ export function serialize(node: ReactNode): string | null {
   const el = node as ReactElement<{ children?: ReactNode; t?: string }>
   if (!el || typeof el !== 'object' || !('type' in el)) return null
 
-  const name = nodeName(el.type)
-  const inner = serialize(el.props?.children)
+  const inner = serialize(el.props?.children, c)
   if (inner === null) return null
 
   // Fragments carry their children straight through.
@@ -81,11 +84,17 @@ export function serialize(node: ReactNode): string | null {
   const [, pre, core, post] = /^(\s*)([\s\S]*?)(\s*)$/.exec(inner) as RegExpExecArray
   const wrap = (open: string, close: string) => core ? `${pre}${open}${core}${close}${post}` : inner
 
-  switch (name) {
+  // Components: identity first, so minification cannot break the match. `displayName` is a
+  // second line of defence for the one case identity would miss — two module instances of
+  // shared.tsx — and unlike `name` it is a string literal the minifier leaves alone.
+  const dn = typeof el.type === 'function' ? (el.type as { displayName?: string }).displayName : ''
+  if (el.type === c.Gk || dn === 'Gk') return wrap('{', '}')
+  if (el.type === c.Term || dn === 'Term') return el.props?.t ? wrap(`[${el.props.t}:`, ']') : null
+
+  // Intrinsics: these are plain strings in the element tree and minifiers never touch them.
+  switch (typeof el.type === 'string' ? el.type : '') {
     case 'em': return wrap('_', '_')
     case 'strong': return wrap('*', '*')
-    case 'Gk': return wrap('{', '}')
-    case 'Term': return el.props?.t ? wrap(`[${el.props.t}:`, ']') : null
     // The chapters write Greek two ways: <Gk> and a bare <span className="normal-case">, which is
     // exactly what <Gk> renders. Both are Greek and both must survive translation untouched.
     case 'span': {

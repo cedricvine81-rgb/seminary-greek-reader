@@ -22,6 +22,7 @@ import { TEXT_CATEGORIES } from '../src/lib/texts-catalog'
 import { fingerprint } from '../src/lib/i18n/content'
 import { serialize, greekRuns } from '../src/lib/i18n/morph-markup'
 import { fieldsOf, FIELD_COMPONENTS } from '../src/lib/i18n/morph-fields'
+import { Gk, Term } from '../src/components/morphology/shared'
 
 const LOCALES = ['es'] as const
 type Loc = typeof LOCALES[number]
@@ -187,7 +188,7 @@ function collect(node: unknown, items: Item[], chapter: string) {
       for (const v of Object.values(props)) if (v && typeof v === 'object') collect(v, items, chapter)
       return
     }
-    const english = serialize(props.children as never)
+    const english = serialize(props.children as never, { Gk, Term })
     if (english === null) {
       console.error(`  ${chapter}: ${id} — markup not representable; left English`)
     } else if (!english.trim()) {

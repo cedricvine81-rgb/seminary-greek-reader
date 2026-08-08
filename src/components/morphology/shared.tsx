@@ -248,6 +248,10 @@ export function Gk({ children }: { children: React.ReactNode }) {
   return <span className="normal-case font-medium text-gray-800">{children}</span>
 }
 
+// Read by morph-markup's serializer when identity matching cannot apply. A string literal, so
+// the production minifier preserves it where it renames the function itself.
+Gk.displayName = 'Gk'
+
 /** An example line in an aside: Greek → English. */
 export function Ex({ grc, en }: { grc: React.ReactNode; en: React.ReactNode }) {
   return (
@@ -300,7 +304,7 @@ export function Tr({ id, children }: { id: string; children: React.ReactNode }) 
   const cat = useContext(MorphContent)
   const entry = cat[id]
   if (!entry) return <>{children}</>
-  const english = serialize(children)
+  const english = serialize(children, { Gk, Term })
   if (english === null || entry.fp !== fingerprint(english)) return <>{children}</>
   return <>{parse(entry.text, { Gk, Term })}</>
 }
@@ -364,6 +368,8 @@ export function Term({ t, children }: { t: string; children?: React.ReactNode })
     </span>
   )
 }
+
+Term.displayName = 'Term'
 
 /** An exercise block with tap-to-reveal answers.
  *  Practice blocks are drill material from the Beginning course, so by default
