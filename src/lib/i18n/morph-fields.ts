@@ -32,6 +32,9 @@ export const K = {
   sentNote: (id: string, i: number) => `${id}.s${i}.note`,
   gloss:  (id: string, s: number, w: number) => `${id}.s${s}.w${w}.gloss`,
   syntax: (id: string, s: number, w: number) => `${id}.s${s}.w${w}.syntax`,
+  catName: (id: string) => `${id}.name`,
+  catEg:   (id: string) => `${id}.eg`,
+  catEx:   (id: string, i: number) => `${id}.e${i}`,
 }
 
 const str = (v: unknown): v is string => typeof v === 'string' && v.trim().length > 0
@@ -72,6 +75,17 @@ export function fieldsOf(name: string, props: Props): Field[] {
       add(K.title(id), props.title)
       break
     }
+    // One syntax category in a Getting Started card. `name`, `eg` and the description are
+    // ReactNode, so a <Tr> could reach them — but the two NT examples arrive as {g,e,r} objects,
+    // and `e` (the English rendering of the Greek clause) is a plain string nothing can wrap.
+    // `g` stays Greek and `r` is a verse reference; only `e` is prose.
+    case 'Cat': {
+      add(K.catName(id), props.name)
+      add(K.catEg(id), props.eg)
+      const ex = (props.ex as Props[]) ?? []
+      ex.forEach((x, i) => add(K.catEx(id, i), x?.e))
+      break
+    }
     case 'ClassSentences': {
       add(K.lesson(id), props.lesson)
       const items = (props.items as Props[]) ?? []
@@ -91,4 +105,23 @@ export function fieldsOf(name: string, props: Props): Field[] {
 }
 
 /** Components whose `id` means "enumerate my props", not "serialize my children". */
-export const FIELD_COMPONENTS = new Set(['MorphTable', 'ColsTable', 'DropdownPractice', 'Practice', 'ClassSentences'])
+export const FIELD_COMPONENTS = new Set(['MorphTable', 'ColsTable', 'DropdownPractice', 'Practice', 'ClassSentences', 'Cat'])
+
+/**
+ * Verse references inside the syntax cards ("Matt 8:15") are display-only strings, not lookup
+ * keys, and there are ~164 of them. Putting each in the catalogue would be 164 entries of pure
+ * book-name noise, so the book token is mapped here instead and the chapter numbers pass through.
+ * Chapters localise book names in their prose, so leaving these English looked like a bug.
+ */
+const BOOKS_ES: Record<string, string> = {
+  Matt: 'Mt', Mark: 'Mc', Luke: 'Lc', John: 'Jn', Acts: 'Hch', Rom: 'Ro',
+  Gal: 'Gá', Eph: 'Ef', Phil: 'Fil', Phlm: 'Flm', Heb: 'He', Jas: 'Stg', Rev: 'Ap',
+  Cor: 'Co', Tim: 'Ti', Pet: 'P',
+}
+
+/** "1 Cor 7:15" → "1 Co 7:15" for es; unchanged for any other locale. */
+export function localizeRef(ref: string, locale: string): string {
+  if (locale !== 'es' || !ref) return ref
+  return ref.replace(/^(\d\s)?([A-Za-z]+)/, (_m, num: string | undefined, book: string) =>
+    `${num ?? ''}${BOOKS_ES[book] ?? book}`)
+}
