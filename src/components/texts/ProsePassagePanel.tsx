@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { X, ExternalLink } from 'lucide-react'
 import { findProseWork, type ProseDoc, type ProseVerse } from '@/lib/prose-texts'
 import { SearchWords } from '@/components/search/SearchWords'
@@ -25,6 +26,7 @@ function clampWidth(w: number): number {
 type Show = 'both' | 'en' | 'orig'
 
 export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTarget; onClose: () => void }) {
+  const t = useT()
   const work = findProseWork(target.source)
   const [width, setWidth] = useState(DEFAULT_W)
   const [doc, setDoc] = useState<ProseDoc | null>(null)
@@ -122,7 +124,7 @@ export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTar
           drag.current = { startX: e.clientX, startW: widthRef.current }
           document.body.style.userSelect = 'none'
         }}
-        title="Drag to resize"
+        title={t('texts.dragResize')}
         className="hidden lg:flex absolute left-0 inset-y-0 w-2 -ml-1 cursor-col-resize touch-none items-center justify-center group"
       >
         <div className="h-12 w-1 rounded-full bg-gray-300 group-hover:bg-brand-400 transition-colors" />
@@ -140,12 +142,12 @@ export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTar
           <div className="flex items-center gap-1 flex-none">
             <a
               href={readerHref}
-              title="Open in the full Texts reader"
+              title={t('texts.openFullReader')}
               className="rounded p-1 text-gray-400 hover:text-brand-600 hover:bg-gray-100"
             >
               <ExternalLink size={15} />
             </a>
-            <button onClick={onClose} title="Close (Esc)" className="rounded p-1 text-gray-400 hover:text-red-600 hover:bg-gray-100">
+            <button onClick={onClose} title={t('texts.closeEsc')} className="rounded p-1 text-gray-400 hover:text-red-600 hover:bg-gray-100">
               <X size={16} />
             </button>
           </div>
@@ -168,9 +170,9 @@ export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTar
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-3">
         {failed || !work ? (
-          <p className="text-sm text-gray-400 italic">Couldn&rsquo;t load this text.</p>
+          <p className="text-sm text-gray-400 italic">{t('texts.couldNotLoad')}</p>
         ) : !doc ? (
-          <p className="text-sm text-gray-300 italic">Loading…</p>
+          <p className="text-sm text-gray-300 italic">{t('reader.loading')}</p>
         ) : !chapter ? (
           <p className="text-sm text-gray-400 italic">Chapter {target.chapter} isn&rsquo;t in this work.</p>
         ) : (

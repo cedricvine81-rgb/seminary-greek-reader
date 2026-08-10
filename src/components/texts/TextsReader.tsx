@@ -146,17 +146,19 @@ function refLabelFor(w: CatalogWork, item: QueueItem): string {
 // (prefixed with its book, for multi-book works) instead of the internal Whiston chapter.
 // Works with a second, structural numbering (Hermas) head each chapter with its traditional
 // reference ("Vision 3.6 · Ch. 14") so both citation systems stay visible.
-function blockHeadingFor(w: CatalogWork, block: ChapterBlock): string {
+function blockHeadingFor(w: CatalogWork, block: ChapterBlock, t: (k: string, v?: Record<string, string | number>) => string): string {
   if (w.source === 'josephus') {
     const nums = block.rows.map(r => r.num)
     const span = nums.length === 0 ? ''
       : nums[0] === nums[nums.length - 1] ? `§${nums[0]}`
       : `§§${nums[0]}–${nums[nums.length - 1]}`
-    return w.books!.length > 1 ? `Book ${block.book} · ${span}` : span
+    return w.books!.length > 1 ? t('texts.bookSpan', { n: block.book ?? '', span }) : span
   }
   // chapterLabel returns the complete heading (each work formats its own — Hermas appends the
   // continuous chapter, Eusebius names its preface); default to "Chapter N".
-  return findProseWork(w.source)?.chapterLabel?.(block.chapter) ?? `Chapter ${block.chapter}`
+  // A work's own chapterLabel is authored data (Hermas' double numbering, Eusebius' preface)
+  // and stays as written; only the generic default is a UI string.
+  return findProseWork(w.source)?.chapterLabel?.(block.chapter) ?? t('texts.chapterN', { n: block.chapter })
 }
 
 interface TextsReaderProps {
@@ -327,7 +329,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const jastrowInfo = useCallback((word: string, reference: string): LexicalInfoPanel => {
     const hits = lookupAramaic(jastrow, word)
     if (hits.length === 0) {
-      return { surface: word, lexeme: '', gloss: jastrow ? 'No Jastrow entry found for this form.' : 'Loading Jastrow…',
+      return { surface: word, lexeme: '', gloss: jastrow ? t('bg.noJastrow') : t('bg.loadingJastrow'),
                partOfSpeech: '', parsing: '', reference, script: 'hebrew' }
     }
     const first = hits[0]
@@ -368,11 +370,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // Whether the parallel English column is rendered at all.
   const englishColShown = (isGreek && showEnglish && hasEnglish) || (greekProse && proseModeEff !== 'greek')
   const translationLabel = translationId
-    ? (availableTranslations.find(t => t.id === translationId)?.label ?? 'Translation')
+    ? (availableTranslations.find(t => t.id === translationId)?.label ?? t('texts.translationFallback'))
     : null
   const currentTranslationLabel = !translationId
-    ? 'Greek only'
-    : greekHidden ? `${translationLabel} only` : `Greek + ${translationLabel}`
+    ? t('texts.greekOnly')
+    : greekHidden
+      ? t('texts.langOnly', { lang: translationLabel ?? '' })
+      : t('texts.greekPlus', { lang: translationLabel ?? '' })
   // The second column is English for most prose works, but Latin for the Greek Sibylline
   // (Augustine's rendering of the Book 8 acrostic).
   const secondLabel = work?.secondaryLabel ?? 'English'
@@ -1042,7 +1046,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     : isActive ? 'text-brand-700 font-medium hover:bg-brand-50'
                     : 'text-gray-700 hover:bg-gray-50'}`}
                 >
-                  <span>{cat.label}{cat.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
+                  <span>{cat.label}{cat.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">{t('texts.comingSoon')}</span>}</span>
                   {!cat.comingSoon && <ChevronDown size={13} className="-rotate-90 text-gray-300" />}
                 </button>
               )
@@ -1221,7 +1225,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                   if (e.key === 'Enter' && suggestOpen && suggestions[0]) { e.preventDefault(); pickSuggestion(suggestions[0]) }
                   else if (e.key === 'Escape') setSuggestOpen(false)
                 }}
-                placeholder={greekTyping ? 'Search Greek…' : 'Search this text…'}
+                placeholder={greekTyping ? t('texts.searchGreek') : t('texts.searchThisText')}
                 className={`w-40 sm:w-52 rounded-md border border-gray-300 pl-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekSearchable && englishSearchable ? 'pr-8' : 'pr-2'} ${greekTyping ? 'greek-text' : ''}`}
               />
               {/* Greek ⇄ English input toggle, shown only when both are on screen. */}
@@ -1229,7 +1233,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 <button
                   type="button"
                   onClick={() => { setSearchLangPref(searchLang === 'grc' ? 'en' : 'grc'); setSearch(''); setSuggestions([]); searchInputRef.current?.focus() }}
-                  title={greekTyping ? 'Searching Greek — click for English' : 'Searching English — click for Greek'}
+                  title={greekTyping ? t('texts.searchingGreek') : t('texts.searchingEnglish')}
                   className={`absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded text-xs font-semibold text-brand-600 hover:bg-brand-50 transition-colors ${greekTyping ? 'font-reading' : ''}`}
                 >
                   {greekTyping ? 'α' : 'A'}
@@ -1272,7 +1276,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                       onClick={() => { setTranslationId(null); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
                       className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${!translationId ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                     >
-                      Greek only
+                      {t('texts.greekOnly')}
                     </button>
                     {availableTranslations.map(t => (
                       <Fragment key={t.id}>
@@ -1311,7 +1315,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
                 {translationMenuOpen && (
                   <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
-                    {([['greek', 'Greek only'], ['both', `Greek + ${secondLabel}`], ['english', `${secondLabel} only`]] as const).map(([mode, label]) => (
+                    {([['greek', t('texts.greekOnly')], ['both', t('texts.greekPlus', { lang: secondLabel })], ['english', t('texts.langOnly', { lang: secondLabel })]] as const).map(([mode, label]) => (
                       <button
                         key={mode}
                         type="button"
@@ -1326,7 +1330,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </div>
             )}
 
-            <span className="text-xs text-gray-400 ml-auto">Scroll to keep reading</span>
+            <span className="text-xs text-gray-400 ml-auto">{t('texts.scrollToRead')}</span>
 
             {/* ⋮ display options (text size) — standalone page only; embedded use
                 (Exegesis Backgrounds) gets its size from the parent tools menu. */}
@@ -1334,8 +1338,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               <div className="relative flex-none" ref={displayMenuRef}>
                 <button
                   type="button"
-                  title="Display options"
-                  aria-label="Display options"
+                  title={t('texts.displayOptions')}
+                  aria-label={t('texts.displayOptions')}
                   aria-expanded={displayMenuOpen}
                   onClick={() => setDisplayMenuOpen(o => !o)}
                   className={`p-1.5 rounded-lg transition-colors ${displayMenuOpen ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
@@ -1345,7 +1349,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 {displayMenuOpen && (
                   <div className="absolute right-0 top-full mt-1 z-40 w-72 bg-popover border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-gray-800">Display options</span>
+                      <span className="text-sm font-semibold text-gray-800">{t('texts.displayOptions')}</span>
                       <button onClick={() => setDisplayMenuOpen(false)} className="text-gray-400 hover:text-gray-600">
                         <X size={15} />
                       </button>
@@ -1362,13 +1366,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             param (chapter/verse-precise), so the generic pixel-restorer must not fight it. */}
         <div ref={panelRef} data-scroll-restore="skip" onContextMenu={e => e.preventDefault()} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
           {!work ? (
-            <p className="text-sm text-gray-400 italic">Open the Texts menu above and select a text to start reading.</p>
+            <p className="text-sm text-gray-400 italic">{t('texts.pickAText')}</p>
           ) : initialLoading || series.sections.length === 0 ? (
-            <p className="text-xs text-gray-300 italic">Loading…</p>
+            <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
           ) : (
             <div className="space-y-4">
               <div ref={topSentinel} />
-              {!series.backDone && <p className="text-xs text-gray-300 italic text-center">Loading previous chapter…</p>}
+              {!series.backDone && <p className="text-xs text-gray-300 italic text-center">{t('texts.loadingPrev')}</p>}
 
               {series.sections.map(section => {
                 // In a greek-prose work's English-only mode, drop the Greek-only §§ (Josephus
@@ -1393,7 +1397,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     {/* Daf sides are written lowercase ("28b"), so the Talmud opts out of the
                         heading's uppercasing — "28B" is not how anyone cites it. */}
                     <p className={`text-xs font-semibold tracking-wide text-gray-400 mb-2 ${hebrewProse ? 'normal-case' : 'uppercase'}`}>
-                      {blockHeadingFor(work, section)}
+                      {blockHeadingFor(work, section, t)}
                     </p>
                     <div className="space-y-2">
                       {filteredRows.map(row => {
@@ -1597,7 +1601,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 )
               })}
 
-              {!series.done && <p className="text-xs text-gray-300 italic text-center">Loading next chapter…</p>}
+              {!series.done && <p className="text-xs text-gray-300 italic text-center">{t('texts.loadingNext')}</p>}
               <div ref={bottomSentinel} />
             </div>
           )}
