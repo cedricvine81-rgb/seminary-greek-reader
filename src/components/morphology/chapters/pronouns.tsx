@@ -73,11 +73,11 @@ export const PRONOUNS_CONTENT = (
       options={["Accusative Plural Masculine — \"them\"", "Dative Singular Feminine — \"to/for her\"", "Genitive Singular (masc./neut.) — \"his/its\"", "Nominative Plural Feminine — \"they\"", "Genitive Plural (all genders) — \"their\"", "Nom/Acc Singular Neuter — \"it\""]}
       items={[
         { q: <span className="normal-case">αὐτούς</span>, answer: "Accusative Plural Masculine — \"them\"" },
-        { q: <span className="normal-case">αὐτῇ</span>, answer: "Dative Singular Feminine — \"to/for her\"", note: <>Or "to it," if the antecedent is a feminine thing.</> },
+        { q: <span className="normal-case">αὐτῇ</span>, answer: "Dative Singular Feminine — \"to/for her\"", note: <Tr id="pronouns.n.the-antecedent-feminine">Or "to it," if the antecedent is a feminine thing.</Tr> },
         { q: <span className="normal-case">αὐτοῦ</span>, answer: "Genitive Singular (masc./neut.) — \"his/its\"" },
         { q: <span className="normal-case">αὐταί</span>, answer: "Nominative Plural Feminine — \"they\"" },
         { q: <span className="normal-case">αὐτῶν</span>, answer: "Genitive Plural (all genders) — \"their\"" },
-        { q: <span className="normal-case">αὐτό</span>, answer: "Nom/Acc Singular Neuter — \"it\"", note: <>Neuter nominative and accusative are identical — as always.</> },
+        { q: <span className="normal-case">αὐτό</span>, answer: "Nom/Acc Singular Neuter — \"it\"", note: <Tr id="pronouns.n.neuter-nominative-and">Neuter nominative and accusative are identical — as always.</Tr> },
       ]}
     />
 
@@ -174,10 +174,10 @@ export const PRONOUNS_CONTENT = (
       items={[
         { q: <span className="normal-case">ἡμῖν</span>, answer: "Dative Plural of ἐγώ — \"to/for us\"" },
         { q: <span className="normal-case">ὑμᾶς</span>, answer: "Accusative Plural of σύ — \"you (pl.)\"" },
-        { q: <span className="normal-case">μου</span>, answer: "Genitive Singular of ἐγώ — \"my / of me\"", note: <>The short (enclitic) form — the everyday "my."</> },
+        { q: <span className="normal-case">μου</span>, answer: "Genitive Singular of ἐγώ — \"my / of me\"", note: <Tr id="pronouns.n.the-short-enclitic">The short (enclitic) form — the everyday "my."</Tr> },
         { q: <span className="normal-case">ὑμῶν</span>, answer: "Genitive Plural of σύ — \"your / of you (pl.)\"" },
-        { q: <span className="normal-case">ἐμέ</span>, answer: "Accusative Singular of ἐγώ (emphatic) — \"me\"", note: <>The long form — used for stress or after prepositions.</> },
-        { q: <span className="normal-case">ἡμεῖς</span>, answer: "Nominative Plural of ἐγώ — \"we\"", note: <>Nominative = emphasis: the verb ending already says "we."</> },
+        { q: <span className="normal-case">ἐμέ</span>, answer: "Accusative Singular of ἐγώ (emphatic) — \"me\"", note: <Tr id="pronouns.n.the-long-form">The long form — used for stress or after prepositions.</Tr> },
+        { q: <span className="normal-case">ἡμεῖς</span>, answer: "Nominative Plural of ἐγώ — \"we\"", note: <Tr id="pronouns.n.nominative-emphasis-the">Nominative = emphasis: the verb ending already says "we."</Tr> },
       ]}
     />
 
@@ -350,7 +350,7 @@ export const PRONOUNS_CONTENT = (
       options={["Interrogative — \"who?\"", "Indefinite — \"someone\"", "Interrogative — \"what? why?\"", "Indefinite — \"some (people)\"", "Interrogative — \"whose? of what?\"", "Indefinite — \"to someone\""]}
       items={[
         { q: <span className="normal-case">τίς</span>, answer: "Interrogative — \"who?\"" },
-        { q: <span className="normal-case">τις</span>, answer: "Indefinite — \"someone\"", note: <>No accent — the enclitic indefinite.</> },
+        { q: <span className="normal-case">τις</span>, answer: "Indefinite — \"someone\"", note: <Tr id="pronouns.n.accent-the-enclitic">No accent — the enclitic indefinite.</Tr> },
         { q: <span className="normal-case">τί</span>, answer: "Interrogative — \"what? why?\"" },
         { q: <span className="normal-case">τινες</span>, answer: "Indefinite — \"some (people)\"" },
         { q: <span className="normal-case">τίνος</span>, answer: "Interrogative — \"whose? of what?\"" },

@@ -392,6 +392,7 @@ export function MorphologyView({
   const activeEss = ESS_SECTIONS.find(s => s.id === essId)!
 
   return (
+    <MorphContentProvider value={chapterContent}>
     <div className="flex flex-col min-h-0">
       {/* Translation Workbench side panel (opened from ClassSentences blocks). */}
       <TranslationWorkbench />
@@ -477,7 +478,6 @@ export function MorphologyView({
 
       {/* Content */}
       <LevelContext.Provider value={level}>
-      <MorphContentProvider value={chapterContent}>
       <div className="flex-1 overflow-y-auto">
         {courseMode && <CourseHeader completed={completed} goTo={goToChapter} />}
         {mainTab === 'essentials' ? (
@@ -531,8 +531,9 @@ export function MorphologyView({
           </div>
         )}
       </div>
-      </MorphContentProvider>
+
       </LevelContext.Provider>
     </div>
+    </MorphContentProvider>
   )
 }

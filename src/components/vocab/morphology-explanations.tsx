@@ -140,114 +140,114 @@ export const ESS_EXPLANATIONS: Record<number, Explanation> = {
   1: {
     beginning: (
       <Note>
-        <P>Greek nouns change their <strong>endings</strong> to show their job in a sentence (this is called <strong>case</strong>). The 1st and 2nd declensions are the two most common ending patterns. Masculine and neuter nouns usually use 2nd-declension endings (<G>‑ος, ‑ον</G>); feminine nouns usually use 1st-declension endings (<G>‑η / ‑α</G>). Look at the last letter or two to find the case.</P>
-        <Eg>English does a tiny version of this: <em>he / him / his</em> is one word wearing three different endings for three different jobs. Greek does it to every noun.</Eg>
+        <P><T id="essentials.exp.s1.b1">Greek nouns change their <strong>endings</strong> to show their job in a sentence (this is called <strong>case</strong>). The 1st and 2nd declensions are the two most common ending patterns. Masculine and neuter nouns usually use 2nd-declension endings (<G>‑ος, ‑ον</G>); feminine nouns usually use 1st-declension endings (<G>‑η / ‑α</G>). Look at the last letter or two to find the case.</T></P>
+        <Eg><T id="essentials.exp.s1.b2">English does a tiny version of this: <em>he / him / his</em> is one word wearing three different endings for three different jobs. Greek does it to every noun.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The case names a noun's function: <strong>Nominative</strong> = subject, <strong>Genitive</strong> = "of" (possession/source), <strong>Dative</strong> = "to/for" (indirect object), <strong>Accusative</strong> = direct object. Two shortcuts save memory work: the neuter matches the masculine everywhere <em>except</em> the nominative and accusative, and the neuter nominative and accusative are always identical.</P>
-        <P>Because endings repeat across genders (<G>‑ων</G> is the genitive plural for all three), let the <strong>article</strong> and context — not the bare ending — settle an ambiguous form.</P>
+        <P><T id="essentials.exp.s1.b3">The case names a noun's function: <strong>Nominative</strong> = subject, <strong>Genitive</strong> = "of" (possession/source), <strong>Dative</strong> = "to/for" (indirect object), <strong>Accusative</strong> = direct object. Two shortcuts save memory work: the neuter matches the masculine everywhere <em>except</em> the nominative and accusative, and the neuter nominative and accusative are always identical.</T></P>
+        <P><T id="essentials.exp.s1.b4">Because endings repeat across genders (<G>‑ων</G> is the genitive plural for all three), let the <strong>article</strong> and context — not the bare ending — settle an ambiguous form.</T></P>
       </Note>
     ),
   },
   2: {
     beginning: (
       <Note>
-        <P>The 3rd declension is the "irregular-looking" group, but its endings are actually very consistent. The trick is that the noun's <strong>stem</strong> is often hidden. You find it by dropping <G>‑ος</G> from the genitive singular.</P>
-        <Eg><G>σάρξ, σαρκός</G> → stem <G>σαρκ‑</G>. Learn the endings, then attach them to that stem. English does something similar with <em>ox → oxen</em> or <em>foot → feet</em> — a few nouns reshape before adding an ending.</Eg>
+        <P><T id="essentials.exp.s2.b1">The 3rd declension is the "irregular-looking" group, but its endings are actually very consistent. The trick is that the noun's <strong>stem</strong> is often hidden. You find it by dropping <G>‑ος</G> from the genitive singular.</T></P>
+        <Eg><T id="essentials.exp.s2.b2"><G>σάρξ, σαρκός</G> → stem <G>σαρκ‑</G>. Learn the endings, then attach them to that stem. English does something similar with <em>ox → oxen</em> or <em>foot → feet</em> — a few nouns reshape before adding an ending.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Because the nominative singular often disguises the stem (letters collide when <G>‑ς</G> is added — <G>‑τ, ‑δ, ‑θ</G> drop out before <G>‑ς</G>), always parse a 3rd-declension noun from its <strong>genitive</strong>, not its nominative.</P>
-        <P>The dative plural <G>‑σι(ν)</G> triggers the very same consonant + <G>σ</G> changes you meet in the future and aorist of verbs. Neuter nouns keep the two universal rules: nom. = acc., and the plural nom./acc. ends in <G>‑α</G>.</P>
+        <P><T id="essentials.exp.s2.b3">Because the nominative singular often disguises the stem (letters collide when <G>‑ς</G> is added — <G>‑τ, ‑δ, ‑θ</G> drop out before <G>‑ς</G>), always parse a 3rd-declension noun from its <strong>genitive</strong>, not its nominative.</T></P>
+        <P><T id="essentials.exp.s2.b4">The dative plural <G>‑σι(ν)</G> triggers the very same consonant + <G>σ</G> changes you meet in the future and aorist of verbs. Neuter nouns keep the two universal rules: nom. = acc., and the plural nom./acc. ends in <G>‑α</G>.</T></P>
       </Note>
     ),
   },
   3: {
     beginning: (
       <Note>
-        <P>These are the two <strong>base</strong> sets of personal endings — every other tense is built from them. Personal endings tell you <strong>who</strong> acts (I, you, he/she/it, we, you-all, they). "Primary" endings go on present/future (non-past); "secondary" endings go on past tenses. The imperfect also adds an <G>ε‑</G> (an <strong>augment</strong>) to the front to mark past time.</P>
-        <Eg>Active endings = the subject <em>does</em> the action; middle/passive endings = the subject <em>receives</em> it (or acts on itself).</Eg>
+        <P><T id="essentials.exp.s3.b1">These are the two <strong>base</strong> sets of personal endings — every other tense is built from them. Personal endings tell you <strong>who</strong> acts (I, you, he/she/it, we, you-all, they). "Primary" endings go on present/future (non-past); "secondary" endings go on past tenses. The imperfect also adds an <G>ε‑</G> (an <strong>augment</strong>) to the front to mark past time.</T></P>
+        <Eg><T id="essentials.exp.s3.b2">Active endings = the subject <em>does</em> the action; middle/passive endings = the subject <em>receives</em> it (or acts on itself).</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Master these two rows and you can rebuild the whole indicative system: the aorist, future, and perfect simply insert a tense marker and then <em>reuse these same endings</em>. The augment (<G>ε‑</G>, or a lengthened initial vowel) is the single most reliable signal of a past-time indicative.</P>
-        <P>The 2nd-person middle forms (<G>‑ῃ / ‑ου</G>) look irregular because an <G>σ</G> between vowels dropped out — knowing that explains the odd spelling instead of forcing you to memorize it cold.</P>
+        <P><T id="essentials.exp.s3.b3">Master these two rows and you can rebuild the whole indicative system: the aorist, future, and perfect simply insert a tense marker and then <em>reuse these same endings</em>. The augment (<G>ε‑</G>, or a lengthened initial vowel) is the single most reliable signal of a past-time indicative.</T></P>
+        <P><T id="essentials.exp.s3.b4">The 2nd-person middle forms (<G>‑ῃ / ‑ου</G>) look irregular because an <G>σ</G> between vowels dropped out — knowing that explains the odd spelling instead of forcing you to memorize it cold.</T></P>
       </Note>
     ),
   },
   4: {
     beginning: (
       <Note>
-        <P>A <strong>tense identifier</strong> is a tell-tale letter (or two) added to a verb's stem that signals its tense. Learn these "flags" and you can spot a verb's tense at a glance: <G>‑σ‑</G> = future, <G>‑σα‑</G> = aorist active/middle, <G>‑θη‑</G> = aorist passive, <G>‑κα‑</G> = perfect active.</P>
-        <Eg><G>λύω</G> "I loose" → <G>λύσω</G> has <G>‑σ‑</G>, so it is future: "I <em>will</em> loose."</Eg>
+        <P><T id="essentials.exp.s4.b1">A <strong>tense identifier</strong> is a tell-tale letter (or two) added to a verb's stem that signals its tense. Learn these "flags" and you can spot a verb's tense at a glance: <G>‑σ‑</G> = future, <G>‑σα‑</G> = aorist active/middle, <G>‑θη‑</G> = aorist passive, <G>‑κα‑</G> = perfect active.</T></P>
+        <Eg><T id="essentials.exp.s4.b2"><G>λύω</G> "I loose" → <G>λύσω</G> has <G>‑σ‑</G>, so it is future: "I <em>will</em> loose."</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Identifiers sit <em>between</em> the stem and the personal ending, so parsing is a two-step scan: (1) find the identifier for tense/voice, (2) read the ending for person/number.</P>
-        <P>Watch for reduced forms — the <G>σ</G> of <G>‑σα</G> or the <G>θ</G> of <G>‑θη</G> can drop or assimilate next to certain endings, so recognize the <em>family</em> (σ-cluster = aorist, θ-cluster = passive) rather than an exact string. The perfect's reduplication (<G>λε‑λυ‑κα</G>) is a second, front-of-word flag reinforcing the <G>‑κα</G>.</P>
+        <P><T id="essentials.exp.s4.b3">Identifiers sit <em>between</em> the stem and the personal ending, so parsing is a two-step scan: (1) find the identifier for tense/voice, (2) read the ending for person/number.</T></P>
+        <P><T id="essentials.exp.s4.b4">Watch for reduced forms — the <G>σ</G> of <G>‑σα</G> or the <G>θ</G> of <G>‑θη</G> can drop or assimilate next to certain endings, so recognize the <em>family</em> (σ-cluster = aorist, θ-cluster = passive) rather than an exact string. The perfect's reduplication (<G>λε‑λυ‑κα</G>) is a second, front-of-word flag reinforcing the <G>‑κα</G>.</T></P>
       </Note>
     ),
   },
   5: {
     beginning: (
       <Note>
-        <P>This is the "recipe" for building any tense: start from the present or imperfect endings, then modify the connecting vowel with the right identifier. Past tenses (secondary) build on <strong>imperfect</strong> endings; non-past (primary) build on <strong>present</strong> endings.</P>
-        <Eg>To make the aorist active, take the imperfect endings and swap the connecting vowel for <G>‑σα</G>: <G>ἔλυον</G> → <G>ἔλυσα</G>, "I loosed."</Eg>
+        <P><T id="essentials.exp.s5.b1">This is the "recipe" for building any tense: start from the present or imperfect endings, then modify the connecting vowel with the right identifier. Past tenses (secondary) build on <strong>imperfect</strong> endings; non-past (primary) build on <strong>present</strong> endings.</T></P>
+        <Eg><T id="essentials.exp.s5.b2">To make the aorist active, take the imperfect endings and swap the connecting vowel for <G>‑σα</G>: <G>ἔλυον</G> → <G>ἔλυσα</G>, "I loosed."</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The system is economical — you never memorize a brand-new paradigm, only a <em>transformation</em> applied to a base. "Insert" operations (future) keep primary endings; "replace" operations (aorist/perfect) reshape the connecting vowel and take secondary endings.</P>
-        <P>Once this clicks, an unfamiliar form can be reverse-engineered: strip the ending, identify the marker, subtract it, and you are left with the lexical stem to look up in a dictionary.</P>
+        <P><T id="essentials.exp.s5.b3">The system is economical — you never memorize a brand-new paradigm, only a <em>transformation</em> applied to a base. "Insert" operations (future) keep primary endings; "replace" operations (aorist/perfect) reshape the connecting vowel and take secondary endings.</T></P>
+        <P><T id="essentials.exp.s5.b4">Once this clicks, an unfamiliar form can be reverse-engineered: strip the ending, identify the marker, subtract it, and you are left with the lexical stem to look up in a dictionary.</T></P>
       </Note>
     ),
   },
   6: {
     beginning: (
       <Note>
-        <P>A <strong>participle</strong> is a verbal adjective — an "‑ing" or "‑ed" word (loosing, loosed) that still describes a noun, so it takes noun-like endings for gender, case, and number. Know two patterns: the participle of <G>εἰμί</G> (<G>ὤν, οὖσα, ὄν</G> = "being"), and the middle/passive participle, which always contains the giveaway chunk <G>‑μεν‑</G> (<G>λυόμενος</G> = "being loosed").</P>
-        <Eg>"The <em>running</em> water," "a <em>broken</em> cup" — participles describing nouns.</Eg>
+        <P><T id="essentials.exp.s6.b1">A <strong>participle</strong> is a verbal adjective — an "‑ing" or "‑ed" word (loosing, loosed) that still describes a noun, so it takes noun-like endings for gender, case, and number. Know two patterns: the participle of <G>εἰμί</G> (<G>ὤν, οὖσα, ὄν</G> = "being"), and the middle/passive participle, which always contains the giveaway chunk <G>‑μεν‑</G> (<G>λυόμενος</G> = "being loosed").</T></P>
+        <Eg><T id="essentials.exp.s6.b2">"The <em>running</em> water," "a <em>broken</em> cup" — participles describing nouns.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Spotting <G>‑μεν‑</G> instantly narrows a participle to middle/passive; its absence points to active. Active participles decline on a 3rd-declension pattern (masc./neut.) plus 1st-declension (fem.), which is why <G>‑ντ‑</G> surfaces (<G>λύο‑ντ‑ος</G>).</P>
-        <P>Participles carry tense (aspect) and voice but no person, so translate them <em>relative to the main verb</em>: a present participle = same time / ongoing, an aorist participle = usually prior / completed action.</P>
+        <P><T id="essentials.exp.s6.b3">Spotting <G>‑μεν‑</G> instantly narrows a participle to middle/passive; its absence points to active. Active participles decline on a 3rd-declension pattern (masc./neut.) plus 1st-declension (fem.), which is why <G>‑ντ‑</G> surfaces (<G>λύο‑ντ‑ος</G>).</T></P>
+        <P><T id="essentials.exp.s6.b4">Participles carry tense (aspect) and voice but no person, so translate them <em>relative to the main verb</em>: a present participle = same time / ongoing, an aorist participle = usually prior / completed action.</T></P>
       </Note>
     ),
   },
   7: {
     beginning: (
       <Note>
-        <P>The <strong>subjunctive</strong> is the mood of "might / should" (potential, not fact); its flag is a <strong>lengthened</strong> connecting vowel (<G>ω/η</G> where the indicative had <G>ο/ε</G>). The <strong>imperative</strong> is the mood of commands ("Loose!"). For the imperative, memorize two endings: 3rd singular <G>‑τω</G> and 3rd plural <G>‑τωσαν</G>.</P>
-        <Hook>The subjunctive usually announces itself with a "<strong>flag word</strong>" just before it — <G>ἵνα</G> / <G>ὅπως</G> (purpose) or <G>ἄν</G> / <G>ἐάν</G> (indefinite / conditional).</Hook>
-        <Eg><G>εἰμί</G> has its own subjunctive worth learning: <G>ὦ, ᾖς, ᾖ…</G></Eg>
+        <P><T id="essentials.exp.s7.b1">The <strong>subjunctive</strong> is the mood of "might / should" (potential, not fact); its flag is a <strong>lengthened</strong> connecting vowel (<G>ω/η</G> where the indicative had <G>ο/ε</G>). The <strong>imperative</strong> is the mood of commands ("Loose!"). For the imperative, memorize two endings: 3rd singular <G>‑τω</G> and 3rd plural <G>‑τωσαν</G>.</T></P>
+        <Hook><T id="essentials.exp.s7.b2">The subjunctive usually announces itself with a "<strong>flag word</strong>" just before it — <G>ἵνα</G> / <G>ὅπως</G> (purpose) or <G>ἄν</G> / <G>ἐάν</G> (indefinite / conditional).</T></Hook>
+        <Eg><T id="essentials.exp.s7.b3"><G>εἰμί</G> has its own subjunctive worth learning: <G>ὦ, ᾖς, ᾖ…</G></T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The subjunctive's long vowel is the whole tell — and <strong>no augment ever appears</strong>, even in the aorist subjunctive, because these moods express aspect, not time. So aorist subjunctive/imperative describe a single, whole action, while present forms describe ongoing action: the difference is <em>kind</em> of action, not <em>when</em>.</P>
-        <P>Greek's third-person imperative (<G>‑τω</G>, "let him…") has no clean English equal, so translate with "let / should."</P>
+        <P><T id="essentials.exp.s7.b4">The subjunctive's long vowel is the whole tell — and <strong>no augment ever appears</strong>, even in the aorist subjunctive, because these moods express aspect, not time. So aorist subjunctive/imperative describe a single, whole action, while present forms describe ongoing action: the difference is <em>kind</em> of action, not <em>when</em>.</T></P>
+        <P><T id="essentials.exp.s7.b5">Greek's third-person imperative (<G>‑τω</G>, "let him…") has no clean English equal, so translate with "let / should."</T></P>
       </Note>
     ),
   },
   8: {
     beginning: (
       <Note>
-        <P>A small but very common group of verbs ends in <G>‑μι</G> instead of <G>‑ω</G>: <G>δίδωμι</G> "I give," <G>τίθημι</G> "I put," <G>ἵστημι</G> "I stand." They look strange because in the present and imperfect they <strong>reduplicate</strong> with an iota (<G>δι‑δω‑μι</G>) and their stem vowel shifts short/long (<G>δο/δω</G>).</P>
-        <Hook><G>‑μι</G> verbs have <strong>two stems</strong>: the <strong>present stem</strong> (longer) covers present + imperfect; the <strong>verbal stem</strong> (shorter) covers future, aorist + perfect.</Hook>
-        <Eg>Good news: outside the present and imperfect, <G>‑μι</G> verbs behave almost like normal <G>‑ω</G> verbs.</Eg>
+        <P><T id="essentials.exp.s8.b1">A small but very common group of verbs ends in <G>‑μι</G> instead of <G>‑ω</G>: <G>δίδωμι</G> "I give," <G>τίθημι</G> "I put," <G>ἵστημι</G> "I stand." They look strange because in the present and imperfect they <strong>reduplicate</strong> with an iota (<G>δι‑δω‑μι</G>) and their stem vowel shifts short/long (<G>δο/δω</G>).</T></P>
+        <Hook><T id="essentials.exp.s8.b2"><G>‑μι</G> verbs have <strong>two stems</strong>: the <strong>present stem</strong> (longer) covers present + imperfect; the <strong>verbal stem</strong> (shorter) covers future, aorist + perfect.</T></Hook>
+        <Eg><T id="essentials.exp.s8.b3">Good news: outside the present and imperfect, <G>‑μι</G> verbs behave almost like normal <G>‑ω</G> verbs.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The iota-reduplication is a <strong>present/imperfect-only</strong> flag — see it and you know the tense system; lose it and you are in the aorist/future/perfect, where μι-verbs act regularly on the short stem.</P>
-        <P>Their aorist marker is <G>‑κα</G>, not <G>‑σα</G> (<G>ἔδωκα, ἔθηκα</G>), which is why their aorists resemble perfects — use reduplication and context to tell the two apart.</P>
+        <P><T id="essentials.exp.s8.b4">The iota-reduplication is a <strong>present/imperfect-only</strong> flag — see it and you know the tense system; lose it and you are in the aorist/future/perfect, where μι-verbs act regularly on the short stem.</T></P>
+        <P><T id="essentials.exp.s8.b5">Their aorist marker is <G>‑κα</G>, not <G>‑σα</G> (<G>ἔδωκα, ἔθηκα</G>), which is why their aorists resemble perfects — use reduplication and context to tell the two apart.</T></P>
       </Note>
     ),
   },
@@ -486,7 +486,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
           <Cat id="participles.cat.imperatival"name="Imperatival" ex={[{ g: "τῇ ἐλπίδι χαίροντες, τῇ θλίψει ὑπομένοντες", e: "rejoice in hope, be patient in tribulation", r: "Rom 12:12" }, { g: "ἀποστυγοῦντες τὸ πονηρόν, κολλώμενοι τῷ ἀγαθῷ", e: "abhor what is evil, cling to what is good", r: "Rom 12:9" }]}><T id="participles.cat.imperatival.d">a participle functioning as a command</T></Cat>
           <Cat id="participles.cat.genitive-absolute"name="Genitive Absolute" ex={[{ g: "ὀψίας δὲ γενομένης", e: "when evening had come", r: "Matt 8:16" }, { g: "ἔτι αὐτοῦ λαλοῦντος ἰδοὺ Ἰούδας ἦλθεν", e: "while he was still speaking, behold, Judas came", r: "Matt 26:47" }]}><T id="participles.cat.genitive-absolute.d">detached participle + noun, both genitive — usually background/time</T></Cat>
         </CatGroup>
-        <Hook>Don't be afraid to add "<strong>who</strong>" for a substantival participle, and if the first word of a sentence is <strong>genitive</strong>, <em>think genitive absolute</em> — its subject differs from the main verb's (<G>ὀψίας γενομένης</G>… = "when evening had come…").</Hook>
+        <Hook><T id="participles.exp.x.b1">Don't be afraid to add "<strong>who</strong>" for a substantival participle, and if the first word of a sentence is <strong>genitive</strong>, <em>think genitive absolute</em> — its subject differs from the main verb's (<G>ὀψίας γενομένης</G>… = "when evening had come…").</T></Hook>
       </Note>
     ),
   },

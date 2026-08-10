@@ -127,7 +127,7 @@ export const INDICATIVES_CONTENT = (
       intro={<Tr id="indicatives.intro.prefix-lengthened-opening">The ἐ- prefix (or a lengthened opening vowel) marks past time in the indicative.</Tr>}
       options={["Augmented — past time", "No augment — not past"]}
       items={[
-        { q: <span className="normal-case">ἤκουον</span>, answer: "Augmented — past time", note: <>ἀ lengthened to ἠ.</> },
+        { q: <span className="normal-case">ἤκουον</span>, answer: "Augmented — past time", note: <Tr id="indicatives.n.lengthened">ἀ lengthened to ἠ.</Tr> },
         { q: <span className="normal-case">πιστεύομεν</span>, answer: "No augment — not past" },
         { q: <span className="normal-case">ἐλέγετε</span>, answer: "Augmented — past time" },
         { q: <span className="normal-case">ἔχει</span>, answer: "No augment — not past" },

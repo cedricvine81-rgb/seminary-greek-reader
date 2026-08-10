@@ -138,7 +138,7 @@ export const LIQUIDS_CONTENT = (
     <Practice
       id="liquids.pr"
       title="Practice — parse and translate"
-      intro={<>Watch accents and stem-stretches. Vocabulary: <span className="normal-case">καρπός</span> "fruit" · <span className="normal-case">νεκρός</span> "dead."</>}
+      intro={<Tr id="liquids.intro.watch-accents-and">Watch accents and stem-stretches. Vocabulary: <span className="normal-case">καρπός</span> "fruit" · <span className="normal-case">νεκρός</span> "dead."</Tr>}
       items={[
         { q: <span className="normal-case">μείνατε ἐν ἐμοί.</span>,
           a: <Tr id="liquids.pr.a0">"Remain in me" — aorist imperative of μένω (John 15:4): the stretched μειν-stem, no σ.</Tr> },
