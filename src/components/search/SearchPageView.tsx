@@ -18,6 +18,7 @@ import { findProseWork } from '@/lib/prose-texts'
 import { noteBookFor } from '@/lib/note-book'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
@@ -32,15 +33,25 @@ import { betaCodeToGreek } from '@/lib/greek-translit'
 // right-click word menu (all via MasterSearchProvider → router.push('/search?…')).
 
 const TRANSLATIONS = [
-  { lang: 'en',  label: 'English (WEB)' },
-  { lang: 'bsb', label: 'English (BSB)' },
-  { lang: 'es',  label: 'Spanish' },
-  { lang: 'fr',  label: 'French' },
-  { lang: 'pt',  label: 'Portuguese' },
-  { lang: 'ru',  label: 'Russian' },
-  { lang: 'ko',  label: 'Korean' },
-  { lang: 'zh',  label: 'Mandarin' },
+  { lang: 'en',  key: 'search.trans.enWeb' },
+  { lang: 'bsb', key: 'search.trans.enBsb' },
+  { lang: 'es',  key: 'search.trans.es' },
+  { lang: 'fr',  key: 'search.trans.fr' },
+  { lang: 'pt',  key: 'search.trans.pt' },
+  { lang: 'ru',  key: 'search.trans.ru' },
+  { lang: 'ko',  key: 'search.trans.ko' },
+  { lang: 'zh',  key: 'search.trans.zh' },
 ]
+
+// Which translation a search starts in. It follows the READER'S language where that language
+// has an index of its own: opening the search in Spanish and being handed the English Bible
+// made the Spanish interface cosmetic — every result came back in a language the student had
+// just chosen not to read. Every interface locale currently has a matching index, so the
+// fallback is only a guard for a future locale that ships before its translation does.
+const TRANS_LANGS = new Set(TRANSLATIONS.map(tr => tr.lang))
+function defaultTransLang(locale: string): string {
+  return TRANS_LANGS.has(locale) ? locale : 'en'
+}
 const COLLECTIONS = TEXT_CATEGORIES.filter(c => !c.comingSoon && c.works.length > 0)
 
 // LXX books with no Protestant-canon counterpart — shown only for the Greek Septuagint scope,
@@ -154,45 +165,52 @@ type SortMode = 'relevance' | 'canonical'
 
 // Sample searches shown in the "Search types" pane — click one to run it (and switch scope
 // where the example needs it, e.g. Greek or background texts).
-interface Example { label: string; query: string; scope?: string }
-const SEARCH_EXAMPLES: { group: string; hint: string; items: Example[] }[] = [
-  { group: 'Single word', hint: 'accent- and case-insensitive', items: [
-    { label: 'love', query: 'love' },
-    { label: 'grace', query: 'grace' },
-    { label: 'covenant', query: 'covenant' },
+// An example is CLICKED TO RUN, so `queryKey` is not a caption — it is the query itself, and
+// it has to be a word that actually occurs in the corpus the example searches. That splits the
+// list in two: the first three groups search a Bible translation, which follows the reader's
+// language, so their queries are looked up; the Greek and background groups pin an explicit
+// scope whose corpus is Greek / English in every locale, so their queries are literals. A
+// translated "temple" would search the English Philo for a Spanish word and quietly find
+// nothing — the one failure mode an example is supposed to rule out.
+interface Example { queryKey?: string; query?: string; scope?: string }
+const SEARCH_EXAMPLES: { groupKey: string; hintKey: string; items: Example[] }[] = [
+  { groupKey: 'search.ex.singleWord', hintKey: 'search.ex.singleWordHint', items: [
+    { queryKey: 'search.ex.q.love' },
+    { queryKey: 'search.ex.q.grace' },
+    { queryKey: 'search.ex.q.covenant' },
   ] },
-  { group: 'All of these words', hint: 'every word must appear (any order)', items: [
-    { label: 'faith hope love', query: 'faith hope love' },
-    { label: 'bread wine', query: 'bread wine' },
+  { groupKey: 'search.ex.allWords', hintKey: 'search.ex.allWordsHint', items: [
+    { queryKey: 'search.ex.q.faithHopeLove' },
+    { queryKey: 'search.ex.q.breadWine' },
   ] },
-  { group: 'Exact phrase', hint: 'wrap in "quotes"', items: [
-    { label: '"kingdom of God"', query: '"kingdom of God"' },
-    { label: '"eternal life"', query: '"eternal life"' },
+  { groupKey: 'search.ex.phrase', hintKey: 'search.ex.phraseHint', items: [
+    { queryKey: 'search.ex.q.kingdomOfGod' },
+    { queryKey: 'search.ex.q.eternalLife' },
   ] },
-  { group: 'Greek word', hint: 'searches the Greek text (type or paste Greek)', items: [
-    { label: 'ἀγάπη', query: 'ἀγάπη', scope: 'greek:GNT' },
-    { label: 'λόγος', query: 'λόγος', scope: 'greek:GNT' },
-    { label: 'πίστις', query: 'πίστις', scope: 'greek:GNT' },
+  { groupKey: 'search.ex.greek', hintKey: 'search.ex.greekHint', items: [
+    { query: 'ἀγάπη', scope: 'greek:GNT' },
+    { query: 'λόγος', scope: 'greek:GNT' },
+    { query: 'πίστις', scope: 'greek:GNT' },
   ] },
-  { group: 'Background texts', hint: 'Philo, Josephus, Apocrypha, Mishnah…', items: [
-    { label: 'temple', query: 'temple', scope: 'bg:all' },
-    { label: 'Sabbath', query: 'Sabbath', scope: 'bg:all' },
+  { groupKey: 'search.ex.bg', hintKey: 'search.ex.bgHint', items: [
+    { query: 'temple', scope: 'bg:all' },
+    { query: 'Sabbath', scope: 'bg:all' },
   ] },
 ]
 
 // Friendly name for the page a search was launched from (its path), for the "Return to" button.
-const RETURN_LABELS: { test: RegExp; label: string }[] = [
-  { test: /^\/reader/, label: 'Reader' },
-  { test: /^\/exegesis\?.*tab=texts/, label: 'Texts' },
-  { test: /^\/exegesis\?.*tab=backgrounds/, label: 'Backgrounds' },
-  { test: /^\/exegesis\?.*tab=commentary/, label: 'Commentary' },
-  { test: /^\/exegesis\?.*tab=notes/, label: 'Notes' },
-  { test: /^\/exegesis/, label: 'Exegesis' },
-  { test: /^\/vocab/, label: 'Vocabulary' },
-  { test: /^\/(grammar|morphology)/, label: 'Grammar' },
+const RETURN_LABELS: { test: RegExp; key: string }[] = [
+  { test: /^\/reader/, key: 'search.return.reader' },
+  { test: /^\/exegesis\?.*tab=texts/, key: 'search.return.texts' },
+  { test: /^\/exegesis\?.*tab=backgrounds/, key: 'search.return.backgrounds' },
+  { test: /^\/exegesis\?.*tab=commentary/, key: 'search.return.commentary' },
+  { test: /^\/exegesis\?.*tab=notes/, key: 'search.return.notes' },
+  { test: /^\/exegesis/, key: 'search.return.exegesis' },
+  { test: /^\/vocab/, key: 'search.return.vocabulary' },
+  { test: /^\/(grammar|morphology)/, key: 'search.return.grammar' },
 ]
-function returnLabelFor(from: string): string {
-  return RETURN_LABELS.find(r => r.test.test(from))?.label ?? 'page'
+function returnLabelFor(from: string, t: (k: string) => string): string {
+  return t(RETURN_LABELS.find(r => r.test.test(from))?.key ?? 'search.return.page')
 }
 
 export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo, embedded = false, onRequestClose, isAuthenticated = false, onParseInfo, onParsePaneActive }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string; embedded?: boolean; onRequestClose?: () => void; isAuthenticated?: boolean;
@@ -201,9 +219,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // onParsePaneActive says whether Greek results are showing (so the host can mount the pane).
   onParseInfo?: (info: LexicalInfoPanel | null) => void; onParsePaneActive?: (active: boolean) => void }) {
   const router = useRouter()
+  const t = useT()
+  const locale = useLocale()
+  const homeTrans = defaultTransLang(locale)
   const [query, setQuery] = useState(initialQuery)
-  const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
-  const [transLang, setTransLang] = useState(initialScope?.startsWith('trans:') ? initialScope.slice(6) : 'en')
+  const [scopeVal, setScopeVal] = useState(initialScope || `trans:${homeTrans}`)
+  const [transLang, setTransLang] = useState(initialScope?.startsWith('trans:') ? initialScope.slice(6) : homeTrans)
   const [books, setBooks] = useState<string[]>(initialBooks ? initialBooks.split(',').filter(Boolean) : [])
   const [showBooks, setShowBooks] = useState(false)
   const [showTypes, setShowTypes] = useState(false)
@@ -287,15 +308,15 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const bookGroups: BookGroup[] = useMemo(() => {
     if (!catalog) return []
     if (scope.kind === 'greek') {
-      if (scope.corpus === 'GNT') return [{ heading: 'New Testament', books: catalog.gnt }]
+      if (scope.corpus === 'GNT') return [{ heading: t('search.books.nt'), books: catalog.gnt }]
       return [
-        { heading: 'Old Testament', books: catalog.lxx.filter(b => !DEUTERO.has(b.osisId)) },
-        { heading: 'Deutero-Canonical', books: catalog.lxx.filter(b => DEUTERO.has(b.osisId)) },
+        { heading: t('search.books.ot'), books: catalog.lxx.filter(b => !DEUTERO.has(b.osisId)) },
+        { heading: t('search.books.deutero'), books: catalog.lxx.filter(b => DEUTERO.has(b.osisId)) },
       ]
     }
     if (scope.kind === 'trans') return [
-      { heading: 'Old Testament', books: catalog.lxx.filter(b => !DEUTERO.has(b.osisId)) },
-      { heading: 'New Testament', books: catalog.gnt },
+      { heading: t('search.books.ot'), books: catalog.lxx.filter(b => !DEUTERO.has(b.osisId)) },
+      { heading: t('search.books.nt'), books: catalog.gnt },
     ]
     return []
   }, [catalog, scope])
@@ -305,17 +326,17 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     return m
   }, [catalog])
   const selectedSet = useMemo(() => new Set(books), [books])
-  const booksLabel = books.length === 0 ? 'Any Biblical book'
+  const booksLabel = books.length === 0 ? t('search.booksAny')
     : books.length === 1 ? (bookName.get(books[0]) ?? books[0])
-    : `${books.length} books`
+    : t('search.booksN', { count: books.length, n: books.length })
   const booksKey = books.join(',')
 
   const laneList = useMemo(() => [
-    { val: `trans:${transLang}`, label: TRANSLATIONS.find(t => t.lang === transLang)?.label ?? 'Translation' },
-    { val: 'greek:GNT', label: 'Greek NT' },
-    { val: 'greek:LXX', label: 'Greek LXX' },
-    { val: 'bg:all', label: 'Backgrounds' },
-  ], [transLang])
+    { val: `trans:${transLang}`, label: t(TRANSLATIONS.find(tr => tr.lang === transLang)?.key ?? 'search.trans.generic') },
+    { val: 'greek:GNT', label: t('search.lane.greekNT') },
+    { val: 'greek:LXX', label: t('search.lane.greekLXX') },
+    { val: 'bg:all', label: t('search.lane.backgrounds') },
+  ], [transLang, t])
   const activeLane = scope.kind === 'bg' ? 'bg:all'
     : scope.kind === 'greek' ? `greek:${scope.corpus}`
     : scope.kind === 'hebrew' ? 'hebrew:MT'
@@ -447,8 +468,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
   // Debounced search.
   useEffect(() => {
-    const t = setTimeout(() => void runSearch(query, scopeVal, booksKey, sort, lemmaMode, hebStrongs), 250)
-    return () => clearTimeout(t)
+    const timer = setTimeout(() => void runSearch(query, scopeVal, booksKey, sort, lemmaMode, hebStrongs), 250)
+    return () => clearTimeout(timer)
   }, [query, scopeVal, booksKey, sort, lemmaMode, hebStrongs, runSearch])
 
   // Live counts for the result-type tabs (all lanes, in parallel). Debounced; reqId guard.
@@ -460,14 +481,14 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     const id = ++countReq.current
     const lanes = [...laneList.map(l => l.val), ...(embedded ? ['hebrew:MT'] : [])]
     setCounts(prev => { const n: Record<string, number | null> = {}; for (const v of lanes) n[v] = prev[v] ?? null; return n })
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       for (const val of lanes) {
         fetchLaneCount(val, q, lemmaMode)
           .then(c => { if (id === countReq.current) setCounts(prev => ({ ...prev, [val]: c })) })
           .catch(() => { if (id === countReq.current) setCounts(prev => ({ ...prev, [val]: 0 })) })
       }
     }, 300)
-    return () => clearTimeout(t)
+    return () => clearTimeout(timer)
   }, [query, laneList, lemmaMode, embedded])
 
   // Verse context for biblical hits: when the slider is > 0, fetch each shown hit's neighbouring
@@ -526,7 +547,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     else if (scope.kind === 'trans') langParam = `&lang=${scope.lang}`
     else if (scope.kind === 'bg' && scope.lang !== 'grc') langParam = '&lang=en'
     const ctrl = new AbortController()
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       fetch(`/api/suggest?q=${encodeURIComponent(lastWord)}${langParam}`, { signal: ctrl.signal })
         .then(r => (r.ok ? r.json() : { suggestions: [] }))
         .then(d => {
@@ -537,7 +558,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         })
         .catch(() => {})
     }, 150)
-    return () => { clearTimeout(t); ctrl.abort() }
+    return () => { clearTimeout(timer); ctrl.abort() }
   }, [query, scope])
 
   function onQueryChange(e: ChangeEvent<HTMLInputElement>) {
@@ -599,9 +620,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     setBooks(prev => prev.includes(osisId) ? prev.filter(b => b !== osisId) : [...prev, osisId])
   const toggleGroup = (ids: string[], select: boolean) =>
     setBooks(prev => select ? Array.from(new Set([...prev, ...ids])) : prev.filter(b => !ids.includes(b)))
+  // The text of an example IS its query — resolved here so a looked-up example runs the
+  // reader's language while a pinned-scope one runs its corpus's own.
+  const exampleText = (ex: Example): string => ex.queryKey ? t(ex.queryKey) : (ex.query ?? '')
   const runExample = (ex: Example) => {
     if (ex.scope) setScopeVal(ex.scope)
-    setQuery(ex.query)
+    setQuery(exampleText(ex))
     setShowTypes(false)
     inputRef.current?.focus()
   }
@@ -705,18 +729,18 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
   // Context slider + sort toggle, shown above every result set (biblical and background). The
   // second sort mode is "Canonical" for Scripture, "Document order" for non-canonical works.
-  const canonicalLabel = isBiblical ? 'Canonical' : 'Document order'
+  const canonicalLabel = isBiblical ? t('search.sortCanonical') : t('search.sortDocOrder')
   const controlsBar = (countLabel: string) => (
     <div className="flex items-center justify-between gap-3 flex-wrap pb-2">
       <p className="text-xs text-gray-400">{countLabel}</p>
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-1.5 text-[11px] text-gray-500">
-          <span title="Show surrounding verses for context">Context</span>
+          <span title={t('search.contextTitle')}>{t('search.context')}</span>
           <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5">
             {[0, 1, 2, 3].map(n => (
               <button key={n} type="button" onClick={() => setContext(n)}
                 className={`rounded-full px-2 py-0.5 tabular-nums transition-colors ${context === n ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
-                {n === 0 ? 'off' : `±${n}`}
+                {n === 0 ? t('search.contextOff') : `±${n}`}
               </button>
             ))}
           </div>
@@ -725,17 +749,17 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             column (Greek / Hebrew scopes). Sits before the sort toggle so it reads above it. */}
         {(scope.kind === 'greek' || scope.kind === 'hebrew') && (
           <select value={parallelLang} onChange={e => setParallelLang(e.target.value)}
-            title="Parallel translation column"
+            title={t('search.parallelTitle')}
             className="rounded-md border border-gray-200 bg-surface px-2 py-1 text-[11px] text-gray-600">
-            <option value="none">No translation</option>
-            {TRANSLATIONS.map(t => <option key={t.lang} value={t.lang}>{t.label}</option>)}
+            <option value="none">{t('search.noTranslation')}</option>
+            {TRANSLATIONS.map(tr => <option key={tr.lang} value={tr.lang}>{t(tr.key)}</option>)}
           </select>
         )}
         <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
           {(['relevance', 'canonical'] as SortMode[]).map(m => (
             <button key={m} type="button" onClick={() => setSort(m)}
               className={`rounded-full px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
-              {m === 'relevance' ? 'Relevance' : canonicalLabel}
+              {m === 'relevance' ? t('search.sortRelevance') : canonicalLabel}
             </button>
           ))}
         </div>
@@ -752,16 +776,16 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     setBgSelKey(key)
     // A word in a grey CONTEXT verse parses against that verse, not the matched one — same
     // work/corpus, only the chapter/verse differ.
-    const t = tv ? { ...h.target, chapter: tv.chapter, verse: tv.verse } : h.target
+    const tgt = tv ? { ...h.target, chapter: tv.chapter, verse: tv.verse } : h.target
     // Literal punctuation class (no \p{} — the repo's TS target predates the u-flag).
     const clean = surface.replace(/^[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–·-]+|[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–·-]+$/g, '')
     const base: LexicalInfoPanel = { surface: clean || surface, lexeme: '', gloss: '', partOfSpeech: '', parsing: '', reference: h.ref }
-    if (t.source === 'lxx' && t.osisId) {
-      const ck = `${t.osisId}.${t.chapter}`
+    if (tgt.source === 'lxx' && tgt.osisId) {
+      const ck = `${tgt.osisId}.${tgt.chapter}`
       if (!(`lxx.${ck}.1` in lxxWords.current) && !bgFetching.current.has(ck)) {
         bgFetching.current.add(ck)
         try {
-          const r = await fetch(`/api/reader?book=${t.osisId}&chapter=${t.chapter}&corpus=LXX`)
+          const r = await fetch(`/api/reader?book=${tgt.osisId}&chapter=${tgt.chapter}&corpus=LXX`)
           const d = r.ok ? await r.json() : null
           for (const v of d?.verses ?? []) {
             lxxWords.current[`lxx.${ck}.${v.verse}`] = (v.words ?? []).map((w: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: Record<string, string | null>[] }) => ({
@@ -774,7 +798,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           }
         } catch { bgFetching.current.delete(ck) }
       }
-      const words = lxxWords.current[`lxx.${ck}.${t.verse}`]
+      const words = lxxWords.current[`lxx.${ck}.${tgt.verse}`]
       // Align by token index; if punctuation/crasis skews the split, fall back to the surface.
       const w = words?.[ti] && normalizeFold(words[ti].surface).includes(normalizeFold(clean))
         ? words[ti]
@@ -785,9 +809,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       return
     }
     // Prose morph sidecars (Josephus per-book; other Greek prose one per work).
-    const url = t.source === 'josephus' && t.workDir && t.book != null
-      ? `/data/josephus/${t.workDir}/${t.book}.morph.json`
-      : (() => { const pw = findProseWork(t.source as Exclude<OpenInTextsTarget['source'], 'lxx' | 'josephus'>); return pw ? pw.dataUrl.replace(/\.json$/, '.morph.json') : null })()
+    const url = tgt.source === 'josephus' && tgt.workDir && tgt.book != null
+      ? `/data/josephus/${tgt.workDir}/${tgt.book}.morph.json`
+      : (() => { const pw = findProseWork(tgt.source as Exclude<OpenInTextsTarget['source'], 'lxx' | 'josephus'>); return pw ? pw.dataUrl.replace(/\.json$/, '.morph.json') : null })()
     if (!url) { showBgInfo(base); return }
     if (!(url in morphMaps.current) && !bgFetching.current.has(url)) {
       bgFetching.current.add(url)
@@ -798,7 +822,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     }
     const map = morphMaps.current[url]
     // Josephus §§ are book-unique (keyed by section); prose works key by "<chapter>.<verse>".
-    const entries = map ? (map[String(t.verse)] ?? map[`${t.chapter}.${t.verse}`]) : undefined
+    const entries = map ? (map[String(tgt.verse)] ?? map[`${tgt.chapter}.${tgt.verse}`]) : undefined
     const entry = entries?.[ti]
     showBgInfo(entry ? { ...base, lexeme: entry[0], parsing: entry[1] } : base)
   }
@@ -928,9 +952,17 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // depends on the result kind.
   const hasResults = !loading && ((isBiblical && !!displayBib && displayBib.length > 0) || (!isBiblical && !!bg && bg.total > 0))
   const resultCountLabel = isBiblical && displayBib
-    ? `${displayBib.length}${displayBib.length >= 300 ? '+' : ''} verse${displayBib.length === 1 ? '' : 's'}`
+    ? t('search.verseCount', {
+        count: displayBib.length,
+        n: `${displayBib.length}${displayBib.length >= 300 ? '+' : ''}`,
+      })
     : bg
-    ? `${bg.total}${bg.truncated ? '+' : ''} match${bg.total === 1 ? '' : 'es'} in ${bg.groups.length} work${bg.groups.length === 1 ? '' : 's'}`
+    // Two counts in one line, each pluralising on its own — composed so a language can put
+    // them in whichever order reads naturally.
+    ? t('search.matchesInWorks', {
+        matches: t('search.matchCount', { count: bg.total, n: `${bg.total}${bg.truncated ? '+' : ''}` }),
+        works: t('search.workCount', { count: bg.groups.length, n: bg.groups.length }),
+      })
     : ''
 
   return (
@@ -947,9 +979,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             back would misfire; the scroll snapshot (sessionStorage, keyed by URL) restores. */}
         {returnTo ? (
           <button type="button" onClick={() => { markScrollRestore(returnTo); router.push(returnTo) }}
-            title={`Return to ${returnLabelFor(returnTo)}`}
+            title={t('search.returnTo', { page: returnLabelFor(returnTo, t) })}
             className="flex-none inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-800 transition-colors">
-            <ArrowLeft size={16} /> {returnLabelFor(returnTo)}
+            <ArrowLeft size={16} /> {returnLabelFor(returnTo, t)}
           </button>
         ) : !embedded && (
           // Reached without an origin — a bookmark, a shared link, or the tab bar on a phone,
@@ -958,14 +990,14 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           // back to the reader if this is the first page of the session.
           <button type="button"
             onClick={() => { if (window.history.length > 1) router.back(); else router.push('/reader') }}
-            title="Back"
+            title={t('search.back')}
             className="flex-none inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-800 transition-colors">
-            <ArrowLeft size={16} /> Back
+            <ArrowLeft size={16} /> {t('search.back')}
           </button>
         )}
         {/* Embedded: this sticky row doubles as the panel header — title, then the query box,
             with Full search + close ✕ pinned at the row's right edge. */}
-        {embedded && <span className="flex-none text-sm font-semibold text-gray-700">Search</span>}
+        {embedded && <span className="flex-none text-sm font-semibold text-gray-700">{t('search.title')}</span>}
         <div className="relative flex-1 min-w-[16rem]">
           <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-input px-3 py-1.5 shadow-sm">
             <Search size={18} className="text-gray-400 shrink-0" />
@@ -975,17 +1007,17 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               onChange={onQueryChange}
               onKeyDown={e => { if (e.key === 'Enter') { lastPickedRef.current = query.trim(); pushRecent(query); setShowSug(false) } if (e.key === 'Escape') { if (showSug) e.stopPropagation(); setShowSug(false) } }}
               onFocus={() => { if (suggestions.length) setShowSug(true) }}
-              placeholder="Search the Greek NT & LXX, translations, or background texts…"
+              placeholder={t('search.placeholder')}
               className={`flex-1 min-w-0 text-base outline-none placeholder:text-gray-400 ${greekInput ? 'greek-text' : ''}`}
             />
             {query && (
               <button type="button" onClick={() => { setQuery(''); setSuggestions([]); inputRef.current?.focus() }}
-                className="flex-none text-gray-400 hover:text-gray-700 p-0.5" title="Clear" aria-label="Clear search">
+                className="flex-none text-gray-400 hover:text-gray-700 p-0.5" title={t('search.clear')} aria-label={t('search.clearSearch')}>
                 <X size={16} />
               </button>
             )}
             <button type="button" onClick={toggleGreekInput} aria-pressed={greekInput}
-              title="Type Greek with a QWERTY keyboard (Beta Code: l→λ, q→θ …)"
+              title={t('search.greekKeyboard')}
               className={`flex-none w-7 h-7 flex items-center justify-center rounded-lg text-base font-semibold transition-colors greek-text ${greekInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
               α
             </button>
@@ -1015,45 +1047,45 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             query/scope/books (and lemma / Strong's mode) — the reader + panel stay put here. */}
         {embedded && (
           <>
-            <a href={fullSearchHref} target="_blank" rel="noopener" title="Open this search in the full Search page (new tab)"
+            <a href={fullSearchHref} target="_blank" rel="noopener" title={t('search.fullSearchTitle')}
               className="flex-none inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
-              <ArrowUpRight size={13} /> Full search
+              <ArrowUpRight size={13} /> {t('search.fullSearch')}
             </a>
             <a href={constructHref} target="_blank" rel="noopener"
-              title="Open Construct search in a new tab — two or three words near each other by their grammar"
+              title={t('search.constructTitle')}
               className="flex-none inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
-              <Blocks size={13} /> Construct
+              <Blocks size={13} /> {t('search.construct')}
             </a>
-            <button type="button" onClick={() => onRequestClose?.()} title="Close search (Esc)" aria-label="Close search"
+            <button type="button" onClick={() => onRequestClose?.()} title={t('search.closeEsc')} aria-label={t('search.closeSearch')}
               className="flex-none p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors">
               <X size={18} />
             </button>
           </>
         )}
             <label className="flex items-center gap-1.5 text-xs text-gray-500">
-              In
+              {t('search.in')}
               <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
                 className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
-                <optgroup label="Greek">
-                  <option value="greek:GNT">Greek — New Testament{optCount('greek:GNT')}</option>
-                  <option value="greek:LXX">Greek — Septuagint{optCount('greek:LXX')}</option>
+                <optgroup label={t('search.scope.greek')}>
+                  <option value="greek:GNT">{t('search.scope.greekNT')}{optCount('greek:GNT')}</option>
+                  <option value="greek:LXX">{t('search.scope.greekLXX')}{optCount('greek:LXX')}</option>
                 </optgroup>
-                <optgroup label="Hebrew">
-                  <option value="hebrew:MT">Hebrew — Old Testament{optCount('hebrew:MT')}</option>
+                <optgroup label={t('search.scope.hebrew')}>
+                  <option value="hebrew:MT">{t('search.scope.hebrewOT')}{optCount('hebrew:MT')}</option>
                 </optgroup>
-                <optgroup label="Bible Translations">
-                  {TRANSLATIONS.map(t => <option key={t.lang} value={`trans:${t.lang}`}>{t.label}{optCount(`trans:${t.lang}`)}</option>)}
+                <optgroup label={t('search.scope.translations')}>
+                  {TRANSLATIONS.map(tr => <option key={tr.lang} value={`trans:${tr.lang}`}>{t(tr.key)}{optCount(`trans:${tr.lang}`)}</option>)}
                 </optgroup>
-                <optgroup label="Background texts">
-                  <option value="bg:all">All Background Texts: English{optCount('bg:all')}</option>
-                  <option value="bggrc:all">All Background Texts: Greek</option>
+                <optgroup label={t('search.scope.backgrounds')}>
+                  <option value="bg:all">{t('search.scope.bgAllEn')}{optCount('bg:all')}</option>
+                  <option value="bggrc:all">{t('search.scope.bgAllGrc')}</option>
                   {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
                 </optgroup>
               </select>
             </label>
             {isBiblical && (
               <span className="flex items-center gap-1.5 text-xs text-gray-500">
-                <button type="button" onClick={() => setShowBooks(v => !v)} title="Limit the search to specific books"
+                <button type="button" onClick={() => setShowBooks(v => !v)} title={t('search.booksLimit')}
                   aria-expanded={showBooks}
                   className={`inline-flex items-center gap-1 rounded border px-1.5 py-1 text-xs transition-colors ${
                     showBooks || books.length > 0 ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
@@ -1071,17 +1103,17 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
           {/* Construct search — a grammar query rather than a text query, so it gets its own
               page (the builder needs room). */}
-            <Link href="/search/construct" title="Find two or three words near each other by their grammar"
+            <Link href="/search/construct" title={t('search.constructLinkTitle')}
               className="inline-flex flex-none items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">
-              <Blocks size={13} /> Construct
+              <Blocks size={13} /> {t('search.construct')}
             </Link>
 
           {/* Searching the same texts by place rather than by word, so it belongs with the
               other search modes. Full page only: in the side pane it wrapped the close button
               onto a second row, and you would have come from the map to open the pane anyway. */}
-            <Link href="/map" title="Map the places these texts name"
+            <Link href="/map" title={t('search.mapTitle')}
               className="inline-flex flex-none items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">
-              <MapIcon size={13} /> Map
+              <MapIcon size={13} /> {t('search.map')}
             </Link>
 
           {/* Search types */}
@@ -1089,28 +1121,30 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             <button type="button" onClick={() => setShowTypes(v => !v)} aria-expanded={showTypes}
               className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs transition-colors ${
                 showTypes ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
-              <Lightbulb size={13} /> Search types
+              <Lightbulb size={13} /> {t('search.types')}
             </button>
             {showTypes && (
               <>
                 <div className="fixed inset-0 z-20" onClick={() => setShowTypes(false)} />
                 <div className="absolute right-0 top-full mt-2 z-30 w-[min(92vw,26rem)] max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-2xl p-3">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Search types</p>
-                    <button type="button" onClick={() => setShowTypes(false)} className="text-gray-400 hover:text-gray-700 p-0.5" aria-label="Close"><X size={14} /></button>
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400">{t('search.types')}</p>
+                    <button type="button" onClick={() => setShowTypes(false)} className="text-gray-400 hover:text-gray-700 p-0.5" aria-label={t('search.close')}><X size={14} /></button>
                   </div>
                   <div className="space-y-3">
                     {SEARCH_EXAMPLES.map(sec => (
-                      <div key={sec.group}>
-                        <p className="text-[13px] font-semibold text-gray-700">{sec.group}</p>
-                        <p className="text-[11px] text-gray-400 mb-1.5">{sec.hint}</p>
+                      <div key={sec.groupKey}>
+                        <p className="text-[13px] font-semibold text-gray-700">{t(sec.groupKey)}</p>
+                        <p className="text-[11px] text-gray-400 mb-1.5">{t(sec.hintKey)}</p>
                         <div className="flex flex-wrap gap-1.5">
-                          {sec.items.map(ex => (
-                            <button key={ex.label} type="button" onClick={() => runExample(ex)}
-                              className={`inline-flex items-center rounded-lg border border-gray-200 bg-surface px-2.5 py-1 text-xs text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(ex.label) ? 'greek-text' : ''}`}>
-                              {ex.label}
+                          {sec.items.map(ex => {
+                            const label = exampleText(ex)
+                            return (
+                            <button key={ex.queryKey ?? ex.query} type="button" onClick={() => runExample(ex)}
+                              className={`inline-flex items-center rounded-lg border border-gray-200 bg-surface px-2.5 py-1 text-xs text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(label) ? 'greek-text' : ''}`}>
+                              {label}
                             </button>
-                          ))}
+                          )})}
                         </div>
                       </div>
                     ))}
@@ -1122,7 +1156,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
           {/* ⋮ display options (result-text size) */}
           <div className="relative flex-none">
-            <button type="button" onClick={() => setShowDisplay(v => !v)} aria-expanded={showDisplay} title="Display options"
+            <button type="button" onClick={() => setShowDisplay(v => !v)} aria-expanded={showDisplay} title={t('search.displayOptions')}
               className={`inline-flex h-7 w-7 items-center justify-center rounded border transition-colors ${
                 showDisplay ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
               <MoreVertical size={14} />
@@ -1133,7 +1167,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 {/* Same container + slider as the Reader/Exegesis tools menus. */}
                 <div className="absolute right-0 top-full mt-2 z-30 w-72 rounded-xl border border-gray-200 bg-popover p-4 space-y-4 shadow-lg">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold text-gray-800">Display options</span>
+                    <span className="text-sm font-semibold text-gray-800">{t('search.displayOptions')}</span>
                     <button onClick={() => setShowDisplay(false)} className="text-gray-400 hover:text-gray-600">
                       <X size={15} />
                     </button>
@@ -1151,7 +1185,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           <div className="mt-2">
             {bookGroups.length > 0
               ? <BookPicker groups={bookGroups} selected={selectedSet} onToggle={toggleBook} onToggleGroup={toggleGroup} onClear={() => setBooks([])} />
-              : <p className="text-xs text-gray-400 py-4 text-center">Loading books…</p>}
+              : <p className="text-xs text-gray-400 py-4 text-center">{t('search.booksLoading')}</p>}
           </div>
         )}
 
@@ -1189,7 +1223,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       <div className="py-4" style={{ fontSize: FONT_SIZE_MAP[fontSize], '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}>
         {loading && (
           <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-400">
-            <Loader2 size={16} className="animate-spin" /> Searching…
+            <Loader2 size={16} className="animate-spin" /> {t('search.searching')}
           </div>
         )}
         {!loading && query.trim().length < 2 && (
@@ -1197,10 +1231,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             {recent.length > 0 && (
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Recent</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">{t('search.recent')}</p>
                   <button type="button"
                     onClick={() => { setRecent([]); try { localStorage.removeItem(RECENT_STORAGE_KEY) } catch {} }}
-                    className="text-[11px] text-brand-600 hover:underline">Clear</button>
+                    className="text-[11px] text-brand-600 hover:underline">{t('search.clear')}</button>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {recent.map(r => (
@@ -1215,7 +1249,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           </div>
         )}
         {noResults && (
-          <p className="py-16 text-center text-sm text-gray-400">No matches.</p>
+          <p className="py-16 text-center text-sm text-gray-400">{t('search.noMatches')}</p>
         )}
 
         {/* Biblical hits */}
@@ -1283,7 +1317,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                       )}
                     </button>
                     <button type="button" onClick={e => { e.stopPropagation(); void copyHit(h, ctx) }}
-                      title="Copy verse(s)" aria-label="Copy verse(s)"
+                      title={t('search.copyVerses')} aria-label={t('search.copyVerses')}
                       className="absolute top-2 right-2 p-1 rounded text-gray-400 opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-brand-700 hover:bg-surface transition">
                       {copiedKey === key ? <Check size={14} className="text-green-600" /> : <Copy size={14} />}
                     </button>

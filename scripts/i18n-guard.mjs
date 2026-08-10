@@ -100,9 +100,15 @@ async function checkKeys() {
       for (const m of line.matchAll(/\bt\(\s*'([^']+)'/g)) {
         if (!known.has(m[1])) bad.push(`${f}:${i + 1}  ${m[1]}`)
       }
-      // Narrow: only `labelKey`/`titleKey` holding a DOTTED value, which is the shape an i18n
-      // key has here. Matching every `*Key:` swept up sortKey: 'case' and storageKey: '…'.
-      for (const m of line.matchAll(/\b(?:label|title)Key:\s*'([a-z]\w*\.[\w.]+)'/gi)) {
+      // Any `…Key:` or bare `key:` whose VALUE has the dotted shape of an i18n key. Keying on
+      // the value rather than the field name is what makes this safe: an earlier version
+      // matched every `*Key:` and swept up sortKey: 'case' and storageKey: '…', so it was
+      // narrowed to labelKey/titleKey — which then missed the search page's queryKey/groupKey/
+      // hintKey and the bare `key:` in its TRANSLATIONS and RETURN_LABELS tables, i.e. exactly
+      // the dynamic keys this matcher exists to guard. Over the whole repo this shape matches
+      // 54 strings and every one is a real key. If a non-i18n field ever adopts a dotted
+      // lowercase string value it will fail here; renaming the field or the value fixes it.
+      for (const m of line.matchAll(/\b\w*[Kk]ey:\s*'([a-z]\w*\.[\w.]+)'/g)) {
         if (!known.has(m[1])) bad.push(`${f}:${i + 1}  ${m[1]}`)
       }
     })

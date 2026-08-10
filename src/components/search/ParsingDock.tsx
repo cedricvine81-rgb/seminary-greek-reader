@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { useParsingPaneHeight } from '@/lib/parsing-pane-height'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 // The search page's parsing pane: docked to the bottom of the viewport whenever Greek results
 // are shown, filled by hovering/clicking a Greek word. The grab-bar drags to resize; height is
@@ -12,6 +13,7 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 // the whole page rather than using a fixed-height flex column.
 
 export function ParsingDock({ info }: { info: LexicalInfoPanel | null }) {
+  const t = useT()
   const [height, setHeight, persist] = useParsingPaneHeight('search')
   const heightRef = useRef(height); heightRef.current = height
   const drag = useRef<{ startY: number; startH: number } | null>(null)
@@ -47,7 +49,7 @@ export function ParsingDock({ info }: { info: LexicalInfoPanel | null }) {
           drag.current = { startY: e.clientY, startH: heightRef.current }
           document.body.style.userSelect = 'none'
         }}
-        title="Drag to resize the parsing pane"
+        title={t('search.dragParsing')}
         className="flex h-3 cursor-row-resize touch-none items-center justify-center bg-gray-50/95 backdrop-blur"
       >
         <div className="h-1 w-12 rounded-full bg-gray-300 transition-colors hover:bg-gray-400" />

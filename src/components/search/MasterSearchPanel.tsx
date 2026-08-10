@@ -6,6 +6,7 @@ import { MorphSearchPage } from './MorphSearchPage'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import type { MasterSearchPreset } from '@/lib/master-search-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 // The Master Search as a side panel beside the current page (Reader, Texts, …) instead of a
 // navigation: the page stays mounted and visible, so there is nothing to "return" to and a
@@ -27,6 +28,7 @@ function clampWidth(w: number): number {
 }
 
 export function MasterSearchPanel({ preset, onClose, isAuthenticated = false }: { preset?: MasterSearchPreset; onClose: () => void; isAuthenticated?: boolean }) {
+  const t = useT()
   const [width, setWidth] = useState(DEFAULT_W)
   // The parsing pane is hoisted out of the scrolling results into a real bottom pane (flex-none
   // below a flex-1 scroll area), like the Reader's, instead of a sticky overlay covering results.
@@ -93,7 +95,7 @@ export function MasterSearchPanel({ preset, onClose, isAuthenticated = false }: 
       className="fixed inset-0 z-50 lg:inset-auto lg:top-14 lg:right-0 lg:z-30 lg:h-[calc(100vh-3.5rem)] lg:w-[var(--panel-w)] flex flex-col bg-gray-50 border-l border-gray-200 shadow-xl"
       style={{ '--panel-w': `${width}px` } as React.CSSProperties}
       role="dialog"
-      aria-label="Search"
+      aria-label={t('search.title')}
     >
       {/* Drag handle on the left edge (desktop) */}
       <div
@@ -102,7 +104,7 @@ export function MasterSearchPanel({ preset, onClose, isAuthenticated = false }: 
           drag.current = { startX: e.clientX, startW: widthRef.current }
           document.body.style.userSelect = 'none'
         }}
-        title="Drag to resize"
+        title={t('search.dragResize')}
         className="hidden lg:flex absolute left-0 inset-y-0 w-2 -ml-1 cursor-col-resize touch-none items-center justify-center group"
       >
         <div className="h-12 w-1 rounded-full bg-gray-300 group-hover:bg-brand-400 transition-colors" />

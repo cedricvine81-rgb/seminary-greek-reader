@@ -1,5 +1,7 @@
 'use client'
 
+import { useT } from '@/lib/i18n/LocaleProvider'
+
 // A compact, grouped book grid (styled like the mobile Reader's passage picker) for the
 // Master Search "Book" scope. Multi-select: click books to toggle them; the search then
 // covers every selected book, so a range (e.g. the Gospels, or the Pentateuch) is just a
@@ -15,14 +17,17 @@ export function BookPicker({ groups, selected, onToggle, onToggleGroup, onClear 
   onToggleGroup: (osisIds: string[], select: boolean) => void
   onClear: () => void
 }) {
+  const t = useT()
   return (
     <div className="rounded-lg border border-gray-200 bg-surface">
       <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-gray-100">
         <span className="text-[11px] text-gray-500">
-          {selected.size === 0 ? 'Searching all books' : `${selected.size} book${selected.size === 1 ? '' : 's'} selected`}
+          {selected.size === 0
+            ? t('search.picker.all')
+            : t('search.picker.selected', { count: selected.size, n: selected.size })}
         </span>
         {selected.size > 0 && (
-          <button type="button" onClick={onClear} className="text-[11px] text-brand-600 hover:underline">Clear</button>
+          <button type="button" onClick={onClear} className="text-[11px] text-brand-600 hover:underline">{t('search.clear')}</button>
         )}
       </div>
       <div className="p-2 max-h-[26vh] overflow-y-auto">
@@ -34,7 +39,7 @@ export function BookPicker({ groups, selected, onToggle, onToggleGroup, onClear 
               <div className="flex items-center justify-between mb-1">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{g.heading}</p>
                 <button type="button" onClick={() => onToggleGroup(ids, !allSel)}
-                  className="text-[10px] text-brand-600 hover:underline">{allSel ? 'Clear' : 'Select all'}</button>
+                  className="text-[10px] text-brand-600 hover:underline">{allSel ? t('search.clear') : t('search.picker.selectAll')}</button>
               </div>
               <div className="grid grid-cols-6 gap-1">
                 {g.books.map(b => {
