@@ -8,21 +8,21 @@ import {
   HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences, DropdownPractice,
+  ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
 
 export const PRONOUNS_CONTENT = (
   <>
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
-      <SectionHeading>Start with English: words that stand in</SectionHeading>
-      <P>
+      <SectionHeading id="pronouns.h.start-english-words">Start with English: words that stand in</SectionHeading>
+      <P id="pronouns.p.mary-saw-mary's">
         "Mary saw Mary's brother and Mary waved to Mary's brother." Unbearable — which is why every language
         has <Term t="pronoun">pronouns</Term>: "Mary saw her brother and waved to him."
         A pronoun stands in for a noun already mentioned (its <strong>antecedent</strong>), so you
         don't have to keep repeating it.
       </P>
-      <P>
+      <P id="pronouns.p.already-know-key">
         You already know the key fact about Greek pronouns from the Nouns chapter: English pronouns are the
         one place English still changes form for <Term t="case">case</Term> — <em>he / his / him</em>. Greek
         pronouns do the same, with fuller sets of endings. The rule of agreement: a pronoun matches its
@@ -33,20 +33,20 @@ export const PRONOUNS_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · αὐτός ──────────────────────────────────────── */}
-    <SectionHeading>The workhorse: αὐτός ("he, she, it")</SectionHeading>
-    <P>
+    <SectionHeading id="pronouns.h.workhorse-she">The workhorse: αὐτός ("he, she, it")</SectionHeading>
+    <P id="pronouns.p.far-most-common">
       By far the most common Greek pronoun is <Gk>αὐτός</Gk> — the everyday "he / she / it / they." Its endings
       are the familiar 1st/2nd-declension set, and its genitive doubles as "his / her / its / their":
       <Gk> ὁ λόγος αὐτοῦ</Gk>, "his word" (literally "the word of him").
     </P>
     <TableAside
       beginning={<>
-        <p><Gk>αὐτός</Gk> is the everyday "he / she / it, they." It agrees in gender with the noun it stands for.</p>
-        <Ex grc="βλέπω αὐτόν" en="I see him" />
-        <Ex grc="ὁ λόγος αὐτοῦ" en="his word" />
+        <p><Tr id="pronouns.as.everyday-she-agrees"><Gk>αὐτός</Gk> is the everyday "he / she / it, they." It agrees in gender with the noun it stands for.</Tr></p>
+        <Ex grc="βλέπω αὐτόν" en={<Tr id="pronouns.ex.see-him">I see him</Tr>} />
+        <Ex grc="ὁ λόγος αὐτοῦ" en={<Tr id="pronouns.ex.his-word">his word</Tr>} />
       </>}
     >
-      <MorphTable flush title={gt("3rd Person Pronoun — αὐτός (he, she, it)")} headers={['','','Masc.','Eng.','Fem.','Eng.','Neut.','Eng.']}
+      <MorphTable id="pronouns.t1" tCols={[0, 1, 3, 5, 7]} flush title="3rd Person Pronoun — αὐτός (he, she, it)" headers={['','','Masc.','Eng.','Fem.','Eng.','Neut.','Eng.']}
         rows={[
           ['Sg.','Nom.','αὐτ|ός','he','αὐτ|ή','she','αὐτ|ό','it'],
           ['','Gen.','αὐτ|οῦ','his','αὐτ|ῆς','her','αὐτ|οῦ','its'],
@@ -60,16 +60,16 @@ export const PRONOUNS_CONTENT = (
       />
     </TableAside>
     <LevelOnly level="beginning">
-      <P>
+      <P id="pronouns.p.one-translation-habit">
         One translation habit to build early: Greek gender is grammatical, so <Gk>αὐτή</Gk> pointing back to a
         feminine <em>thing</em> (say, <Gk>ἡ ἐκκλησία</Gk>, "the church") comes into English as "it," not "she."
         Translate the antecedent's meaning, not the Greek gender.
       </P>
     </LevelOnly>
 
-    <DropdownPractice
+    <DropdownPractice id="pronouns.d1"
       title="Practice — parse αὐτός"
-      intro={<>Match each form to its parsing and default translation.</>}
+      intro={<Tr id="pronouns.intro.match-each-form">Match each form to its parsing and default translation.</Tr>}
       options={["Accusative Plural Masculine — \"them\"", "Dative Singular Feminine — \"to/for her\"", "Genitive Singular (masc./neut.) — \"his/its\"", "Nominative Plural Feminine — \"they\"", "Genitive Plural (all genders) — \"their\"", "Nom/Acc Singular Neuter — \"it\""]}
       items={[
         { q: <span className="normal-case">αὐτούς</span>, answer: "Accusative Plural Masculine — \"them\"" },
@@ -81,7 +81,7 @@ export const PRONOUNS_CONTENT = (
       ]}
     />
 
-    <ClassSentences
+    <ClassSentences id="pronouns.cs1"
       lesson="Lesson 3 · Pronouns (αὐτός)"
       items={[
         { words: [
@@ -133,8 +133,8 @@ export const PRONOUNS_CONTENT = (
     />
 
     {/* ── 3 · 1st & 2nd person ───────────────────────────── */}
-    <SectionHeading>"I" and "you": the personal pronouns</SectionHeading>
-    <P>
+    <SectionHeading id="pronouns.h.personal-pronouns">"I" and "you": the personal pronouns</SectionHeading>
+    <P id="pronouns.p.here-surprise-verb">
       Here is a surprise from the verb chapter: Greek usually does <em>not</em> need a word for "I" or "you" —
       the verb ending already says who acts (<Gk>λέγω</Gk> = "I say," all by itself). So when
       <Gk> ἐγώ</Gk> or <Gk>σύ</Gk> <em>does</em> appear, it adds <strong>emphasis</strong>:
@@ -142,14 +142,14 @@ export const PRONOUNS_CONTENT = (
     </P>
     <TableAside
       beginning={<>
-        <p>Greek usually leaves out "I / you" — the verb ending already says who acts. So when <Gk>ἐγώ</Gk> or <Gk>σύ</Gk> <em>do</em> appear, they add emphasis.</p>
-        <Ex grc="ἐγὼ λέγω" en="I (myself) say" />
+        <p><Tr id="pronouns.as.greek-usually-leaves">Greek usually leaves out "I / you" — the verb ending already says who acts. So when <Gk>ἐγώ</Gk> or <Gk>σύ</Gk> <em>do</em> appear, they add emphasis.</Tr></p>
+        <Ex grc="ἐγὼ λέγω" en={<Tr id="pronouns.ex.myself-say">I (myself) say</Tr>} />
       </>}
       intermediate={<>
-        <p>Each has an emphatic and an unemphatic (enclitic) form: <Gk>ἐμοῦ / μου</Gk>, <Gk>ἐμοί / μοι</Gk>, <Gk>ἐμέ / με</Gk>. The longer form is used for stress or after a preposition.</p>
+        <p><Tr id="pronouns.as.each-emphatic-unemphatic">Each has an emphatic and an unemphatic (enclitic) form: <Gk>ἐμοῦ / μου</Gk>, <Gk>ἐμοί / μοι</Gk>, <Gk>ἐμέ / με</Gk>. The longer form is used for stress or after a preposition.</Tr></p>
       </>}
     >
-      <MorphTable flush title="1st & 2nd Person Pronouns" headers={['Case','1st Sg.','Eng.','1st Pl.','Eng.','2nd Sg.','Eng.','2nd Pl.']}
+      <MorphTable id="pronouns.t2" tCols={[0, 2, 4, 6]} flush title="1st & 2nd Person Pronouns" headers={['Case','1st Sg.','Eng.','1st Pl.','Eng.','2nd Sg.','Eng.','2nd Pl.']}
         rows={[
           ['Nom.','ἐγώ','I','ἡμεῖς','we','σύ','you','ὑμεῖς'],
           ['Gen.','ἐμοῦ / μου','of me','ἡμῶν','of us','σοῦ','of you','ὑμῶν'],
@@ -159,7 +159,7 @@ export const PRONOUNS_CONTENT = (
       />
     </TableAside>
     <LevelOnly level="beginning">
-      <P>
+      <P id="pronouns.p.little-genitives-how">
         The little genitives <Gk>μου</Gk> and <Gk>σου</Gk> are how Greek says "my" and "your":
         <Gk> ὁ πατήρ μου</Gk>, "my father" (literally "the father of me"). Note that English spelling can't
         tell "you" singular from "you" plural — Greek always can: <Gk>σύ</Gk> is one person,
@@ -167,9 +167,9 @@ export const PRONOUNS_CONTENT = (
       </P>
     </LevelOnly>
 
-    <DropdownPractice
+    <DropdownPractice id="pronouns.d2"
       title="Practice — parse the personal pronoun"
-      intro={<>Which pronoun, which case — and what does it mean?</>}
+      intro={<Tr id="pronouns.intro.which-pronoun-which">Which pronoun, which case — and what does it mean?</Tr>}
       options={["Dative Plural of ἐγώ — \"to/for us\"", "Accusative Plural of σύ — \"you (pl.)\"", "Genitive Singular of ἐγώ — \"my / of me\"", "Genitive Plural of σύ — \"your / of you (pl.)\"", "Accusative Singular of ἐγώ (emphatic) — \"me\"", "Nominative Plural of ἐγώ — \"we\""]}
       items={[
         { q: <span className="normal-case">ἡμῖν</span>, answer: "Dative Plural of ἐγώ — \"to/for us\"" },
@@ -181,7 +181,7 @@ export const PRONOUNS_CONTENT = (
       ]}
     />
 
-    <ClassSentences
+    <ClassSentences id="pronouns.cs2"
       lesson="Lesson 3 · Pronouns (first and second person)"
       items={[
         { words: [
@@ -240,23 +240,23 @@ export const PRONOUNS_CONTENT = (
     />
 
     {/* ── 4 · "No one" ───────────────────────────────────── */}
-    <SectionHeading>"No one, nothing": οὐδείς and μηδείς</SectionHeading>
-    <P>
+    <SectionHeading id="pronouns.h.one-nothing">"No one, nothing": οὐδείς and μηδείς</SectionHeading>
+    <P id="pronouns.p.greek-two-words">
       Greek has two words for "no one / nothing," built from a negative + <Gk>εἷς</Gk> ("one") — literally
       "not even one." Which negative you meet depends on the verb's mood: <Gk>οὐδείς</Gk> pairs with plain
       statements (the indicative), <Gk>μηδείς</Gk> with everything else (commands, "maybes," infinitives).
     </P>
     <TableAside
       beginning={<>
-        <p>Both mean "no one / nothing." Use <Gk>οὐδείς</Gk> with the indicative (statements of fact); use <Gk>μηδείς</Gk> with the other moods (commands, subjunctives, infinitives, participles).</p>
-        <Ex grc="οὐδεὶς οἶδεν" en="no one knows" />
+        <p><Tr id="pronouns.as.both-mean-one">Both mean "no one / nothing." Use <Gk>οὐδείς</Gk> with the indicative (statements of fact); use <Gk>μηδείς</Gk> with the other moods (commands, subjunctives, infinitives, participles).</Tr></p>
+        <Ex grc="οὐδεὶς οἶδεν" en={<Tr id="pronouns.ex.one-knows">no one knows</Tr>} />
       </>}
       intermediate={<>
-        <p>Both are built from a negative + <Gk>εἷς</Gk> ("not even one"). Unlike English, Greek can stack negatives for <em>emphasis</em> — two negatives do not cancel (<Gk>οὐκ … οὐδείς</Gk> = "not … anyone").</p>
+        <p><Tr id="pronouns.as.both-built-negative">Both are built from a negative + <Gk>εἷς</Gk> ("not even one"). Unlike English, Greek can stack negatives for <em>emphasis</em> — two negatives do not cancel (<Gk>οὐκ … οὐδείς</Gk> = "not … anyone").</Tr></p>
       </>}
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <MorphTable flush title={gt("οὐδείς — no one, nothing")} headers={['','Masc.','Fem.','Neut.']}
+        <MorphTable id="pronouns.t3" tCols={[0]} flush title="οὐδείς — no one, nothing" headers={['','Masc.','Fem.','Neut.']}
           rows={[
             ['Nom.','οὐδείς','οὐδεμία','οὐδέν'],
             ['Gen.','οὐδενός','οὐδεμιᾶς','οὐδενός'],
@@ -265,7 +265,7 @@ export const PRONOUNS_CONTENT = (
           ]}
           note="Used with indicative mood."
         />
-        <MorphTable flush title={gt("μηδείς — no one, nothing")} headers={['','Masc.','Fem.','Neut.']}
+        <MorphTable id="pronouns.t4" tCols={[0]} flush title="μηδείς — no one, nothing" headers={['','Masc.','Fem.','Neut.']}
           rows={[
             ['Nom.','μηδείς','μηδεμία','μηδέν'],
             ['Gen.','μηδενός','μηδεμιᾶς','μηδενός'],
@@ -278,22 +278,22 @@ export const PRONOUNS_CONTENT = (
     </TableAside>
 
     {/* ── 5 · τις / τίς ──────────────────────────────────── */}
-    <SectionHeading>An accent that changes everything: τις and τίς</SectionHeading>
-    <P>
+    <SectionHeading id="pronouns.h.accent-changes-everything">An accent that changes everything: τις and τίς</SectionHeading>
+    <P id="pronouns.p.two-pronouns-spelled">
       Two pronouns are spelled with the same letters and distinguished <em>only</em> by the accent.
       Unaccented <Gk>τις</Gk> means "someone, anyone, a certain…"; accented <Gk>τίς</Gk> asks the question
       "who? what?" This is the one place a beginner truly must read accents.
     </P>
     <TableAside
       beginning={<>
-        <p>Unaccented <Gk>τις</Gk> = "someone, anyone, a certain." It is <em>enclitic</em> — it leans on the previous word and has no accent of its own.</p>
-        <Ex grc="ἄνθρωπός τις" en="a certain man" />
+        <p><Tr id="pronouns.as.unaccented-someone-anyone">Unaccented <Gk>τις</Gk> = "someone, anyone, a certain." It is <em>enclitic</em> — it leans on the previous word and has no accent of its own.</Tr></p>
+        <Ex grc="ἄνθρωπός τις" en={<Tr id="pronouns.ex.certain-man">a certain man</Tr>} />
       </>}
       intermediate={<>
-        <p><Gk>τις</Gk> can be a pronoun ("someone") or an adjective ("a certain …"). Tell it from the question word <Gk>τίς</Gk> purely by the <strong>accent</strong>.</p>
+        <p><Tr id="pronouns.as.can-pronoun-someone"><Gk>τις</Gk> can be a pronoun ("someone") or an adjective ("a certain …"). Tell it from the question word <Gk>τίς</Gk> purely by the <strong>accent</strong>.</Tr></p>
       </>}
     >
-      <MorphTable flush title={gt("τις — Indefinite Pronoun (someone, anyone)")} headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
+      <MorphTable id="pronouns.t5" tCols={[0, 2, 4]} flush title="τις — Indefinite Pronoun (someone, anyone)" headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
         rows={[
           ['Sg. Nom.','τις','someone','τι','something'],
           ['Gen.','τινος','of someone','τινος','of something'],
@@ -309,14 +309,14 @@ export const PRONOUNS_CONTENT = (
     </TableAside>
     <TableAside
       beginning={<>
-        <p>Accented <Gk>τίς</Gk> asks a question: "who? what?" The accent is the <em>only</em> difference from indefinite <Gk>τις</Gk>.</p>
-        <Ex grc="τίς εἶ;" en="Who are you?" />
+        <p><Tr id="pronouns.as.accented-asks-question">Accented <Gk>τίς</Gk> asks a question: "who? what?" The accent is the <em>only</em> difference from indefinite <Gk>τις</Gk>.</Tr></p>
+        <Ex grc="τίς εἶ;" en={<Tr id="pronouns.ex.who">Who are you?</Tr>} />
       </>}
       intermediate={<>
-        <p>The neuter <Gk>τί</Gk> often means "why?" as well as "what?" (<Gk>τί ποιεῖτε;</Gk> "why are you doing this?").</p>
+        <p><Tr id="pronouns.as.neuter-often-means">The neuter <Gk>τί</Gk> often means "why?" as well as "what?" (<Gk>τί ποιεῖτε;</Gk> "why are you doing this?").</Tr></p>
       </>}
     >
-      <MorphTable flush title={gt("τίς — Interrogative Pronoun (who? what?)")} headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
+      <MorphTable id="pronouns.t6" tCols={[0, 2, 4]} flush title="τίς — Interrogative Pronoun (who? what?)" headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
         rows={[
           ['Sg. Nom.','τίς','who?','τί','which? what? why?'],
           ['Gen.','τίνος','whose?','τίνος','of which? what?'],
@@ -332,21 +332,21 @@ export const PRONOUNS_CONTENT = (
     </TableAside>
 
     {/* ── 6 · Watch out ──────────────────────────────────── */}
-    <SectionHeading>Watch out</SectionHeading>
+    <SectionHeading id="pronouns.h.watch-out">Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
-        <li><Gk>αὐτή</Gk> ("she") vs. <Gk>αὕτη</Gk> ("this woman," from <Gk>οὗτος</Gk>) — the breathing mark and accent are the only visible difference.</li>
-        <li>The Greek question mark is <Gk>;</Gk> — what looks like a semicolon ends a question: <Gk>τίς εἶ;</Gk></li>
-        <li>Possessives need the article: "my words" is <Gk>οἱ λόγοι μου</Gk>, with <Gk>οἱ</Gk> — not bare <Gk>λόγοι μου</Gk>.</li>
-        <li>Translate grammatical gender by sense: <Gk>αὐτῆς</Gk> referring to <Gk>τῆς ἐκκλησίας</Gk> is "its," not "her."</li>
+        <li><Tr id="pronouns.wo.she-woman-breathing"><Gk>αὐτή</Gk> ("she") vs. <Gk>αὕτη</Gk> ("this woman," from <Gk>οὗτος</Gk>) — the breathing mark and accent are the only visible difference.</Tr></li>
+        <li><Tr id="pronouns.wo.greek-question-mark">The Greek question mark is <Gk>;</Gk> — what looks like a semicolon ends a question: <Gk>τίς εἶ;</Gk></Tr></li>
+        <li><Tr id="pronouns.wo.possessives-need-article">Possessives need the article: "my words" is <Gk>οἱ λόγοι μου</Gk>, with <Gk>οἱ</Gk> — not bare <Gk>λόγοι μου</Gk>.</Tr></li>
+        <li><Tr id="pronouns.wo.translate-grammatical-gender">Translate grammatical gender by sense: <Gk>αὐτῆς</Gk> referring to <Gk>τῆς ἐκκλησίας</Gk> is "its," not "her."</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
-    <DropdownPractice
+    <LevelOnly level="beginning"><SectionHeading id="pronouns.h.try">Try it</SectionHeading></LevelOnly>
+    <DropdownPractice id="pronouns.d3"
       title="Practice — τις or τίς?"
-      intro={<>Read the accent first — it is the only difference between "someone" and "who?"</>}
+      intro={<Tr id="pronouns.intro.read-accent-first">Read the accent first — it is the only difference between "someone" and "who?"</Tr>}
       options={["Interrogative — \"who?\"", "Indefinite — \"someone\"", "Interrogative — \"what? why?\"", "Indefinite — \"some (people)\"", "Interrogative — \"whose? of what?\"", "Indefinite — \"to someone\""]}
       items={[
         { q: <span className="normal-case">τίς</span>, answer: "Interrogative — \"who?\"" },
@@ -358,7 +358,7 @@ export const PRONOUNS_CONTENT = (
       ]}
     />
 
-    <ClassSentences
+    <ClassSentences id="pronouns.cs3"
       lesson="Lesson 4 · τις and τίς"
       items={[
         { words: [
@@ -420,30 +420,30 @@ export const PRONOUNS_CONTENT = (
     <HomeworkAssignments chapter="pronouns" />
 
     <LiveExamples
-      intro={<>Pronouns are the highest-frequency words in the NT after the article — see them at work.</>}
+      intro={<Tr id="pronouns.intro.pronouns-highest-frequency">Pronouns are the highest-frequency words in the NT after the article — see them at work.</Tr>}
       links={[
-        { label: <>Every form of <span className="normal-case">αὐτός</span> — the NT's third most common word</>, lemma: 'αὐτός', features: ['pronoun'] },
-        { label: <>Every <span className="normal-case">ἐγώ</span> — spot the emphasis each time "I" is spelled out</>, lemma: 'ἐγώ', features: ['pronoun'] },
-        { label: 'All pronouns in the accusative — pronouns as objects', features: ['pronoun', 'accusative'] },
+        { label: <Tr id="pronouns.le.every-form-nt's">Every form of <span className="normal-case">αὐτός</span> — the NT's third most common word</Tr>, lemma: 'αὐτός', features: ['pronoun'] },
+        { label: <Tr id="pronouns.le.every-spot-emphasis">Every <span className="normal-case">ἐγώ</span> — spot the emphasis each time "I" is spelled out</Tr>, lemma: 'ἐγώ', features: ['pronoun'] },
+        { label: <Tr id="pronouns.le.accusative">All pronouns in the accusative — pronouns as objects</Tr>, features: ['pronoun', 'accusative'] },
       ]}
     />
 
     {/* ── 9 · Going deeper (Intermediate only) ───────────── */}
     <LevelOnly level="intermediate">
-      <SectionHeading>Going deeper: small words, large claims</SectionHeading>
-      <P>
+      <SectionHeading id="pronouns.h.going-deeper-small">Going deeper: small words, large claims</SectionHeading>
+      <P id="pronouns.p.three-faces-position">
         <strong>The three faces of αὐτός.</strong> Position is everything. Oblique and alone, it is the plain
         pronoun ("him"). Inside the article-unit — <Gk>ὁ αὐτὸς λόγος</Gk> — it means "the <em>same</em> word."
         In predicate position — <Gk>αὐτὸς ὁ κύριος</Gk> — it intensifies: "the Lord <em>himself</em>"
         (1 Thess 4:16). Same word, three meanings, all decided by the article.
       </P>
-      <P>
+      <P id="pronouns.p.emphatic-since-verb">
         <strong>Emphatic ἐγώ εἰμι.</strong> Since the verb alone means "I am," the spelled-out
         <Gk> ἐγώ εἰμι</Gk> is doubly weighted — and John builds a christology on it: "before Abraham was,
         <Gk> ἐγὼ εἰμί</Gk>" (John 8:58), echoing the divine self-declaration of Exod 3:14 (LXX). The
         crowd's reaction — picking up stones — shows they heard the claim in the grammar.
       </P>
-      <P>
+      <P id="pronouns.p.editorial-first-person">
         <strong>Editorial "we."</strong> A first-person plural does not always include the readers: Paul's
         "we" sometimes means himself alone (epistolary plural), sometimes himself and his co-workers
         (exclusive), sometimes everyone (inclusive). Deciding which is a genuinely interpretive act —

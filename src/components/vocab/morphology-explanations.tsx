@@ -298,14 +298,14 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   pronouns: {
     beginning: (
       <Note>
-        <P>A <strong>pronoun</strong> stands in for a noun ("he," "this," "who"). Like nouns, pronouns change endings for case, and they agree with what they replace in gender and number. <G>αὐτός</G> is the workhorse third-person pronoun ("he / she / it, they"). The personal pronouns <G>ἐγώ</G> ("I") and <G>σύ</G> ("you") simply have to be memorized.</P>
-        <Eg><G>βλέπω αὐτόν</G> = "I see <em>him</em>" (accusative = the object).</Eg>
+        <P><T id="pronouns.exp.b.intro">A <strong>pronoun</strong> stands in for a noun ("he," "this," "who"). Like nouns, pronouns change endings for case, and they agree with what they replace in gender and number. <G>αὐτός</G> is the workhorse third-person pronoun ("he / she / it, they"). The personal pronouns <G>ἐγώ</G> ("I") and <G>σύ</G> ("you") simply have to be memorized.</T></P>
+        <Eg><T id="pronouns.exp.b.eg"><G>βλέπω αὐτόν</G> = "I see <em>him</em>" (accusative = the object).</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <Hook>Is "himself" intensive or reflexive? <strong>Delete it.</strong> If the basic meaning is unchanged, it was intensive ("the king himself came"); if not, it was reflexive ("he saw himself"). And a very short word with a <em>rough</em> breathing is almost always a relative pronoun (<G>ὅς, ἥ, ὅ</G>).</Hook>
-        <P>Relative pronouns take their <em>gender and number</em> from their antecedent but their <em>case</em> from their own clause — a frequent parsing trap. And watch for forms of <G>οὗτος</G> that drop the <G>τ</G> (<G>οὗτος / αὕτη</G>).</P>
+        <Hook><T id="pronouns.exp.i.hook">Is "himself" intensive or reflexive? <strong>Delete it.</strong> If the basic meaning is unchanged, it was intensive ("the king himself came"); if not, it was reflexive ("he saw himself"). And a very short word with a <em>rough</em> breathing is almost always a relative pronoun (<G>ὅς, ἥ, ὅ</G>).</T></Hook>
+        <P><T id="pronouns.exp.i.main">Relative pronouns take their <em>gender and number</em> from their antecedent but their <em>case</em> from their own clause — a frequent parsing trap. And watch for forms of <G>οὗτος</G> that drop the <G>τ</G> (<G>οὗτος / αὕτη</G>).</T></P>
       </Note>
     ),
   },
