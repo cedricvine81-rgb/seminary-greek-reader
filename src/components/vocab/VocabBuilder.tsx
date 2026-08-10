@@ -1425,7 +1425,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
         </div>
         <select value={filterSection} onChange={e => setFilterSection(e.target.value)} className="input text-sm w-auto">
           <option value="all">{t('vocab.allSections')}</option>
-          {V.sections.map(s => <option key={s} value={s}>Section {s}</option>)}
+          {V.sections.map(s => <option key={s} value={s}>{t('vocab.sectionN', { n: s })}</option>)}
         </select>
         <select value={filterPos} onChange={e => setFilterPos(e.target.value)} className="input text-sm w-auto">
           <option value="all">{t('vocab.allParts')}</option>
