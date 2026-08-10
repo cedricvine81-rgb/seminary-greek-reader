@@ -14,7 +14,7 @@ import clsx from 'clsx'
 import { Menu, GraduationCap, ListChecks, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { ESS_EXPLANATIONS, TAB_EXPLANATIONS, type Explanation } from './morphology-explanations'
 import { LevelContext, MorphContentProvider, type MorphLevel } from '@/components/morphology/shared'
-import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
 import { TranslationWorkbench } from '@/components/morphology/TranslationWorkbench'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
@@ -44,15 +44,16 @@ import { DEPONENTS_CONTENT } from '@/components/morphology/chapters/deponents'
    Beginning / Intermediate explanations
 ───────────────────────────────────────────── */
 
-const LEVELS: { id: MorphLevel; label: string }[] = [
-  { id: 'beginning',    label: 'Beginning'    },
-  { id: 'intermediate', label: 'Intermediate' },
+const LEVELS: { id: MorphLevel; labelKey: string }[] = [
+  { id: 'beginning',    labelKey: 'morph.level.beginning' },
+  { id: 'intermediate', labelKey: 'morph.level.intermediate' },
 ]
 
 /** Segmented Beginning ⇄ Intermediate control. */
 function LevelToggle({ level, onChange }: { level: MorphLevel; onChange: (l: MorphLevel) => void }) {
+  const t = useT()
   return (
-    <div className="inline-flex shrink-0 rounded-lg border border-gray-200 bg-gray-50 p-0.5" role="tablist" aria-label="Explanation level">
+    <div className="inline-flex shrink-0 rounded-lg border border-gray-200 bg-gray-50 p-0.5" role="tablist" aria-label={t('morph.explanationLevel')}>
       {LEVELS.map(l => (
         <button
           key={l.id}
@@ -64,7 +65,7 @@ function LevelToggle({ level, onChange }: { level: MorphLevel; onChange: (l: Mor
             level === l.id ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'
           )}
         >
-          {l.label}
+          {t(l.labelKey)}
         </button>
       ))}
     </div>
@@ -73,13 +74,14 @@ function LevelToggle({ level, onChange }: { level: MorphLevel; onChange: (l: Mor
 
 /** Teaching-note card that renders the current level's explanation. */
 function ExplanationCard({ explanation, level }: { explanation?: Explanation; level: MorphLevel }) {
+  const t = useT()
   if (!explanation) return null
   return (
     <div className="mb-6 rounded-xl border border-brand-100 bg-brand-50/60 px-4 py-3.5">
       <div className="flex items-center gap-1.5 mb-2">
         <GraduationCap size={15} className="text-brand-600 shrink-0" />
         <span className="text-xs font-semibold uppercase tracking-wide text-brand-700">
-          {level === 'beginning' ? 'Getting started' : 'Going deeper'}
+          {level === 'beginning' ? t('morph.gettingStarted') : t('morph.goingDeeper')}
         </span>
       </div>
       {level === 'beginning' ? explanation.beginning : explanation.intermediate}
@@ -103,30 +105,30 @@ export type MainTab = 'essentials' | 'pronunciation' | 'parsing' | 'nouns' | 'pr
 // Phase-4 topics slot into their natural lesson positions: demonstratives
 // and relatives after Pronouns, contract verbs after Indicatives, liquids
 // beside 2nd Aorists, and Principal Parts closing the verb block.
-const MAIN_TABS: { id: MainTab; label: string }[] = [
-  { id: 'essentials',      label: 'Minimums'       },
-  { id: 'pronunciation',   label: 'Pronunciation'   },
+const MAIN_TABS: { id: MainTab; labelKey: string }[] = [
+  { id: 'essentials',      labelKey: 'morph.tab.essentials' },
+  { id: 'pronunciation',   labelKey: 'morph.tab.pronunciation' },
   // Sits before the first paradigm on purpose: the student learns the shape of
   // the ANSWER (which slots, in what order) before meeting forms to fill it in.
-  { id: 'parsing',         label: 'Parsing'         },
-  { id: 'nouns',           label: 'Nouns/Adj.'      },
-  { id: 'prepositions',    label: 'Prepositions'    },
-  { id: 'pronouns',        label: 'Pronouns'        },
-  { id: 'demonstratives',  label: 'Demonstratives'  },
-  { id: 'relatives',       label: 'Relatives'       },
-  { id: 'indicatives',     label: 'Indicatives'     },
-  { id: 'contract-verbs',  label: 'Contract Verbs'  },
-  { id: 'deponents',       label: 'Deponents'       },
-  { id: '2nd-aorists',     label: '2nd Aorists'     },
-  { id: 'liquids',         label: 'Liquid Verbs'    },
-  { id: 'principal-parts', label: 'Principal Parts' },
-  { id: 'participles',     label: 'Participles'     },
-  { id: 'subjunctives',    label: 'Subjunctives'    },
-  { id: 'imperatives',     label: 'Imperatives'     },
-  { id: 'infinitives',     label: 'Infinitives'     },
-  { id: 'mi-verbs',        label: 'μι-Verbs'        },
-  { id: 'conjunctions',    label: 'Conditionals'    },
-  { id: 'conj-adv',        label: 'Conj. & Adv.'    },
+  { id: 'parsing',         labelKey: 'morph.tab.parsing' },
+  { id: 'nouns',           labelKey: 'morph.tab.nouns' },
+  { id: 'prepositions',    labelKey: 'morph.tab.prepositions' },
+  { id: 'pronouns',        labelKey: 'morph.tab.pronouns' },
+  { id: 'demonstratives',  labelKey: 'morph.tab.demonstratives' },
+  { id: 'relatives',       labelKey: 'morph.tab.relatives' },
+  { id: 'indicatives',     labelKey: 'morph.tab.indicatives' },
+  { id: 'contract-verbs',  labelKey: 'morph.tab.contract-verbs' },
+  { id: 'deponents',       labelKey: 'morph.tab.deponents' },
+  { id: '2nd-aorists',     labelKey: 'morph.tab.2nd-aorists' },
+  { id: 'liquids',         labelKey: 'morph.tab.liquids' },
+  { id: 'principal-parts', labelKey: 'morph.tab.principal-parts' },
+  { id: 'participles',     labelKey: 'morph.tab.participles' },
+  { id: 'subjunctives',    labelKey: 'morph.tab.subjunctives' },
+  { id: 'imperatives',     labelKey: 'morph.tab.imperatives' },
+  { id: 'infinitives',     labelKey: 'morph.tab.infinitives' },
+  { id: 'mi-verbs',        labelKey: 'morph.tab.mi-verbs' },
+  { id: 'conjunctions',    labelKey: 'morph.tab.conjunctions' },
+  { id: 'conj-adv',        labelKey: 'morph.tab.conj-adv' },
 ]
 
 /**
@@ -189,6 +191,7 @@ const COURSE_CHAPTERS = MAIN_TABS.filter(t => t.id !== 'essentials')
 
 /** Small pill that switches course mode on/off, next to the level toggle. */
 function CourseToggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
+  const t = useT()
   return (
     <button
       onClick={onToggle}
@@ -199,13 +202,14 @@ function CourseToggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
       )}
     >
       <ListChecks size={14} />
-      Course
+      {t('morph.courseMode')}
     </button>
   )
 }
 
 /** Progress bar + continue button shown above the content in course mode. */
 function CourseHeader({ completed, goTo }: { completed: Set<string>; goTo: (id: MainTab) => void }) {
+  const t = useT()
   const done = COURSE_CHAPTERS.filter(c => completed.has(c.id)).length
   const next = COURSE_CHAPTERS.find(c => !completed.has(c.id))
   return (
@@ -213,7 +217,7 @@ function CourseHeader({ completed, goTo }: { completed: Set<string>; goTo: (id: 
       <ListChecks size={16} className="text-brand-600 shrink-0" />
       <div className="flex-1 min-w-[10rem]">
         <p className="text-sm font-medium text-gray-800">
-          Course progress · {done} of {COURSE_CHAPTERS.length} chapters
+          {t('morph.courseProgress', { done, total: COURSE_CHAPTERS.length })}
         </p>
         <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-gray-200">
           <div
@@ -227,10 +231,12 @@ function CourseHeader({ completed, goTo }: { completed: Set<string>; goTo: (id: 
           onClick={() => goTo(next.id)}
           className="shrink-0 rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700"
         >
-          {done > 0 ? 'Continue' : 'Start'}: {next.label} →
+          {done > 0
+            ? t('morph.continueTo', { chapter: t(next.labelKey) })
+            : t('morph.startAt', { chapter: t(next.labelKey) })}
         </button>
       ) : (
-        <span className="text-sm font-medium text-green-600">All chapters complete 🎉</span>
+        <span className="text-sm font-medium text-green-600">{t('morph.allComplete')}</span>
       )}
     </div>
   )
@@ -243,6 +249,7 @@ function CourseNav({ index, completed, onComplete, goTo }: {
   onComplete: (id: MainTab, done: boolean) => void
   goTo: (id: MainTab) => void
 }) {
+  const t = useT()
   const cur = COURSE_CHAPTERS[index]
   const prev = index > 0 ? COURSE_CHAPTERS[index - 1] : null
   const next = index < COURSE_CHAPTERS.length - 1 ? COURSE_CHAPTERS[index + 1] : null
@@ -254,7 +261,7 @@ function CourseNav({ index, completed, onComplete, goTo }: {
           onClick={() => goTo(prev.id)}
           className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
         >
-          <ChevronLeft size={15} /> {prev.label}
+          <ChevronLeft size={15} /> {t(prev.labelKey)}
         </button>
       )}
       <div className="flex-1" />
@@ -265,7 +272,7 @@ function CourseNav({ index, completed, onComplete, goTo }: {
           done ? 'bg-green-600 hover:bg-green-700' : 'bg-brand-600 hover:bg-brand-700'
         )}
       >
-        <Check size={15} /> {done ? 'Completed — tap to undo' : 'Mark chapter complete'}
+        <Check size={15} /> {done ? t('morph.completedUndo') : t('morph.markComplete')}
       </button>
       <div className="flex-1" />
       {next && (
@@ -273,7 +280,7 @@ function CourseNav({ index, completed, onComplete, goTo }: {
           onClick={() => goTo(next.id)}
           className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
         >
-          {next.label} <ChevronRight size={15} />
+          {t(next.labelKey)} <ChevronRight size={15} />
         </button>
       )}
     </div>
@@ -389,6 +396,7 @@ export function MorphologyView({
     return () => document.removeEventListener('mousedown', onDown)
   }, [menuOpen])
 
+  const t = useT()
   const activeEss = ESS_SECTIONS.find(s => s.id === essId)!
 
   return (
@@ -403,7 +411,7 @@ export function MorphologyView({
           className="w-full flex items-center justify-between gap-2 py-2 border-b border-gray-100 bg-surface text-left"
         >
           <span className="text-sm font-semibold text-gray-900 truncate">
-            {MAIN_TABS.find(t => t.id === mainTab)?.label}
+            {(() => { const m = MAIN_TABS.find(x => x.id === mainTab); return m ? t(m.labelKey) : '' })()}
             {mainTab === 'essentials' && <span className="text-gray-400 font-normal"> · {activeEss.label}</span>}
           </span>
           <Menu size={18} className="text-gray-500 shrink-0" />
@@ -411,20 +419,20 @@ export function MorphologyView({
         {menuOpen && (
           <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-[70svh] overflow-y-auto bg-popover border border-gray-200 rounded-xl p-3 shadow-lg space-y-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5 px-1">Topics</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5 px-1">{t('morph.topics')}</p>
               <div className="flex flex-wrap gap-1.5">
-                {MAIN_TABS.map(t => (
+                {MAIN_TABS.map(tab => (
                   <button
-                    key={t.id}
-                    onClick={() => { setMainTab(t.id); if (t.id !== 'essentials') setMenuOpen(false) }}
+                    key={tab.id}
+                    onClick={() => { setMainTab(tab.id); if (tab.id !== 'essentials') setMenuOpen(false) }}
                     className={clsx(
                       'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
-                      mainTab === t.id ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
+                      mainTab === tab.id ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
                     )}
                   >
-                    {t.label}
-                    {courseMode && completed.has(t.id) && (
-                      <span className={clsx('ml-1', mainTab === t.id ? 'text-white' : 'text-green-600')}>✓</span>
+                    {t(tab.labelKey)}
+                    {courseMode && completed.has(tab.id) && (
+                      <span className={clsx('ml-1', mainTab === tab.id ? 'text-white' : 'text-green-600')}>✓</span>
                     )}
                   </button>
                 ))}
@@ -432,7 +440,7 @@ export function MorphologyView({
             </div>
             {mainTab === 'essentials' && (
               <div className="border-t border-gray-100 pt-2">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5 px-1">Section</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5 px-1">{t('morph.section')}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {ESS_SECTIONS.map(s => (
                     <button
@@ -456,21 +464,21 @@ export function MorphologyView({
       {/* Desktop: inline topic tab bar. Never in the panel — 21 chips don't fit 620px. */}
       <div className={embedded ? 'hidden' : 'hidden lg:block'}>
         <div className="flex flex-wrap gap-1.5 py-2 border-b border-gray-100 bg-surface">
-          {MAIN_TABS.map(t => (
+          {MAIN_TABS.map(tab => (
             <button
-              key={t.id}
-              onClick={() => setMainTab(t.id)}
+              key={tab.id}
+              onClick={() => setMainTab(tab.id)}
               className={clsx(
                 'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap',
-                t.id === 'essentials'
+                tab.id === 'essentials'
                   ? 'bg-brand-600 text-white'
-                  : mainTab === t.id
+                  : mainTab === tab.id
                     ? 'text-gray-900 font-semibold'
                     : 'text-gray-600 hover:text-gray-900'
               )}
             >
-              {t.label}
-              {courseMode && completed.has(t.id) && <span className="ml-1 text-green-600">✓</span>}
+              {t(tab.labelKey)}
+              {courseMode && completed.has(tab.id) && <span className="ml-1 text-green-600">✓</span>}
             </button>
           ))}
         </div>
@@ -514,9 +522,9 @@ export function MorphologyView({
             <div className="flex items-center justify-between gap-3 mb-4">
               <h2 className="text-base font-semibold text-gray-900">
                 {courseMode && chapterIndex >= 0 && (
-                  <span className="text-gray-400 font-normal">Ch. {chapterIndex + 1} · </span>
+                  <span className="text-gray-400 font-normal">{t('morph.chapterNo', { n: chapterIndex + 1 })}</span>
                 )}
-                {MAIN_TABS.find(t => t.id === mainTab)?.label}
+                {(() => { const m = MAIN_TABS.find(x => x.id === mainTab); return m ? t(m.labelKey) : '' })()}
               </h2>
               <div className="flex items-center gap-2">
                 <CourseToggle on={courseMode} onToggle={toggleCourse} />

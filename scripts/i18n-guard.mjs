@@ -93,7 +93,16 @@ async function checkKeys() {
     const src = fs.readFileSync(f, 'utf8')
     const lines = src.split('\n')
     lines.forEach((line, i) => {
+      // `t('literal')`, plus keys held in DATA rather than passed at the call site:
+      // MAIN_TABS declares `labelKey: 'morph.tab.nouns'` and renders `t(tab.labelKey)`, which
+      // this scanner cannot see. Matching the declaration keeps those keys guarded too — a
+      // dynamic key is otherwise the one way to reintroduce failure mode 2 silently.
       for (const m of line.matchAll(/\bt\(\s*'([^']+)'/g)) {
+        if (!known.has(m[1])) bad.push(`${f}:${i + 1}  ${m[1]}`)
+      }
+      // Narrow: only `labelKey`/`titleKey` holding a DOTTED value, which is the shape an i18n
+      // key has here. Matching every `*Key:` swept up sortKey: 'case' and storageKey: '…'.
+      for (const m of line.matchAll(/\b(?:label|title)Key:\s*'([a-z]\w*\.[\w.]+)'/gi)) {
         if (!known.has(m[1])) bad.push(`${f}:${i + 1}  ${m[1]}`)
       }
     })

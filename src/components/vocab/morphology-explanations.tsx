@@ -18,7 +18,7 @@
 import React from 'react'
 import { ChevronRight } from 'lucide-react'
 import { Tr, Term, useTm } from '@/components/morphology/shared'
-import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { K, localizeRef } from '@/lib/i18n/morph-fields'
 
 export type MorphLevel = 'beginning' | 'intermediate'
@@ -38,9 +38,10 @@ function P({ children }: { children: React.ReactNode }) {
 /** An illustrative example, set off with a left rule. Use for the "simple
  *  English example" that anchors each explanation. */
 function Eg({ children }: { children: React.ReactNode }) {
+  const t = useT()
   return (
     <p className="text-sm leading-relaxed text-gray-600 border-l-2 border-brand-200 pl-3">
-      <span className="font-semibold text-gray-500 mr-1.5 text-xs uppercase tracking-wide">e.g.</span>
+      <span className="font-semibold text-gray-500 mr-1.5 text-xs uppercase tracking-wide">{t('morph.eg')}</span>
       {children}
     </p>
   )
@@ -63,9 +64,10 @@ function T({ id, children }: { id: string; children: React.ReactNode }) {
 
 /** A memory hook — the kind of "How to remember" mnemonic used in class. */
 function Hook({ children }: { children: React.ReactNode }) {
+  const t = useT()
   return (
     <p className="text-sm leading-relaxed text-gray-700 rounded-md bg-surface border border-brand-200 px-2.5 py-1.5">
-      <span className="font-semibold text-brand-700 mr-1.5 text-xs uppercase tracking-wide">Remember</span>
+      <span className="font-semibold text-brand-700 mr-1.5 text-xs uppercase tracking-wide">{t('morph.remember')}</span>
       {children}
     </p>
   )
