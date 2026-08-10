@@ -365,12 +365,36 @@ model LexicalEntry {
   parses     MorphParse[]
   vocabItems VocabularyItem[]
   flashcards Flashcard[]
+  glosses    LexicalGloss[]
 
   @@index([lexeme])
   @@index([frequency])
 }
 
 // ─── Morphology ───────────────────────────────────────────────────
+
+/// A lemma's gloss in ONE language, with the synonyms accepted as correct in that language.
+///
+/// LexicalEntry.gloss and .acceptedAnswers stay as they are and remain the English row: they are
+/// referenced across the app and by live Question rows, and moving them would rewrite grading.
+/// This table is additive — an absent row means "not translated", and every reader falls back to
+/// the English on LexicalEntry.
+model LexicalGloss {
+  id              String   @id @default(cuid())
+  lexemeId        String
+  locale          String
+  gloss           String
+  /// Comma-separated synonyms accepted in THIS language. Grown by the appeal loop, exactly as
+  /// LexicalEntry.acceptedAnswers is for English.
+  acceptedAnswers String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  lexeme LexicalEntry @relation(fields: [lexemeId], references: [id], onDelete: Cascade)
+
+  @@unique([lexemeId, locale])
+  @@index([locale])
+}
 
 model MorphParse {
   id           String  @id @default(cuid())

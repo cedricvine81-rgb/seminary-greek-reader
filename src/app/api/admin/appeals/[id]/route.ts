@@ -32,7 +32,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const appeal = await prisma.vocabAppeal.findUnique({
       where: { id: params.id },
       include: {
-        question: { select: { prompt: true } },
+        // The course's language decides WHICH lexicon this synonym joins. A Spanish section's
+        // appeals must not accumulate in the English acceptedAnswers, and vice versa.
+        question: { select: { prompt: true, assignment: { select: { course: { select: { language: true } } } } } },
         student: { select: { email: true } },
       },
     })
@@ -71,19 +73,20 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     // ── ACCEPT: add the answer to the lemma's acceptedAnswers (dedup'd) ──
     const lemma = appeal.question.prompt
+    const locale = appeal.question.assignment?.course?.language ?? 'en'
     const newAnswer = appeal.studentAnswer.trim().toLowerCase()
 
     // Diacritic-tolerant lemma lookup (mirrors src/lib/grading.ts:getLemmaSynonyms)
     let lex = await prisma.lexicalEntry.findFirst({
       where: { lexeme: lemma },
-      select: { id: true, lexeme: true, acceptedAnswers: true },
+      select: { id: true, lexeme: true, gloss: true, acceptedAnswers: true },
     })
     if (!lex) {
       const strip = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').normalize('NFC')
       const stripped = strip(lemma)
       const candidates = await prisma.lexicalEntry.findMany({
         where: { lexeme: { startsWith: stripped.slice(0, 1) } },
-        select: { id: true, lexeme: true, acceptedAnswers: true },
+        select: { id: true, lexeme: true, gloss: true, acceptedAnswers: true },
       })
       lex = candidates.find(c => strip(c.lexeme) === stripped) ?? null
     }
@@ -94,16 +97,32 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       // We accept the admin decision but can't update the lexicon — flag it
       lexiconWarning = `No lexicon entry found for "${lemma}". The appeal is marked accepted but the global lexicon was not updated.`
     } else {
-      const existing = (lex.acceptedAnswers ?? '')
+      const existing = ((locale === 'en'
+        ? lex.acceptedAnswers
+        : (await prisma.lexicalGloss.findUnique({
+            where: { lexemeId_locale: { lexemeId: lex.id, locale } },
+            select: { acceptedAnswers: true },
+          }))?.acceptedAnswers) ?? '')
         .split(',')
         .map(s => s.trim().toLowerCase())
         .filter(Boolean)
       if (!existing.includes(newAnswer)) {
         const next = [...existing, newAnswer].join(', ')
-        await prisma.lexicalEntry.update({
-          where: { id: lex.id },
-          data: { acceptedAnswers: next },
-        })
+        if (locale === 'en') {
+          await prisma.lexicalEntry.update({
+            where: { id: lex.id },
+            data: { acceptedAnswers: next },
+          })
+        } else {
+          // Upsert the per-locale row. `gloss` is required, so a row created by an appeal seeds
+          // itself from the English — the synonym is the point, and the gloss can be corrected
+          // later without losing the accepted answer.
+          await prisma.lexicalGloss.upsert({
+            where: { lexemeId_locale: { lexemeId: lex.id, locale } },
+            update: { acceptedAnswers: next },
+            create: { lexemeId: lex.id, locale, gloss: lex.gloss, acceptedAnswers: next },
+          })
+        }
         lexiconUpdated = true
 
         await recordAudit({

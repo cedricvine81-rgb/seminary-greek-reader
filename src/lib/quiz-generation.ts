@@ -203,31 +203,42 @@ export async function generateVocabQuestions(
   level: CourseLevel,
   type: QuestionType,
   count: number,
-  provideDefinitionPct = 0   // 0–100: % of questions where student types the answer
+  provideDefinitionPct = 0,  // 0–100: % of questions where student types the answer
+  /**
+   * The COURSE's language. Glosses come from LexicalGloss for that locale where a row exists and
+   * fall back to LexicalEntry.gloss where it does not, so a partly-translated lexicon yields a
+   * mixed key rather than a broken one — the same rule as every other content surface.
+   */
+  locale = 'en',
 ) {
   const freqLevel = level === 'BEGINNING' ? 'BEGINNING' : 'INTERMEDIATE'
   const items = await prisma.vocabularyItem.findMany({
     where: { level: freqLevel },
-    include: { lexeme: true },
+    // Always joined, filtered by locale. For 'en' there are simply no rows — English lives on
+    // LexicalEntry itself — so this costs a trivial join and needs no branch.
+    include: { lexeme: { include: { glosses: { where: { locale } } } } },
     take: count * 4,
   })
 
   if (items.length === 0) return [] // vocabulary table not yet loaded
 
+  const glossOf = (l: { gloss: string; glosses?: { gloss: string }[] }) =>
+    l.glosses?.[0]?.gloss ?? l.gloss
+
   const picked = shuffle(items).slice(0, count)
-  const allGlosses = items.map(i => i.lexeme.gloss)
+  const allGlosses = items.map(i => glossOf(i.lexeme))
   const allLexemes = items.map(i => i.lexeme.lexeme)
   const openEndedCount = Math.round((provideDefinitionPct / 100) * count)
 
   return picked.map((item, idx) => {
     const isOpenEnded = idx < openEndedCount
     if (type === 'GREEK_TO_ENGLISH') {
-      const options = isOpenEnded ? [] : shuffle([item.lexeme.gloss, ...pickDistractors(item.lexeme.gloss, allGlosses)])
+      const options = isOpenEnded ? [] : shuffle([glossOf(item.lexeme), ...pickDistractors(glossOf(item.lexeme), allGlosses)])
       return {
         position: idx + 1,
         type: (isOpenEnded ? 'GREEK_TO_ENGLISH' : 'MULTIPLE_CHOICE') as QuestionType,
         prompt: item.lexeme.lexeme,
-        correctAnswer: item.lexeme.gloss,
+        correctAnswer: glossOf(item.lexeme),
         options,
         points: 1,
       }
@@ -236,7 +247,7 @@ export async function generateVocabQuestions(
       return {
         position: idx + 1,
         type: (isOpenEnded ? 'ENGLISH_TO_GREEK' : 'MULTIPLE_CHOICE') as QuestionType,
-        prompt: item.lexeme.gloss,
+        prompt: glossOf(item.lexeme),
         correctAnswer: item.lexeme.lexeme,
         options,
         points: 1,

@@ -7,12 +7,20 @@ import { isAnswerCorrect, isMultipleChoiceCorrect, fuzzyMatch, normalise } from 
  * isn't in the lexicon or has no curated synonyms. Tolerant of mismatched
  * accents (some quiz prompts may differ in diacritics from the lexicon entry).
  */
-export async function getLemmaSynonyms(lemma: string): Promise<string[]> {
+/**
+ * Synonyms accepted for a lemma, IN THE COURSE'S LANGUAGE.
+ *
+ * Assessment follows the course, so a Spanish section is marked against the Spanish synonyms the
+ * appeal loop has accumulated, not the English ones. An absent per-locale row means the language
+ * has no curated synonyms yet and only the question's own correctAnswer applies — it never falls
+ * back to English synonyms, which would accept an English answer in a Spanish exam.
+ */
+export async function getLemmaSynonyms(lemma: string, locale = 'en'): Promise<string[]> {
   if (!lemma) return []
   // Exact match first (fast path on the unique index)
   let lex = await prisma.lexicalEntry.findFirst({
     where: { lexeme: lemma },
-    select: { acceptedAnswers: true },
+    select: { id: true, acceptedAnswers: true },
   })
   // Fallback: strip diacritics on both sides if the exact match failed
   if (!lex) {
@@ -20,12 +28,19 @@ export async function getLemmaSynonyms(lemma: string): Promise<string[]> {
     const stripped = strip(lemma)
     const candidates = await prisma.lexicalEntry.findMany({
       where: { lexeme: { startsWith: stripped.slice(0, 1) } },
-      select: { lexeme: true, acceptedAnswers: true },
+      select: { id: true, lexeme: true, acceptedAnswers: true },
     })
     lex = candidates.find(c => strip(c.lexeme) === stripped) ?? null
   }
-  if (!lex?.acceptedAnswers) return []
-  return lex.acceptedAnswers.split(',').map(s => s.trim()).filter(Boolean)
+  if (!lex) return []
+  const raw = locale === 'en'
+    ? lex.acceptedAnswers
+    : (await prisma.lexicalGloss.findUnique({
+        where: { lexemeId_locale: { lexemeId: lex.id, locale } },
+        select: { acceptedAnswers: true },
+      }))?.acceptedAnswers
+  if (!raw) return []
+  return raw.split(',').map(s => s.trim()).filter(Boolean)
 }
 
 export async function gradeResponse(
@@ -34,7 +49,11 @@ export async function gradeResponse(
   /** Pass this from the caller when you already have the assignment loaded — avoids an extra DB query per question. */
   provideDefinitionOverride?: boolean
 ): Promise<{ isCorrect: boolean; score: number; correctAnswer: string }> {
-  const question = await prisma.question.findUnique({ where: { id: questionId } })
+  const question = await prisma.question.findUnique({
+    where: { id: questionId },
+    // The course's language decides which synonym list marks this answer.
+    include: { assignment: { select: { course: { select: { language: true } } } } },
+  })
   if (!question) throw new Error('Question not found')
 
   let isCorrect = false
@@ -88,7 +107,7 @@ export async function gradeResponse(
   // typed answers; not to ENGLISH_TO_GREEK (different problem) or MULTIPLE_CHOICE.
   let acceptable = question.correctAnswer
   if (question.type === 'GREEK_TO_ENGLISH') {
-    const synonyms = await getLemmaSynonyms(question.prompt)
+    const synonyms = await getLemmaSynonyms(question.prompt, question.assignment?.course?.language ?? 'en')
     if (synonyms.length > 0) {
       acceptable = [question.correctAnswer, ...synonyms].join(',')
     }

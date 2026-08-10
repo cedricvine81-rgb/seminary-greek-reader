@@ -175,7 +175,7 @@ export async function POST(req: NextRequest) {
       // Store the full pool; the player draws perAttempt at random each attempt.
       questions = generateVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', openEndedPct, vocabSel.reviewPct, glossOf)
     } else {
-      questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
+      questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct, course?.language ?? 'en')
     }
   } else if (type === 'MORPHOLOGY_QUIZ') {
     const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'

@@ -72,7 +72,7 @@ export async function POST(
     const glossOf = (w: { word: string; gloss: string }) => resolve(w.word, w.gloss)
     questions = effectiveSel
       ? generateVocabPoolFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, provideDefinitionPct, effectiveSel.reviewPct ?? 0, glossOf)
-      : await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct)
+      : await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct, assignment.course?.language ?? 'en')
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {
       case 'VERB':        questions = generateVerbParseQuestions(qCount);       break
