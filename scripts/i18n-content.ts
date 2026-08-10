@@ -106,7 +106,10 @@ export function vocabItems(): Item[] {
     const words = JSON.parse(fs.readFileSync(file, 'utf8')) as { word: string; gloss: string }[]
     for (const w of words) {
       if (!w.gloss?.trim()) continue
-      items.push({ key: `vocab.gloss.${deck}.${w.word}`, english: w.gloss, bucket: deck })
+      // NFC-normalise the lemma. The decks store some words with OXIA (U+1F77) where NFC uses
+      // TONOS (U+03AF) — canonically equivalent, different code points — so a key typed by hand
+      // would silently fail to match and the gloss would stay English with nothing reported.
+      items.push({ key: `vocab.gloss.${deck}.${w.word.normalize('NFC')}`, english: w.gloss, bucket: deck })
     }
   }
   return items

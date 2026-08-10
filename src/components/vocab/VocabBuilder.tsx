@@ -268,7 +268,7 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
   const V = useMemo<VocabData>(() => ({
     ...base,
     // content() enforces the fingerprint: a gloss whose English was edited since falls back.
-    gloss: (w: BgvbWord) => content(glosses, `vocab.gloss.${lang}.${w.word}`, w.gloss),
+    gloss: (w: BgvbWord) => content(glosses, `vocab.gloss.${lang}.${w.word.normalize('NFC')}`, w.gloss),
   }), [base, glosses, lang])
   const [tab, setTab] = useState<Tab>('study')
   const [progress, setProgress] = useState<ProgressMap>({})

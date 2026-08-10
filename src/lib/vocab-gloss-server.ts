@@ -43,5 +43,6 @@ export function glossResolver(
 ): (word: string, english: string) => string {
   const cat = catalogue(locale, deck)
   if (cat === NO_CONTENT) return (_w, english) => english
-  return (word, english) => content(cat, `vocab.gloss.${deck}.${word}`, english)
+  // Same NFC normalisation as the build and the client — see vocabItems() in i18n-content.
+  return (word, english) => content(cat, `vocab.gloss.${deck}.${word.normalize('NFC')}`, english)
 }
