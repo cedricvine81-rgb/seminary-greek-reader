@@ -193,9 +193,9 @@ export const IMPERATIVES_CONTENT = (
     <LiveExamples
       intro={<Tr id="imperatives.intro.full-commands-compare">The NT is full of commands — compare how present and aorist feel in context.</Tr>}
       links={[
-        { label: 'Every imperative in the NT', features: ['verb', 'imperative'] },
-        { label: 'Aorist imperatives — specific, whole-act commands', features: ['verb', 'imperative', 'aorist'] },
-        { label: 'Present imperatives — ongoing or habitual commands', features: ['verb', 'imperative', 'present'] },
+        { label: <Tr id="imperatives.le.imperative">Every imperative in the NT</Tr>, features: ['verb', 'imperative'] },
+        { label: <Tr id="imperatives.le.aorist-imperatives-specific">Aorist imperatives — specific, whole-act commands</Tr>, features: ['verb', 'imperative', 'aorist'] },
+        { label: <Tr id="imperatives.le.present-imperatives-ongoing">Present imperatives — ongoing or habitual commands</Tr>, features: ['verb', 'imperative', 'present'] },
       ]}
     />
 

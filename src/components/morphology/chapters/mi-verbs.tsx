@@ -8,15 +8,15 @@ import {
   HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences, DropdownPractice,
+  ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
 
 export const MI_VERBS_CONTENT = (
   <>
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
-      <SectionHeading>Start with English: the irregular VIPs</SectionHeading>
-      <P>
+      <SectionHeading id="mi-verbs.h.start-english-irregular">Start with English: the irregular VIPs</SectionHeading>
+      <P id="mi-verbs.p.every-language-keeps">
         Every language keeps its most-used verbs in odd old shapes. English "to be" (am, is, was),
         "go" (went!), "do" (did, done) — beginners must simply learn them, because they appear on every
         page. Greek is the same: a small club of verbs ends in <Gk>‑μι</Gk> instead of <Gk>‑ω</Gk>, keeps
@@ -24,7 +24,7 @@ export const MI_VERBS_CONTENT = (
         <Gk> δίδωμι</Gk> "I give," <Gk>τίθημι</Gk> "I put," <Gk>ἵστημι</Gk> "I stand," <Gk>ἀφίημι</Gk> "I
         forgive / leave."
       </P>
-      <P>
+      <P id="mi-verbs.p.good-news-strangeness">
         The good news: the strangeness is concentrated. In the present and imperfect, μι-verbs look alien;
         everywhere else they behave nearly like <Gk>λύω</Gk>. Learn two habits and one marker, below, and
         the club stops being intimidating.
@@ -32,8 +32,8 @@ export const MI_VERBS_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · The two stems ──────────────────────────────── */}
-    <SectionHeading>Habit one: two stems</SectionHeading>
-    <P>
+    <SectionHeading id="mi-verbs.h.habit-one-two">Habit one: two stems</SectionHeading>
+    <P id="mi-verbs.p.each-verb-keeps">
       Each μι-verb keeps two <Term t="stem">stems</Term>. The short <strong>verb stem</strong>
       (<Gk>δο‑</Gk>, <Gk>θε‑</Gk>, <Gk>στα‑</Gk>) powers the future, aorist, and perfect. The longer
       <strong> present stem</strong> doubles the first consonant with an iota — <Gk>δι‑δο</Gk>,
@@ -42,16 +42,16 @@ export const MI_VERBS_CONTENT = (
     </P>
     <TableAside
       beginning={<>
-        <AsideLabel>Meanings</AsideLabel>
-        <Ex grc="δίδωμι" en="I give" />
-        <Ex grc="τίθημι" en="I put / place" />
-        <Ex grc="ἵστημι" en="I stand / set" />
+        <AsideLabel><Tr id="mi-verbs.al.meanings">Meanings</Tr></AsideLabel>
+        <Ex grc="δίδωμι" en={<Tr id="mi-verbs.ex.give">I give</Tr>} />
+        <Ex grc="τίθημι" en={<Tr id="mi-verbs.ex.put-place">I put / place</Tr>} />
+        <Ex grc="ἵστημι" en={<Tr id="mi-verbs.ex.stand-set">I stand / set</Tr>} />
       </>}
       intermediate={<>
-        <p>Each has <strong>two stems</strong>: the reduplicated <em>present</em> stem (longer) for present + imperfect, and the shorter <em>verb</em> stem for future, aorist + perfect.</p>
+        <p><Tr id="mi-verbs.as.each-two-stems">Each has <strong>two stems</strong>: the reduplicated <em>present</em> stem (longer) for present + imperfect, and the shorter <em>verb</em> stem for future, aorist + perfect.</Tr></p>
       </>}
     >
-      <MorphTable flush title={gt("‒μι Verb Stems")} headers={['-μι verb','Verb stem','Present stem']}
+      <MorphTable id="mi-verbs.t1" flush title="‒μι Verb Stems" headers={['-μι verb','Verb stem','Present stem']}
         rows={[
           ['δίδωμι','δο / δω','διδο / διδω'],
           ['τίθημι','θε / θη','τιθε / τιθη'],
@@ -60,21 +60,21 @@ export const MI_VERBS_CONTENT = (
         note="The reduplicated present stem is lengthened in the singular (διδο → διδω, τιθε → τιθη, ἱστα → ἱστη)."
       />
     </TableAside>
-    <P>
+    <P id="mi-verbs.p.habit-two-hides">
       Habit two hides in that note: the stem vowel plays <strong>short / long</strong> — long in the
       singular (<Gk>δίδωμι, δίδως, δίδωσι</Gk>), short in the plural (<Gk>δίδομεν, δίδοτε</Gk>). Watch the
       pattern run down the present tense:
     </P>
     <TableAside
       beginning={<>
-        <p>The iota reduplication (<Gk>δι‑, τι‑, ἱ‑</Gk>) marks the present. See it → the verb is present or imperfect.</p>
-        <Ex grc="δίδωμί σοι" en="I give to you" />
+        <p><Tr id="mi-verbs.as.iota-reduplication-marks">The iota reduplication (<Gk>δι‑, τι‑, ἱ‑</Gk>) marks the present. See it → the verb is present or imperfect.</Tr></p>
+        <Ex grc="δίδωμί σοι" en={<Tr id="mi-verbs.ex.give-2">I give to you</Tr>} />
       </>}
       intermediate={<>
-        <p>Endings attach directly to the long stem (no connecting vowel), which is why the singular looks so different from <Gk>‑ω</Gk> verbs; the plural shortens the stem again.</p>
+        <p><Tr id="mi-verbs.as.endings-attach-directly">Endings attach directly to the long stem (no connecting vowel), which is why the singular looks so different from <Gk>‑ω</Gk> verbs; the plural shortens the stem again.</Tr></p>
       </>}
     >
-      <MorphTable flush title="Present Active Indicative" headers={['','Pers.','δίδωμι','τίθημι','ἵστημι']}
+      <MorphTable id="mi-verbs.t2" flush title="Present Active Indicative" headers={['','Pers.','δίδωμι','τίθημι','ἵστημι']}
         rows={[
           ['Sg.','1.','δίδωμι','τίθημι','ἵστημι'],
           ['','2.','δίδως','τίθης','ἵστης'],
@@ -87,9 +87,9 @@ export const MI_VERBS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · The κα aorist ──────────────────────────────── */}
-    <DropdownPractice
+    <DropdownPractice id="mi-verbs.d1"
       title="Practice — which μι-verb?"
-      intro={<>Spot the stem: διδ(ο)-, τιθ(ε)-, (ἱ)στ(α)-, ἀφι(ε)-.</>}
+      intro={<Tr id="mi-verbs.intro.spot-stem">Spot the stem: διδ(ο)-, τιθ(ε)-, (ἱ)στ(α)-, ἀφι(ε)-.</Tr>}
       options={["δίδωμι — give", "τίθημι — place", "ἵστημι — stand", "ἀφίημι — forgive / leave"]}
       items={[
         { q: <span className="normal-case">δίδομεν</span>, answer: "δίδωμι — give" },
@@ -101,23 +101,23 @@ export const MI_VERBS_CONTENT = (
       ]}
     />
 
-    <SectionHeading>The marker: a ‑κα aorist</SectionHeading>
-    <P>
+    <SectionHeading id="mi-verbs.h.marker-aorist">The marker: a ‑κα aorist</SectionHeading>
+    <P id="mi-verbs.p.aorist-verbs-drop">
       In the aorist, μι-verbs drop the iota (of course — not present tense any more) and take
       <Gk> ‑κα</Gk> where ordinary verbs take <Gk>‑σα</Gk>: <Gk>ἔδωκα</Gk> "I gave," <Gk>ἔθηκα</Gk> "I
       put." Same augment, same endings as a first aorist — just a different flag letter.
     </P>
     <TableAside
       beginning={<>
-        <p>No iota here — the aorist drops the reduplication and takes a <Gk>‑κα</Gk> marker (not <Gk>‑σα</Gk>).</p>
-        <Ex grc="ἔδωκα" en="I gave" />
-        <Ex grc="ἔθηκα" en="I put" />
+        <p><Tr id="mi-verbs.as.iota-here-aorist">No iota here — the aorist drops the reduplication and takes a <Gk>‑κα</Gk> marker (not <Gk>‑σα</Gk>).</Tr></p>
+        <Ex grc="ἔδωκα" en={<Tr id="mi-verbs.ex.gave">I gave</Tr>} />
+        <Ex grc="ἔθηκα" en={<Tr id="mi-verbs.ex.put">I put</Tr>} />
       </>}
       intermediate={<>
-        <p>The <Gk>‑κα</Gk> aorist can look like a perfect — tell them apart by reduplication (perfect) and context. <Gk>ἵστημι</Gk> keeps its <Gk>‑σα</Gk> (<Gk>ἔστησα</Gk>) and is transitive here ("I set up").</p>
+        <p><Tr id="mi-verbs.as.aorist-can-look">The <Gk>‑κα</Gk> aorist can look like a perfect — tell them apart by reduplication (perfect) and context. <Gk>ἵστημι</Gk> keeps its <Gk>‑σα</Gk> (<Gk>ἔστησα</Gk>) and is transitive here ("I set up").</Tr></p>
       </>}
     >
-      <MorphTable flush title="Aorist Active Indicative" headers={['','Pers.','δίδωμι','τίθημι','ἵστημι']}
+      <MorphTable id="mi-verbs.t3" flush title="Aorist Active Indicative" headers={['','Pers.','δίδωμι','τίθημι','ἵστημι']}
         rows={[
           ['Sg.','1.','ἔδωκα','ἔθηκα','ἔστησα'],
           ['','2.','ἔδωκας','ἔθηκας','ἔστησας'],
@@ -130,9 +130,9 @@ export const MI_VERBS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · The compound family ────────────────────────── */}
-    <DropdownPractice
+    <DropdownPractice id="mi-verbs.d2"
       title="Practice — aorist or perfect?"
-      intro={<>Both wear κα — reduplication settles it.</>}
+      intro={<Tr id="mi-verbs.intro.both-wear-reduplication">Both wear κα — reduplication settles it.</Tr>}
       options={["κ-aorist", "Perfect — reduplicated"]}
       items={[
         { q: <span className="normal-case">ἔδωκεν</span>, answer: "κ-aorist" },
@@ -144,18 +144,18 @@ export const MI_VERBS_CONTENT = (
       ]}
     />
 
-    <SectionHeading>The family you'll actually read: compounds</SectionHeading>
-    <P>
+    <SectionHeading id="mi-verbs.h.family-you'll-actually">The family you'll actually read: compounds</SectionHeading>
+    <P id="mi-verbs.p.much-club's-frequency">
       Much of the μι-club's NT frequency comes through compounds — preposition + μι-verb — and several are
       theological heavyweights:
     </P>
     <TableAside
       beginning={<>
-        <Ex grc="ἀφίημι τὰς ἁμαρτίας" en="I forgive sins" />
-        <Ex grc="παρέδωκεν αὐτόν" en="he handed him over" />
+        <Ex grc="ἀφίημι τὰς ἁμαρτίας" en={<Tr id="mi-verbs.ex.forgive-sins">I forgive sins</Tr>} />
+        <Ex grc="παρέδωκεν αὐτόν" en={<Tr id="mi-verbs.ex.handed-him-over">he handed him over</Tr>} />
       </>}
     >
-      <MorphTable flush title="Key μι-compounds" headers={['Compound', 'Built from', 'Meaning']} firstColIsData
+      <MorphTable id="mi-verbs.t4" tCols={[2]} flush title="Key μι-compounds" headers={['Compound', 'Built from', 'Meaning']} firstColIsData
         rows={[
           ['ἀφίημι', 'ἀπό + ἵημι', 'forgive, leave, allow'],
           ['παραδίδωμι', 'παρά + δίδωμι', 'hand over, entrust, betray'],
@@ -167,7 +167,7 @@ export const MI_VERBS_CONTENT = (
     </TableAside>
 
     {/* ── 5 · Watch out ──────────────────────────────────── */}
-    <ClassSentences
+    <ClassSentences id="mi-verbs.cs1"
       lesson="μι-verbs in the text"
       items={[
         { words: [
@@ -183,37 +183,37 @@ export const MI_VERBS_CONTENT = (
       ]}
     />
 
-    <SectionHeading>Watch out</SectionHeading>
+    <SectionHeading id="mi-verbs.h.watch-out">Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
-        <li><Gk>‑κα</Gk> aorist vs. perfect: <Gk>ἔδωκα</Gk> (aorist — augment, no reduplication) vs. <Gk>δέδωκα</Gk> (perfect — reduplication). Front of the word decides.</li>
-        <li><Gk>ἵστημι</Gk> swings between transitive "I set / place" (1st aorist <Gk>ἔστησα</Gk>) and intransitive "I stand" (2nd aorist <Gk>ἔστην</Gk>); its perfect <Gk>ἕστηκα</Gk> means a present state — "I stand."</li>
-        <li>The rough breathing on <Gk>ἵστημι</Gk> forms (<Gk>ἱ‑</Gk>) <em>is</em> the reduplication — an "h" where δ and τ doubled with iota.</li>
-        <li>μι-verb aorist imperatives are short and common: <Gk>δός</Gk> "give!", <Gk>ἄφες</Gk> "forgive!", <Gk>θές</Gk> "put!"</li>
+        <li><Tr id="mi-verbs.wo.aorist-perfect-aorist"><Gk>‑κα</Gk> aorist vs. perfect: <Gk>ἔδωκα</Gk> (aorist — augment, no reduplication) vs. <Gk>δέδωκα</Gk> (perfect — reduplication). Front of the word decides.</Tr></li>
+        <li><Tr id="mi-verbs.wo.swings-between-transitive"><Gk>ἵστημι</Gk> swings between transitive "I set / place" (1st aorist <Gk>ἔστησα</Gk>) and intransitive "I stand" (2nd aorist <Gk>ἔστην</Gk>); its perfect <Gk>ἕστηκα</Gk> means a present state — "I stand."</Tr></li>
+        <li><Tr id="mi-verbs.wo.rough-breathing-forms">The rough breathing on <Gk>ἵστημι</Gk> forms (<Gk>ἱ‑</Gk>) <em>is</em> the reduplication — an "h" where δ and τ doubled with iota.</Tr></li>
+        <li><Tr id="mi-verbs.wo.verb-aorist-imperatives">μι-verb aorist imperatives are short and common: <Gk>δός</Gk> "give!", <Gk>ἄφες</Gk> "forgive!", <Gk>θές</Gk> "put!"</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
-    <Practice
+    <LevelOnly level="beginning"><SectionHeading id="mi-verbs.h.try">Try it</SectionHeading></LevelOnly>
+    <Practice id="mi-verbs.pr1"
       title="Practice — parse and translate"
-      intro={<>Front of the word first: iota? augment? reduplication?</>}
+      intro={<Tr id="mi-verbs.intro.front-word-first">Front of the word first: iota? augment? reduplication?</Tr>}
       items={[
         { q: <span className="normal-case">δίδωσιν</span>,
-          a: <>Present active 3rd sg. — "he gives." Iota reduplication = present system.</> },
+          a: <Tr id="mi-verbs.pa.present-active-gives">Present active 3rd sg. — "he gives." Iota reduplication = present system.</Tr>},
         { q: <span className="normal-case">ἔδωκεν αὐτῷ ὁ θεός.</span>,
-          a: <>"God gave (it) to him" — aorist (augment + κα, no iota).</> },
+          a: <Tr id="mi-verbs.pa.god-gave-him">"God gave (it) to him" — aorist (augment + κα, no iota).</Tr>},
         { q: <span className="normal-case">δέδωκα</span>,
-          a: <>Perfect active 1st sg. — "I have given." Reduplication (δε‑) + κα.</> },
+          a: <Tr id="mi-verbs.pa.perfect-active-given">Perfect active 1st sg. — "I have given." Reduplication (δε‑) + κα.</Tr>},
         { q: <span className="normal-case">τίθησιν τὴν ψυχὴν αὐτοῦ.</span>,
-          a: <>"He lays down his life" — present of τίθημι (John 10:11's shepherd).</> },
+          a: <Tr id="mi-verbs.pa.lays-down-his">"He lays down his life" — present of τίθημι (John 10:11's shepherd).</Tr>},
         { q: <span className="normal-case">ἄφες ἡμῖν τὰ ὀφειλήματα ἡμῶν.</span>,
-          a: <>"Forgive us our debts" — aorist imperative of ἀφίημι (Matt 6:12).</> },
+          a: <Tr id="mi-verbs.pa.forgive-our-debts">"Forgive us our debts" — aorist imperative of ἀφίημι (Matt 6:12).</Tr>},
       ]}
     />
 
     {/* ── 7 · See it in the NT ───────────────────────────── */}
-    <ClassSentences
+    <ClassSentences id="mi-verbs.cs2"
       lesson="Lesson 9 · μι-verbs"
       items={[
         { words: [
@@ -263,32 +263,32 @@ export const MI_VERBS_CONTENT = (
     <HomeworkAssignments chapter="mi-verbs" />
 
     <LiveExamples
-      intro={<>The μι-club in the wild — watch for iota vs. augment vs. reduplication at the front.</>}
+      intro={<Tr id="mi-verbs.intro.club-wild-watch">The μι-club in the wild — watch for iota vs. augment vs. reduplication at the front.</Tr>}
       links={[
-        { label: <>Every form of <span className="normal-case">δίδωμι</span> — the model μι-verb</>, lemma: 'δίδωμι' },
-        { label: <>Every form of <span className="normal-case">ἀφίημι</span> — "forgive / leave / allow"</>, lemma: 'ἀφίημι' },
-        { label: <>Every form of <span className="normal-case">παραδίδωμι</span> — "hand over / betray"</>, lemma: 'παραδίδωμι' },
-        { label: <>Every form of <span className="normal-case">ἵστημι</span> — "stand / set"</>, lemma: 'ἵστημι' },
+        { label: <Tr id="mi-verbs.le.every-form-model">Every form of <span className="normal-case">δίδωμι</span> — the model μι-verb</Tr>, lemma: 'δίδωμι' },
+        { label: <Tr id="mi-verbs.le.every-form-forgive">Every form of <span className="normal-case">ἀφίημι</span> — "forgive / leave / allow"</Tr>, lemma: 'ἀφίημι' },
+        { label: <Tr id="mi-verbs.le.every-form-hand">Every form of <span className="normal-case">παραδίδωμι</span> — "hand over / betray"</Tr>, lemma: 'παραδίδωμι' },
+        { label: <Tr id="mi-verbs.le.every-form-stand">Every form of <span className="normal-case">ἵστημι</span> — "stand / set"</Tr>, lemma: 'ἵστημι' },
       ]}
     />
 
     {/* ── 8 · Going deeper (Intermediate only) ───────────── */}
     <LevelOnly level="intermediate">
-      <SectionHeading>Going deeper: small club, heavy theology</SectionHeading>
-      <P>
+      <SectionHeading id="mi-verbs.h.going-deeper-small">Going deeper: small club, heavy theology</SectionHeading>
+      <P id="mi-verbs.p.stative-perfect-because">
         <strong>ἵστημι's stative perfect.</strong> Because its perfect <Gk>ἕστηκα</Gk> denotes the
         <em> state</em> of standing, it translates as an English present: <Gk>ἰδοὺ ἕστηκα ἐπὶ τὴν θύραν</Gk>,
         "behold, I <em>stand</em> at the door" (Rev 3:20). A "have stood" here would miss the living
         posture the perfect asserts.
       </P>
-      <P>
+      <P id="mi-verbs.p.passion-gospels-thread">
         <strong>παραδίδωμι and the passion.</strong> The Gospels thread one verb through the whole story:
         Judas <em>hands over</em> Jesus (Mark 14:10), the chief priests <em>hand him over</em> to Pilate
         (15:1), Pilate <em>hands him over</em> to be crucified (15:15) — and Paul dares to make God the
         subject: "he did not spare his own Son but <em>handed him over</em> for us all" (Rom 8:32). Tracking
         the verb is tracking the theology.
       </P>
-      <P>
+      <P id="mi-verbs.p.range-one-verb">
         <strong>ἀφίημι's range.</strong> One verb covers "forgive" (sins), "leave" (nets, Matt 4:20), and
         "allow" (Matt 3:15). The root picture — releasing, letting go — underlies all three; context picks
         the English word, and the shared root sometimes carries the point.

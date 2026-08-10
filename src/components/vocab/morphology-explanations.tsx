@@ -480,14 +480,14 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   subjunctives: {
     beginning: (
       <Note>
-        <P>The <strong>subjunctive</strong> is the mood of possibility — "might, may, should" rather than plain fact. Its signal is a <strong>long connecting vowel</strong> (<G>ω/η</G>). It rarely stands alone; it usually follows a trigger word like <G>ἵνα</G> ("in order that"), <G>ἐάν</G> ("if"), or <G>ὅταν</G> ("whenever"). There is no past time here — even the aorist subjunctive is not past; the tense only shows aspect.</P>
-        <Hook>Each common use has a "<strong>flag word</strong>" that alerts you the subjunctive is coming: <G>ἵνα</G> / <G>ὅπως</G> (purpose) or <G>ἄν</G> / <G>ἐάν</G> (indefinite / conditional).</Hook>
-        <Eg><G>ἵνα λύῃ</G> = "in order that he <em>may</em> loose."</Eg>
+        <P><T id="subjunctives.exp.p.subjunctive-mood-possibility">The <strong>subjunctive</strong> is the mood of possibility — "might, may, should" rather than plain fact. Its signal is a <strong>long connecting vowel</strong> (<G>ω/η</G>). It rarely stands alone; it usually follows a trigger word like <G>ἵνα</G> ("in order that"), <G>ἐάν</G> ("if"), or <G>ὅταν</G> ("whenever"). There is no past time here — even the aorist subjunctive is not past; the tense only shows aspect.</T></P>
+        <Hook><T id="subjunctives.exp.hook.each-common-use">Each common use has a "<strong>flag word</strong>" that alerts you the subjunctive is coming: <G>ἵνα</G> / <G>ὅπως</G> (purpose) or <G>ἄν</G> / <G>ἐάν</G> (indefinite / conditional).</T></Hook>
+        <Eg><T id="subjunctives.exp.eg.order-may-loose"><G>ἵνα λύῃ</G> = "in order that he <em>may</em> loose."</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>These are its <strong>Essential Syntax Categories</strong> (after Wallace) — some standing alone, some inside a dependent clause.</P>
+        <P><T id="subjunctives.exp.p.these-essential-syntax">These are its <strong>Essential Syntax Categories</strong> (after Wallace) — some standing alone, some inside a dependent clause.</T></P>
         <CatGroup label="In independent clauses">
           <Cat name="Hortatory" eg="“let us love one another”" ex={[{ g: "ἀγαπῶμεν ἀλλήλους", e: "let us love one another", r: "1 John 4:7" }, { g: "διέλθωμεν ἕως Βηθλέεμ", e: "let us go over to Bethlehem", r: "Luke 2:15" }]}>1st person plural — an exhortation</Cat>
           <Cat name="Deliberative" eg="“what shall we say?”" ex={[{ g: "τί οὖν ποιήσωμεν;", e: "what then shall we do?", r: "Luke 3:10" }, { g: "δῶμεν ἢ μὴ δῶμεν;", e: "shall we pay, or shall we not?", r: "Mark 12:14" }]}>a real or rhetorical question about what to do</Cat>
@@ -499,21 +499,21 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
           <Cat name="Conditional" eg="“if you ask…”" ex={[{ g: "ἐάν τι αἰτήσητέ με, ἐγὼ ποιήσω", e: "if you ask me anything, I will do it", r: "John 14:14" }, { g: "ἐὰν ὁμολογῶμεν τὰς ἁμαρτίας ἡμῶν", e: "if we confess our sins", r: "1 John 1:9" }]}><G>ἐάν</G> + subjunctive — the 3rd-class condition</Cat>
           <Cat name="Indefinite" eg="ὃς ἄν “whoever,” ὅταν “whenever”" ex={[{ g: "ὃς ἂν ποιήσῃ τὸ θέλημα τοῦ θεοῦ", e: "whoever does the will of God", r: "Mark 3:35" }, { g: "ὅταν προσεύχησθε, λέγετε", e: "whenever you pray, say", r: "Luke 11:2" }]}>relative or temporal clauses with <G>ἄν</G></Cat>
         </CatGroup>
-        <P>Because the subjunctive carries aspect only, choose your English helper ("may / should / might") from the <em>clause type</em>, not from a fixed gloss.</P>
+        <P><T id="subjunctives.exp.p.because-subjunctive-carries">Because the subjunctive carries aspect only, choose your English helper ("may / should / might") from the <em>clause type</em>, not from a fixed gloss.</T></P>
       </Note>
     ),
   },
   'mi-verbs': {
     beginning: (
       <Note>
-        <P>Most Greek verbs end in <G>‑ω</G>, but a handful of very common ones end in <G>‑μι</G>: <G>δίδωμι</G> ("I give"), <G>τίθημι</G> ("I put / place"), <G>ἵστημι</G> ("I stand"). They look odd because in the present/imperfect they double their first sound with an iota (<G>δι‑δωμι</G>) and their stem vowel swaps short/long (<G>δο/δω</G>). Learn these few verbs as high-frequency VIPs.</P>
-        <Hook><G>‑μι</G> verbs have <strong>two stems</strong>: the <strong>present stem</strong> (longer, reduplicated) is used for the present and imperfect; the <strong>verbal stem</strong> (shorter) is used for the future, aorist, and perfect.</Hook>
-        <Eg><G>δίδωμι σοι</G> = "I give <em>to you</em>."</Eg>
+        <P><T id="mi-verbs.exp.p.most-greek-verbs">Most Greek verbs end in <G>‑ω</G>, but a handful of very common ones end in <G>‑μι</G>: <G>δίδωμι</G> ("I give"), <G>τίθημι</G> ("I put / place"), <G>ἵστημι</G> ("I stand"). They look odd because in the present/imperfect they double their first sound with an iota (<G>δι‑δωμι</G>) and their stem vowel swaps short/long (<G>δο/δω</G>). Learn these few verbs as high-frequency VIPs.</T></P>
+        <Hook><T id="mi-verbs.exp.hook.verbs-two-stems"><G>‑μι</G> verbs have <strong>two stems</strong>: the <strong>present stem</strong> (longer, reduplicated) is used for the present and imperfect; the <strong>verbal stem</strong> (shorter) is used for the future, aorist, and perfect.</T></Hook>
+        <Eg><T id="mi-verbs.exp.eg.give"><G>δίδωμι σοι</G> = "I give <em>to you</em>."</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The iota-reduplication marks <strong>present/imperfect only</strong>; elsewhere μι-verbs revert to the short stem and act like <G>‑ω</G> verbs, with an aorist in <G>‑κα</G> (<G>ἔδωκα, ἔθηκα</G>) rather than <G>‑σα</G>.</P>
+        <P><T id="mi-verbs.exp.p.iota-reduplication-marks">The iota-reduplication marks <strong>present/imperfect only</strong>; elsewhere μι-verbs revert to the short stem and act like <G>‑ω</G> verbs, with an aorist in <G>‑κα</G> (<G>ἔδωκα, ἔθηκα</G>) rather than <G>‑σα</G>.</T></P>
       </Note>
     ),
   },

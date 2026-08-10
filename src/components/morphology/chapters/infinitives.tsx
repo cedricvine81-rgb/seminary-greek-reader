@@ -257,8 +257,8 @@ export const INFINITIVES_CONTENT = (
     <LiveExamples
       intro={<Tr id="infinitives.intro.watch-patterns-helper">Watch the patterns — helper + infinitive, preposition + articular infinitive — repeat page after page.</Tr>}
       links={[
-        { label: 'Every infinitive in the NT', features: ['verb', 'infinitive'] },
-        { label: 'Aorist infinitives — whole-action "to …"', features: ['verb', 'infinitive', 'aorist'] },
+        { label: <Tr id="infinitives.le.infinitive">Every infinitive in the NT</Tr>, features: ['verb', 'infinitive'] },
+        { label: <Tr id="infinitives.le.aorist-infinitives-whole">Aorist infinitives — whole-action "to …"</Tr>, features: ['verb', 'infinitive', 'aorist'] },
         { label: <Tr id="infinitives.le.every-form-nt's">Every form of <span className="normal-case">δεῖ</span> — the NT's "must"</Tr>, lemma: 'δεῖ' },
         { label: <Tr id="infinitives.le.every-form-able">Every form of <span className="normal-case">δύναμαι</span> — "able to…" + infinitive</Tr>, lemma: 'δύναμαι' },
       ]}
