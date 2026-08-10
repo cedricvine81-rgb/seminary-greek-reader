@@ -60,7 +60,7 @@ export function ReferenceNavigator({
           className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-surface"
         >
           {Array.from({ length: selectedBook.totalChapters }, (_, i) => i + 1).map(ch => (
-            <option key={ch} value={ch}>Chapter {ch}</option>
+            <option key={ch} value={ch}>{t('reader.chapterN', { n: ch })}</option>
           ))}
         </select>
       )}

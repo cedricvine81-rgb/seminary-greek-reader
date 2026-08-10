@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ParsingPanel } from './ParsingPanel'
 import { useParsingPaneHeight } from '@/lib/parsing-pane-height'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -33,6 +34,7 @@ export function ResizableParsingPane({ storageKey, info, locked = false, bgClass
                        // so the grab bar tracks the edge that actually moves. Bottom-anchored panes
                        // (Reader, Texts, …) leave this off: handle on top, drag-up enlarges.
 }) {
+  const t = useT()
   const isDesktop = useIsDesktop()
   const [height, setHeight, persist] = useParsingPaneHeight(storageKey)
   const hRef = useRef(height); hRef.current = height
@@ -64,7 +66,7 @@ export function ResizableParsingPane({ storageKey, info, locked = false, bgClass
   const handle = isDesktop && (
     <div
       onPointerDown={e => { e.preventDefault(); drag.current = { startY: e.clientY, startH: hRef.current }; document.body.style.userSelect = 'none' }}
-      title="Drag to resize the parsing pane"
+      title={t('reader.dragResize')}
       className="mx-auto flex h-3 w-full max-w-[10rem] cursor-row-resize touch-none items-center justify-center"
     >
       <div className="h-1 w-12 rounded-full bg-gray-300 transition-colors hover:bg-gray-400" />

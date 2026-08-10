@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { X, Search } from 'lucide-react'
 import { MORPH_GROUPS } from '@/lib/morph-features'
 
@@ -15,6 +16,7 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
   onSearch: (features: string[], lemma: string | null) => void
   onClose: () => void
 }) {
+  const t = useT()
   const ref = useRef<HTMLDivElement>(null)
   const [selected, setSelected] = useState<Set<string>>(() => new Set(initialFeatures))
   const [restrictLemma, setRestrictLemma] = useState(initialRestrictLemma)
@@ -44,13 +46,13 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
         {/* Header */}
         <div className="flex items-start justify-between gap-2 px-4 py-3 border-b border-gray-100 shrink-0">
           <div>
-            <p className="text-sm font-semibold text-gray-800">Search by morphology</p>
+            <p className="text-sm font-semibold text-gray-800">{t('reader.searchByMorphology')}</p>
             <p className="text-xs text-gray-400 mt-0.5">
               {subject ? <span className="greek-text">{subject}</span> : null}
               {subject ? ' · ' : ''}New Testament
             </p>
           </div>
-          <button onClick={onClose} aria-label="Close" className="text-gray-400 hover:text-gray-600 p-1 -mr-1"><X size={18} /></button>
+          <button onClick={onClose} aria-label={t('action.close')} className="text-gray-400 hover:text-gray-600 p-1 -mr-1"><X size={18} /></button>
         </div>
 
         {/* Feature groups */}
@@ -77,7 +79,7 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
             <label className="flex items-center gap-2 pt-1 text-sm text-gray-700 cursor-pointer">
               <input type="checkbox" checked={restrictLemma} onChange={e => setRestrictLemma(e.target.checked)}
                 className="accent-brand-600" />
-              Only this lemma (<span className="greek-text">{lemma}</span>)
+              {t('reader.onlyThisLemma')}<span className="greek-text">{lemma}</span>)
             </label>
           )}
         </div>
@@ -85,11 +87,11 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
         {/* Actions */}
         <div className="flex items-center justify-between gap-2 px-4 py-3 border-t border-gray-100 shrink-0">
           <button type="button" onClick={() => { setSelected(new Set()); setRestrictLemma(false) }}
-            className="text-xs text-gray-500 hover:text-gray-700">Clear</button>
+            className="text-xs text-gray-500 hover:text-gray-700">{t('action.clear')}</button>
           <button type="button" disabled={!canSearch}
             onClick={() => onSearch(features, restrictLemma ? lemma : null)}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-brand-600 text-white disabled:opacity-40 hover:bg-brand-700 transition-colors">
-            <Search size={15} /> Search
+            <Search size={15} /> {t('reader.search')}
           </button>
         </div>
       </div>

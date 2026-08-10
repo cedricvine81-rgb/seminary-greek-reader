@@ -1682,7 +1682,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           )}
           {chapter !== null && (
             <h4 className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none">
-              Chapter {chapter}
+              {t('reader.chapterN', { n: chapter })}
             </h4>
           )}
           {sec.verses.map(v => renderVerseRow(v))}
@@ -1761,7 +1761,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
             <h3 dir="ltr" className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-5 mb-1 pb-1 border-b border-gray-100 font-sans">{sec.bookName}</h3>
           )}
           {chapter !== null && (
-            <h4 dir="ltr" className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none font-sans">Chapter {chapter}</h4>
+            <h4 dir="ltr" className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none font-sans">{t('reader.chapterN', { n: chapter })}</h4>
           )}
           {sec.verses.map(v => renderHebrewVerseRow(v))}
         </div>
@@ -2015,22 +2015,22 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                     <div>
                       <p className="text-sm font-semibold text-gray-700 mb-1">{t('reader.parsingPanel')}</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
-                        <li><span className="font-medium text-gray-600">Hover</span> over any word to see its lexical entry, parsing, and glosses.</li>
-                        <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word.</li>
-                        <li><span className="font-medium text-gray-600">Press Shift again</span> to unfreeze and return to hover mode.</li>
+                        <li><span className="font-medium text-gray-600">{t('reader.helpHoverTerm')}</span> {t('reader.helpHoverRest')}</li>
+                        <li><span className="font-medium text-gray-600">{t('reader.helpShiftTerm')}</span> {t('reader.helpShiftRest')}</li>
+                        <li><span className="font-medium text-gray-600">{t('reader.helpShiftAgainTerm')}</span> {t('reader.helpShiftAgainRest')}</li>
                       </ul>
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-gray-700 mb-1">{t('reader.syntax')}</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
-                        <li><span className="font-medium text-gray-600">Right-click</span> any word to open the syntax menu.</li>
-                        <li>The menu shows categories from Wallace, PROIEL, GBI, and ABS Syntax.</li>
+                        <li><span className="font-medium text-gray-600">{t('reader.helpRightClickTerm')}</span> {t('reader.helpRightClickRest')}</li>
+                        <li>{t('reader.helpMenuSources')}</li>
                       </ul>
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-gray-700 mb-1">{t('reader.search')}</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
-                        <li>Type a <span className="font-medium text-gray-600">Greek word</span> to find every occurrence in the corpus.</li>
+                        <li>{t('reader.helpTypePre')} <span className="font-medium text-gray-600">{t('reader.helpTypeTerm')}</span> {t('reader.helpTypeRest')}</li>
                         <li>Type a <span className="font-medium text-gray-600">reference</span> (e.g. Matt 5:3, Rom 8) to jump to a passage.</li>
                       </ul>
                     </div>

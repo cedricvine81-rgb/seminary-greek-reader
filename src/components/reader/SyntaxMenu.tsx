@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import Link from 'next/link'
 import { X, Info, GraduationCap } from 'lucide-react'
 import { chapterForCategory, grammarHref, CHAPTER_LABEL, type GrammarChapter } from '@/lib/syntax-grammar-map'
@@ -25,8 +26,9 @@ function GrammarLink({ chapter, level, category }: {
   level: 'beginner' | 'intermediate'
   category: string
 }) {
+  const t = useT()
   const cls = 'mb-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-brand-700 hover:underline'
-  const label = <><GraduationCap size={11} className="shrink-0" /> Learn this — Grammar: {CHAPTER_LABEL[chapter]}</>
+  const label = <><GraduationCap size={11} className="shrink-0" /> {t('reader.learnThis', { chapter: CHAPTER_LABEL[chapter] })}</>
 
   if (!hasGrammarPanel()) {
     return <Link href={grammarHref(chapter, level)} className={cls}>{label}</Link>
@@ -99,6 +101,7 @@ const LEVEL_BADGE: Record<WallaceCategory['level'], string> = {
 }
 
 export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onWordAction, highlight, loading, onClose }: SyntaxMenuProps) {
+  const t = useT()
   const ref = useRef<HTMLDivElement>(null)
 
   const [selectedPrep, setSelectedPrep] = useState<string>(ctx.governingPrep ?? 'none')
@@ -202,7 +205,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
         <button
           onClick={onClose}
           className="text-gray-400 hover:text-gray-600 shrink-0 p-2 -mr-1 rounded-lg hover:bg-gray-100 touch-manipulation"
-          aria-label="Close"
+          aria-label={t('action.close')}
         >
           <X size={isMobile ? 22 : 16} />
         </button>
@@ -214,7 +217,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
         {/* ── Highlight this word ── */}
         {highlight && (
           <div className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/70 px-2.5 py-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 shrink-0">Highlight</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 shrink-0">{t('reader.highlight')}</span>
             <HighlightSwatches
               activeColor={highlight.activeColor}
               copyValue={word.surface}
@@ -229,7 +232,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
         {/* ── Search this word ── */}
         <div className="rounded-lg border border-gray-100 bg-gray-50/70 p-2.5 space-y-2">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Search this word</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{t('reader.searchThisWord')}</span>
             <div className="flex rounded-md border border-gray-200 overflow-hidden text-[10px] leading-none">
               {(['GNT', 'LXX', 'BOTH'] as const).map(s => (
                 <button key={s} type="button" onClick={() => setScope(s)}
@@ -242,26 +245,26 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
           <div className="grid grid-cols-2 gap-1.5">
             <button type="button" onClick={() => onWordAction('lemma', scope)}
               className="text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              All forms{typeof freq === 'number' ? <span className="text-gray-400"> · {freq}×</span> : null}
+              {t('reader.allForms')}{typeof freq === 'number' ? <span className="text-gray-400"> · {freq}×</span> : null}
             </button>
             <button type="button" onClick={() => onWordAction('form', scope)}
               className="text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              This form
+              {t('reader.thisForm')}
             </button>
             <button type="button" onClick={() => onWordAction('morph', scope)}
               className="col-span-2 text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              By morphology <span className="text-gray-400">· NT</span>
+              {t('reader.byMorphology')} <span className="text-gray-400">· NT</span>
             </button>
             <button type="button" onClick={() => onWordAction('backgrounds', scope)}
               className="col-span-2 text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
+              {t('reader.backgroundTexts')} <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </div>
           <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500">
-            <span className="text-gray-400">Copy:</span>
-            <button type="button" onClick={() => copy(word.surface, 'word')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">word</button>
-            {lemma && <button type="button" onClick={() => copy(lemma, 'dictionary form')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">dictionary form</button>}
-            {reference && <button type="button" onClick={() => copy(reference, 'reference')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">reference</button>}
+            <span className="text-gray-400">{t('reader.copyLabel')}</span>
+            <button type="button" onClick={() => copy(word.surface, 'word')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">{t('reader.copyWord')}</button>
+            {lemma && <button type="button" onClick={() => copy(lemma, 'dictionary form')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">{t('reader.copyDictForm')}</button>}
+            {reference && <button type="button" onClick={() => copy(reference, 'reference')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">{t('reader.copyRef')}</button>}
             {copied && <span className="text-green-600">✓ copied {copied}</span>}
           </div>
         </div>
@@ -297,7 +300,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-sm font-semibold">{cat.name}</span>
                 <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0 ${LEVEL_BADGE[cat.level]}`}>
-                  {cat.level === 'beginner' ? 'Beginner' : 'Intermediate'}
+                  {cat.level === 'beginner' ? t('reader.levelBeginner') : t('reader.levelIntermediate')}
                 </span>
               </div>
               {/* Directly under the name, BEFORE the description. Wallace's descriptions run
@@ -334,14 +337,14 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
 
             {gbi.role && (
               <div>
-                <span className="text-xs font-semibold text-amber-900">Role: </span>
+                <span className="text-xs font-semibold text-amber-900">{t('reader.role')} </span>
                 <span className="text-xs text-amber-800">{gbi.role}</span>
               </div>
             )}
 
             {gbi.gloss && (
               <div>
-                <span className="text-xs font-semibold text-amber-900">Gloss: </span>
+                <span className="text-xs font-semibold text-amber-900">{t('reader.glossLabel')} </span>
                 <span className="text-xs text-amber-800 italic">{gbi.gloss}</span>
               </div>
             )}
@@ -361,7 +364,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
 
             {gbi.frame.length > 0 && (
               <div>
-                <span className="text-xs font-semibold text-amber-900 block mb-0.5">Semantic Frame:</span>
+                <span className="text-xs font-semibold text-amber-900 block mb-0.5">{t('reader.semanticFrame')}</span>
                 {gbi.frame.map((f, i) => (
                   <div key={i} className="text-xs text-amber-800 leading-snug">{f.label}</div>
                 ))}
@@ -376,33 +379,33 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             <div className="rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 space-y-1.5">
               <span className="text-[10px] font-bold tracking-widest text-violet-600 uppercase">ABS · NT Syntax</span>
               {abs.function && (
-                <div><span className="text-xs font-semibold text-violet-900">Function: </span>
+                <div><span className="text-xs font-semibold text-violet-900">{t('reader.function')} </span>
                      <span className="text-xs text-violet-800">{abs.function}</span></div>
               )}
               {abs.phrase && (
-                <div><span className="text-xs font-semibold text-violet-900">Phrase: </span>
+                <div><span className="text-xs font-semibold text-violet-900">{t('reader.phrase')} </span>
                      <span className="text-xs text-violet-800">{abs.phrase}</span></div>
               )}
               {abs.rule && (
-                <div><span className="text-xs font-semibold text-violet-900">Construction: </span>
+                <div><span className="text-xs font-semibold text-violet-900">{t('reader.construction')} </span>
                      <span className="text-xs text-violet-800">{abs.rule}</span></div>
               )}
               {abs.clauseRule && (
-                <div><span className="text-xs font-semibold text-violet-900">Clause pattern: </span>
+                <div><span className="text-xs font-semibold text-violet-900">{t('reader.clausePattern')} </span>
                      <span className="text-xs text-violet-800">{abs.clauseRule}</span></div>
               )}
             </div>
           ) : (
             <div className="rounded-lg border border-violet-100 bg-violet-50/50 px-3 py-2">
               <span className="text-[10px] font-bold tracking-widest text-violet-400 uppercase">ABS · NT Syntax</span>
-              <p className="text-xs text-violet-400 italic mt-0.5">No entry for this word.</p>
+              <p className="text-xs text-violet-400 italic mt-0.5">{t('reader.noEntryForWord')}</p>
             </div>
           )
         )}
 
         {/* Loading state — the syntax datasets are still downloading (first use of a session). */}
         {loading && (wallaceOn || proielOn || gbiOn || absOn) && !hasContent && (
-          <p className="text-xs text-gray-400 italic px-1">Loading syntactic analysis…</p>
+          <p className="text-xs text-gray-400 italic px-1">{t('reader.loadingSyntax')}</p>
         )}
 
         {/* Empty state — data is loaded but no syntax layers are enabled. */}
@@ -433,7 +436,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
               )}
             </div>
             {ctx.governingPrep && ctx.governingPrep !== 'none' && selectedPrep === ctx.governingPrep && (
-              <span className="text-[10px] bg-brand-100 text-brand-700 rounded-full px-1.5 py-0.5 font-medium">auto-detected</span>
+              <span className="text-[10px] bg-brand-100 text-brand-700 rounded-full px-1.5 py-0.5 font-medium">{t('reader.autoDetected')}</span>
             )}
           </div>
           <select

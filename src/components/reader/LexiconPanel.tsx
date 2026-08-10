@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { X } from 'lucide-react'
 import type { VerseWord } from '@/types/biblical-text'
 import { formatParsing } from '@/lib/morph-formatting'
@@ -10,6 +11,7 @@ interface StrongsEntry { lemma: string; def: string; kjv: string }
 // gloss, part of speech, frequency, Strong's) plus the Strong's lexical definition fetched
 // lazily from /api/lexicon.
 export function LexiconPanel({ word, onClose }: { word: VerseWord; onClose: () => void }) {
+  const t = useT()
   const ref = useRef<HTMLDivElement>(null)
   const lex = word.lexeme
   const parse = word.parses?.[0]
@@ -53,42 +55,42 @@ export function LexiconPanel({ word, onClose }: { word: VerseWord; onClose: () =
               {strongs ? ` · Strong's ${String(strongs).replace(/^0+/, '')}` : ''}
             </span>
           </div>
-          <button onClick={onClose} aria-label="Close" className="text-gray-400 hover:text-gray-600 p-1 -mr-1"><X size={18} /></button>
+          <button onClick={onClose} aria-label={t('action.close')} className="text-gray-400 hover:text-gray-600 p-1 -mr-1"><X size={18} /></button>
         </div>
 
         {/* Body */}
         <div className="p-4 space-y-4 overflow-y-auto text-sm">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">This form</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t('reader.thisForm')}</p>
             <p className="text-gray-800"><span className="font-reading text-base">{word.surface}</span>{parse ? ` — ${formatParsing(parse)}` : ''}</p>
           </div>
 
           {lex?.gloss && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Gloss</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t('reader.gloss')}</p>
               <p className="text-gray-800">{lex.gloss}</p>
             </div>
           )}
 
           {lex?.extendedGloss && lex.extendedGloss !== lex.gloss && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Extended</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t('reader.extended')}</p>
               <p className="text-gray-700 leading-relaxed">{lex.extendedGloss}</p>
             </div>
           )}
 
           {strongs && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Strong's definition</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{t('reader.strongsDefinition')}</p>
               {loading ? (
-                <p className="text-gray-400 italic text-xs">Loading…</p>
+                <p className="text-gray-400 italic text-xs">{t('reader.loading')}</p>
               ) : entry ? (
                 <div className="space-y-1">
                   <p className="text-gray-700 leading-relaxed">{entry.def}</p>
                   {entry.kjv && <p className="text-xs text-gray-400">KJV: {entry.kjv}</p>}
                 </div>
               ) : (
-                <p className="text-gray-400 italic text-xs">No entry.</p>
+                <p className="text-gray-400 italic text-xs">{t('reader.noEntry')}</p>
               )}
             </div>
           )}

@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { VOCAB_GLOSSES } from '@/lib/vocab-glosses'
 
@@ -69,6 +70,7 @@ interface ParsingPanelProps {
 }
 
 export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = 'panel' }: ParsingPanelProps) {
+  const t = useT()
   const [entry, setEntry] = useState<LexiconEntry | null>(null)
   const [lsjEntry, setLsjEntry] = useState<string | null>(null)
   const isHebrew = info?.script === 'hebrew'
@@ -102,7 +104,7 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
 
       {!info ? (
         <div className="flex items-center justify-center h-full text-sm text-gray-400 italic px-5">
-          Hover or click any word to see lexical information.
+          {t('reader.hoverHint')}
         </div>
       ) : (
         <div className="flex-1 min-h-0 overflow-y-auto px-5 py-3 text-sm leading-snug">
@@ -117,18 +119,18 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
               <span className="font-mono text-xs text-gray-400 bg-gray-50 rounded px-1">{info.strongs}</span>
             )}
             {locked && (
-              <span className="ml-auto text-xs text-brand-500 font-medium">Shift key to enter/exit scrolling</span>
+              <span className="ml-auto text-xs text-brand-500 font-medium">{t('reader.shiftHint')}</span>
             )}
           </div>
           <p className="text-gray-600 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Parsing</span>
+            <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('study.parsing')}</span>
             {info.parsing}
           </p>
 
           {/* Hebrew: morpheme segment breakdown (prefixes/suffixes) */}
           {isHebrew && info.segments && info.segments.length > 0 && (
             <p className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Segments</span>
+              <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('reader.segments')}</span>
               {info.segments.map((s, i) => (
                 <span key={i} className="inline-flex items-baseline gap-1">
                   <span className="font-hebrew text-base text-brand-800" dir="rtl">{s.text}</span>
@@ -145,7 +147,7 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
             <div className="text-gray-800">
               {info.gloss && (
                 <p className="mb-0">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Gloss</span>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('reader.gloss')}</span>
                   {info.gloss}
                 </p>
               )}
@@ -191,13 +193,13 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
             )}
             {vocabGloss && (
               <p className="mb-0">
-                <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Vocab Builder</span>
+                <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('reader.vocabBuilder')}</span>
                 {vocabGloss}
               </p>
             )}
             {!entry?.thayer && !entry?.mounce && !entry?.abbottSmith && !lsjEntry && !vocabGloss && info.gloss && (
               <p className="mb-0">
-                <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Gloss</span>
+                <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('reader.gloss')}</span>
                 {info.gloss}
               </p>
             )}

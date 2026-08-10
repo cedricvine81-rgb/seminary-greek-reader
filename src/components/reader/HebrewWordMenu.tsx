@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { X } from 'lucide-react'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { WordHighlight } from '@/lib/word-search-bus'
@@ -19,6 +20,7 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
   highlight?: WordHighlight
   onClose: () => void
 }) {
+  const t = useT()
   const ref = useRef<HTMLDivElement>(null)
   const [copied, setCopied] = useState<string | null>(null)
   const [syntax, setSyntax] = useState<MaculaHebrewEntry | null>(null)
@@ -72,7 +74,7 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
             {info.strongs && <span className="font-mono text-gray-400">{info.strongs}</span>}
           </span>
         </div>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600 shrink-0 p-1 -mr-1 rounded hover:bg-gray-100" aria-label="Close">
+        <button onClick={onClose} className="text-gray-400 hover:text-gray-600 shrink-0 p-1 -mr-1 rounded hover:bg-gray-100" aria-label={t('action.close')}>
           <X size={16} />
         </button>
       </div>
@@ -81,7 +83,7 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
         {/* Highlight this word (signed-in readers) */}
         {highlight && (
           <div className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/70 px-2.5 py-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 shrink-0">Highlight</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 shrink-0">{t('reader.highlight')}</span>
             <HighlightSwatches
               activeColor={highlight.activeColor}
               copyValue={info.surface}
@@ -97,17 +99,17 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
             inflection) or "this form" (the consonantal surface). Routes into Master Search. */}
         {!isExamLocked() && info.strongs && (
           <div className="space-y-1.5">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Search this word</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{t('reader.searchThisWord')}</span>
             <div className="grid grid-cols-2 gap-1.5">
               <button type="button"
                 onClick={() => { onClose(); openMasterSearch({ query: info.lexeme, scope: 'hebrew:MT', strongs: info.strongs!.replace(/[^0-9]/g, '') }) }}
                 className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-                All forms
+                {t('reader.allForms')}
               </button>
               <button type="button"
                 onClick={() => { onClose(); openMasterSearch({ query: info.surface, scope: 'hebrew:MT' }) }}
                 className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-                This form
+                {t('reader.thisForm')}
               </button>
             </div>
           </div>
@@ -115,14 +117,14 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
 
         {/* Parsing */}
         <p className="text-gray-600">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Parsing</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">{t('study.parsing')}</span>
           {info.parsing}
         </p>
 
         {/* Morpheme segments (compounds) */}
         {info.segments && info.segments.length > 0 && (
           <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Segments</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">{t('reader.segments')}</span>
             {info.segments.map((s, i) => (
               <span key={i} className="inline-flex items-baseline gap-1">
                 <span className="font-hebrew text-base text-brand-800" dir="rtl">{s.text}</span>
@@ -137,13 +139,13 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
           <div className="rounded-lg border border-gray-100 bg-gray-50/70 px-2.5 py-1.5 space-y-0.5">
             {syntaxRole && (
               <p className="text-gray-700">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Syntax</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">{t('study.syntax')}</span>
                 {syntaxRole}
               </p>
             )}
             {syntaxClause && (
               <p className="text-xs text-gray-500">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Clause</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">{t('reader.clause')}</span>
                 {syntaxClause}
               </p>
             )}
@@ -154,7 +156,7 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
             concise definition where BDB has no matching entry). */}
         {info.gloss && (
           <p className="text-gray-800">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Gloss</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">{t('reader.gloss')}</span>
             {info.gloss}
           </p>
         )}
@@ -172,10 +174,10 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
 
         {/* Copy */}
         <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500 pt-1 border-t border-gray-100">
-          <span className="text-gray-400">Copy:</span>
-          <button type="button" onClick={() => copy(info.surface, 'word')} className="underline decoration-gray-300 hover:text-brand-700">word</button>
-          <button type="button" onClick={() => copy(info.lexeme, 'lemma')} className="underline decoration-gray-300 hover:text-brand-700">lemma</button>
-          <button type="button" onClick={() => copy(info.reference, 'reference')} className="underline decoration-gray-300 hover:text-brand-700">reference</button>
+          <span className="text-gray-400">{t('reader.copyLabel')}</span>
+          <button type="button" onClick={() => copy(info.surface, 'word')} className="underline decoration-gray-300 hover:text-brand-700">{t('reader.copyWord')}</button>
+          <button type="button" onClick={() => copy(info.lexeme, 'lemma')} className="underline decoration-gray-300 hover:text-brand-700">{t('reader.copyLemma')}</button>
+          <button type="button" onClick={() => copy(info.reference, 'reference')} className="underline decoration-gray-300 hover:text-brand-700">{t('reader.copyRef')}</button>
           {copied && <span className="text-green-600">✓ copied {copied}</span>}
         </div>
       </div>
