@@ -26,11 +26,12 @@ export function generateVocabQuestionsFromSelection(
   type: QuestionType,
   count: number,
   provideDefinitionPct = 0,
+  glossOf: GlossOf = ENGLISH_GLOSS,
 ): GeneratedQuestion[] {
   const words = wordsForSelection(subsections, pos).filter(w => w.word && w.gloss)
   if (words.length === 0) return []
 
-  return buildVocabQuestions(shuffle(words).slice(0, count), words, type, provideDefinitionPct)
+  return buildVocabQuestions(shuffle(words).slice(0, count), words, type, provideDefinitionPct, glossOf)
 }
 
 /**
@@ -49,6 +50,7 @@ export function generateVocabQuestionsForLesson(
   count: number,
   provideDefinitionPct = 0,
   reviewPct = 0,
+  glossOf: GlossOf = ENGLISH_GLOSS,
 ): GeneratedQuestion[] {
   const key = lessonSubsectionKey(lesson)
   if (!key) return []
@@ -69,17 +71,30 @@ export function generateVocabQuestionsForLesson(
   ]).slice(0, count)
 
   // Distractors come from the whole studied-so-far pool, so wrong answers stay plausible.
-  return buildVocabQuestions(picked, [...current, ...earlier], type, provideDefinitionPct)
+  return buildVocabQuestions(picked, [...current, ...earlier], type, provideDefinitionPct, glossOf)
 }
 
 /** Shared question shaping for the BGVB-backed generators above. */
+/**
+ * How a word's gloss is rendered in the generated question. Defaults to the deck's own English.
+ *
+ * Assessment follows the COURSE's language, not the student's: everyone in a section is marked
+ * against one key. The caller (an API route that knows the course) passes a resolver built by
+ * glossResolver() in vocab-gloss-server.ts, which applies the same fingerprint check the student
+ * sees — so a gloss whose English was edited since translation generates in English rather than
+ * from a stale translation.
+ */
+export type GlossOf = (w: BgvbWord) => string
+const ENGLISH_GLOSS: GlossOf = w => w.gloss
+
 function buildVocabQuestions(
   picked: BgvbWord[],
   pool: BgvbWord[],
   type: QuestionType,
   provideDefinitionPct: number,
+  glossOf: GlossOf = ENGLISH_GLOSS,
 ): GeneratedQuestion[] {
-  const allGlosses = pool.map(w => w.gloss)
+  const allGlosses = pool.map(glossOf)
   const allLexemes = pool.map(w => w.word)
   const openEndedCount = Math.round((provideDefinitionPct / 100) * picked.length)
 
@@ -90,18 +105,18 @@ function buildVocabQuestions(
       return {
         position: idx + 1,
         type: (isOpenEnded ? 'ENGLISH_TO_GREEK' : 'MULTIPLE_CHOICE') as QuestionType,
-        prompt: w.gloss,
+        prompt: glossOf(w),
         correctAnswer: w.word,
         options,
         points: 1,
       }
     }
-    const options = isOpenEnded ? [] : shuffle([w.gloss, ...pickDistractors(w.gloss, allGlosses)])
+    const options = isOpenEnded ? [] : shuffle([glossOf(w), ...pickDistractors(glossOf(w), allGlosses)])
     return {
       position: idx + 1,
       type: (isOpenEnded ? 'GREEK_TO_ENGLISH' : 'MULTIPLE_CHOICE') as QuestionType,
       prompt: w.word,
-      correctAnswer: w.gloss,
+      correctAnswer: glossOf(w),
       options,
       points: 1,
     }
@@ -120,6 +135,7 @@ export function generateVocabPoolFromSelection(
   type: QuestionType,
   provideDefinitionPct = 0,
   reviewPct = 0,
+  glossOf: GlossOf = ENGLISH_GLOSS,
 ): GeneratedQuestion[] {
   const current = wordsForSelection(subsections, pos).filter(w => w.word && w.gloss)
   if (current.length === 0) return []
@@ -134,7 +150,7 @@ export function generateVocabPoolFromSelection(
     : []
 
   if (earlier.length === 0) {
-    return buildVocabQuestions(shuffle(current), current, type, provideDefinitionPct)
+    return buildVocabQuestions(shuffle(current), current, type, provideDefinitionPct, glossOf)
   }
 
   // pct of the pool should be review: reviewSize / (current + reviewSize) = pct/100.
@@ -145,7 +161,7 @@ export function generateVocabPoolFromSelection(
     ? shuffle(earlier)
     : [...current, ...shuffle(earlier).slice(0, reviewSize)]
 
-  return buildVocabQuestions(shuffle(pool), pool, type, provideDefinitionPct)
+  return buildVocabQuestions(shuffle(pool), pool, type, provideDefinitionPct, glossOf)
 }
 
 function shuffle<T>(arr: T[]): T[] {

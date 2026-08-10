@@ -11,6 +11,7 @@ import {
   type MorphologySubtype,
   type MorphTestConfig,
 } from '@/lib/quiz-generation'
+import { glossResolver } from '@/lib/vocab-gloss-server'
 import { getLessonForWeek } from '@/lib/vocab-lesson-map'
 import type { AssignmentType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -123,6 +124,10 @@ export async function POST(req: NextRequest) {
   const isMorphSeries = quizType === 'MORPHOLOGY_QUIZ' && Array.isArray(morphologySeries) && morphologySeries.length > 0
   const effectiveSchedule = isMorphSeries ? schedule.slice(0, morphologySeries!.length) : schedule
 
+  // One resolver for the whole semester: every week's quiz is set in the course's language.
+  const semesterCourse = await prisma.course.findUnique({ where: { id: courseId }, select: { language: true } })
+  const resolveGloss = glossResolver(semesterCourse?.language ?? 'en')
+
   let created = 0
 
   for (let i = 0; i < effectiveSchedule.length; i++) {
@@ -205,13 +210,14 @@ export async function POST(req: NextRequest) {
 
     if (quizType === 'VOCABULARY_QUIZ') {
       const pct = Number(quizStylePct ?? 0)
+      const glossOf = (w: { word: string; gloss: string }) => resolveGloss(w.word, w.gloss)
       if (vocabSel) {
         // Instructor picked sections → draw every week's quiz from those words.
-        questions = generateVocabQuestionsFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', qCount, pct)
+        questions = generateVocabQuestionsFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', qCount, pct, glossOf)
       } else if (lesson) {
         // Mix in cumulative review from every lesson before this week's range.
         questions = generateVocabQuestionsForLesson(
-          lesson.lesson, 'GREEK_TO_ENGLISH', qCount, pct, Number(prevSectionsPct ?? 0))
+          lesson.lesson, 'GREEK_TO_ENGLISH', qCount, pct, Number(prevSectionsPct ?? 0), glossOf)
       } else {
         questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount, pct)
       }

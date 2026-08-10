@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { generateVocabQuestionsForLesson, generateMorphQuestionsFromConfig, type MorphGenConfig } from '@/lib/quiz-generation'
+import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { MorphologySubtype } from '@/lib/quiz-fields'
 import { VOCAB_LESSONS, lessonSubsectionKey } from '@/lib/vocab-lesson-map'
 
@@ -71,7 +72,8 @@ export async function PATCH(req: NextRequest) {
     const pct = Math.min(Math.max(Number(value), 0), 100)
     const rows = await prisma.assignment.findMany({
       where: { id: { in: assignmentIds }, type: 'VOCABULARY_QUIZ' },
-      include: { _count: { select: { questions: true, responses: true } } },
+      include: { _count: { select: { questions: true, responses: true } },
+                 course: { select: { language: true } } },
     })
     const answered = rows.filter(r => r._count.responses > 0)
     if (answered.length > 0) {
@@ -88,8 +90,10 @@ export async function PATCH(req: NextRequest) {
       if (!lesson) continue
       const count = r._count.questions || 20
       const fill = r.vocabFillPct ?? (r.provideDefinition ? 100 : 0)
+      const resolve = glossResolver(r.course?.language ?? 'en')
       const qs = generateVocabQuestionsForLesson(
-        lesson, 'GREEK_TO_ENGLISH', count, fill, pct)
+        lesson, 'GREEK_TO_ENGLISH', count, fill, pct,
+        w => resolve(w.word, w.gloss))
       await prisma.$transaction([
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
@@ -107,7 +111,8 @@ export async function PATCH(req: NextRequest) {
     const fill = Math.min(Math.max(Number(value), 0), 100)
     const rows = await prisma.assignment.findMany({
       where: { id: { in: assignmentIds }, type: 'VOCABULARY_QUIZ' },
-      include: { _count: { select: { questions: true, responses: true } } },
+      include: { _count: { select: { questions: true, responses: true } },
+                 course: { select: { language: true } } },
     })
     const answered = rows.filter(r => r._count.responses > 0)
     if (answered.length > 0) {
@@ -122,8 +127,10 @@ export async function PATCH(req: NextRequest) {
         : r.weekNumber
       if (!lesson) continue
       const count = r._count.questions || 20
+      const resolve = glossResolver(r.course?.language ?? 'en')
       const qs = generateVocabQuestionsForLesson(
-        lesson, 'GREEK_TO_ENGLISH', count, fill, r.vocabReviewPct ?? 0)
+        lesson, 'GREEK_TO_ENGLISH', count, fill, r.vocabReviewPct ?? 0,
+        w => resolve(w.word, w.gloss))
       await prisma.$transaction([
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
@@ -141,7 +148,8 @@ export async function PATCH(req: NextRequest) {
     const mode = value === 'none' ? 'none' : 'auto'
     const rows = await prisma.assignment.findMany({
       where: { id: { in: assignmentIds }, type: 'MORPHOLOGY_QUIZ' },
-      include: { _count: { select: { questions: true, responses: true } } },
+      include: { _count: { select: { questions: true, responses: true } },
+                 course: { select: { language: true } } },
     })
     const answered = rows.filter(r => r._count.responses > 0)
     if (answered.length > 0) {

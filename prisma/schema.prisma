@@ -27,77 +27,77 @@ enum SubscriptionStatus {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  firstName   String
-  surname     String
-  title       String?
-  email       String   @unique
-  password    String
-  role        Role
-  institution String?
+  id                 String    @id @default(cuid())
+  firstName          String
+  surname            String
+  title              String?
+  email              String    @unique
+  password           String
+  role               Role
+  institution        String?
   // Instructors created via self-registration start unapproved and must be
   // approved by an admin before they can sign in. Students/admins are auto-approved.
-  approved    Boolean  @default(true)
+  approved           Boolean   @default(true)
   // Set true when an admin creates an account with a temporary password — the user
   // is forced to set their own password on first sign-in. Cleared on successful change.
-  mustChangePassword Boolean @default(false)
+  mustChangePassword Boolean   @default(false)
   // Soft-delete timestamp. The admin DELETE endpoint sets this instead of dropping the row.
   // Sign-in and all queries filter out users with deletedAt set. Reversible by clearing it.
-  deletedAt   DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  deletedAt          DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
   // Personal (non-institutional) email — contact-only, never a login credential.
   // Lets us stay in touch with students after they graduate and their institutional
   // address is deactivated. Required for new sign-ups; nullable for pre-existing accounts.
-  personalEmail   String?
-  termsAcceptedAt DateTime?
+  personalEmail    String?
+  termsAcceptedAt  DateTime?
   // Version string of the Terms of Service the user agreed to (e.g. "2026-07"), so we
   // know whose consent is stale if the terms are materially revised later.
-  termsVersion    String?
+  termsVersion     String?
   // Opt-in (default false): lets coursemates see this user's email address when
   // messaging them directly. Independent of admin visibility, which always applies.
-  messagingConsent Boolean @default(false)
+  messagingConsent Boolean   @default(false)
 
   // ── Paddle subscription state ($10/yr, students only) ──
   // Never trust a client-side read of this field alone — every protected route/action
   // must re-check it server-side. Updated only by the Paddle webhook handler.
-  subscriptionStatus         SubscriptionStatus @default(NONE)
-  paddleCustomerId           String?
-  paddleSubscriptionId       String?
-  subscriptionCurrentPeriodEnd DateTime?
+  subscriptionStatus            SubscriptionStatus @default(NONE)
+  paddleCustomerId              String?
+  paddleSubscriptionId          String?
+  subscriptionCurrentPeriodEnd  DateTime?
   // True once the student has scheduled a cancellation — the subscription stays ACTIVE
   // (full access, no refund for time already paid) until subscriptionCurrentPeriodEnd,
   // when Paddle sends the final `subscription.canceled` webhook and subscriptionStatus
   // flips to CANCELED. Written only by the webhook handler, same as subscriptionStatus.
-  subscriptionCancelAtPeriodEnd Boolean @default(false)
+  subscriptionCancelAtPeriodEnd Boolean            @default(false)
 
-  instructorCourses  Course[]              @relation("InstructorCourses")
-  coInstructorOf     CourseCoInstructor[]
-  enrollments        Enrollment[]
-  responses          Response[]
-  quizAttempts       QuizAttempt[]
-  flashcardProgress  FlashcardProgress[]
-  createdAssignments Assignment[]          @relation("CreatedAssignments")
-  exegesisSessions   ExegesisSession[]
-  sentMessages       Message[]             @relation("SentMessages")
-  receivedMessages   Message[]             @relation("ReceivedMessages")
-  vocabAppeals       VocabAppeal[]
-  ownedMaterials     Material[]            @relation("InstructorMaterials")
-  ownedFolders       MaterialFolder[]      @relation("InstructorFolders")
-  noteFolders        NoteFolder[]
-  verseNotes         VerseNote[]
-  noteSubmissions    NoteSubmission[]
+  instructorCourses    Course[]              @relation("InstructorCourses")
+  coInstructorOf       CourseCoInstructor[]
+  enrollments          Enrollment[]
+  responses            Response[]
+  quizAttempts         QuizAttempt[]
+  flashcardProgress    FlashcardProgress[]
+  createdAssignments   Assignment[]          @relation("CreatedAssignments")
+  exegesisSessions     ExegesisSession[]
+  sentMessages         Message[]             @relation("SentMessages")
+  receivedMessages     Message[]             @relation("ReceivedMessages")
+  vocabAppeals         VocabAppeal[]
+  ownedMaterials       Material[]            @relation("InstructorMaterials")
+  ownedFolders         MaterialFolder[]      @relation("InstructorFolders")
+  noteFolders          NoteFolder[]
+  verseNotes           VerseNote[]
+  noteSubmissions      NoteSubmission[]
   constructSubmissions ConstructSubmission[]
-  highlights         Highlight[]
-  groupMemberships   CourseGroupMember[]
-  groupContributions GroupContribution[]
-  morphologyProgress MorphologyProgress[]
+  highlights           Highlight[]
+  groupMemberships     CourseGroupMember[]
+  groupContributions   GroupContribution[]
+  morphologyProgress   MorphologyProgress[]
+  seriesTemplates      SeriesTemplate[]
 
   @@index([email])
   @@index([paddleCustomerId])
   @@index([paddleSubscriptionId])
-  seriesTemplates SeriesTemplate[]
 }
 
 // ─── App-wide settings ───────────────────────────────────────────
@@ -135,24 +135,29 @@ enum CourseLevel {
 }
 
 model Course {
-  id            String      @id @default(cuid())
-  name          String
-  listing       String?
-  level         CourseLevel
-  startDate     DateTime
-  endDate       DateTime
-  institutionId String?
-  instructorId  String
-  isArchived    Boolean     @default(false)
+  id                   String      @id @default(cuid())
+  name                 String
+  listing              String?
+  level                CourseLevel
+  // The language ALL ASSESSMENT in this course is set and marked in. Students may revise in any
+  // interface language they like — the deck, reader and grammar follow the student — but the
+  // answer key is generated in the course's language so a section is marked consistently.
+  // 'en' by default: existing courses hold English answer keys in their Question rows.
+  language             String      @default("en")
+  startDate            DateTime
+  endDate              DateTime
+  institutionId        String?
+  instructorId         String
+  isArchived           Boolean     @default(false)
   // Final-grade weighting by assignment-type category, e.g.
   // { VOCABULARY_QUIZ: 40, TRANSLATION_EXERCISE: 30, TRANSLATION_EXAM: 30 }.
   // Null = no custom weighting (the gradebook overall is a flat average).
   gradeCategoryWeights Json?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
 
-  instructor     User                @relation("InstructorCourses", fields: [instructorId], references: [id])
-  institution    Institution?        @relation(fields: [institutionId], references: [id])
+  instructor     User                 @relation("InstructorCourses", fields: [instructorId], references: [id])
+  institution    Institution?         @relation(fields: [institutionId], references: [id])
   coInstructors  CourseCoInstructor[]
   enrollments    Enrollment[]
   assignments    Assignment[]
@@ -202,21 +207,21 @@ model Enrollment {
 // instructor sets up). Members can message their group; the instructor can message
 // any group. A student belongs to at most one group per course (enforced in the API).
 model CourseGroup {
-  id        String   @id @default(cuid())
-  courseId  String
-  name      String
+  id           String   @id @default(cuid())
+  courseId     String
+  name         String
   // The Group Presentation this group is doing, or null for a plain (messaging-only)
   // group. A group is linked to at most one presentation; members write and submit
   // against this assignment.
   assignmentId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  course       Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  assignment   Assignment?         @relation("GroupPresentationGroups", fields: [assignmentId], references: [id], onDelete: SetNull)
-  members      CourseGroupMember[]
+  course        Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  assignment    Assignment?         @relation("GroupPresentationGroups", fields: [assignmentId], references: [id], onDelete: SetNull)
+  members       CourseGroupMember[]
   contributions GroupContribution[]
-  submission   GroupSubmission?
+  submission    GroupSubmission?
 
   @@index([courseId])
   @@index([assignmentId])
@@ -226,25 +231,25 @@ model CourseGroup {
 // AI/copying attestation. Per-member so contribution is unambiguous: a member with a
 // non-empty body has contributed. One row per (group, user).
 model GroupContribution {
-  id           String   @id @default(cuid())
-  groupId      String
-  assignmentId String   // denormalised for querying an assignment's contributions directly
-  userId       String
-  body         String   @default("")  // sanitized rich-text HTML: this member's section
-  aiDeclaration String  @default("")  // member's use-of-AI / sources / originality statement
-  attestedAt   DateTime?              // set when the member signs their declaration
+  id            String    @id @default(cuid())
+  groupId       String
+  assignmentId  String // denormalised for querying an assignment's contributions directly
+  userId        String
+  body          String    @default("") // sanitized rich-text HTML: this member's section
+  aiDeclaration String    @default("") // member's use-of-AI / sources / originality statement
+  attestedAt    DateTime? // set when the member signs their declaration
   // Set when this member submits their OWN section. Submission is per-member: one member
   // submitting no longer freezes their teammates, so each can finish and hand in
   // independently. The group-level GroupSubmission.submittedAt is the roll-up, set only
   // once every member has submitted.
-  submittedAt  DateTime?
+  submittedAt   DateTime?
   // Optional per-member grade override. Null = this member inherits the group grade
   // (GroupSubmission.grade); set it to give an individual a different grade for their
   // contribution.
-  grade        Int?
-  gradeNote    String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  grade         Int?
+  gradeNote     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   group      CourseGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
   assignment Assignment  @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
@@ -265,8 +270,8 @@ model GroupSubmission {
   // of them reopens theirs. Members submit against GroupContribution.submittedAt — this
   // field no longer gates anyone's editing, it just tells the gradebook the group is in.
   submittedAt  DateTime?
-  lateApproved Boolean   @default(false)  // instructor accepted a submission after the deadline
-  grade        Int?      // 0–100, applied to the whole group
+  lateApproved Boolean   @default(false) // instructor accepted a submission after the deadline
+  grade        Int? // 0–100, applied to the whole group
   gradeNote    String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
@@ -298,11 +303,11 @@ enum Corpus {
 }
 
 model BiblicalBook {
-  id         String @id @default(cuid())
-  corpus     Corpus
-  osisId     String @unique
-  name       String
-  abbrev     String
+  id            String @id @default(cuid())
+  corpus        Corpus
+  osisId        String @unique
+  name          String
+  abbrev        String
   totalChapters Int
 
   verses BiblicalVerse[]
@@ -327,11 +332,11 @@ model BiblicalVerse {
 }
 
 model VerseWord {
-  id          String @id @default(cuid())
-  verseId     String
-  position    Int
-  surface     String
-  lexemeId    String?
+  id       String  @id @default(cuid())
+  verseId  String
+  position Int
+  surface  String
+  lexemeId String?
 
   verse  BiblicalVerse @relation(fields: [verseId], references: [id])
   lexeme LexicalEntry? @relation(fields: [lexemeId], references: [id])
@@ -344,22 +349,22 @@ model VerseWord {
 // ─── Lexicon ──────────────────────────────────────────────────────
 
 model LexicalEntry {
-  id           String  @id @default(cuid())
-  lexeme       String  @unique
-  strongs      String?
-  gloss        String
-  extendedGloss String?
-  partOfSpeech String
-  frequency    Int     @default(0)
+  id              String  @id @default(cuid())
+  lexeme          String  @unique
+  strongs         String?
+  gloss           String
+  extendedGloss   String?
+  partOfSpeech    String
+  frequency       Int     @default(0)
   // Comma-separated additional English glosses that are accepted as correct in
   // vocab quizzes for this lemma. Instructor-curated. Empty/null = no extra
   // synonyms (the quiz's own correctAnswer field is still used).
   acceptedAnswers String?
 
-  words       VerseWord[]
-  parses      MorphParse[]
-  vocabItems  VocabularyItem[]
-  flashcards  Flashcard[]
+  words      VerseWord[]
+  parses     MorphParse[]
+  vocabItems VocabularyItem[]
+  flashcards Flashcard[]
 
   @@index([lexeme])
   @@index([frequency])
@@ -368,20 +373,20 @@ model LexicalEntry {
 // ─── Morphology ───────────────────────────────────────────────────
 
 model MorphParse {
-  id          String  @id @default(cuid())
-  wordId      String
-  lexemeId    String
-  surface     String
+  id           String  @id @default(cuid())
+  wordId       String
+  lexemeId     String
+  surface      String
   partOfSpeech String
-  casus       String?
-  number      String?
-  gender      String?
-  tense       String?
-  voice       String?
-  mood        String?
-  person      String?
-  degree      String?
-  extraInfo   String?
+  casus        String?
+  number       String?
+  gender       String?
+  tense        String?
+  voice        String?
+  mood         String?
+  person       String?
+  degree       String?
+  extraInfo    String?
 
   word   VerseWord    @relation(fields: [wordId], references: [id])
   lexeme LexicalEntry @relation(fields: [lexemeId], references: [id])
@@ -393,16 +398,16 @@ model MorphParse {
 // ─── Vocabulary ───────────────────────────────────────────────────
 
 enum FrequencyLevel {
-  BEGINNING     // BGVB sections I–II  (50+ NT occurrences)
-  INTERMEDIATE  // BGVB section III    (30–49)
-  ADVANCED      // BGVB sections IV–VII (under 30) — past both courses
+  BEGINNING // BGVB sections I–II  (50+ NT occurrences)
+  INTERMEDIATE // BGVB section III    (30–49)
+  ADVANCED // BGVB sections IV–VII (under 30) — past both courses
 }
 
 model VocabularyItem {
-  id           String         @id @default(cuid())
-  lexemeId     String
-  level        FrequencyLevel
-  sortOrder    Int
+  id        String         @id @default(cuid())
+  lexemeId  String
+  level     FrequencyLevel
+  sortOrder Int
 
   lexeme     LexicalEntry @relation(fields: [lexemeId], references: [id])
   flashcards Flashcard[]
@@ -444,84 +449,84 @@ enum AssignmentType {
 }
 
 model Assignment {
-  id           String         @id @default(cuid())
-  courseId     String
-  createdById  String
-  title        String
-  type         AssignmentType
-  weekNumber   Int
-  dueDate      DateTime
-  level        CourseLevel
-  reference           String?
-  instructions        String?
-  opensAt             DateTime?  // translation exams: students cannot start before this time
-  submissionDeadline  DateTime?  // translation exercises: cut-off for new submissions; editing still allowed after
-  round1Deadline      DateTime?  // translation exercises: absolute cut-off for Round 1 annotations (to the minute)
-  round2Deadline      DateTime?  // translation exercises: absolute cut-off for Round 2 corrections (to the minute)
-  timePerQuestion Int?           // seconds per question; null = untimed
-  reviewTimeSeconds Int?         // stage-2 review/correction time limit (seconds); null = unlimited
-  allowLate    Boolean        @default(false)
-  lateDaysLimit Int?           // days after dueDate late submissions are accepted; null = no limit
-  provideDefinition Boolean   @default(false)
+  id                    String         @id @default(cuid())
+  courseId              String
+  createdById           String
+  title                 String
+  type                  AssignmentType
+  weekNumber            Int
+  dueDate               DateTime
+  level                 CourseLevel
+  reference             String?
+  instructions          String?
+  opensAt               DateTime? // translation exams: students cannot start before this time
+  submissionDeadline    DateTime? // translation exercises: cut-off for new submissions; editing still allowed after
+  round1Deadline        DateTime? // translation exercises: absolute cut-off for Round 1 annotations (to the minute)
+  round2Deadline        DateTime? // translation exercises: absolute cut-off for Round 2 corrections (to the minute)
+  timePerQuestion       Int? // seconds per question; null = untimed
+  reviewTimeSeconds     Int? // stage-2 review/correction time limit (seconds); null = unlimited
+  allowLate             Boolean        @default(false)
+  lateDaysLimit         Int? // days after dueDate late submissions are accepted; null = no limit
+  provideDefinition     Boolean        @default(false)
   // Vocabulary quizzes: % of questions drawn from lessons BEFORE this one (cumulative
   // review). Stored so regenerating a quiz keeps the review mix — it used to be applied
   // at generation time and thrown away, so any regeneration silently dropped it.
-  vocabReviewPct Int?
+  vocabReviewPct        Int?
   // Vocabulary quizzes: % of questions that are fill-in-the-blank (the student types the
   // answer) rather than multiple choice. 0 = all multiple choice, 100 = all fill-in. Stored so
   // regenerating a quiz keeps the chosen balance. Null = fall back to `provideDefinition`.
-  vocabFillPct Int?
+  vocabFillPct          Int?
   // Translation exercises: show a glossary of words rarer than this NT frequency
   // under each verse (e.g. 50 = beginner, 30 = intermediate). Null = no glossary.
-  glossFrequency Int?
+  glossFrequency        Int?
   // Translation exams: relative weights (percent) for the parsing/syntax/translation
   // sub-scores when computing each passage grade. { parsing, syntax, translation }. Null = equal.
-  gradeWeights Json?
+  gradeWeights          Json?
   // Translation exams: "lockdown" integrity mode. When on, the exam requires fullscreen,
   // detects tab/window switching, blocks copy/paste, and logs integrity events.
-  lockdown    Boolean  @default(false)
+  lockdown              Boolean        @default(false)
   // Auto-submit the exam after this many integrity violations (null = warn only, never auto-submit).
   lockdownMaxViolations Int?
   // Translation exercises: when true, students may consult Reader info (parsing, gloss, lexicon)
   // for the clicked word during Round 2 corrections. Default false to preserve existing behavior.
-  allowReaderInRound2 Boolean  @default(false)
+  allowReaderInRound2   Boolean        @default(false)
   // Vocab quizzes: max number of student appeals per attempt. Null/0 = appeals disabled.
-  maxAppeals  Int?
-  maxRetakes   Int?
-  morphSubtype String?        // For MORPHOLOGY_QUIZ: VERB | NOUN | ADJECTIVE | PRONOUN | CONDITIONAL | SUBJUNCTIVE
+  maxAppeals            Int?
+  maxRetakes            Int?
+  morphSubtype          String? // For MORPHOLOGY_QUIZ: VERB | NOUN | ADJECTIVE | PRONOUN | CONDITIONAL | SUBJUNCTIVE
   // MORPHOLOGY_QUIZ: BGVB vocab lesson this quiz's words are capped at (usually its week),
   // so "only vocabulary taught so far" is stored and visible, not just applied and lost.
-  vocabThruLesson Int?
+  vocabThruLesson       Int?
   // MORPHOLOGY_QUIZ: the full generation recipe ({ fields, parseFilter, declensions }), so
   // the quiz can be regenerated faithfully (e.g. when the vocabulary cap changes) without
   // the series builder's in-memory state.
-  morphConfig Json?
+  morphConfig           Json?
   // For VOCABULARY_QUIZ: the instructor's word selection from the BGVB list —
   // { subsections: string[] (e.g. ["1-A","2-B"]), pos: string[] }. Lets the edit
   // page pre-fill the picker and regenerate from the same words.
-  vocabSelection Json?
+  vocabSelection        Json?
   // For COURSE_NOTES: the name of the notes folder each enrolled student is given and
   // submits for grading (e.g. "Judaism"). Null for every other assignment type.
-  notesFolderName String?
+  notesFolderName       String?
   // For CONSTRUCT_SEARCH: how the find-list is set up —
   // { requiredCount: number, askTranslation: boolean, askComment: boolean }.
   // The search itself is the link in `reference`, which is the whole query (construct-query.ts).
-  constructConfig Json?
-  isPublished  Boolean        @default(false)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  constructConfig       Json?
+  isPublished           Boolean        @default(false)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
 
-  course     Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  createdBy  User          @relation("CreatedAssignments", fields: [createdById], references: [id])
-  questions  Question[]
-  responses  Response[]
-  attempts   QuizAttempt[]
-  appeals    VocabAppeal[]
-  noteSubmissions NoteSubmission[]
-  noteFolders     NoteFolder[]
-  groups             CourseGroup[]       @relation("GroupPresentationGroups")
-  groupContributions GroupContribution[]
-  groupSubmissions   GroupSubmission[]
+  course               Course                @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdBy            User                  @relation("CreatedAssignments", fields: [createdById], references: [id])
+  questions            Question[]
+  responses            Response[]
+  attempts             QuizAttempt[]
+  appeals              VocabAppeal[]
+  noteSubmissions      NoteSubmission[]
+  noteFolders          NoteFolder[]
+  groups               CourseGroup[]         @relation("GroupPresentationGroups")
+  groupContributions   GroupContribution[]
+  groupSubmissions     GroupSubmission[]
   constructSubmissions ConstructSubmission[]
 
   @@index([courseId])
@@ -540,10 +545,10 @@ model ConstructSubmission {
   // JSON rather than columns because which fields are asked for is per-assignment
   // (Assignment.constructConfig), and an unanswered column is simply absent.
   findings     Json      @default("[]")
-  notes        String    @default("")   // the "what did you notice" box under the list
-  submittedAt  DateTime?                // null = still a draft
-  grade        Int?                     // instructor-entered score 0-100
-  gradeNote    String?                  // instructor feedback, shown to the student
+  notes        String    @default("") // the "what did you notice" box under the list
+  submittedAt  DateTime? // null = still a draft
+  grade        Int? // instructor-entered score 0-100
+  gradeNote    String? // instructor feedback, shown to the student
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
@@ -567,17 +572,17 @@ enum QuestionType {
 }
 
 model Question {
-  id           String       @id @default(cuid())
-  assignmentId String
-  position     Int
-  type         QuestionType
-  prompt       String
+  id            String       @id @default(cuid())
+  assignmentId  String
+  position      Int
+  type          QuestionType
+  prompt        String
   correctAnswer String
-  options      String[]
-  points       Int          @default(1)
-  reference    String?
+  options       String[]
+  points        Int          @default(1)
+  reference     String?
 
-  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  assignment Assignment    @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   responses  Response[]
   appeals    VocabAppeal[]
 
@@ -615,9 +620,9 @@ model Response {
   score        Float?
   submittedAt  DateTime @default(now())
 
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
-  question   Question?  @relation(fields: [questionId], references: [id])
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment Assignment   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  question   Question?    @relation(fields: [questionId], references: [id])
   appeal     VocabAppeal?
 
   @@index([userId, assignmentId])
@@ -626,33 +631,33 @@ model Response {
 // ─── Flashcards ───────────────────────────────────────────────────
 
 model Flashcard {
-  id           String  @id @default(cuid())
-  lexemeId     String
-  vocabItemId  String?
-  level        FrequencyLevel
-  front        String
-  backLexeme   String
-  backGloss    String
-  backParsing  String?
+  id          String         @id @default(cuid())
+  lexemeId    String
+  vocabItemId String?
+  level       FrequencyLevel
+  front       String
+  backLexeme  String
+  backGloss   String
+  backParsing String?
 
-  lexeme    LexicalEntry   @relation(fields: [lexemeId], references: [id])
-  vocabItem VocabularyItem? @relation(fields: [vocabItemId], references: [id])
+  lexeme    LexicalEntry        @relation(fields: [lexemeId], references: [id])
+  vocabItem VocabularyItem?     @relation(fields: [vocabItemId], references: [id])
   progress  FlashcardProgress[]
 
   @@unique([lexemeId, level])
 }
 
 model FlashcardProgress {
-  id              String   @id @default(cuid())
-  userId          String
-  flashcardId     String
-  easeFactor      Float    @default(2.5)
-  interval        Int      @default(1)
-  repetitions     Int      @default(0)
-  nextReviewDate  DateTime @default(now())
-  lastReviewDate  DateTime?
-  knownCount      Int      @default(0)
-  unknownCount    Int      @default(0)
+  id             String    @id @default(cuid())
+  userId         String
+  flashcardId    String
+  easeFactor     Float     @default(2.5)
+  interval       Int       @default(1)
+  repetitions    Int       @default(0)
+  nextReviewDate DateTime  @default(now())
+  lastReviewDate DateTime?
+  knownCount     Int       @default(0)
+  unknownCount   Int       @default(0)
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   flashcard Flashcard @relation(fields: [flashcardId], references: [id])
@@ -664,24 +669,24 @@ model FlashcardProgress {
 // ─── Materials (instructor uploads) ──────────────────────────────
 
 model Material {
-  id          String   @id @default(cuid())
+  id           String   @id @default(cuid())
   // Legacy direct-course attachment (kept for backward compat). New library files
   // live in a folder and are shared to courses via MaterialShare instead.
-  courseId    String?
-  folderId    String?
+  courseId     String?
+  folderId     String?
   instructorId String?
-  title       String
-  description String?
-  fileUrl     String?
-  content     String?
-  weekNumber  Int?
+  title        String
+  description  String?
+  fileUrl      String?
+  content      String?
+  weekNumber   Int?
   // Physical file in Supabase Storage. Null for link-only or text materials.
   storagePath  String?
   mimeType     String?
   sizeBytes    Int?
   originalName String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   course     Course?         @relation(fields: [courseId], references: [id], onDelete: Cascade)
   folder     MaterialFolder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
@@ -743,44 +748,44 @@ model FolderShare {
 // ─── Exegesis Workspace ───────────────────────────────────────────
 
 model ExegesisSession {
-  id           String    @id @default(cuid())
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  assignmentId String?   // optional — set when linked to a Translation Exercise assignment
-  title        String
-  bookOsisId   String
-  bookName     String
-  chapter      Int
-  verseStart   Int
-  verseEnd     Int
+  id                   String    @id @default(cuid())
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignmentId         String? // optional — set when linked to a Translation Exercise assignment
+  title                String
+  bookOsisId           String
+  bookName             String
+  chapter              Int
+  verseStart           Int
+  verseEnd             Int
   // JSON map: { [wordKey]: { parsing: string, syntax: string, translation: string } }
   // wordKey = "verseNum-wordId"
-  annotations           Json      @default("{}")
-  corrections           Json      @default("{}")   // post-timer review edits; tracked separately, shown in red
-  verseTranslations     Json      @default("{}")   // Round 1 whole-verse translations: { [verseNumber]: string }
-  verseCorrections      Json      @default("{}")   // Round 2 whole-verse notes/corrections: { [verseNumber]: string }
-  submittedAnnotations  Json?                      // snapshot of annotations at submit time; post-deadline edits show as diff
+  annotations          Json      @default("{}")
+  corrections          Json      @default("{}") // post-timer review edits; tracked separately, shown in red
+  verseTranslations    Json      @default("{}") // Round 1 whole-verse translations: { [verseNumber]: string }
+  verseCorrections     Json      @default("{}") // Round 2 whole-verse notes/corrections: { [verseNumber]: string }
+  submittedAnnotations Json? // snapshot of annotations at submit time; post-deadline edits show as diff
   // Free-form "Notes & Questions" scratchpad the student fills in across Round 1 & 2.
   // Live until submission, then locked; shown to the instructor in the submission viewer.
-  notes        String    @default("")
-  startedAt    DateTime?
-  submittedAt  DateTime?
-  grade        Int?      // instructor-entered score 0-100 (exams: the average of passageGrades)
-  gradeNote    String?   // instructor feedback
-  passageGrades Json?    // translation exams: per-passage sub-scores { [reference]: { parsing, syntax, translation } }
-  integrityEvents Json?  // lockdown exams: array of { type, at } violation events logged during the exam
+  notes                String    @default("")
+  startedAt            DateTime?
+  submittedAt          DateTime?
+  grade                Int? // instructor-entered score 0-100 (exams: the average of passageGrades)
+  gradeNote            String? // instructor feedback
+  passageGrades        Json? // translation exams: per-passage sub-scores { [reference]: { parsing, syntax, translation } }
+  integrityEvents      Json? // lockdown exams: array of { type, at } violation events logged during the exam
   // lockdown exams: per-answer typing telemetry, keyed by "verseNum-wordId:field" (or
   // "vt:key" for whole-verse translations). Each value is { t0, tLast, edits }: ms from
   // exam start to first/last keystroke in that field, and the keystroke count. Lets the
   // instructor spot answers entered near-instantly or in a single action (possible AI paste).
-  answerTimings   Json?
+  answerTimings        Json?
   // Set when an instructor reopens a submitted exam for this student. Lets that one
   // student edit and resubmit even though the exam's close time has passed, without
   // affecting anyone else. Cleared-effect is implicit: once they resubmit, submittedAt
   // locks the work again; reopening again refreshes this timestamp.
-  reopenedAt   DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  reopenedAt           DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   @@index([userId])
   @@index([assignmentId])
@@ -790,25 +795,25 @@ model ExegesisSession {
 // class or an individual student. Fan-out model: one row per recipient, so each
 // student has independent read state. A "whole class" send shares a broadcastId.
 model Message {
-  id          String    @id @default(cuid())
-  courseId    String
-  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  senderId    String
-  sender      User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  recipientId String
-  recipient   User      @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
-  subject     String
-  body        String
-  broadcastId String?   // groups a single "to whole class" send
+  id                 String    @id @default(cuid())
+  courseId           String
+  course             Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  senderId           String
+  sender             User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipientId        String
+  recipient          User      @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+  subject            String
+  body               String
+  broadcastId        String? // groups a single "to whole class" send
   // Conversation thread key = the root message's id. Root messages leave this null
   // (their thread key is their own id); replies carry the root id here.
-  threadId    String?
-  readAt      DateTime?
+  threadId           String?
+  readAt             DateTime?
   // Per-user soft delete: each party can remove a message from their own view
   // without affecting the other's. Filtered out of their lists when set.
   senderDeletedAt    DateTime?
   recipientDeletedAt DateTime?
-  createdAt   DateTime  @default(now())
+  createdAt          DateTime  @default(now())
 
   @@index([recipientId, readAt])
   @@index([courseId])
@@ -821,11 +826,11 @@ model Message {
 // even if the actor or target is later soft-deleted.
 model AuditLog {
   id         String   @id @default(cuid())
-  actorId    String?  // who performed the action (null = system/script)
-  actorEmail String?  // captured at action time, in case the actor is later deleted
-  action     String   // e.g. "user.create", "user.softDelete", "user.roleChange", "course.delete"
-  targetType String?  // e.g. "User", "Course", "Assignment"
-  targetId   String?  // id of the affected row
+  actorId    String? // who performed the action (null = system/script)
+  actorEmail String? // captured at action time, in case the actor is later deleted
+  action     String // e.g. "user.create", "user.softDelete", "user.roleChange", "course.delete"
+  targetType String? // e.g. "User", "Course", "Assignment"
+  targetId   String? // id of the affected row
   // Snapshot of relevant fields before/after — keeps the log self-contained
   before     Json?
   after      Json?
@@ -853,36 +858,36 @@ enum AppealDecision {
   PENDING
   ACCEPTED
   REJECTED
-  NOT_APPLICABLE   // admin tier: never reached because instructor rejected first
+  NOT_APPLICABLE // admin tier: never reached because instructor rejected first
 }
 
 model VocabAppeal {
-  id            String   @id @default(cuid())
+  id String @id @default(cuid())
 
   // Who and what is being appealed
   studentId     String
   assignmentId  String
-  responseId    String   @unique  // one appeal per Response row (deleted-cascade when a new best attempt rewrites responses)
+  responseId    String @unique // one appeal per Response row (deleted-cascade when a new best attempt rewrites responses)
   questionId    String
   studentAnswer String
 
   // Instructor tier — controls the student's grade
-  instructorDecision   AppealDecision  @default(PENDING)
-  instructorDecidedAt  DateTime?
-  instructorNote       String?
+  instructorDecision  AppealDecision @default(PENDING)
+  instructorDecidedAt DateTime?
+  instructorNote      String?
 
   // Admin tier — controls the global lexicon. NOT_APPLICABLE when instructor rejected.
-  adminDecision        AppealDecision  @default(PENDING)
-  adminDecidedAt       DateTime?
-  adminNote            String?
+  adminDecision  AppealDecision @default(PENDING)
+  adminDecidedAt DateTime?
+  adminNote      String?
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  student     User       @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  assignment  Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
-  response    Response   @relation(fields: [responseId], references: [id], onDelete: Cascade)
-  question    Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  student    User       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  response   Response   @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  question   Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@index([studentId, assignmentId])
   @@index([assignmentId, instructorDecision])
@@ -893,20 +898,20 @@ model VocabAppeal {
 // Private study notes a student writes, grouped into colour-labelled folders.
 
 model NoteFolder {
-  id        String   @id @default(cuid())
-  userId    String
-  name      String
-  color     String   @default("blue")   // palette key (blue/sky/indigo/amber/yellow/slate)
+  id           String   @id @default(cuid())
+  userId       String
+  name         String
+  color        String   @default("blue") // palette key (blue/sky/indigo/amber/yellow/slate)
   // Present from day one so nested folders can be enabled later with no migration.
   // Currently always null (the UI shows a single flat level).
-  parentId  String?
-  position  Int      @default(0)
+  parentId     String?
+  position     Int      @default(0)
   // Set (non-null) when this folder was auto-provisioned for a COURSE_NOTES assignment.
   // Links the student's submission folder to its assignment — rename-safe, so the coupling
   // survives even if the student renames the folder. onDelete SetNull keeps the notes.
   assignmentId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   assignment Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
@@ -930,7 +935,7 @@ model VerseNote {
   book      String?
   chapter   Int?
   verse     Int?
-  verseEnd  Int?     // optional range end (e.g. a note spanning 1:1–3)
+  verseEnd  Int? // optional range end (e.g. a note spanning 1:1–3)
   // Optional heading, mainly for general notes so a list of them reads without a verse ref.
   title     String?
   body      String   @default("")
@@ -948,15 +953,15 @@ model VerseNote {
 // "submitted" flag + the instructor's grade — the graded content is the student's live
 // folder notes (they stay editable; the grade reflects the folder's latest state).
 model NoteSubmission {
-  id           String    @id @default(cuid())
+  id           String   @id @default(cuid())
   userId       String
   assignmentId String
-  folderId     String?   // the student's folder that was submitted (their "Judaism" folder)
-  submittedAt  DateTime  @default(now())
-  grade        Int?      // instructor-entered score 0-100
-  gradeNote    String?   // instructor feedback
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  folderId     String? // the student's folder that was submitted (their "Judaism" folder)
+  submittedAt  DateTime @default(now())
+  grade        Int? // instructor-entered score 0-100
+  gradeNote    String? // instructor feedback
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
@@ -966,8 +971,8 @@ model NoteSubmission {
 }
 
 model Highlight {
-  id        String   @id @default(cuid())
-  userId    String
+  id          String   @id @default(cuid())
+  userId      String
   // Canonical, version-independent verse anchor (osisId + chapter + verse) — same
   // pattern as VerseNote. startOffset/endOffset are character offsets into that verse's
   // canonical plain text (Greek tokens joined by single spaces, or the plain English

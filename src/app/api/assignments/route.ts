@@ -8,6 +8,7 @@ import { isInstructorOfCourse } from '@/lib/course-auth'
 import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
 import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
 import { generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
+import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 import { normalizeWeights } from '@/lib/exam-grading'
@@ -165,9 +166,14 @@ export async function POST(req: NextRequest) {
     // If the instructor picked frequency sections / parts of speech, draw the
     // quiz from exactly those words (BGVB list); otherwise fall back to the
     // course-level pool from the database.
+    // Assessment is set in the COURSE's language, whatever interface language the instructor
+    // happens to be using — a section must be marked against one key.
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { language: true } })
+    const resolve = glossResolver(course?.language ?? 'en')
+    const glossOf = (w: { word: string; gloss: string }) => resolve(w.word, w.gloss)
     if (vocabSel) {
       // Store the full pool; the player draws perAttempt at random each attempt.
-      questions = generateVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', openEndedPct, vocabSel.reviewPct)
+      questions = generateVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', openEndedPct, vocabSel.reviewPct, glossOf)
     } else {
       questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
     }

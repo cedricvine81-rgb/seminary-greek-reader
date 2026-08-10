@@ -8,6 +8,7 @@ import {
   generateAdjectiveParseQuestions, generatePronounParseQuestions,
   generateConditionalQuestions, generateSubjunctiveQuestions,
 } from '@/lib/quiz-generation'
+import { glossResolver } from '@/lib/vocab-gloss-server'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import type { QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -31,7 +32,8 @@ export async function POST(
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { type: true, level: true, morphSubtype: true, provideDefinition: true, vocabSelection: true },
+    select: { type: true, level: true, morphSubtype: true, provideDefinition: true, vocabSelection: true,
+             course: { select: { language: true } } },
   })
   if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
@@ -64,8 +66,12 @@ export async function POST(
   let questions: ReturnType<typeof generateVerbParseQuestions> | Awaited<ReturnType<typeof generateVocabQuestions>> = []
 
   if (assignment.type === 'VOCABULARY_QUIZ') {
+    // Regeneration uses the COURSE's language, so a regenerated quiz matches the one the section
+    // already sat rather than flipping language under them.
+    const resolve = glossResolver(assignment.course?.language ?? 'en')
+    const glossOf = (w: { word: string; gloss: string }) => resolve(w.word, w.gloss)
     questions = effectiveSel
-      ? generateVocabPoolFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, provideDefinitionPct, effectiveSel.reviewPct ?? 0)
+      ? generateVocabPoolFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, provideDefinitionPct, effectiveSel.reviewPct ?? 0, glossOf)
       : await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct)
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {
