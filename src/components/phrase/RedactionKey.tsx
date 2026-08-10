@@ -4,6 +4,7 @@
 // more. Rendered inline below the synopsis columns when the user opens the key.
 
 import { BookOpen } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { WORD_LEVEL, NARRATIVE_LEVEL, TECHNIQUE_SOURCES, type TechniqueRef } from '@/lib/redaction-techniques'
 import { openProsePassage } from '@/lib/prose-panel-bus'
 
@@ -11,6 +12,7 @@ import { openProsePassage } from '@/lib/prose-panel-bus'
 // beside the key, so a student can read the ancient text against the passage that cited
 // it; everything else stays an ordinary external link.
 function Refs({ refs }: { refs: TechniqueRef[] }) {
+  const t = useT()
   return (
     <span className="text-[11px] text-gray-400">
       {refs.map((r, i) => (
@@ -20,7 +22,7 @@ function Refs({ refs }: { refs: TechniqueRef[] }) {
             <button
               type="button"
               onClick={() => openProsePassage(r.passage!)}
-              title="Read this passage beside the page"
+              title={t('red.readBeside')}
               className="inline-flex items-baseline gap-0.5 text-brand-600 hover:underline"
             >
               <BookOpen size={11} className="translate-y-px" aria-hidden />
@@ -41,10 +43,11 @@ function Swatch({ tag, children }: { tag: string; children: React.ReactNode }) {
 }
 
 export function RedactionKey() {
+  const t = useT()
   return (
     <div className="rounded-xl border border-gray-200 bg-surface p-4 space-y-5 text-sm">
       <div>
-        <h3 className="font-semibold text-gray-800">Editorial techniques of ancient authors</h3>
+        <h3 className="font-semibold text-gray-800">{t('red.heading')}</h3>
         <p className="mt-1 text-xs leading-relaxed text-gray-500">
           The compositional exercises every Greco-Roman student practiced — preserved in Theon&rsquo;s{' '}
           <span className="italic">Progymnasmata</span> and Quintilian&rsquo;s <span className="italic">Institutio Oratoria</span> —
@@ -59,50 +62,50 @@ export function RedactionKey() {
           substitution must occupy the same grammatical slot (subject for subject, object for object). Examples here are worded from Markan
           priority, which both major source models share; where a note&rsquo;s direction depends on whether
           Luke used Matthew (Farrer) or Matthew and Luke independently used Q (Two-Source), the note
-          follows the <span className="font-medium">Source model</span> selector beside the device chips. The compare
+          follows the <span className="font-medium">{t('red.sourceModel')}</span> selector beside the device chips. The compare
           tool itself takes no position — make any column the source to test a direction of dependence.
         </p>
       </div>
 
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Word-level modes — colored automatically</h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t('red.wordModes')}</h4>
         <ul className="space-y-3">
           <li className="flex flex-col gap-0.5">
-            <span className="rounded border border-gray-300 px-1.5 py-0.5 text-xs font-medium text-gray-700 w-fit">plain — verbatim agreement</span>
+            <span className="rounded border border-gray-300 px-1.5 py-0.5 text-xs font-medium text-gray-700 w-fit">{t('red.plainVerbatim')}</span>
             <span className="text-xs text-gray-500">Unmarked words are identical in form to the source: the copied core both columns share. Function words — articles, conjunctions, prepositions, particles — are never flagged as editorial acts of their own (an article&rsquo;s case follows its noun); they are judged with the phrase they belong to, so they read plain when their phrase is retained and colour only as part of added or omitted material.</span>
           </li>
-          {WORD_LEVEL.map(t => (
-            <li key={t.tag} className="flex flex-col gap-0.5">
+          {WORD_LEVEL.map(tech => (
+            <li key={tech.tag} className="flex flex-col gap-0.5">
               <span className="flex items-baseline gap-2 flex-wrap">
-                <Swatch tag={t.tag}>{t.name}</Swatch>
-                <span className="text-[11px] italic text-gray-400">{t.ancient}</span>
+                <Swatch tag={tech.tag}>{tech.name}</Swatch>
+                <span className="text-[11px] italic text-gray-400">{tech.ancient}</span>
               </span>
-              <span className="text-xs text-gray-500">{t.description}</span>
-              <span className="text-xs text-gray-500"><span className="font-medium text-gray-600">Example:</span> {t.example}</span>
-              <Refs refs={t.refs} />
+              <span className="text-xs text-gray-500">{tech.description}</span>
+              <span className="text-xs text-gray-500"><span className="font-medium text-gray-600">{t('red.example')}</span> {tech.example}</span>
+              <Refs refs={tech.refs} />
             </li>
           ))}
         </ul>
       </div>
 
       <div>
-        <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Narrative-level devices — read from the evidence</h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t('red.narrativeDevices')}</h4>
         <p className="mb-2 text-xs leading-relaxed text-gray-500">
-          Two chip styles keep the registers apart on this page. <span className="rounded border border-parchment-300 bg-parchment-50 px-1 text-gray-700">Parchment chips</span> are
-          curated study notes on the whole pericope. <span className="rounded border border-dashed border-gray-400 px-1 text-gray-600">Dashed chips</span> are
+          Two chip styles keep the registers apart on this page. <span className="rounded border border-parchment-300 bg-parchment-50 px-1 text-gray-700">{t('red.parchmentChips')}</span> are
+          curated study notes on the whole pericope. <span className="rounded border border-dashed border-gray-400 px-1 text-gray-600">{t('red.dashedChips')}</span> are
           computed <span className="italic">signals</span> — person shifts, dropped names, plural-to-singular verbs, add/omit balance,
           pericope order — each clickable to ring the exact words that generated it. Both are inferences
           about the whole episode; only the word-level colours above record direct observations, and no
           device is ever asserted automatically.
         </p>
         <ul className="grid gap-3 sm:grid-cols-2">
-          {NARRATIVE_LEVEL.map(t => (
-            <li key={t.name} className="rounded-lg border border-gray-200 p-2.5 flex flex-col gap-0.5">
-              <span className="text-xs font-semibold text-gray-700">{t.name}</span>
-              <span className="text-xs text-gray-500">{t.description}</span>
-              <span className="text-xs text-gray-500"><span className="font-medium text-gray-600">Example:</span> {t.example}</span>
-              <span className="text-xs text-gray-500"><span className="font-medium text-gray-600">In the colors:</span> {t.lookFor}</span>
-              <Refs refs={t.refs} />
+          {NARRATIVE_LEVEL.map(tech => (
+            <li key={tech.name} className="rounded-lg border border-gray-200 p-2.5 flex flex-col gap-0.5">
+              <span className="text-xs font-semibold text-gray-700">{tech.name}</span>
+              <span className="text-xs text-gray-500">{tech.description}</span>
+              <span className="text-xs text-gray-500"><span className="font-medium text-gray-600">{t('red.example')}</span> {tech.example}</span>
+              <span className="text-xs text-gray-500"><span className="font-medium text-gray-600">{t('red.inTheColors')}</span> {tech.lookFor}</span>
+              <Refs refs={tech.refs} />
             </li>
           ))}
         </ul>
@@ -110,7 +113,7 @@ export function RedactionKey() {
 
       <p className="text-[11px] text-gray-400">
         Sources: <Refs refs={TECHNIQUE_SOURCES} />. Citations marked with a book icon open here in a
-        side panel, beside this key. The Theon passages open <span className="italic">our own English translation</span>,
+        side panel, beside this key. The Theon passages open <span className="italic">{t('red.ourTranslation')}</span>,
         made for this app directly from the public-domain Greek of Walz and shown alongside it.
         Theon&rsquo;s Greek breaks off in the chapter on law: everything through <span className="italic">On the Chreia</span> survives
         in Greek and is translated here, but the closing pedagogical chapters — including

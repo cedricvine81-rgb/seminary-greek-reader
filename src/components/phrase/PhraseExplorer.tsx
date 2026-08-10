@@ -1,5 +1,6 @@
 'use client'
 import { createContext, useContext, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { PassageAutocomplete } from './PassageAutocomplete'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -128,12 +129,13 @@ export const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md
 
 /** Static "Sources & copyright" content for the Phrasing tab's settings menu. */
 export function PhrasingSourcesPanel() {
+  const t = useT()
   return (
     <details className="border-t border-gray-100 pt-2">
-      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">{t('phr.sourcesCopyright')}</summary>
       <div className="space-y-3 text-xs text-gray-600 mt-2">
         <div>
-          <p className="font-semibold text-gray-700">Greek text &amp; syntax</p>
+          <p className="font-semibold text-gray-700">{t('phr.greekTextSyntax')}</p>
           <p className="mt-0.5">
             Syntax trees: MACULA Greek Linguistic Datasets over the Nestle 1904 Greek New Testament (public domain),
             licensed <span className="font-medium">CC BY 4.0</span>.{' '}
@@ -142,7 +144,7 @@ export function PhrasingSourcesPanel() {
           <p className="mt-1">Greek editions: Nestle 1904 and Tischendorf (8th ed.) — both public domain.</p>
         </div>
         <div>
-          <p className="font-semibold text-gray-700">Translations</p>
+          <p className="font-semibold text-gray-700">{t('phr.translations')}</p>
           <ul className="mt-0.5 space-y-0.5">
             {LANGS.map(l => (
               <li key={l.code}><span className="text-gray-700">{l.label}</span> — {l.sub}</li>
@@ -150,8 +152,8 @@ export function PhrasingSourcesPanel() {
           </ul>
         </div>
         <div>
-          <p className="font-semibold text-gray-700">Gospel parallels</p>
-          <p className="mt-0.5">Adapted from Wikipedia, &ldquo;Gospel harmony&rdquo; (CC BY-SA 4.0).</p>
+          <p className="font-semibold text-gray-700">{t('phr.gospelParallels')}</p>
+          <p className="mt-0.5">{t('phr.wikipediaAttr')}</p>
         </div>
         <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">
           All sources are public-domain or openly licensed, used with attribution.
@@ -233,6 +235,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   fontSize?: PhraseFontSize
   onFontSize?: (v: PhraseFontSize) => void
 } = {}) {
+  const t = useT()
   const [books, setBooks] = useState<RefBook[]>([])
   const [input, setInput] = useState('John 1:1-5')
   const [inputError, setInputError] = useState(false)
@@ -452,19 +455,19 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
       {controlledPassage === undefined && (
         <div className="flex items-center flex-wrap gap-3">
           <div className="flex items-center">
-            <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
+            <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">{t('exeg.passage')}</span>
             <PassageAutocomplete
               value={input}
               onChange={v => { setInput(v); if (inputError) setInputError(false) }}
               onCommit={v => submit(v)}
               commitOnBlur
               error={inputError}
-              placeholder="e.g. Matthew 3:1-3"
+              placeholder={t('exeg.refPlaceholder')}
               inputClassName="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
-          {loading && <span className="text-sm text-gray-400">Loading…</span>}
-          {inputError && <span className="text-xs text-red-500">Couldn&rsquo;t find that reference — try e.g. &ldquo;John 1:1-5&rdquo;</span>}
+          {loading && <span className="text-sm text-gray-400">{t('reader.loading')}</span>}
+          {inputError && <span className="text-xs text-red-500">{t('exeg.refNotFound')}</span>}
         </div>
       )}
 

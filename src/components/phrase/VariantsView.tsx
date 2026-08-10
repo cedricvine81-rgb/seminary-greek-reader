@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { X, ChevronDown, Info, Printer } from 'lucide-react'
 import { FONT_SIZE_MAP, FONT_SIZES, type PhraseFontSize } from './PhraseExplorer'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
@@ -140,6 +141,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   onAttribution?: (a: string) => void
   diplomatic?: boolean   // raw CNTR transcription (bare, medial σ, unaccented) instead of the readable overlay
 }) {
+  const t = useT()
   const isFontControlled = controlledFontSize !== undefined
   const [internalFont, setInternalFont] = useState<PhraseFontSize>('lg')
   const fontSize = isFontControlled ? (controlledFontSize ?? 'lg') : internalFont
@@ -327,7 +329,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   function NoteBadge({ vid, verse }: { vid: string; verse: number }) {
     if (!noteFor(verse)) return null
     return (
-      <button type="button" title="Why this variant matters" onClick={() => setOpenNote(openNote === vid ? null : vid)}
+      <button type="button" title={t('var.whyMatters')} onClick={() => setOpenNote(openNote === vid ? null : vid)}
         className={`print:hidden ${openNote === vid ? 'text-amber-600' : 'text-amber-500 hover:text-amber-600'}`}>
         <Info size={13} />
       </button>
@@ -384,12 +386,12 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
     <div className="h-full flex flex-col min-h-0 print:h-auto print:block">
       <div className="flex-1 overflow-y-auto px-1 pb-4 print:overflow-visible" onClick={() => info && setInfo(null)}>
         {status === 'idle' && (
-          <p className="text-gray-400 text-sm mt-6 text-center">Enter a New Testament passage to compare its manuscript witnesses.</p>
+          <p className="text-gray-400 text-sm mt-6 text-center">{t('var.enterPassage')}</p>
         )}
         {status === 'nonNT' && (
-          <p className="text-gray-500 text-sm mt-6 text-center">Textual-variant data covers the <b>New Testament</b>. Try e.g. <span className="font-medium">John 1:1-5</span>.</p>
+          <p className="text-gray-500 text-sm mt-6 text-center">Textual-variant data covers the <b>{t('var.newTestament')}</b>. Try e.g. <span className="font-medium">John 1:1-5</span>.</p>
         )}
-        {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">Loading witnesses…</p>}
+        {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">{t('var.loadingWitnesses')}</p>}
         {status === 'missing' && (
           <div className="text-gray-500 text-sm mt-6 text-center space-y-1">
             <p>No collation generated for <b>{parsed?.name} {parsed?.chapter}</b> yet.</p>
@@ -404,7 +406,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               {/* Reference selector */}
               <div className="relative">
                 <button type="button" className={ctrlBtn} onClick={() => setOpenMenu(openMenu === 'ref' ? null : 'ref')}>
-                  <span className="text-gray-400">Compare to</span>
+                  <span className="text-gray-400">{t('var.compareTo')}</span>
                   <span className="font-greek font-semibold text-gray-700">{refSigil}</span>
                   <ChevronDown size={12} className="text-gray-400" />
                 </button>
@@ -424,16 +426,16 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               {/* Witness picker */}
               <div className="relative">
                 <button type="button" className={ctrlBtn} onClick={() => setOpenMenu(openMenu === 'wit' ? null : 'wit')}>
-                  <span className="text-gray-400">Witnesses</span>
+                  <span className="text-gray-400">{t('var.witnesses')}</span>
                   <span className="font-medium text-gray-700">{visibleCount}/{witnesses.length}</span>
                   <ChevronDown size={12} className="text-gray-400" />
                 </button>
                 {openMenu === 'wit' && (
                   <div className="absolute left-0 top-full mt-1 w-56 max-h-80 overflow-y-auto rounded-lg border border-gray-200 bg-popover shadow-lg z-30">
                     <div className="flex flex-wrap gap-1 px-2 py-1.5 border-b border-gray-100 sticky top-0 bg-popover">
-                      <button type="button" className="rounded px-1.5 py-0.5 text-[11px] text-gray-600 hover:bg-gray-100" onClick={() => setControls({ hidden: [] })}>All</button>
+                      <button type="button" className="rounded px-1.5 py-0.5 text-[11px] text-gray-600 hover:bg-gray-100" onClick={() => setControls({ hidden: [] })}>{t('action.all')}</button>
                       <button type="button" className="rounded px-1.5 py-0.5 text-[11px] text-gray-600 hover:bg-gray-100"
-                        onClick={() => setControls({ hidden: witnesses.filter(w => w.wid !== ctrl.refWid).map(w => w.wid) })}>None</button>
+                        onClick={() => setControls({ hidden: witnesses.filter(w => w.wid !== ctrl.refWid).map(w => w.wid) })}>{t('var.none')}</button>
                       {familiesPresent.map(f => (
                         <button key={f} type="button" className="rounded px-1.5 py-0.5 text-[11px] hover:bg-gray-100 inline-flex items-center gap-1"
                           style={{ color: FAMILY_COLOR[f] }} onClick={() => toggleFamily(f)}>
@@ -457,21 +459,21 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                 )}
               </div>
 
-              <label className="inline-flex items-center gap-1 cursor-pointer" title="Show only verses with a substantive variant">
+              <label className="inline-flex items-center gap-1 cursor-pointer" title={t('var.onlyVariantVerses')}>
                 <input type="checkbox" checked={ctrl.onlyVariants} className="accent-brand-600" onChange={e => setControls({ onlyVariants: e.target.checked })} />
-                <span className="text-gray-600">Only variants</span>
+                <span className="text-gray-600">{t('var.onlyVariants')}</span>
               </label>
-              <label className="inline-flex items-center gap-1 cursor-pointer" title="Group witnesses that share a reading onto one line">
+              <label className="inline-flex items-center gap-1 cursor-pointer" title={t('var.groupWitnesses')}>
                 <input type="checkbox" checked={ctrl.group} className="accent-brand-600" onChange={e => setControls({ group: e.target.checked })} />
-                <span className="text-gray-600">Group</span>
+                <span className="text-gray-600">{t('var.group')}</span>
               </label>
 
-              <button type="button" title="Print / save as PDF" className="ml-auto inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50"
-                onClick={() => window.print()}><Printer size={13} /> Print</button>
+              <button type="button" title={t('var.printPdf')} className="ml-auto inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50"
+                onClick={() => window.print()}><Printer size={13} /> {t('var.print')}</button>
             </div>
 
             {displayed.length === 0 && (
-              <p className="text-gray-400 text-sm text-center mt-6">No substantive variants among the visible witnesses in this passage.</p>
+              <p className="text-gray-400 text-sm text-center mt-6">{t('var.noSubstantive')}</p>
             )}
 
             {isMobile && displayed.map(vm => {
@@ -486,7 +488,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                   </div>
                   <NotePanel vid={vm.vid} verse={vm.verse} />
                   {units.length === 0 ? (
-                    <p className="text-xs text-gray-400">No variants among the visible witnesses.</p>
+                    <p className="text-xs text-gray-400">{t('var.noVariants')}</p>
                   ) : units.map((u, ui) => (
                     <div key={ui} className="mb-2 last:mb-0 border-l-2 border-gray-100 pl-2">
                       {u.readings.map((rd, ri) => (
@@ -497,7 +499,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                           </span>
                           <span className="flex flex-wrap gap-x-1.5 gap-y-0.5 items-center pt-0.5">
                             {rd.sigla.map(s => (
-                              <button key={s.wid + s.sigil} type="button" title="Manuscript information"
+                              <button key={s.wid + s.sigil} type="button" title={t('var.msInfo')}
                                 onClick={e => { e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); setInfo({ wid: s.wid, sigil: s.sigil, family: s.family, x: r.left, y: r.bottom }) }}
                                 className="font-greek text-[0.85rem] font-semibold" style={{ color: FAMILY_COLOR[s.family] }}>{s.sigil}</button>
                             ))}
@@ -543,7 +545,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                                 <button key={s.wid + s.sigil} type="button"
                                   onClick={e => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setInfo({ wid: s.wid, sigil: s.sigil, family: s.family, x: rect.left, y: rect.bottom }) }}
                                   className="inline-flex items-center gap-1 font-greek text-[0.9rem] font-semibold text-gray-600 hover:text-brand-700"
-                                  title="Manuscript information">
+                                  title={t('var.msInfo')}>
                                   <span className="inline-block w-[7px] h-[7px] rounded-full" style={{ background: FAMILY_COLOR[s.family] }} />
                                   {s.sigil}
                                 </button>
@@ -557,7 +559,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                 </div>
                 {vm.lac.length > 0 && (
                   <div className="text-[0.7rem] text-gray-400 mt-0.5 pl-6">
-                    <span className="font-mono font-semibold">lac.</span> {vm.lac.join(' ')} <span className="text-gray-300">(absent here)</span>
+                    <span className="font-mono font-semibold">lac.</span> {vm.lac.join(' ')} <span className="text-gray-300">{t('var.absentHere')}</span>
                   </div>
                 )}
               </div>
@@ -565,7 +567,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
             {ctrl.onlyVariants && hiddenVerses > 0 && (
               <p className="text-[0.7rem] text-gray-400 mt-1 pl-1">{hiddenVerses} verse{hiddenVerses > 1 ? 's' : ''} with no variants hidden ·
-                <button type="button" className="ml-1 underline hover:text-brand-600" onClick={() => setControls({ onlyVariants: false })}>show all</button>
+                <button type="button" className="ml-1 underline hover:text-brand-600" onClick={() => setControls({ onlyVariants: false })}>{t('var.showAll')}</button>
               </p>
             )}
 
@@ -610,9 +612,9 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               <span className="text-xs text-gray-500">{FAMILY_LABEL[wi.family]} text</span>
             </div>
             <dl className="space-y-1 text-xs text-gray-600">
-              <div className="flex gap-2"><dt className="w-20 shrink-0 text-gray-400">Date</dt><dd>{wi.date}</dd></div>
-              <div className="flex gap-2"><dt className="w-20 shrink-0 text-gray-400">Contents</dt><dd>{wi.contents}</dd></div>
-              <div className="flex gap-2"><dt className="w-20 shrink-0 text-gray-400">Provenance</dt><dd>{wi.provenance}</dd></div>
+              <div className="flex gap-2"><dt className="w-20 shrink-0 text-gray-400">{t('var.date')}</dt><dd>{wi.date}</dd></div>
+              <div className="flex gap-2"><dt className="w-20 shrink-0 text-gray-400">{t('var.contents')}</dt><dd>{wi.contents}</dd></div>
+              <div className="flex gap-2"><dt className="w-20 shrink-0 text-gray-400">{t('var.provenance')}</dt><dd>{wi.provenance}</dd></div>
             </dl>
             <p className="text-xs text-gray-600 mt-2 leading-relaxed border-t border-gray-100 pt-2">{wi.importance}</p>
           </div>

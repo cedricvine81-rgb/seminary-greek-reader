@@ -192,6 +192,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   onAttribution?: (a: string) => void
   onNavigate?: (ref: string) => void   // jump the shared passage box to a ref (stays on this tab)
 }) {
+  const t = useT()
   // The figure catalogue is curated English (rhetoric-devices.ts) and is translated per string,
   // so a device with no Spanish yet shows its English name and definition rather than nothing.
   // Under no provider — or in English — tc returns the English it is handed.
@@ -749,7 +750,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                         : text}
                   </p>
                 ) : (
-                  <p className="text-xs text-gray-400 italic">Loading…</p>
+                  <p className="text-xs text-gray-400 italic">{t('reader.loading')}</p>
                 )}
                 {/* Parallel translation immediately below the Greek (user picks the version). */}
                 {isGreek && text && (() => {
