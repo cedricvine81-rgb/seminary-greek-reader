@@ -51,6 +51,16 @@ const ROUTES = [
   '/map',
   '/grammar',
   '/vocab',
+  // Added before the ~1,800 hard-coded UI strings are converted: those live mostly OUTSIDE the
+  // surfaces above, and an unlisted page is an unguarded page.
+  '/',                 // marketing home — also what an unauthenticated /dashboard renders
+  '/reader',           // the largest chrome surface in the app
+  '/search',           // master search page (the pane's own route)
+  '/exegesis',         // default tab; only ?tab=rhetoric was covered
+  '/texts',            // library index, as opposed to a single work
+  '/settings',         // unauthenticated this renders the SIGN-IN form, which is all UI strings
+  '/student',          // student dashboard shell: nav, header, footer
+  '/pricing',
 ]
 
 /** Visible text of a server-rendered page, normalised so whitespace churn is not a diff. */
