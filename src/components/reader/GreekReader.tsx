@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
@@ -177,6 +178,7 @@ function buildQueue(books: BiblicalBook[]): ChapterItem[] {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export function GreekReader({ initialRef, initialHighlight, initialTransLang, initialCorpus, isAuthenticated: isAuthenticatedInitial = false, userRole }: { initialRef?: string; initialHighlight?: string; initialTransLang?: string; initialCorpus?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
+  const t = useT()
   const router = useRouter()
   // The server bakes isAuthenticated into the page from the session cookie at render time — but
   // a browser cold start (relaunching the app / restoring tabs) can fire that first document
@@ -1587,7 +1589,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
       }
 
       const englishCol = !alignVerse ? (
-        <p className="leading-relaxed text-gray-400 italic text-xs pt-0.5">Loading…</p>
+        <p className="leading-relaxed text-gray-400 italic text-xs pt-0.5">{t('reader.loading')}</p>
       ) : (
         <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
           onContextMenu={forwardContextMenuToNearestTransWord}>
@@ -1656,7 +1658,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
           onContextMenu={forwardContextMenuToNearestTransWord}>
           {transTxt === undefined
-            ? <span className="text-gray-300 italic text-xs">Loading…</span>
+            ? <span className="text-gray-300 italic text-xs">{t('reader.loading')}</span>
             : transTxt
               ? <><sup className="text-xs text-brand-500 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}><TransWords text={transTxt} lang={parallelLang} terms={arrivalTerms} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} /></span></>
               : null}
@@ -1736,7 +1738,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         <p dir="ltr" className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0 text-left" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
           onContextMenu={forwardContextMenuToNearestTransWord}>
           {transTxt === undefined
-            ? <span className="text-gray-300 italic text-xs">Loading…</span>
+            ? <span className="text-gray-300 italic text-xs">{t('reader.loading')}</span>
             : transTxt
               ? <><sup className="text-xs text-brand-500 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}><TransWords text={transTxt} lang={parallelLang} terms={arrivalTerms} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} /></span></>
               : null}
@@ -1797,7 +1799,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
               key={c}
               type="button"
               onClick={() => setCorpus(c)}
-              title={c === 'GNT' ? 'Show the New Testament' : c === 'LXX' ? 'Show the Septuagint' : 'Show the Hebrew Old Testament'}
+              title={c === 'GNT' ? t('reader.showNT') : c === 'LXX' ? t('reader.showLXX') : t('reader.showMT')}
               className={`px-2.5 text-sm font-medium ${
                 corpus === c ? 'bg-brand-600 text-white' : 'bg-surface text-brand-700 hover:bg-brand-50'
               } ${c !== 'GNT' ? 'border-l border-gray-300' : ''}`}
@@ -1811,10 +1813,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         <select
           value={parallelLang ?? ''}
           onChange={e => switchView(e.target.value || null)}
-          title="Show a parallel translation column"
+          title={t('reader.parallelTranslation')}
           className="hidden lg:block shrink-0 self-stretch lg:ml-auto rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 max-w-[10rem]"
         >
-          <option value="">Greek only</option>
+          <option value="">{t('reader.greekOnly')}</option>
           {PARALLEL_LANGS.filter(l => transCompatible(l.code, corpus)).map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
         </select>
         <div ref={settingsRef} className="relative shrink-0">
@@ -1840,7 +1842,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                     so it keeps the broader "Settings" — and "Menu" on mobile, where
                     it carries the whole navigation too. */}
                 <span className="text-sm font-semibold text-gray-800">
-                  <span className="lg:hidden">Menu</span><span className="hidden lg:inline">Settings</span>
+                  <span className="lg:hidden">{t('reader.menu')}</span><span className="hidden lg:inline">{t('reader.settings')}</span>
                 </span>
                 <button onClick={() => { setShowSettings(false); setSettingsFlyout(null) }} className="text-gray-400 hover:text-gray-600">
                   <X size={15} />
@@ -1881,16 +1883,16 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                       <Settings size={16} className="text-gray-400 shrink-0" /> Settings
                     </Link>
                     <button onClick={handleReaderSignOut} className="flex w-full items-center gap-2.5 py-1.5 rounded-lg text-sm text-red-600 hover:bg-red-50">
-                      <LogOut size={16} className="shrink-0" /> Sign out
+                      <LogOut size={16} className="shrink-0" /> {t('action.signOut')}
                     </button>
                   </>
                 ) : (
                   <>
                     <Link href="/auth/sign-in" onClick={() => setShowSettings(false)} className="flex items-center gap-2.5 py-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                      <LogIn size={16} className="text-gray-400 shrink-0" /> Sign in
+                      <LogIn size={16} className="text-gray-400 shrink-0" /> {t('action.signIn')}
                     </Link>
                     <Link href="/auth/sign-up" onClick={() => setShowSettings(false)} className="flex items-center gap-2.5 py-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                      <UserPlus size={16} className="text-gray-400 shrink-0" /> Sign up
+                      <UserPlus size={16} className="text-gray-400 shrink-0" /> {t('action.signUp')}
                     </Link>
                   </>
                 )}
@@ -1907,7 +1909,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'contents' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">
-                    Contents
+                    {t('reader.contents')}
                     {gntEdition !== 'tischendorf' && <span className="ml-1.5 normal-case font-normal text-brand-600">(Nestle 1904)</span>}
                   </p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'contents' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
@@ -1917,7 +1919,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                     onMouseEnter={cancelFlyoutClose}
                     className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[75vh] overflow-y-auto bg-popover border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
-                    <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
+                    <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">{t('reader.gntEdition')}</p>
                     <div className="space-y-2">
                       {([
                         { label: 'Tischendorf 8th', value: 'tischendorf' as const },
@@ -1972,7 +1974,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                   {/* On mobile the menu also lists a "Syntax" nav item (the Exegesis tab),
                       so disambiguate this settings flyout there; desktop keeps "Syntax". */}
                   <p className="text-xs font-semibold uppercase tracking-wide">
-                    <span className="lg:hidden">Syntax sources</span><span className="hidden lg:inline">Syntax</span>
+                    <span className="lg:hidden">{t('reader.syntaxSources')}</span><span className="hidden lg:inline">{t('reader.syntax')}</span>
                   </p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'syntax' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
@@ -2005,13 +2007,13 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                   onClick={() => toggleFlyout('controls')}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'controls' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
-                  <p className="text-xs font-semibold uppercase tracking-wide">Controls</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide">{t('reader.controls')}</p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'controls' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'controls' && (
                   <div onMouseEnter={cancelFlyoutClose} className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-popover border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
                     <div>
-                      <p className="text-sm font-semibold text-gray-700 mb-1">Parsing Panel</p>
+                      <p className="text-sm font-semibold text-gray-700 mb-1">{t('reader.parsingPanel')}</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
                         <li><span className="font-medium text-gray-600">Hover</span> over any word to see its lexical entry, parsing, and glosses.</li>
                         <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word.</li>
@@ -2019,14 +2021,14 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                       </ul>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-700 mb-1">Syntax</p>
+                      <p className="text-sm font-semibold text-gray-700 mb-1">{t('reader.syntax')}</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
                         <li><span className="font-medium text-gray-600">Right-click</span> any word to open the syntax menu.</li>
                         <li>The menu shows categories from Wallace, PROIEL, GBI, and ABS Syntax.</li>
                       </ul>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-700 mb-1">Search</p>
+                      <p className="text-sm font-semibold text-gray-700 mb-1">{t('reader.search')}</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
                         <li>Type a <span className="font-medium text-gray-600">Greek word</span> to find every occurrence in the corpus.</li>
                         <li>Type a <span className="font-medium text-gray-600">reference</span> (e.g. Matt 5:3, Rom 8) to jump to a passage.</li>
@@ -2044,8 +2046,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'translations' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">
-                    Translation
-                    <span className="ml-1.5 normal-case font-normal text-brand-600">({parallelLang ? parallelLangInfo?.label : 'off'})</span>
+                    {t('reader.translation')}
+                    <span className="ml-1.5 normal-case font-normal text-brand-600">({parallelLang ? parallelLangInfo?.label : t('reader.off')})</span>
                   </p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'translations' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
@@ -2054,7 +2056,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                     onMouseEnter={cancelFlyoutClose}
                     className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[60vh] lg:max-h-60 overflow-y-auto bg-popover border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
                   >
-                    <p className="lg:hidden text-xs text-gray-400 px-1 pb-1">Shown inline beneath each Greek verse.</p>
+                    <p className="lg:hidden text-xs text-gray-400 px-1 pb-1">{t('reader.shownInline')}</p>
                     <button
                       onClick={() => switchView(null)}
                       aria-pressed={parallelLang === null}

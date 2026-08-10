@@ -1,5 +1,6 @@
 'use client'
 import { AlignJustify } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { FONT_SCALES, LINE_SPACINGS } from '@/lib/note-prefs'
 
 /**
@@ -14,15 +15,16 @@ export function TextSizeSlider<T extends string | number>({ options, value, onCh
   value: T
   onChange: (v: T) => void
 }) {
+  const t = useT()
   const idx = Math.max(0, options.indexOf(value))
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text Size</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t('reader.textSize')}</p>
       <div className="flex items-center gap-3">
         <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '0.8rem' }}>A</span>
         <input
           type="range" min={0} max={options.length - 1} step={1} value={idx}
-          aria-label="Text size"
+          aria-label={t('reader.textSize')}
           onChange={e => onChange(options[e.target.valueAsNumber])}
           className="flex-1 accent-brand-600 cursor-pointer"
         />
@@ -30,7 +32,7 @@ export function TextSizeSlider<T extends string | number>({ options, value, onCh
       </div>
       {options.length === 4 && (
         <div className="flex justify-between text-xs text-gray-400 mt-1 px-1">
-          <span>Small</span><span>Med</span><span>Large</span><span>X-Lg</span>
+          <span>{t('reader.sizeSmall')}</span><span>{t('reader.sizeMed')}</span><span>{t('reader.sizeLarge')}</span><span>{t('reader.sizeXLarge')}</span>
         </div>
       )}
     </div>
@@ -42,15 +44,16 @@ export function LineSpacingSlider({ value, onChange }: {
   value: number
   onChange: (v: number) => void
 }) {
+  const t = useT()
   const idx = Math.max(0, LINE_SPACINGS.indexOf(value))
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Line Spacing</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t('reader.lineSpacing')}</p>
       <div className="flex items-center gap-3">
         <AlignJustify size={13} className="text-gray-400 shrink-0" />
         <input
           type="range" min={0} max={LINE_SPACINGS.length - 1} step={1} value={idx}
-          aria-label="Line spacing"
+          aria-label={t('reader.lineSpacing')}
           onChange={e => onChange(LINE_SPACINGS[e.target.valueAsNumber])}
           className="flex-1 accent-brand-600 cursor-pointer"
         />

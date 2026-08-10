@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef, useEffect, KeyboardEvent, ChangeEvent } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { Search, Delete } from 'lucide-react'
 import { betaCodeToGreek } from '@/lib/greek-translit'
 
@@ -24,6 +25,7 @@ const GREEK_ROWS = [
 ]
 
 export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLangLabel }: SearchBarProps) {
+  const t = useT()
   const [query, setQuery]             = useState('')
   const [type, setType]               = useState<'word' | 'reference'>('reference')
   const [showKeyboard, setShowKeyboard] = useState(false)
@@ -150,18 +152,18 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
     <div ref={wrapperRef} className="relative flex items-center gap-2">
       {/* Desktop: Verse | Word type toggle. */}
       <div className="hidden lg:flex rounded-lg border border-gray-300 overflow-hidden text-sm shrink-0">
-        {(['reference', 'word'] as const).map(t => (
+        {(['reference', 'word'] as const).map(kind => (
           <button
-            key={t}
+            key={kind}
             type="button"
-            onClick={() => { setType(t); if (t !== 'word') setShowKeyboard(false) }}
+            onClick={() => { setType(kind); if (kind !== 'word') setShowKeyboard(false) }}
             className={
-              type === t
+              type === kind
                 ? 'px-3 py-2 bg-brand-600 text-white font-medium'
                 : 'px-3 py-2 bg-surface text-gray-600 hover:bg-gray-50'
             }
           >
-            {t === 'word' ? 'Word' : 'Verse'}
+            {kind === 'word' ? t('reader.searchWord') : t('reader.searchVerse')}
           </button>
         ))}
       </div>
@@ -191,14 +193,18 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
           value={query}
           onChange={onChange}
           onKeyDown={handleKey}
-          placeholder={effectiveLang ? `Search ${viewLangLabel ?? 'translation'}…` : hebrewMode ? 'Search Hebrew word…' : effectiveType === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
+          placeholder={effectiveLang
+              ? t('reader.searchTransPlaceholder', { lang: viewLangLabel ?? t('reader.translationWord') })
+              : hebrewMode ? t('reader.searchHebrewPlaceholder')
+              : effectiveType === 'word' ? t('reader.searchGreekPlaceholder')
+              : t('reader.searchRefPlaceholder')}
           dir={HEBREW_RE.test(query) ? 'rtl' : undefined}
           className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekTyping ? 'greek-text' : hebrewMode ? 'font-hebrew' : ''} ${greekTyping ? 'pr-10' : 'pr-3'}`}
         />
         {greekTyping && (
           <button
             type="button"
-            title="Greek keyboard — or just type Beta Code (l→λ, q→θ, h→η …)"
+            title={t('reader.greekKeyboard')}
             onClick={() => setShowKeyboard(v => !v)}
             className={`font-reading absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded text-sm font-semibold transition-colors ${showKeyboard ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}
           >
@@ -251,7 +257,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
                   type="button"
                   onMouseDown={e => { e.preventDefault(); deleteLetter() }}
                   className="w-8 h-8 flex items-center justify-center rounded text-gray-500 hover:bg-gray-100 active:bg-gray-200 transition-colors ml-1"
-                  title="Backspace"
+                  title={t('reader.backspace')}
                 >
                   <Delete size={14} />
                 </button>

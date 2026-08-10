@@ -1,5 +1,6 @@
 'use client'
 import type { Corpus } from '@/types/biblical-text'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface CorpusSelectorProps {
   value: Corpus
@@ -7,6 +8,7 @@ interface CorpusSelectorProps {
 }
 
 export function CorpusSelector({ value, onChange }: CorpusSelectorProps) {
+  const t = useT()
   return (
     <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden bg-surface">
       {(['GNT', 'LXX'] as Corpus[]).map(corpus => (
@@ -19,7 +21,7 @@ export function CorpusSelector({ value, onChange }: CorpusSelectorProps) {
               : 'text-gray-600 hover:bg-gray-50'
           }`}
         >
-          {corpus === 'GNT' ? 'Greek NT' : 'LXX'}
+          {corpus === 'GNT' ? t('reader.greekNT') : 'LXX'}
         </button>
       ))}
     </div>

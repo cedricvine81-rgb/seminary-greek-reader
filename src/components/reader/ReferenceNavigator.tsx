@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { BiblicalBook } from '@/types/biblical-text'
 
@@ -13,6 +14,7 @@ interface ReferenceNavigatorProps {
 export function ReferenceNavigator({
   books, selectedBook, selectedChapter, onNavigate,
 }: ReferenceNavigatorProps) {
+  const t = useT()
   function prevChapter() {
     if (!selectedBook) return
     if (selectedChapter > 1) {
@@ -44,7 +46,7 @@ export function ReferenceNavigator({
         }}
         className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-surface"
       >
-        <option value="">Select book…</option>
+        <option value="">{t('reader.selectBook')}</option>
         {books.map(b => (
           <option key={b.id} value={b.id}>{b.name}</option>
         ))}
@@ -64,10 +66,10 @@ export function ReferenceNavigator({
       )}
 
       {/* Prev / Next */}
-      <button onClick={prevChapter} disabled={!selectedBook} className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Previous chapter">
+      <button onClick={prevChapter} disabled={!selectedBook} className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label={t('reader.prevChapter')}>
         <ChevronLeft size={16} />
       </button>
-      <button onClick={nextChapter} disabled={!selectedBook} className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Next chapter">
+      <button onClick={nextChapter} disabled={!selectedBook} className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label={t('reader.nextChapter')}>
         <ChevronRight size={16} />
       </button>
     </div>

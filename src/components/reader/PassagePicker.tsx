@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ChevronLeft, X } from 'lucide-react'
 import type { BiblicalBook } from '@/types/biblical-text'
 
@@ -78,6 +79,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
   onPick: (ref: string) => void
   onClose: () => void
 }) {
+  const t = useT()
   const [book, setBook] = useState<BiblicalBook | null>(null)
   const [chapter, setChapter] = useState<number | null>(null)
   const [verses, setVerses] = useState<number[] | null>(null)
@@ -136,7 +138,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
         <span className="ml-auto text-sm text-gray-500 truncate">
           {book ? `${sbl(book)}${chapter ? ` ${chapter}` : ''}` : ''}
         </span>
-        <button type="button" onClick={onClose} aria-label="Close" className="text-gray-400 -mr-1 p-1"><X size={18} /></button>
+        <button type="button" onClick={onClose} aria-label={t('action.close')} className="text-gray-400 -mr-1 p-1"><X size={18} /></button>
       </div>
 
       {/* Sliding panes: books → chapters → verses */}
@@ -156,7 +158,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
                 </div>
               )
             })}
-            {books.length === 0 && <p className="text-sm text-gray-400 py-6 text-center">Loading books…</p>}
+            {books.length === 0 && <p className="text-sm text-gray-400 py-6 text-center">{t('reader.loadingBooks')}</p>}
           </div>
 
           {/* Pane 2 — chapters */}
@@ -188,7 +190,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
               </div>
             )}
             {verses && verses.length === 0 && !loadingVerses && (
-              <p className="text-sm text-gray-400 py-6 text-center">No verses found.</p>
+              <p className="text-sm text-gray-400 py-6 text-center">{t('reader.noVerses')}</p>
             )}
           </div>
         </div>
