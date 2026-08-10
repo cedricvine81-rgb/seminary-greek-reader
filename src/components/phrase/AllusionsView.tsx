@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { Search, ChevronDown, ChevronRight, Sparkles, X } from 'lucide-react'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
@@ -142,6 +143,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   onAttribution?: (a: string) => void
   onOpenInTexts?: (t: OpenInTextsTarget) => void
 }) {
+  const t = useT()
   const parsed = useMemo(() => parseRef(controlledPassage ?? ''), [controlledPassage])
 
   // Passage words (na1904 phrase tree), per verse of the open chapter.
@@ -530,9 +532,9 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
     } : null
   })()
 
-  if (loadState === 'idle') return <p className="text-gray-400 text-sm mt-6 text-center">Enter a New Testament passage to hunt for its Old Testament allusions.</p>
-  if (loadState === 'missing') return <p className="text-gray-500 text-sm mt-6 text-center">Allusion search works from a <b>New Testament</b> passage. Try e.g. <span className="font-medium">Mark 1:1-8</span>.</p>
-  if (loadState === 'loading') return <p className="text-gray-400 text-sm mt-6 text-center">Loading…</p>
+  if (loadState === 'idle') return <p className="text-gray-400 text-sm mt-6 text-center">{t('all.enterPassage')}</p>
+  if (loadState === 'missing') return <p className="text-gray-500 text-sm mt-6 text-center">Allusion search works from a <b>{t('var.newTestament')}</b> passage. Try e.g. <span className="font-medium">Mark 1:1-8</span>.</p>
+  if (loadState === 'loading') return <p className="text-gray-400 text-sm mt-6 text-center">{t('reader.loading')}</p>
 
   return (
     <div className="h-full flex flex-col min-h-0">
@@ -544,7 +546,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
           <div className="mt-4 rounded-xl border border-gray-200 bg-surface px-4 py-3.5">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
-                {parsed!.name} {parsed!.chapter}{parsed!.vStart ? `:${parsed!.vStart}${parsed!.vEnd !== parsed!.vStart ? `–${parsed!.vEnd}` : ''}` : ''} — tap the words that feel loaded
+                {parsed!.name} {parsed!.chapter}{parsed!.vStart ? `:${parsed!.vStart}${parsed!.vEnd !== parsed!.vStart ? `–${parsed!.vEnd}` : ''}` : ''} — {t('all.tapWords')}
               </p>
               <label className="flex items-center gap-1.5 text-xs text-gray-500">
                 <input type="checkbox" checked={showEnglish} onChange={e => setShowEnglish(e.target.checked)}
@@ -556,10 +558,10 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
             {/* Search scope: the whole passage, or one verse of it. */}
             {passageVerses.length > 1 && (
               <div className="mb-2.5 flex flex-wrap items-center gap-1">
-                <span className="text-[11px] text-gray-400 mr-1">Search from:</span>
+                <span className="text-[11px] text-gray-400 mr-1">{t('all.searchFrom')}</span>
                 <button type="button" onClick={() => setScope(null)}
                   className={`rounded-md px-2 py-0.5 text-xs font-medium ${scopeVerse == null ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-brand-50'}`}>
-                  All verses
+                  {t('all.allVerses')}
                 </button>
                 {passageVerses.map(v => (
                   <button key={v.verse} type="button" onClick={() => setScope(v.verse)}
@@ -606,8 +608,8 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
               ))}
             </div>
             <p className="mt-2.5 text-xs text-gray-400">
-              Dotted words are <b>rare in the LXX</b> — sharing one is worth far more than sharing a common word.
-              Tap <b>adjacent</b> words and they become a phrase, searched as a sequence
+              Dotted words are <b>{t('all.rareInLXX')}</b> — sharing one is worth far more than sharing a common word.
+              Tap <b>{t('all.adjacent')}</b> words and they become a phrase, searched as a sequence
               (&ldquo;ἐν ἀρχῇ&rdquo; is two common words but a rare pairing). Hover a word for its gloss.
             </p>
           </div>
@@ -627,9 +629,9 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                     <span className={`text-[10px] ${rare ? 'text-blue-700 font-semibold' : 'text-blue-400'}`}>
                       {n == null ? 'phrase' : n === 0 ? 'sequence not in LXX' : `sequence ×${n}`}
                     </span>
-                    <button type="button" title="Search these as separate words instead"
+                    <button type="button" title={t('all.searchSeparate')}
                       onClick={() => setSplitGroups(prev => new Set(prev).add(g.key))}
-                      className="text-[10px] font-medium text-blue-400 hover:text-blue-700">split</button>
+                      className="text-[10px] font-medium text-blue-400 hover:text-blue-700">{t('all.split')}</button>
                     <button type="button" onClick={() => setSelected(prev => { const s = new Set(prev); g.words.forEach(w => s.delete(w.key)); return s })}
                       className="text-gray-400 hover:text-gray-600"><X size={12} /></button>
                   </span>
@@ -646,9 +648,9 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                       {n === 0 ? 'not in LXX' : `×${n}`}
                     </span>}
                     {g.words.length >= 2 && (
-                      <button type="button" title="Rejoin into a phrase"
+                      <button type="button" title={t('all.rejoinPhrase')}
                         onClick={() => setSplitGroups(prev => { const s = new Set(prev); s.delete(g.key); return s })}
-                        className="text-[10px] font-medium text-gray-400 hover:text-brand-700">join</button>
+                        className="text-[10px] font-medium text-gray-400 hover:text-brand-700">{t('all.join')}</button>
                     )}
                     <button type="button" onClick={() => setSelected(prev => { const s = new Set(prev); s.delete(key); return s })}
                       className="text-gray-400 hover:text-gray-600"><X size={12} /></button>
@@ -663,7 +665,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
             </button>
             <button type="button" disabled={terms.length === 0 || searching} onClick={runSearch}
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
-              <Search size={13} /> {searching ? 'Searching…' : 'Search the Septuagint'}
+              <Search size={13} /> {searching ? t('all.searching') : t('all.searchLXX')}
             </button>
             <label className="inline-flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer"
               title="Let a close relative of a word count as a match — ἐξαποστέλλω for ἀποστέλλω, βοάω for κράζω. Marked ≈ in the results and scored below an exact match.">
@@ -686,7 +688,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                     <span className="flex items-center gap-3 text-[11px] text-gray-400">
                       <span><span className="font-semibold text-red-600">red</span> = key word</span>
                       <span><span className="font-semibold text-blue-700">blue</span> = phrase</span>
-                      <span>hover a coloured word for the test it meets</span>
+                      <span>{t('all.hoverColoured')}</span>
                     </span>
                     <label className="flex items-center gap-1.5 text-xs text-gray-500">
                       Translation
@@ -770,8 +772,8 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                     </div>
                   ) : (
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-1.5">The apparatus on this passage</p>
-                      {apparatus === null ? <p className="text-sm text-amber-800">Loading…</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-1.5">{t('all.apparatusOnPassage')}</p>
+                      {apparatus === null ? <p className="text-sm text-amber-800">{t('reader.loading')}</p>
                         : apparatusRows.length === 0 ? (
                           <p className="text-sm text-amber-900">No OT cross-references are catalogued for this passage — if your search surfaced a strong candidate, you may be looking at something the apparatus missed. Argue it with Allison&rsquo;s criteria.</p>
                         ) : (
@@ -779,7 +781,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                             <ul className="space-y-1">
                               {apparatusRows.map((r, i) => (
                                 <li key={i} className="flex flex-wrap items-baseline gap-x-2 text-sm">
-                                  <span className={`text-xs font-medium ${r.found ? 'text-green-700' : 'text-gray-400'}`}>{r.found ? '✓ you found it' : '— not in your list'}</span>
+                                  <span className={`text-xs font-medium ${r.found ? 'text-green-700' : 'text-gray-400'}`}>{r.found ? t('all.youFoundIt') : t('all.notInList')}</span>
                                   <span className="text-gray-800">{r.text}</span>
                                   <span className="text-xs text-gray-400">({r.label})</span>
                                 </li>
@@ -801,39 +803,39 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
         {/* ── Right column: build the case ── */}
         <aside className="lg:w-[330px] lg:shrink-0 mt-4">
           <div className="rounded-xl border border-gray-200 bg-surface px-4 py-3.5 lg:sticky lg:top-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-1">Build the case — Allison&rsquo;s tests</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-1">{t('all.buildCase')}</p>
             <p className="text-xs text-gray-500 mb-3">
-              {active ? <>Assessing <b>{refLabel(active)}</b>. The app fills what it can measure; the rest is your judgment. Notes aren&rsquo;t saved.</>
-                : 'Select a candidate on the left to assess it. The app fills what it can measure; the rest is your judgment.'}
+              {active ? <>{t('all.assessing')} <b>{refLabel(active)}</b>{t('all.assessingRest')}</>
+                : t('all.selectCandidate')}
             </p>
             <ul className="space-y-2.5 text-sm">
               {/* Device 1 is about the NT passage, not the candidate, so it can be answered
                   before anything is selected — and a citation formula is one of the few
                   Allison devices a machine can genuinely see. */}
-              <ChecklistRow label="1 · Explicit statement" manual={checks['d1']} onManual={v => setChecks(c => ({ ...c, d1: v }))}
+              <ChecklistRow label={t('all.d1')} manual={checks['d1']} onManual={v => setChecks(c => ({ ...c, d1: v }))}
                 auto={citation.formula ? 'yes' : citation.sources.length ? 'partial' : 'no'}
                 autoNote={
                   citation.formula
-                    ? `citation formula (${citation.formulaWords.join(', ')})${citation.sources.length ? ` naming ${citation.sources.join(' and ')}` : ', source unnamed'}`
+                    ? `${t('all.d1formula', { words: citation.formulaWords.join(', ') })}${citation.sources.length ? t('all.d1naming', { sources: citation.sources.join(' & ') }) : t('all.d1unnamed')}`
                     : citation.sources.length
-                      ? `names ${citation.sources.join(' and ')}, but with no citation formula`
-                      : 'no citation formula in this passage'}
-                hint="Does the author name the source or the figure (“as Moses…”)?" />
-              <ChecklistRow label="2 · Implicit citation" hint="Words transplanted without acknowledgement."
+                      ? t('all.d1namesNoFormula', { sources: citation.sources.join(' & ') })
+                      : t('all.d1none')}
+                hint={t('all.d1hint')} />
+              <ChecklistRow label={t('all.d2')} hint={t('all.d2hint')}
                 auto={active ? (nearVerbatim ? 'yes' : active.run ? 'partial' : 'no') : null}
-                autoNote={active?.run ? `run of ${active.run.length}, ${active.run.exactForms} in the same inflected form` : 'no shared word-run found'} />
-              <ChecklistRow label="3 · Similar circumstances" auto={null} manual={checks['d3']} onManual={v => setChecks(c => ({ ...c, d3: v }))}
-                hint="Is the event circumstantially like the proposed subtext? Only you can judge this." />
-              <ChecklistRow label="4 · Key words or phrases" hint="Shared vocabulary — weighted by rarity."
+                autoNote={active?.run ? t('all.d2run', { n: active.run.length, exact: active.run.exactForms }) : t('all.d2none')} />
+              <ChecklistRow label={t('all.d3')} auto={null} manual={checks['d3']} onManual={v => setChecks(c => ({ ...c, d3: v }))}
+                hint={t('all.d3hint')} />
+              <ChecklistRow label={t('all.d4')} hint={t('all.d4hint')}
                 auto={active ? (rareMatched >= 2 ? 'yes' : rareMatched === 1 ? 'partial' : 'no') : null}
-                autoNote={active ? `${rareMatched} shared ${rareMatched === 1 ? 'word is' : 'words are'} rare in the LXX (under ${RARE} verses)` : undefined} />
-              <ChecklistRow label="5 · Narrative structure" auto={null} manual={checks['d5']} onManual={v => setChecks(c => ({ ...c, d5: v }))}
-                hint="Does the shape of the story itself follow the subtext? Only you can judge this." />
-              <ChecklistRow label="6 · Word order & rhythm" hint="Imitative sequence."
+                autoNote={active ? t('all.d4note', { n: rareMatched, wordWord: rareMatched === 1 ? t('all.wordIs') : t('all.wordsAre'), rare: RARE }) : undefined} />
+              <ChecklistRow label={t('all.d5')} auto={null} manual={checks['d5']} onManual={v => setChecks(c => ({ ...c, d5: v }))}
+                hint={t('all.d5hint')} />
+              <ChecklistRow label={t('all.d6')} hint={t('all.d6hint')}
                 auto={active ? ((active.run && active.run.length >= 3) || phraseMatched.length > 0 ? 'yes' : 'no') : null}
                 autoNote={active
-                  ? [phraseMatched.length > 0 ? `matched the phrase ${phraseMatched.map(m => `“${m.form}”`).join(', ')}` : '',
-                     active.run ? `${active.run.length} words appear in the same order` : '']
+                  ? [phraseMatched.length > 0 ? t('all.d6phrase', { phrases: phraseMatched.map(m => `“${m.form}”`).join(', ') }) : '',
+                     active.run ? t('all.d6order', { n: active.run.length }) : '']
                       .filter(Boolean).join('; ') || undefined
                   : undefined} />
             </ul>
@@ -920,6 +922,7 @@ function ExpandedHit({ hit, label, bookName, chapters, english, onOpenInTexts, o
   onOpenInTexts?: (t: OpenInTextsTarget) => void
   onHoverWord: (info: LexicalInfoPanel) => void
 }) {
+  const t = useT()
   const [tip, setTip] = useState<{ x: number; y: number; ev: WordEvidence } | null>(null)
   const rootRef = useRef<HTMLDivElement>(null)
 
@@ -962,13 +965,13 @@ function ExpandedHit({ hit, label, bookName, chapters, english, onOpenInTexts, o
     const lines: string[] = []
     if (mark.phrase) {
       const pm = phraseMatches.find(m => m.form === mark.phrase)
-      lines.push(`Part of the phrase “${mark.phrase}” — tests 2 & 6 (implicit citation; word order)${pm ? `: this sequence occurs ${pm.verses}× in the whole LXX` : ''}.`)
+      lines.push(`${t('all.tipPhrase', { phrase: mark.phrase })}${pm ? t('all.tipPhraseOccurs', { n: pm.verses }) : ''}.`)
     }
     if (mark.word) {
-      lines.push(`Key word — test 4 (shared vocabulary): in ${mark.word.verses} LXX verses${mark.word.verses < RARE ? ' — rare, so it carries real weight' : ' — common, so it carries little weight alone'}.${mark.word.exactForm ? ' Same inflected form as your passage.' : ''}`)
+      lines.push(`${t('all.tipKeyWord', { n: mark.word.verses })}${mark.word.verses < RARE ? t('all.rareWeight') : t('all.commonWeight')}.${mark.word.exactForm ? t('all.tipSameForm') : ''}`)
     }
     if (mark.run && hit.run) {
-      lines.push(`Inside a run of ${hit.run.length} words in your passage's order — test 6${nearVerbatim ? ', and near-verbatim, so test 2 (implicit citation) as well' : ''}.`)
+      lines.push(`${t('all.tipRun', { n: hit.run.length })}${nearVerbatim ? t('all.tipNearVerbatim') : ''}.`)
     }
     return lines.length ? { kind: mark.phrase ? 'phrase' : 'word', lines } : null
   }
@@ -982,7 +985,7 @@ function ExpandedHit({ hit, label, bookName, chapters, english, onOpenInTexts, o
 
   return (
     <div ref={rootRef} className="relative border-t border-gray-100 px-3.5 py-3">
-      {!anyLoaded && <p className="text-sm text-gray-400">Loading the Greek…</p>}
+      {!anyLoaded && <p className="text-sm text-gray-400">{t('all.loadingGreek')}</p>}
       {segments.map(seg => {
         const vv = (chapters[`${hit.osis}.${seg.chapter}`] ?? []).filter(v => v.verse >= seg.vLo && v.verse <= seg.vHi)
         return vv.map(v => {
@@ -1027,7 +1030,7 @@ function ExpandedHit({ hit, label, bookName, chapters, english, onOpenInTexts, o
         <div className="pointer-events-none absolute z-30 w-72 rounded-lg border border-gray-200 bg-popover px-3 py-2 shadow-lg"
           style={{ left: Math.max(0, tip.x), top: tip.y }}>
           <p className={`text-[11px] font-semibold uppercase tracking-wide mb-1 ${tip.ev.kind === 'phrase' ? 'text-blue-700' : 'text-red-600'}`}>
-            {tip.ev.kind === 'phrase' ? 'Phrase evidence' : 'Key-word evidence'}
+            {tip.ev.kind === 'phrase' ? t('all.phraseEvidence') : t('all.keywordEvidence')}
           </p>
           {tip.ev.lines.map((l, i) => <p key={i} className="text-xs leading-relaxed text-gray-700 mb-0.5">{l}</p>)}
         </div>

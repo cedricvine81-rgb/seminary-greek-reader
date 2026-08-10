@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ExternalLink, BookOpen, ChevronDown, X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
@@ -361,6 +362,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   onAttribution?: (a: string) => void
   onOpenInTexts?: (target: OpenInTextsTarget) => void
 }) {
+  const t = useT()
   const [gntBooks, setGntBooks] = useState<RefBook[]>([])
   const [lxxBooks, setLxxBooks] = useState<RefBook[]>([])
   const [version, setVersion] = useState('na1904')
@@ -783,7 +785,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
             <button
               type="button"
               onClick={() => setShowSummaries(v => !v)}
-              title="Summaries — overviews of extra-canonical literature"
+              title={t('bg.summariesTitle')}
               className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showSummaries ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
             >
               <BookOpen size={14} /> Summaries
@@ -856,7 +858,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
       )}
 
       {!anchor || !parsed ? (
-        <p className="text-sm text-gray-400 italic">Enter a passage above to load its background apparatus.</p>
+        <p className="text-sm text-gray-400 italic">{t('bg.enterPassage')}</p>
       ) : (
         <div ref={panesRef} className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
           {/* ── Left: Greek text ── */}
@@ -875,7 +877,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
             </div>
             <div className="flex-1 min-h-0 overflow-y-auto p-3">
               {leftVerses.length === 0 ? (
-                <p className="text-xs text-gray-300 italic">Loading…</p>
+                <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
               ) : (
                 <div
                   className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`}
@@ -946,9 +948,9 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
             </p>
             <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-3">
               {!crossRefData ? (
-                <p className="text-xs text-gray-300 italic">Loading…</p>
+                <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
               ) : applicableRefs.length === 0 ? (
-                <p className="text-xs text-gray-400 italic">No cataloged cross-references for this passage.</p>
+                <p className="text-xs text-gray-400 italic">{t('bg.noCrossRefs')}</p>
               ) : (
                 applicableRefs.map((entry, ei) => {
                   const cites = entry.citations.filter(c => typeFilter.has(c.type))
@@ -980,7 +982,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                     href={perseusHref}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    title="Open at Perseus (opens in a new tab)"
+                                    title={t('bg.openPerseus')}
                                     className="shrink-0 text-[10px] text-gray-400 hover:text-brand-600 px-1"
                                   >
                                     ↗
@@ -1030,7 +1032,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           }
                           const scholarTitle = c.note
                             ? `${c.kind ? `${c.kind}. ` : ''}${c.note}${c.source ? ` — ${c.source}` : ''}`
-                            : (cref ? 'View text' : 'Full text not yet available for this source')
+                            : (cref ? t('bg.viewText') : t('bg.noFullText'))
                           // Clickable when there is embedded text (a resolved ref) OR a scholarly
                           // note to show in the right pane — patristic/commentary entries carry a
                           // note but no embedded text of their own.
@@ -1085,7 +1087,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                   <button
                     type="button"
                     onClick={() => onOpenInTexts?.(openInTextsTarget)}
-                    title="Open in Texts — keep reading this work"
+                    title={t('bg.openInTexts')}
                     className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-[11px] font-medium text-gray-600 hover:bg-gray-100 transition-colors"
                   >
                     <ExternalLink size={12} /> Open
@@ -1096,9 +1098,9 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
             <div className="flex-1 min-h-0 overflow-y-auto p-3">
               {rightJosephus ? (
                 josephusLoading ? (
-                  <p className="text-xs text-gray-300 italic">Loading…</p>
+                  <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
                 ) : !josephusChapter ? (
-                  <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
+                  <p className="text-xs text-gray-400 italic">{t('bg.noText')}</p>
                 ) : (
                   <div className="space-y-3">
                     <p className="text-xs font-semibold text-gray-600">
@@ -1152,9 +1154,9 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                 )
               ) : rightProse ? (
                 proseLoading ? (
-                  <p className="text-xs text-gray-300 italic">Loading…</p>
+                  <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
                 ) : !proseChapter ? (
-                  <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
+                  <p className="text-xs text-gray-400 italic">{t('bg.noText')}</p>
                 ) : (
                   <div className="space-y-3">
                     <p className="text-xs font-semibold text-gray-600">
@@ -1198,7 +1200,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                           ? `Other possibilities: ${hits.slice(1, 4).map(h => `${h.headword} — ${h.entry.s[0] ?? ''}`).join('  |  ')}`
                                           : undefined,
                                       }
-                                    : { surface: tok, lexeme: '', gloss: jastrow ? 'No Jastrow entry found for this form.' : 'Loading Jastrow…',
+                                    : { surface: tok, lexeme: '', gloss: jastrow ? t('bg.noJastrow') : t('bg.loadingJastrow'),
                                         partOfSpeech: '', parsing: '', reference: ref, script: 'hebrew' })
                                   setSelectedKey(key)
                                 }
@@ -1228,7 +1230,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                   </div>
                 )
               ) : !rightRef ? (
-                <p className="text-xs text-gray-400 italic">Click a cross-reference to view its text here.</p>
+                <p className="text-xs text-gray-400 italic">{t('bg.clickCrossRef')}</p>
               ) : (
                 <>
                   {/* Exegetical note + scholar attribution — present on citations merged in
@@ -1243,14 +1245,14 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     </div>
                   )}
                   {rightLoading ? (
-                    <p className="text-xs text-gray-300 italic">Loading…</p>
+                    <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
                   ) : !rightRef.citation.ref ? (
                     <div className="text-xs text-gray-500 space-y-2">
                       <p className="italic">Full text not yet available for this source ({TYPE_LABELS[rightRef.citation.type]}).</p>
                       <p className="text-gray-400">Citation: {rightRef.citation.text}</p>
                     </div>
                   ) : !rightVerses || rightVerses.length === 0 ? (
-                    <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
+                    <p className="text-xs text-gray-400 italic">{t('bg.noText')}</p>
                   ) : (
                     <div
                       dir={isRightHebrew ? 'rtl' : undefined}

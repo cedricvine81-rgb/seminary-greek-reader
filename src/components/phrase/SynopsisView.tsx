@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { X } from 'lucide-react'
 import { compareRedaction, isFunctionWord, isGlueWord, morphFacts, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
 import { computeColumnIndicators, computeSequenceShift, type Indicator } from '@/lib/redaction-indicators'
@@ -128,6 +129,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   onFontSize?: (v: SynFontSize) => void
   onAttribution?: (a: string) => void
 }) {
+  const t = useT()
   const [books, setBooks] = useState<RefBook[]>([])
   const [version, setVersion] = useState('na1904')
   // Text size — the settings panel that used to live here is now hoisted into the
@@ -304,7 +306,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const bestGospel = computeBest(anchor)
   const bestNt = !bestGospel ? computeBestNt(anchor) : null
   const best = bestGospel ?? bestNt
-  const parallelsLabel = bestGospel ? 'Gospel parallels' : 'Parallel passages'
+  const parallelsLabel = bestGospel ? t('syn.gospelParallels') : t('syn.parallelPassages')
   // Chips offer to re-add any parallel the user has removed.
   const suggestionChips = best ? best.refs.filter(r => !columns.includes(r)) : []
   // Tier-3 curated compositional-device notes for this pericope (may be undefined —
@@ -711,7 +713,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                   those words as plain text. Dimmed chip = hidden (same idiom as the
                   Backgrounds type filter). */}
               <span className="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-600">
-                <span className="text-[9px] uppercase tracking-wide text-gray-400">word-level</span>
+                <span className="text-[9px] uppercase tracking-wide text-gray-400">{t('syn.wordLevel')}</span>
                 <span className="rounded border border-gray-300 px-1.5">plain = verbatim</span>
                 {MARK_TAGS.map(t => (
                   <button
@@ -741,7 +743,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       )}
 
       {!anchor ? (
-        <p className="text-sm text-gray-400 italic">Enter a passage above to anchor the synopsis.</p>
+        <p className="text-sm text-gray-400 italic">{t('syn.enterPassage')}</p>
       ) : (
         // Capped height with its own scroll (rather than letting the page grow), so a
         // long passage can't push the parsing pane below the fold — it stays visible
@@ -754,7 +756,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                 <div className="flex items-center justify-between mb-2 gap-2 shrink-0">
                   <p className="text-sm font-semibold text-gray-700 truncate">{col?.label ?? ref}{i === 0 && <span className="ml-1 text-[10px] font-normal text-brand-600 uppercase tracking-wide">anchor</span>}{compareOn && compareData && i === compareData.sourceIdx && <span className="ml-1 text-[10px] font-normal text-red-600 uppercase tracking-wide">source</span>}</p>
                   {i > 0 && (
-                    <button onClick={() => setExtraRefs(r => r.filter((_, j) => j !== i - 1))} className="text-gray-400 hover:text-red-600 shrink-0" title="Remove column"><X size={14} /></button>
+                    <button onClick={() => setExtraRefs(r => r.filter((_, j) => j !== i - 1))} className="text-gray-400 hover:text-red-600 shrink-0" title={t('syn.removeColumn')}><X size={14} /></button>
                   )}
                 </div>
                 {i === 0 && (
@@ -799,7 +801,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                 setHoverTip({
                                   x, y: rect.top,
                                   title: ind.device ? `Signal · ${ind.device.toLowerCase()}` : 'Note',
-                                  body: ind.title + (clickable ? (active ? ' Click again to clear the rings.' : ' Click to ring the evidence.') : ''),
+                                  body: ind.title + (clickable ? (active ? t('syn.clickToClear') : t('syn.clickToRing')) : ''),
                                 })
                               }
                               return (
@@ -849,7 +851,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                             .filter((s): s is string => !!s)
                           if (!chips.length) return null
                           return (
-                            <span className="font-sans align-middle mr-1 inline-flex flex-wrap gap-1" title="Corresponding verses, from the word alignment — approximate">
+                            <span className="font-sans align-middle mr-1 inline-flex flex-wrap gap-1" title={t('syn.correspondingVerses')}>
                               {chips.map(t => (
                                 <span key={t} className="rounded bg-brand-50 px-1 py-px text-[9px] font-medium text-brand-700 ring-1 ring-brand-100">{t}</span>
                               ))}
@@ -967,7 +969,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-gray-300 italic">Loading…</p>
+                  <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
                 )}
               </div>
             )
@@ -975,17 +977,17 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
 
           {/* Add a comparison column */}
           <div className="w-60 shrink-0 rounded-xl border border-dashed border-gray-300 p-3">
-            <p className="text-xs font-semibold text-gray-500 mb-2">Add a passage to compare</p>
+            <p className="text-xs font-semibold text-gray-500 mb-2">{t('syn.addPassage')}</p>
             <PassageAutocomplete
               value={addInput}
               onChange={v => { setAddInput(v); if (addError) setAddError(false) }}
               onCommit={v => addRef(v)}
-              placeholder="e.g. Mark 1:9-11"
+              placeholder={t('syn.refPlaceholder')}
               error={addError}
               inputClassName="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
-            <button onClick={() => addRef()} className="mt-2 w-full rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">Add</button>
-            {addError && <p className="text-xs text-red-500 mt-1">Couldn&rsquo;t parse that reference.</p>}
+            <button onClick={() => addRef()} className="mt-2 w-full rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">{t('syn.add')}</button>
+            {addError && <p className="text-xs text-red-500 mt-1">{t('syn.parseError')}</p>}
           </div>
         </div>
       )}
