@@ -369,13 +369,13 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   indicatives: {
     beginning: (
       <Note>
-        <P>The <strong>indicative</strong> is the mood of plain fact — it states what actually happens, happened, or will happen. This tab lays out <G>λύω</G> ("I loose") across all its tenses and voices as the model verb. For each form, focus on two things: the <strong>tense identifier</strong> (which tense/voice) and the <strong>personal ending</strong> (who). <G>εἰμί</G> ("I am") is irregular and worth memorizing on its own.</P>
-        <Eg>"She <em>writes</em> / she <em>wrote</em> / she <em>will write</em>" — one verb, different tenses. Greek marks these on the verb itself.</Eg>
+        <P><T id="indicatives.exp.b.intro">The <strong>indicative</strong> is the mood of plain fact — it states what actually happens, happened, or will happen. This tab lays out <G>λύω</G> ("I loose") across all its tenses and voices as the model verb. For each form, focus on two things: the <strong>tense identifier</strong> (which tense/voice) and the <strong>personal ending</strong> (who). <G>εἰμί</G> ("I am") is irregular and worth memorizing on its own.</T></P>
+        <Eg><T id="indicatives.exp.b.hook">"She <em>writes</em> / she <em>wrote</em> / she <em>will write</em>" — one verb, different tenses. Greek marks these on the verb itself.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>In the <em>indicative</em>, tense encodes both <strong>time</strong> and <strong>aspect</strong>. The same form can be put to several uses; naming the use is the interpretive step. These are the <strong>Essential Syntax Categories</strong> for the tenses (after Wallace).</P>
+        <P><T id="indicatives.exp.b.eg">In the <em>indicative</em>, tense encodes both <strong>time</strong> and <strong>aspect</strong>. The same form can be put to several uses; naming the use is the interpretive step. These are the <strong>Essential Syntax Categories</strong> for the tenses (after Wallace).</T></P>
         <CatGroup label={<T id="indicatives.cg.present-imperfective-ongoing">Present (imperfective — ongoing)</T>}>
           <Cat id="indicatives.cat.progressive"name="Progressive" eg="“she is writing”" ex={[{ g: "κύριε, σῶσον, ἀπολλύμεθα", e: "Lord, save us! We are perishing", r: "Matt 8:25" }, { g: "πάντες ζητοῦσίν σε", e: "everyone is looking for you", r: "Mark 1:37" }]}><T id="indicatives.cat.progressive.d">action in progress right now</T></Cat>
           <Cat id="indicatives.cat.iterative"name="Iterative" ex={[{ g: "νηστεύω δὶς τοῦ σαββάτου", e: "I fast twice a week", r: "Luke 18:12" }, { g: "καθ’ ἡμέραν ἀποθνῄσκω", e: "I die daily", r: "1 Cor 15:31" }]}><T id="indicatives.cat.iterative.d">a repeated / habitual action</T></Cat>

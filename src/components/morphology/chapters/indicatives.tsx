@@ -56,7 +56,7 @@ export const INDICATIVES_CONTENT = (
         <p><Tr id="indicatives.as.present-imperfective-aspect">Present = <em>imperfective</em> <Term t="aspect">aspect</Term> (ongoing).</Tr></p>
       </>}
     >
-      <MorphTable id="indicatives.t1" tCols={[0, 2]} flush title={gt("Present Tense — λύω (I loose, I am loosing)")} headers={['Person','Greek','Translation']}
+      <MorphTable id="indicatives.t1" tCols={[0, 2]} flush title="Present Tense — λύω (I loose, I am loosing)" headers={['Person','Greek','Translation']}
         rows={[
           ['1st sg.','λύ|ω','I am untying / I untie'],
           ['2nd sg.','λύ|εις','You are untying / you untie'],
@@ -94,8 +94,8 @@ export const INDICATIVES_CONTENT = (
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="indicatives.al.default-translations-add">Default translations (add the verb)</Tr></AsideLabel>
-        <p><Tr id="indicatives.as.present-active-ing"><Gk>Present</Gk> active: "I ‒ / I am ‒ing" · mid/pass: "I am (being) ‒ed."</Tr></p>
-        <p><Tr id="indicatives.as.imperfect-active-was"><Gk>Imperfect</Gk> active: "I was ‒ing" · mid/pass: "I was being ‒ed." The middle adds "for myself."</Tr></p>
+        <p><Tr id="indicatives.as.present-active-ing"><strong>Present</strong> active: "I ‒ / I am ‒ing" · mid/pass: "I am (being) ‒ed."</Tr></p>
+        <p><Tr id="indicatives.as.imperfect-active-was"><strong>Imperfect</strong> active: "I was ‒ing" · mid/pass: "I was being ‒ed." The middle adds "for myself."</Tr></p>
         <p><Tr id="indicatives.as.imperfect's-augment-marks">The imperfect's <Gk>ε‒</Gk> augment marks past time.</Tr></p>
       </>}
       intermediate={<>
@@ -103,7 +103,7 @@ export const INDICATIVES_CONTENT = (
         <p><Tr id="indicatives.as.middle-lost-intervocalic">The 2nd-sg. middle (<Gk>ἐλύου, λύῃ</Gk>) lost an intervocalic <Gk>σ</Gk>, which is why it looks irregular.</Tr></p>
       </>}
     >
-      <MorphTable id="indicatives.t2" tCols={[0, 1]} flush title={gt("Present & Imperfect Full Paradigm — λύω")} headers={['','','Imp. Active','Imp. Mid/Pass','Pres. Active','Pres. Mid/Pass']}
+      <MorphTable id="indicatives.t2" tCols={[0, 1]} flush title="Present & Imperfect Full Paradigm — λύω" headers={['','','Imp. Active','Imp. Mid/Pass','Pres. Active','Pres. Mid/Pass']}
         rows={[
           ['SG','1','ἔλυ|ον','ἐλυ|όμην','λύ|ω','λύ|ομαι'],
           ['','2','ἔλυ|ες','ἐλύ|ου','λύ|εις','λύ|ῃ (σαι)'],
@@ -153,7 +153,7 @@ export const INDICATIVES_CONTENT = (
         <p><Tr id="indicatives.as.future-middle-deponent">Its future <Gk>ἔσομαι</Gk> is a middle (deponent) form.</Tr></p>
       </>}
     >
-      <MorphTable id="indicatives.t3" tCols={[0]} flush title={gt("εἰμί — Present, Future & Imperfect Indicative")} headers={['Person','Present','Future','Imperfect']}
+      <MorphTable id="indicatives.t3" tCols={[0]} flush title="εἰμί — Present, Future & Imperfect Indicative" headers={['Person','Present','Future','Imperfect']}
         rows={[
           ['I','εἰμί','ἔσομαι','ἦμην'],
           ['You (sg.)','εἶ','ἔσῃ','ἦς (or ἦσθα)'],
@@ -257,7 +257,7 @@ export const INDICATIVES_CONTENT = (
         <p><Tr id="indicatives.as.very-same-mergers">The very same mergers drive the dative plural (<Gk>‒σι</Gk>) and many 3rd-declension nominatives — one rule, several places.</Tr></p>
       </>}
     >
-      <MorphTable id="indicatives.t6" tCols={[]} flush title={gt("Consonant + σ Combinations")} headers={['Stem ends in','+ σ','Result']}
+      <MorphTable id="indicatives.t6" tCols={[]} flush title="Consonant + σ Combinations" headers={['Stem ends in','+ σ','Result']}
         rows={[
           ['π, β, φ','+ σ','ψ'],
           ['τ, δ, θ, ζ','+ σ','σ'],
@@ -273,7 +273,7 @@ export const INDICATIVES_CONTENT = (
         <p><Tr id="indicatives.as.passive-builds-middle">The passive builds on <Gk>θη / θησ</Gk>; the middle borrows the active's <Gk>σ</Gk> in the future and aorist. Stem + augment + identifier is the whole machine.</Tr></p>
       </>}
     >
-      <MorphTable id="indicatives.t7" tCols={[0]} flush title={gt("Tense Stem Structure — λύ‒")} headers={['Tense','Active','Middle','Passive']}
+      <MorphTable id="indicatives.t7" tCols={[0]} flush title="Tense Stem Structure — λύ‒" headers={['Tense','Active','Middle','Passive']}
         rows={[
           ['Present','λυ','λυ','λυ'],
           ['Future','λυ‒σ','λυ‒σ','λυ‒θησ'],
@@ -317,7 +317,7 @@ export const INDICATIVES_CONTENT = (
         <p><Tr id="indicatives.as.many-middle-looking">Many middle-looking forms are simply <strong>deponents</strong> with an active meaning — see the Deponents tab.</Tr></p>
       </>}
     >
-      <MorphTable id="indicatives.t8" tCols={[0, 1, 3]} flush title={gt("Full Tense & Voice Paradigm — λύω (1st sg.)")} headers={['Tense','Voice','Form','Translation']}
+      <MorphTable id="indicatives.t8" tCols={[0, 1, 3]} flush title="Full Tense & Voice Paradigm — λύω (1st sg.)" headers={['Tense','Voice','Form','Translation']}
         rows={[
           ['Present','Active','λύ|ω','I loose'],
           ['','Middle','λύ|ομαι','I loose myself'],
@@ -343,7 +343,7 @@ export const INDICATIVES_CONTENT = (
         <p><Tr id="indicatives.as.perfect-stresses-present">The perfect stresses the <strong>present state</strong> produced by a past action — <Gk>γέγραπται</Gk> "it stands written." That resultative force is why it matters exegetically.</Tr></p>
       </>}
     >
-      <MorphTable id="indicatives.t9" tCols={[0, 1, 3]} flush title={gt("Perfect & Pluperfect — λύω")} headers={['Tense','Voice','Form','Translation']}
+      <MorphTable id="indicatives.t9" tCols={[0, 1, 3]} flush title="Perfect & Pluperfect — λύω" headers={['Tense','Voice','Form','Translation']}
         rows={[
           ['Perfect','Active','λέλυ|κα|','I have loosed'],
           ['','Middle','λέλυ|μαι','I have loosed myself'],
@@ -383,7 +383,7 @@ export const INDICATIVES_CONTENT = (
         <p><Tr id="indicatives.as.same-scan-reverse">The same scan in reverse tells you what to look up: strip <Gk>ἐ‑</Gk> and <Gk>‑σα‑</Gk> and <Gk>‑μεν</Gk>, and the remainder <Gk>λυ‑</Gk> is the lexical stem → <Gk>λύω</Gk> in the dictionary.</Tr></p>
       </>}
     >
-      <MorphTable id="indicatives.t10" tCols={[1]} flush title={gt("Worked example — ἐλύσαμεν")} headers={['Piece','What it says']} firstColIsData
+      <MorphTable id="indicatives.t10" tCols={[1]} flush title="Worked example — ἐλύσαμεν" headers={['Piece','What it says']} firstColIsData
         rows={[
           ['ἐ‑', 'augment → past time'],
           ['λυ‑', 'stem → “loose”'],
@@ -505,10 +505,10 @@ export const INDICATIVES_CONTENT = (
     <LiveExamples
       intro={<Tr id="indicatives.intro.tense-system-wild">The tense system in the wild — every hit is a real NT verb you can now decode.</Tr>}
       links={[
-        { label: 'Aorist indicatives — the narrative workhorse (spot the augments)', features: ['verb', 'aorist', 'indicative'] },
-        { label: 'Imperfects — ongoing past scenes ("was …ing")', features: ['verb', 'imperfect', 'indicative'] },
-        { label: 'Perfects — completed acts whose results stand', features: ['verb', 'perfect', 'indicative'] },
-        { label: 'Future indicatives — promises and predictions', features: ['verb', 'future', 'indicative'] },
+        { label: <Tr id="indicatives.le.aorist">Aorist indicatives — the narrative workhorse (spot the augments)</Tr>, features: ['verb', 'aorist', 'indicative'] },
+        { label: <Tr id="indicatives.le.imperfect">Imperfects — ongoing past scenes ("was …ing")</Tr>, features: ['verb', 'imperfect', 'indicative'] },
+        { label: <Tr id="indicatives.le.perfect">Perfects — completed acts whose results stand</Tr>, features: ['verb', 'perfect', 'indicative'] },
+        { label: <Tr id="indicatives.le.future">Future indicatives — promises and predictions</Tr>, features: ['verb', 'future', 'indicative'] },
       ]}
     />
 
