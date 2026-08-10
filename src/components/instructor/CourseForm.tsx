@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
 import type { CourseFormData, CourseLevel } from '@/types/course'
+import { ASSESSMENT_LANGUAGES, ASSESSMENT_LANGUAGE_LABEL } from '@/lib/assessment-languages'
 
 interface CourseFormProps {
   initialData?: Partial<CourseFormData>
@@ -19,6 +20,7 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
     name: initialData?.name ?? '',
     listing: initialData?.listing ?? '',
     level: initialData?.level ?? 'BEGINNING',
+    language: initialData?.language ?? 'en',
     startDate: initialData?.startDate ?? '',
     endDate: initialData?.endDate ?? '',
     institutionName: initialData?.institutionName ?? '',
@@ -66,6 +68,16 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
           { value: 'ADVANCED',     label: 'Advanced' },
         ]}
       />
+      <Select
+        label="Assessment language"
+        value={form.language ?? 'en'}
+        onChange={e => set('language', e.target.value)}
+        options={ASSESSMENT_LANGUAGES.map(l => ({ value: l, label: ASSESSMENT_LANGUAGE_LABEL[l] }))}
+      />
+      <p className="-mt-3 text-xs text-gray-500">
+        Quizzes and exams for this course are set and marked in this language. Students may still
+        read the app, the reader and the vocabulary deck in whichever language they prefer.
+      </p>
       <div className="grid grid-cols-2 gap-4">
         <Input label="Start date" type="date" required value={form.startDate} onChange={e => set('startDate', e.target.value)} />
         <Input label="End date" type="date" required value={form.endDate} onChange={e => set('endDate', e.target.value)} />

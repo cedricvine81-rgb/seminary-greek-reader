@@ -27,6 +27,9 @@ export interface CourseFormData {
   name: string
   listing?: string
   level: CourseLevel
+  /** The language all ASSESSMENT in this course is set and marked in. Students may still revise
+   *  in any interface language — only the answer key follows the course. */
+  language?: string
   startDate: string
   endDate: string
   institutionName?: string

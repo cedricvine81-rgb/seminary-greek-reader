@@ -78,6 +78,7 @@ export default async function EditCoursePage({ params }: { params: { courseId: s
             initialName={course.name}
             initialListing={course.listing ?? ''}
             initialLevel={course.level}
+            initialLanguage={course.language}
             initialStartDate={toDateInput(course.startDate)}
             initialEndDate={toDateInput(course.endDate)}
           />
