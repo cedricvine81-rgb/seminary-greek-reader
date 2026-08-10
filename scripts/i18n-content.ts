@@ -90,6 +90,28 @@ export function themeItems(): Item[] {
  * Greek in any language) and `ref`, which is a machine-parsed verse address — translating
  * "Matt 10:16" would break the lookup that turns it into a passage.
  */
+/**
+ * The two vocabulary decks' GLOSSES — the English meaning shown on every flashcard, quiz option
+ * and browse row (src/data/bgvb-vocabulary.json, src/data/hebrew-vocabulary.json).
+ *
+ * Keyed by the LEMMA, not by position: the decks are rebuilt from frequency data by
+ * scripts/build-hebrew-vocabulary.py and friends, so a word's index moves but its lemma does not.
+ * Two words occasionally share a gloss ("and"); the key is per-word, so each is translated in its
+ * own right and can diverge where Spanish needs it to.
+ */
+export function vocabItems(): Item[] {
+  const items: Item[] = []
+  for (const [deck, file] of [['greek', 'src/data/bgvb-vocabulary.json'],
+                              ['hebrew', 'src/data/hebrew-vocabulary.json']] as const) {
+    const words = JSON.parse(fs.readFileSync(file, 'utf8')) as { word: string; gloss: string }[]
+    for (const w of words) {
+      if (!w.gloss?.trim()) continue
+      items.push({ key: `vocab.gloss.${deck}.${w.word}`, english: w.gloss, bucket: deck })
+    }
+  }
+  return items
+}
+
 export function rhetoricItems(): Item[] {
   const items: Item[] = []
   for (const [g, label] of Object.entries(GROUP_LABEL)) {
@@ -369,7 +391,7 @@ function summaryFanOut(t: Record<string, string>): { key: string; english: strin
 
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
-  rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems,
+  rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems, vocab: vocabItems,
 }
 /**
  * Sources emitted as per-bucket JSON under public/ and fetched by the client, instead of as one
@@ -384,6 +406,8 @@ const SPLIT: Record<string, SplitPath | undefined> = {
   // panel is mounted in the root layout, where a server-loaded catalogue would ride along with
   // every page in the app. Fetched per chapter instead, by the chapter that needs it.
   morphology: (loc, chapter) => `public/data/morphology/${loc}/${chapter}.json`,
+  // One file per deck. A Greek reader never downloads the Hebrew glosses.
+  vocab: (loc, deck) => `public/data/vocab/${loc}/${deck}.json`,
 }
 /** Sources whose generated catalogue is expanded from the translated one. */
 const FAN_OUT: Record<string, (t: Record<string, string>) => { key: string; english: string; text: string }[]> = {

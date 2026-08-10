@@ -1,6 +1,7 @@
 'use client'
 import { useState, useMemo, useEffect, createContext, useContext, type ReactNode } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { content, NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
 import Link from 'next/link'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen, FileText } from 'lucide-react'
 import { clsx } from 'clsx'
@@ -117,6 +118,12 @@ interface VocabData {
   scriptLabel: string                          // 'Gk' / 'Heb' for the direction toggle
   scriptName: string                           // 'Greek' / 'Hebrew' for hints
   corpusLabel: string                          // 'GNT' / 'the Hebrew Bible' for the frequency line
+  /**
+   * The gloss to SHOW. Every display, dedup and search site goes through this, so a translated
+   * deck behaves like the English one: the multiple-choice distractor filter dedups on what the
+   * student actually reads, and Browse searches the language they are reading in.
+   */
+  gloss: (w: BgvbWord) => string
 }
 
 function buildVocab(
@@ -173,7 +180,8 @@ function buildVocab(
     subsections[s] = subs
   })
   const allSubsectionKeys = sections.flatMap(s => subsections[s].map(sub => sub.key))
-  return { words, sections, allPos, coverage, subsections, wordSubsection, allSubsectionKeys, ...opts }
+  return {
+    gloss: (w: BgvbWord) => w.gloss, words, sections, allPos, coverage, subsections, wordSubsection, allSubsectionKeys, ...opts }
 }
 
 const GREEK_VOCAB = buildVocab(
@@ -187,6 +195,21 @@ const HEBREW_VOCAB = buildVocab(
   { scriptClass: 'font-hebrew', rtl: true, storageKey: 'hebrew-vocab-progress-v1', scriptLabel: 'Heb', scriptName: 'Hebrew', corpusLabel: 'the Hebrew Bible' },
 )
 const VOCAB: Record<VocabLang, VocabData> = { greek: GREEK_VOCAB, hebrew: HEBREW_VOCAB }
+
+// Deck glosses are a SPLIT content source: public/data/vocab/<loc>/<deck>.json, one file per
+// deck, so a Greek reader never downloads the Hebrew glosses. Missing or stale entries fall back
+// to the English in the deck itself — the same never-mislead rule as every other content surface.
+const glossCache: Record<string, ContentCatalogue> = {}
+const glossInflight: Record<string, Promise<ContentCatalogue>> = {}
+function loadGlosses(locale: string, deck: VocabLang): Promise<ContentCatalogue> {
+  const k = `${locale}.${deck}`
+  if (glossCache[k]) return Promise.resolve(glossCache[k])
+  if (!glossInflight[k]) glossInflight[k] = fetch(`/data/vocab/${locale}/${deck}.json`)
+    .then(r => (r.ok ? r.json() : {}))
+    .then((d: ContentCatalogue) => (glossCache[k] = d))
+    .catch(() => (glossCache[k] = NO_CONTENT))
+  return glossInflight[k]
+}
 
 const VocabCtx = createContext<VocabData>(GREEK_VOCAB)
 const useVocab = () => useContext(VocabCtx)
@@ -233,7 +256,20 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
   const t = useT()
   // The active deck. VocabBuilder is remounted (key={lang}) when the language switches, so
   // per-language state (config, session, progress) simply starts fresh — no cross-over.
-  const V = VOCAB[lang]
+  const base = VOCAB[lang]
+  const locale = useLocale()
+  const [glosses, setGlosses] = useState<ContentCatalogue>(NO_CONTENT)
+  useEffect(() => {
+    let alive = true
+    if (locale === 'en') { setGlosses(NO_CONTENT); return }
+    loadGlosses(locale, lang).then(g => { if (alive) setGlosses(g) })
+    return () => { alive = false }
+  }, [locale, lang])
+  const V = useMemo<VocabData>(() => ({
+    ...base,
+    // content() enforces the fingerprint: a gloss whose English was edited since falls back.
+    gloss: (w: BgvbWord) => content(glosses, `vocab.gloss.${lang}.${w.word}`, w.gloss),
+  }), [base, glosses, lang])
   const [tab, setTab] = useState<Tab>('study')
   const [progress, setProgress] = useState<ProgressMap>({})
   const [config, setConfig] = useState<StudyConfig>(() => defaultConfig(V))
@@ -705,7 +741,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
   const [correct, setCorrect] = useState(0)
 
   const questions = useMemo(() => {
-    const key = (w: BgvbWord) => (dir === 'greek-to-english' ? w.gloss : wid(w))
+    const key = (w: BgvbWord) => (dir === 'greek-to-english' ? V.gloss(w) : wid(w))
     return words.map(word => {
       const correctKey = key(word)
       const pool = shuffled(V.words.filter(w => key(w) !== correctKey))
@@ -778,7 +814,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
           <p className="text-3xl leading-snug text-gray-900" dir={promptIsWord && V.rtl ? 'rtl' : undefined}>
             {promptIsWord
               ? <span className={V.scriptClass}>{q.word.word}</span>
-              : <>{q.word.gloss} <span className="text-sm text-gray-400">({posLabelKey(q.word.pos) ? t(posLabelKey(q.word.pos)!) : q.word.pos})</span></>}
+              : <>{V.gloss(q.word)} <span className="text-sm text-gray-400">({posLabelKey(q.word.pos) ? t(posLabelKey(q.word.pos)!) : q.word.pos})</span></>}
           </p>
         </div>
 
@@ -795,7 +831,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
                   state === 'wrong' && 'bg-red-50 border-red-300 text-red-800',
                   state === 'dim' && 'bg-surface border-gray-100 text-gray-400')}>
                 {promptIsWord
-                  ? opt.gloss
+                  ? V.gloss(opt)
                   : <span dir={V.rtl ? 'rtl' : undefined} className={V.scriptClass}>{opt.word}</span>}
               </button>
             )
@@ -899,7 +935,7 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
         <div className="text-center">
           <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">{t('vocab.whichWordMeans')}</p>
           <p className="text-2xl font-semibold text-gray-900">
-            {word.gloss} <span className="text-sm font-normal text-gray-400">({posLabelKey(word.pos) ? t(posLabelKey(word.pos)!) : word.pos})</span>
+            {V.gloss(word)} <span className="text-sm font-normal text-gray-400">({posLabelKey(word.pos) ? t(posLabelKey(word.pos)!) : word.pos})</span>
           </p>
         </div>
 
@@ -1276,7 +1312,7 @@ function StudySettings({
                                         {w.inflection && (
                                           <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-xs text-gray-400 ml-1`}>{w.inflection}</span>
                                         )}
-                                        <span className="text-sm text-gray-600 ml-1.5">{w.gloss}</span>
+                                        <span className="text-sm text-gray-600 ml-1.5">{V.gloss(w)}</span>
                                       </div>
                                       {w.freq && (
                                         <span className="text-xs text-gray-300 shrink-0">×{w.freq.toLocaleString()}</span>
@@ -1292,7 +1328,7 @@ function StudySettings({
                                     </div>
                                   )}
                                   {mode === 'english' && (
-                                    <span className="text-sm text-gray-700">{w.gloss}</span>
+                                    <span className="text-sm text-gray-700">{V.gloss(w)}</span>
                                   )}
                                 </div>
                               ))}
@@ -1366,7 +1402,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
       if (!q) return true
       return (
         w.word.toLowerCase().includes(q) ||
-        w.gloss.toLowerCase().includes(q) ||
+        V.gloss(w).toLowerCase().includes(q) ||
         (w.inflection ?? '').toLowerCase().includes(q)
       )
     })
@@ -1412,7 +1448,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
               <div className="min-w-0">
                 <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-medium text-gray-900 leading-tight`}>{w.word}</p>
                 {w.inflection && <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-xs text-gray-400`}>{w.inflection}</p>}
-                <p className="text-sm text-gray-700 mt-0.5 leading-snug">{w.gloss}</p>
+                <p className="text-sm text-gray-700 mt-0.5 leading-snug">{V.gloss(w)}</p>
               </div>
               <div className="flex flex-col items-end gap-1 shrink-0">
                 <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full">§{w.section}</span>
