@@ -1227,7 +1227,7 @@ function StudySettings({
                             <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-b border-gray-100">
                               <p className="text-sm font-semibold text-gray-700">
                                 §{s}{sub.label} · Words {sub.rankRange}
-                                <span className="text-gray-400 font-normal ml-1.5">({sub.words.length} words)</span>
+                                <span className="text-gray-400 font-normal ml-1.5">({t('vocab.wordCountPlural', { count: sub.words.length, n: sub.words.length })})</span>
                                 {freqRange(sub.words) && (
                                   <span className="text-gray-500 font-normal ml-1.5">· {freqRange(sub.words)}</span>
                                 )}
@@ -1379,7 +1379,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            placeholder={`Search ${V.scriptName} or English...`}
+            placeholder={V.scriptName === 'Hebrew' ? t('vocab.searchHebrewOrEnglish') : t('vocab.searchGreekOrEnglish')}
             value={query}
             onChange={e => setQuery(e.target.value)}
             className="input pl-8 text-sm w-full"
@@ -1395,7 +1395,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
         </select>
       </div>
 
-      <p className="text-xs text-gray-400">{filtered.length} word{filtered.length !== 1 ? 's' : ''}</p>
+      <p className="text-xs text-gray-400">{t('vocab.wordCountPlural', { count: filtered.length, n: filtered.length })}</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {filtered.map(w => {

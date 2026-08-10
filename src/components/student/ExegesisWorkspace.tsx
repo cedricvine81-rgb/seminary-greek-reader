@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useLayoutEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
@@ -82,6 +83,7 @@ function Round2WordPopover({
   onCorrection: (key: string, field: keyof WordAnnotation, value: string) => void
   onClose: () => void
 }) {
+  const t = useT()
   const key = wordKey(verseNum, word.id)
   const parse = word.parses?.[0]
   const parsingLabel = parse ? buildParsingLabel(parse) : ''
@@ -90,9 +92,9 @@ function Round2WordPopover({
   const extendedGloss = word.lexeme?.extendedGloss ?? ''
 
   const FIELDS: { field: keyof WordAnnotation; label: string }[] = [
-    { field: 'parsing', label: 'Parsing' },
-    { field: 'syntax', label: 'Syntax / Function' },
-    { field: 'translation', label: 'Translation' },
+    { field: 'parsing', label: t('study.parsing') },
+    { field: 'syntax', label: t('exeg.syntaxFunction') },
+    { field: 'translation', label: t('study.translation') },
   ]
 
   return (
@@ -110,7 +112,7 @@ function Round2WordPopover({
         </div>
         <button
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t('action.close')}
           className="text-gray-400 hover:text-gray-700 text-lg leading-none px-1"
         >
           ×
@@ -121,12 +123,12 @@ function Round2WordPopover({
         {/* Reader info — only when the assignment allows it */}
         {showReader && (
           <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-3 space-y-1.5">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-emerald-700">Reader reference</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-emerald-700">{t('exeg.readerReference')}</p>
             {parsingLabel && (
-              <p className="text-xs"><span className="text-gray-500">Parsing:</span> <span className="text-gray-800 font-medium">{parsingLabel}</span></p>
+              <p className="text-xs"><span className="text-gray-500">{t('exeg.parsingLabel')}</span> <span className="text-gray-800 font-medium">{parsingLabel}</span></p>
             )}
             {gloss && (
-              <p className="text-xs"><span className="text-gray-500">Gloss:</span> <span className="text-gray-800">{gloss}</span></p>
+              <p className="text-xs"><span className="text-gray-500">{t('exeg.glossLabel')}</span> <span className="text-gray-800">{gloss}</span></p>
             )}
             {extendedGloss && extendedGloss !== gloss && (
               <p className="text-xs text-gray-600 italic">{extendedGloss}</p>
@@ -139,7 +141,7 @@ function Round2WordPopover({
           <div key={field}>
             <div className="flex items-baseline justify-between mb-1">
               <span className="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">{label}</span>
-              <span className="text-[10px] text-gray-400">Round 1</span>
+              <span className="text-[10px] text-gray-400">{t('exeg.round1')}</span>
             </div>
             <div className={`mb-1.5 text-xs px-2.5 py-1.5 rounded-md bg-gray-50 border border-gray-200 ${original[field] ? 'text-gray-600' : 'text-gray-300 italic'}`}>
               {original[field] || '—'}
@@ -191,6 +193,7 @@ function AnnotationPanel({
   onChange: (key: string, field: keyof WordAnnotation, value: string) => void
   locked?: boolean
 }) {
+  const t = useT()
   const key = wordKey(verseNum, word.id)
   const ann = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
 
@@ -203,7 +206,7 @@ function AnnotationPanel({
       {(['parsing', 'syntax', 'translation'] as const).map(field => (
         <div key={field}>
           <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-            {field === 'parsing' ? 'Parsing' : field === 'syntax' ? 'Syntax / Function' : 'Translation'}
+            {field === 'parsing' ? t('study.parsing') : field === 'syntax' ? t('exeg.syntaxFunction') : t('study.translation')}
           </label>
           <input
             type="text"
@@ -229,14 +232,15 @@ function ReviewAnnotationPanel({
   onCorrection: (key: string, field: keyof WordAnnotation, value: string) => void
   locked?: boolean
 }) {
+  const t = useT()
   const key = wordKey(verseNum, word.id)
   const original = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
   const corr = corrections[key] ?? { parsing: '', syntax: '', translation: '' }
 
   const FIELDS: { field: keyof WordAnnotation; label: string }[] = [
-    { field: 'parsing', label: 'Parsing' },
-    { field: 'syntax', label: 'Syntax / Function' },
-    { field: 'translation', label: 'Translation' },
+    { field: 'parsing', label: t('study.parsing') },
+    { field: 'syntax', label: t('exeg.syntaxFunction') },
+    { field: 'translation', label: t('study.translation') },
   ]
 
   return (
@@ -248,7 +252,7 @@ function ReviewAnnotationPanel({
 
       {/* ── Round 1 — your answers (read-only) ── */}
       <div className="space-y-2">
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Round 1 — your answers</p>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('exeg.round1Yours')}</p>
         {FIELDS.map(({ field, label }) => (
           <div key={field}>
             <span className="block text-[11px] font-medium text-gray-500 mb-0.5">{label}</span>
@@ -294,6 +298,7 @@ function ReviewPassagePanel({
   selectedWordKey: string | null
   onWordClick: (word: VerseWord, verse: number) => void
 }) {
+  const t = useT()
   const [hoveredKey, setHoveredKey] = useState<string | null>(null)
 
   return (
@@ -303,8 +308,8 @@ function ReviewPassagePanel({
         <svg className="w-4 h-4 text-brand-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
-        <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide">Passage Reader</p>
-        <p className="text-xs text-brand-500 ml-1">Click any word to annotate</p>
+        <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide">{t('exeg.passageReader')}</p>
+        <p className="text-xs text-brand-500 ml-1">{t('exeg.clickWordToAnnotate')}</p>
       </div>
 
       {/* Suppress the native (OS) context menu across this pure-reading pane; Greek words
@@ -430,13 +435,14 @@ function isIPad(): boolean {
 }
 
 // Student-facing wording for each integrity event type (shown in the live warning).
-const VIOLATION_MESSAGES: Record<string, string> = {
-  'tab-hidden': 'You switched away from the exam tab',
-  'window-blur': 'You left the exam window',
-  'fullscreen-exit': 'You exited fullscreen',
-  'copy': 'Copying is disabled in this exam',
-  'paste': 'Pasting is disabled in this exam',
-  'contextmenu': 'The right-click menu is disabled in this exam',
+// Module-level, so these hold KEYS and are resolved through t() where the warning is built.
+const VIOLATION_MESSAGE_KEYS: Record<string, string> = {
+  'tab-hidden': 'exeg.violTabHidden',
+  'window-blur': 'exeg.violWindowBlur',
+  'fullscreen-exit': 'exeg.violFullscreenExit',
+  'copy': 'exeg.violCopy',
+  'paste': 'exeg.violPaste',
+  'contextmenu': 'exeg.violContextmenu',
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
@@ -462,6 +468,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false, controlledPassage,
   glossPref: controlledGloss, onGlossPref, savedSessions: controlledSessions, onSavedSessions,
 }, ref) {
+  const t = useT()
   const router = useRouter()
 
   // ── Passage state ──
@@ -1316,7 +1323,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     // grading — but only on a manual submit. Automatic deadline/timer submission must
     // never be blocked, or the student would lose their work at the cut-off.
     if (!opts?.auto && !isExam && !notes.trim()) {
-      setSubmitError('Please complete “Areas for Improvement” before submitting for grading.')
+      setSubmitError(t('exeg.needReflection'))
       return
     }
     if (submittingRef.current || submitted) return   // already submitting/submitted — don't double-fire
@@ -1652,7 +1659,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     const willAutoSubmit = maxViolations != null && count >= maxViolations
     // Flash a clear, unmissable warning so the student knows what was recorded and what
     // happens next. Stays until the next one replaces it or ~7s passes.
-    const action = VIOLATION_MESSAGES[type] ?? 'An action was flagged'
+    const action = VIOLATION_MESSAGE_KEYS[type] ? t(VIOLATION_MESSAGE_KEYS[type]) : t('exeg.violFlagged')
     const consequence = maxViolations != null
       ? (willAutoSubmit
           ? 'You have reached the limit — your exam is being submitted.'
@@ -1764,7 +1771,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             <div className="max-w-lg w-full rounded-2xl bg-popover p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="text-center">
                 <div className="text-4xl mb-2">🔒</div>
-                <h2 className="text-xl font-bold text-gray-900">Locked exam — please read before you begin</h2>
+                <h2 className="text-xl font-bold text-gray-900">{t('exeg.lockedExamHeading')}</h2>
                 <p className="mt-1 text-sm text-gray-600">
                   {isIPadDevice
                     ? 'While this exam is open, the following are recorded with a timestamp and shown to your instructor:'
@@ -1774,19 +1781,19 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
 
               <ul className="mt-4 space-y-2 text-sm text-gray-700">
                 {!isIPadDevice && (
-                  <li className="flex gap-2"><span className="text-red-500">•</span> Leaving fullscreen</li>
+                  <li className="flex gap-2"><span className="text-red-500">•</span> {t('exeg.leavingFullscreen')}</li>
                 )}
                 <li className="flex gap-2"><span className="text-red-500">•</span> Switching to another tab, window, or application (clicking outside this window)</li>
-                <li className="flex gap-2"><span className="text-red-500">•</span> Copying, pasting, or opening the right-click menu</li>
+                <li className="flex gap-2"><span className="text-red-500">•</span> {t('exeg.copyPasteMenu')}</li>
               </ul>
 
               {maxViolations != null ? (
                 <p className="mt-4 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-800">
-                  After <strong>{maxViolations}</strong> such actions, your exam will be <strong>submitted automatically</strong>. Stay in this {isIPadDevice ? 'browser tab' : 'window and in fullscreen'} until you finish.
+                  {t('exeg.afterWord')} <strong>{maxViolations}</strong> {t('exeg.suchActions')} <strong>{t('exeg.submittedAutomatically')}</strong>{t('exeg.stayInThis')} {isIPadDevice ? t('exeg.browserTab') : t('exeg.windowFullscreen')} {t('exeg.untilFinish')}
                 </p>
               ) : (
                 <p className="mt-4 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-sm text-amber-800">
-                  These actions are logged for your instructor to review. Stay in this {isIPadDevice ? 'browser tab' : 'window and in fullscreen'} until you finish.
+                  {t('exeg.actionsLogged')} {isIPadDevice ? t('exeg.browserTab') : t('exeg.windowFullscreen')} {t('exeg.untilFinish')}
                 </p>
               )}
 
@@ -1819,16 +1826,16 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 disabled={!rulesAck}
                 className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               >
-                {isIPadDevice ? 'Begin exam' : 'Enter fullscreen & begin'}
+                {isIPadDevice ? t('exeg.beginExam') : t('exeg.enterFullscreenBegin')}
               </button>
               {!rulesAck && (
-                <p className="mt-2 text-center text-xs text-gray-400">Tick the box above to start the exam.</p>
+                <p className="mt-2 text-center text-xs text-gray-400">{t('exeg.tickToStart')}</p>
               )}
             </div>
           ) : (
             <div className="max-w-md rounded-2xl bg-popover p-6 text-center shadow-2xl">
               <div className="text-4xl mb-3">🖥️</div>
-              <h2 className="text-xl font-bold text-gray-900">Use a computer for this exam</h2>
+              <h2 className="text-xl font-bold text-gray-900">{t('exeg.useComputer')}</h2>
               <p className="mt-2 text-sm text-gray-600">
                 This is a locked exam that must run in fullscreen, which phones don&rsquo;t support.
                 Please open it on a desktop or laptop (or a tablet) in an up-to-date browser to begin.
@@ -1843,7 +1850,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-red-900/90 px-6 print:hidden">
           <div className="max-w-md rounded-2xl bg-popover p-6 text-center shadow-2xl">
             <div className="text-4xl mb-3">⚠️</div>
-            <h2 className="text-xl font-bold text-red-700">You left fullscreen</h2>
+            <h2 className="text-xl font-bold text-red-700">{t('exeg.youLeftFullscreen')}</h2>
             <p className="mt-2 text-sm text-gray-600">
               This was recorded ({violations} violation{violations === 1 ? '' : 's'} so far). Return to fullscreen to continue your exam.
             </p>
@@ -1851,7 +1858,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               onClick={enterLockdown}
               className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
             >
-              Return to exam
+              {t('exeg.returnToExam')}
             </button>
           </div>
         </div>
@@ -1860,7 +1867,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {/* ── Lockdown: persistent integrity status ── */}
       {lockdownOn && lockdownStarted && (
         <div className={`print:hidden flex items-center justify-between gap-3 px-4 py-1.5 text-xs font-medium ${violations > 0 ? 'bg-red-50 text-red-700 border-b border-red-200' : 'bg-gray-100 text-gray-600 border-b border-gray-200'}`}>
-          <span className="inline-flex items-center gap-1.5">🔒 Lockdown exam — {isIPadDevice ? 'stay in this tab' : 'stay in fullscreen'}; do not switch tabs or copy/paste.</span>
+          <span className="inline-flex items-center gap-1.5">🔒 Lockdown exam — {isIPadDevice ? t('exeg.stayInTab') : t('exeg.stayFullscreen')}; do not switch tabs or copy/paste.</span>
           <span>{violations > 0 ? `${violations} violation${violations === 1 ? '' : 's'} recorded${lastViolation ? ` · last: ${lastViolation}` : ''}` : 'No violations'}{maxViolations != null ? ` (auto-submit at ${maxViolations})` : ''}</span>
         </div>
       )}
@@ -1878,7 +1885,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {/* ── Print header (hidden on screen) ── */}
       <div className="hidden print:block mb-6">
         <h1 className="text-2xl font-bold text-center">{sessionTitle || passageTitle}</h1>
-        <p className="text-center text-sm text-gray-500">Exegesis Worksheet</p>
+        <p className="text-center text-sm text-gray-500">{t('exeg.worksheet')}</p>
       </div>
 
       {/* ── Assignment banner ── */}
@@ -1900,10 +1907,10 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             {(assignment.round1Deadline || assignment.round2Deadline) && (
               <div className="mt-2 flex flex-col gap-1">
                 {assignment.round1Deadline && (
-                  <DeadlineLine label={assignment.isExam ? 'Exam closes' : 'Round 1 (annotations) closes'} date={assignment.round1Deadline} passed={round1Passed} />
+                  <DeadlineLine label={assignment.isExam ? t('exeg.examCloses') : t('exeg.round1Closes')} date={assignment.round1Deadline} passed={round1Passed} />
                 )}
                 {assignment.round2Deadline && (
-                  <DeadlineLine label="Round 2 (corrections) closes" date={assignment.round2Deadline} passed={round2Passed} />
+                  <DeadlineLine label={t('exeg.round2Closes')} date={assignment.round2Deadline} passed={round2Passed} />
                 )}
               </div>
             )}
@@ -1915,12 +1922,12 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           )}
           {!submitted && reopened && (
             <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">
-              Reopened by instructor — edit &amp; resubmit
+              {t('exeg.reopened')}
             </span>
           )}
           {!submitted && !reopened && deadlinePassed && (
             <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-300">
-              Deadline passed — editing only
+              {t('exeg.deadlinePassed')}
             </span>
           )}
         </div>
@@ -1936,27 +1943,27 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             <div className="flex flex-col gap-0.5">
               <div className="flex items-center gap-2">
                 <div className="flex items-center">
-                  <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
+                  <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">{t('exeg.passage')}</span>
                   <PassageAutocomplete
                     value={passageInput}
                     onChange={v => { setPassageInput(v); if (passageError) setPassageError(false) }}
                     onCommit={v => handlePassageSubmit(v)}
                     commitOnBlur
                     error={passageError}
-                    placeholder="e.g. Matthew 3:1-3"
+                    placeholder={t('exeg.refPlaceholder')}
                     inputClassName="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 </div>
-                {isLoading && <span className="text-sm text-gray-400">Loading…</span>}
+                {isLoading && <span className="text-sm text-gray-400">{t('reader.loading')}</span>}
                 {selectedBook && loadedVerses.length > 0 && (
                   <a
                     href={`/reader?ref=${encodeURIComponent(`${selectedBook.name} ${chapter}:${verseStart}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="Open this passage in the Reader (new tab)"
+                    title={t('exeg.openInReaderTitle')}
                     className="inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-800 hover:underline whitespace-nowrap"
                   >
-                    Open in Reader
+                    {t('exeg.openInReader')}
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
@@ -1964,7 +1971,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 )}
               </div>
               {passageError && (
-                <span className="text-xs text-red-500">Couldn&rsquo;t find that reference — try e.g. &ldquo;John 1:1-5&rdquo;</span>
+                <span className="text-xs text-red-500">{t('exeg.refNotFound')}</span>
               )}
             </div>
           </>
@@ -1980,15 +1987,15 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             when the control is hoisted into the shared exegesis header (controlled). */}
         {!isGlossControlled && loadedVerses.length > 0 && assignment?.glossFrequency == null && (
           <div className="self-end flex items-center gap-1.5">
-            <label className="text-xs font-medium text-gray-500">Vocabulary</label>
+            <label className="text-xs font-medium text-gray-500">{t('exeg.vocabulary')}</label>
             <select
               value={glossPref ?? ''}
               onChange={e => setGlossPref(e.target.value ? Number(e.target.value) : null)}
               className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
-              <option value="">Off</option>
-              <option value="50">Words less frequent than 50×</option>
-              <option value="30">Words less frequent than 30×</option>
+              <option value="">{t('exeg.off')}</option>
+              <option value="50">{t('exeg.lessFrequent50')}</option>
+              <option value="30">{t('exeg.lessFrequent30')}</option>
             </select>
           </div>
         )}
@@ -2009,7 +2016,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span className="text-xs font-normal mr-0.5 opacity-70">Stage 1</span>
+            <span className="text-xs font-normal mr-0.5 opacity-70">{t('exeg.stage1')}</span>
             {formatTime(secondsLeft)}
           </div>
         )}
@@ -2030,7 +2037,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
-            <span className="text-xs font-normal mr-0.5 opacity-70">Review</span>
+            <span className="text-xs font-normal mr-0.5 opacity-70">{t('exeg.review')}</span>
             {reviewTimerExpired
               ? 'Locked'
               : reviewSecondsLeft !== null
@@ -2048,7 +2055,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             href={`/auth/sign-in?redirect=${encodeURIComponent('/exegesis')}`}
             className="self-end inline-flex items-center gap-1.5 px-2 py-1.5 text-sm text-brand-600 hover:text-brand-800 hover:underline"
           >
-            🔒 Sign in to save your work
+            {t('exeg.signInToSave')}
           </Link>
         )}
         {/* Save status is hidden on the public exegesis study page (work auto-saves);
@@ -2056,13 +2063,13 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         {loadedVerses.length > 0 && isAuthenticated && propAssignmentId && (
           <span className="self-end inline-flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-500">
             {saveStatus === 'saving' || isSaving ? (
-              <><svg className="w-3.5 h-3.5 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Saving…</>
+              <><svg className="w-3.5 h-3.5 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> {t('exeg.saving')}</>
             ) : saveStatus === 'pending' ? (
-              <span className="text-gray-400">Unsaved changes…</span>
+              <span className="text-gray-400">{t('exeg.unsaved')}</span>
             ) : saveStatus === 'error' ? (
               <span className="text-amber-600">Offline — your work is saved on this device and will sync when you reconnect</span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-emerald-600">All changes saved</span>
+              <span className="inline-flex items-center gap-1 text-emerald-600">{t('exeg.allSaved')}</span>
             )}
           </span>
         )}
@@ -2077,7 +2084,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
             </svg>
-            Download as PDF
+            {t('exeg.downloadPdf')}
           </button>
         )}
 
@@ -2093,7 +2100,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {isSubmitting ? 'Submitting…' : 'Submit for Grading'}
+              {isSubmitting ? t('exeg.submitting') : t('exeg.submitForGrading')}
             </button>
             {submitError && (
               <p className="text-xs text-red-600 max-w-xs text-right">{submitError}</p>
@@ -2118,12 +2125,12 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               onClick={() => { loadSessionList(); setShowSessionList(v => !v) }}
               className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition"
             >
-              My Sessions
+              {t('exeg.mySessionsLabel')}
             </button>
             {showSessionList && (
               <div ref={sessionPanelRef} className="absolute right-0 top-full mt-1 z-50 bg-popover border border-gray-200 rounded-xl shadow-xl w-80 max-w-[calc(100vw-1rem)] max-h-80 overflow-y-auto">
                 {savedSessions.length === 0 ? (
-                  <p className="px-4 py-3 text-sm text-gray-400">No saved sessions yet.</p>
+                  <p className="px-4 py-3 text-sm text-gray-400">{t('exeg.noSessions')}</p>
                 ) : (
                   <ul className="divide-y divide-gray-100">
                     {savedSessions.map(s => (
@@ -2138,7 +2145,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                         <button
                           onClick={() => deleteSession(s.id)}
                           className="ml-2 text-red-400 hover:text-red-600 text-xs p-1"
-                          title="Delete session"
+                          title={t('exeg.deleteSession')}
                         >
                           ✕
                         </button>
@@ -2168,14 +2175,14 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           </svg>
           {propAssignmentId ? (
             <>
-              <p className="text-lg font-medium">Loading your passage…</p>
-              <p className="text-sm mt-1">If the passage doesn&apos;t appear, try refreshing the page.</p>
+              <p className="text-lg font-medium">{t('exeg.loadingYourPassage')}</p>
+              <p className="text-sm mt-1">{t('exeg.ifNotAppear')}</p>
             </>
           ) : passagePending ? (
-            <p className="text-lg font-medium">Loading passage…</p>
+            <p className="text-lg font-medium">{t('exeg.loadingPassage')}</p>
           ) : (
             <>
-              <p className="text-lg font-medium">Select a book, chapter, and verses above</p>
+              <p className="text-lg font-medium">{t('exeg.selectBookChapter')}</p>
               <p className="text-sm mt-1">The passage loads automatically — then click any Greek word to begin annotating</p>
             </>
           )}
@@ -2280,14 +2287,14 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 {/* Whole-verse translation (Round 1) */}
                 <div className="mt-2 print:hidden">
                   <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                    Verse Translation
+                    {t('exeg.verseTranslation')}
                   </label>
                   <textarea
                     value={verseTranslations[vtKey(v)] ?? ''}
                     onChange={e => handleVerseTranslationChange(vtKey(v), e.target.value)}
                     disabled={isLocked}
                     rows={2}
-                    placeholder={isLocked ? '' : 'Write your translation of this whole verse…'}
+                    placeholder={isLocked ? '' : t('exeg.verseTransPlaceholder')}
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
                   />
                 </div>
@@ -2352,12 +2359,12 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                   return (
                     <div className={`hidden print:grid gap-4 mt-2 ${reviewMode ? 'print:grid-cols-2' : 'print:grid-cols-1'}`}>
                       <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500 mb-1">Round 1 — Verse translation</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500 mb-1">{t('exeg.round1VerseTranslation')}</p>
                         <p className="text-sm text-gray-800 whitespace-pre-wrap">{r1 || '—'}</p>
                       </div>
                       {reviewMode && (
                         <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-wide text-red-500 mb-1">Round 2 Notes</p>
+                          <p className="text-[10px] font-semibold uppercase tracking-wide text-red-500 mb-1">{t('exeg.round2Notes')}</p>
                           <p className="text-sm text-red-700 whitespace-pre-wrap">{r2 || '—'}</p>
                         </div>
                       )}
@@ -2380,9 +2387,9 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                     <table className="hidden print:table w-full border-collapse text-xs mt-3">
                       <thead>
                         <tr className="border-b border-gray-300">
-                          <th className="text-left py-1 pr-3 font-semibold w-28">Greek word</th>
-                          <th className="text-left py-1 pr-3 font-semibold">Round 1 — annotations</th>
-                          <th className="text-left py-1 font-semibold text-red-600">Round 2 — corrections</th>
+                          <th className="text-left py-1 pr-3 font-semibold w-28">{t('exeg.greekWord')}</th>
+                          <th className="text-left py-1 pr-3 font-semibold">{t('exeg.round1Annotations')}</th>
+                          <th className="text-left py-1 font-semibold text-red-600">{t('exeg.round2Corrections')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -2446,7 +2453,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                             onClick={() => { setSelectedWord(null); setSelectedWordKey(null) }}
                             className="text-xs font-medium text-gray-500 hover:text-gray-700"
                           >
-                            Done
+                            {t('action.done')}
                           </button>
                         </div>
                       </div>
@@ -2464,7 +2471,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             {!!propAssignmentId && !isExam && (
               <div className="mt-6 print:hidden">
                 <label className="block text-sm font-semibold text-gray-800 mb-1">
-                  Areas for Improvement <span className="text-red-500">*</span>
+                  {t('exeg.areasForImprovement')} <span className="text-red-500">*</span>
                 </label>
                 <p className="text-xs text-gray-500 mb-1.5">
                   Reflect on what you found difficult and what you&rsquo;d work on next. This is required before you can submit for grading.
@@ -2486,7 +2493,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                   }`}
                 />
                 {!submitted && !notes.trim() && (
-                  <p className="text-xs text-amber-600 mt-1">Write a short reflection here before submitting.</p>
+                  <p className="text-xs text-amber-600 mt-1">{t('exeg.reflectionPlaceholder')}</p>
                 )}
               </div>
             )}
