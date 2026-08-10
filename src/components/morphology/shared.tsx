@@ -10,6 +10,7 @@
 ───────────────────────────────────────────── */
 
 import { useState, useEffect, useContext, useMemo, useRef, createContext } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
@@ -402,6 +403,7 @@ export function Practice({ id, title = 'Try it', intro, items, level = 'beginnin
   items: { q: React.ReactNode; a: React.ReactNode }[]
   level?: MorphLevel | 'both'
 }) {
+  const t = useT()
   const cur = useContext(LevelContext)
   const tm = useTm()
   if (id) title = tm(K.title(id), title)
@@ -416,7 +418,7 @@ export function Practice({ id, title = 'Try it', intro, items, level = 'beginnin
             <span>{it.q}</span>
             <details className="mt-0.5 ml-5">
               <summary className="cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-xs font-medium text-brand-600 hover:text-brand-700">
-                Show answer
+                {t('morph.showAnswer')}
               </summary>
               <div className="mt-1 text-sm text-gray-700 border-l-2 border-brand-200 pl-3">{it.a}</div>
             </details>
@@ -448,6 +450,7 @@ export function GuidedExample({ title, sentence, source, translation, steps, lev
   /** Beginning-course drill material — hidden at Intermediate by default. */
   level?: MorphLevel | 'both'
 }) {
+  const t = useT()
   const [revealed, setRevealed] = useState(0)
   const cur = useContext(LevelContext)
   if (level !== 'both' && cur !== level) return null
@@ -484,7 +487,7 @@ export function GuidedExample({ title, sentence, source, translation, steps, lev
       )}
       {revealed > 0 && (
         <button onClick={() => setRevealed(0)} className="mt-2 text-xs text-gray-400 hover:text-gray-600">
-          Start over
+          {t('morph.startOver')}
         </button>
       )}
     </div>
@@ -506,6 +509,7 @@ export function DropdownPractice({ id, title = 'Practice', intro, options, items
   /** Beginning-course drill material — hidden at Intermediate by default. */
   level?: MorphLevel | 'both'
 }) {
+  const t = useT()
   const curLevel = useContext(LevelContext)
   const tm = useTm()
   if (id) {
@@ -588,19 +592,19 @@ export function DropdownPractice({ id, title = 'Practice', intro, options, items
       <div className="mb-2 flex items-center justify-between gap-3">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
           {title}
-          {mode === 'quiz' && <span className="ml-2 normal-case font-medium text-brand-700">— from memory (table hidden)</span>}
-          {mode === 'review' && <span className="ml-2 normal-case font-medium text-brand-700">— results</span>}
+          {mode === 'quiz' && <span className="ml-2 normal-case font-medium text-brand-700">{t('morph.fromMemory')}</span>}
+          {mode === 'review' && <span className="ml-2 normal-case font-medium text-brand-700">{t('morph.results')}</span>}
         </p>
         {mode === 'review'
-          ? <span className="text-xs font-medium tabular-nums text-gray-600">{right}/{items.length} correct</span>
+          ? <span className="text-xs font-medium tabular-nums text-gray-600">{t('morph.score', { right, total: items.length })}</span>
           : mode === 'open' && answered > 0 && (
-            <span className="text-xs tabular-nums text-gray-400">{right}/{answered} correct</span>
+            <span className="text-xs tabular-nums text-gray-400">{t('morph.score', { right, total: answered })}</span>
           )}
       </div>
       {intro && mode === 'open' && <div className="text-sm text-gray-600 mb-3">{intro}</div>}
       {mode === 'quiz' && (
         <p className="mb-3 text-sm text-brand-800">
-          The table is hidden — answer every item from memory, then submit to see how you did.
+          {t('morph.quizInstructions')}
         </p>
       )}
       <ol className="space-y-3">
@@ -622,12 +626,12 @@ export function DropdownPractice({ id, title = 'Practice', intro, options, items
                     isRight ? 'border-green-400' : (isWrong || missed) ? 'border-red-400' : 'border-gray-300'
                   )}
                 >
-                  <option value="">Choose…</option>
+                  <option value="">{t('morph.chooseOption')}</option>
                   {(it.options ?? options).map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
-                {isRight && <span className="text-xs font-medium text-green-700">✓ correct</span>}
-                {isWrong && <span className="text-xs font-medium text-red-700">✗ — {it.answer}</span>}
-                {missed && <span className="text-xs font-medium text-red-700">not answered — {it.answer}</span>}
+                {isRight && <span className="text-xs font-medium text-green-700">{t('morph.correct')}</span>}
+                {isWrong && <span className="text-xs font-medium text-red-700">{t('morph.wrongAnswer', { answer: it.answer })}</span>}
+                {missed && <span className="text-xs font-medium text-red-700">{t('morph.notAnswered', { answer: it.answer })}</span>}
               </div>
               {(isWrong || missed) && it.note && (
                 <p className="mt-1 border-l-2 border-brand-200 pl-3 text-xs text-gray-600">{it.note}</p>
@@ -643,7 +647,7 @@ export function DropdownPractice({ id, title = 'Practice', intro, options, items
             onClick={startQuiz}
             className="rounded-lg border border-brand-300 bg-surface px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-50"
           >
-            Quiz me — hide the table
+            {t('morph.quizMe')}
           </button>
         )}
         {mode === 'quiz' && (
@@ -653,7 +657,9 @@ export function DropdownPractice({ id, title = 'Practice', intro, options, items
               onClick={submitQuiz}
               className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700"
             >
-              Submit answers{answered < items.length ? ` (${items.length - answered} left)` : ''}
+              {answered < items.length
+                ? t('morph.submitAnswersLeft', { left: items.length - answered })
+                : t('morph.submitAnswers')}
             </button>
             <button type="button" onClick={endQuiz} className="text-xs text-gray-400 hover:text-gray-600">
               Cancel
@@ -667,16 +673,16 @@ export function DropdownPractice({ id, title = 'Practice', intro, options, items
               onClick={startQuiz}
               className="rounded-lg border border-brand-300 bg-surface px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-50"
             >
-              Try again
+              {t('morph.tryAgain')}
             </button>
             <button type="button" onClick={endQuiz} className="text-xs text-gray-400 hover:text-gray-600">
-              Done
+              {t('morph.done')}
             </button>
           </>
         )}
         {mode === 'open' && answered > 0 && (
           <button type="button" onClick={() => setChosen({})} className="text-xs text-gray-400 hover:text-gray-600">
-            Start over
+            {t('morph.startOver')}
           </button>
         )}
       </div>
@@ -700,6 +706,7 @@ export function ClassSentences({ id, lesson, intro, items, level = 'beginning' }
   /** Mirrors the Beginning course's lesson decks — hidden at Intermediate by default. */
   level?: MorphLevel | 'both'
 }) {
+  const t = useT()
   const cur = useContext(LevelContext)
   const tm = useTm()
   if (id) {
@@ -720,7 +727,7 @@ export function ClassSentences({ id, lesson, intro, items, level = 'beginning' }
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-brand-200 bg-brand-50/40 px-4 py-3.5">
       <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-0.5">
-        Translate — from class
+        {t('morph.translateFromClass')}
       </p>
       <p className="text-xs text-gray-500 mb-2">{lesson}</p>
       {intro && <div className="text-sm text-gray-600 mb-3">{intro}</div>}
@@ -736,11 +743,11 @@ export function ClassSentences({ id, lesson, intro, items, level = 'beginning' }
                 onClick={() => openTranslationWorkbench({ ...it, lesson })}
                 className="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline"
               >
-                Open in the workbench →
+                {t('morph.openInWorkbench')}
               </button>
               <details className="inline-block">
                 <summary className="cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-xs font-medium text-gray-400 hover:text-gray-600">
-                  Show translation
+                  {t('morph.showTranslation')}
                 </summary>
                 <span className="text-sm text-gray-700">{it.translation}</span>
               </details>
@@ -1036,9 +1043,10 @@ export function LiveExamples({ intro, links }: {
     construct?: Omit<ConstructQuery, 'corpus'>
   }[]
 }) {
+  const t = useT()
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-brand-100 bg-brand-50/40 px-4 py-3.5">
-      <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-1.5">See it in the New Testament</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-1.5">{t('morph.seeItInNT')}</p>
       {intro && <div className="text-sm text-gray-600 mb-2">{intro}</div>}
       <ul className="space-y-1.5">
         {links.map((l, i) => (
