@@ -434,11 +434,15 @@ export function Practice({ id, title = 'Try it', intro, items, level = 'beginnin
  * to the current prompt and surfaces the next one, mirroring how the
  * instructor prompts the class. The final translation appears at the end.
  */
-export function GuidedExample({ title = 'Together: work it through', sentence, source, translation, steps, level = 'beginning' }: {
-  title?: string
+export function GuidedExample({ title, sentence, source, translation, steps, level = 'beginning' }: {
+  // No English default: a default string could not be translated, so each call site passes its
+  // own <Tr>. See the three GuidedExamples in nouns.tsx and parsing.tsx.
+  title: React.ReactNode
   sentence: React.ReactNode
   /** Optional verse reference; rendered as a link into the Reader. */
-  source?: { ref: string; label?: string }
+  // `ref` is the corpus lookup key and stays English; `label` is what the reader sees, so it
+  // has to be able to hold a <Tr>.
+  source?: { ref: string; label?: React.ReactNode }
   translation?: React.ReactNode
   steps: { prompt: React.ReactNode; answer: React.ReactNode }[]
   /** Beginning-course drill material — hidden at Intermediate by default. */

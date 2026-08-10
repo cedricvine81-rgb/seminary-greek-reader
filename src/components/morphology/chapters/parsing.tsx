@@ -290,34 +290,34 @@ export const PARSING_CONTENT = (
 
     {/* ── 7 · Guided ─────────────────────────────────────── */}
     <GuidedExample
-      title="Together: parse every word of John 1:1a"
+      title={<Tr id="parsing.ge.together-parse-every">Together: parse every word of John 1:1a</Tr>}
       sentence={<Gk>ἐν ἀρχῇ ἦν ὁ λόγος</Gk>}
-      source={{ ref: 'John 1:1', label: 'John 1:1' }}
+      source={{ ref: 'John 1:1', label: <Tr id="parsing.src.john-1-1">John 1:1</Tr> }}
       translation="“In the beginning was the Word.”"
       steps={[
         {
           prompt: 'First sort the words: which pattern does each one need?',
-          answer: <>
+          answer: <Tr id="parsing.ga.preposition-indeclinable-slots">
             <Gk>ἐν</Gk> is a preposition — indeclinable, no slots. <Gk>ἀρχῇ</Gk> and <Gk>λόγος</Gk> are
             nouns — three slots each. <Gk>ὁ</Gk> is the article — it parses like a noun.{' '}
             <Gk>ἦν</Gk> is the only finite verb — five slots.
-          </>,
+          </Tr>,
         },
         {
-          prompt: <>Parse <Gk>ἀρχῇ</Gk>.</>,
-          answer: <>Dative singular feminine of <Gk>ἀρχή</Gk>. The <Gk>-ῃ</Gk> ending is dative singular, and <Gk>ἐν</Gk> always takes the dative — the preposition confirms the case.</>,
+          prompt: <Tr id="parsing.gp.parse">Parse <Gk>ἀρχῇ</Gk>.</Tr>,
+          answer: <Tr id="parsing.ga.dative-singular-feminine">Dative singular feminine of <Gk>ἀρχή</Gk>. The <Gk>-ῃ</Gk> ending is dative singular, and <Gk>ἐν</Gk> always takes the dative — the preposition confirms the case.</Tr>,
         },
         {
-          prompt: <>Parse <Gk>ὁ λόγος</Gk> — both words.</>,
-          answer: <><Gk>ὁ</Gk> = nominative singular masculine article; <Gk>λόγος</Gk> = nominative singular masculine of <Gk>λόγος</Gk>. They agree in all three slots, which is how you know they belong together. Nominative means this is the subject.</>,
+          prompt: <Tr id="parsing.gp.parse-both-words">Parse <Gk>ὁ λόγος</Gk> — both words.</Tr>,
+          answer: <Tr id="parsing.ga.nominative-singular-masculine"><Gk>ὁ</Gk> = nominative singular masculine article; <Gk>λόγος</Gk> = nominative singular masculine of <Gk>λόγος</Gk>. They agree in all three slots, which is how you know they belong together. Nominative means this is the subject.</Tr>,
         },
         {
-          prompt: <>Parse <Gk>ἦν</Gk>.</>,
-          answer: <>Imperfect active indicative 3rd singular of <Gk>εἰμί</Gk>. All five slots named, then the lexical form.</>,
+          prompt: <Tr id="parsing.gp.parse-2">Parse <Gk>ἦν</Gk>.</Tr>,
+          answer: <Tr id="parsing.ga.imperfect-active-indicative">Imperfect active indicative 3rd singular of <Gk>εἰμί</Gk>. All five slots named, then the lexical form.</Tr>,
         },
         {
           prompt: 'What has the parsing already told you about the sentence?',
-          answer: <>That <Gk>ὁ λόγος</Gk> is the subject (nominative) and <Gk>ἐν ἀρχῇ</Gk> is a prepositional phrase of place/time (dative) — before you have translated a word. The imperfect <Gk>ἦν</Gk> describes continuing existence rather than a point of origin, which is exactly the theological weight the verse carries.</>,
+          answer: <Tr id="parsing.ga.that-the-subject">That <Gk>ὁ λόγος</Gk> is the subject (nominative) and <Gk>ἐν ἀρχῇ</Gk> is a prepositional phrase of place/time (dative) — before you have translated a word. The imperfect <Gk>ἦν</Gk> describes continuing existence rather than a point of origin, which is exactly the theological weight the verse carries.</Tr>,
         },
       ]}
     />

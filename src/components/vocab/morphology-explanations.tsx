@@ -261,14 +261,14 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   nouns: {
     beginning: (
       <Note>
-        <P>Greek nouns and adjectives share the same endings, so learning one set covers both. Every noun has a <strong>gender</strong> (masculine, feminine, neuter), and it shows its job by its <strong>case ending</strong>, not by word order as in English. The article ("the": <G>ὁ, ἡ, τό</G>) agrees with its noun in gender, case, and number — so it is your best clue when parsing. An adjective must "agree" with the noun it describes in the same three ways.</P>
-        <Hook>Three steps to translation: (1) work out the <strong>case</strong> of each word, (2) work out <strong>why</strong> it has that case, (3) then translate. And watch the breathings — <G>ἐν</G> "in" vs. <G>ἕν</G> "one," <G>εἰς</G> "into" vs. <G>εἷς</G> "one."</Hook>
-        <Eg><G>καλὸς λόγος</G> = "a good word." Change the noun's case and the adjective changes to match.</Eg>
+        <P><T id="nouns.exp.b.intro">Greek nouns and adjectives share the same endings, so learning one set covers both. Every noun has a <strong>gender</strong> (masculine, feminine, neuter), and it shows its job by its <strong>case ending</strong>, not by word order as in English. The article ("the": <G>ὁ, ἡ, τό</G>) agrees with its noun in gender, case, and number — so it is your best clue when parsing. An adjective must "agree" with the noun it describes in the same three ways.</T></P>
+        <Hook><T id="nouns.exp.b.hook">Three steps to translation: (1) work out the <strong>case</strong> of each word, (2) work out <strong>why</strong> it has that case, (3) then translate. And watch the breathings — <G>ἐν</G> "in" vs. <G>ἕν</G> "one," <G>εἰς</G> "into" vs. <G>εἷς</G> "one."</T></Hook>
+        <Eg><T id="nouns.exp.b.eg"><G>καλὸς λόγος</G> = "a good word." Change the noun's case and the adjective changes to match.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>Each case does more than one job. These are the <strong>Essential Syntax Categories</strong> (after Wallace) — the functions you learn to name when you move from parsing to interpreting.</P>
+        <P><T id="nouns.exp.i.intro">Each case does more than one job. These are the <strong>Essential Syntax Categories</strong> (after Wallace) — the functions you learn to name when you move from parsing to interpreting.</T></P>
         <CatGroup label={<T id="nouns.cg.nominative-the-naming">Nominative — the naming case</T>}>
           <Cat id="nouns.cat.subject"name="Subject" ex={[{ g: "ὁ λόγος σὰρξ ἐγένετο", e: "the Word became flesh", r: "John 1:14" }, { g: "ὁ θεὸς ἀγάπη ἐστίν", e: "God is love", r: "1 John 4:8" }]}><T id="nouns.cat.subject.d">the doer of a finite verb</T></Cat>
           <Cat id="nouns.cat.predicate-nominative"name="Predicate Nominative" eg="“the Word was God,” John 1:1" ex={[{ g: "θεὸς ἦν ὁ λόγος", e: "the Word was God", r: "John 1:1" }, { g: "ὑμεῖς ἐστε τὸ φῶς τοῦ κόσμου", e: "you are the light of the world", r: "Matt 5:14" }]}><T id="nouns.cat.predicate-nominative.d">renames the subject through an equative verb (<G>εἰμί, γίνομαι</G>)</T></Cat>
