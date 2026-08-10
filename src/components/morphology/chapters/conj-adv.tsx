@@ -31,7 +31,7 @@ export const CONJ_ADV_CONTENT = (
       </P>
     </LevelOnly>
 
-    <InfoBox title="Key terms">
+    <InfoBox title={<Tr id="conj-adv.ib.key-terms">Key terms</Tr>}>
       <ul className="space-y-1.5 list-disc list-inside">
         <li><Tr id="conj-adv.wo.phrase-group-words"><strong>Phrase</strong> — a group of words that cannot stand alone as a sentence because it lacks a subject, a predicate, or both.</Tr></li>
         <li><Tr id="conj-adv.wo.clause-group-words"><strong>Clause</strong> — a group of words forming part of a sentence that contains a subject and a predicate.</Tr></li>
@@ -95,7 +95,7 @@ export const CONJ_ADV_CONTENT = (
         ['Time', 'ὅτε (103×) — “when”; ὅταν (123×) — “whenever”; ἕως (146×) — “until”'],
       ]}
     />
-    <InfoBox title="Mood indicators">
+    <InfoBox title={<Tr id="conj-adv.ib.mood-indicators">Mood indicators</Tr>}>
       <p><Tr id="conj-adv.as.certain-conjunctions-tend">Certain conjunctions tend to signal the mood of the verb in their clause:</Tr></p>
       <ul className="mt-1.5 space-y-1 list-disc list-inside">
         <li><Tr id="conj-adv.wo.usually-indicative-amp">Usually with the <strong>indicative</strong>: ὅτι, εἰ, καθώς, ὡς, γάρ &amp; ὅτε</Tr></li>

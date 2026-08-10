@@ -446,14 +446,14 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   participles: {
     beginning: (
       <Note>
-        <P>A <strong>participle</strong> is a verbal adjective — part verb (tense, voice), part adjective (gender, case, number). Translate it with "‑ing" (active: <G>λύων</G> "loosing") or "‑ed / being" (middle/passive: <G>λυόμενος</G> "being loosed"). It agrees with the noun it describes, and the middle/passive form always shows the chunk <G>‑μεν‑</G>.</P>
-        <Hook>Present participle = <strong>Simultaneous</strong> (same time as the main verb) · Aorist participle = <strong>Sequence</strong> (before the main verb).</Hook>
-        <Eg>Present: "<em>While eating</em>, the man read his newspaper." Aorist: "<em>Having eaten</em>, the man read his newspaper." Same actions — the participle's tense just tells you the timing.</Eg>
+        <P><T id="participles.exp.b.intro">A <strong>participle</strong> is a verbal adjective — part verb (tense, voice), part adjective (gender, case, number). Translate it with "‑ing" (active: <G>λύων</G> "loosing") or "‑ed / being" (middle/passive: <G>λυόμενος</G> "being loosed"). It agrees with the noun it describes, and the middle/passive form always shows the chunk <G>‑μεν‑</G>.</T></P>
+        <Hook><T id="participles.exp.b.hook">Present participle = <strong>Simultaneous</strong> (same time as the main verb) · Aorist participle = <strong>Sequence</strong> (before the main verb).</T></Hook>
+        <Eg><T id="participles.exp.b.eg">Present: "<em>While eating</em>, the man read his newspaper." Aorist: "<em>Having eaten</em>, the man read his newspaper." Same actions — the participle's tense just tells you the timing.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The first question is <strong>article or no article?</strong> With the article the participle is <em>adjectival</em>; without it, usually <em>adverbial</em>. These are its <strong>Essential Syntax Categories</strong> (after Wallace).</P>
+        <P><T id="participles.exp.i.intro">The first question is <strong>article or no article?</strong> With the article the participle is <em>adjectival</em>; without it, usually <em>adverbial</em>. These are its <strong>Essential Syntax Categories</strong> (after Wallace).</T></P>
         <CatGroup label="Adjectival (with the article)">
           <Cat name="Attributive" eg="“the man who is loosing…”" ex={[{ g: "ὁ ἄρτος ὁ ἐκ τοῦ οὐρανοῦ καταβαίνων", e: "the bread that comes down from heaven", r: "John 6:50" }, { g: "τὸ πνεῦμα τὸ λαλοῦν ἐν ὑμῖν", e: "the Spirit who speaks in you", r: "Matt 10:20" }]}>adds detail to a noun (“who / which”)</Cat>
           <Cat name="Substantival" eg="ὁ πιστεύων, “the believer”" ex={[{ g: "ὁ πιστεύων εἰς τὸν υἱὸν ἔχει ζωὴν αἰώνιον", e: "the one who believes in the Son has eternal life", r: "John 3:36" }, { g: "μακάριοι οἱ πενθοῦντες", e: "blessed are those who mourn", r: "Matt 5:4" }]}>stands alone as a noun</Cat>

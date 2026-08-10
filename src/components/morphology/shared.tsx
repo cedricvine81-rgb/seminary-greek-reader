@@ -142,7 +142,7 @@ export function MorphTable({ id, tCols, title, headers, rows, dividerRows = [], 
   )
 }
 
-export function InfoBox({ title, children }: { title?: string; children: React.ReactNode }) {
+export function InfoBox({ title, children }: { title?: React.ReactNode; children: React.ReactNode }) {
   return (
     <div className="mb-5 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
       {title && <p className="font-semibold text-gray-800 mb-1.5">{title}</p>}

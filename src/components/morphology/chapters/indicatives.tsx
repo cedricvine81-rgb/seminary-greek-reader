@@ -9,6 +9,7 @@ import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
+  Tr,
 } from '../shared'
 
 export const INDICATIVES_CONTENT = (
@@ -113,7 +114,7 @@ export const INDICATIVES_CONTENT = (
         ]}
       />
     </TableAside>
-    <InfoBox title="Two augment quirks">
+    <InfoBox title={<Tr id="indicatives.ib.augment-quirks">Two augment quirks</Tr>}>
       <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
         <li>If the verb starts with a vowel, the augment <em>lengthens</em> it instead of adding <Gk>ἐ‑</Gk>: <Gk>ἀκούω</Gk> "I hear" → <Gk>ἤκουον</Gk> "I was hearing."</li>
         <li>In compound verbs the augment goes <em>after</em> the preposition: <Gk>ἀπολύω</Gk> "I release" → <Gk>ἀπέλυον</Gk> (not <Gk>ἠπολυον</Gk>).</li>

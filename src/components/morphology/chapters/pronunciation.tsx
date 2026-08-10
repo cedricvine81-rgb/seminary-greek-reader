@@ -10,6 +10,7 @@ import Link from 'next/link'
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, InfoBox,
+  Tr,
 } from '../shared'
 
 export const PRONUNCIATION_CONTENT = (
@@ -304,7 +305,7 @@ export const PRONUNCIATION_CONTENT = (
     />
 
     {/* ── 9 · Into the text ──────────────────────────────── */}
-    <InfoBox title="Now read the real thing">
+    <InfoBox title={<Tr id="pronunciation.ib.read-real-thing">Now read the real thing</Tr>}>
       <p className="text-sm text-gray-700">
         You can already sound out Scripture. Open the <Link href="/reader" className="text-brand-600 hover:underline">Reader</Link> at
         John 1:1 — <span className="normal-case">Ἐν ἀρχῇ ἦν ὁ λόγος</span>, "In the beginning was the

@@ -241,7 +241,7 @@ export const PARSING_CONTENT = (
       note="“Participle” and “infinitive” occupy the mood slot in this scheme — say the word aloud where the mood would go."
     />
 
-    <InfoBox title="The one rule to carry forward">
+    <InfoBox title={<Tr id="parsing.ib.one-rule">The one rule to carry forward</Tr>}>
       <p><Tr id="parsing.as.parse-finished-only">
         A parse is finished only when you have named <em>every</em> slot for that word type and then the
         lexical form. &ldquo;Aorist&rdquo; is not a parse. &ldquo;Aorist active indicative 3rd singular of{' '}

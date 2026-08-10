@@ -59,7 +59,7 @@ export const PARTICIPLES_CONTENT = (
         <p><Tr id="participles.as.only-present-participle"><Gk>εἰμί</Gk> has only a present participle — the building block of the <em>periphrastic</em> tenses covered in "Going deeper" below.</Tr></p>
       </>}
     >
-      <MorphTable id="participles.t1" tCols={[0]} flush title={gt("Present Participle of εἰμί (ὤν, οὖσα, ὄν)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
+      <MorphTable id="participles.t1" tCols={[0]} flush title="Present Participle of εἰμί (ὤν, οὖσα, ὄν)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
         rows={[
           ['Singular','','',''],
           ['Nom.','ὤν','ὄν','οὖσα'],['Gen.','ὄντος','ὄντος','οὔσης'],
@@ -84,7 +84,7 @@ export const PARTICIPLES_CONTENT = (
         <p><Tr id="participles.as.declines-declension-pattern">It declines on a 3rd-declension pattern for masc./neut. (note the <Gk>‑ντ‑</Gk>) plus 1st-declension for the feminine — the same split as <Gk>πᾶς</Gk>.</Tr></p>
       </>}
     >
-      <MorphTable id="participles.t2" tCols={[0]} flush title={gt("Present Active Participle — λύων, λύουσα, λύον")} headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
+      <MorphTable id="participles.t2" tCols={[0]} flush title="Present Active Participle — λύων, λύουσα, λύον" headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
         rows={[
           ['Singular','','',''],
           ['Nom.','λύων','λύουσα','λύον'],['Gen.','λύοντος','λυούσης','λύοντος'],
@@ -109,7 +109,7 @@ export const PARTICIPLES_CONTENT = (
         <p><Tr id="participles.as.note-there-augment">Note there is <strong>no augment</strong> (augments live only in the indicative). The aorist participle marks relative time, not absolute past.</Tr></p>
       </>}
     >
-      <MorphTable id="participles.t3" tCols={[0]} flush title={gt("Aorist Active Participle — λύσας, λύσασα, λύσαν")} headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
+      <MorphTable id="participles.t3" tCols={[0]} flush title="Aorist Active Participle — λύσας, λύσασα, λύσαν" headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
         rows={[
           ['Singular','','',''],
           ['Nom.','λύσας','λύσασα','λύσαν'],['Gen.','λύσαντος','λυσάσης','λύσαντος'],
@@ -134,7 +134,7 @@ export const PARTICIPLES_CONTENT = (
         <p><Tr id="participles.as.these-take-regular">These take the regular 1st/2nd-declension endings of <Gk>ἀγαθός</Gk> — fully predictable, unlike the active's 3rd-declension pattern.</Tr></p>
       </>}
     >
-      <MorphTable id="participles.t4" tCols={[0]} flush title={gt("Middle / Passive Participle Endings (‒μεν‒ + endings of ἀγαθός)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
+      <MorphTable id="participles.t4" tCols={[0]} flush title="Middle / Passive Participle Endings (‒μεν‒ + endings of ἀγαθός)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
         rows={[
           ['Singular','','',''],
           ['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου','‒μενου','‒μενης'],
@@ -156,7 +156,7 @@ export const PARTICIPLES_CONTENT = (
         <p><Tr id="participles.as.reading-reverse-before">Reading it in reverse: <Gk>ο</Gk> before <Gk>‑μεν‑</Gk> = present, <Gk>σα</Gk> = aorist middle, and no connecting vowel (with reduplication) = perfect.</Tr></p>
       </>}
     >
-      <MorphTable id="participles.t5" tCols={[0]} flush title={gt("Middle/Passive Participle — Tense Identifier + ‒μεν‒")} headers={['Tense','Identifier','Example (Masc. Nom. Sg.)']}
+      <MorphTable id="participles.t5" tCols={[0]} flush title="Middle/Passive Participle — Tense Identifier + ‒μεν‒" headers={['Tense','Identifier','Example (Masc. Nom. Sg.)']}
         rows={[
           ['Present m/p','‒ο‒μεν','λυόμενος'],
           ['Aorist middle','‒σα‒μεν','λυσάμενος'],
@@ -257,7 +257,7 @@ export const PARTICIPLES_CONTENT = (
         ]}
       />
     </TableAside>
-    <InfoBox title="Parsing a Participle — Decision Process">
+    <InfoBox title={<Tr id="participles.ib.decision-process">Parsing a Participle — Decision Process</Tr>}>
       <ol className="text-xs text-gray-600 space-y-1 list-decimal list-inside">
         <li><Tr id="participles.wo.stem-been-changed">Has the stem been changed? No → regular; Yes → 2nd aorist (uses ‛o' present endings)</Tr></li>
         <li><Tr id="participles.wo.what-connecting-vowel">What is the connecting vowel? ο/ου → present; α → aorist</Tr></li>
@@ -463,9 +463,9 @@ export const PARTICIPLES_CONTENT = (
     <LiveExamples
       intro={<Tr id="participles.intro.participles-everywhere-roughly">Participles are everywhere — roughly one NT word in twenty. Watch the patterns repeat.</Tr>}
       links={[
-        { label: 'Aorist participles — hunt the "having …ed" clauses that open sentences', features: ['participle', 'aorist'] },
-        { label: 'Present participles — "while …ing" and "the one who …s"', features: ['participle', 'present'] },
-        { label: 'Genitive participles — genitive-absolute territory', features: ['participle', 'genitive'] },
+        { label: <Tr id="participles.le.aorist">Aorist participles — hunt the "having …ed" clauses that open sentences</Tr>, features: ['participle', 'aorist'] },
+        { label: <Tr id="participles.le.present">Present participles — "while …ing" and "the one who …s"</Tr>, features: ['participle', 'present'] },
+        { label: <Tr id="participles.le.genitive">Genitive participles — genitive-absolute territory</Tr>, features: ['participle', 'genitive'] },
         { label: <Tr id="participles.le.every-participle-john's">Every participle of <span className="normal-case">πιστεύω</span> — John's favourite: "the one believing"</Tr>, lemma: 'πιστεύω', features: ['participle'] },
       ]}
     />
