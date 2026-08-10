@@ -398,13 +398,13 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   infinitives: {
     beginning: (
       <Note>
-        <P>An <strong>infinitive</strong> is the "to ‑" form of a verb (<G>λύειν</G> "to loose"). It names the action without a subject, person, or number, so it does not change for "I / you / he." Mostly you just recognize two forms: present active (<G>‑ειν</G>) and aorist active (<G>‑σαι</G>). The aorist infinitive has the <G>σ</G> but — importantly — <strong>no augment</strong> (augments live only in the indicative).</P>
-        <Eg><G>θέλω λύειν</G> = "I want <em>to loose</em>."</Eg>
+        <P><T id="infinitives.exp.p.infinitive-form-verb">An <strong>infinitive</strong> is the "to ‑" form of a verb (<G>λύειν</G> "to loose"). It names the action without a subject, person, or number, so it does not change for "I / you / he." Mostly you just recognize two forms: present active (<G>‑ειν</G>) and aorist active (<G>‑σαι</G>). The aorist infinitive has the <G>σ</G> but — importantly — <strong>no augment</strong> (augments live only in the indicative).</T></P>
+        <Eg><T id="infinitives.exp.eg.want-loose"><G>θέλω λύειν</G> = "I want <em>to loose</em>."</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>The infinitive is a <strong>verbal noun</strong>, so it can take an article (<G>τό</G>) and even a subject in the accusative (<G>θέλω τὸν ἄγγελον ἀπελθεῖν</G> = "I want the messenger to depart"). These are its <strong>Essential Syntax Categories</strong> (after Wallace).</P>
+        <P><T id="infinitives.exp.p.infinitive-verbal-noun">The infinitive is a <strong>verbal noun</strong>, so it can take an article (<G>τό</G>) and even a subject in the accusative (<G>θέλω τὸν ἄγγελον ἀπελθεῖν</G> = "I want the messenger to depart"). These are its <strong>Essential Syntax Categories</strong> (after Wallace).</T></P>
         <CatGroup label="Verbal use (like a verb)">
           <Cat name="Purpose" eg="“I came to destroy the law”" ex={[{ g: "οὐκ ἦλθον καταλῦσαι ἀλλὰ πληρῶσαι", e: "I did not come to abolish but to fulfill", r: "Matt 5:17" }, { g: "ἐξῆλθεν ὁ σπείρων σπεῖραι", e: "the sower went out to sow", r: "Mark 4:3" }]}>answers <em>why?</em> — “in order to”; naked inf., or <G>τοῦ / εἰς τό / πρὸς τό</G></Cat>
           <Cat name="Result" eg="“…so that the crowd was amazed”" ex={[{ g: "ὥστε τὸν ὄχλον θαυμάσαι", e: "so that the crowd marveled", r: "Matt 15:31" }, { g: "ὥστε ἤδη γεμίζεσθαι τὸ πλοῖον", e: "so that the boat was already filling", r: "Mark 4:37" }]}>the outcome produced; usually <G>ὥστε</G> + infinitive</Cat>
@@ -417,7 +417,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
           <Cat name="Indirect Discourse" eg="“they say there is no resurrection”" ex={[{ g: "λέγουσιν ἀνάστασιν μὴ εἶναι", e: "they say there is no resurrection", r: "Mark 12:18" }, { g: "τίνα με λέγουσιν εἶναι;", e: "who do they say that I am?", r: "Mark 8:27" }]}>reports speech/thought after a verb of perception</Cat>
           <Cat name="Epexegetical" eg="“authority to tread on serpents”" ex={[{ g: "ἐξουσίαν τοῦ πατεῖν ἐπάνω ὄφεων", e: "authority to tread on serpents", r: "Luke 10:19" }, { g: "ἐξουσίαν ἔχω θεῖναι αὐτήν", e: "I have authority to lay it down", r: "John 10:18" }]}>explains a noun or adjective (ability, freedom, need…)</Cat>
         </CatGroup>
-        <P>Present vs. aorist infinitive is aspect, not time: ongoing vs. simple action.</P>
+        <P><T id="infinitives.exp.p.present-aorist-infinitive">Present vs. aorist infinitive is aspect, not time: ongoing vs. simple action.</T></P>
       </Note>
     ),
   },
@@ -548,15 +548,15 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   demonstratives: {
     beginning: (
       <Note>
-        <P>The <strong>demonstratives</strong> are the pointing words: <G>οὗτος</G> "this" (near) and <G>ἐκεῖνος</G> "that" (far). They agree with their noun in gender, case, and number — and unlike adjectives, they stand <em>outside</em> the article-noun unit: <G>οὗτος ὁ ἄνθρωπος</G> = "this man."</P>
-        <Hook>Watch the breathing: <G>αὕτη</G> (rough) = "this woman"; <G>αὐτή</G> (smooth) = "she." One mark, two different words.</Hook>
-        <Eg><G>ταῦτα</G> = "these things" — one of the most common words in the NT.</Eg>
+        <P><T id="demonstratives.exp.p.demonstratives-pointing-words">The <strong>demonstratives</strong> are the pointing words: <G>οὗτος</G> "this" (near) and <G>ἐκεῖνος</G> "that" (far). They agree with their noun in gender, case, and number — and unlike adjectives, they stand <em>outside</em> the article-noun unit: <G>οὗτος ὁ ἄνθρωπος</G> = "this man."</T></P>
+        <Hook><T id="demonstratives.exp.hook.watch-breathing-rough">Watch the breathing: <G>αὕτη</G> (rough) = "this woman"; <G>αὐτή</G> (smooth) = "she." One mark, two different words.</T></Hook>
+        <Eg><T id="demonstratives.exp.eg.these-things-one"><G>ταῦτα</G> = "these things" — one of the most common words in the NT.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P><G>οὗτος</G> follows the article's front-end pattern (rough breathing in the nom. masc./fem., <G>τ‑</G> elsewhere) with 1st/2nd-declension endings. Standing alone it is a full pronoun (<G>οὗτός ἐστιν ὁ υἱός μου</G>).</P>
-        <P>The interpretive interest is in <em>how</em> it points — backward, forward, or with attitude ("Going deeper" below walks through the options). The reflexive <G>ἑαυτοῦ</G> and reciprocal <G>ἀλλήλων</G> complete the pointing family.</P>
+        <P><T id="demonstratives.exp.p.follows-article's-front"><G>οὗτος</G> follows the article's front-end pattern (rough breathing in the nom. masc./fem., <G>τ‑</G> elsewhere) with 1st/2nd-declension endings. Standing alone it is a full pronoun (<G>οὗτός ἐστιν ὁ υἱός μου</G>).</T></P>
+        <P><T id="demonstratives.exp.p.interpretive-interest-how">The interpretive interest is in <em>how</em> it points — backward, forward, or with attitude ("Going deeper" below walks through the options). The reflexive <G>ἑαυτοῦ</G> and reciprocal <G>ἀλλήλων</G> complete the pointing family.</T></P>
       </Note>
     ),
   },

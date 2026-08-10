@@ -8,21 +8,21 @@ import {
   HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences, DropdownPractice,
+  ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
 
 export const DEMONSTRATIVES_CONTENT = (
   <>
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
-      <SectionHeading>Start with English: pointing words</SectionHeading>
-      <P>
+      <SectionHeading id="demonstratives.h.start-english-pointing">Start with English: pointing words</SectionHeading>
+      <P id="demonstratives.p.book-one-english">
         "<em>This</em> book, not <em>that</em> one." English points with a near word (this/these) and a far
         word (that/those) — grammarians call them <strong>demonstratives</strong>, from the Latin for
         "point out." Greek has the same pair: <Gk>οὗτος</Gk> "this" (near) and <Gk>ἐκεῖνος</Gk> "that"
         (far — related to <Gk>ἐκεῖ</Gk>, "there").
       </P>
-      <P>
+      <P id="demonstratives.p.like-any-pronoun">
         Like any pronoun-adjective, they agree with their noun in gender, case, and
         {' '}<Term t="number">number</Term> — and they are frequent: <Gk>οὗτος</Gk> alone occurs nearly 1,400
         times in the New Testament. Two things to learn: the forms (one quirky paradigm) and one surprising
@@ -31,8 +31,8 @@ export const DEMONSTRATIVES_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · Forms ──────────────────────────────────────── */}
-    <SectionHeading>The forms: οὗτος and its shifting front end</SectionHeading>
-    <P>
+    <SectionHeading id="demonstratives.h.forms-shifting-front">The forms: οὗτος and its shifting front end</SectionHeading>
+    <P id="demonstratives.p.endings-familiar-declension">
       The endings of <Gk>οὗτος</Gk> are the familiar 1st/2nd-declension set. The strangeness is at the
       <em> front</em>, and it follows two rules: the masculine and feminine nominatives begin with a rough
       breathing (<Gk>οὗ‑, αὕ‑</Gk>, matching the article's <Gk>ὁ, ἡ</Gk>); every other form begins
@@ -41,17 +41,17 @@ export const DEMONSTRATIVES_CONTENT = (
     </P>
     <TableAside
       beginning={<>
-        <AsideLabel>Default translations</AsideLabel>
-        <Ex grc="οὗτος ὁ ἄνθρωπος" en="this man" />
-        <Ex grc="ταῦτα" en="these things (very common!)" />
-        <Ex grc="μετὰ τοῦτο" en="after this" />
-        <p>Standing alone, it's a pronoun: <Gk>οὗτος</Gk> "this one / he."</p>
+        <AsideLabel><Tr id="demonstratives.al.default-translations">Default translations</Tr></AsideLabel>
+        <Ex grc="οὗτος ὁ ἄνθρωπος" en={<Tr id="demonstratives.ex.man">this man</Tr>} />
+        <Ex grc="ταῦτα" en={<Tr id="demonstratives.ex.these-things-very">these things (very common!)</Tr>} />
+        <Ex grc="μετὰ τοῦτο" en={<Tr id="demonstratives.ex.after">after this</Tr>} />
+        <p><Tr id="demonstratives.as.standing-alone-it's">Standing alone, it's a pronoun: <Gk>οὗτος</Gk> "this one / he."</Tr></p>
       </>}
       intermediate={<>
-        <p>The neuter plural <Gk>ταῦτα</Gk> may be the most common demonstrative form in the NT — "these things."</p>
+        <p><Tr id="demonstratives.as.neuter-plural-may">The neuter plural <Gk>ταῦτα</Gk> may be the most common demonstrative form in the NT — "these things."</Tr></p>
       </>}
     >
-      <MorphTable flush title={gt("οὗτος, αὕτη, τοῦτο — this")} headers={['','','Masc.','Fem.','Neut.']}
+      <MorphTable id="demonstratives.t1" flush title="οὗτος, αὕτη, τοῦτο — this" headers={['','','Masc.','Fem.','Neut.']}
         rows={[
           ['Sg.','Nom.','οὗτ|ος','αὕτ|η','τοῦτ|ο'],
           ['','Gen.','τούτ|ου','ταύτ|ης','τούτ|ου'],
@@ -64,19 +64,19 @@ export const DEMONSTRATIVES_CONTENT = (
         ]}
       />
     </TableAside>
-    <P>
+    <P id="demonstratives.p.friendlier-completely-regular">
       <Gk>ἐκεῖνος</Gk> is friendlier: completely regular endings (like <Gk>αὐτός</Gk>), no front-end games.
     </P>
     <TableAside
       beginning={<>
-        <Ex grc="ἐκεῖνος ὁ μαθητής" en="that disciple" />
-        <Ex grc="ἐν ἐκείνῃ τῇ ἡμέρᾳ" en="on that day" />
+        <Ex grc="ἐκεῖνος ὁ μαθητής" en={<Tr id="demonstratives.ex.disciple">that disciple</Tr>} />
+        <Ex grc="ἐν ἐκείνῃ τῇ ἡμέρᾳ" en={<Tr id="demonstratives.ex.day">on that day</Tr>} />
       </>}
       intermediate={<>
-        <p><Gk>ἄλλος</Gk> "other" and the reciprocal <Gk>ἀλλήλων</Gk> "one another" decline just like <Gk>ἐκεῖνος</Gk> — meet them here: <Gk>ἔλεγον πρὸς ἀλλήλους</Gk>, "they were saying to one another" (Mark 4:41).</p>
+        <p><Tr id="demonstratives.as.other-reciprocal-one"><Gk>ἄλλος</Gk> "other" and the reciprocal <Gk>ἀλλήλων</Gk> "one another" decline just like <Gk>ἐκεῖνος</Gk> — meet them here: <Gk>ἔλεγον πρὸς ἀλλήλους</Gk>, "they were saying to one another" (Mark 4:41).</Tr></p>
       </>}
     >
-      <MorphTable flush title={gt("ἐκεῖνος, ἐκείνη, ἐκεῖνο — that")} headers={['','','Masc.','Fem.','Neut.']}
+      <MorphTable id="demonstratives.t2" flush title="ἐκεῖνος, ἐκείνη, ἐκεῖνο — that" headers={['','','Masc.','Fem.','Neut.']}
         rows={[
           ['Sg.','Nom.','ἐκεῖν|ος','ἐκείν|η','ἐκεῖν|ο'],
           ['','Gen.','ἐκείν|ου','ἐκείν|ης','ἐκείν|ου'],
@@ -91,9 +91,9 @@ export const DEMONSTRATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Position ───────────────────────────────────── */}
-    <DropdownPractice
+    <DropdownPractice id="demonstratives.d1"
       title="Practice — parse the demonstrative"
-      intro={<>Same endings as αὐτός — watch the τουτ-/ταυτ- front end.</>}
+      intro={<Tr id="demonstratives.intro.same-endings-watch">Same endings as αὐτός — watch the τουτ-/ταυτ- front end.</Tr>}
       options={["Gen Sg Fem — \"of this\"", "Dat Pl Masc/Neut — \"to these\"", "Nom/Acc Pl Neut — \"those (things)\"", "Acc Sg Masc — \"this\"", "Nom Pl Fem — \"these\"", "Dat Sg Masc/Neut — \"to that\""]}
       items={[
         { q: <span className="normal-case">ταύτης</span>, answer: "Gen Sg Fem — \"of this\"" },
@@ -105,8 +105,8 @@ export const DEMONSTRATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading>The position surprise</SectionHeading>
-    <P>
+    <SectionHeading id="demonstratives.h.position-surprise">The position surprise</SectionHeading>
+    <P id="demonstratives.p.adjectives-modifying-articular">
       Adjectives modifying an articular noun sit <em>inside</em> the article-unit (<Gk>ὁ καλὸς λόγος</Gk>).
       Demonstratives do the opposite: they stand in <strong>predicate position</strong> — outside the
       article — yet still mean a simple "this/that + noun": <Gk>οὗτος ὁ ἄνθρωπος</Gk> or
@@ -115,12 +115,12 @@ export const DEMONSTRATIVES_CONTENT = (
     </P>
     <TableAside
       beginning={<>
-        <Ex grc="οὗτος ὁ λόγος" en="this word" />
-        <Ex grc="ἐκείνη ἡ ἡμέρα" en="that day" />
-        <p>Note the article is still there — demonstrative + article + noun.</p>
+        <Ex grc="οὗτος ὁ λόγος" en={<Tr id="demonstratives.ex.word">this word</Tr>} />
+        <Ex grc="ἐκείνη ἡ ἡμέρα" en={<Tr id="demonstratives.ex.day-2">that day</Tr>} />
+        <p><Tr id="demonstratives.as.note-article-still">Note the article is still there — demonstrative + article + noun.</Tr></p>
       </>}
     >
-      <MorphTable flush title="Adjective vs. demonstrative position" headers={['Pattern', 'Meaning']} firstColIsData
+      <MorphTable id="demonstratives.t3" tCols={[1]} flush title="Adjective vs. demonstrative position" headers={['Pattern', 'Meaning']} firstColIsData
         rows={[
           ['ὁ καλὸς λόγος', 'the good word (adjective inside)'],
           ['οὗτος ὁ λόγος', 'this word (demonstrative outside)'],
@@ -130,9 +130,9 @@ export const DEMONSTRATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 4 · The relatives: ἑαυτοῦ and ἀλλήλων ──────────── */}
-    <DropdownPractice
+    <DropdownPractice id="demonstratives.d2"
       title="Practice — translate the phrase"
-      intro={<>Demonstratives sit in predicate position but translate attributively.</>}
+      intro={<Tr id="demonstratives.intro.demonstratives-sit-predicate">Demonstratives sit in predicate position but translate attributively.</Tr>}
       options={["this man", "that day", "these works", "those disciples", "this commandment", "this gospel"]}
       items={[
         { q: <span className="normal-case">οὗτος ὁ ἄνθρωπος</span>, answer: "this man" },
@@ -144,15 +144,15 @@ export const DEMONSTRATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading>Two cousins: "himself" and "one another"</SectionHeading>
-    <P>
+    <SectionHeading id="demonstratives.h.two-cousins-himself">Two cousins: "himself" and "one another"</SectionHeading>
+    <P id="demonstratives.p.two-more-pointing">
       Two more pointing-family pronouns complete the set. The reflexive <Gk>ἑαυτοῦ</Gk> ("himself /
       herself / itself") points the action back at its own subject: <Gk>σῴζει ἑαυτόν</Gk>, "he saves
       <em> himself</em>." The reciprocal <Gk>ἀλλήλων</Gk> ("one another") only exists in the plural — you
       need at least two to reciprocate: <Gk>ἀγαπᾶτε ἀλλήλους</Gk>, "love one another."
     </P>
     <LevelOnly level="intermediate">
-      <P>
+      <P id="demonstratives.p.distinguish-reflexive-intensive">
         Distinguish reflexive <Gk>ἑαυτόν</Gk> from intensive <Gk>αὐτός</Gk> by the delete-test you know
         from the Pronouns chapter: delete "himself," and if the meaning collapses it was reflexive
         (<Gk>σῴζει ἑαυτόν</Gk>), if unchanged it was intensive (<Gk>αὐτὸς ὁ κύριος σῴζει</Gk>).
@@ -160,7 +160,7 @@ export const DEMONSTRATIVES_CONTENT = (
     </LevelOnly>
 
     {/* ── 5 · Watch out ──────────────────────────────────── */}
-    <ClassSentences
+    <ClassSentences id="demonstratives.cs1"
       lesson="Reflexives and reciprocals"
       items={[
         { words: [
@@ -179,37 +179,37 @@ export const DEMONSTRATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading>Watch out</SectionHeading>
+    <SectionHeading id="demonstratives.h.watch-out">Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
-        <li><Gk>αὕτη</Gk> ("this woman/she", rough breathing) vs. <Gk>αὐτή</Gk> ("she", smooth) — the breathing mark is the whole difference. Likewise <Gk>αὗται</Gk> vs. <Gk>αὐταί</Gk>.</li>
-        <li><Gk>ταῦτα</Gk> ("these things") vs. <Gk>ταύτας</Gk> (acc. fem. pl.) — a one-letter trap in fast reading.</li>
-        <li>Set phrases to recognize on sight: <Gk>μετὰ ταῦτα</Gk> "after these things," <Gk>διὰ τοῦτο</Gk> "for this reason," <Gk>ἐκ τούτου</Gk> "as a result."</li>
-        <li>Demonstrative + article + noun is <em>not</em> a sentence — resist reading "this is the…" unless a verb (or equative context) demands it.</li>
+        <li><Tr id="demonstratives.wo.woman-she-rough"><Gk>αὕτη</Gk> ("this woman/she", rough breathing) vs. <Gk>αὐτή</Gk> ("she", smooth) — the breathing mark is the whole difference. Likewise <Gk>αὗται</Gk> vs. <Gk>αὐταί</Gk>.</Tr></li>
+        <li><Tr id="demonstratives.wo.these-things-acc"><Gk>ταῦτα</Gk> ("these things") vs. <Gk>ταύτας</Gk> (acc. fem. pl.) — a one-letter trap in fast reading.</Tr></li>
+        <li><Tr id="demonstratives.wo.set-phrases-recognize">Set phrases to recognize on sight: <Gk>μετὰ ταῦτα</Gk> "after these things," <Gk>διὰ τοῦτο</Gk> "for this reason," <Gk>ἐκ τούτου</Gk> "as a result."</Tr></li>
+        <li><Tr id="demonstratives.wo.demonstrative-article-noun">Demonstrative + article + noun is <em>not</em> a sentence — resist reading "this is the…" unless a verb (or equative context) demands it.</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
-    <Practice
+    <LevelOnly level="beginning"><SectionHeading id="demonstratives.h.try">Try it</SectionHeading></LevelOnly>
+    <Practice id="demonstratives.pr1"
       title="Practice — parse and translate"
-      intro={<>Vocabulary: <span className="normal-case">πρόβατον</span> "sheep" · <span className="normal-case">συνάγω</span> "gather" · <span className="normal-case">παραβολή</span> "parable."</>}
+      intro={<Tr id="demonstratives.intro.vocabulary-sheep-gather">Vocabulary: <span className="normal-case">πρόβατον</span> "sheep" · <span className="normal-case">συνάγω</span> "gather" · <span className="normal-case">παραβολή</span> "parable."</Tr>}
       items={[
         { q: <span className="normal-case">συνάγει ταῦτα τὰ πρόβατα.</span>,
-          a: <>"She is gathering these sheep" — ταῦτα agrees with τὰ πρόβατα (neut. pl.).</> },
+          a: <Tr id="demonstratives.pa.she-gathering-these">"She is gathering these sheep" — ταῦτα agrees with τὰ πρόβατα (neut. pl.).</Tr>},
         { q: <span className="normal-case">φιλῶ ἐκεῖνον τὸν μαθητήν.</span>,
-          a: <>"I love that disciple" — ἐκεῖνον, acc. masc. sg., predicate position.</> },
+          a: <Tr id="demonstratives.pa.love-disciple-acc">"I love that disciple" — ἐκεῖνον, acc. masc. sg., predicate position.</Tr>},
         { q: <span className="normal-case">οὗτός ἐστιν ὁ υἱός μου ὁ ἀγαπητός.</span>,
-          a: <>"This is my beloved Son" (Matt 3:17) — οὗτος standing alone as subject.</> },
+          a: <Tr id="demonstratives.pa.beloved-son-matt">"This is my beloved Son" (Matt 3:17) — οὗτος standing alone as subject.</Tr>},
         { q: <span className="normal-case">ἐν ἐκείνῃ τῇ ἡμέρᾳ γνώσεσθε.</span>,
-          a: <>"On that day you will know" (John 14:20) — dative of time.</> },
+          a: <Tr id="demonstratives.pa.day-will-know">"On that day you will know" (John 14:20) — dative of time.</Tr>},
         { q: <span className="normal-case">διὰ τοῦτο λέγω ὑμῖν.</span>,
-          a: <>"For this reason I say to you" — the set phrase διὰ τοῦτο.</> },
+          a: <Tr id="demonstratives.pa.reason-say-set">"For this reason I say to you" — the set phrase διὰ τοῦτο.</Tr>},
       ]}
     />
 
     {/* ── 7 · See it in the NT ───────────────────────────── */}
-    <ClassSentences
+    <ClassSentences id="demonstratives.cs2"
       lesson="Lesson 3 · Pronouns (οὗτος and ἐκεῖνος)"
       items={[
         { words: [
@@ -258,29 +258,29 @@ export const DEMONSTRATIVES_CONTENT = (
     <HomeworkAssignments chapter="demonstratives" />
 
     <LiveExamples
-      intro={<>The pointing words in place — notice how often they open or close an argument.</>}
+      intro={<Tr id="demonstratives.intro.pointing-words-place">The pointing words in place — notice how often they open or close an argument.</Tr>}
       links={[
-        { label: <>Every form of <span className="normal-case">οὗτος</span> — nearly 1,400 pointers</>, lemma: 'οὗτος' },
-        { label: <>Every form of <span className="normal-case">ἐκεῖνος</span> — "that one," John's favourite</>, lemma: 'ἐκεῖνος' },
-        { label: <>Every <span className="normal-case">ἀλλήλων</span> — the "one another" commands</>, lemma: 'ἀλλήλων' },
+        { label: <Tr id="demonstratives.le.every-form-nearly">Every form of <span className="normal-case">οὗτος</span> — nearly 1,400 pointers</Tr>, lemma: 'οὗτος' },
+        { label: <Tr id="demonstratives.le.every-form-one">Every form of <span className="normal-case">ἐκεῖνος</span> — "that one," John's favourite</Tr>, lemma: 'ἐκεῖνος' },
+        { label: <Tr id="demonstratives.le.every-one-another">Every <span className="normal-case">ἀλλήλων</span> — the "one another" commands</Tr>, lemma: 'ἀλλήλων' },
       ]}
     />
 
     {/* ── 8 · Going deeper (Intermediate only) ───────────── */}
     <LevelOnly level="intermediate">
-      <SectionHeading>Going deeper: pointing with attitude</SectionHeading>
-      <P>
+      <SectionHeading id="demonstratives.h.going-deeper-pointing">Going deeper: pointing with attitude</SectionHeading>
+      <P id="demonstratives.p.backward-forward-demonstrative">
         <strong>Backward or forward?</strong> A demonstrative usually points back at what was just said
         (anaphoric: <Gk>μετὰ ταῦτα</Gk>), but it can point forward to what's coming (cataphoric):
         <Gk> αὕτη ἐστὶν ἡ ἐντολὴ ἡ ἐμή, ἵνα…</Gk> — "<em>this</em> is my commandment: that you love…"
         (John 15:12). John especially uses forward-pointing οὗτος to headline a definition before giving it.
       </P>
-      <P>
+      <P id="demonstratives.p.contemptuous-pointing-person">
         <strong>The contemptuous οὗτος.</strong> Pointing at a person can sneer: <Gk>οὗτος</Gk> as "this
         fellow" — <Gk>οὗτος ὁ ἄνθρωπος</Gk> on hostile lips (Luke 15:2, "this fellow welcomes sinners").
         Context supplies the tone English must add with "fellow."
       </P>
-      <P>
+      <P id="demonstratives.p.title-john's-farewell">
         <strong>ἐκεῖνος as a title.</strong> In John's farewell discourse, <Gk>ἐκεῖνος</Gk> repeatedly
         refers to the coming Spirit-Paraclete (John 14:26; 16:13–14) — a masculine demonstrative tracking
         through the discourse. Note also the idiom <Gk>ἐν ἐκείνῃ τῇ ἡμέρᾳ</Gk>, "in that day," carrying
