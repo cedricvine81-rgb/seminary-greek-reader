@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect, createContext, useContext, type ReactNode } from 'react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { content, NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
+import { glossKey, duplicatedLemmas } from '@/lib/vocab-gloss-key'
 import Link from 'next/link'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen, FileText } from 'lucide-react'
 import { clsx } from 'clsx'
@@ -265,11 +266,12 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
     loadGlosses(locale, lang).then(g => { if (alive) setGlosses(g) })
     return () => { alive = false }
   }, [locale, lang])
+  const dupLemmas = useMemo(() => duplicatedLemmas(base.words), [base.words])
   const V = useMemo<VocabData>(() => ({
     ...base,
     // content() enforces the fingerprint: a gloss whose English was edited since falls back.
-    gloss: (w: BgvbWord) => content(glosses, `vocab.gloss.${lang}.${w.word.normalize('NFC')}`, w.gloss),
-  }), [base, glosses, lang])
+    gloss: (w: BgvbWord) => content(glosses, glossKey(lang, w.word, w.gloss, dupLemmas), w.gloss),
+  }), [base, glosses, lang, dupLemmas])
   const [tab, setTab] = useState<Tab>('study')
   const [progress, setProgress] = useState<ProgressMap>({})
   const [config, setConfig] = useState<StudyConfig>(() => defaultConfig(V))

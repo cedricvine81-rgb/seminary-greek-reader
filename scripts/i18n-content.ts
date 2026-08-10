@@ -104,12 +104,24 @@ export function vocabItems(): Item[] {
   for (const [deck, file] of [['greek', 'src/data/bgvb-vocabulary.json'],
                               ['hebrew', 'src/data/hebrew-vocabulary.json']] as const) {
     const words = JSON.parse(fs.readFileSync(file, 'utf8')) as { word: string; gloss: string }[]
+    // HOMOGRAPHS. 19 Hebrew lemmas appear twice with unrelated senses — אֵת is both the
+    // direct-object marker and "with"; עָנָה is both "answer" and "afflict". Keyed by lemma
+    // alone they collide, and only one sense of each pair could ever be translated: the other
+    // would fall back to English while the catalogue looked complete. So a lemma that occurs
+    // more than once takes the fingerprint of its English as a suffix — derived from the deck,
+    // stable across rebuilds, and not positional.
+    const seen = new Map<string, number>()
+    for (const w of words) seen.set(w.word.normalize('NFC'), (seen.get(w.word.normalize('NFC')) ?? 0) + 1)
     for (const w of words) {
       if (!w.gloss?.trim()) continue
       // NFC-normalise the lemma. The decks store some words with OXIA (U+1F77) where NFC uses
       // TONOS (U+03AF) — canonically equivalent, different code points — so a key typed by hand
       // would silently fail to match and the gloss would stay English with nothing reported.
-      items.push({ key: `vocab.gloss.${deck}.${w.word.normalize('NFC')}`, english: w.gloss, bucket: deck })
+      const lemma = w.word.normalize('NFC')
+      const key = (seen.get(lemma) ?? 0) > 1
+        ? `vocab.gloss.${deck}.${lemma}~${fingerprint(w.gloss)}`
+        : `vocab.gloss.${deck}.${lemma}`
+      items.push({ key, english: w.gloss, bucket: deck })
     }
   }
   return items

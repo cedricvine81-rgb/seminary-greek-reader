@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { content, NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
+import { glossKey, duplicatedLemmas } from '@/lib/vocab-gloss-key'
 
 /**
  * The deck gloss in a given language, resolved on the SERVER so a quiz's answer key can be
@@ -43,6 +44,11 @@ export function glossResolver(
 ): (word: string, english: string) => string {
   const cat = catalogue(locale, deck)
   if (cat === NO_CONTENT) return (_w, english) => english
-  // Same NFC normalisation as the build and the client — see vocabItems() in i18n-content.
-  return (word, english) => content(cat, `vocab.gloss.${deck}.${word.normalize('NFC')}`, english)
+  const file = deck === 'greek' ? 'bgvb-vocabulary.json' : 'hebrew-vocabulary.json'
+  const words = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'src', 'data', file), 'utf8'),
+  ) as { word: string }[]
+  const dup = duplicatedLemmas(words)
+  // Key built by the shared helper, so build, client and server cannot drift apart.
+  return (word, english) => content(cat, glossKey(deck, word, english, dup), english)
 }
