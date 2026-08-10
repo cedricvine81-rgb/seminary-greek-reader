@@ -1969,5 +1969,15 @@
   "parsing.le.aorist-indicative": "Todos los aoristos activos de indicativo — la columna vertebral narrativa de los Evangelios",
   "parsing.le.present-participle": "Todos los participios de presente — el híbrido de seis casillas",
   "parsing.le.infinitive": "Todos los infinitivos — sin persona, sin número",
-  "parsing.le.vocative": "Todos los vocativos — llamada directa y oración"
+  "parsing.le.vocative": "Todos los vocativos — llamada directa y oración",
+  "conditionals.q.first": "{εἰ} + indicativo presente",
+  "conditionals.q.second": "{εἰ} + indicativo aoristo … {ἄν}",
+  "conditionals.q.third": "{ἐάν} + subjuntivo",
+  "conditionals.q.indefinite": "{ὃς ἄν} + subjuntivo",
+  "subjunctives.q.prohibition": "{μή} + subj. aoristo",
+  "conj-adv.n.euthys": "La palabra preferida de Marcos.",
+  "demonstratives.n.hautai": "Espíritu áspero — no αὐταί («ellas»).",
+  "deponents.n.erchetai": "«Viene» — ἔρχομαι no tiene forma activa.",
+  "deponents.n.luetai": "«Está siendo desatado».",
+  "deponents.n.graphetai": "«Está escrito»."
 }

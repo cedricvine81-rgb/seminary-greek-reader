@@ -56,10 +56,10 @@ export const CONJUNCTIONS_CONTENT = (
       intro={<Tr id="conditionals.intro.read-conjunction-mood">Read the conjunction + mood before anything else.</Tr>}
       options={["First class — εἰ + indicative (assumed true)", "Second class — εἰ + past indicative … ἄν (contrary to fact)", "Third class — ἐάν + subjunctive (open)", "Indefinite relative — ὃς ἄν + subjunctive (\"whoever\")"]}
       items={[
-        { q: <span className="normal-case">εἰ + present indicative</span>, answer: "First class — εἰ + indicative (assumed true)" },
-        { q: <span className="normal-case">εἰ + aorist indicative … ἄν</span>, answer: "Second class — εἰ + past indicative … ἄν (contrary to fact)" },
-        { q: <span className="normal-case">ἐάν + subjunctive</span>, answer: "Third class — ἐάν + subjunctive (open)" },
-        { q: <span className="normal-case">ὃς ἄν + subjunctive</span>, answer: "Indefinite relative — ὃς ἄν + subjunctive (\"whoever\")" },
+        { q: <Tr id="conditionals.q.first"><span className="normal-case">εἰ</span> + present indicative</Tr>, answer: "First class — εἰ + indicative (assumed true)" },
+        { q: <Tr id="conditionals.q.second"><span className="normal-case">εἰ</span> + aorist indicative … <span className="normal-case">ἄν</span></Tr>, answer: "Second class — εἰ + past indicative … ἄν (contrary to fact)" },
+        { q: <Tr id="conditionals.q.third"><span className="normal-case">ἐάν</span> + subjunctive</Tr>, answer: "Third class — ἐάν + subjunctive (open)" },
+        { q: <Tr id="conditionals.q.indefinite"><span className="normal-case">ὃς ἄν</span> + subjunctive</Tr>, answer: "Indefinite relative — ὃς ἄν + subjunctive (\"whoever\")" },
       ]}
     />
 

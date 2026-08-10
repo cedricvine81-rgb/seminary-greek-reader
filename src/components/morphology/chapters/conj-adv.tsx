@@ -185,7 +185,7 @@ export const CONJ_ADV_CONTENT = (
         { q: <span className="normal-case">τότε</span>, answer: "then" },
         { q: <span className="normal-case">ἐκεῖ</span>, answer: "there" },
         { q: <span className="normal-case">πάλιν</span>, answer: "again" },
-        { q: <span className="normal-case">εὐθύς</span>, answer: "immediately", note: <>Mark’s favourite word.</> },
+        { q: <span className="normal-case">εὐθύς</span>, answer: "immediately", note: <Tr id="conj-adv.n.euthys">Mark’s favourite word.</Tr> },
         { q: <span className="normal-case">ὧδε</span>, answer: "here" },
       ]}
     />

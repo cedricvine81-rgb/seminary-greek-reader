@@ -135,7 +135,7 @@ export const SUBJUNCTIVES_CONTENT = (
         { q: <span className="normal-case">ἐάν</span>, answer: "Condition — \"if (maybe)\"" },
         { q: <span className="normal-case">ὃς ἄν</span>, answer: "\"Whoever\"" },
         { q: <span className="normal-case">ὅταν</span>, answer: "\"Whenever\"" },
-        { q: <span className="normal-case">μή + aorist subj.</span>, answer: "Prohibition — \"do not\"" },
+        { q: <Tr id="subjunctives.q.prohibition"><span className="normal-case">μή</span> + aorist subj.</Tr>, answer: "Prohibition — \"do not\"" },
         { q: <span className="normal-case">οὐ μή</span>, answer: "Emphatic denial — \"never\"" },
       ]}
     />

@@ -108,10 +108,10 @@ export const DEPONENTS_CONTENT = (
       intro={<Tr id="deponents.intro.middle-passive-form">Middle/passive form; does the verb have an active form in use?</Tr>}
       options={["Deponent — translate as active", "Ordinary middle/passive"]}
       items={[
-        { q: <span className="normal-case">ἔρχεται</span>, answer: "Deponent — translate as active", note: <>"He comes" — ἔρχομαι has no active form.</> },
-        { q: <span className="normal-case">λύεται</span>, answer: "Ordinary middle/passive", note: <>"He is being loosed."</> },
+        { q: <span className="normal-case">ἔρχεται</span>, answer: "Deponent — translate as active", note: <Tr id="deponents.n.erchetai">"He comes" — ἔρχομαι has no active form.</Tr> },
+        { q: <span className="normal-case">λύεται</span>, answer: "Ordinary middle/passive", note: <Tr id="deponents.n.luetai">"He is being loosed."</Tr> },
         { q: <span className="normal-case">δέχονται</span>, answer: "Deponent — translate as active" },
-        { q: <span className="normal-case">γράφεται</span>, answer: "Ordinary middle/passive", note: <>"It is written."</> },
+        { q: <span className="normal-case">γράφεται</span>, answer: "Ordinary middle/passive", note: <Tr id="deponents.n.graphetai">"It is written."</Tr> },
         { q: <span className="normal-case">πορεύονται</span>, answer: "Deponent — translate as active" },
         { q: <span className="normal-case">ἀποκρίνεται</span>, answer: "Deponent — translate as active" },
       ]}

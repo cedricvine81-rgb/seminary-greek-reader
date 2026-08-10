@@ -100,7 +100,7 @@ export const DEMONSTRATIVES_CONTENT = (
         { q: <span className="normal-case">τούτοις</span>, answer: "Dat Pl Masc/Neut — \"to these\"" },
         { q: <span className="normal-case">ἐκεῖνα</span>, answer: "Nom/Acc Pl Neut — \"those (things)\"" },
         { q: <span className="normal-case">τοῦτον</span>, answer: "Acc Sg Masc — \"this\"" },
-        { q: <span className="normal-case">αὗται</span>, answer: "Nom Pl Fem — \"these\"", note: <>Rough breathing — not αὐταί ("they").</> },
+        { q: <span className="normal-case">αὗται</span>, answer: "Nom Pl Fem — \"these\"", note: <Tr id="demonstratives.n.hautai">Rough breathing — not αὐταί ("they").</Tr> },
         { q: <span className="normal-case">ἐκείνῳ</span>, answer: "Dat Sg Masc/Neut — \"to that\"" },
       ]}
     />
