@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { Check, ChevronRight, ChevronDown, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
@@ -10,6 +11,23 @@ import {
   ALL_SUBSECTION_KEYS,
 } from '@/lib/vocab-subsections'
 import type { Subsection } from '@/lib/vocab-subsections'
+
+/**
+ * Band labels via LITERAL t() keys, not `t(`vocab.band.${band}.short`)`. A template-literal key
+ * is invisible to `npm run i18n:keys`, so a missing one would print the key on screen with every
+ * check green — the exact failure that guard exists to catch.
+ */
+function useBandLabels() {
+  const t = useT()
+  return {
+    name: (b: string) => b === 'BEGINNING' ? t('vocab.band.BEGINNING.name')
+      : b === 'INTERMEDIATE' ? t('vocab.band.INTERMEDIATE.name') : t('vocab.band.BEYOND.name'),
+    short: (b: string) => b === 'BEGINNING' ? t('vocab.band.BEGINNING.short')
+      : b === 'INTERMEDIATE' ? t('vocab.band.INTERMEDIATE.short') : t('vocab.band.BEYOND.short'),
+    freq: (b: string) => b === 'BEGINNING' ? t('vocab.band.BEGINNING.freq')
+      : b === 'INTERMEDIATE' ? t('vocab.band.INTERMEDIATE.freq') : t('vocab.band.BEYOND.freq'),
+  }
+}
 
 // ── Local Checkbox ────────────────────────────────────────────────────────────
 
@@ -50,6 +68,8 @@ export function FrequencySectionPicker({
   selectedSubsections,
   onChange,
 }: FrequencySectionPickerProps) {
+  const t = useT()
+  const bandL = useBandLabels()
   const [expandedSections, setExpandedSections] = useState<number[]>(ALL_SECTIONS)
   const [listSubKey, setListSubKey] = useState<string | null>(null)
   const [subListMode, setSubListMode] = useState<Record<string, SectionListMode>>({})
@@ -91,7 +111,7 @@ export function FrequencySectionPicker({
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
-          Frequency Sections
+          {t('vocab.frequencySections')}
         </p>
         <div className="flex gap-3">
           <button
@@ -99,14 +119,14 @@ export function FrequencySectionPicker({
             onClick={() => onChange([...ALL_SUBSECTION_KEYS])}
             className="text-sm text-gray-700 hover:underline font-medium"
           >
-            All
+            {t('action.all')}
           </button>
           <button
             type="button"
             onClick={() => onChange([])}
             className="text-sm text-gray-500 hover:text-gray-700"
           >
-            Clear
+            {t('action.clear')}
           </button>
         </div>
       </div>
@@ -116,7 +136,7 @@ export function FrequencySectionPicker({
       <div className="flex flex-wrap items-center gap-2 mb-3">
         {BAND_LEGEND.map(b => (
           <span key={b.band} className={clsx('text-xs px-2 py-0.5 rounded-full border', b.chip)}>
-            {b.name} · {b.freq}
+            {bandL.name(b.band)} · {bandL.freq(b.band)}
           </span>
         ))}
       </div>
@@ -144,14 +164,14 @@ export function FrequencySectionPicker({
                   onChange={() => toggleSection(s)}
                 />
                 <div className="flex-1 min-w-0">
-                  <span className="text-base font-medium text-gray-900">Section §{s}</span>
+                  <span className="text-base font-medium text-gray-900">{t('vocab.sectionN', { n: s })}</span>
                   <span className={clsx('text-xs px-2 py-0.5 rounded-full border ml-2 align-middle', band.chip)}>
-                    {band.short}
+                    {bandL.short(band.band)}
                   </span>
                   <span className="text-sm text-gray-500 ml-2">
-                    {subs.reduce((n, sub) => n + sub.words.length, 0)} words
+                    {t('vocab.wordCount', { n: subs.reduce((n, sub) => n + sub.words.length, 0) })}
                     {sectionRange && <> · {sectionRange}</>}
-                    {' '}· up to {coverage}% GNT
+                    {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: 'GNT' })}
                   </span>
                 </div>
                 <button

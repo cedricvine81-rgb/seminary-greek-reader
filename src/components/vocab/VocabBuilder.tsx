@@ -1,5 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect, createContext, useContext, type ReactNode } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import Link from 'next/link'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen, FileText } from 'lucide-react'
 import { clsx } from 'clsx'
@@ -7,6 +8,23 @@ import { sm2 } from '@/lib/spaced-repetition'
 import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
 import bgvbData from '@/data/bgvb-vocabulary.json'
 import hebrewData from '@/data/hebrew-vocabulary.json'
+
+/**
+ * Band labels via LITERAL t() keys, not `t(`vocab.band.${band}.short`)`. A template-literal key
+ * is invisible to `npm run i18n:keys`, so a missing one would print the key on screen with every
+ * check green — the exact failure that guard exists to catch.
+ */
+function useBandLabels() {
+  const t = useT()
+  return {
+    name: (b: string) => b === 'BEGINNING' ? t('vocab.band.BEGINNING.name')
+      : b === 'INTERMEDIATE' ? t('vocab.band.INTERMEDIATE.name') : t('vocab.band.BEYOND.name'),
+    short: (b: string) => b === 'BEGINNING' ? t('vocab.band.BEGINNING.short')
+      : b === 'INTERMEDIATE' ? t('vocab.band.INTERMEDIATE.short') : t('vocab.band.BEYOND.short'),
+    freq: (b: string) => b === 'BEGINNING' ? t('vocab.band.BEGINNING.freq')
+      : b === 'INTERMEDIATE' ? t('vocab.band.INTERMEDIATE.freq') : t('vocab.band.BEYOND.freq'),
+  }
+}
 
 export type VocabLang = 'greek' | 'hebrew'
 
@@ -75,11 +93,10 @@ function shuffled<T>(arr: T[]): T[] {
   return a
 }
 
-const POS_LABELS: Record<string, string> = {
-  Verb: 'Verb', Noun: 'Noun', Adj: 'Adjective', Adv: 'Adverb',
-  Prep: 'Preposition', Conj: 'Conjunction', Pron: 'Pronoun',
-  Art: 'Article', Interj: 'Interjection', Particle: 'Particle',
-}
+// Part-of-speech tags are DATA (they key off the corpus's own abbreviations), so the label is
+// resolved at render through posLabel() rather than being baked in here.
+const POS_KEYS = ['Verb', 'Noun', 'Adj', 'Adv', 'Prep', 'Conj', 'Pron', 'Art', 'Interj', 'Particle'] as const
+const posLabelKey = (pos: string) => (POS_KEYS as readonly string[]).includes(pos) ? `pos.${pos}` : null
 
 // ── Per-language vocabulary datasets ──────────────────────────────────────────
 // The Greek (Biblical Greek Vocabulary Builder) and Hebrew (frequency-ranked from the MT,
@@ -213,6 +230,7 @@ function filterWords(config: StudyConfig, V: VocabData): BgvbWord[] {
 // ── Main component ───────────────────────────────────────────────────────────
 
 export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLang; onLangChange?: (l: VocabLang) => void }) {
+  const t = useT()
   // The active deck. VocabBuilder is remounted (key={lang}) when the language switches, so
   // per-language state (config, session, progress) simply starts fresh — no cross-over.
   const V = VOCAB[lang]
@@ -324,8 +342,8 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
   }
 
   const TABS = [
-    { id: 'study'  as Tab, label: 'Study',  action: () => setTab('study') },
-    { id: 'browse' as Tab, label: 'Browse', action: () => setTab('browse') },
+    { id: 'study'  as Tab, label: t('vocab.study'),  action: () => setTab('study') },
+    { id: 'browse' as Tab, label: t('vocab.browse'), action: () => setTab('browse') },
   ]
 
   return (
@@ -357,14 +375,14 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
             className="ml-auto mr-1 inline-flex items-center gap-1.5 text-sm text-brand-700 hover:underline"
           >
             <FileText size={15} />
-            <span className="hidden sm:inline">Printable word list</span>
-            <span className="sm:hidden">Word list</span>
+            <span className="hidden sm:inline">{t('vocab.printableWordList')}</span>
+            <span className="sm:hidden">{t('vocab.wordList')}</span>
           </a>
         )}
 
         {onLangChange && (
           <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
-            {([['greek', 'Greek'], ['hebrew', 'Hebrew']] as const).map(([id, label]) => (
+            {([['greek', t('vocab.langGreek')], ['hebrew', t('vocab.langHebrew')]] as const).map(([id, label]) => (
               <button
                 key={id}
                 onClick={() => onLangChange(id)}
@@ -451,6 +469,7 @@ function FlashcardPlayer({
   onRestart: () => void
   onStudyMissed: () => void
 }) {
+  const t = useT()
   const V = useVocab()
   // Keyboard shortcuts (the desktop controls): ← / → move to the previous / next card,
   // ↑ reveals the translation and ↓ hides it (script only). Enter/Space still flip, and 1/2/3
@@ -474,8 +493,8 @@ function FlashcardPlayer({
   if (sessionWords.length === 0) {
     return (
       <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
-        <p className="text-xl font-semibold text-gray-700">No cards match</p>
-        <p className="text-gray-600 text-sm">Try selecting different sections or parts of speech.</p>
+        <p className="text-xl font-semibold text-gray-700">{t('vocab.noCardsMatch')}</p>
+        <p className="text-gray-600 text-sm">{t('vocab.noCardsHint')}</p>
         <button onClick={onGoBack} className="btn bg-surface border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm mt-2">← Back to settings</button>
       </div>
     )
@@ -492,7 +511,7 @@ function FlashcardPlayer({
     return (
       <div className="max-w-lg mx-auto py-12 space-y-6">
         <div className="text-center space-y-1">
-          <p className="text-2xl font-bold text-gray-700">Session Complete</p>
+          <p className="text-2xl font-bold text-gray-700">{t('vocab.sessionComplete')}</p>
           <p className="text-6xl font-bold text-gray-900 py-2">{pct}%</p>
           <p className="text-gray-500 text-sm">
             {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} missed · {sessionStats.total} attempts
@@ -517,7 +536,7 @@ function FlashcardPlayer({
 
         <div className="flex gap-2 flex-wrap">
           <button className="btn bg-surface border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={onGoBack}>← Return</button>
-          <button className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onRestart}>Review again</button>
+          <button className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onRestart}>{t('vocab.reviewAgain')}</button>
           {missedWords.length > 0 && (
             <button className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onStudyMissed}>
               Study missed ({missedWords.length})
@@ -574,7 +593,7 @@ function FlashcardPlayer({
           role="button"
           tabIndex={0}
           onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onFlip()}
-          aria-label="Flip card"
+          aria-label={t('vocab.flipCard')}
         >
           {/* One card, one layout: the front term stays locked in place and the translation
               simply fades in below it (its space is always reserved, so nothing shifts). Primary
@@ -590,7 +609,7 @@ function FlashcardPlayer({
               ) : (
                 <>
                   <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                  <p className="text-sm text-gray-500">{POS_LABELS[word.pos] ?? word.pos}</p>
+                  <p className="text-sm text-gray-500">{posLabelKey(word.pos) ? t(posLabelKey(word.pos)!) : word.pos}</p>
                 </>
               )}
               {/* Back — space always reserved; fades in on reveal */}
@@ -599,7 +618,7 @@ function FlashcardPlayer({
                 {greekFirst ? (
                   <>
                     <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                    <p className="text-sm text-gray-500">{POS_LABELS[word.pos] ?? word.pos}</p>
+                    <p className="text-sm text-gray-500">{posLabelKey(word.pos) ? t(posLabelKey(word.pos)!) : word.pos}</p>
                   </>
                 ) : (
                   <>
@@ -614,8 +633,8 @@ function FlashcardPlayer({
               <span className="lg:hidden">{flipped ? `Tap for ${V.scriptName} only` : 'Tap to reveal'}</span>
               <span className="hidden lg:inline">
                 {flipped
-                  ? <><span className="font-medium">↓</span> {V.scriptName} only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</>
-                  : <><span className="font-medium">↑</span> reveal · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</>}
+                  ? <><span className="font-medium">↓</span> {V.scriptName} {t('vocab.hintOnly')} · <span className="font-medium">←</span> {t('vocab.hintBack')} · <span className="font-medium">→</span> {t('vocab.hintNext')}</>
+                  : <><span className="font-medium">↑</span> {t('vocab.hintReveal')} · <span className="font-medium">←</span> {t('vocab.hintBack')} · <span className="font-medium">→</span> {t('vocab.hintNext')}</>}
               </span>
             </p>
           </div>
@@ -628,19 +647,19 @@ function FlashcardPlayer({
             onClick={() => onAdvance(4)}
             className="py-3 text-sm font-semibold rounded-lg bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 transition-colors"
           >
-            Got it
+            {t('vocab.gotIt')}
           </button>
           <button
             onClick={() => onAdvance(1)}
             className="py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
           >
-            Again
+            {t('vocab.again')}
           </button>
           <button
             onClick={() => onAdvance(3)}
             className="py-2.5 text-xs font-medium rounded-lg bg-surface text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
           >
-            Hard
+            {t('vocab.hard')}
           </button>
         </div>
       </div>
@@ -678,6 +697,7 @@ function Checkbox({ checked, indeterminate = false, onChange }: { checked: boole
 type QuizDir = 'greek-to-english' | 'english-to-greek'
 
 function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => void }) {
+  const t = useT()
   const V = useVocab()
   const [dir, setDir] = useState<QuizDir>('greek-to-english')
   const [qIdx, setQIdx] = useState(0)
@@ -705,7 +725,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
   useEffect(() => { setQIdx(0); setChosen(null); setCorrect(0) }, [dir])
 
   if (words.length === 0) {
-    return <ModeShell title="Multiple Choice" onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">No words selected.</p></ModeShell>
+    return <ModeShell title={t('vocab.multipleChoice')} onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">{t('vocab.noWordsSelected')}</p></ModeShell>
   }
 
   const showWord = (w: BgvbWord) => (
@@ -716,13 +736,13 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
   if (qIdx >= questions.length) {
     const pct = Math.round((correct / questions.length) * 100)
     return (
-      <ModeShell title="Multiple Choice" onGoBack={onGoBack}>
+      <ModeShell title={t('vocab.multipleChoice')} onGoBack={onGoBack}>
         <div className="max-w-md mx-auto py-12 text-center space-y-4">
-          <p className="text-2xl font-bold text-gray-700">Quiz complete</p>
+          <p className="text-2xl font-bold text-gray-700">{t('vocab.quizComplete')}</p>
           <p className="text-6xl font-bold text-gray-900">{pct}%</p>
           <p className="text-sm text-gray-500">{correct} of {questions.length} correct</p>
           <button onClick={() => { setQIdx(0); setChosen(null); setCorrect(0) }}
-            className="btn btn-primary px-6 py-2">Try again</button>
+            className="btn btn-primary px-6 py-2">{t('action.tryAgain')}</button>
         </div>
       </ModeShell>
     )
@@ -737,7 +757,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
   }
 
   return (
-    <ModeShell title="Multiple Choice" onGoBack={onGoBack}
+    <ModeShell title={t('vocab.multipleChoice')} onGoBack={onGoBack}
       right={<span className="text-sm text-gray-500 tabular-nums">{qIdx + 1} / {questions.length} · {correct} correct</span>}>
       <div className="flex justify-center mb-4">
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1 text-xs">
@@ -758,7 +778,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
           <p className="text-3xl leading-snug text-gray-900" dir={promptIsWord && V.rtl ? 'rtl' : undefined}>
             {promptIsWord
               ? <span className={V.scriptClass}>{q.word.word}</span>
-              : <>{q.word.gloss} <span className="text-sm text-gray-400">({POS_LABELS[q.word.pos] ?? q.word.pos})</span></>}
+              : <>{q.word.gloss} <span className="text-sm text-gray-400">({posLabelKey(q.word.pos) ? t(posLabelKey(q.word.pos)!) : q.word.pos})</span></>}
           </p>
         </div>
 
@@ -785,7 +805,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
         {chosen && (
           <div className="flex justify-end">
             <button onClick={() => { setChosen(null); setQIdx(i => i + 1) }} className="btn btn-primary px-6 py-2">
-              {qIdx + 1 >= questions.length ? 'See results' : 'Next'} <ChevronRight size={16} />
+              {qIdx + 1 >= questions.length ? t('vocab.seeResults') : t('action.next')} <ChevronRight size={16} />
             </button>
           </div>
         )}
@@ -802,6 +822,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
 interface SentenceItem { ref: string; tokens: string[]; targets: number[]; rtl: boolean; loc?: { book: string; chapter: number; verse: number } | null }
 
 function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: VocabLang; onGoBack: () => void }) {
+  const t = useT()
   const V = useVocab()
   const [qIdx, setQIdx] = useState(0)
   const [item, setItem] = useState<SentenceItem | null | 'loading' | 'none'>('loading')
@@ -845,18 +866,18 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
   }, [picked, item])
 
   if (words.length === 0) {
-    return <ModeShell title="Identify the word" onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">No words selected.</p></ModeShell>
+    return <ModeShell title={t('vocab.identifyWord')} onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">{t('vocab.noWordsSelected')}</p></ModeShell>
   }
 
   if (qIdx >= words.length) {
     const pct = asked > 0 ? Math.round((correct / asked) * 100) : 0
     return (
-      <ModeShell title="Identify the word" onGoBack={onGoBack}>
+      <ModeShell title={t('vocab.identifyWord')} onGoBack={onGoBack}>
         <div className="max-w-md mx-auto py-12 text-center space-y-4">
-          <p className="text-2xl font-bold text-gray-700">Done</p>
+          <p className="text-2xl font-bold text-gray-700">{t('action.done')}</p>
           <p className="text-6xl font-bold text-gray-900">{pct}%</p>
           <p className="text-sm text-gray-500">{correct} of {asked} correct{asked < words.length ? ` · ${words.length - asked} had no example` : ''}</p>
-          <button onClick={() => { setQIdx(0); setCorrect(0); setAsked(0) }} className="btn btn-primary px-6 py-2">Start over</button>
+          <button onClick={() => { setQIdx(0); setCorrect(0); setAsked(0) }} className="btn btn-primary px-6 py-2">{t('action.startOver')}</button>
         </div>
       </ModeShell>
     )
@@ -871,22 +892,22 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
   }
 
   return (
-    <ModeShell title="Identify the word" onGoBack={onGoBack}
+    <ModeShell title={t('vocab.identifyWord')} onGoBack={onGoBack}
       right={<span className="text-sm text-gray-500 tabular-nums">{qIdx + 1} / {words.length} · {correct}/{asked}</span>}>
       <div className="max-w-2xl mx-auto space-y-5">
         {/* Clue: given this English meaning, click the matching word in the verse below. */}
         <div className="text-center">
-          <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Which word means</p>
+          <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">{t('vocab.whichWordMeans')}</p>
           <p className="text-2xl font-semibold text-gray-900">
-            {word.gloss} <span className="text-sm font-normal text-gray-400">({POS_LABELS[word.pos] ?? word.pos})</span>
+            {word.gloss} <span className="text-sm font-normal text-gray-400">({posLabelKey(word.pos) ? t(posLabelKey(word.pos)!) : word.pos})</span>
           </p>
         </div>
 
         {item === 'loading' ? (
-          <p className="py-10 text-center text-sm text-gray-400">Finding a sentence…</p>
+          <p className="py-10 text-center text-sm text-gray-400">{t('vocab.findingSentence')}</p>
         ) : item === 'none' || !item ? (
           <div className="py-10 text-center space-y-3">
-            <p className="text-sm text-gray-400">No example sentence available for this word.</p>
+            <p className="text-sm text-gray-400">{t('vocab.noExampleSentence')}</p>
             <button onClick={next} className="btn btn-primary px-6 py-2">Skip <ChevronRight size={16} /></button>
           </div>
         ) : (
@@ -915,7 +936,7 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
             {/* Before answering: a hint. After: a reveal panel grouping the result, the verse
                 translation, and its reference (which deep-links into the Reader). */}
             {picked == null ? (
-              <p className="text-center text-sm text-gray-400 italic">Click the word above that matches the meaning.</p>
+              <p className="text-center text-sm text-gray-400 italic">{t('vocab.clickMatchingWord')}</p>
             ) : (
               <div className="rounded-2xl border border-gray-200 bg-surface p-4">
                 <div className="flex items-center gap-2">
@@ -923,7 +944,7 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
                     ? <CheckCircle2 size={18} className="flex-none text-green-600" />
                     : <XCircle size={18} className="flex-none text-red-600" />}
                   <span className={clsx('text-base font-semibold', item.targets.includes(picked) ? 'text-green-700' : 'text-red-700')}>
-                    {item.targets.includes(picked) ? 'Correct!' : 'Not quite — the answer is highlighted.'}
+                    {item.targets.includes(picked) ? t('vocab.correct') : t('vocab.notQuite')}
                   </span>
                 </div>
 
@@ -941,7 +962,7 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
                     </Link>
                   )}
                   <button onClick={next} className="btn btn-primary px-6 py-2 flex-none">
-                    {qIdx + 1 >= words.length ? 'See results' : 'Next'} <ChevronRight size={16} />
+                    {qIdx + 1 >= words.length ? t('vocab.seeResults') : t('action.next')} <ChevronRight size={16} />
                   </button>
                 </div>
               </div>
@@ -980,6 +1001,8 @@ function StudySettings({
   cardCount: number
   onStart: (mode: LaunchMode) => void
 }) {
+  const t = useT()
+  const bandL = useBandLabels()
   const V = useVocab()
   const isGreek = V.scriptName === 'Greek'
   const [expandedSections, setExpandedSections] = useState<number[]>(V.sections)
@@ -1038,7 +1061,7 @@ function StudySettings({
       {disabled ? (
         <button disabled
           className="w-full btn bg-surface border border-gray-300 text-gray-400 py-4 text-lg justify-center opacity-60 cursor-not-allowed">
-          No cards match — adjust filters
+          {t('vocab.noCardsAdjust')}
         </button>
       ) : (
         <div className="grid grid-cols-3 gap-2">
@@ -1046,21 +1069,21 @@ function StudySettings({
             onClick={() => onStart('flashcards')}
             className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-base sm:text-lg justify-center"
           >
-            Flashcards
+            {t('vocab.flashcards')}
           </button>
           <button
             onClick={() => onStart('test')}
-            title="Multiple-choice quiz on the selected words"
+            title={t('vocab.mcTooltip')}
             className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-base sm:text-lg justify-center"
           >
-            Multiple Choice
+            {t('vocab.multipleChoice')}
           </button>
           <button
             onClick={() => onStart('identify')}
-            title="Find the word in a real sentence that matches the given meaning"
+            title={t('vocab.identifyTooltip')}
             className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-base sm:text-lg justify-center"
           >
-            Identify the word
+            {t('vocab.identifyWord')}
           </button>
         </div>
       )}
@@ -1071,19 +1094,19 @@ function StudySettings({
         {/* Frequency Sections */}
         <div className="p-5">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">Frequency Sections</p>
+            <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{t('vocab.frequencySections')}</p>
             <div className="flex gap-3">
               <button
                 onClick={() => onChange({ ...config, subsections: [...V.allSubsectionKeys] })}
                 className="text-sm text-gray-700 hover:underline font-medium"
               >
-                All
+                {t('action.all')}
               </button>
               <button
                 onClick={() => onChange({ ...config, subsections: [] })}
                 className="text-sm text-gray-500 hover:text-gray-700"
               >
-                Clear
+                {t('action.clear')}
               </button>
             </div>
           </div>
@@ -1097,7 +1120,7 @@ function StudySettings({
                   key={b.band}
                   className={clsx('text-xs px-2 py-0.5 rounded-full border', b.chip)}
                 >
-                  {b.name} · {b.freq}
+                  {bandL.name(b.band)} · {bandL.freq(b.band)}
                 </span>
               ))}
             </div>
@@ -1129,16 +1152,16 @@ function StudySettings({
                       onChange={() => toggleSection(s)}
                     />
                     <div className="flex-1 min-w-0">
-                      <span className="text-base font-medium text-gray-900">Section §{s}</span>
+                      <span className="text-base font-medium text-gray-900">{t('vocab.sectionN', { n: s })}</span>
                       {band && (
                         <span className={clsx('text-xs px-2 py-0.5 rounded-full border ml-2 align-middle', band.chip)}>
-                          {band.short}
+                          {bandL.short(band.band)}
                         </span>
                       )}
                       <span className="text-sm text-gray-500 ml-2">
-                        {subs.reduce((n, sub) => n + sub.words.length, 0)} words
+                        {t('vocab.wordCount', { n: subs.reduce((n, sub) => n + sub.words.length, 0) })}
                         {sectionRange && <> · {sectionRange}</>}
-                        {' '}· up to {coverage}% of {V.corpusLabel}
+                        {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: V.corpusLabel })}
                       </span>
                     </div>
                     <button
@@ -1288,10 +1311,10 @@ function StudySettings({
         {/* Part of Speech */}
         <div className="p-5">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">Part of Speech</p>
+            <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{t('vocab.partOfSpeech')}</p>
             <div className="flex gap-3">
-              <button onClick={() => onChange({ ...config, pos: [...V.allPos] })} className="text-sm text-gray-700 hover:underline font-medium">All</button>
-              <button onClick={() => onChange({ ...config, pos: [] })} className="text-sm text-gray-500 hover:text-gray-700">Clear</button>
+              <button onClick={() => onChange({ ...config, pos: [...V.allPos] })} className="text-sm text-gray-700 hover:underline font-medium">{t('action.all')}</button>
+              <button onClick={() => onChange({ ...config, pos: [] })} className="text-sm text-gray-500 hover:text-gray-700">{t('action.clear')}</button>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-2">
@@ -1314,7 +1337,7 @@ function StudySettings({
                   )}>
                     {isSelected && <Check size={11} className="text-gray-700" strokeWidth={3} />}
                   </div>
-                  <span className="text-sm font-medium">{POS_LABELS[p] ?? p}</span>
+                  <span className="text-sm font-medium">{posLabelKey(p) ? t(posLabelKey(p)!) : p}</span>
                 </button>
               )
             })}
@@ -1329,6 +1352,7 @@ function StudySettings({
 // ── Browse view ──────────────────────────────────────────────────────────────
 
 function BrowseView({ progress }: { progress: ProgressMap }) {
+  const t = useT()
   const V = useVocab()
   const [query, setQuery] = useState('')
   const [filterSection, setFilterSection] = useState<string>('all')
@@ -1362,12 +1386,12 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
           />
         </div>
         <select value={filterSection} onChange={e => setFilterSection(e.target.value)} className="input text-sm w-auto">
-          <option value="all">All Sections</option>
+          <option value="all">{t('vocab.allSections')}</option>
           {V.sections.map(s => <option key={s} value={s}>Section {s}</option>)}
         </select>
         <select value={filterPos} onChange={e => setFilterPos(e.target.value)} className="input text-sm w-auto">
-          <option value="all">All Parts</option>
-          {V.allPos.map(p => <option key={p} value={p}>{POS_LABELS[p] ?? p}</option>)}
+          <option value="all">{t('vocab.allParts')}</option>
+          {V.allPos.map(p => <option key={p} value={p}>{posLabelKey(p) ? t(posLabelKey(p)!) : p}</option>)}
         </select>
       </div>
 
@@ -1392,7 +1416,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
               </div>
               <div className="flex flex-col items-end gap-1 shrink-0">
                 <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full">§{w.section}</span>
-                <span className="text-xs text-gray-400">{POS_LABELS[w.pos] ?? w.pos}</span>
+                <span className="text-xs text-gray-400">{posLabelKey(w.pos) ? t(posLabelKey(w.pos)!) : w.pos}</span>
                 {w.freq && <span className="text-xs text-gray-300">×{w.freq}</span>}
               </div>
             </div>
