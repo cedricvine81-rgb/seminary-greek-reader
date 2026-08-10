@@ -267,6 +267,11 @@ const en: Catalogue = {
   'reader.helpTypeTerm': 'Greek word',
   'reader.helpTypePre': 'Type a',
   'reader.helpTypeRest': 'to find every occurrence in the corpus.',
+  'help.aboutThisPage': 'About this page',
+  'help.worthKnowing': 'Worth knowing',
+  'help.otherPages': 'Other pages',
+  'action.next': 'Next',
+  'search.searchShortcut': 'Search (⌘K)',
   'msg.sentToMembers': {
     one: 'Sent to {count} group member.',
     other: 'Sent to {count} group members.',
@@ -768,6 +773,11 @@ const es: Catalogue = {
   'reader.helpTypeTerm': 'palabra griega',
   'reader.helpTypePre': 'Escribe una',
   'reader.helpTypeRest': 'para encontrar todas sus apariciones en el corpus.',
+  'help.aboutThisPage': 'Acerca de esta página',
+  'help.worthKnowing': 'Conviene saber',
+  'help.otherPages': 'Otras páginas',
+  'action.next': 'Siguiente',
+  'search.searchShortcut': 'Buscar (⌘K)',
   'msg.sentToMembers': {
     one: 'Enviado a {count} integrante del grupo.',
     other: 'Enviado a {count} integrantes del grupo.',

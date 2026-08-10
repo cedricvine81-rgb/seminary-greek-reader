@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { HelpCircle } from 'lucide-react'
 import { openPageGuide } from '@/lib/page-guide-bus'
 import { guideForPath } from '@/lib/page-guides'
@@ -14,14 +15,15 @@ import { guideForPath } from '@/lib/page-guides'
  * (which the button cannot observe — see PageGuideProvider) never changes the answer.
  */
 export function PageGuideButton() {
+  const t = useT()
   const pathname = usePathname()
   if (!guideForPath(pathname ?? '/', '')) return null
 
   return (
     <button
       onClick={() => openPageGuide()}
-      title="About this page"
-      aria-label="About this page"
+      title={t('help.aboutThisPage')}
+      aria-label={t('help.aboutThisPage')}
       className="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:text-brand-700 hover:bg-brand-50 transition-colors"
     >
       <HelpCircle size={18} />
@@ -34,6 +36,7 @@ export function PageGuideButton() {
  * button is hidden — mirroring how search is offered in both places.
  */
 export function PageGuideMenuItem({ onNavigate }: { onNavigate?: () => void }) {
+  const t = useT()
   const pathname = usePathname()
   if (!guideForPath(pathname ?? '/', '')) return null
 
@@ -42,7 +45,7 @@ export function PageGuideMenuItem({ onNavigate }: { onNavigate?: () => void }) {
       onClick={() => { onNavigate?.(); openPageGuide() }}
       className="md:hidden flex w-full items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100"
     >
-      <HelpCircle size={15} className="text-gray-400 shrink-0" /> About this page
+      <HelpCircle size={15} className="text-gray-400 shrink-0" /> {t('help.aboutThisPage')}
     </button>
   )
 }

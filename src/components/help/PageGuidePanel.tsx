@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import Link from 'next/link'
 import { X, HelpCircle, ArrowRight } from 'lucide-react'
 import { PAGE_GUIDES, EXEGESIS_GUIDE_IDS, guideById, type PageGuide } from '@/lib/page-guides'
@@ -16,6 +17,7 @@ import { openPageGuide } from '@/lib/page-guide-bus'
 const WIDTH = 420
 
 export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: () => void }) {
+  const t = useT()
   // Which Exegesis sub-guide is being read, when the panel is showing one.
   const [tabPickerOpen, setTabPickerOpen] = useState(false)
 
@@ -51,11 +53,11 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
       <div className="flex-none flex items-start justify-between gap-3 border-b border-gray-100 px-4 py-3">
         <div className="min-w-0">
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-brand-700">
-            <HelpCircle size={13} /> About this page
+            <HelpCircle size={13} /> {t('help.aboutThisPage')}
           </p>
           <h2 className="mt-0.5 text-base font-semibold text-gray-900">{guide.title}</h2>
         </div>
-        <button onClick={onClose} aria-label="Close" className="mt-0.5 shrink-0 text-gray-400 hover:text-gray-600">
+        <button onClick={onClose} aria-label={t('action.close')} className="mt-0.5 shrink-0 text-gray-400 hover:text-gray-600">
           <X size={16} />
         </button>
       </div>
@@ -73,7 +75,7 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
         {guide.gestures && guide.gestures.length > 0 && (
           <div className="rounded-xl border border-brand-200 bg-brand-50/40 px-3.5 py-3">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-2">
-              Worth knowing
+              {t('help.worthKnowing')}
             </h3>
             <ul className="space-y-2">
               {guide.gestures.map(g => (
@@ -121,7 +123,7 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
 
         {guide.related && guide.related.length > 0 && (
           <div className="border-t border-gray-100 pt-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5">Next</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5">{t('action.next')}</h3>
             <div className="space-y-0.5">
               {guide.related.map(r => (
                 <Link
@@ -139,7 +141,7 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
 
         {/* Browse the rest of the app's tools. */}
         <div className="border-t border-gray-100 pt-3">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5">Other pages</h3>
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5">{t('help.otherPages')}</h3>
           <div className="flex flex-wrap gap-1.5">
             {otherPages.map(g => (
               <button
