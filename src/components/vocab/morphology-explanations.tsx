@@ -312,14 +312,14 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
   prepositions: {
     beginning: (
       <Note>
-        <P><strong>Prepositions</strong> are little words that show relationships — direction, place, means ("into," "from," "with"). In Greek a preposition <strong>governs a case</strong>: the noun after it must be in the case that preposition requires, and the meaning depends on that case. Some take only one case; others take two or three, with a different meaning for each.</P>
-        <Eg><G>ἐν</G> + dative = "in"; <G>εἰς</G> + accusative = "into." Learn each preposition together with its case(s) and gloss.</Eg>
+        <P><T id="prepositions.exp.b.intro"><strong>Prepositions</strong> are little words that show relationships — direction, place, means ("into," "from," "with"). In Greek a preposition <strong>governs a case</strong>: the noun after it must be in the case that preposition requires, and the meaning depends on that case. Some take only one case; others take two or three, with a different meaning for each.</T></P>
+        <Eg><T id="prepositions.exp.b.eg"><G>ἐν</G> + dative = "in"; <G>εἰς</G> + accusative = "into." Learn each preposition together with its case(s) and gloss.</T></Eg>
       </Note>
     ),
     intermediate: (
       <Note>
-        <P>A rough logic underlies the cases: <strong>genitive</strong> often = motion away / source, <strong>dative</strong> = position / rest, <strong>accusative</strong> = motion toward / extent. So with a three-case preposition like <G>ἐπί</G>, the case shifts the sense (<G>ἐπί</G> + gen. "on," + dat. "at," + acc. "onto / against").</P>
-        <Hook>Where English uses "<strong>by</strong>" or "<strong>with</strong>" to show the instrument, Greek often needs <em>no preposition at all</em> — just the plain <strong>dative</strong> (<G>τῷ λόγῳ</G> = "with a word").</Hook>
+        <P><T id="prepositions.exp.i.main">A rough logic underlies the cases: <strong>genitive</strong> often = motion away / source, <strong>dative</strong> = position / rest, <strong>accusative</strong> = motion toward / extent. So with a three-case preposition like <G>ἐπί</G>, the case shifts the sense (<G>ἐπί</G> + gen. "on," + dat. "at," + acc. "onto / against").</T></P>
+        <Hook><T id="prepositions.exp.i.hook">Where English uses "<strong>by</strong>" or "<strong>with</strong>" to show the instrument, Greek often needs <em>no preposition at all</em> — just the plain <strong>dative</strong> (<G>τῷ λόγῳ</G> = "with a word").</T></Hook>
       </Note>
     ),
   },

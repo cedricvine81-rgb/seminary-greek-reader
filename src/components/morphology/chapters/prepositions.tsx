@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences, DropdownPractice, HomeworkAssignments,
+  ClassSentences, DropdownPractice, HomeworkAssignments,  Tr,
 } from '../shared'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 
@@ -19,14 +19,14 @@ export const PREPOSITIONS_CONTENT = (
   <>
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
-      <SectionHeading>Start with English: the little relationship words</SectionHeading>
-      <P>
+      <SectionHeading id="prepositions.h.start-english-little">Start with English: the little relationship words</SectionHeading>
+      <P id="prepositions.p.cat-box-cat">
         "The cat is <em>in</em> the box. The cat jumped <em>onto</em> the box. The cat came <em>out of</em> the
         box." Those little words — <em>in, onto, out of, with, from, through</em> — are
         {' '}<Term t="preposition">prepositions</Term>: they pin down the relationship (usually of place, time, or
         means) between the action and a noun. "Pre-position" is literal: they sit <em>before</em> the noun.
       </P>
-      <P>
+      <P id="prepositions.p.greek-prepositions-come">
         Greek prepositions come with one twist. Each preposition <strong>governs a case</strong> — it dictates
         which case the noun after it must wear. And some prepositions govern two or even three cases,
         <em>with a different meaning for each</em>. So a Greek preposition is really a
@@ -36,8 +36,8 @@ export const PREPOSITIONS_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · The spatial logic ──────────────────────────── */}
-    <SectionHeading>The logic behind the cases</SectionHeading>
-    <P>
+    <SectionHeading id="prepositions.h.logic-behind-cases">The logic behind the cases</SectionHeading>
+    <P id="prepositions.p.case-pairings-random">
       The case pairings are not random — they ride on the cases' own instincts, which you can picture as
       motion in a diagram: the <Term t="genitive">genitive</Term> leans toward <strong>away from / out
       of</strong> (source), the <Term t="dative">dative</Term> toward <strong>resting at</strong> (position),
@@ -46,16 +46,16 @@ export const PREPOSITIONS_CONTENT = (
     </P>
     <TableAside
       beginning={<>
-        <AsideLabel>The triangle in action</AsideLabel>
-        <Ex grc="ἐκ τοῦ οἴκου" en="out of the house (gen. — away)" />
-        <Ex grc="ἐν τῷ οἴκῳ" en="in the house (dat. — at rest)" />
-        <Ex grc="εἰς τὸν οἶκον" en="into the house (acc. — toward)" />
+        <AsideLabel><Tr id="prepositions.al.triangle-action">The triangle in action</Tr></AsideLabel>
+        <Ex grc="ἐκ τοῦ οἴκου" en={<Tr id="prepositions.ex.out-house-gen">out of the house (gen. — away)</Tr>} />
+        <Ex grc="ἐν τῷ οἴκῳ" en={<Tr id="prepositions.ex.house-dat-rest">in the house (dat. — at rest)</Tr>} />
+        <Ex grc="εἰς τὸν οἶκον" en={<Tr id="prepositions.ex.into-house-acc">into the house (acc. — toward)</Tr>} />
       </>}
       intermediate={<>
-        <p>The one-case prepositions are the purest expression of the triangle: <Gk>ἀπό/ἐκ</Gk> + gen. (away), <Gk>ἐν/σύν</Gk> + dat. (rest, accompaniment), <Gk>εἰς/πρός</Gk> + acc. (toward).</p>
+        <p><Tr id="prepositions.as.one-case-prepositions">The one-case prepositions are the purest expression of the triangle: <Gk>ἀπό/ἐκ</Gk> + gen. (away), <Gk>ἐν/σύν</Gk> + dat. (rest, accompaniment), <Gk>εἰς/πρός</Gk> + acc. (toward).</Tr></p>
       </>}
     >
-      <MorphTable flush title="One-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
+      <MorphTable id="prepositions.t1" tCols={[1, 2]} flush title="One-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
         rows={[
           ['ἀντί',    '+ genitive',   'instead of, in place of'],
           ['ἀπό',     '+ genitive',   'from, away from'],
@@ -68,21 +68,21 @@ export const PREPOSITIONS_CONTENT = (
       />
     </TableAside>
 
-    <DropdownPractice
+    <DropdownPractice id="prepositions.d1"
       title="Practice — which case follows?"
-      intro={<>The one-case prepositions are the pure triangle: away = genitive, rest = dative, toward = accusative.</>}
+      intro={<Tr id="prepositions.intro.one-case-prepositions-2">The one-case prepositions are the pure triangle: away = genitive, rest = dative, toward = accusative.</Tr>}
       options={["Genitive", "Dative", "Accusative"]}
       items={[
-        { q: <><span className="normal-case">ἀπό</span> — away from</>, answer: "Genitive" },
-        { q: <><span className="normal-case">ἐν</span> — in</>, answer: "Dative" },
-        { q: <><span className="normal-case">εἰς</span> — into</>, answer: "Accusative" },
-        { q: <><span className="normal-case">ἐκ</span> — out of</>, answer: "Genitive" },
-        { q: <><span className="normal-case">πρός</span> — toward</>, answer: "Accusative" },
-        { q: <><span className="normal-case">σύν</span> — with</>, answer: "Dative" },
+        { q: <Tr id="prepositions.q.away-from"><span className="normal-case">ἀπό</span> — away from</Tr>, answer: "Genitive" },
+        { q: <Tr id="prepositions.q.in"><span className="normal-case">ἐν</span> — in</Tr>, answer: "Dative" },
+        { q: <Tr id="prepositions.q.into"><span className="normal-case">εἰς</span> — into</Tr>, answer: "Accusative" },
+        { q: <Tr id="prepositions.q.out-of"><span className="normal-case">ἐκ</span> — out of</Tr>, answer: "Genitive" },
+        { q: <Tr id="prepositions.q.toward"><span className="normal-case">πρός</span> — toward</Tr>, answer: "Accusative" },
+        { q: <Tr id="prepositions.q.with"><span className="normal-case">σύν</span> — with</Tr>, answer: "Dative" },
       ]}
     />
 
-    <ClassSentences
+    <ClassSentences id="prepositions.cs1"
       lesson="Lesson 3 · One-case prepositions"
       items={[
         { words: [
@@ -146,22 +146,22 @@ export const PREPOSITIONS_CONTENT = (
     />
 
     {/* ── 3 · Two-case ───────────────────────────────────── */}
-    <SectionHeading>Two cases, two meanings</SectionHeading>
-    <P>
+    <SectionHeading id="prepositions.h.two-cases-two">Two cases, two meanings</SectionHeading>
+    <P id="prepositions.p.these-case-following">
       With these, the case of the following noun is not decoration — it <em>selects the meaning</em>. Before
       translating, glance past the preposition to the noun's article and ending, then choose the row.
     </P>
     <TableAside
       beginning={<>
-        <p>These take <em>two</em> cases — and the case changes the meaning. Always check the ending of the following noun.</p>
-        <Ex grc="διὰ τοῦ ἀγγέλου" en="through the messenger (gen.)" />
-        <Ex grc="διὰ τὸν ὄχλον" en="because of the crowd (acc.)" />
+        <p><Tr id="prepositions.as.these-take-two">These take <em>two</em> cases — and the case changes the meaning. Always check the ending of the following noun.</Tr></p>
+        <Ex grc="διὰ τοῦ ἀγγέλου" en={<Tr id="prepositions.ex.through-messenger-gen">through the messenger (gen.)</Tr>} />
+        <Ex grc="διὰ τὸν ὄχλον" en={<Tr id="prepositions.ex.because-crowd-acc">because of the crowd (acc.)</Tr>} />
       </>}
       intermediate={<>
-        <p>The genitive typically keeps the "source / through" sense, the accusative the "toward / because-of" sense — the same gen.-vs-acc. logic you meet everywhere.</p>
+        <p><Tr id="prepositions.as.genitive-typically-keeps">The genitive typically keeps the "source / through" sense, the accusative the "toward / because-of" sense — the same gen.-vs-acc. logic you meet everywhere.</Tr></p>
       </>}
     >
-      <MorphTable flush title="Two-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
+      <MorphTable id="prepositions.t2" tCols={[1, 2]} flush title="Two-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
         rows={[
           ['διά',  '+ genitive',  'through'],
           ['',     '+ accusative','because of'],
@@ -175,7 +175,7 @@ export const PREPOSITIONS_CONTENT = (
       />
     </TableAside>
     <LevelOnly level="beginning">
-      <P>
+      <P id="prepositions.p.pair-worth-savoring">
         A pair worth savoring: <Gk>μετὰ τῶν μαθητῶν</Gk> is "with the disciples," but
         <Gk> μετὰ τὸ σάββατον</Gk> is "after the Sabbath." Same preposition, opposite English words — the
         case did all the work.
@@ -183,15 +183,15 @@ export const PREPOSITIONS_CONTENT = (
     </LevelOnly>
 
     {/* ── 4 · Three-case ─────────────────────────────────── */}
-    <SectionHeading>The three-case prepositions</SectionHeading>
+    <SectionHeading id="prepositions.h.three-case-prepositions">The three-case prepositions</SectionHeading>
     <TableAside
       beginning={<>
-        <p>These take <em>three</em> cases — three senses. Let the case of the noun tell you which.</p>
-        <Ex grc="ἐπὶ τῆς γῆς" en="on the earth (gen.)" />
-        <Ex grc="ἐπὶ τὸ βιβλίον" en="onto the book (acc.)" />
+        <p><Tr id="prepositions.as.these-take-three">These take <em>three</em> cases — three senses. Let the case of the noun tell you which.</Tr></p>
+        <Ex grc="ἐπὶ τῆς γῆς" en={<Tr id="prepositions.ex.earth-gen">on the earth (gen.)</Tr>} />
+        <Ex grc="ἐπὶ τὸ βιβλίον" en={<Tr id="prepositions.ex.onto-book-acc">onto the book (acc.)</Tr>} />
       </>}
     >
-      <MorphTable flush title="Three-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
+      <MorphTable id="prepositions.t3" tCols={[1, 2]} flush title="Three-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
         rows={[
           ['ἐπί',  '+ genitive',  'on, over'],
           ['',     '+ dative',    'on, at'],
@@ -207,8 +207,8 @@ export const PREPOSITIONS_CONTENT = (
     </TableAside>
 
     {/* ── 5 · Compound verbs ─────────────────────────────── */}
-    <SectionHeading>Prepositions glued onto verbs</SectionHeading>
-    <P>
+    <SectionHeading id="prepositions.h.prepositions-glued-onto">Prepositions glued onto verbs</SectionHeading>
+    <P id="prepositions.p.greek-loves-welding">
       Greek loves welding a preposition onto the front of a verb to sharpen or redirect its meaning —
       exactly like English "out-run" or "over-look." <Gk>βάλλω</Gk> "I throw" + <Gk>ἐκ</Gk> "out" →
       <Gk> ἐκβάλλω</Gk> "I throw out, drive out" (what Jesus does to demons). <Gk>ἔρχομαι</Gk> "I come/go"
@@ -217,7 +217,7 @@ export const PREPOSITIONS_CONTENT = (
       noun: <Gk>εἰσέρχεται εἰς τὸν οἶκον</Gk>, "he enters into the house."
     </P>
     <LevelOnly level="intermediate">
-      <P>
+      <P id="prepositions.p.two-refinements-first">
         Two refinements. First, remember from the verb chapter that compounds take their augment
         <em>after</em> the preposition (<Gk>ἐξέβαλον</Gk>, "they cast out"). Second, compounding can
         intensify rather than redirect (<Gk>γινώσκω</Gk> "know" → <Gk>ἐπιγινώσκω</Gk> "know fully") —
@@ -227,41 +227,41 @@ export const PREPOSITIONS_CONTENT = (
     </LevelOnly>
 
     {/* ── 6 · Watch out ──────────────────────────────────── */}
-    <SectionHeading>Watch out</SectionHeading>
+    <SectionHeading id="prepositions.h.watch-out">Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
-        <li>Final vowels elide before a following vowel: <Gk>διὰ αὐτοῦ → δι᾿ αὐτοῦ</Gk>, <Gk>ἀπὸ αὐτοῦ → ἀπ᾿ αὐτοῦ</Gk>. The apostrophe marks the lost vowel.</li>
-        <li><Gk>ἐκ</Gk> becomes <Gk>ἐξ</Gk> before a vowel: <Gk>ἐξ οἴκου</Gk>.</li>
-        <li>Instrument usually needs <em>no</em> preposition at all — the plain dative does it: <Gk>τῷ λόγῳ</Gk> "by a word." Don't hunt for a missing ἐν.</li>
-        <li>Breathings again: <Gk>ἐν</Gk> "in" vs. <Gk>ἕν</Gk> "one"; <Gk>εἰς</Gk> "into" vs. <Gk>εἷς</Gk> "one."</li>
+        <li><Tr id="prepositions.wo.final-vowels-elide">Final vowels elide before a following vowel: <Gk>διὰ αὐτοῦ → δι᾿ αὐτοῦ</Gk>, <Gk>ἀπὸ αὐτοῦ → ἀπ᾿ αὐτοῦ</Gk>. The apostrophe marks the lost vowel.</Tr></li>
+        <li><Tr id="prepositions.wo.becomes-before-vowel"><Gk>ἐκ</Gk> becomes <Gk>ἐξ</Gk> before a vowel: <Gk>ἐξ οἴκου</Gk>.</Tr></li>
+        <li><Tr id="prepositions.wo.instrument-usually-needs">Instrument usually needs <em>no</em> preposition at all — the plain dative does it: <Gk>τῷ λόγῳ</Gk> "by a word." Don't hunt for a missing ἐν.</Tr></li>
+        <li><Tr id="prepositions.wo.breathings-again-one">Breathings again: <Gk>ἐν</Gk> "in" vs. <Gk>ἕν</Gk> "one"; <Gk>εἰς</Gk> "into" vs. <Gk>εἷς</Gk> "one."</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
-    <Practice
+    <LevelOnly level="beginning"><SectionHeading id="prepositions.h.try">Try it</SectionHeading></LevelOnly>
+    <Practice id="prepositions.pr1"
       title="Practice — translate the phrase"
-      intro={<>Read the case first, then choose the meaning. Vocabulary: <span className="normal-case">οἶκος</span> "house" · <span className="normal-case">σάββατον</span> "Sabbath" · <span className="normal-case">νόμος</span> "law" · <span className="normal-case">μαθητής</span> "disciple."</>}
+      intro={<Tr id="prepositions.intro.read-case-first">Read the case first, then choose the meaning. Vocabulary: <span className="normal-case">οἶκος</span> "house" · <span className="normal-case">σάββατον</span> "Sabbath" · <span className="normal-case">νόμος</span> "law" · <span className="normal-case">μαθητής</span> "disciple."</Tr>}
       items={[
         { q: <span className="normal-case">ἐν τῷ οἴκῳ</span>,
-          a: <>"In the house" — dative of rest.</> },
+          a: <Tr id="prepositions.pa.house-dative-rest">"In the house" — dative of rest.</Tr>},
         { q: <span className="normal-case">εἰς τὸν οἶκον</span>,
-          a: <>"Into the house" — accusative of motion toward.</> },
+          a: <Tr id="prepositions.pa.into-house-accusative">"Into the house" — accusative of motion toward.</Tr>},
         { q: <span className="normal-case">ἐκ τοῦ οἴκου</span>,
-          a: <>"Out of the house" — genitive of source.</> },
+          a: <Tr id="prepositions.pa.out-house-genitive">"Out of the house" — genitive of source.</Tr>},
         { q: <span className="normal-case">μετὰ τῶν μαθητῶν</span>,
-          a: <>"With the disciples" — μετά + genitive.</> },
+          a: <Tr id="prepositions.pa.disciples-genitive">"With the disciples" — μετά + genitive.</Tr>},
         { q: <span className="normal-case">μετὰ τὸ σάββατον</span>,
-          a: <>"After the Sabbath" — μετά + accusative. The case flipped the meaning.</> },
+          a: <Tr id="prepositions.pa.after-sabbath-accusative">"After the Sabbath" — μετά + accusative. The case flipped the meaning.</Tr>},
         { q: <span className="normal-case">κατὰ τὸν νόμον</span>,
-          a: <>"According to the law" — κατά + accusative.</> },
+          a: <Tr id="prepositions.pa.according-law-accusative">"According to the law" — κατά + accusative.</Tr>},
         { q: <span className="normal-case">ὑπὸ τοῦ θεοῦ</span>,
-          a: <>"By God" — ὑπό + genitive: the agent behind a passive verb.</> },
+          a: <Tr id="prepositions.pa.god-genitive-agent">"By God" — ὑπό + genitive: the agent behind a passive verb.</Tr>},
       ]}
     />
 
     {/* ── 8 · See it in the NT ───────────────────────────── */}
-    <ClassSentences
+    <ClassSentences id="prepositions.cs2"
       lesson="Lesson 3 · Prepositions"
       items={[
         { words: [
@@ -316,7 +316,7 @@ export const PREPOSITIONS_CONTENT = (
     {/* Syntax is a relation between words, which the one-word morphology search can't express;
         these open Construct search instead. */}
     <LiveExamples
-      intro={<>The same preposition in different cases — see how the sense turns on the case:</>}
+      intro={<Tr id="prepositions.intro.same-preposition-different">The same preposition in different cases — see how the sense turns on the case:</Tr>}
       links={PREPOSITION_CASES.map(pr => ({
         label: <>{pr.label} <span className="text-gray-400">— {pr.approx.toLocaleString()} in the NT</span></>,
         construct: pr.query,
@@ -324,30 +324,30 @@ export const PREPOSITIONS_CONTENT = (
     />
 
     <LiveExamples
-      intro={<>Prepositions saturate the NT — watch the same word shift meaning with its case.</>}
+      intro={<Tr id="prepositions.intro.prepositions-saturate-watch">Prepositions saturate the NT — watch the same word shift meaning with its case.</Tr>}
       links={[
-        { label: <>Every <span className="normal-case">ἐν</span> in the NT — the most common preposition of all</>, lemma: 'ἐν', features: ['preposition'] },
-        { label: <>Every <span className="normal-case">διά</span> — check each one: genitive "through" or accusative "because of"?</>, lemma: 'διά', features: ['preposition'] },
-        { label: <>Every <span className="normal-case">ὑπό</span> — hunt for the agent ("by …") uses with passives</>, lemma: 'ὑπό', features: ['preposition'] },
+        { label: <Tr id="prepositions.le.every-most-common">Every <span className="normal-case">ἐν</span> in the NT — the most common preposition of all</Tr>, lemma: 'ἐν', features: ['preposition'] },
+        { label: <Tr id="prepositions.le.every-check-each">Every <span className="normal-case">διά</span> — check each one: genitive "through" or accusative "because of"?</Tr>, lemma: 'διά', features: ['preposition'] },
+        { label: <Tr id="prepositions.le.every-hunt-agent">Every <span className="normal-case">ὑπό</span> — hunt for the agent ("by …") uses with passives</Tr>, lemma: 'ὑπό', features: ['preposition'] },
       ]}
     />
 
     {/* ── 9 · Going deeper (Intermediate only) ───────────── */}
     <LevelOnly level="intermediate">
-      <SectionHeading>Going deeper: theology in small words</SectionHeading>
-      <P>
+      <SectionHeading id="prepositions.h.going-deeper-theology">Going deeper: theology in small words</SectionHeading>
+      <P id="prepositions.p.paul's-signature-phrase">
         <strong>ἐν Χριστῷ.</strong> Paul's signature phrase — "in Christ," some 80+ times with its variants —
         rides on the dative of sphere: believers live and act <em>within the realm defined by</em> Christ.
         No English preposition quite reproduces it, which is why translations wobble between "in," "united
         to," and "through." The grammar is the theology here.
       </P>
-      <P>
+      <P id="prepositions.p.chains-agency-greek">
         <strong>Chains of agency.</strong> Greek can distinguish the ultimate agent (<Gk>ὑπό</Gk> + gen.)
         from the intermediate one (<Gk>διά</Gk> + gen.): "what was spoken <Gk>ὑπὸ κυρίου διὰ τοῦ
         προφήτου</Gk>" — <em>by</em> the Lord <em>through</em> the prophet (Matt 1:22). One verse, a whole
         doctrine of inspiration in two prepositions.
       </P>
-      <P>
+      <P id="prepositions.p.don't-over-press">
         <strong>Don't over-press εἰς.</strong> In classical Greek <Gk>εἰς</Gk> (motion) and
         <Gk> ἐν</Gk> (rest) were kept apart; in Koine they had begun to blur, and Mark can write
         <Gk> εἰς</Gk> where John writes <Gk>ἐν</Gk> with no difference intended. Arguments that lean hard on

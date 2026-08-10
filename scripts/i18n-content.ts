@@ -183,11 +183,20 @@ export function morphologyItems(): Item[] {
     collect(e?.intermediate, items, 'essentials')
   }
 
-  // Every bucket must be a real tab, because the bucket IS the filename the view fetches. The tab
-  // ids are exactly the TAB_EXPLANATIONS keys, so they make an authoritative cross-check — and
-  // without it, a chapter whose file name differs from its tab (see CHAPTER_TAB) writes a
-  // catalogue nobody ever requests and stays English with nothing reported.
-  const tabs = new Set([...Object.keys(exp.TAB_EXPLANATIONS ?? {}), 'essentials'])
+  // Every bucket must be a real tab, because the bucket IS the filename the view fetches. Without
+  // this, a chapter whose file name differs from its tab (see CHAPTER_TAB) writes a catalogue
+  // nobody ever requests and stays English with nothing reported.
+  //
+  // The tab list is read from MorphologyView's own REVISION_CONTENT, which is the thing that does
+  // the fetching. TAB_EXPLANATIONS was the first guess and is subtly wrong: not every tab has a
+  // "Getting started" note (parsing has none), so it would reject a perfectly good bucket.
+  const view = fs.readFileSync('src/components/vocab/MorphologyView.tsx', 'utf8')
+  const block = /const REVISION_CONTENT[^{]*\{([\s\S]*?)\n\}/.exec(view)?.[1] ?? ''
+  const tabs = new Set<string>()
+  const tabRe = /^\s*'?([a-z0-9-]+)'?:/gm
+  let tm: RegExpExecArray | null
+  while ((tm = tabRe.exec(block)) !== null) tabs.add(tm[1])
+  if (tabs.size < 10) throw new Error('could not read the tab list from MorphologyView')
   const stray = Array.from(new Set(items.map(i => i.bucket!).filter(b => !tabs.has(b))))
   if (stray.length) {
     console.error(`morphology: ${stray.length} bucket(s) are not tab ids — their catalogues would`
