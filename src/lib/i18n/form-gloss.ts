@@ -21,6 +21,8 @@
  * Returns null when it has nothing better to offer, and the caller falls back to the lexicon.
  */
 
+const nfc = (s: string) => s.normalize('NFC')
+
 type Morph = { case?: string; number?: string; gender?: string; person?: string }
 
 /** Read back the comma-separated English parsing that formatParsing() produces. */
@@ -54,6 +56,17 @@ const PERSONAL: Record<string, Record<string, string>> = {
   '2.plural':   { nominative: 'ustedes', genitive: 'de ustedes', dative: 'les, a ustedes', accusative: 'los, a ustedes' },
 }
 
+/**
+ * Which person each personal-pronoun lemma is. Editions disagree about the lemma of the plural
+ * forms — Nestle 1904 files ὑμῶν under σύ, Tischendorf under ὑμεῖς — and both must resolve, or
+ * the gloss silently depends on which edition the student happens to be reading. κἀγώ is ἐγώ
+ * with καί fused onto the front.
+ */
+const PERSON_OF: Record<string, string> = {
+  'ἐγώ': '1', 'ἡμεῖς': '1', 'κἀγώ': '1',
+  'σύ': '2', 'ὑμεῖς': '2',
+}
+
 /** αὐτός — third person, and by far the commonest word a student clicks after the article. */
 const AUTOS: Record<string, Record<string, string>> = {
   'singular.masculine': { nominative: 'él; mismo', genitive: 'de él, su', dative: 'le, a él', accusative: 'lo, a él' },
@@ -76,13 +89,83 @@ const DEMONSTRATIVE: Record<string, Record<string, string>> = {
   },
 }
 
-const nfc = (s: string) => s.normalize('NFC')
+/**
+ * A preposition's sense depends on the case it governs — which is carried by its OBJECT, not by
+ * the preposition. διά + genitive is "by means of"; διά + accusative is "because of". The lemma
+ * gloss has to list every case at once, so a beginner reading διὰ τὴν ἀγάπην is handed three
+ * possibilities and left to pick. Given the case, only one is shown.
+ *
+ * Prepositions governing a single case are here too: "(con dat.) en" is not wrong, but "en" is
+ * what the student needs, and the case is stated on the parsing line anyway.
+ */
+const PREPOSITION: Record<string, Record<string, string>> = {
+  'ἐν':        { dative: 'en, dentro de; con, por' },
+  'εἰς':       { accusative: 'a, hacia dentro de; para' },
+  'ἐκ':        { genitive: 'de, desde dentro de' },
+  'ἀπό':       { genitive: 'de, desde, lejos de' },
+  'πρό':       { genitive: 'antes de, delante de' },
+  'σύν':       { dative: 'con, junto con' },
+  'ἀντί':      { genitive: 'en lugar de, a cambio de' },
+  'ἐνώπιον':   { genitive: 'delante de, en presencia de' },
+  'ἔμπροσθεν': { genitive: 'delante de, ante' },
+  'ἕνεκα':     { genitive: 'a causa de, por' },
+  // The ones whose meaning actually turns on the case — where this earns its place.
+  'ἐπί':   { genitive: 'sobre, encima de; en tiempos de', dative: 'en, junto a; a base de', accusative: 'sobre, hacia; contra' },
+  'διά':   { genitive: 'por medio de, a través de', accusative: 'a causa de, por' },
+  'κατά':  { genitive: 'contra; hacia abajo desde', accusative: 'según, conforme a; por' },
+  'μετά':  { genitive: 'con, en compañía de', accusative: 'después de' },
+  'περί':  { genitive: 'acerca de, sobre', accusative: 'alrededor de' },
+  'ὑπό':   { genitive: 'por (agente)', accusative: 'debajo de, bajo' },
+  'παρά':  { genitive: 'de parte de', dative: 'junto a, al lado de; ante', accusative: 'junto a, a lo largo de' },
+  'ὑπέρ':  { genitive: 'a favor de, por', accusative: 'por encima de, más que' },
+  'πρός':  { accusative: 'a, hacia; con', dative: 'cerca de, junto a', genitive: 'de parte de' },
+  'ἀνά':   { accusative: 'por, a través de; cada uno' },
+}
+
+/** The real cases. The corpus stores a person digit or a proper-noun code in this field for some
+ *  pronouns and names, so a value has to be recognised rather than merely present. */
+const CASES = ['nominative', 'genitive', 'dative', 'accusative', 'vocative']
+export function isCase(v: string | null | undefined): boolean {
+  return !!v && CASES.includes(v.toLowerCase())
+}
+
+/**
+ * Postpositives, which cannot begin a clause and so routinely sit between a preposition and its
+ * object (ἐν δὲ τῷ …) without being part of the phrase.
+ */
+const POSTPOSITIVE = new Set(['δέ', 'γάρ', 'μέν', 'οὖν', 'τε'])
+
+/**
+ * The case a preposition at `i` governs, or undefined when it cannot be read.
+ *
+ * STOPS AT THE FIRST REAL WORD rather than searching for the first readable case, and the
+ * difference matters: the corpus stores a person digit for pronouns (ὑμᾶς is '2', not
+ * Accusative) and 'P' for indeclinable names. Scanning onward for something case-shaped sailed
+ * past those objects into the NEXT phrase and mis-sensed 282 prepositions — εἰς ὑμᾶς ἐν λόγῳ was
+ * read as εἰς + dative, which εἰς never takes. Giving up is correct there: the panel falls back
+ * to the full lemma gloss, which lists every case, and the student is no worse off than before.
+ *
+ * Exported so the reader and its tests share one implementation. An earlier pair of reference
+ * parsers drifted apart in exactly this way and grew the same bug twice.
+ */
+export function governingCase(
+  words: { lemma?: string; casus?: string | null }[], i: number,
+): string | undefined {
+  for (let j = i + 1; j < Math.min(i + 4, words.length); j++) {
+    const w = words[j]
+    if (w.lemma && POSTPOSITIVE.has(nfc(w.lemma))) continue   // not part of the phrase
+    return isCase(w.casus) ? (w.casus as string) : undefined  // the object: readable, or give up
+  }
+  return undefined
+}
 
 /**
  * The form's meaning, or null to fall back to the lemma gloss.
  * `parsing` is the English parsing string as stored, not the translated display one.
  */
-export function formGloss(lexeme: string | undefined, parsing: string | undefined): string | null {
+export function formGloss(
+  lexeme: string | undefined, parsing: string | undefined, objectCase?: string,
+): string | null {
   if (!lexeme) return null
   const l = nfc(lexeme)
   const m = parseMorph(parsing)
@@ -90,9 +173,9 @@ export function formGloss(lexeme: string | undefined, parsing: string | undefine
 
   if (l === 'ὁ' && ng && m.case) return ARTICLE[ng]?.[m.case] ?? null
 
-  if ((l === 'ἐγώ' || l === 'σύ') && m.number && m.case) {
+  const person = PERSON_OF[l]
+  if (person && m.number && m.case) {
     // Person is not always tagged on these — the lemma already fixes it.
-    const person = l === 'ἐγώ' ? '1' : '2'
     return PERSONAL[`${person}.${m.number}`]?.[m.case] ?? null
   }
 
@@ -101,5 +184,23 @@ export function formGloss(lexeme: string | undefined, parsing: string | undefine
   const dem = DEMONSTRATIVE[l]
   if (dem && ng) return dem[ng] ?? null
 
+  const prep = PREPOSITION[l]
+  if (prep) {
+    // A preposition governing ONE case needs no lookahead: εἰς is accusative whether or not the
+    // object's tagging can be read. Deriving that from the table rather than a second list keeps
+    // the two from drifting when a case is added to an entry.
+    const only = Object.keys(prep)
+    if (only.length === 1) return prep[only[0]]
+    if (objectCase) return prep[objectCase.toLowerCase()] ?? null
+  }
+
   return null
 }
+
+/**
+ * Every lemma this module glosses by form. Exported so a caller — or a test — can ask rather
+ * than restate the list; the one that restated it went stale the first time a lemma was added.
+ */
+export const FORM_GLOSSED_LEMMAS: ReadonlySet<string> = new Set([
+  'ὁ', 'αὐτός', ...Object.keys(PERSON_OF), ...Object.keys(DEMONSTRATIVE), ...Object.keys(PREPOSITION),
+])

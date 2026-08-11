@@ -91,7 +91,7 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
   }, [locale, isHebrew])
   // The FORM's meaning wins over the lemma's on the closed classes — see form-gloss.ts. Only
   // for a reader in another language: an English reader's glosses are untouched by all of this.
-  const formSpecific = locale === 'en' ? null : formGloss(info?.lexeme, info?.parsing)
+  const formSpecific = locale === 'en' ? null : formGloss(info?.lexeme, info?.parsing, info?.objectCase)
   const translatedGloss = formSpecific ?? (info?.lexeme ? localGloss(info.lexeme) : null)
   // English readers keep exactly what they had.
   const vocabGloss = isHebrew ? null : lookupVocabGloss(info?.lexeme)

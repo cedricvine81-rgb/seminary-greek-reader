@@ -5,6 +5,7 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 import { GreekWord } from './GreekWord'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { bookAbbrev, formatRef } from '@/lib/i18n/book-names'
+import { governingCase } from '@/lib/i18n/form-gloss'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import type { HighlightRecord } from '@/components/highlights/useHighlights'
@@ -111,10 +112,15 @@ function GreekVerseImpl({
           {verse.words.map((w, i) => {
             const { start, end } = withOffsets[i]
             const hl = highlightAt(start, end, textHighlights)
+            // A preposition governs a case it does not itself carry — see governingCase().
+            const objectCase = w.parses?.[0]?.partOfSpeech === 'Preposition'
+              ? governingCase(verse.words!.map(n => ({ lemma: n.lexeme?.lexeme, casus: n.parses?.[0]?.casus })), i)
+              : undefined
             return (
               <Fragment key={w.id}>
                 <GreekWord
                   word={w}
+                  objectCase={objectCase}
                   reference={displayRef}
                   isActive={w.id === activeWordId}
                   searchWord={searchWord}

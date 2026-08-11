@@ -10,6 +10,8 @@ import { highlightMarkClass } from '@/lib/highlight-colors'
 interface GreekWordProps {
   word: VerseWord
   reference: string
+  /** The case this word governs, when it is a preposition — see LexicalInfoPanel.objectCase. */
+  objectCase?: string
   isActive: boolean
   isBsbHighlight?: boolean  // highlighted because the corresponding BSB English token is hovered
   searchWord?: string   // normalized search term — word is highlighted if it matches
@@ -24,7 +26,7 @@ interface GreekWordProps {
   onRightClick?: (word: VerseWord, x: number, y: number) => void
 }
 
-function GreekWordImpl({ word, reference, isActive, isBsbHighlight, searchWord, searchLemma, highlightId, highlightColor, hlBook, hlChapter, onHover, onClick, onRightClick }: GreekWordProps) {
+function GreekWordImpl({ word, reference, objectCase, isActive, isBsbHighlight, searchWord, searchLemma, highlightId, highlightColor, hlBook, hlChapter, onHover, onClick, onRightClick }: GreekWordProps) {
   // Long-press state for touch devices (fires the same handler as desktop right-click)
   const longPressTimer  = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longPressCoords = useRef<{ x: number; y: number } | null>(null)
@@ -62,6 +64,7 @@ function GreekWordImpl({ word, reference, isActive, isBsbHighlight, searchWord, 
       parsing: parse ? formatParsing(parse) : word.lexeme.partOfSpeech,
       strongs: word.lexeme.strongs ?? undefined,
       reference,
+      objectCase,
     }
   }
 
@@ -103,6 +106,7 @@ function areEqual(prev: GreekWordProps, next: GreekWordProps): boolean {
   return (
     prev.word === next.word &&
     prev.reference === next.reference &&
+    prev.objectCase === next.objectCase &&
     prev.isActive === next.isActive &&
     prev.isBsbHighlight === next.isBsbHighlight &&
     prev.searchWord === next.searchWord &&

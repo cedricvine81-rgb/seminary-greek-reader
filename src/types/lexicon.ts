@@ -17,6 +17,13 @@ export interface LexicalInfoPanel {
   parsing: string
   strongs?: string
   reference: string
+  /**
+   * For a PREPOSITION: the case of the phrase it governs, read from the following words.
+   * A preposition carries no case of its own, and in Greek its meaning often depends entirely
+   * on the case of its object — διά + genitive is "by means of", διά + accusative "because of".
+   * Supplied by the caller, which can see the neighbouring words; the panel cannot.
+   */
+  objectCase?: string
   // Hebrew (MT) enrichment — set only for Masoretic words so the parsing pane renders in the
   // Hebrew font, shows the transliteration + full definition, and lists prefix/suffix segments.
   script?: 'hebrew'

@@ -4,6 +4,7 @@ import path from 'path'
 import type { Corpus, BiblicalBook, BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalEntry } from '@/types/lexicon'
 import type { MorphParse } from '@/types/morphology'
+import { normalizeMorph } from './robinson-morph'
 export { formatParsing } from './morph-formatting'
 
 // ─── Static-file paths ────────────────────────────────────────────────────────
@@ -180,19 +181,25 @@ function wordToVerseWord(raw: RawWord, verseId: string): VerseWord {
     strongs: gloss?.strongs ?? (raw.strongs ? `G${raw.strongs}` : undefined),
   }
 
+  // Tischendorf leaves some Robinson codes unexpanded and one field out of step — see
+  // normalizeMorph(). Repaired here, at the one place the corpus becomes a MorphParse, so the
+  // parsing line, the preposition lookahead and the form glosses all see the same corrected row.
+  const morph = normalizeMorph(raw.morph)
+
   const parse: MorphParse = {
     id: `parse-${raw.id}`,
     wordId: raw.id,
     lexemeId: fakeId,
     surface: raw.surface,
-    partOfSpeech: raw.morph.partOfSpeech,
-    casus:  raw.morph.casus  ?? undefined,
-    number: raw.morph.number ?? undefined,
-    gender: raw.morph.gender ?? undefined,
-    tense:  raw.morph.tense  ?? undefined,
-    voice:  raw.morph.voice  ?? undefined,
-    mood:   raw.morph.mood   ?? undefined,
-    person: raw.morph.person ?? undefined,
+    partOfSpeech: morph.partOfSpeech,
+    casus:  morph.casus  ?? undefined,
+    number: morph.number ?? undefined,
+    gender: morph.gender ?? undefined,
+    tense:  morph.tense  ?? undefined,
+    voice:  morph.voice  ?? undefined,
+    mood:   morph.mood   ?? undefined,
+    person: morph.person ?? undefined,
+    degree: morph.degree ?? undefined,
   }
 
   return {
