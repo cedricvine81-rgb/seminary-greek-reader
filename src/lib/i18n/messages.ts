@@ -125,6 +125,11 @@ const en: Catalogue = {
   // Source credits in the reader's settings panel. These were hardcoded English inside the
   // panel and so were missed by every i18n batch — a Spanish reader got Spanish chrome around
   // an English credits block.
+  // The Texts reader's parallel-translation menu built these two by concatenation, so they
+  // stayed English beside an already-Spanish "Solo griego".
+  'texts.onlyLabel': '{label} only',
+  'texts.spanishOurs': 'Spanish (our translation)',
+  'texts.spanishOursCredit': 'Spanish: translated for this app directly from the Greek shown here. Not a published edition; only the chapters already done carry it.',
   'reader.creditGreek': 'Greek text: {edition} (SBLGNT) © 2010 Society of Biblical Literature and Logos Bible Software.',
   'reader.creditGreekEdition': 'SBL Greek New Testament',
   'reader.creditSyntax': 'Syntax: {lowfat} treebank (Wallace & PROIEL) · {macula} (GBI) © Clear Bible, CC BY 4.0 · {abs} © Asian Bible Society.',
@@ -2374,6 +2379,9 @@ const es: Catalogue = {
   // ── Profesor: panel y cursos ──
   'mt.englishOnly': 'Este texto solo existe en inglés.',
   'mt.howTo': 'Tu navegador puede traducirlo: haz clic derecho en la página y elige «Traducir» (Chrome), o usa el botón de traducción de la barra de direcciones (Safari).',
+  'texts.onlyLabel': 'Solo {label}',
+  'texts.spanishOurs': 'Español (traducción propia)',
+  'texts.spanishOursCredit': 'Español: traducción hecha para esta aplicación a partir del griego que aquí se muestra. No es una edición publicada; solo la llevan los capítulos ya traducidos.',
   'reader.creditGreek': 'Texto griego: {edition} (SBLGNT) © 2010 Society of Biblical Literature y Logos Bible Software.',
   'reader.creditGreekEdition': 'SBL Greek New Testament',
   'reader.creditSyntax': 'Sintaxis: treebank {lowfat} (Wallace y PROIEL) · {macula} (GBI) © Clear Bible, CC BY 4.0 · {abs} © Asian Bible Society.',

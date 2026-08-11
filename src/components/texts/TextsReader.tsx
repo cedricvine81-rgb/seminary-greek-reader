@@ -90,12 +90,25 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
   },
 }
 
-// The parallel translations available for a work. Only Greek (LXX) works carry one, and
-// each currently provides a single option; returning a list keeps the menu ready for more.
-function translationsFor(w: CatalogWork | null): { id: string; label: string }[] {
-  if (!w || w.source !== 'lxx' || !w.english) return []
-  const own = w.osisId ? ENGLISH_BY_WORK[w.osisId] : undefined
-  return [{ id: w.english, label: own?.label ?? TRANSLATION_LABELS[w.english] ?? w.english }]
+/**
+ * Deuterocanonical books carrying our own Spanish, made from the LXX Greek this reader shows.
+ * Listed rather than probed because the menu has to be built before any chapter is fetched;
+ * add a book here when its first chapter lands in public/data/deutero-es/.
+ */
+const DEUTERO_ES_BOOKS = new Set(['Tob'])
+
+// The parallel translations available for a work. Only Greek (LXX) works carry one.
+function translationsFor(w: CatalogWork | null, t: (k: string) => string): { id: string; label: string }[] {
+  if (!w || w.source !== 'lxx') return []
+  const out: { id: string; label: string }[] = []
+  if (w.english) {
+    const own = w.osisId ? ENGLISH_BY_WORK[w.osisId] : undefined
+    out.push({ id: w.english, label: own?.label ?? TRANSLATION_LABELS[w.english] ?? w.english })
+  }
+  if (w.osisId && DEUTERO_ES_BOOKS.has(w.osisId)) {
+    out.push({ id: 'deutero-es', label: t('texts.spanishOurs') })
+  }
+  return out
 }
 
 const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
@@ -243,6 +256,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [initialLoading, setInitialLoading] = useState(false)
   // Which parallel translation is shown next to the Greek, or null for Greek-only.
   const [translationId, setTranslationId] = useState<string | null>(null)
+  // fetchChapterRows is a useCallback the queue holds across renders, so it must read the
+  // CURRENT choice rather than the one captured when it was created.
+  const translationIdRef = useRef<string | null>(null)
+  useEffect(() => { translationIdRef.current = translationId }, [translationId])
   // For Greek (lxx) works with a translation, hide the Greek and read the translation alone.
   const [greekHiddenPref, setGreekHiddenPref] = useState(false)
   // Display mode for greek-prose works (Josephus, Epictetus): Greek | Greek+English | English.
@@ -269,6 +286,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [notedMap, setNotedMap] = useState<Record<string, Set<number>>>({})
 
   const brentonCache = useRef<Record<string, Record<string, string>>>({})
+  const deuteroEsCache = useRef<Record<string, Record<string, string>>>({})
   const bsbCache = useRef<Record<string, string> | null>(null)
   // Per-word morphology sidecars, keyed by "<work>.<book>" → { "<section>": MorphEntry[] }.
   // Fetched once per book (lazily, alongside content) so the parsing pane works on Greek prose.
@@ -364,7 +382,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const primaryLabel = work?.primaryLabel ?? 'Greek'
   const primaryIsGreek = primaryLabel === 'Greek'
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
-  const availableTranslations = translationsFor(work)
+  const availableTranslations = translationsFor(work, t)
   const showEnglish = translationId !== null
   // Greek-hidden (English-only): an lxx work with its translation showing, or a greek-prose
   // work whose mode is 'english'.
@@ -542,9 +560,25 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const prose = findProseWork(work.source)
     if (prose) parts.push(prose.attribution)
     if (work.source === 'josephus') parts.push('Greek: B. Niese’s edition (1885–1895); English: William Whiston’s translation (1737); both public domain. Sections numbered per Niese. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.')
+    // The one text here with no published edition behind it, because we made it — so it says so
+    // whenever it is the column being read.
+    if (translationId === 'deutero-es') parts.push(t('texts.spanishOursCredit'))
     onAttribution?.(parts.join(' '))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [work, onAttribution])
+  }, [work, translationId, onAttribution])
+
+  /** Our Spanish for one deuterocanonical chapter. Missing chapters resolve to {} — the column
+   *  is simply blank for anything not yet translated, as it is for a Brenton gap. */
+  async function loadDeuteroEs(osisId: string, chapter: number): Promise<Record<string, string>> {
+    const key = `${osisId}.${chapter}`
+    if (deuteroEsCache.current[key]) return deuteroEsCache.current[key]
+    const r = await fetch(`/data/deutero-es/${osisId}_${chapter}.json`)
+    const d = r.ok ? await r.json() as { verses?: Record<string, string> } : {}
+    const out: Record<string, string> = {}
+    for (const [n, text] of Object.entries(d.verses ?? {})) out[`${osisId}.${chapter}.${n}`] = text
+    deuteroEsCache.current[key] = out
+    return out
+  }
 
   async function loadBrenton(osisId: string): Promise<Record<string, string>> {
     if (brentonCache.current[osisId]) return brentonCache.current[osisId]
@@ -595,7 +629,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       const d = await r.json()
       type V = { verse: number; text?: string; words?: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: Record<string, string | null>[] }[] }
       let eng: Record<string, string> = {}
-      if (w.english === 'brenton') eng = await loadBrenton(w.osisId!)
+      // Which side-file fills the parallel column depends on what the reader PICKED, not on
+      // the work's default English — Spanish is a second option on the same works.
+      if (translationIdRef.current === 'deutero-es') eng = await loadDeuteroEs(w.osisId!, item.chapter!)
+      else if (w.english === 'brenton') eng = await loadBrenton(w.osisId!)
       else if (w.english === 'bsb') eng = await loadBsb()
       return (d.verses ?? []).map((v: V) => ({
         num: v.verse,
@@ -878,7 +915,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   }
 
   function openWork(w: CatalogWork) {
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
+    setWork(w); setTranslationId(translationsFor(w, t)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
     setLocateBook(1); setLocateChapter(1)
     setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
@@ -905,7 +942,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
       : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === target.source)
     if (!w) return
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
+    setWork(w); setTranslationId(translationsFor(w, t)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
@@ -1280,21 +1317,21 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     >
                       {t('texts.greekOnly')}
                     </button>
-                    {availableTranslations.map(t => (
-                      <Fragment key={t.id}>
+                    {availableTranslations.map(tr => (
+                      <Fragment key={tr.id}>
                         <button
                           type="button"
-                          onClick={() => { setTranslationId(t.id); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
-                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === t.id && !greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                          onClick={() => { setTranslationId(tr.id); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
+                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === tr.id && !greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
-                          Greek + {t.label}
+                          {t('texts.greekPlus', { lang: tr.label })}
                         </button>
                         <button
                           type="button"
-                          onClick={() => { setTranslationId(t.id); setGreekHiddenPref(true); setTranslationMenuOpen(false) }}
-                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === t.id && greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                          onClick={() => { setTranslationId(tr.id); setGreekHiddenPref(true); setTranslationMenuOpen(false) }}
+                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === tr.id && greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
-                          {t.label} only
+                          {t('texts.onlyLabel', { label: tr.label })}
                         </button>
                       </Fragment>
                     ))}
