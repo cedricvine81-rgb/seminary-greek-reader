@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { bookAbbrev } from '@/lib/i18n/book-names'
 import { ChevronLeft, X } from 'lucide-react'
 import type { BiblicalBook } from '@/types/biblical-text'
 
@@ -38,7 +39,11 @@ const SBL_ABBR: Record<string, string> = {
   Zeph: 'Zeph', Hag: 'Hag', Zech: 'Zech', Mal: 'Mal',
   '1Macc': '1 Macc', '2Macc': '2 Macc', '3Macc': '3 Macc', '4Macc': '4 Macc', Odes: 'Odes',
 }
-const sbl = (b: { osisId: string; abbrev: string }) => SBL_ABBR[b.osisId] ?? b.abbrev
+// SBL is the English citation standard; a localized abbreviation wins where one exists, because
+// this grid is a NAVIGATION aid rather than a citation — a Spanish student scans for "Mt", not
+// "Matt". Falls back to SBL, then to the catalog's own abbreviation.
+const sbl = (b: { osisId: string; abbrev: string }, locale: string) =>
+  bookAbbrev(b.osisId, locale, SBL_ABBR[b.osisId] ?? b.abbrev)
 
 // Each book's colour comes from its canon section; books are listed in canonical
 // sequence within their heading (so colours vary down the list, but order is continuous).
@@ -65,12 +70,12 @@ const COLOR_OF: Record<string, ColorKey> = {
   Bar: 'violet', EpJer: 'violet', Sus: 'violet', Bel: 'violet',
 }
 
-const GROUPS: { heading: string; corpus: 'GNT' | 'LXX' | 'MT'; order: string[] }[] = [
-  { heading: 'Old Testament', corpus: 'LXX', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'EsthGr', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'DanLXX', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
-  { heading: 'Deutero-Canonical', corpus: 'LXX', order: ['1Esd', 'Tob', 'Jdt', '1Macc', '2Macc', '3Macc', '4Macc', 'Wis', 'Sir', 'PsSol', 'Odes', 'Bar', 'EpJer', 'Sus', 'Bel'] },
-  { heading: 'New Testament', corpus: 'GNT', order: ['Matt', 'Mark', 'Luke', 'John', 'Acts', 'Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm', 'Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude', 'Rev'] },
+const GROUPS: { headingKey: string; corpus: 'GNT' | 'LXX' | 'MT'; order: string[] }[] = [
+  { headingKey: 'books.ot', corpus: 'LXX', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'EsthGr', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'DanLXX', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
+  { headingKey: 'books.deutero', corpus: 'LXX', order: ['1Esd', 'Tob', 'Jdt', '1Macc', '2Macc', '3Macc', '4Macc', 'Wis', 'Sir', 'PsSol', 'Odes', 'Bar', 'EpJer', 'Sus', 'Bel'] },
+  { headingKey: 'books.nt', corpus: 'GNT', order: ['Matt', 'Mark', 'Luke', 'John', 'Acts', 'Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm', 'Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude', 'Rev'] },
   // Hebrew Masoretic OT — the standard 39-book Hebrew canon (MT osisIds).
-  { heading: 'Hebrew Bible', corpus: 'MT', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'Josh', 'Judg', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'Esth', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'Dan', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
+  { headingKey: 'books.hebrewBible', corpus: 'MT', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'Josh', 'Judg', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'Esth', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'Dan', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
 ]
 
 export function PassagePicker({ books, corpus, onPick, onClose }: {
@@ -80,6 +85,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
   onClose: () => void
 }) {
   const t = useT()
+  const locale = useLocale()
   const [book, setBook] = useState<BiblicalBook | null>(null)
   const [chapter, setChapter] = useState<number | null>(null)
   const [verses, setVerses] = useState<number[] | null>(null)
@@ -114,7 +120,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
             <button key={b.osisId} type="button"
               onClick={() => { setBook(b); setChapter(null); setVerses(null) }}
               className={`rounded-lg border px-1 py-2 text-[13px] leading-tight font-medium bg-surface transition-colors ${c.btn}`}>
-              {sbl(b)}
+              {sbl(b, locale)}
             </button>
           )
         })}
@@ -136,7 +142,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
           <span className="text-sm font-semibold text-gray-800">Select {corpus === 'GNT' ? 'an NT' : corpus === 'MT' ? 'a Hebrew' : 'an LXX'} passage</span>
         )}
         <span className="ml-auto text-sm text-gray-500 truncate">
-          {book ? `${sbl(book)}${chapter ? ` ${chapter}` : ''}` : ''}
+          {book ? `${sbl(book, locale)}${chapter ? ` ${chapter}` : ''}` : ''}
         </span>
         <button type="button" onClick={onClose} aria-label={t('action.close')} className="text-gray-400 -mr-1 p-1"><X size={18} /></button>
       </div>
@@ -152,8 +158,8 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
               const pane = renderGroup(g.order)
               if (!pane) return null
               return (
-                <div key={g.heading} className="mb-5">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">{g.heading}</p>
+                <div key={g.headingKey} className="mb-5">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">{t(g.headingKey)}</p>
                   {pane}
                 </div>
               )

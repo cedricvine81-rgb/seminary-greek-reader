@@ -3,6 +3,8 @@ import { Fragment, memo, type MouseEvent } from 'react'
 import type { BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { GreekWord } from './GreekWord'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { bookAbbrev, formatRef } from '@/lib/i18n/book-names'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import type { HighlightRecord } from '@/components/highlights/useHighlights'
@@ -73,9 +75,14 @@ function displayAbbrev(bookId: string): string {
 }
 
 function VerseRef({ verse }: { verse: BiblicalVerse }) {
+  // Display only. The verse's own `reference` field is the English string baked in by
+  // src/lib/reader.ts and persisted on BiblicalVerse — it stays English so notes, assignment
+  // references and grading keep matching; what the reader SEES is built here from the id.
+  const locale = useLocale()
+  const abbrev = bookAbbrev(verse.bookId, locale, displayAbbrev(verse.bookId))
   return (
     <span className="text-xs font-semibold text-brand-500 mr-2 select-none whitespace-nowrap" style={{ fontFamily: 'inherit' }}>
-      {displayAbbrev(verse.bookId)} {verse.chapter}:{verse.verse}
+      {abbrev} {verse.chapter}:{verse.verse}
     </span>
   )
 }
@@ -83,6 +90,11 @@ function VerseRef({ verse }: { verse: BiblicalVerse }) {
 function GreekVerseImpl({
   verse, activeWordId, bsbHighlightPos, highlighted, searchWord, searchLemma, textHighlights = [], onWordHover, onWordClick, onWordRightClick, verseRefCallback
 }: GreekVerseProps) {
+  // What the parsing pane shows above a word. Built from the id rather than reusing
+  // verse.reference, which is the English string baked in server-side and persisted.
+  const locale = useLocale()
+  const displayRef = formatRef(verse.bookId, locale, verse.chapter, verse.verse,
+    verse.reference?.replace(/\s+\d+:\d+$/, ''))
   const baseClass = `greek-text mb-2 rounded px-1 transition-colors ${highlighted ? 'bg-brand-50 ring-1 ring-brand-300' : ''}`
   const anchorProps = verseAnchorProps(verse.bookId, verse.chapter, verse.verse)
 
@@ -103,7 +115,7 @@ function GreekVerseImpl({
               <Fragment key={w.id}>
                 <GreekWord
                   word={w}
-                  reference={verse.reference}
+                  reference={displayRef}
                   isActive={w.id === activeWordId}
                   searchWord={searchWord}
                   searchLemma={searchLemma}
@@ -142,7 +154,7 @@ function GreekVerseImpl({
             <Fragment key={fakeWord.id}>
               <GreekWord
                 word={fakeWord}
-                reference={verse.reference}
+                reference={displayRef}
                 isActive={fakeWord.id === activeWordId}
                 searchWord={searchWord}
 

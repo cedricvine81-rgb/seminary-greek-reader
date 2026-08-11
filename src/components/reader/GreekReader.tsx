@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { bookName as bookNameFor } from '@/lib/i18n/book-names'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
@@ -164,12 +165,15 @@ const LOOKAHEAD = 1600   // px ahead of sentinel to start loading next chapter
 const NAV_PRE   = 3      // chapters to preload before the search target
 const NAV_FWD   = 2      // chapters to preload after the search target
 
-function buildQueue(books: BiblicalBook[]): ChapterItem[] {
+// `bookName` here is the DISPLAY heading the reader prints above a book, and the value
+// renderSections() compares to decide where a new book starts — so localizing it at the source
+// keeps those two in step. Navigation is unaffected: every jump carries the osisId.
+function buildQueue(books: BiblicalBook[], locale: string): ChapterItem[] {
   return books.flatMap(b =>
     Array.from({ length: b.totalChapters }, (_, i) => ({
       osisId: b.osisId,
       chapter: i + 1,
-      bookName: b.name,
+      bookName: bookNameFor(b.osisId, locale, b.name),
       corpus: b.corpus,
     }))
   )
@@ -179,6 +183,7 @@ function buildQueue(books: BiblicalBook[]): ChapterItem[] {
 
 export function GreekReader({ initialRef, initialHighlight, initialTransLang, initialCorpus, isAuthenticated: isAuthenticatedInitial = false, userRole }: { initialRef?: string; initialHighlight?: string; initialTransLang?: string; initialCorpus?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
   const t = useT()
+  const locale = useLocale()
   const router = useRouter()
   // The server bakes isAuthenticated into the page from the session cookie at render time — but
   // a browser cold start (relaunching the app / restoring tabs) can fire that first document
@@ -605,7 +610,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     fetch('/api/reader?corpus=LXX')
       .then(r => r.json())
       .then(lxxData => {
-        const lxxQ = buildQueue(lxxData.books ?? [])
+        const lxxQ = buildQueue(lxxData.books ?? [], locale)
         setLxxQueue(lxxQ)
         if (lxxQ[0]) {
           lxxLoading.current = true
@@ -631,7 +636,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     fetch('/api/reader?corpus=MT')
       .then(r => r.json())
       .then(data => {
-        const q = buildQueue(data.books ?? [])
+        const q = buildQueue(data.books ?? [], locale)
         setMtQueue(q)
         if (q[0]) {
           mtLoading.current = true
@@ -658,7 +663,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     fetch(`/api/reader?corpus=${corpus}`)
       .then(r => r.json())
       .then(data => {
-        const q = buildQueue(data.books ?? [])
+        const q = buildQueue(data.books ?? [], locale)
         setGntQueue(q)
         if (q[0]) {
           gntLoading.current = true
@@ -1084,8 +1089,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     // list first so an OT jump stays in Hebrew — even for books whose MT osisId differs from
     // the LXX (Josh/Judg/Esth/Dan). A miss (e.g. an NT reference) falls back to the full list,
     // which switches the view to the resolved book's own corpus.
-    const ref = (corpus === 'MT' ? parseReference(trimmed, books.filter(b => b.corpus === 'MT')) : null)
-      ?? parseReference(trimmed, books)
+    const ref = (corpus === 'MT' ? parseReference(trimmed, books.filter(b => b.corpus === 'MT'), locale) : null)
+      ?? parseReference(trimmed, books, locale)
     if (!ref) return
     // A jump scrolls over several frames (and font reflow) — hold the scroll-driven URL
     // position-sync off so it can't capture the pre-jump view and overwrite the target.
@@ -1943,8 +1948,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
 
                     {/* Jump to any book — New Testament or Old Testament (Septuagint). */}
                     {([
-                      { label: 'New Testament', books: Array.from(new Map(gntQueue.map(q => [q.osisId, q.bookName])).entries()) },
-                      { label: 'Old Testament (Septuagint)', books: Array.from(new Map(lxxQueue.map(q => [q.osisId, q.bookName])).entries()) },
+                      { label: t('books.nt'), books: Array.from(new Map(gntQueue.map(q => [q.osisId, q.bookName])).entries()) },
+                      { label: t('books.otSeptuagint'), books: Array.from(new Map(lxxQueue.map(q => [q.osisId, q.bookName])).entries()) },
                     ] as const).map(group => group.books.length > 0 && (
                       <div key={group.label} className="mt-4 pt-4 border-t border-gray-100">
                         <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-2">{group.label}</p>

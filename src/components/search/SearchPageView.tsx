@@ -19,6 +19,7 @@ import { noteBookFor } from '@/lib/note-book'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { bookName as bookNameFor, bookAbbrev, hasBookNames } from '@/lib/i18n/book-names'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
@@ -305,26 +306,38 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     return { mode: 'flat' as const, hits }
   }, [bg, sort, terms])
 
+  // The picker grid shows ABBREVIATIONS, so it needs the short forms rather than the names the
+  // reference labels use. Identity is the osisId in `selected` / `onToggle`, untouched — only
+  // what the button reads changes. Skipped wholesale for a locale with no book names, so an
+  // English reader maps over nothing.
+  const localizeBooks = useCallback((bs: readonly PickBook[]): readonly PickBook[] =>
+    hasBookNames(locale)
+      ? bs.map(b => ({ ...b, name: bookNameFor(b.osisId, locale, b.name), abbrev: bookAbbrev(b.osisId, locale, b.abbrev) }))
+      : bs, [locale])
   const bookGroups: BookGroup[] = useMemo(() => {
     if (!catalog) return []
     if (scope.kind === 'greek') {
-      if (scope.corpus === 'GNT') return [{ heading: t('search.books.nt'), books: catalog.gnt }]
+      if (scope.corpus === 'GNT') return [{ heading: t('books.nt'), books: localizeBooks(catalog.gnt) }]
       return [
-        { heading: t('search.books.ot'), books: catalog.lxx.filter(b => !DEUTERO.has(b.osisId)) },
-        { heading: t('search.books.deutero'), books: catalog.lxx.filter(b => DEUTERO.has(b.osisId)) },
+        { heading: t('books.ot'), books: localizeBooks(catalog.lxx.filter(b => !DEUTERO.has(b.osisId))) },
+        { heading: t('books.deutero'), books: localizeBooks(catalog.lxx.filter(b => DEUTERO.has(b.osisId))) },
       ]
     }
     if (scope.kind === 'trans') return [
-      { heading: t('search.books.ot'), books: catalog.lxx.filter(b => !DEUTERO.has(b.osisId)) },
-      { heading: t('search.books.nt'), books: catalog.gnt },
+      { heading: t('books.ot'), books: localizeBooks(catalog.lxx.filter(b => !DEUTERO.has(b.osisId))) },
+      { heading: t('books.nt'), books: localizeBooks(catalog.gnt) },
     ]
     return []
-  }, [catalog, scope])
+  }, [catalog, scope, t, localizeBooks])
+  // Every rendered verse reference on this page — and in the Greek/Hebrew results components,
+  // which take this as a prop — resolves its book through this map, so localizing it here is
+  // the whole change. The reference STRINGS built from it are display labels; the identity
+  // always travels beside them as `book: h.osisId`, which is what note keys and highlights use.
   const bookName = useMemo(() => {
     const m = new Map<string, string>()
-    if (catalog) for (const b of [...catalog.gnt, ...catalog.lxx]) m.set(b.osisId, b.name)
+    if (catalog) for (const b of [...catalog.gnt, ...catalog.lxx]) m.set(b.osisId, bookNameFor(b.osisId, locale, b.name))
     return m
-  }, [catalog])
+  }, [catalog, locale])
   const selectedSet = useMemo(() => new Set(books), [books])
   const booksLabel = books.length === 0 ? t('search.booksAny')
     : books.length === 1 ? (bookName.get(books[0]) ?? books[0])
