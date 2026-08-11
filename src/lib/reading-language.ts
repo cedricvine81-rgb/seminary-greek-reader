@@ -11,24 +11,41 @@ import { useCallback, useEffect, useState } from 'react'
  * need. All are public domain except the Korean and Portuguese editions, which are the
  * closest available and are labelled without a licence claim.
  */
-export const READING_LANGS: { code: string; label: string; sub: string }[] = [
-  { code: 'en',  label: 'English',       sub: 'World English Bible · public domain' },
-  { code: 'bsb', label: 'English (BSB)', sub: 'Berean Standard Bible · public domain' },
-  { code: 'es',  label: 'Spanish',       sub: 'Reina-Valera 1909 · public domain' },
-  { code: 'ru',  label: 'Russian',       sub: 'Russian Synodal Bible · public domain' },
-  { code: 'zh',  label: 'Mandarin',      sub: 'Chinese Union Version · public domain' },
-  { code: 'fr',  label: 'French',        sub: 'Louis Segond 1910 · public domain' },
-  { code: 'pt',  label: 'Portuguese',    sub: 'João Ferreira de Almeida (ARC)' },
-  { code: 'ko',  label: 'Korean',        sub: 'Korean Revised Version' },
+export const READING_LANGS: { code: string; labelKey: string; subKey: string }[] = [
+  { code: 'en',  labelKey: 'lang.en',  subKey: 'lang.en.sub' },
+  { code: 'bsb', labelKey: 'lang.bsb', subKey: 'lang.bsb.sub' },
+  { code: 'es',  labelKey: 'lang.es',  subKey: 'lang.es.sub' },
+  { code: 'ru',  labelKey: 'lang.ru',  subKey: 'lang.ru.sub' },
+  { code: 'zh',  labelKey: 'lang.zh',  subKey: 'lang.zh.sub' },
+  { code: 'fr',  labelKey: 'lang.fr',  subKey: 'lang.fr.sub' },
+  { code: 'pt',  labelKey: 'lang.pt',  subKey: 'lang.pt.sub' },
+  { code: 'ko',  labelKey: 'lang.ko',  subKey: 'lang.ko.sub' },
 ]
+
+/**
+ * The Bible the app reaches for when it has to pick one and the student has not.
+ *
+ * A Spanish reader was being handed the World English Bible: the interface was Spanish, the
+ * search scope (once fixed) was Spanish, and the parallel column beside it was still English.
+ * Where an edition exists in the reader's own language, that is the sane default; 'en' is the
+ * fallback for interface languages with no Bible of their own.
+ *
+ * This is a DEFAULT, not an override — an explicit choice (the cookie, ?tl=, a picker) always
+ * wins, and this is only consulted when there is nothing to honour.
+ */
+export function defaultReadingLang(locale: string): string {
+  return READING_LANGS.some(l => l.code === locale) ? locale : 'en'
+}
 
 export function isReadingLang(v: unknown): boolean {
   return typeof v === 'string' && READING_LANGS.some(l => l.code === v)
 }
 
-export function readingLangLabel(code: string | null): string {
-  if (!code) return 'Greek only'
-  return READING_LANGS.find(l => l.code === code)?.label ?? code
+/** `t` is passed in so this stays a plain function usable outside a component. */
+export function readingLangLabel(code: string | null, t: (k: string) => string): string {
+  if (!code) return t('reader.greekOnly')
+  const l = READING_LANGS.find(x => x.code === code)
+  return l ? t(l.labelKey) : code
 }
 
 /**

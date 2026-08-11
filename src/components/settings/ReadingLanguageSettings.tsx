@@ -25,7 +25,7 @@ export function ReadingLanguageSettings() {
 
       <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
         {/* Greek only comes first: it is the default, and the one choice that isn't a language. */}
-        {[{ code: null as string | null, label: t('settings.reading.greekOnly'), sub: t('settings.reading.noParallel') }, ...READING_LANGS].map(l => {
+        {[{ code: null as string | null, labelKey: 'settings.reading.greekOnly', subKey: 'settings.reading.noParallel' }, ...READING_LANGS].map(l => {
           const active = lang === l.code
           return (
             <button
@@ -38,8 +38,8 @@ export function ReadingLanguageSettings() {
               }`}
             >
               <span className="min-w-0">
-                <span className="block text-sm font-medium text-gray-900">{l.label}</span>
-                <span className="block text-xs text-gray-500">{l.sub}</span>
+                <span className="block text-sm font-medium text-gray-900">{t(l.labelKey)}</span>
+                <span className="block text-xs text-gray-500">{t(l.subKey)}</span>
               </span>
               {active && (
                 <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white">

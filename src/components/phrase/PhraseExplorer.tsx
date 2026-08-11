@@ -1,6 +1,6 @@
 'use client'
 import { createContext, useContext, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { PassageAutocomplete } from './PassageAutocomplete'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -110,8 +110,11 @@ function NodeView({ node, depth }: { node: TreeNode; depth: number }) {
 // Re-exported from lib/reading-language.ts, which the Reader and the Settings picker also
 // read. This was a hand-maintained copy of the Reader's list and had already drifted from it.
 export { READING_LANGS as LANGS } from '@/lib/reading-language'
-import { READING_LANGS as LANGS } from '@/lib/reading-language'
-const langLabel = (code: string) => LANGS.find(l => l.code === code)?.label ?? code
+import { READING_LANGS as LANGS, defaultReadingLang } from '@/lib/reading-language'
+const langLabel = (code: string, t: (k: string) => string) => {
+  const l = LANGS.find(x => x.code === code)
+  return l ? t(l.labelKey) : code
+}
 
 // Greek editions for the middle column (the tree itself is Nestle 1904).
 const GREEK_EDITIONS = [
@@ -147,7 +150,7 @@ export function PhrasingSourcesPanel() {
           <p className="font-semibold text-gray-700">{t('phr.translations')}</p>
           <ul className="mt-0.5 space-y-0.5">
             {LANGS.map(l => (
-              <li key={l.code}><span className="text-gray-700">{l.label}</span> — {l.sub}</li>
+              <li key={l.code}><span className="text-gray-700">{t(l.labelKey)}</span> — {t(l.subKey)}</li>
             ))}
           </ul>
         </div>
@@ -236,6 +239,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   onFontSize?: (v: PhraseFontSize) => void
 } = {}) {
   const t = useT()
+  const locale = useLocale()
   const [books, setBooks] = useState<RefBook[]>([])
   const [input, setInput] = useState('John 1:1-5')
   const [inputError, setInputError] = useState(false)
@@ -278,8 +282,10 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   const cache = useRef<Record<string, BookData>>({})
 
   // Middle column = a Greek edition; right column = a modern translation.
+  // The Greek edition is a scholarly choice and stays put; the translation follows the
+  // reader's language, falling back to English where there is no edition in it.
   const [greekEd, setGreekEd] = useState('na1904')
-  const [transLang, setTransLang] = useState('bsb')
+  const [transLang, setTransLang] = useState(() => defaultReadingLang(locale) === 'en' ? 'bsb' : defaultReadingLang(locale))
   const [cur, setCur] = useState<{ osis: string; chapter: number } | null>(null)
   // Text highlights for the running Greek column (signed-in users).
   const highlights = useHighlights(isAuthenticated)
@@ -476,7 +482,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
         <div className="hidden lg:flex justify-end">
           <div className="grid grid-cols-2 gap-4 w-[31rem]">
             <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
-            <OptionSelect value={transLang} onChange={setTransLang} options={LANGS} />
+            <OptionSelect value={transLang} onChange={setTransLang} options={LANGS.map(l => ({ code: l.code, label: t(l.labelKey) }))} />
           </div>
         </div>
       )}
@@ -484,7 +490,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
       {!message && shown.length > 0 && (
         <div className="grid grid-cols-2 gap-2 lg:hidden">
           <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
-          <OptionSelect value={transLang} onChange={setTransLang} options={LANGS} />
+          <OptionSelect value={transLang} onChange={setTransLang} options={LANGS.map(l => ({ code: l.code, label: t(l.labelKey) }))} />
         </div>
       )}
 
@@ -537,7 +543,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                       </span>
                     </div>
                     <div className="text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.8)' }}>
-                      <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(transLang)}</span>
+                      <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(transLang, t)}</span>
                       {right || <span className="text-gray-300 italic">—</span>}
                     </div>
                   </div>

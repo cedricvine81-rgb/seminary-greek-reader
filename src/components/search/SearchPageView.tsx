@@ -20,6 +20,7 @@ import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { bookName as bookNameFor, bookAbbrev, hasBookNames } from '@/lib/i18n/book-names'
+import { defaultReadingLang } from '@/lib/reading-language'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
@@ -251,7 +252,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const [sort, setSort] = useState<SortMode>('relevance')
   // Parallel-translation column language for the Greek / Hebrew results (the selector lives in
   // the controls bar; the results components receive it as a prop). 'none' = source only.
-  const [parallelLang, setParallelLang] = useState('en')
+  // The translation shown beside a Greek or Hebrew result. Follows the reader's language for
+  // the same reason the search scope does: an English column beside Greek results is no use to
+  // someone who has just told the app they read Spanish.
+  const [parallelLang, setParallelLang] = useState(() => defaultReadingLang(locale))
   const [context, setContext] = useState(0)   // verse-context radius: 0 (off) … 3
   const [ctxMap, setCtxMap] = useState<Record<string, { chapter: number; verse: number; text: string }[]>>({})
   // The English of each background-Greek hit's context verses (fetched from the 'en' facet, same

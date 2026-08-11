@@ -1791,7 +1791,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
             onVerseClick={c => { setCorpus(c); setPickerCorpus(c); setPickerOpen(true) }}
             viewCorpus={corpus}
             viewLang={parallelLang}
-            viewLangLabel={parallelLangInfo?.label}
+            viewLangLabel={parallelLangInfo ? t(parallelLangInfo.labelKey) : undefined}
           />
         </div>
         {/* Desktop corpus toggle: NT | LXX. Switches which testament the pane shows so a jump
@@ -1822,7 +1822,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           className="hidden lg:block shrink-0 self-stretch lg:ml-auto rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 max-w-[10rem]"
         >
           <option value="">{t('reader.greekOnly')}</option>
-          {PARALLEL_LANGS.filter(l => transCompatible(l.code, corpus)).map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
+          {PARALLEL_LANGS.filter(l => transCompatible(l.code, corpus)).map(l => <option key={l.code} value={l.code}>{t(l.labelKey)}</option>)}
         </select>
         <div ref={settingsRef} className="relative shrink-0">
           <button
@@ -2052,7 +2052,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">
                     {t('reader.translation')}
-                    <span className="ml-1.5 normal-case font-normal text-brand-600">({parallelLang ? parallelLangInfo?.label : t('reader.off')})</span>
+                    <span className="ml-1.5 normal-case font-normal text-brand-600">({parallelLang && parallelLangInfo ? t(parallelLangInfo.labelKey) : t('reader.off')})</span>
                   </p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'translations' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
@@ -2082,8 +2082,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                         }`}
                       >
                         <span className="min-w-0">
-                          <span className="text-base">{l.label}</span>
-                          <span className="block text-sm text-gray-400">{l.sub}</span>
+                          <span className="text-base">{t(l.labelKey)}</span>
+                          <span className="block text-sm text-gray-400">{t(l.subKey)}</span>
                         </span>
                         {parallelLang === l.code && <Check size={14} className="shrink-0 text-brand-600" />}
                       </button>
