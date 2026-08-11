@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ArrowUpRight } from 'lucide-react'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
 import { shouldSnippet, snippetRanges } from '@/lib/snippet'
@@ -44,6 +45,7 @@ export function ConstructProseResults({ hits, showEnglish, onOpen }: {
   /** Open the passage in the side panel beside the search. Absent = link out as before. */
   onOpen?: (h: ProseHit) => void
 }) {
+  const t = useT()
   // Which passages the reader has asked to see in full.
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   return (
@@ -67,21 +69,21 @@ export function ConstructProseResults({ hits, showEnglish, onOpen }: {
                 // Beside the search, not away from it — the query that found this stays on screen.
                 <button type="button" onClick={() => onOpen(h)}
                   className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:underline"
-                  title="Read this passage beside your search">
+                  title={t('cq.readBeside')}>
                   {h.reference} <ArrowUpRight size={11} className="flex-none" />
                 </button>
               ) : href ? (
                 <a href={href} target="_blank" rel="noopener"
                   className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:underline"
-                  title="Open this passage in the Texts reader">
+                  title={t('cq.openInTexts')}>
                   {h.reference} <ArrowUpRight size={11} className="flex-none" />
                 </a>
               ) : (
                 <span className="text-xs font-medium text-gray-500">{h.reference}</span>
               )}
               {h.crossesVerse && (
-                <span className="text-[10px] text-gray-300" title="Part of this construct is in the next section">
-                  continues
+                <span className="text-[10px] text-gray-300" title={t('cq.continuesTitle')}>
+                  {t('cq.continues')}
                 </span>
               )}
             </div>

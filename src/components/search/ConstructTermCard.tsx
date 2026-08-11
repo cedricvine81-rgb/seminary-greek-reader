@@ -3,6 +3,7 @@
 // The React KeyboardEvent is aliased so it doesn't shadow the DOM one that MorphSelect's
 // document-level key listener below relies on.
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ChevronDown, Trash2, Check } from 'lucide-react'
 import { type MorphGroup } from '@/lib/morph-features'
 import { vocabFor, type MorphVocab } from '@/lib/morph-vocab'
@@ -25,6 +26,7 @@ function MorphSelect({ group, selected, onChange, vocab }: {
   onChange: (vals: string[]) => void
   vocab: MorphVocab
 }) {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -52,11 +54,14 @@ function MorphSelect({ group, selected, onChange, vocab }: {
     setOpen(false)
   }
 
+  // "any" and "N selected" are chrome — they say how much of the box is constrained. The VALUES
+  // inside it (nominative, aorist …) come from vocab.label and stay English with the rest of the
+  // parsing vocabulary, which moves as one piece across the reader, Variants and the quiz.
   const label = selected.length === 0
-    ? 'any'
+    ? t('cq.any')
     : selected.length <= 2
       ? selected.map(v => vocab.label(v)).join(', ')
-      : `${selected.length} selected`
+      : t('cq.nSelected', { n: selected.length })
 
   return (
     <div className="relative" ref={ref}>
@@ -74,7 +79,7 @@ function MorphSelect({ group, selected, onChange, vocab }: {
           {selected.length > 0 && (
             <button type="button" onClick={() => { onChange([]); setOpen(false) }}
               className="mb-1 w-full rounded px-2 py-1 text-left text-[11px] text-gray-400 hover:bg-gray-50 hover:text-gray-600">
-              Clear — any {group.label.toLowerCase()}
+              {t('cq.clearAny', { group: group.label.toLowerCase() })}
             </button>
           )}
           {group.features.map(f => {
@@ -105,10 +110,11 @@ function MorphSelect({ group, selected, onChange, vocab }: {
 // card keeps its shape, but plainly not interactive. Not sent as a search constraint either:
 // the lemma already implies it.
 function Fixed({ label, value }: { label: string; value: string }) {
+  const t = useT()
   return (
     <div>
       <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">{label}</label>
-      <p className="rounded-md border border-dashed border-gray-200 px-2 py-1.5 text-xs text-gray-500" title="Fixed by the word you chose">
+      <p className="rounded-md border border-dashed border-gray-200 px-2 py-1.5 text-xs text-gray-500" title={t('cq.fixedByWord')}>
         {value}
       </p>
     </div>
@@ -131,6 +137,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
   onChange: (t: ConstructTerm) => void
   onRemove?: () => void
 }) {
+  const t = useT()
   // Greek or Hebrew, decided by the corpus: the two share this card but no categories.
   const vocab = vocabFor(corpus)
   const isHebrew = vocab.script === 'hebrew'
@@ -355,7 +362,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
   return (
     <div className="rounded-xl border border-gray-200 bg-surface p-3">
       <div className="mb-2.5 flex items-center justify-between">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Word {index + 1}</span>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{t('cq.wordN', { n: index + 1 })}</span>
         {onRemove && (
           <button type="button" onClick={onRemove} title={`Remove word ${index + 1}`}
             className="rounded p-1 text-gray-300 transition-colors hover:bg-red-50 hover:text-red-500">
@@ -375,19 +382,21 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
               rather than promising something it can't do. Strong's numbers would give the LXX a
               true lexeme, which is the proper fix. */}
           <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-            <span className="text-gray-500">1 · {vocab.wordLabel}{lexemeIsExact ? ' form' : ''}</span>
+            <span className="text-gray-500">
+              {t(isHebrew
+                ? (lexemeIsExact ? 'cq.step1HebrewForm' : 'cq.step1Hebrew')
+                : (lexemeIsExact ? 'cq.step1GreekForm' : 'cq.step1Greek'))}
+            </span>
             <span className="font-normal normal-case tracking-normal text-gray-300">
-              {lexemeIsExact
-                ? ' — this exact form; leave blank for any word'
-                : ' — any form of it; leave blank for any word'}
+              {t(lexemeIsExact ? 'cq.exactFormHint' : 'cq.anyFormHint')}
             </span>
           </label>
           <input ref={inputRef} value={term.lemma ?? ''} onChange={onLemmaChange} onKeyDown={onLemmaKeyDown}
             onFocus={() => { if (suggestions.length) setOpenSug(true) }}
             autoComplete="off" spellCheck={false}
-            placeholder={isHebrew
-              ? (lexemeIsExact ? 'e.g. דָּבָר — one exact form' : 'e.g. דבר — or leave blank')
-              : (lexemeIsExact ? 'e.g. σκότος — one exact form' : 'e.g. πνεῦμα — or leave blank')}
+            placeholder={t(isHebrew
+              ? (lexemeIsExact ? 'cq.egHebrewExact' : 'cq.egHebrew')
+              : (lexemeIsExact ? 'cq.egGreekExact' : 'cq.egGreek'))}
             dir={isHebrew ? 'rtl' : undefined}
             lang={isHebrew ? 'he' : undefined}
             className={`w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 ${isHebrew ? 'font-hebrew text-base' : greekInput ? 'greek-text' : ''}`} />
@@ -417,7 +426,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
               accent-insensitive, so a miss really is a spelling issue or a non-NT word. */}
           {forms ? (
             <p className="mt-1 text-[11px] text-brand-600">
-              {lexemeIsExact ? 'Found' : 'Recognised'} — {forms.p.join(' or ')}
+              {lexemeIsExact ? t('cq.found') : t('cq.recognised')} — {forms.p.join(' or ')}
               {settled.length > 0 && <span className="text-gray-400"> · always {settled.join(', ')}</span>}
             </p>
           ) : typed.length >= 3 && resolved ? (
@@ -426,8 +435,8 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
         </div>
         <button type="button" onClick={() => setGreekInput(v => !v)}
           title={greekInput
-            ? (isHebrew ? `Hebrew keyboard on — ${HEBREW_LEGEND}` : `Greek keyboard on — ${BETA_LEGEND}`)
-            : `${isHebrew ? 'Hebrew' : 'Greek'} keyboard off — type Latin letters`}
+            ? (isHebrew ? t('cq.hebrewKeyboardOn', { legend: HEBREW_LEGEND }) : t('cq.greekKeyboardOn', { legend: BETA_LEGEND }))
+            : t(isHebrew ? 'cq.hebrewKeyboardOff' : 'cq.greekKeyboardOff')}
           className={`flex-none rounded-md border px-2 py-1.5 text-xs transition-colors ${
             greekInput ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-500 hover:bg-gray-50'}`}>
           <span className={isHebrew ? 'font-hebrew' : 'greek-text'}>{isHebrew ? 'א' : 'α'}</span>
@@ -436,20 +445,20 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
 
       {/* Step 2 — WHAT FORM. Part of speech first: it decides which categories even appear. */}
       <p className="mb-1 mt-3 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
-        2 · Its form
-        <span className="font-normal normal-case tracking-normal text-gray-300"> — leave as “any” to match every form</span>
+        {t('cq.step2')}
+        <span className="font-normal normal-case tracking-normal text-gray-300">{t('cq.step2Hint')}</span>
       </p>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
         {/* Part of speech: a dropdown only while it's still open. Once the word settles it
             (λόγος can only be a noun) there is nothing to pick, so it reads as a fact. */}
         {posOptions.length === 1 && forms ? (
-          <Fixed label="Part of speech" value={vocab.label(posOptions[0])} />
+          <Fixed label={t('cq.partOfSpeech')} value={vocab.label(posOptions[0])} />
         ) : (
           <div>
             <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">Part of speech</label>
             <select value={pos} onChange={e => setCategory('pos', e.target.value ? [e.target.value] : [])}
               className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
-              <option value="">any</option>
+              <option value="">{t('cq.any')}</option>
               {vocab.posFeatures.filter(f => posOptions.includes(f.value))
                 .map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
             </select>
@@ -477,9 +486,9 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
       {termCount > 1 && (
         <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-gray-100 pt-2.5">
           <span className="flex items-center gap-2 text-xs text-gray-600">
-            {([[false, 'must appear'], [true, 'must NOT appear']] as const).map(([val, label]) => (
+            {([[false, t('cq.mustAppear')], [true, t('cq.mustNotAppear')]] as const).map(([val, label]) => (
               <label key={label} className="flex cursor-pointer items-center gap-1"
-                title={val ? 'Match only where no such word stands between the others' : undefined}>
+                title={val ? t('cq.notBetweenTitle') : undefined}>
                 <input type="radio" name={`negate-${index}`} checked={!!term.negate === val}
                   onChange={() => onChange({ ...term, negate: val || undefined })}
                   className="h-3 w-3 accent-brand-600" />
@@ -495,17 +504,17 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
                 <input type="checkbox" checked={agreeOn.length > 0}
                   onChange={e => setAgreement(e.target.checked ? [...vocab.agreementCategories] : [], agreeWith)}
                   className="h-3 w-3 accent-brand-600" />
-                agrees with
+                {t('cq.agreesWith')}
               </label>
               {otherWords.length === 1 ? (
-                <span className="text-gray-500">Word {otherWords[0] + 1}</span>
+                <span className="text-gray-500">{t('cq.wordN', { n: otherWords[0] + 1 })}</span>
               ) : (
                 <select value={agreeWith} onChange={e => setAgreement(agreeOn, Number(e.target.value))}
                   className="rounded border border-gray-300 bg-surface px-1 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
-                  {otherWords.map(i => <option key={i} value={i}>Word {i + 1}</option>)}
+                  {otherWords.map(i => <option key={i} value={i}>{t('cq.wordN', { n: i + 1 })}</option>)}
                 </select>
               )}
-              <span className="text-gray-400">in</span>
+              <span className="text-gray-400">{t('cq.in')}</span>
               {vocab.agreementCategories.map(cat => (
                 <label key={cat} className="flex cursor-pointer items-center gap-1">
                   <input type="checkbox" checked={agreeOn.includes(cat)}

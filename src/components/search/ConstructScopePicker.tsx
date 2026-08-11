@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { Check, X } from 'lucide-react'
 
 // Limiting a construct to particular books or works. The biblical corpora scope by book and are
@@ -25,6 +26,7 @@ export function ConstructScopePicker({ entries, selected, onChange, onClose, bib
   onClose: () => void
   biblical: boolean
 }) {
+  const t = useT()
   const [filter, setFilter] = useState('')
   const chosen = new Set(selected)
 
@@ -67,7 +69,7 @@ export function ConstructScopePicker({ entries, selected, onChange, onClose, bib
       {/* 49 Greco-Roman works is too many to scan, so the list is filterable. */}
       {!biblical && (
         <div className="border-b border-gray-100 px-2.5 py-1.5">
-          <input value={filter} onChange={e => setFilter(e.target.value)} placeholder="Filter works…"
+          <input value={filter} onChange={e => setFilter(e.target.value)} placeholder={t('cq.filterWorks')}
             className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500" />
         </div>
       )}
@@ -84,7 +86,7 @@ export function ConstructScopePicker({ entries, selected, onChange, onClose, bib
                 {list.length > 1 && (
                   <button type="button" onClick={() => toggleMany(ids, !allOn)}
                     className="flex-none text-[10px] text-brand-600 hover:underline">
-                    {allOn ? 'Deselect all' : 'Select all'}
+                    {allOn ? t('cq.deselectAll') : t('cq.selectAll')}
                   </button>
                 )}
               </div>

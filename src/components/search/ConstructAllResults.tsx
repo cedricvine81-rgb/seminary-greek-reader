@@ -1,6 +1,8 @@
 'use client'
 
 import { ChevronRight } from 'lucide-react'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatNumber } from '@/lib/i18n/format'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
 import { corpusInfo, type ConstructCorpus } from '@/lib/construct-query'
@@ -30,6 +32,8 @@ export function ConstructAllResults({ blocks, total, bookName, transLang, onOpen
   onDrillDown: (corpus: ConstructCorpus) => void
   isAuthenticated: boolean
 }) {
+  const t = useT()
+  const locale = useLocale()
   const max = Math.max(1, ...blocks.map(b => b.count))
   const present = blocks.filter(b => b.count > 0)
 
@@ -38,7 +42,7 @@ export function ConstructAllResults({ blocks, total, bookName, transLang, onOpen
       {/* The distribution — the part that answers "is this distinctive, or ordinary Greek?" */}
       <div className="mb-5 rounded-xl border border-gray-200 bg-surface p-3">
         <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-          Where it occurs · {total.toLocaleString()} passage{total === 1 ? '' : 's'} in all
+          {t('cq.whereItOccurs', { n: t('cq.passageCount', { count: total, n: formatNumber(total, locale) }) })}
         </p>
         <div className="space-y-1">
           {blocks.map(b => {
@@ -46,16 +50,16 @@ export function ConstructAllResults({ blocks, total, bookName, transLang, onOpen
             return (
               <button key={b.corpus} type="button" disabled={b.count === 0}
                 onClick={() => onDrillDown(b.corpus)}
-                title={b.count ? `Search ${info.label} on its own to see all ${b.count.toLocaleString()}` : undefined}
+                title={b.count ? t('cq.searchCorpusAlone', { corpus: info.label, n: formatNumber(b.count, locale) }) : undefined}
                 className={`flex w-full items-center gap-2 rounded px-1 py-0.5 text-left text-xs transition-colors ${
                   b.count ? 'hover:bg-brand-50' : 'cursor-default opacity-40'}`}>
                 <span className="w-44 flex-none truncate text-gray-700">
                   {info.label}
                   {info.tagging === 'machine' && (
-                    <span className="ml-1 text-[10px] text-amber-600" title="Machine-parsed, roughly 90–95% accurate">~</span>
+                    <span className="ml-1 text-[10px] text-amber-600" title={t('cq.machineTaggedMark')}>~</span>
                   )}
                 </span>
-                <span className="w-14 flex-none text-right tabular-nums text-gray-500">{b.count.toLocaleString()}</span>
+                <span className="w-14 flex-none text-right tabular-nums text-gray-500">{formatNumber(b.count, locale)}</span>
                 <span className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
                   <span className="block h-full rounded-full bg-brand-400"
                     style={{ width: `${Math.round((b.count / max) * 100)}%` }} />
@@ -80,7 +84,7 @@ export function ConstructAllResults({ blocks, total, bookName, transLang, onOpen
               <p className="text-xs font-semibold text-gray-700">{info.label}</p>
               <button type="button" onClick={() => onDrillDown(b.corpus)}
                 className="text-[11px] text-brand-600 hover:underline">
-                {b.count > b.results.length ? `see all ${b.count.toLocaleString()}` : 'open'}
+                {b.count > b.results.length ? `see all ${formatNumber(b.count, locale)}` : 'open'}
               </button>
             </div>
             {b.prose

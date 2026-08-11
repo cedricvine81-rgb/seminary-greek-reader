@@ -1,6 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { READING_LANGS, defaultReadingLang } from '@/lib/reading-language'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatNumber } from '@/lib/i18n/format'
 import { useRouter } from 'next/navigation'
 import { Check, ChevronDown, Library, Lightbulb, Link2, Loader2, Plus, Search } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
@@ -39,11 +42,12 @@ type Hit = GreekHit & { crossesVerse?: boolean }
 // that both match but never stand near each other, and without this the two look identical — which
 // is how a stale part of speech ("a verb whose lemma is ἵνα") once returned nothing in silence.
 function NoMatches({ query, termTotals }: { query: ConstructQuery; termTotals: number[] }) {
-  const used = query.terms.filter(t => !termIsEmpty(t) && !t.negate)
-  const describe = (t: ConstructTerm) => {
-    const feats = Object.values(t.features).flat().map(v => FEATURE_LABEL.get(v) ?? v)
-    const desc = feats.length ? feats.join(' ') : 'any word'
-    return t.lemma ? `${desc} (${t.lemma})` : desc
+  const t = useT()
+  const used = query.terms.filter(term => !termIsEmpty(term) && !term.negate)
+  const describe = (term: ConstructTerm) => {
+    const feats = Object.values(term.features).flat().map(v => FEATURE_LABEL.get(v) ?? v)
+    const desc = feats.length ? feats.join(' ') : t('cq.anyWord')
+    return term.lemma ? `${desc} (${term.lemma})` : desc
   }
   const empties = used.filter((_, i) => (termTotals[i] ?? 0) === 0)
   return (
@@ -53,9 +57,9 @@ function NoMatches({ query, termTotals }: { query: ConstructQuery; termTotals: n
         <div className="mx-auto mt-3 max-w-md text-left">
           <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">What each word found on its own</p>
           <div className="space-y-0.5">
-            {used.map((t, i) => (
+            {used.map((term, i) => (
               <p key={i} className="flex items-baseline justify-between gap-3 text-xs">
-                <span className="truncate text-gray-600">{describe(t)}</span>
+                <span className="truncate text-gray-600">{describe(term)}</span>
                 <span className={`flex-none tabular-nums ${(termTotals[i] ?? 0) === 0 ? 'font-semibold text-red-600' : 'text-gray-400'}`}>
                   {(termTotals[i] ?? 0).toLocaleString()}
                 </span>
@@ -64,8 +68,8 @@ function NoMatches({ query, termTotals }: { query: ConstructQuery; termTotals: n
           </div>
           <p className="mt-2 text-[11px] leading-snug text-gray-500">
             {empties.length > 0
-              ? 'A word matching nothing on its own can never combine — check that its form is one that word actually takes.'
-              : 'Each word occurs, but never within the distance you set. Try a larger distance, either order, or fewer constraints.'}
+              ? t('cq.noneOnItsOwn')
+              : t('cq.neverWithinDistance')}
           </p>
         </div>
       )}
@@ -77,6 +81,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   initial: ConstructQuery
   isAuthenticated?: boolean
 }) {
+  const t = useT()
+  const locale = useLocale()
   const router = useRouter()
   const [query, setQuery] = useState<ConstructQuery>(initial)
   // The query that produced the results below — set only when a search actually runs, so
@@ -91,7 +97,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const [termTotals, setTermTotals] = useState<number[]>([])
   const [loading, setLoading] = useState(false)
   const [bookName, setBookName] = useState<Map<string, string>>(new Map())
-  const [transLang, setTransLang] = useState('en')
+  // Follows the reader's language, like the other parallel columns.
+  const [transLang, setTransLang] = useState(() => defaultReadingLang(locale))
   const [showProseEnglish, setShowProseEnglish] = useState(false)
   // 'Search all' returns a per-corpus distribution rather than one list.
   const [allBlocks, setAllBlocks] = useState<{ blocks: CorpusBlock[]; total: number } | null>(null)
@@ -256,14 +263,14 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const summary = useMemo(() => (ran ? describeConstruct(ran) : ''), [ran])
 
   const crossCount = hits?.filter(h => h.crossesVerse).length ?? 0
-  const scopeNoun = isProseCorpus(query.corpus) ? 'work' : 'book'
+  const scopeIsWorks = isProseCorpus(query.corpus)
   const scopeAvailable = query.corpus !== CONSTRUCT_ALL && (scopes[query.corpus]?.length ?? 0) > 0
 
   // Never available during a lockdown exam — same rule as the rest of Search.
   if (mounted && isExamLocked()) {
     return (
       <div className="mx-auto w-full max-w-2xl px-4 py-20 text-center text-gray-500">
-        Search is unavailable during a Translation Exam.
+        {t('cq.unavailableInExam')}
       </div>
     )
   }
@@ -271,11 +278,11 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
       <div className="mb-1 flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="text-lg font-semibold text-gray-900">Construct search</h1>
+        <h1 className="text-lg font-semibold text-gray-900">{t('cq.title')}</h1>
         {/* Which Greek text. One at a time — see ConstructCorpus. Switching corpus keeps the
             construct you've built, so you can run the same query against the other text. */}
         <label className="flex items-center gap-1.5 text-xs text-gray-500">
-          Search in
+          {t('cq.searchIn')}
           <select value={query.corpus}
             onChange={e => {
               // Book ids are corpus-specific, so a scope can't survive the switch.
@@ -284,13 +291,13 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
               setShowScope(false)
             }}
             className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
-            <option value={CONSTRUCT_ALL}>All Greek texts — where does it occur?</option>
-            <optgroup label="Biblical (hand-tagged)">
+            <option value={CONSTRUCT_ALL}>{t('cq.allGreekTexts')}</option>
+            <optgroup label={t('cq.biblicalHandTagged')}>
               {CONSTRUCT_CORPORA.filter(c => c.kind === 'bible').map(c => (
                 <option key={c.id} value={c.id}>{c.label}</option>
               ))}
             </optgroup>
-            <optgroup label="Other Greek texts (machine-tagged)">
+            <optgroup label={t('cq.otherMachineTagged')}>
               {CONSTRUCT_CORPORA.filter(c => c.kind === 'prose').map(c => (
                 <option key={c.id} value={c.id}>{c.label}</option>
               ))}
@@ -299,8 +306,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         </label>
       </div>
       <p className="mb-4 text-xs text-gray-500">
-        Find two or three words near each other by their grammar — e.g. an aorist participle within
-        four words of a dative noun. Ticking more than one option in a box means <em>either</em>.
+        <span dangerouslySetInnerHTML={{ __html: t('cq.intro') }} />
       </p>
       {/* Worked constructions. The builder is powerful and a blank one teaches nothing — these open
           it on something real, and each is an ordinary query that can then be edited or re-scoped.
@@ -312,7 +318,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           <button type="button" onClick={() => setShowExamples(v => !v)} aria-expanded={showExamples}
             className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-xs transition-colors ${
               showExamples ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
-            <Lightbulb size={13} /> Examples
+            <Lightbulb size={13} /> {t('cq.examples')}
             <ChevronDown size={12} className={`transition-transform ${showExamples ? 'rotate-180' : ''}`} />
           </button>
           {/* Limit to particular books or works. Not offered for "search all", where a book id
@@ -325,8 +331,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                   : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
               <Library size={13} />
               {query.books?.length
-                ? `${query.books.length} ${scopeNoun}${query.books.length === 1 ? '' : 's'}`
-                : `All ${scopeNoun}s`}
+                ? t(scopeIsWorks ? 'cq.workCount' : 'cq.bookCount', { count: query.books.length, n: query.books.length })
+                : t(scopeIsWorks ? 'cq.allWorks' : 'cq.allBooks')}
               <ChevronDown size={12} className={`transition-transform ${showScope ? 'rotate-180' : ''}`} />
             </button>
           )}
@@ -358,7 +364,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                       className="w-full rounded-lg border border-gray-100 px-2.5 py-1.5 text-left transition-colors hover:border-brand-200 hover:bg-brand-50">
                       <span className="flex items-baseline justify-between gap-3">
                         <span className="text-xs font-medium text-gray-800">{preset.label}</span>
-                        <span className="flex-none text-[10px] tabular-nums text-gray-400">{preset.approx.toLocaleString()} in the {query.corpus === 'MT' ? 'MT' : 'NT'}</span>
+                        <span className="flex-none text-[10px] tabular-nums text-gray-400">{t('cq.approxIn', { n: formatNumber(preset.approx, locale), corpus: query.corpus === 'MT' ? 'MT' : 'NT' })}</span>
                       </span>
                       <span className="mt-0.5 block text-[11px] leading-snug text-gray-500">{preset.note}</span>
                     </button>
@@ -372,18 +378,16 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
 
       {query.corpus !== CONSTRUCT_ALL && corpusInfo(query.corpus).tagging === 'machine' && (
         <p className="mb-4 rounded-lg border border-amber-200/70 bg-amber-50/50 px-3 py-2 text-xs text-gray-600">
-          This text is <strong className="font-semibold">machine-parsed</strong> (roughly 90–95% accurate), unlike the
-          New Testament and Septuagint, which are hand-tagged. Treat a hit as a lead to check in the
-          text, not as a settled parse.
+          <span dangerouslySetInnerHTML={{ __html: t('cq.machineParsedWarning') }} />
         </p>
       )}
 
       {/* ─── Builder ─────────────────────────────────────────────────────── */}
       <div className="space-y-2">
-        {query.terms.map((t, i) => (
+        {query.terms.map((term, i) => (
           <div key={i}>
             <ConstructTermCard
-              index={i} termCount={query.terms.length} term={t} corpus={query.corpus}
+              index={i} termCount={query.terms.length} term={term} corpus={query.corpus}
               lemmaForms={lemmaForms}
               onChange={nt => setTerm(i, nt)}
               onRemove={query.terms.length > 2 ? () => removeTerm(i) : undefined}
@@ -392,21 +396,21 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
             {i < query.terms.length - 1 && (
               <div className="my-2 flex flex-wrap items-center gap-x-4 gap-y-2 px-3">
                 <label className="flex items-center gap-1.5 text-xs text-gray-600">
-                  within
+                  {t('cq.withinPrefix')}
                   <select value={query.within} onChange={e => setQuery(q => ({ ...q, within: Number(e.target.value) }))}
                     className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
                     {Array.from({ length: CONSTRUCT_MAX_WITHIN }, (_, n) => n + 1).map(n => (
                       <option key={n} value={n}>{n}</option>
                     ))}
                   </select>
-                  word{query.within === 1 ? '' : 's'}
+                  {t('cq.wordUnit', { count: query.within })}
                 </label>
                 {/* Order and verse-confinement are properties of the whole construct, so they
                     only show once, on the first connector. */}
                 {i === 0 && (
                   <>
                     <span className="flex items-center gap-2 text-xs text-gray-600">
-                      {([[false, 'either order'], [true, 'in order']] as const).map(([val, label]) => (
+                      {([[false, t('cq.eitherOrder')], [true, t('cq.inOrder')]] as const).map(([val, label]) => (
                         <label key={label} className="flex cursor-pointer items-center gap-1">
                           <input type="radio" name="construct-order" checked={query.ordered === val}
                             onChange={() => setQuery(q => ({ ...q, ordered: val }))}
@@ -416,11 +420,11 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                       ))}
                     </span>
                     <label className="flex cursor-pointer items-center gap-1 text-xs text-gray-600"
-                      title="Off: a construct may straddle a verse boundary (those hits are flagged in the results)">
+                      title={t('cq.sameVerseTitle')}>
                       <input type="checkbox" checked={query.sameVerse}
                         onChange={e => setQuery(q => ({ ...q, sameVerse: e.target.checked }))}
                         className="h-3 w-3 accent-brand-600" />
-                      same verse only
+                      {t('cq.sameVerseOnly')}
                     </label>
                   </>
                 )}
@@ -434,7 +438,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         {query.terms.length < CONSTRUCT_MAX_TERMS && (
           <button type="button" onClick={addTerm}
             className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-surface px-3 py-1.5 text-xs text-gray-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">
-            <Plus size={13} /> Add a word
+            <Plus size={13} /> {t('cq.addWord')}
           </button>
         )}
         {/* A construct is entirely described by its URL, so a search can be handed to students as a
@@ -458,7 +462,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                 let ok = false
                 try { ok = document.execCommand('copy') } catch { ok = false }
                 document.body.removeChild(el)
-                if (ok) done(); else window.prompt('Copy this link:', url)
+                if (ok) done(); else window.prompt(t('cq.copyThisLink'), url)
               }
               if (navigator.clipboard?.writeText) {
                 navigator.clipboard.writeText(url).then(done).catch(fallback)
@@ -466,15 +470,15 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                 fallback()
               }
             }}
-            title="Copy a link to this exact search — paste it into an assignment or a message"
+            title={t('cq.copyLinkTitle')}
             className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-surface px-3 py-1.5 text-xs text-gray-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">
-            {copied ? <><Check size={13} /> Link copied</> : <><Link2 size={13} /> Copy link</>}
+            {copied ? <><Check size={13} /> {t('cq.linkCopied')}</> : <><Link2 size={13} /> {t('cq.copyLink')}</>}
           </button>
         )}
                 <button type="button" onClick={runSearch} disabled={!runnable}
-          title={runnable ? undefined : 'Give a word something to match — a part of speech, a form, or a lexeme'}
+          title={runnable ? undefined : t('cq.needSomethingToMatch')}
           className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400">
-          <Search size={14} /> Search
+          <Search size={14} /> {t('cq.search')}
         </button>
         {!runnable && (
           <span className="text-xs text-gray-400">Set a part of speech, form, or lexeme on at least one word.</span>
@@ -512,19 +516,19 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                 <div className="flex items-center justify-between gap-3 pb-2">
                   <p className="text-xs text-gray-400">
                     {truncated
-                      ? <>showing {proseHits.length} of {total.toLocaleString()} passages</>
-                      : <>{total.toLocaleString()} passage{total === 1 ? '' : 's'}</>}
+                      ? <>{t('cq.showingOf', { shown: proseHits.length, total: formatNumber(total, locale) })}</>
+                      : <>{t('cq.passageCount', { count: total, n: formatNumber(total, locale) })}</>}
                   </p>
                   <label className="flex items-center gap-1.5 text-[11px] text-gray-500">
                     <input type="checkbox" checked={showProseEnglish}
                       onChange={e => setShowProseEnglish(e.target.checked)}
                       className="h-3 w-3 accent-brand-600" />
-                    Show the English
+                    {t('cq.showTheEnglish')}
                   </label>
                 </div>
                 {truncated && (
                   <p className="mb-2 text-[11px] text-gray-400">
-                    Showing the first {proseHits.length} of {total.toLocaleString()} — narrow the construct to see the rest.
+                    {t('cq.showingFirstOf', { shown: proseHits.length, total: formatNumber(total, locale) })}
                   </p>
                 )}
                 <ConstructProseResults hits={proseHits} showEnglish={showProseEnglish} onOpen={openProseHit} />
@@ -542,17 +546,18 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                   {crossCount > 0 && <span className="text-gray-300"> · {crossCount} straddle a verse boundary</span>}
                 </p>
                 <select value={transLang} onChange={e => setTransLang(e.target.value)}
-                  title="Parallel translation column"
+                  title={t('search.parallelTitle')}
                   className="rounded-md border border-gray-200 bg-surface px-2 py-1 text-[11px] text-gray-600">
-                  <option value="none">No translation</option>
-                  <option value="en">English (WEB)</option><option value="bsb">English (BSB)</option>
-                  <option value="es">Spanish</option><option value="fr">French</option><option value="pt">Portuguese</option>
-                  <option value="ru">Russian</option><option value="ko">Korean</option><option value="zh">Mandarin</option>
+                  <option value="none">{t('search.noTranslation')}</option>
+                  {/* Driven by READING_LANGS rather than a hand-written list: this was the
+                      fourth copy of the same eight languages, and it had already lost the
+                      labels the others use. */}
+                  {READING_LANGS.map(l => <option key={l.code} value={l.code}>{t(l.labelKey)}</option>)}
                 </select>
               </div>
               {truncated && (
                 <p className="mb-2 text-[11px] text-gray-400">
-                  Showing the first {hits.length} of {total.toLocaleString()} — narrow the construct to see the rest.
+                  {t('cq.showingFirstOf', { shown: hits.length, total: formatNumber(total, locale) })}
                 </p>
               )}
               {/* Biblical only — the prose branch above returns before reaching this. */}
