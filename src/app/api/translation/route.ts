@@ -36,6 +36,44 @@ const LANG_TO_TRANSLATION: Record<string, string> = {
 // Simple in-memory cache: "translation.bookNr.chapter" → verse map
 const _cache = new Map<string, Record<string, string>>()
 
+/**
+ * Our own Spanish of a deuterocanonical chapter, or null when it isn't translated yet.
+ *
+ * Read through the same static-asset path the corpus uses on Vercel rather than fs, so it is
+ * not bundled into the function — see readCorpusFile() in lib/reader.ts for why that matters.
+ */
+async function readDeuteroEs(osisId: string, chapter: number): Promise<Record<string, string> | null> {
+  const key = `deutero-es.${osisId}.${chapter}`
+  if (_cache.has(key)) return _cache.get(key)!
+  const host = process.env.VERCEL_ENV === 'production'
+    ? process.env.VERCEL_PROJECT_PRODUCTION_URL
+    : process.env.VERCEL_URL
+  try {
+    let raw: string
+    if (host) {
+      const res = await fetch(`https://${host}/data/deutero-es/${osisId}_${chapter}.json`, {
+        next: { revalidate: 86400 },
+      })
+      if (!res.ok) return null
+      raw = await res.text()
+    } else {
+      const fs = await import('fs')
+      const path = await import('path')
+      const file = path.join(process.cwd(), 'public', 'data', 'deutero-es', `${osisId}_${chapter}.json`)
+      if (!fs.existsSync(file)) return null
+      raw = fs.readFileSync(file, 'utf8')
+    }
+    const data = JSON.parse(raw) as { verses?: Record<string, string> }
+    if (!data.verses) return null
+    const verses: Record<string, string> = {}
+    for (const [n, text] of Object.entries(data.verses)) verses[`${osisId}.${chapter}.${n}`] = text
+    _cache.set(key, verses)
+    return verses
+  } catch {
+    return null
+  }
+}
+
 export async function GET(req: NextRequest) {
   try {
   const { searchParams } = req.nextUrl
@@ -45,6 +83,19 @@ export async function GET(req: NextRequest) {
 
   if (!osisId || isNaN(chapter) || !lang) {
     return NextResponse.json({ error: 'Missing params' }, { status: 400 })
+  }
+
+  // ── Deuterocanonical books, Spanish ─────────────────────────────────────────
+  // These have no Protestant book number, so every entry in LANG_TO_TRANSLATION is blind to
+  // them: a Spanish reader on LXX Tobit got Greek, Brenton's English, and an empty third
+  // column. The public-domain Spanish (Reina 1569, Valera 1602, Scío, Torres Amat) is all
+  // translated from the VULGATE, whose Tobit is a shorter recension and whose Sirach renumbers
+  // after ch. 30 — in a parallel reader a column that drifts from the Greek beside it is worse
+  // than no column. So these are translated from the app's own LXX Greek and served from disk,
+  // the same choice made for Theon (scripts/theon-english.json).
+  if (lang === 'es' && !OSIS_TO_BOOK[osisId]) {
+    const local = await readDeuteroEs(osisId, chapter)
+    if (local) return NextResponse.json({ verses: local, ourTranslation: true })
   }
 
   const bookNr = OSIS_TO_BOOK[osisId]
