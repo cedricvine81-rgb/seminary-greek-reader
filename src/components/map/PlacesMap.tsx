@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { MapPin, Search, X, Loader2 } from 'lucide-react'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatNumber } from '@/lib/i18n/format'
 import { openMasterSearch, hasMasterSearch } from '@/lib/master-search-bus'
 
 // A map of every place the Texts library's authors name, drawn as SVG from data built by
@@ -34,6 +36,8 @@ const y = (lat: number) => ((BBOX.n - lat) / (BBOX.n - BBOX.s)) * H
 const radius = (count: number) => Math.min(11, 1.6 + Math.sqrt(count) * 0.42)
 
 export function PlacesMap() {
+  const t = useT()
+  const locale = useLocale()
   const [places, setPlaces] = useState<Place[] | null>(null)
   const [land, setLand] = useState<number[][][] | null>(null)
   const [author, setAuthor] = useState<string>('all')
@@ -110,28 +114,28 @@ export function PlacesMap() {
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Find a place…"
-            aria-label="Find a place"
+            placeholder={t('map.findPlace')}
+            aria-label={t('map.findPlaceAria')}
             className="w-52 rounded-lg border border-gray-200 bg-surface py-1.5 pl-8 pr-3 text-sm"
           />
         </div>
         <select
           value={author}
           onChange={e => { setAuthor(e.target.value); setSelected(null) }}
-          aria-label="Filter by author"
+          aria-label={t('map.filterByAuthor')}
           className="rounded-lg border border-gray-200 bg-surface px-2.5 py-1.5 text-sm"
         >
-          <option value="all">All authors ({places.length} places)</option>
-          {authors.map(([a, c]) => <option key={a} value={a}>{a} ({c.toLocaleString()})</option>)}
+          <option value="all">{t('map.allAuthors', { n: formatNumber(places.length, locale) })}</option>
+          {authors.map(([a, c]) => <option key={a} value={a}>{a} ({formatNumber(c, locale)})</option>)}
         </select>
-        <span className="text-xs text-gray-500">{shown.length.toLocaleString()} places shown</span>
+        <span className="text-xs text-gray-500">{t('map.placesShown', { n: formatNumber(shown.length, locale) })}</span>
         <div className="ml-auto flex items-center gap-1">
           <button onClick={() => zoom(1 / 1.5, view.x + view.w / 2, view.y + view.h / 2)}
-            className="rounded-lg border border-gray-200 px-2 py-1 text-sm text-gray-600 hover:bg-brand-50" aria-label="Zoom in">+</button>
+            className="rounded-lg border border-gray-200 px-2 py-1 text-sm text-gray-600 hover:bg-brand-50" aria-label={t('map.zoomIn')}>+</button>
           <button onClick={() => zoom(1.5, view.x + view.w / 2, view.y + view.h / 2)}
-            className="rounded-lg border border-gray-200 px-2 py-1 text-sm text-gray-600 hover:bg-brand-50" aria-label="Zoom out">−</button>
+            className="rounded-lg border border-gray-200 px-2 py-1 text-sm text-gray-600 hover:bg-brand-50" aria-label={t('map.zoomOut')}>−</button>
           <button onClick={() => setView({ x: 0, y: 0, w: W, h: H })}
-            className="rounded-lg border border-gray-200 px-2 py-1 text-xs text-gray-600 hover:bg-brand-50">Reset</button>
+            className="rounded-lg border border-gray-200 px-2 py-1 text-xs text-gray-600 hover:bg-brand-50">{t('map.reset')}</button>
         </div>
       </div>
 
@@ -200,18 +204,18 @@ export function PlacesMap() {
               <h3 className="flex items-center gap-1.5 text-sm font-semibold text-gray-800">
                 <MapPin size={14} className="text-brand-600" />{selected.n}
               </h3>
-              <button onClick={() => setSelected(null)} aria-label="Close" className="text-gray-400 hover:text-gray-600">
+              <button onClick={() => setSelected(null)} aria-label={t('map.close')} className="text-gray-400 hover:text-gray-600">
                 <X size={15} />
               </button>
             </div>
             <p className="mt-0.5 text-[11px] text-gray-500">
               {selected.lat.toFixed(2)}°{selected.lat >= 0 ? 'N' : 'S'}, {Math.abs(selected.lon).toFixed(2)}°{selected.lon >= 0 ? 'E' : 'W'}
-              {' · '}{selected.c.toLocaleString()} mention{selected.c === 1 ? '' : 's'}
+              {' · '}{t('map.mentionCount', { count: selected.c, n: formatNumber(selected.c, locale) })}
             </p>
             <ul className="mt-2 space-y-0.5">
               {Object.entries(selected.a).sort((a, b) => b[1] - a[1]).map(([a, c]) => (
                 <li key={a} className="flex justify-between gap-3 text-xs text-gray-700">
-                  <span>{a}</span><span className="tabular-nums text-gray-500">{c.toLocaleString()}</span>
+                  <span>{a}</span><span className="tabular-nums text-gray-500">{formatNumber(c, locale)}</span>
                 </li>
               ))}
             </ul>
@@ -225,14 +229,14 @@ export function PlacesMap() {
                 onClick={() => openMasterSearch({ query: selected.n, scope: 'bg:all' })}
                 className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 hover:underline"
               >
-                <Search size={12} /> Find {selected.n} in the texts
+                <Search size={12} /> {t('map.findInTexts', { place: selected.n })}
               </button>
             ) : (
               <Link
                 href={`/search?q=${encodeURIComponent(selected.n)}&in=bg:all`}
                 className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 hover:underline"
               >
-                <Search size={12} /> Find {selected.n} in the texts
+                <Search size={12} /> {t('map.findInTexts', { place: selected.n })}
               </Link>
             )}
           </div>

@@ -28,3 +28,12 @@ export function formatDateLong(value: string | number | Date, locale: string): s
     weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
   })
 }
+
+/**
+ * A number with the reader's own grouping. Spanish writes 1.234 where English writes 1,234, so
+ * a bare toLocaleString() — which follows the BROWSER, not the app — puts English separators in
+ * a Spanish page whenever the two disagree.
+ */
+export function formatNumber(value: number, locale: string): string {
+  return value.toLocaleString(locale)
+}

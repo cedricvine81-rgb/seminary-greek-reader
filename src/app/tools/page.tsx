@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { Church, Map as MapIcon, Blocks, ArrowRight } from 'lucide-react'
 import { THEME_PAGES } from '@/lib/themes'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
+import { getServerT, getServerLocale } from '@/lib/i18n/server'
+import { formatNumber } from '@/lib/i18n/format'
 
 export const metadata: Metadata = { title: 'Tools' }
 
@@ -16,66 +18,58 @@ export const metadata: Metadata = { title: 'Tools' }
 
 const workCount = TEXT_CATEGORIES.reduce((n, c) => n + (c.comingSoon ? 0 : c.works.length), 0)
 
+const TOPIC_COUNT = THEME_PAGES.length
+const PASSAGE_COUNT = THEME_PAGES.reduce((n, p) => n + p.entries.length, 0)
+
+// Names reuse the header menu's tools.* keys. `stat` is a function rather than a string because
+// the Themes figures are DERIVED from the data — the original comment's point, kept — and a
+// count that pluralises cannot be baked into a constant.
 const TOOLS = [
   {
-    href: '/themes',
-    icon: Church,
-    name: 'Themes',
-    tagline: 'The library indexed by subject',
-    body: `Thirty-seven theological topics — the Godhead, the Sabbath, atonement, the kingdom — each `
-      + `set out from the non-canonical sources themselves: Second Temple Jewish, rabbinic, the `
-      + `Apostolic Fathers, the later Christian writers and the Greek and Roman world. Every `
-      + `citation is verified against the corpus, and every page also says what the sources do `
-      + `NOT contain.`,
-    stat: `${THEME_PAGES.length} topics · ${THEME_PAGES.reduce((n, p) => n + p.entries.length, 0)} passages`,
+    href: '/themes', icon: Church,
+    nameKey: 'tools.themes', taglineKey: 'tools.themes.tagline', bodyKey: 'tools.themes.body',
+    stat: (tr: (k: string, v?: Record<string, string | number>) => string) => tr('tools.statPair', {
+      a: tr('tools.topicCount', { count: TOPIC_COUNT, n: TOPIC_COUNT }),
+      b: tr('tools.passageCount', { count: PASSAGE_COUNT, n: PASSAGE_COUNT }),
+    }),
   },
   {
-    href: '/map',
-    icon: MapIcon,
-    name: 'Places',
-    tagline: 'Where the texts say things happened',
-    body: `Every place named by Herodotus, Thucydides, Strabo, Pausanias, Polybius and the orators, `
-      + `sized by how often each is mentioned. Click a place to see which authors speak of it, and `
-      + `open the passage beside the map.`,
-    stat: '655 ancient places',
+    href: '/map', icon: MapIcon,
+    nameKey: 'tools.places', taglineKey: 'tools.places.tagline', bodyKey: 'tools.places.body',
+    stat: (tr: (k: string) => string) => tr('tools.places.stat'),
   },
   {
-    href: '/search/construct',
-    icon: Blocks,
-    name: 'Construct search',
-    tagline: 'Search by grammar, not by word',
-    body: `Find constructions rather than vocabulary — an aorist participle before a main verb, a `
-      + `genitive absolute, an article-noun-article-adjective string — across the Greek New `
-      + `Testament, the Septuagint, the Hebrew Bible and the background corpora, with agreement, `
-      + `negation and scoping.`,
-    stat: '3.16M words in 9 corpora',
+    href: '/search/construct', icon: Blocks,
+    nameKey: 'tools.construct', taglineKey: 'tools.construct.tagline', bodyKey: 'tools.construct.body',
+    stat: (tr: (k: string) => string) => tr('tools.construct.stat'),
   },
 ]
 
 export default function ToolsPage() {
+  const t = getServerT()
+  const locale = getServerLocale()
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-semibold text-gray-900">Tools</h1>
+      <h1 className="text-2xl font-semibold text-gray-900">{t('tools.title')}</h1>
       <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-gray-600">
-        Ways into the {workCount.toLocaleString()} works this library holds, other than reading them
-        front to back — by subject, by place, and by grammatical construction.
+        {t('tools.intro', { n: formatNumber(workCount, locale) })}
       </p>
 
       <div className="mt-6 space-y-3">
-        {TOOLS.map(t => (
-          <Link key={t.href} href={t.href}
+        {TOOLS.map(tool => (
+          <Link key={tool.href} href={tool.href}
             className="group block rounded-xl border border-gray-200 bg-surface p-5 transition-colors hover:border-brand-300 hover:bg-brand-50/40">
             <div className="flex items-start gap-4">
               <span className="mt-0.5 shrink-0 rounded-lg bg-brand-50 p-2 text-brand-600 group-hover:bg-brand-100">
-                <t.icon size={20} />
+                <tool.icon size={20} />
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-baseline gap-x-2">
-                  <h2 className="text-base font-semibold text-gray-900 group-hover:text-brand-800">{t.name}</h2>
-                  <span className="text-sm text-gray-500">{t.tagline}</span>
+                  <h2 className="text-base font-semibold text-gray-900 group-hover:text-brand-800">{t(tool.nameKey)}</h2>
+                  <span className="text-sm text-gray-500">{t(tool.taglineKey)}</span>
                 </div>
-                <p className="mt-1.5 text-sm leading-relaxed text-gray-600">{t.body}</p>
-                <p className="mt-2 text-xs text-gray-400">{t.stat}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-gray-600">{t(tool.bodyKey)}</p>
+                <p className="mt-2 text-xs text-gray-400">{tool.stat(t)}</p>
               </div>
               <ArrowRight size={16} className="mt-1 shrink-0 text-gray-300 transition-colors group-hover:text-brand-500" />
             </div>
