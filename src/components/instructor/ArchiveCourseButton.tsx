@@ -39,8 +39,8 @@ export function ArchiveCourseButton({ courseId, isArchived }: Props) {
       title={t(isArchived ? 'inst.restoreCourse' : 'inst.archiveCourse')}
     >
       {isArchived
-        ? <><ArchiveRestore size={14} /> Restore</>
-        : <><Archive size={14} /> Archive</>}
+        ? <><ArchiveRestore size={14} /> {t('ab.restore')}</>
+        : <><Archive size={14} /> {t('ab.archive')}</>}
     </Button>
   )
 }

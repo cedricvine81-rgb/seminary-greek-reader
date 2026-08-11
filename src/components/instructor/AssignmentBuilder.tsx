@@ -21,6 +21,9 @@ import type { CourseLevel } from '@/types/course'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { formatDate, formatDateLong } from '@/lib/i18n/format'
 import { featureLabel, groupLabel } from '@/lib/i18n/morph-labels'
+import {
+  SINGLE_ASSIGNMENT_TYPES, SERIES_ASSIGNMENT_TYPES, retakeOptions, appealOptions, glossaryOptions,
+} from '@/lib/assignment-display'
 import { getLessonForWeek, minOccurrencesThrough, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-lesson-map'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -57,32 +60,6 @@ const MORPHOLOGY_SUBTYPES: MorphologySubtype[] =
 
 const DAYS_OF_WEEK = [0, 1, 2, 3, 4, 5, 6]
 
-/** What a single assignment can be. PASSAGE_VOCABULARY is generated, never authored here. */
-const SINGLE_ASSIGNMENT_TYPES: AssignmentType[] = [
-  'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
-  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
-]
-
-/** A repeated series is always a quiz — the other types have no weekly form. */
-const SERIES_ASSIGNMENT_TYPES: AssignmentType[] = ['VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ']
-
-type T = (key: string, vars?: Record<string, string | number>) => string
-
-/** Retake and appeal counts, offered identically by both forms. */
-const retakeOptions = (t: T) =>
-  [0, 1, 2, 3, 5].map(n => ({ value: String(n), label: t(`inst.b.retakes${n}`) }))
-
-const appealOptions = (t: T) => [
-  { value: '0', label: t('inst.b.appealsOff') },
-  ...[1, 2, 3, 5].map(n => ({ value: String(n), label: t('inst.b.appealsN', { count: n, n }) })),
-]
-
-/** The glossary threshold, offered by both the exam and the exercise. */
-const glossaryOptions = (t: T) => [
-  { value: '', label: t('inst.b.glossaryOff') },
-  { value: '50', label: t('inst.b.glossaryBeginner') },
-  { value: '30', label: t('inst.b.glossaryIntermediate') },
-]
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 

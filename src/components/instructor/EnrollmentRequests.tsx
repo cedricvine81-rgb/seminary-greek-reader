@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { CheckCircle2, XCircle, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
-import { format } from 'date-fns'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate } from '@/lib/i18n/format'
 
 interface PendingEnrollment {
   id: string
@@ -20,6 +21,8 @@ interface Props {
 
 export function EnrollmentRequests({ pending: initial }: Props) {
   const router = useRouter()
+  const t = useT()
+  const locale = useLocale()
   const [pending, setPending] = useState(initial)
   const [acting, setActing] = useState<string | null>(null)
   const [messageOpen, setMessageOpen] = useState<string | null>(null)
@@ -86,7 +89,7 @@ export function EnrollmentRequests({ pending: initial }: Props) {
   return (
     <Card className="border-amber-200 bg-amber-50">
       <CardTitle className="mb-4 text-amber-900 flex items-center gap-2">
-        Requests for Approval
+        {t('er.title')}
         <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white text-xs font-bold">
           {pending.length}
         </span>
@@ -108,7 +111,7 @@ export function EnrollmentRequests({ pending: initial }: Props) {
                   {e.course.name}
                 </p>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  Requested {format(new Date(e.createdAt), 'MMM d, yyyy')}
+                  {t('er.requested', { date: formatDate(e.createdAt, locale) })}
                 </p>
               </div>
 
@@ -119,7 +122,7 @@ export function EnrollmentRequests({ pending: initial }: Props) {
                   onClick={() => decide(e.id, 'APPROVED')}
                   className="bg-green-600 hover:bg-green-700 text-white border-0 flex items-center gap-1"
                 >
-                  <CheckCircle2 size={13} /> Permit
+                  <CheckCircle2 size={13} /> {t('er.permit')}
                 </Button>
                 <Button
                   size="sm"
@@ -128,7 +131,7 @@ export function EnrollmentRequests({ pending: initial }: Props) {
                   onClick={() => decide(e.id, 'REJECTED')}
                   className="text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-1"
                 >
-                  <XCircle size={13} /> Deny
+                  <XCircle size={13} /> {t('er.deny')}
                 </Button>
                 <Button
                   size="sm"
@@ -136,7 +139,7 @@ export function EnrollmentRequests({ pending: initial }: Props) {
                   onClick={() => openMessage(e.id)}
                   className="text-gray-600 flex items-center gap-1"
                 >
-                  <Mail size={13} /> Message
+                  <Mail size={13} /> {t('er.message')}
                 </Button>
               </div>
             </div>
@@ -145,18 +148,18 @@ export function EnrollmentRequests({ pending: initial }: Props) {
             {messageOpen === e.id && (
               <div className="border-t border-amber-100 px-4 py-3 bg-gray-50 space-y-2">
                 <p className="text-xs font-medium text-gray-600">
-                  Message to {e.user.firstName} — will open in your email client
+                  {t('er.messageTo', { name: e.user.firstName })}
                 </p>
                 <textarea
                   value={messageText}
                   onChange={ev => setMessageText(ev.target.value)}
                   rows={3}
-                  placeholder={`Hi ${e.user.firstName}, regarding your request to join ${e.course.name}…`}
+                  placeholder={t('er.messageExample', { name: e.user.firstName, course: e.course.name })}
                   className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
                 />
                 <div className="flex gap-2">
                   <Button size="sm" onClick={() => sendMessage(e)} className="flex items-center gap-1">
-                    <Mail size={13} /> Send via Email Client
+                    <Mail size={13} /> {t('er.sendViaEmail')}
                   </Button>
                   <Button size="sm" variant="ghost" onClick={() => setMessageOpen(null)}>
                     Cancel

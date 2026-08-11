@@ -1,7 +1,9 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { format } from 'date-fns'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate } from '@/lib/i18n/format'
+import { ASSIGNMENT_TYPE_VARIANT, assignmentTypeShort } from '@/lib/assignment-display'
 import { Copy, CheckCircle2 } from 'lucide-react'
 import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
@@ -23,17 +25,6 @@ interface Assignment {
   _count: { questions: number }
 }
 
-const typeLabel: Record<string, string> = {
-  VOCABULARY_QUIZ: 'Vocabulary',
-  MORPHOLOGY_QUIZ: 'Morphology',
-  TRANSLATION_EXERCISE: 'Translation',
-}
-const typeVariant: Record<string, 'blue' | 'purple' | 'green'> = {
-  VOCABULARY_QUIZ: 'blue',
-  MORPHOLOGY_QUIZ: 'purple',
-  TRANSLATION_EXERCISE: 'green',
-}
-
 export function CopyAssignmentsPanel({
   courses,
   assignments,
@@ -43,6 +34,8 @@ export function CopyAssignmentsPanel({
   assignments: Assignment[]
   defaultTargetCourseId: string
 }) {
+  const t = useT()
+  const locale = useLocale()
   const router = useRouter()
   const [targetCourseId, setTargetCourseId] = useState(defaultTargetCourseId)
   const [copying, setCopying] = useState<string | null>(null)
@@ -68,7 +61,7 @@ export function CopyAssignmentsPanel({
   }
 
   if (courses.length === 0) {
-    return <p className="text-sm text-gray-500">Create a course first before copying assignments.</p>
+    return <p className="text-sm text-gray-500">{t('cp.createCourseFirst')}</p>
   }
 
   const grouped = available.reduce<Record<string, Assignment[]>>((acc, a) => {
@@ -86,7 +79,7 @@ export function CopyAssignmentsPanel({
           Copying duplicates the assignment and all its questions; the original is unchanged.
         </p>
         <Select
-          label="Copy into course"
+          label={t('cp.copyInto')}
           value={targetCourseId}
           onChange={e => { setTargetCourseId(e.target.value); setCopied(new Set()) }}
           options={courses.map(c => ({ value: c.id, label: c.name }))}
@@ -111,14 +104,17 @@ export function CopyAssignmentsPanel({
                     className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 bg-surface px-4 py-3"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <Badge variant={typeVariant[a.type] ?? 'gray'}>
-                        {typeLabel[a.type] ?? a.type}
+                      <Badge variant={ASSIGNMENT_TYPE_VARIANT[a.type] ?? 'gray'}>
+                        {assignmentTypeShort(a.type, t)}
                       </Badge>
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-gray-800 truncate">{a.title}</p>
                         <p className="text-xs text-gray-400">
-                          Week {a.weekNumber} · {a._count.questions} questions ·{' '}
-                          due {format(new Date(a.dueDate), 'MMM d, yyyy')}
+                          {t('cp.weekLine', {
+                            week: a.weekNumber,
+                            questions: a._count.questions,
+                            date: formatDate(a.dueDate, locale),
+                          })}
                         </p>
                       </div>
                     </div>
@@ -126,7 +122,7 @@ export function CopyAssignmentsPanel({
                     {copied.has(a.id) ? (
                       <span className="inline-flex items-center gap-1.5 text-sm text-green-600 font-medium shrink-0">
                         <CheckCircle2 size={15} />
-                        Copied
+                        {t('cp.copied')}
                       </span>
                     ) : (
                       <Button
@@ -137,7 +133,7 @@ export function CopyAssignmentsPanel({
                         className="shrink-0"
                       >
                         <Copy size={13} />
-                        Copy
+                        {t('cp.copy')}
                       </Button>
                     )}
                   </div>

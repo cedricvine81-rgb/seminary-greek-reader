@@ -4,6 +4,7 @@ import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Users, Mail, Trash2, Plus, CheckCircle2, ArrowLeft } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface Student { id: string; name: string }
 interface Group { id: string; name: string; assignmentId: string | null; members: { id: string; name: string }[] }
@@ -22,6 +23,7 @@ interface Props {
  * Class" on the course page.
  */
 export function CourseGroupsPanel({ courseId, students, presentations = [] }: Props) {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const [groups, setGroups] = useState<Group[]>([])
   const [loaded, setLoaded] = useState(false)
@@ -37,7 +39,7 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
       const data = await res.json().catch(() => ({}))
       if (res.ok) setGroups(data.groups ?? [])
       else setError(data.error ?? 'Failed to load groups.')
-    } catch { setError('Failed to load groups.') }
+    } catch { setError(t('cg.loadFailed')) }
     finally { setLoaded(true) }
   }
 
@@ -64,7 +66,7 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
     const res = await fetch(`/api/courses/${courseId}/groups/${id}`, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     })
-    if (!res.ok) { setError('Update failed — please try again.'); return false }
+    if (!res.ok) { setError(t('cg.updateFailed')); return false }
     return true
   }
 
@@ -92,10 +94,10 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
   }
 
   async function remove(id: string) {
-    if (!confirm('Delete this group? Its members will be unassigned.')) return
+    if (!confirm(t('cg.deleteConfirm'))) return
     const res = await fetch(`/api/courses/${courseId}/groups/${id}`, { method: 'DELETE' })
     if (res.ok) setGroups(gs => gs.filter(g => g.id !== id))
-    else setError('Failed to delete group.')
+    else setError(t('cg.deleteFailed'))
   }
 
   // studentId -> the group they're currently in (for the "already in X" hint)
@@ -111,33 +113,33 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
         variant="secondary"
         onClick={openPanel}
         disabled={disabled}
-        title={disabled ? 'No enrolled students yet' : undefined}
+        title={disabled ? t('cg.noStudents') : undefined}
         className="flex items-center gap-1.5"
       >
-        <Users size={14} /> Course Groups
+        <Users size={14} /> {t('cg.title')}
       </Button>
 
-      <Modal open={open} onClose={() => setOpen(false)} title={compose ? `Message “${compose.name}”` : 'Course groups'} size="lg">
+      <Modal open={open} onClose={() => setOpen(false)} title={compose ? t('cg.composeTitle', { name: compose.name }) : t('cg.modalTitle')} size="lg">
         {compose ? (
           <GroupComposer courseId={courseId} group={compose} onBack={() => setCompose(null)} onClose={() => setOpen(false)} />
         ) : !loaded ? (
-          <p className="text-sm text-gray-400 py-6 text-center">Loading groups…</p>
+          <p className="text-sm text-gray-400 py-6 text-center">{t('cg.loading')}</p>
         ) : (
           <div className="space-y-4">
             {/* Create a group */}
             <div className="flex items-end gap-2">
               <div className="flex-1">
                 <Input
-                  label="New group"
+                  label={t('cg.newGroup')}
                   value={newName}
                   onChange={e => setNewName(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); void createGroup() } }}
-                  placeholder="e.g. Group A / Tuesday cohort"
+                  placeholder={t('cg.groupNameExample')}
                   maxLength={100}
                 />
               </div>
               <Button size="sm" onClick={createGroup} loading={creating} className="flex items-center gap-1.5">
-                <Plus size={14} /> Create
+                <Plus size={14} /> {t('cg.create')}
               </Button>
             </div>
 
@@ -145,7 +147,7 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
 
             {groups.length === 0 ? (
               <p className="text-sm text-gray-400 italic py-4 text-center">
-                No groups yet. Create one above, then assign students to it.
+                {t('cg.none')}
               </p>
             ) : (
               <div className="space-y-4 max-h-[55vh] overflow-y-auto pr-1">
@@ -157,25 +159,25 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
                         onBlur={e => { if (e.target.value.trim() && e.target.value.trim() !== group.name) void rename(group.id, e.target.value) }}
                         onKeyDown={e => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }}
                         className="flex-1 rounded-lg border border-transparent hover:border-gray-200 focus:border-brand-400 px-2 py-1 text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
-                        aria-label="Group name"
+                        aria-label={t('cg.groupName')}
                       />
                       <span className="text-xs text-gray-400">{group.members.length} member{group.members.length === 1 ? '' : 's'}</span>
-                      <Button size="sm" variant="secondary" onClick={() => setCompose(group)} disabled={group.members.length === 0} title={group.members.length === 0 ? 'Add members first' : undefined} className="flex items-center gap-1">
-                        <Mail size={13} /> Message
+                      <Button size="sm" variant="secondary" onClick={() => setCompose(group)} disabled={group.members.length === 0} title={group.members.length === 0 ? t('cg.addMembersFirst') : undefined} className="flex items-center gap-1">
+                        <Mail size={13} /> {t('cg.message')}
                       </Button>
-                      <button onClick={() => remove(group.id)} className="text-gray-400 hover:text-red-600 p-1" title="Delete group"><Trash2 size={15} /></button>
+                      <button onClick={() => remove(group.id)} className="text-gray-400 hover:text-red-600 p-1" title={t('cg.deleteGroup')}><Trash2 size={15} /></button>
                     </div>
                     {/* Link this group to a Group Presentation assignment (or leave unassigned). */}
                     <label className="flex items-center gap-2 text-xs text-gray-500">
-                      <span className="shrink-0">Assignment</span>
+                      <span className="shrink-0">{t('cg.assignment')}</span>
                       <select
                         value={group.assignmentId ?? ''}
                         onChange={e => setAssignment(group.id, e.target.value || null)}
                         className="flex-1 rounded-lg border border-gray-200 px-2 py-1 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-500"
                       >
-                        <option value="">No assignment (messaging only)</option>
+                        <option value="">{t('cg.noAssignment')}</option>
                         {presentations.map(p => (
-                          <option key={p.id} value={p.id}>Group Presentation · {p.title}</option>
+                          <option key={p.id} value={p.id}>{t('cg.presentationOption', { title: p.title })}</option>
                         ))}
                       </select>
                     </label>
@@ -210,6 +212,7 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
 
 // Compose + send a message to every member of one group. Reuses /api/messages with groupId.
 function GroupComposer({ courseId, group, onBack, onClose }: { courseId: string; group: Group; onBack: () => void; onClose: () => void }) {
+  const t = useT()
   const [subject, setSubject] = useState('')
   const [body, setBody] = useState('')
   const [sending, setSending] = useState(false)
@@ -217,7 +220,7 @@ function GroupComposer({ courseId, group, onBack, onClose }: { courseId: string;
   const [sent, setSent] = useState<number | null>(null)
 
   async function send() {
-    if (!subject.trim() || !body.trim()) { setError('Subject and message are both required.'); return }
+    if (!subject.trim() || !body.trim()) { setError(t('cg.bothRequired')); return }
     setSending(true); setError('')
     try {
       const res = await fetch('/api/messages', {
@@ -227,7 +230,7 @@ function GroupComposer({ courseId, group, onBack, onClose }: { courseId: string;
       const data = await res.json().catch(() => ({}))
       if (!res.ok) { setError(data.error ?? 'Failed to send message.'); return }
       setSent(data.sent ?? group.members.length)
-    } catch { setError('Network error — please try again.') }
+    } catch { setError(t('cg.networkError')) }
     finally { setSending(false) }
   }
 
@@ -235,10 +238,10 @@ function GroupComposer({ courseId, group, onBack, onClose }: { courseId: string;
     return (
       <div className="text-center py-6 space-y-3">
         <CheckCircle2 size={36} className="text-green-500 mx-auto" />
-        <p className="text-sm text-gray-700">Message delivered to <span className="font-semibold">{sent}</span> member{sent === 1 ? '' : 's'} of “{group.name}”.</p>
+        <p className="text-sm text-gray-700">{t('cg.delivered', { count: sent, n: sent, group: group.name })}</p>
         <div className="flex justify-center gap-2">
-          <Button size="sm" variant="secondary" onClick={onBack}>Back to groups</Button>
-          <Button size="sm" onClick={onClose}>Done</Button>
+          <Button size="sm" variant="secondary" onClick={onBack}>{t('cg.backToGroups')}</Button>
+          <Button size="sm" onClick={onClose}>{t('cg.done')}</Button>
         </div>
       </div>
     )
@@ -248,16 +251,16 @@ function GroupComposer({ courseId, group, onBack, onClose }: { courseId: string;
     <div className="space-y-4">
       <button onClick={onBack} className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800"><ArrowLeft size={14} /> Back to groups</button>
       <p className="text-xs text-gray-500">To all {group.members.length} member{group.members.length === 1 ? '' : 's'} of <span className="font-medium text-gray-700">{group.name}</span>.</p>
-      <Input label="Subject" value={subject} onChange={e => setSubject(e.target.value)} placeholder="e.g. Group project check-in" maxLength={200} />
+      <Input label={t('cg.subject')} value={subject} onChange={e => setSubject(e.target.value)} placeholder={t('cg.subjectExample')} maxLength={200} />
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">{t('cg.messageLabel')}</label>
         <textarea value={body} onChange={e => setBody(e.target.value)} rows={6} placeholder={`Write your message to ${group.name}…`}
           className="w-full rounded-lg border border-gray-300 bg-input px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent" />
       </div>
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
       <div className="flex justify-end gap-2">
-        <Button variant="secondary" onClick={onBack}>Cancel</Button>
-        <Button onClick={send} loading={sending}>Send message</Button>
+        <Button variant="secondary" onClick={onBack}>{t('cg.cancel')}</Button>
+        <Button onClick={send} loading={sending}>{t('cg.sendMessage')}</Button>
       </div>
     </div>
   )

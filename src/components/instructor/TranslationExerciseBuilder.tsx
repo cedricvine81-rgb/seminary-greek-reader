@@ -4,12 +4,14 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
 import { ALL_SYNTAX_OPTIONS } from '@/data/syntax-categories'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface TranslationExerciseBuilderProps {
   assignmentId: string
 }
 
 export function TranslationExerciseBuilder({ assignmentId }: TranslationExerciseBuilderProps) {
+  const t = useT()
   const [qType, setQType] = useState<'TRANSLATION' | 'SYNTAX_IDENTIFY'>('TRANSLATION')
   const [prompt, setPrompt] = useState('')
   const [reference, setReference] = useState('')
@@ -31,56 +33,56 @@ export function TranslationExerciseBuilder({ assignmentId }: TranslationExercise
 
   return (
     <div className="space-y-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
-      <h3 className="font-semibold text-gray-900 text-sm">Add Translation / Syntax Question</h3>
+      <h3 className="font-semibold text-gray-900 text-sm">{t('te.addHeading')}</h3>
 
       <Select
-        label="Question type"
+        label={t('te.questionType')}
         value={qType}
         onChange={e => setQType(e.target.value as 'TRANSLATION' | 'SYNTAX_IDENTIFY')}
         options={[
-          { value: 'TRANSLATION', label: 'Translation' },
-          { value: 'SYNTAX_IDENTIFY', label: 'Syntax identification (dropdown)' },
+          { value: 'TRANSLATION', label: t('te.typeTranslation') },
+          { value: 'SYNTAX_IDENTIFY', label: t('te.typeSyntax') },
         ]}
       />
 
       <Input
-        label="Greek text / prompt"
+        label={t('te.prompt')}
         value={prompt}
         onChange={e => setPrompt(e.target.value)}
-        placeholder="ἐν ἀρχῇ ἦν ὁ λόγος"
+        placeholder={t('te.promptExample')}
       />
 
       <Input
-        label="Reference"
+        label={t('te.reference')}
         value={reference}
         onChange={e => setReference(e.target.value)}
-        placeholder="John 1:1"
+        placeholder={t('te.referenceExample')}
       />
 
       {qType === 'SYNTAX_IDENTIFY' && (
         <Select
-          label="Correct syntax category"
+          label={t('te.syntaxCategory')}
           value={correctAnswer}
           onChange={e => setCorrectAnswer(e.target.value)}
-          placeholder="Select correct category…"
+          placeholder={t('te.selectCategory')}
           options={ALL_SYNTAX_OPTIONS.map(o => ({ value: o, label: o }))}
         />
       )}
 
       {qType === 'TRANSLATION' && (
         <div>
-          <label className="label">Model translation</label>
+          <label className="label">{t('te.modelTranslation')}</label>
           <textarea
             value={correctAnswer}
             onChange={e => setCorrectAnswer(e.target.value)}
             rows={2}
             className="input"
-            placeholder="In the beginning was the Word…"
+            placeholder={t('te.modelExample')}
           />
         </div>
       )}
 
-      <Button onClick={handleAdd} variant="secondary" size="sm">Add Question</Button>
+      <Button onClick={handleAdd} variant="secondary" size="sm">{t('te.addQuestion')}</Button>
     </div>
   )
 }

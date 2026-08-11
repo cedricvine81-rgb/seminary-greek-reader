@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { CheckCircle2 } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface LatePolicyEditorProps {
   assignmentId: string
@@ -13,6 +14,7 @@ interface LatePolicyEditorProps {
 export function LatePolicyEditor({
   assignmentId, initialAllowLate, initialLateDaysLimit,
 }: LatePolicyEditorProps) {
+  const t = useT()
   const router = useRouter()
   const [allowLate, setAllowLate] = useState(initialAllowLate)
   const [lateDaysLimit, setLateDaysLimit] = useState(initialLateDaysLimit ?? 7)
@@ -42,7 +44,7 @@ export function LatePolicyEditor({
           onChange={e => { setAllowLate(e.target.checked); setSaved(false) }}
           className="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
         />
-        <span className="text-sm text-gray-700">Allow students to submit after the due date</span>
+        <span className="text-sm text-gray-700">{t('inst.b.allowLate')}</span>
       </label>
 
       {allowLate && (
@@ -60,17 +62,17 @@ export function LatePolicyEditor({
               className="input w-28"
             />
             <span className="text-sm text-gray-500">
-              {lateDaysLimit === 0 ? 'No time limit — accept indefinitely' : 'days after due date'}
+              {t(lateDaysLimit === 0 ? 'inst.b.lateNoLimit' : 'inst.b.lateDaysAfter')}
             </span>
           </div>
         </div>
       )}
 
       <div className="flex items-center gap-3 pt-1">
-        <Button size="sm" onClick={handleSave} loading={saving}>Save</Button>
+        <Button size="sm" onClick={handleSave} loading={saving}>{t('gr.save')}</Button>
         {saved && (
           <span className="flex items-center gap-1.5 text-sm text-green-600">
-            <CheckCircle2 size={14} /> Saved
+            <CheckCircle2 size={14} /> {t('ab.saved')}
           </span>
         )}
       </div>

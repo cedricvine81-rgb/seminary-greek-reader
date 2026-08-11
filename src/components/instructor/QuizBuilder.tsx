@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Select } from '@/components/ui/Select'
 import { Badge } from '@/components/ui/Badge'
 import type { QuestionType } from '@/types/assignment'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface QuizBuilderProps {
   assignmentId: string
@@ -14,6 +15,7 @@ interface QuizBuilderProps {
 }
 
 export function QuizBuilder({ assignmentId, level, provideDefinition = false }: QuizBuilderProps) {
+  const t = useT()
   const router = useRouter()
   const [type, setType] = useState<QuestionType>('GREEK_TO_ENGLISH')
   const [count, setCount] = useState(20)
@@ -46,34 +48,32 @@ export function QuizBuilder({ assignmentId, level, provideDefinition = false }: 
   return (
     <div className="space-y-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
       <div className="flex items-center gap-2 flex-wrap">
-        <h3 className="font-semibold text-gray-900 text-sm">Auto-generate Questions</h3>
+        <h3 className="font-semibold text-gray-900 text-sm">{t('qb.autoGenerate')}</h3>
         <Badge variant={level === 'BEGINNING' ? 'blue' : 'purple'}>
-          {level === 'BEGINNING' ? 'Beginning (50+ freq.)' : 'Intermediate (30+ freq.)'}
+          {t(level === 'BEGINNING' ? 'qb.levelBeginning' : 'qb.levelIntermediate')}
         </Badge>
         <Badge variant={provideDefinition ? 'green' : 'gray'}>
-          {provideDefinition ? 'Provide Definition mode' : 'Choose Definition mode'}
+          {t(provideDefinition ? 'qb.provideMode' : 'qb.chooseMode')}
         </Badge>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
           <Select
-            label="Question direction"
+            label={t('qb.direction')}
             value={type}
             onChange={e => setType(e.target.value as QuestionType)}
             options={[
-              { value: 'GREEK_TO_ENGLISH', label: 'Greek → English' },
-              ...(!provideDefinition ? [{ value: 'ENGLISH_TO_GREEK', label: 'English → Greek' }] : []),
+              { value: 'GREEK_TO_ENGLISH', label: t('qb.greekToEnglish') },
+              ...(!provideDefinition ? [{ value: 'ENGLISH_TO_GREEK', label: t('qb.englishToGreek') }] : []),
             ]}
           />
           {provideDefinition && (
-            <p className="mt-1 text-xs text-gray-400">
-              English → Greek is unavailable in Provide Definition mode (requires typing Greek characters).
-            </p>
+            <p className="mt-1 text-xs text-gray-400">{t('qb.engToGrkUnavailable')}</p>
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1"># of questions</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('qb.numQuestions')}</label>
           <input
             type="number"
             min={1}
@@ -87,12 +87,12 @@ export function QuizBuilder({ assignmentId, level, provideDefinition = false }: 
 
       <div className="flex items-center gap-3">
         <Button onClick={handleGenerate} loading={loading} variant="secondary" size="sm">
-          Generate Questions
+          {t('qb.generate')}
         </Button>
         {generated !== null && !loading && (
           <span className="flex items-center gap-1.5 text-sm text-green-700">
             <CheckCircle2 size={14} />
-            {generated} question{generated !== 1 ? 's' : ''} generated
+            {t('qb.generated', { count: generated, n: generated })}
           </span>
         )}
       </div>

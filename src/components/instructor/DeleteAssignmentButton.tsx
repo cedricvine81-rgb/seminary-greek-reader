@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface DeleteAssignmentButtonProps {
   assignmentId: string
@@ -14,6 +15,7 @@ interface DeleteAssignmentButtonProps {
 export function DeleteAssignmentButton({
   assignmentId, assignmentTitle, redirectOnDelete, size = 'sm',
 }: DeleteAssignmentButtonProps) {
+  const t = useT()
   const router = useRouter()
   const [confirming, setConfirming] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -26,7 +28,7 @@ export function DeleteAssignmentButton({
       const res = await fetch(`/api/assignments/${assignmentId}`, { method: 'DELETE' })
       if (!res.ok) {
         const d = await res.json().catch(() => ({}))
-        setDeleteError(d.error ?? 'Delete failed. Please try again.')
+        setDeleteError(d.error ?? t('ab.deleteFailed'))
         setDeleting(false)
         return
       }
@@ -37,7 +39,7 @@ export function DeleteAssignmentButton({
         router.refresh()
       }
     } catch {
-      setDeleteError('Network error. Please try again.')
+      setDeleteError(t('ab.networkError'))
     } finally {
       setDeleting(false)
       setConfirming(false)
@@ -47,7 +49,7 @@ export function DeleteAssignmentButton({
   if (confirming) {
     return (
       <span className="inline-flex items-center gap-2 flex-wrap">
-        <span className="text-sm text-gray-600 hidden sm:inline">Delete "{assignmentTitle}"?</span>
+        <span className="text-sm text-gray-600 hidden sm:inline">{t('ab.deleteConfirm', { title: assignmentTitle })}</span>
         <Button size={size} variant="danger" loading={deleting} onClick={handleDelete}>
           Yes, delete
         </Button>

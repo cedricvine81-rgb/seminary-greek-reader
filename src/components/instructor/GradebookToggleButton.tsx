@@ -1,8 +1,10 @@
 'use client'
 import { useState } from 'react'
 import { BookOpen } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 export function GradebookToggleButton({ detailsId }: { detailsId: string }) {
+  const t = useT()
   const [open, setOpen] = useState(false)
 
   function toggle() {
@@ -19,7 +21,7 @@ export function GradebookToggleButton({ detailsId }: { detailsId: string }) {
       className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors"
     >
       <BookOpen size={14} />
-      {open ? 'Hide Gradebook' : 'View Gradebook'}
+      {t(open ? 'ab.hideGradebook' : 'ab.viewGradebook')}
     </button>
   )
 }

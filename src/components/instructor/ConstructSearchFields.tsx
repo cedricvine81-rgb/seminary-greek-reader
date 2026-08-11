@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import Link from 'next/link'
 import { AlertCircle, Check, Search } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import {
   CONSTRUCT_MAX_FINDINGS, constructCorpusLabel, describeConstruct, parseConstructLink,
 } from '@/lib/construct-assignment'
@@ -25,31 +26,27 @@ interface Props {
 export function ConstructSearchFields({
   url, onUrl, count, onCount, askTranslation, onAskTranslation, askComment, onAskComment,
 }: Props) {
+  const t = useT()
   const parsed = useMemo(() => parseConstructLink(url), [url])
   const touched = url.trim().length > 0
 
   return (
     <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-      <p className="text-sm font-semibold text-brand-800">🔍 Construct Search</p>
-      <p className="text-xs text-brand-700">
-        Students run your search on the Construct page and write up what they find — reference,
-        the Greek, and their own analysis. Build the search first, run it, then use its{' '}
-        <span className="font-medium">Copy link</span> button and paste it here: the link is the
-        entire query, so what you paste is exactly what the class will see.
-      </p>
+      <p className="text-sm font-semibold text-brand-800">🔍 {t('cf.heading')}</p>
+      <p className="text-xs text-brand-700">{t('cf.intro')}</p>
       <Link
         href="/search/construct"
         target="_blank"
         className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 hover:text-brand-900 hover:underline"
       >
-        <Search size={13} /> Open the Construct search in a new tab
+        <Search size={13} /> {t('cf.openSearch')}
       </Link>
 
       <Input
-        label="Construct search link (required)"
+        label={t('cf.link')}
         value={url}
         onChange={e => onUrl(e.target.value)}
-        placeholder="https://seminarygreek.app/search/construct?c=…"
+        placeholder={t('cf.linkExample')}
       />
 
       {touched && (
@@ -63,28 +60,24 @@ export function ConstructSearchFields({
         ) : (
           <p className="flex items-start gap-1.5 text-xs text-red-600">
             <AlertCircle size={13} className="mt-0.5 shrink-0" />
-            That isn&rsquo;t a construct search link. Copy it from the Construct page after running your
-            search — it should look like <span className="font-mono">/search/construct?c=…</span>
+            {t('cf.badLink')}
           </p>
         )
       )}
 
       <Input
-        label="Examples each student must find"
+        label={t('cf.count')}
         type="number"
         min={1}
         max={CONSTRUCT_MAX_FINDINGS}
         value={count}
         onChange={e => onCount(Math.min(Math.max(Number(e.target.value) || 1, 1), CONSTRUCT_MAX_FINDINGS))}
       />
-      <p className="-mt-2 text-xs text-brand-600">
-        The find-list opens with this many rows. Students can add more, but the grade view flags
-        anyone below the target.
-      </p>
+      <p className="-mt-2 text-xs text-brand-600">{t('cf.countHelp')}</p>
 
       <div className="space-y-1.5">
-        <p className="text-sm font-medium text-brand-800">For each example, ask for</p>
-        <p className="text-xs text-brand-600">Reference and the Greek text are always asked for.</p>
+        <p className="text-sm font-medium text-brand-800">{t('cf.askFor')}</p>
+        <p className="text-xs text-brand-600">{t('cf.alwaysAsked')}</p>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
@@ -92,7 +85,7 @@ export function ConstructSearchFields({
             onChange={e => onAskTranslation(e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
           />
-          <span className="text-sm text-brand-800">Their translation</span>
+          <span className="text-sm text-brand-800">{t('cf.askTranslation')}</span>
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
@@ -101,7 +94,7 @@ export function ConstructSearchFields({
             onChange={e => onAskComment(e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
           />
-          <span className="text-sm text-brand-800">A comment — what the construction is doing there</span>
+          <span className="text-sm text-brand-800">{t('cf.askComment')}</span>
         </label>
       </div>
     </div>

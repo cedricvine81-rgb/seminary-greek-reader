@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/Badge'
 import { useApi } from '@/lib/api-client'
 import { mutate as globalMutate } from 'swr'
 import { Check, X } from 'lucide-react'
-import { format } from 'date-fns'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDateTime } from '@/lib/i18n/format'
 
 interface Appeal {
   id: string
@@ -26,6 +27,8 @@ interface AppealsResp { appeals: Appeal[]; pendingCount: number }
 export function AppealsTable() {
   const [status, setStatus] = useState<'PENDING' | 'DECIDED'>('PENDING')
   const [busyId, setBusyId] = useState<string | null>(null)
+  const t = useT()
+  const locale = useLocale()
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
 
@@ -48,17 +51,20 @@ export function AppealsTable() {
         body: JSON.stringify({ decision }),
       })
       const d = await res.json().catch(() => ({}))
-      if (!res.ok) { setError(d.error ?? 'Action failed'); return }
+      if (!res.ok) { setError(d.error ?? t('ap.actionFailed')); return }
       if (decision === 'ACCEPTED' && d.responsesFlipped) {
-        setInfo(`Updated ${d.responsesFlipped} response${d.responsesFlipped === 1 ? '' : 's'} across ${d.affectedUsers} student${d.affectedUsers === 1 ? '' : 's'}.`)
+        setInfo(t('ap.updated', {
+          count: d.responsesFlipped, n: d.responsesFlipped,
+          students: t('ap.studentCount', { count: d.affectedUsers, n: d.affectedUsers }),
+        }))
       } else {
-        setInfo('Decision recorded.')
+        setInfo(t('ap.decisionRecorded'))
       }
       mutate()
       // Refresh the sidebar's pending-count badge immediately (it polls every 60s otherwise).
       globalMutate('/api/instructor/appeals/pending')
     } catch {
-      setError('Network error.')
+      setError(t('ap.networkError'))
     } finally {
       setBusyId(null)
     }
@@ -68,9 +74,9 @@ export function AppealsTable() {
     <Card>
       <div className="flex items-center justify-between mb-3 flex-wrap gap-3">
         <CardTitle>
-          Vocab Appeals
+          {t('ap.title')}
           {data && status === 'PENDING' && data.pendingCount > 0 && (
-            <span className="ml-2 text-sm font-normal text-amber-700">({data.pendingCount} pending)</span>
+            <span className="ml-2 text-sm font-normal text-amber-700">{t('ap.pendingCount', { n: data.pendingCount })}</span>
           )}
         </CardTitle>
         <div className="flex gap-2">
@@ -78,30 +84,25 @@ export function AppealsTable() {
             onClick={() => setStatus('PENDING')}
             className={`px-3 py-1 rounded-lg text-sm ${status === 'PENDING' ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-gray-500 hover:bg-gray-50'}`}
           >
-            Pending
+            {t('ap.tabPending')}
           </button>
           <button
             onClick={() => setStatus('DECIDED')}
             className={`px-3 py-1 rounded-lg text-sm ${status === 'DECIDED' ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-gray-500 hover:bg-gray-50'}`}
           >
-            History
+            {t('ap.tabHistory')}
           </button>
         </div>
       </div>
 
-      <p className="text-xs text-gray-500 mb-4">
-        Students may appeal a wrong vocab answer (subject to the per-quiz cap). Accepting marks
-        the answer correct for that student <strong>and</strong> for any other student who gave the
-        same answer on the same quiz — their scores are updated automatically. The answer is then
-        sent to the admin for a separate decision about whether to add it to the global lexicon.
-      </p>
+      <p className="text-xs text-gray-500 mb-4">{t('ap.intro')}</p>
 
       {info && <p className="text-sm text-emerald-700 bg-emerald-50 rounded px-3 py-2 mb-3">{info}</p>}
       {error && <p className="text-sm text-red-600 bg-red-50 rounded px-3 py-2 mb-3">{error}</p>}
-      {isLoading && <p className="text-sm text-gray-400 animate-pulse">Loading…</p>}
+      {isLoading && <p className="text-sm text-gray-400 animate-pulse">{t('ap.loading')}</p>}
 
       {data && data.appeals.length === 0 && (
-        <p className="text-sm text-gray-400 italic py-4">No {status === 'PENDING' ? 'pending' : 'decided'} appeals.</p>
+        <p className="text-sm text-gray-400 italic py-4">{t(status === 'PENDING' ? 'ap.nonePending' : 'ap.noneDecided')}</p>
       )}
 
       {data && data.appeals.length > 0 && (
@@ -109,13 +110,13 @@ export function AppealsTable() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100 text-left text-xs text-gray-400 uppercase tracking-wide">
-                <th className="pb-2 pr-3">Student</th>
-                <th className="pb-2 pr-3">Quiz</th>
-                <th className="pb-2 pr-3">Lemma</th>
-                <th className="pb-2 pr-3">Their answer</th>
-                <th className="pb-2 pr-3">Official</th>
-                <th className="pb-2 pr-3 whitespace-nowrap">When</th>
-                <th className="pb-2">Action</th>
+                <th className="pb-2 pr-3">{t('ap.colStudent')}</th>
+                <th className="pb-2 pr-3">{t('ap.colQuiz')}</th>
+                <th className="pb-2 pr-3">{t('ap.colLemma')}</th>
+                <th className="pb-2 pr-3">{t('ap.colTheirAnswer')}</th>
+                <th className="pb-2 pr-3">{t('ap.colOfficial')}</th>
+                <th className="pb-2 pr-3 whitespace-nowrap">{t('ap.colWhen')}</th>
+                <th className="pb-2">{t('ap.colAction')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -132,15 +133,15 @@ export function AppealsTable() {
                   <td className="py-2 pr-3 font-greek text-lg text-gray-800">{a.question.prompt}</td>
                   <td className="py-2 pr-3 text-red-700 font-medium">{a.studentAnswer}</td>
                   <td className="py-2 pr-3 text-emerald-700">{a.question.correctAnswer}</td>
-                  <td className="py-2 pr-3 text-xs text-gray-500 whitespace-nowrap">{format(new Date(a.createdAt), 'MMM d, h:mm a')}</td>
+                  <td className="py-2 pr-3 text-xs text-gray-500 whitespace-nowrap">{formatDateTime(a.createdAt, locale)}</td>
                   <td className="py-2">
                     {a.instructorDecision === 'PENDING' ? (
                       <div className="flex gap-1">
-                        <Button size="sm" onClick={() => decide(a.id, 'ACCEPTED')} loading={busyId === a.id} title="Accept appeal — update grades">
-                          <Check size={13} /> Accept
+                        <Button size="sm" onClick={() => decide(a.id, 'ACCEPTED')} loading={busyId === a.id} title={t('ap.acceptTitle')}>
+                          <Check size={13} /> {t('ap.accept')}
                         </Button>
                         <Button size="sm" variant="secondary" onClick={() => decide(a.id, 'REJECTED')} loading={busyId === a.id}>
-                          <X size={13} /> Reject
+                          <X size={13} /> {t('ap.reject')}
                         </Button>
                       </div>
                     ) : (
@@ -150,7 +151,7 @@ export function AppealsTable() {
                         </Badge>
                         {a.instructorDecision === 'ACCEPTED' && (
                           <span className="text-[10px] text-gray-400">
-                            Admin: {a.adminDecision === 'PENDING' ? 'in queue' : a.adminDecision.toLowerCase()}
+                            {t('ap.adminPrefix', { state: a.adminDecision === 'PENDING' ? t('ap.adminInQueue') : a.adminDecision.toLowerCase() })}
                           </span>
                         )}
                       </div>

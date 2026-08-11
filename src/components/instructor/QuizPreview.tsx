@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import { Card, CardTitle } from '@/components/ui/Card'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface Question {
   id: string
@@ -14,6 +15,7 @@ interface Question {
 }
 
 export function QuizPreview({ questions, provideDefinition }: { questions: Question[]; provideDefinition: boolean }) {
+  const t = useT()
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
 
   function toggle(id: string) {
@@ -35,14 +37,14 @@ export function QuizPreview({ questions, provideDefinition }: { questions: Quest
   return (
     <Card>
       <div className="flex items-center justify-between mb-4">
-        <CardTitle>Quiz Preview ({questions.length} questions)</CardTitle>
+        <CardTitle>{t('qp.title', { n: questions.length })}</CardTitle>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={revealAll}
             className="text-xs text-brand-600 hover:text-brand-800 hover:underline"
           >
-            Reveal all
+            {t('qp.revealAll')}
           </button>
           <span className="text-xs text-gray-300">|</span>
           <button
@@ -50,13 +52,13 @@ export function QuizPreview({ questions, provideDefinition }: { questions: Quest
             onClick={hideAll}
             className="text-xs text-gray-400 hover:text-gray-600 hover:underline"
           >
-            Hide all
+            {t('qp.hideAll')}
           </button>
         </div>
       </div>
 
       {questions.length === 0 ? (
-        <p className="text-sm text-gray-400 italic">No questions yet.</p>
+        <p className="text-sm text-gray-400 italic">{t('qp.none')}</p>
       ) : (
         <ol className="space-y-4">
           {questions.map(q => (
@@ -97,14 +99,14 @@ export function QuizPreview({ questions, provideDefinition }: { questions: Quest
               {/* Provide-definition: show text box placeholder */}
               {provideDefinition && (
                 <div className="mt-1 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-400 italic">
-                  Student types their answer here…
+                  {t('qp.typesAnswer')}
                 </div>
               )}
 
               {/* Revealed correct answer */}
               {revealed.has(q.id) && (
                 <p className="text-sm text-green-700 mt-1">
-                  <span className="font-medium">Answer:</span> {q.correctAnswer}
+                  <span className="font-medium">{t('qp.answer')}</span> {q.correctAnswer}
                 </p>
               )}
             </li>

@@ -1,7 +1,9 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { format } from 'date-fns'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate } from '@/lib/i18n/format'
+import { ASSIGNMENT_TYPE_VARIANT, assignmentTypeShort } from '@/lib/assignment-display'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { DeleteAssignmentButton } from './DeleteAssignmentButton'
@@ -24,20 +26,13 @@ interface Stats {
   avgPct: number | null
 }
 
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
-const typeLabel: Record<string, string> = {
-  VOCABULARY_QUIZ: 'Vocab', MORPHOLOGY_QUIZ: 'Morph', TRANSLATION_EXERCISE: 'Trans',
-}
-const typeVariant: Record<string, 'blue' | 'purple' | 'green'> = {
-  VOCABULARY_QUIZ: 'blue', MORPHOLOGY_QUIZ: 'purple', TRANSLATION_EXERCISE: 'green',
-}
-
+/** The section a quiz covers, pulled out of its instructions — the number only; the caller
+ *  supplies the word, which differs by language. */
 function extractSection(instructions: string | null): string | null {
   if (!instructions) return null
   const match = instructions.match(/Section\s+([\w\-:]+)/i)
   if (!match) return null
-  return 'Section ' + match[1].replace('-', ':')
+  return match[1].replace('-', ':')
 }
 
 function ScorePct({ pct }: { pct: number | null }) {
@@ -53,6 +48,8 @@ export function AssignmentTable({
   assignments: Assignment[]
   statsMap: Record<string, Stats>
 }) {
+  const t = useT()
+  const locale = useLocale()
   const allCourses = Array.from(new Map(assignments.map(a => [a.course.id, a.course.name])).entries())
   const [courseFilter, setCourseFilter] = useState<string>('all')
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all')
@@ -85,7 +82,7 @@ export function AssignmentTable({
             onChange={e => setCourseFilter(e.target.value)}
             className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-surface text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
           >
-            <option value="all">All courses</option>
+            <option value="all">{t('at.allCourses')}</option>
             {allCourses.map(([id, name]) => (
               <option key={id} value={id}>{name}</option>
             ))}
@@ -98,7 +95,7 @@ export function AssignmentTable({
               onClick={() => setStatusFilter(v)}
               className={`px-3 py-1.5 capitalize transition-colors ${statusFilter === v ? 'bg-brand-600 text-white' : 'bg-surface text-gray-600 hover:bg-gray-50'}`}
             >
-              {v}
+              {t(v === 'all' ? 'at.filterAll' : v === 'published' ? 'at.filterPublished' : 'at.filterDraft')}
             </button>
           ))}
         </div>
@@ -126,14 +123,14 @@ export function AssignmentTable({
                 <table className="w-full text-sm text-left border-collapse">
                   <thead>
                     <tr className="bg-gray-50 border-b border-gray-200">
-                      <th className="px-4 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">Wk</th>
-                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">Day</th>
-                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">Date</th>
-                      <th className="px-4 py-3 text-xs font-semibold text-gray-600">Quiz</th>
-                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">Type</th>
-                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 text-center whitespace-nowrap">Submitted</th>
-                      <th className="px-3 py-3 text-xs font-semibold text-brand-700 text-center whitespace-nowrap bg-brand-50">Avg Score</th>
-                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">Status</th>
+                      <th className="px-4 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">{t('at.colWk')}</th>
+                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">{t('at.colDay')}</th>
+                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">{t('at.colDate')}</th>
+                      <th className="px-4 py-3 text-xs font-semibold text-gray-600">{t('at.colQuiz')}</th>
+                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">{t('at.colType')}</th>
+                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 text-center whitespace-nowrap">{t('at.colSubmitted')}</th>
+                      <th className="px-3 py-3 text-xs font-semibold text-brand-700 text-center whitespace-nowrap bg-brand-50">{t('at.colAvgScore')}</th>
+                      <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">{t('at.colStatus')}</th>
                       <th className="px-3 py-3" />
                     </tr>
                   </thead>
@@ -145,18 +142,18 @@ export function AssignmentTable({
                       return (
                         <tr key={a.id} className="hover:bg-gray-50 transition-colors">
                           <td className="px-4 py-3 text-gray-700 font-medium">{a.weekNumber}</td>
-                          <td className="px-3 py-3 text-gray-500 text-xs">{DAYS[due.getDay()]}</td>
-                          <td className="px-3 py-3 text-gray-500 text-xs whitespace-nowrap">{format(due, 'MMM d, yyyy')}</td>
+                          <td className="px-3 py-3 text-gray-500 text-xs">{t(`day.short.${due.getDay()}`)}</td>
+                          <td className="px-3 py-3 text-gray-500 text-xs whitespace-nowrap">{formatDate(due, locale)}</td>
                           <td className="px-4 py-3 max-w-[220px]">
                             <Link href={`/instructor/assignments/${a.id}`} className="hover:text-brand-700">
                               {section && (
-                                <span className="block text-xs font-semibold text-brand-600 mb-0.5">{section}</span>
+                                <span className="block text-xs font-semibold text-brand-600 mb-0.5">{t('at.section', { n: section })}</span>
                               )}
                               <span className="font-medium text-gray-800 line-clamp-1">{a.title}</span>
                             </Link>
                           </td>
                           <td className="px-3 py-3">
-                            <Badge variant={typeVariant[a.type] ?? 'gray'}>{typeLabel[a.type] ?? a.type}</Badge>
+                            <Badge variant={ASSIGNMENT_TYPE_VARIANT[a.type] ?? 'gray'}>{assignmentTypeShort(a.type, t)}</Badge>
                           </td>
                           <td className="px-3 py-3 text-center">
                             {stats ? (
@@ -171,13 +168,13 @@ export function AssignmentTable({
                           </td>
                           <td className="px-3 py-3">
                             <Badge variant={a.isPublished ? 'green' : 'gray'}>
-                              {a.isPublished ? 'Published' : 'Draft'}
+                              {t(a.isPublished ? 'at.published' : 'at.draft')}
                             </Badge>
                           </td>
                           <td className="px-3 py-3">
                             <span className="inline-flex items-center gap-1">
                               <Link href={`/instructor/assignments/${a.id}`}>
-                                <Button size="sm" variant="secondary">Edit</Button>
+                                <Button size="sm" variant="secondary">{t('at.colEdit')}</Button>
                               </Link>
                               <DeleteAssignmentButton assignmentId={a.id} assignmentTitle={a.title} />
                             </span>
