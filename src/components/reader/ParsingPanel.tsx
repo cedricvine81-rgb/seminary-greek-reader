@@ -6,6 +6,7 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 import { VOCAB_GLOSSES } from '@/lib/vocab-glosses'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { resolverFor, type GlossResolver } from '@/lib/vocab-gloss-lookup'
+import { formGloss } from '@/lib/i18n/form-gloss'
 import { translatable } from '@/lib/i18n/machine-translation'
 
 function lookupVocabGloss(lexeme: string | undefined): string | null {
@@ -88,7 +89,10 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
     resolverFor(locale, isHebrew ? 'hebrew' : 'greek').then(r => { if (alive) setLocalGloss(() => r) })
     return () => { alive = false }
   }, [locale, isHebrew])
-  const translatedGloss = info?.lexeme ? localGloss(info.lexeme) : null
+  // The FORM's meaning wins over the lemma's on the closed classes — see form-gloss.ts. Only
+  // for a reader in another language: an English reader's glosses are untouched by all of this.
+  const formSpecific = locale === 'en' ? null : formGloss(info?.lexeme, info?.parsing)
+  const translatedGloss = formSpecific ?? (info?.lexeme ? localGloss(info.lexeme) : null)
   // English readers keep exactly what they had.
   const vocabGloss = isHebrew ? null : lookupVocabGloss(info?.lexeme)
 
