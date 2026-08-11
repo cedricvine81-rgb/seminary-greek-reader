@@ -80,14 +80,28 @@ describe('coverage of running New Testament text', () => {
       .map(k => k.slice('lex.gloss.'.length)),
   ])
 
-  it('covers the large majority of what a student actually clicks', () => {
-    const total = lemmas.reduce((n, e) => n + e.f, 0)
-    const covered = lemmas.filter(e => known.has(e.l.normalize('NFC'))).reduce((n, e) => n + e.f, 0)
-    expect(covered / total).toBeGreaterThan(0.95)
+  it('covers every New Testament lemma the app has an English gloss for', () => {
+    // The real invariant. Three hapax carry no English gloss in the index, so there is nothing
+    // to translate for them and nothing an English reader sees either — asserting a flat 100%
+    // would fail on those and teach the next person to lower the threshold instead of looking.
+    const gaps = lemmas
+      .filter(e => (e as { g?: string }).g?.trim() && !known.has(e.l.normalize('NFC')))
+      .map(e => e.l)
+    expect(gaps).toEqual([])
   })
 
-  it('every lemma occurring three times or more has a gloss', () => {
-    const gaps = lemmas.filter(e => e.f >= 3 && !known.has(e.l.normalize('NFC'))).map(e => e.l)
-    expect(gaps).toEqual([])
+  it('leaves 99.99% of running text glossed', () => {
+    const total = lemmas.reduce((n, e) => n + e.f, 0)
+    const covered = lemmas.filter(e => known.has(e.l.normalize('NFC'))).reduce((n, e) => n + e.f, 0)
+    expect(covered / total).toBeGreaterThan(0.9999)
+  })
+
+  it('leaves a gloss only where the app has no English one either', () => {
+    // Three hapax legomena carry no English gloss in the lemma index, so an English reader gets
+    // nothing from this layer for them either and both fall through to Thayer's. That is equal
+    // treatment rather than a Spanish gap — which is why the assertion is about the ENGLISH
+    // source, not about a count that would drift.
+    const gaps = lemmas.filter(e => !known.has(e.l.normalize('NFC')))
+    expect(gaps.every(e => !(e as { g?: string }).g?.trim())).toBe(true)
   })
 })
