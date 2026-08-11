@@ -30,29 +30,59 @@ const ALIASES: Record<string, string> = {
  * forms have to keep working too: osisIds are English-shaped, saved links and assignment
  * references are English, and a bilingual student types whichever comes to mind.
  */
+/**
+ * The character class a book name may be built from. Explicit rather than \w, which is
+ * [A-Za-z0-9_]: "Génesis 1" failed the regex gate on the é before any name was ever compared,
+ * so folding the candidates alone would not have been enough. Covers Latin-1 / Latin Extended-A
+ * (Spanish, French, Portuguese), Greek and Cyrillic. Parentheses are allowed INSIDE a name
+ * because four books are disambiguated by one — "Esther (Greek)", "Daniel (LXX)" — which never
+ * parsed at all before, in English either. No \p{L}: the repo's TS target predates the u flag.
+ *
+ * Exported because there are TWO reference parsers — this one and parsePassageRef in
+ * ExegesisWorkspace, which additionally understands verse RANGES. They had independent copies
+ * of this regex and of the candidate list, which is how the same accent bug existed twice.
+ */
+export const BOOK_CHARS = 'A-Za-z\\u00c0-\\u024f\\u0370-\\u03ff\\u0400-\\u04ff'
+
+/** Fold a book token for comparison: lowercase, strip accents, spaces and parentheses. */
+export function foldBookToken(x: string): string {
+  return x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\s()]+/g, '')
+}
+
+/**
+ * Resolve a folded book token against a book list, trying exact matches before prefixes.
+ * `locale` ADDS the localized name and abbreviation as candidates and never removes the
+ * English ones — see parseReference's note on why that has to be additive.
+ */
+export function findBook(needle: string, books: BiblicalBook[], locale = 'en'): BiblicalBook | undefined {
+  const localized = hasBookNames(locale)
+  const candidatesFor = (b: BiblicalBook) => {
+    const c = [foldBookToken(b.osisId), foldBookToken(b.name), foldBookToken(b.abbrev)]
+    if (localized) {
+      c.push(foldBookToken(bookName(b.osisId, locale, b.name)), foldBookToken(bookAbbrev(b.osisId, locale, b.abbrev)))
+    }
+    return c
+  }
+  return books.find(b => candidatesFor(b).some(c => c === needle))
+    ?? books.find(b => {
+      const len = Math.max(3, needle.length)
+      return candidatesFor(b).some(c => c.startsWith(needle) || needle.startsWith(c.slice(0, len)))
+    })
+}
+
 export function parseReference(query: string, books: BiblicalBook[], locale = 'en'): ParsedRef | null {
   const q = query.trim()
 
   // Match: optional-number + word(s) + chapter + optional :verse
   // e.g. "John 3:16", "1 Cor 13:4", "Genesis 1", "Ps 23:1", "Génesis 1", "1 Corintios 13:4"
-  //
-  // The letter class is explicit rather than \w because \w is [A-Za-z0-9_]: "Génesis 1" failed
-  // this gate outright on the é, before any book name was ever compared, so accent-folding the
-  // candidates alone would not have been enough. Ranges cover Latin-1/Latin Extended-A (Spanish,
-  // French, Portuguese), Greek and Cyrillic. No \p{L} — the repo's TS target predates the u flag.
-  const L = 'A-Za-z\\u00c0-\\u024f\\u0370-\\u03ff\\u0400-\\u04ff'
-  // Parentheses are allowed INSIDE the name (never at the start) because four books are
-  // disambiguated by a parenthetical: "Esther (Greek)", "Daniel (LXX)". Without this they did
-  // not parse AT ALL — in English either, long before any of this was localized — so the Texts
-  // and picker paths that build a reference from a displayed name silently dead-ended on them.
-  const m = q.match(new RegExp(`^((?:\\d\\s*)?[${L}][${L}\\s()]*?)\\s+(\\d+)(?:\\s*[:.,]\\s*(\\d+))?$`))
+  const m = q.match(new RegExp(`^((?:\\d\\s*)?[${BOOK_CHARS}][${BOOK_CHARS}\\s()]*?)\\s+(\\d+)(?:\\s*[:.,]\\s*(\\d+))?$`))
   if (!m) return null
 
   const bookPart = m[1].trim()
   const chapter = parseInt(m[2])
   const verse = m[3] ? parseInt(m[3]) : undefined
 
-  const needle = bookPart.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\s()]+/g, '')
+  const needle = foldBookToken(bookPart)
 
   // 1. Check alias map first
   const aliasMatch = ALIASES[needle]
@@ -61,22 +91,8 @@ export function parseReference(query: string, books: BiblicalBook[], locale = 'e
     if (book && chapter >= 1 && chapter <= book.totalChapters) return { book, chapter, verse }
   }
 
-  // 2. Try exact matches then prefix matches
-  // Accents are folded so "Génesis" and "Genesis", "Gálatas" and "Galatas" all resolve — a
-  // reader typing quickly on a phone should not have to reach for the accent key.
-  const fold = (x: string) =>
-    x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\s()]+/g, '')
-  const localized = hasBookNames(locale)
-  const candidatesFor = (b: BiblicalBook) => {
-    const c = [fold(b.osisId), fold(b.name), fold(b.abbrev)]
-    if (localized) { c.push(fold(bookName(b.osisId, locale, b.name)), fold(bookAbbrev(b.osisId, locale, b.abbrev))) }
-    return c
-  }
-  const book = books.find(b => candidatesFor(b).some(c => c === needle))
-    ?? books.find(b => {
-      const len = Math.max(3, needle.length)
-      return candidatesFor(b).some(c => c.startsWith(needle) || needle.startsWith(c.slice(0, len)))
-    })
+  // 2. Exact matches, then prefixes — shared with parsePassageRef.
+  const book = findBook(needle, books, locale)
 
   if (!book || chapter < 1 || chapter > book.totalChapters) return null
   return { book, chapter, verse }

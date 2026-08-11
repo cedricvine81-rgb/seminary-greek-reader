@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
-import { bookName as bookNameFor } from '@/lib/i18n/book-names'
+import { bookName as bookNameFor, formatRef } from '@/lib/i18n/book-names'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
@@ -1626,7 +1626,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                     openWordSearch({
                       x: e.clientX, y: e.clientY,
                       surface: tok.replace(/^[.,;:!?"“”‘’'()[\]…—–-]+|[.,;:!?"“”‘’'()[\]…—–-]+$/g, ''),
-                      reference: `${v.bookId} ${v.chapter}:${v.verse}`, kind: 'translation', transLang: parallelLang, book: v.bookId,
+                      reference: formatRef(v.bookId, locale, v.chapter, v.verse), kind: 'translation', transLang: parallelLang, book: v.bookId,
                       highlight: isAuthenticated ? {
                         activeColor: mark?.color ?? null,
                         onPick: c => mark ? void highlights.recolor(mark.id, v.bookId, v.chapter, c) : void highlights.create(v.bookId, v.chapter, v.verse, start, end, c, parallelLang),
@@ -1665,7 +1665,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">{t('reader.loading')}</span>
             : transTxt
-              ? <><sup className="text-xs text-brand-500 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}><TransWords text={transTxt} lang={parallelLang} terms={arrivalTerms} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} /></span></>
+              ? <><sup className="text-xs text-brand-500 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}><TransWords text={transTxt} lang={parallelLang} terms={arrivalTerms} reference={formatRef(v.bookId, locale, v.chapter, v.verse)} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} /></span></>
               : null}
         </p>
       </div>
@@ -1745,7 +1745,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">{t('reader.loading')}</span>
             : transTxt
-              ? <><sup className="text-xs text-brand-500 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}><TransWords text={transTxt} lang={parallelLang} terms={arrivalTerms} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} /></span></>
+              ? <><sup className="text-xs text-brand-500 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}><TransWords text={transTxt} lang={parallelLang} terms={arrivalTerms} reference={formatRef(v.bookId, locale, v.chapter, v.verse)} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} /></span></>
               : null}
         </p>
       </div>

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { parseReference } from '@/lib/parseReference'
+import { parseReference, findBook, foldBookToken } from '@/lib/parseReference'
 import type { BiblicalBook } from '@/types/biblical-text'
 import { bookName } from '@/lib/i18n/book-names'
 
@@ -107,5 +107,28 @@ describe('parseReference — parenthetical book names', () => {
     ['Daniel (LXX) 1', 'es'],
   ])('parses %s in %s', (q, loc) => {
     expect(osis(q, loc)).not.toBeNull()
+  })
+})
+
+describe('findBook — the matcher both parsers share', () => {
+  // parseReference and ExegesisWorkspace's parsePassageRef (which also understands verse
+  // ranges) each used to carry their own copy of this matching, and so each carried its own
+  // copy of the accent bug. They now import findBook/foldBookToken/BOOK_CHARS from one place;
+  // these cases pin the behaviour that both rely on.
+  const find = (q: string, loc?: string) => findBook(foldBookToken(q), BOOKS, loc)?.osisId ?? null
+
+  it('matches English in any locale', () => {
+    expect(find('Matthew', 'es')).toBe('Matt')
+    expect(find('1 Corinthians', 'es')).toBe('1Cor')
+  })
+  it('matches Spanish only when asked', () => {
+    expect(find('Mateo', 'es')).toBe('Matt')
+    expect(find('Mateo', 'en')).toBeNull()
+  })
+  it('folds accents, spaces and parentheses', () => {
+    expect(find('Génesis', 'es')).toBe('Gen')
+    expect(find('genesis', 'es')).toBe('Gen')
+    expect(find('1Corintios', 'es')).toBe('1Cor')
+    expect(find('Daniel (LXX)', 'en')).not.toBeNull()
   })
 })

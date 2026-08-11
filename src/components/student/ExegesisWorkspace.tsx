@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect, useLayoutEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
+import { BOOK_CHARS, foldBookToken, findBook } from '@/lib/parseReference'
+import { bookName as bookNameFor } from '@/lib/i18n/book-names'
 import { buildParsingLabel } from '@/lib/parsing'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
@@ -359,23 +361,24 @@ function ReviewPassagePanel({
 
 // ─── Reference parser (for assignment auto-load) ──────────────────────────────
 // Parses strings like "John 1:1-5", "Rom 3:23", "1 Cor 13:4–7"
-function parsePassageRef(ref: string, books: BiblicalBook[]): {
+// Like parseReference, but understands a verse RANGE ("John 1:1-5"), which is what an exegesis
+// passage is. The book-token regex and the candidate matching are IMPORTED rather than repeated:
+// this function used to hold its own copies, which is how the same accent bug ("Génesis" failing
+// the \w gate) came to exist in two places at once.
+function parsePassageRef(ref: string, books: BiblicalBook[], locale = 'en'): {
   book: BiblicalBook; chapter: number; verseStart: number; verseEnd: number
 } | null {
   const q = ref.trim().replace(/–|—/g, '-')
   // Match: bookPart + chapter : verseStart [-verseEnd]
-  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?(?:\s*-\s*(\d+))?$/)
+  const m = q.match(new RegExp(`^((?:\\d\\s*)?[${BOOK_CHARS}][${BOOK_CHARS}\\s()]*?)\\s+(\\d+)(?:\\s*[:.,]\\s*(\\d+)(?:\\s*-\\s*(\\d+))?)?(?:\\s*-\\s*(\\d+))?$`))
   if (!m) return null
-  const bookPart = m[1].trim().toLowerCase().replace(/\s+/g, '')
+  const bookPart = foldBookToken(m[1].trim())
   const ch = parseInt(m[2])
   const vs = m[3] ? parseInt(m[3]) : 1
   const ve = m[4] ? parseInt(m[4]) : vs
   const dashEnd = m[5] ? parseInt(m[5]) : undefined   // bare "N-M" verse range (single-chapter books)
 
-  const book = books.find(b => {
-    const c = [b.osisId, b.name, b.abbrev].map(s => s.toLowerCase().replace(/\s+/g, ''))
-    return c.some(s => s === bookPart || s.startsWith(bookPart) || bookPart.startsWith(s.slice(0, Math.max(3, bookPart.length))))
-  })
+  const book = findBook(bookPart, books, locale)
   if (!book) return null
   // Single-chapter books (Jude, Philemon, etc.): if only one number is given, treat it as
   // verse not chapter; "14-15" is a verse range of chapter 1.
@@ -470,6 +473,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
 }, ref) {
   const t = useT()
   const router = useRouter()
+  const locale = useLocale()
 
   // ── Passage state ──
   const [books, setBooks] = useState<BiblicalBook[]>([])
@@ -684,7 +688,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         // Exams store several references (one per line); parse them all to passages.
         const examPassages = isExam && a.reference
           ? (a.reference as string).split('\n').map((line: string) => line.trim()).filter(Boolean)
-              .map((line: string) => parsePassageRef(line, books)).filter((p): p is NonNullable<typeof p> => !!p)
+              .map((line: string) => parsePassageRef(line, books, locale)).filter((p): p is NonNullable<typeof p> => !!p)
           : []
         const assignmentInfo: AssignmentInfo = {
           id: a.id, title: a.title, reference: a.reference ?? null,
@@ -837,7 +841,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           // No session linked to this assignment yet.
           // Before starting fresh, check if the student has an ORPHANED session for the
           // same passage (created before the assignmentId routing was added). If so, adopt it.
-          const parsed = parsePassageRef(a.reference, books)
+          const parsed = parsePassageRef(a.reference, books, locale)
           if (parsed) {
             // Fetch all student sessions to look for an orphan
             let orphanAdopted = false
@@ -1143,7 +1147,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     if (controlledPassage === undefined || propAssignmentId || books.length === 0) return
     const raw = controlledPassage.trim()
     if (!raw) return
-    const parsed = parsePassageRef(raw, books)
+    const parsed = parsePassageRef(raw, books, locale)
     if (!parsed) return
     const unchanged =
       selectedBook?.osisId === parsed.book.osisId && chapter === parsed.chapter &&
@@ -1160,7 +1164,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   function handlePassageSubmit(value: string = passageInput) {
     const raw = value.trim()
     if (!raw) { setPassageError(false); return }
-    const parsed = parsePassageRef(raw, books)
+    const parsed = parsePassageRef(raw, books, locale)
     if (!parsed) { setPassageError(true); return }
     setPassageError(false)
     // No-op if the passage is unchanged (e.g. focusing the box and clicking away, or
@@ -1544,7 +1548,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     setVerseStart(sess.verseStart)
     setVerseEnd(sess.verseEnd)
     setPassageInput(
-      `${book?.name ?? sess.bookName} ${sess.chapter}:${sess.verseStart}${sess.verseEnd !== sess.verseStart ? `-${sess.verseEnd}` : ''}`
+      `${bookNameFor(sess.bookOsisId, locale, book?.name ?? sess.bookName)} ${sess.chapter}:${sess.verseStart}${sess.verseEnd !== sess.verseStart ? `-${sess.verseEnd}` : ''}`
     )
     setPassageError(false)
     setAnnotations((sess.annotations as AnnotationMap) ?? {})
@@ -1755,8 +1759,10 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     ? secondsLeft <= 60 ? 'text-red-600' : secondsLeft <= 180 ? 'text-gray-600' : 'text-brand-700'
     : ''
 
+  // Display only. The session's stored `title` and `bookName` stay English (they are persisted
+  // and an instructor's assignment title must not change language under them).
   const passageTitle = selectedBook && loadedVerses.length > 0
-    ? `${selectedBook.name} ${chapter}:${verseStart}${verseEnd !== verseStart ? `–${verseEnd}` : ''}`
+    ? `${bookNameFor(selectedBook.osisId, locale, selectedBook.name)} ${chapter}:${verseStart}${verseEnd !== verseStart ? `–${verseEnd}` : ''}`
     : ''
 
   // ─────────────────────────────────────────────────────────────────────────────
