@@ -316,6 +316,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   // already seen is instant and does zero network, and so neighboring views can be
   // pre-warmed in the background before you swipe to them.
   const [transByLang, setTransByLang] = useState<Record<string, Record<string, string>>>({})
+  // Chapters ("Tob-1") whose translation the API served from our own files rather than a
+  // published edition. Tracked so the reader can say so — see reader.creditOurTranslation.
+  const [ourTransChapters, setOurTransChapters] = useState<Set<string>>(new Set())
   const [wallaceOn, setWallaceOn]           = useState(true)
   const [proielOn,  setProielOn]            = useState(true)
   const [gbiOn,     setGbiOn]              = useState(true)
@@ -994,6 +997,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           const patch: Record<string, string> = {}
           for (const id of verseIds) patch[id] = received[id] ?? ''
           setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
+          if (data.ourTranslation) {
+            setOurTransChapters(prev => prev.has(sec.key) ? prev : new Set(prev).add(sec.key))
+          }
         })
         .catch(() => {
           const patch = Object.fromEntries(verseIds.map(id => [id, '']))
@@ -1693,6 +1699,13 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           {chapter !== null && (
             <h4 className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none">
               {t('reader.chapterN', { n: chapter })}
+              {/* The settings panel credits every source, but it is a click away and the student
+                  who most needs this notice is the least likely to open it. */}
+              {ourTransChapters.has(sec.key) && (
+                <span className="ml-2 font-normal normal-case tracking-normal text-amber-700">
+                  {'· '}{t('reader.ourTranslationBadge')}
+                </span>
+              )}
             </h4>
           )}
           {sec.verses.map(v => renderVerseRow(v))}
@@ -2103,11 +2116,18 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
               {/* Attribution */}
               <div className="border-t border-gray-100 pt-3 space-y-1">
                 <p className="text-[10px] text-gray-400 leading-relaxed">
-                  Greek text: <span className="font-medium text-gray-500">SBL Greek New Testament</span> (SBLGNT) &copy; 2010 Society of Biblical Literature and Logos Bible Software.
+                  {t('reader.creditGreek', { edition: t('reader.creditGreekEdition') })}
                 </p>
                 <p className="text-[10px] text-gray-400 leading-relaxed">
-                  Syntax: <span className="font-medium text-gray-500">Lowfat SBLGNT</span> treebank (Wallace &amp; PROIEL) &middot; <span className="font-medium text-gray-500">Macula-Greek SBLGNT</span> (GBI) &copy; Clear Bible, CC BY 4.0 &middot; <span className="font-medium text-gray-500">ABS NT Syntax Database</span> &copy; Asian Bible Society.
+                  {t('reader.creditSyntax', {
+                    lowfat: 'Lowfat SBLGNT', macula: 'Macula-Greek SBLGNT', abs: 'ABS NT Syntax Database',
+                  })}
                 </p>
+                {ourTransChapters.size > 0 && (
+                  <p className="text-[10px] text-amber-700 leading-relaxed">
+                    {t('reader.creditOurTranslation')}
+                  </p>
+                )}
               </div>
             </div>
           )}

@@ -122,6 +122,17 @@ const en: Catalogue = {
   // your browser's translation" is not actionable if you have never done it.
   'mt.englishOnly': 'This text exists only in English.',
   'mt.howTo': 'Your browser can translate it: right-click the page and choose Translate (Chrome), or use the translate button in the address bar (Safari).',
+  // Source credits in the reader's settings panel. These were hardcoded English inside the
+  // panel and so were missed by every i18n batch — a Spanish reader got Spanish chrome around
+  // an English credits block.
+  'reader.creditGreek': 'Greek text: {edition} (SBLGNT) © 2010 Society of Biblical Literature and Logos Bible Software.',
+  'reader.creditGreekEdition': 'SBL Greek New Testament',
+  'reader.creditSyntax': 'Syntax: {lowfat} treebank (Wallace & PROIEL) · {macula} (GBI) © Clear Bible, CC BY 4.0 · {abs} © Asian Bible Society.',
+  // The deuterocanonical Spanish is the one text in the app with no published source, because
+  // we made it. Every other text names a translator and a date; a student citing this one in a
+  // paper has to be able to see what it is.
+  'reader.creditOurTranslation': 'Spanish for the deuterocanonical books: translated for this app directly from the Greek shown here. Not a published edition.',
+  'reader.ourTranslationBadge': 'our translation from the Greek',
   'reader.glossLocal': 'Gloss',
   'inst.welcome': 'Welcome back, {name}',
   'inst.overview': 'Here’s an overview of your courses and student activity.',
@@ -2363,6 +2374,11 @@ const es: Catalogue = {
   // ── Profesor: panel y cursos ──
   'mt.englishOnly': 'Este texto solo existe en inglés.',
   'mt.howTo': 'Tu navegador puede traducirlo: haz clic derecho en la página y elige «Traducir» (Chrome), o usa el botón de traducción de la barra de direcciones (Safari).',
+  'reader.creditGreek': 'Texto griego: {edition} (SBLGNT) © 2010 Society of Biblical Literature y Logos Bible Software.',
+  'reader.creditGreekEdition': 'SBL Greek New Testament',
+  'reader.creditSyntax': 'Sintaxis: treebank {lowfat} (Wallace y PROIEL) · {macula} (GBI) © Clear Bible, CC BY 4.0 · {abs} © Asian Bible Society.',
+  'reader.creditOurTranslation': 'El español de los libros deuterocanónicos es una traducción hecha para esta aplicación a partir del griego que aquí se muestra. No es una edición publicada.',
+  'reader.ourTranslationBadge': 'traducción propia del griego',
   'reader.glossLocal': 'Glosa',
   'inst.welcome': 'Hola de nuevo, {name}',
   'inst.overview': 'Este es un resumen de tus cursos y de la actividad de tus estudiantes.',
