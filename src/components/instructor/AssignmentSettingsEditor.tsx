@@ -11,6 +11,8 @@ import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicke
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { ConstructSearchFields } from '@/components/instructor/ConstructSearchFields'
 import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
+import { useT } from '@/lib/i18n/LocaleProvider'
+import { retakeOptions, appealOptions, glossaryOptions } from '@/lib/assignment-display'
 
 interface Props {
   assignmentId: string
@@ -53,6 +55,7 @@ function toLocalInput(iso: string | null): string {
 }
 
 export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocabQuiz, initial }: Props) {
+  const t = useT()
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -121,15 +124,15 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
   async function handleSave() {
     if ((isTranslation || isExam) && !reference.trim()) {
-      setError('At least one passage reference is required (e.g. "John 1:1–18").')
+      setError(t('inst.b.err.passageRequired'))
       return
     }
     if (isConstruct && !parseConstructLink(reference)) {
-      setError('Paste a construct search link — copy it from the Construct search page after running your search.')
+      setError(t('as.constructLinkError'))
       return
     }
     if (isTranslation && round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
-      setError('The Round 2 deadline must be after the Round 1 deadline.')
+      setError(t('inst.b.err.roundOrder'))
       return
     }
     setSaving(true)
@@ -232,13 +235,13 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
         <div className="grid grid-cols-2 gap-4">
           <Input
-            label="Title"
+            label={t('inst.b.title')}
             value={title}
             onChange={e => setTitle(e.target.value)}
             className="col-span-2"
           />
           <Input
-            label="Week number"
+            label={t('inst.b.weekNumber')}
             type="number"
             min={1}
             value={weekNumber}
@@ -247,7 +250,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           {/* Translation exercises derive their close/due date from the Round deadlines. */}
           {!isTranslation && (
             <Input
-              label="Due date"
+              label={t('inst.b.dueDate')}
               type="date"
               value={dueDate}
               onChange={e => setDueDate(e.target.value)}
@@ -257,7 +260,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               date, which is how every assignment behaved before this existed. */}
           {!isTranslation && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Due time (optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.dueTime')}</label>
               <input
                 type="time"
                 value={dueTime}
@@ -265,22 +268,20 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 className="input"
               />
               <p className="text-xs text-gray-500 mt-1">
-                {dueTime
-                  ? `Closes at ${dueTime} your time.`
-                  : 'Leave blank to close at the end of the due date (11:59 pm).'}
+                {dueTime ? t('inst.b.dueTimeSet', { time: dueTime }) : t('as.dueTimeBlank')}
               </p>
             </div>
           )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Instructions (optional)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.instructions')}</label>
           <textarea
             value={instructions}
             onChange={e => setInstructions(e.target.value)}
             rows={3}
             className="input w-full"
-            placeholder="Additional instructions for students…"
+            placeholder={t('inst.b.instructionsExample')}
           />
         </div>
 
@@ -289,7 +290,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-4">
             {isExam ? (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Passages (one reference per line, required)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.exam.passages')}</label>
                 <textarea
                   value={reference}
                   onChange={e => setReference(e.target.value)}
@@ -297,15 +298,15 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                   className="input"
                   placeholder={'John 15:1-4\nRomans 8:1-4\nMark 1:9-13'}
                 />
-                <p className="text-xs text-brand-600 mt-1">Each passage students translate in the exam. Enter one reference per line.</p>
+                <p className="text-xs text-brand-600 mt-1">{t('as.passagesHelp')}</p>
               </div>
             ) : (
               <div>
                 <Input
-                  label="Passage reference (required)"
+                  label={t('inst.b.ex.passage')}
                   value={reference}
                   onChange={e => setReference(e.target.value)}
-                  placeholder="e.g. John 1:1–18"
+                  placeholder={t('inst.b.ex.passageExample')}
                 />
                 <p className="text-xs text-brand-600 mt-1">
                   The passage students annotate in the Exegesis Workspace. Changing this affects new sessions;
@@ -317,41 +318,39 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               <>
                 <hr className="border-brand-200" />
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Exam opens (date &amp; time)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.exam.opens')}</label>
                   <input
                     type="datetime-local"
                     value={opensAt}
                     onChange={e => setOpensAt(e.target.value)}
                     className="input"
                   />
-                  <p className="text-xs text-brand-600 mt-1">Students cannot start before this time. Leave blank to open immediately.</p>
+                  <p className="text-xs text-brand-600 mt-1">{t('as.opensHelp')}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Exam closes (date &amp; time)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.exam.closes')}</label>
                   <input
                     type="datetime-local"
                     value={round1Deadline}
                     onChange={e => setRound1Deadline(e.target.value)}
                     className="input"
                   />
-                  <p className="text-xs text-brand-600 mt-1">At this cut-off the exam locks and auto-submits. Leave blank for no cut-off.</p>
+                  <p className="text-xs text-brand-600 mt-1">{t('as.closesHelp')}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Definition glossary</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.glossary')}</label>
                   <select
                     value={glossFrequency ?? ''}
                     onChange={e => setGlossFrequency(e.target.value ? Number(e.target.value) : null)}
                     className="input"
                   >
-                    <option value="">Off — no glossary</option>
-                    <option value="50">Beginner — words less frequent than 50×</option>
-                    <option value="30">Intermediate — words less frequent than 30×</option>
+                    {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                   </select>
                   <p className="text-xs text-brand-600 mt-1">Lists definitions for each passage&rsquo;s less-frequent words beneath its verse translation box.</p>
                 </div>
                 <hr className="border-brand-200" />
                 <div>
-                  <label className="block text-sm font-medium text-brand-800 mb-1">Grade weights (parsing / syntax / translation)</label>
+                  <label className="block text-sm font-medium text-brand-800 mb-1">{t('inst.b.exam.weights')}</label>
                   <div className="flex flex-wrap gap-3">
                     {(['parsing', 'syntax', 'translation'] as const).map(c => (
                       <div key={c} className="flex items-center gap-1.5">
@@ -382,7 +381,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                       className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                     />
                     <div>
-                      <span className="text-sm font-medium text-brand-800">Lockdown mode</span>
+                      <span className="text-sm font-medium text-brand-800">{t('inst.b.lockdown')}</span>
                       <p className="text-xs text-brand-600 mt-0.5">
                         Requires fullscreen, detects tab/window switching, blocks copy &amp; paste, and logs integrity
                         events for you to review. A browser can deter and detect, but cannot fully prevent cheating.
@@ -392,7 +391,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                   {lockdown && (
                     <div className="mt-2 ml-6">
                       <div className="flex items-center gap-2">
-                        <label className="text-xs text-gray-600">Auto-submit after</label>
+                        <label className="text-xs text-gray-600">{t('inst.b.autoSubmitAfter')}</label>
                         <input
                           type="number" min={MIN_LOCKDOWN_AUTOSUBMIT} max={50}
                           value={lockdownMaxViolations ?? ''}
@@ -405,7 +404,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                           placeholder="—"
                           className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                         />
-                        <span className="text-xs text-gray-600">violations (blank = warn only)</span>
+                        <span className="text-xs text-gray-600">{t('as.violations')}</span>
                       </div>
                       <p className="text-[11px] text-gray-500 mt-1">
                         Leave blank to only log violations (recommended — pair with proctoring). If set, the minimum is {MIN_LOCKDOWN_AUTOSUBMIT}, so a single accidental focus-loss can&rsquo;t end an exam.
@@ -418,7 +417,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             {!isExam && (
             <>
             <hr className="border-brand-200" />
-            <p className="text-sm font-semibold text-brand-800">Round deadlines</p>
+            <p className="text-sm font-semibold text-brand-800">{t('as.roundDeadlines')}</p>
             <p className="text-xs text-brand-600 -mt-1">The exercise closes at the Round 2 deadline (or Round 1 if there&rsquo;s no Round 2); the due date is set from these.</p>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -430,7 +429,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 onChange={e => setRound1Deadline(e.target.value)}
                 className="input"
               />
-              <p className="text-xs text-brand-600 mt-1">Fixed cut-off for Round 1 annotations. Leave blank for none.</p>
+              <p className="text-xs text-brand-600 mt-1">{t('as.round1Help')}</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -442,7 +441,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 onChange={e => setRound2Deadline(e.target.value)}
                 className="input"
               />
-              <p className="text-xs text-brand-600 mt-1">Fixed cut-off for Round 2 corrections. Leave blank for none.</p>
+              <p className="text-xs text-brand-600 mt-1">{t('as.round2Help')}</p>
             </div>
             <hr className="border-brand-200" />
             <label className="flex items-start gap-2 cursor-pointer">
@@ -453,7 +452,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
               />
               <div>
-                <span className="text-sm font-medium text-brand-800">Allow Reader tools in Round 2</span>
+                <span className="text-sm font-medium text-brand-800">{t('inst.b.ex.readerRound2')}</span>
                 <p className="text-xs text-brand-600 mt-0.5">
                   When on, clicking a word in Round 2 also shows the Reader's parsing, gloss, and lexicon entry next to the correction box.
                 </p>
@@ -461,22 +460,20 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             </label>
             <hr className="border-brand-200" />
             <div>
-              <label className="block text-sm font-medium text-brand-800 mb-1">Definition glossary</label>
+              <label className="block text-sm font-medium text-brand-800 mb-1">{t('inst.b.glossary')}</label>
               <select
                 value={glossFrequency ?? ''}
                 onChange={e => setGlossFrequency(e.target.value ? Number(e.target.value) : null)}
                 className="input"
               >
-                <option value="">Off — no glossary</option>
-                <option value="50">Beginner — words less frequent than 50×</option>
-                <option value="30">Intermediate — words less frequent than 30×</option>
+                {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
               <p className="text-xs text-brand-600 mt-1">Shows definitions for the verse&rsquo;s less-frequent words beneath each Verse Translation box.</p>
             </div>
             <hr className="border-brand-200" />
-            <p className="text-sm font-semibold text-brand-800">Timer settings</p>
+            <p className="text-sm font-semibold text-brand-800">{t('as.timerSettings')}</p>
             <Input
-              label="Stage 1 — annotation phase (minutes, 0 = no limit)"
+              label={t('as.stage1')}
               type="number"
               min={0}
               max={180}
@@ -487,7 +484,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               Students annotate each word. When the timer reaches zero, annotations lock and review mode begins.
             </p>
             <Input
-              label="Stage 2 — review & correction phase (minutes, 0 = no limit)"
+              label={t('as.stage2')}
               type="number"
               min={0}
               max={60}
@@ -515,7 +512,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           />
         ) : (isNotes || isGroup) ? null : (
           <Input
-            label="Time per question (seconds, 0 = untimed)"
+            label={t('inst.b.timePerQuestion')}
             type="number"
             min={0}
             max={300}
@@ -526,10 +523,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
         {isVocabQuiz && (
           <div className="space-y-4">
-            <p className="text-sm font-semibold text-gray-800">Choose the words for this quiz</p>
+            <p className="text-sm font-semibold text-gray-800">{t('as.chooseWords')}</p>
             <FrequencySectionPicker selectedSubsections={vocabSubsections} onChange={setVocabSubsections} />
             <p className="text-xs text-gray-500">
-              After changing the selection, click <strong>Generate Questions</strong> below to rebuild the quiz from these words.
+              {t('as.afterSelection')}
             </p>
           </div>
         )}
@@ -561,18 +558,18 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
             />
             <div className="flex justify-between text-xs text-gray-400 mt-0.5">
-              <span>Choose Definition</span>
-              <span>Provide Definition</span>
+              <span>{t('inst.b.chooseDefinition')}</span>
+              <span>{t('inst.b.provideDefinition')}</span>
             </div>
             <p className="mt-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-              After changing this setting, save first, then use <strong>Generate Questions</strong> below to regenerate in the correct format.
+              {t('as.afterStyle')}
             </p>
           </div>
         )}
 
         {isVocabQuiz && (
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
-            <p className="text-sm font-semibold text-gray-800">Generate questions</p>
+            <p className="text-sm font-semibold text-gray-800">{t('as.generateQuestions')}</p>
             <p className="text-xs text-gray-500">
               Click after you&rsquo;ve set the Type of Quiz above. Regenerating replaces any existing questions for this quiz.
             </p>
@@ -589,7 +586,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 />
               </div>
               <Button onClick={handleGenerate} loading={generating} variant="secondary" size="sm">
-                Generate Questions
+                {t('qb.generate')}
               </Button>
               {generatedCount !== null && !generating && (
                 <span className="flex items-center gap-1.5 text-sm text-green-700">
@@ -605,33 +602,21 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
         {!isTranslation && !isNotes && !isGroup && !isConstruct && (
           <Select
-            label="Quiz retakes allowed"
+            label={t('inst.b.retakes')}
             value={maxRetakes === null ? '' : String(maxRetakes)}
             onChange={e => setMaxRetakes(e.target.value === '' ? null : Number(e.target.value))}
-            options={[
-              { value: '0', label: 'No retakes (1 attempt only)' },
-              { value: '1', label: '1 retake (2 attempts total)' },
-              { value: '2', label: '2 retakes (3 attempts total)' },
-              { value: '3', label: '3 retakes (4 attempts total)' },
-              { value: '5', label: '5 retakes (6 attempts total)' },
-            ]}
-            placeholder="Unlimited retakes"
+            options={retakeOptions(t)}
+            placeholder={t('inst.b.retakesUnlimited')}
           />
         )}
 
         {isVocabQuiz && (
           <div>
             <Select
-              label="Wrong-answer appeals per attempt"
+              label={t('inst.b.appeals')}
               value={String(maxAppeals)}
               onChange={e => setMaxAppeals(Number(e.target.value))}
-              options={[
-                { value: '0', label: 'Off — students cannot appeal' },
-                { value: '1', label: '1 appeal per attempt' },
-                { value: '2', label: '2 appeals per attempt' },
-                { value: '3', label: '3 appeals per attempt' },
-                { value: '5', label: '5 appeals per attempt' },
-              ]}
+              options={appealOptions(t)}
             />
             <p className="mt-1 text-xs text-gray-500">
               When enabled, students see an &ldquo;Appeal this answer&rdquo; link beside each wrong answer on the results screen.
@@ -650,7 +635,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 onChange={e => setAllowLate(e.target.checked)}
                 className="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
               />
-              <span className="text-sm text-gray-700">Allow students to submit after the due date</span>
+              <span className="text-sm text-gray-700">{t('inst.b.allowLate')}</span>
             </label>
 
             {allowLate && (
@@ -674,7 +659,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
         {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
 
         <div className="flex items-center gap-3 justify-end">
-          <Button onClick={handleSave} loading={saving}>Save settings</Button>
+          <Button onClick={handleSave} loading={saving}>{t('as.saveSettings')}</Button>
           {saved && (
             <span className="flex items-center gap-1.5 text-sm text-green-600">
               <CheckCircle2 size={15} />
