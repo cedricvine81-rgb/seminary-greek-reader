@@ -95,7 +95,7 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
  * Listed rather than probed because the menu has to be built before any chapter is fetched;
  * add a book here when its first chapter lands in public/data/deutero-es/.
  */
-const DEUTERO_ES_BOOKS = new Set(['Tob'])
+const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt'])
 
 // The parallel translations available for a work. Only Greek (LXX) works carry one.
 function translationsFor(w: CatalogWork | null, t: (k: string) => string): { id: string; label: string }[] {
