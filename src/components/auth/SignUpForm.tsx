@@ -2,6 +2,7 @@
 import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, Check, X, ChevronDown } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { RoleSelector } from './RoleSelector'
@@ -10,26 +11,26 @@ import type { Role } from '@/types/auth'
 // ── Password strength ─────────────────────────────────────────────────────────
 
 interface Requirement {
-  label: string
+  labelKey: string
   met: (p: string) => boolean
 }
 
 const REQUIREMENTS: Requirement[] = [
-  { label: 'At least 8 characters',          met: p => p.length >= 8 },
-  { label: 'One uppercase letter',            met: p => /[A-Z]/.test(p) },
-  { label: 'One number',                      met: p => /\d/.test(p) },
-  { label: 'One special character (!@#$…)',   met: p => /[^A-Za-z0-9]/.test(p) },
+  { labelKey: 'auth.rule.length',    met: p => p.length >= 8 },
+  { labelKey: 'auth.rule.uppercase', met: p => /[A-Z]/.test(p) },
+  { labelKey: 'auth.rule.number',    met: p => /\d/.test(p) },
+  { labelKey: 'auth.rule.special',   met: p => /[^A-Za-z0-9]/.test(p) },
 ]
 
 function strength(password: string): 0 | 1 | 2 | 3 | 4 {
   return REQUIREMENTS.filter(r => r.met(password)).length as 0 | 1 | 2 | 3 | 4
 }
 
-const STRENGTH_LABEL  = ['', 'Weak', 'Fair', 'Good', 'Strong']
 const STRENGTH_COLOR  = ['', 'bg-red-500', 'bg-orange-400', 'bg-yellow-400', 'bg-green-500']
 const STRENGTH_TEXT   = ['', 'text-red-600', 'text-orange-500', 'text-yellow-600', 'text-green-600']
 
 function PasswordStrengthMeter({ password }: { password: string }) {
+  const t = useT()
   if (!password) return null
   const score = strength(password)
   return (
@@ -48,7 +49,7 @@ function PasswordStrengthMeter({ password }: { password: string }) {
       {/* Label */}
       {score > 0 && (
         <p className={`text-xs font-medium ${STRENGTH_TEXT[score]}`}>
-          {STRENGTH_LABEL[score]} password
+          {t(`auth.strength.${score}`)}
         </p>
       )}
       {/* Requirements */}
@@ -56,11 +57,11 @@ function PasswordStrengthMeter({ password }: { password: string }) {
         {REQUIREMENTS.map(r => {
           const met = r.met(password)
           return (
-            <li key={r.label} className={`flex items-center gap-1.5 text-xs ${met ? 'text-green-600' : 'text-gray-400'}`}>
+            <li key={r.labelKey} className={`flex items-center gap-1.5 text-xs ${met ? 'text-green-600' : 'text-gray-400'}`}>
               {met
                 ? <Check size={11} className="shrink-0" />
                 : <X size={11} className="shrink-0" />}
-              {r.label}
+              {t(r.labelKey)}
             </li>
           )
         })}
@@ -82,6 +83,7 @@ interface PasswordFieldProps {
 }
 
 function PasswordField({ label, value, onChange, placeholder, error, required, showStrength }: PasswordFieldProps) {
+  const t = useT()
   const [show, setShow] = useState(false)
   return (
     <div className="w-full">
@@ -102,7 +104,7 @@ function PasswordField({ label, value, onChange, placeholder, error, required, s
           onClick={() => setShow(v => !v)}
           className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600"
           tabIndex={-1}
-          aria-label={show ? 'Hide password' : 'Show password'}
+          aria-label={show ? t('auth.hidePassword') : t('auth.showPassword')}
         >
           {show ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
@@ -125,28 +127,30 @@ interface FieldErrors {
   terms?: string
 }
 
+// Returns KEYS, not sentences: this is module-level so it has no translator, and an error
+// message that has already been rendered to English cannot be un-rendered at the call site.
 function validate(form: typeof INITIAL_FORM, role: Role, terms: boolean): FieldErrors {
   const errors: FieldErrors = {}
-  if (!form.firstName.trim())            errors.firstName = 'Required.'
-  if (!form.surname.trim())              errors.surname   = 'Required.'
-  if (!form.email.trim())                errors.email     = 'Required.'
+  if (!form.firstName.trim())            errors.firstName = 'auth.err.required'
+  if (!form.surname.trim())              errors.surname   = 'auth.err.required'
+  if (!form.email.trim())                errors.email     = 'auth.err.required'
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-                                         errors.email     = 'Enter a valid email address.'
+                                         errors.email     = 'auth.err.invalidEmail'
   // Students need a personal email so we can stay in touch after they graduate —
   // instructor accounts don't have this requirement.
   if (role === 'STUDENT') {
-    if (!form.personalEmail.trim())      errors.personalEmail = 'Required.'
+    if (!form.personalEmail.trim())      errors.personalEmail = 'auth.err.required'
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.personalEmail))
-                                         errors.personalEmail = 'Enter a valid email address.'
+                                         errors.personalEmail = 'auth.err.invalidEmail'
     else if (form.personalEmail.trim().toLowerCase() === form.email.trim().toLowerCase())
-                                         errors.personalEmail = 'Use a different address than your institutional email.'
+                                         errors.personalEmail = 'auth.err.samePersonalEmail'
   }
-  if (!form.password)                    errors.password  = 'Required.'
-  else if (strength(form.password) < 2) errors.password  = 'Password is too weak.'
-  if (!form.confirmPassword)             errors.confirmPassword = 'Required.'
+  if (!form.password)                    errors.password  = 'auth.err.required'
+  else if (strength(form.password) < 2) errors.password  = 'auth.err.weakPassword'
+  if (!form.confirmPassword)             errors.confirmPassword = 'auth.err.required'
   else if (form.confirmPassword !== form.password)
-                                         errors.confirmPassword = 'Passwords do not match.'
-  if (!terms)                            errors.terms     = 'You must accept the terms to continue.'
+                                         errors.confirmPassword = 'auth.err.passwordsDiffer'
+  if (!terms)                            errors.terms     = 'auth.err.acceptTerms'
   return errors
 }
 
@@ -158,6 +162,10 @@ const INITIAL_FORM = {
 // /auth/sign-up/instructor) and hides the Student/Instructor picker. Omitted → the
 // picker is shown and the user chooses.
 export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
+  const t = useT()
+  // validate() yields keys; render them here. Undefined has to stay undefined — the Input
+  // components treat any string as "show an error".
+  const err = (key?: string) => (key ? t(key) : undefined)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState('')
@@ -209,16 +217,16 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
         body: JSON.stringify({ action: 'signup', role, ...form, terms, messagingConsent }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Sign-up failed')
+      if (!res.ok) throw new Error(data.error ?? t('auth.signUpFailed'))
       // Instructors are created in a pending state and get no session — show a message instead of redirecting.
       if (data.pending) {
-        setPendingMessage(data.message ?? 'Your account is awaiting admin approval.')
+        setPendingMessage(data.message ?? t('auth.awaitingApproval'))
         return
       }
       router.push(role === 'INSTRUCTOR' ? '/instructor' : '/subscribe')
       router.refresh()
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : 'Sign-up failed')
+      setServerError(err instanceof Error ? err.message : t('auth.signUpFailed'))
     } finally {
       setLoading(false)
     }
@@ -230,10 +238,10 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
           <Check size={24} className="text-green-600" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900">Account created</h3>
+        <h3 className="text-lg font-semibold text-gray-900">{t('auth.accountCreated')}</h3>
         <p className="text-sm text-gray-600">{pendingMessage}</p>
         <Button onClick={() => router.push('/auth/sign-in')} className="w-full" size="lg">
-          Back to Sign In
+          {t('auth.backToSignIn')}
         </Button>
       </div>
     )
@@ -247,60 +255,60 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
       {/* Name */}
       <div className="grid grid-cols-2 gap-3">
         <Input
-          label="First name"
+          label={t('auth.firstName')}
           required
           value={form.firstName}
           onChange={set('firstName')}
           onBlur={blur('firstName')}
-          placeholder="Jane"
-          error={touched.firstName ? fieldErrors.firstName : undefined}
+          placeholder={t('auth.firstNameExample')}
+          error={touched.firstName ? err(fieldErrors.firstName) : undefined}
         />
         <Input
-          label="Surname"
+          label={t('auth.surname')}
           required
           value={form.surname}
           onChange={set('surname')}
           onBlur={blur('surname')}
-          placeholder="Smith"
-          error={touched.surname ? fieldErrors.surname : undefined}
+          placeholder={t('auth.surnameExample')}
+          error={touched.surname ? err(fieldErrors.surname) : undefined}
         />
       </div>
 
       {/* Email */}
       <Input
-        label="Email address"
+        label={t('auth.emailAddress')}
         type="email"
         required
         value={form.email}
         onChange={set('email')}
         onBlur={blur('email')}
-        placeholder="jane@seminary.edu"
-        error={touched.email ? fieldErrors.email : undefined}
+        placeholder={t('auth.emailExample')}
+        error={touched.email ? err(fieldErrors.email) : undefined}
       />
 
       {/* Personal email — students only, contact-only, never a login credential */}
       {role === 'STUDENT' && (
         <Input
-          label="Personal email address"
+          label={t('auth.personalEmail')}
           type="email"
           required
           value={form.personalEmail}
           onChange={set('personalEmail')}
           onBlur={blur('personalEmail')}
-          placeholder="jane@gmail.com"
-          error={touched.personalEmail ? fieldErrors.personalEmail : undefined}
+          placeholder={t('auth.personalEmailExample')}
+          error={touched.personalEmail ? err(fieldErrors.personalEmail) : undefined}
         />
       )}
       {role === 'STUDENT' && !fieldErrors.personalEmail && (
         <p className="-mt-3 text-xs text-gray-400">
-          A non-institutional address so we can stay in touch after you graduate. Never used to sign in.
+          {t('auth.personalEmailNote')}
         </p>
       )}
 
       {/* Institution — pick from instructor-created list only */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Institution <span className="text-gray-400 font-normal">(optional)</span>
+          {t('auth.institution')} <span className="text-gray-400 font-normal">{t('auth.optional')}</span>
         </label>
         <div className="relative">
           <select
@@ -309,7 +317,7 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
             className="w-full appearance-none rounded-lg border border-gray-300 bg-input px-3 py-2 pr-9 text-sm
               focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           >
-            <option value="">No institution</option>
+            <option value="">{t('auth.noInstitution')}</option>
             {institutions.map(name => (
               <option key={name} value={name}>{name}</option>
             ))}
@@ -319,28 +327,28 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
             className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
           />
         </div>
-        <p className="mt-1 text-xs text-gray-400">Helps match you to your instructor's courses</p>
+        <p className="mt-1 text-xs text-gray-400">{t('auth.institutionNote')}</p>
       </div>
 
       {/* Password */}
       <PasswordField
-        label="Password"
+        label={t('auth.password')}
         required
         value={form.password}
         onChange={set('password')}
         placeholder="••••••••"
-        error={touched.password ? fieldErrors.password : undefined}
+        error={touched.password ? err(fieldErrors.password) : undefined}
         showStrength
       />
 
       {/* Confirm password */}
       <PasswordField
-        label="Confirm password"
+        label={t('auth.confirmPassword')}
         required
         value={form.confirmPassword}
         onChange={set('confirmPassword')}
         placeholder="••••••••"
-        error={touched.confirmPassword ? fieldErrors.confirmPassword : undefined}
+        error={touched.confirmPassword ? err(fieldErrors.confirmPassword) : undefined}
       />
 
       {/* Terms & Privacy */}
@@ -353,18 +361,18 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
             className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 shrink-0"
           />
           <span className="text-sm text-gray-600 leading-snug">
-            I agree to the{' '}
+            {t('auth.agreeToThe')}{' '}
             <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline font-medium">
-              Terms of Service
+              {t('auth.termsOfService')}
             </a>{' '}
-            and{' '}
+            {t('auth.and')}{' '}
             <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline font-medium">
-              Privacy Policy
+              {t('auth.privacyPolicy')}
             </a>
           </span>
         </label>
         {fieldErrors.terms && (
-          <p className="mt-1 text-xs text-red-600">{fieldErrors.terms}</p>
+          <p className="mt-1 text-xs text-red-600">{err(fieldErrors.terms)}</p>
         )}
       </div>
 
@@ -379,7 +387,7 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
               className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 shrink-0"
             />
             <span className="text-sm text-gray-600 leading-snug">
-              Let coursemates see my email address when they message me. (Optional — you can change this anytime in settings. Admins can always see all messages.)
+              {t('auth.messagingConsent')}
             </span>
           </label>
         </div>
@@ -391,7 +399,7 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
       )}
 
       <Button type="submit" loading={loading} className="w-full" size="lg">
-        Create Account
+        {t('auth.createAccountButton')}
       </Button>
     </form>
   )

@@ -4,9 +4,11 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { CheckCircle2 } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 export function ChangePasswordForm() {
   const router = useRouter()
+  const t = useT()
   const searchParams = useSearchParams()
   // The forced first-sign-in flow appends ?required=1; in that case we
   // must NOT use router.back() (which would go to sign-in) — route to the
@@ -23,11 +25,11 @@ export function ChangePasswordForm() {
     setError('')
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters.')
+      setError(t('auth.err.min8'))
       return
     }
     if (password !== confirm) {
-      setError('Passwords do not match.')
+      setError(t('auth.err.passwordsDiffer'))
       return
     }
 
@@ -39,7 +41,7 @@ export function ChangePasswordForm() {
         body: JSON.stringify({ password }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to update password')
+      if (!res.ok) throw new Error(data.error ?? t('auth.err.updateFailed'))
       setSuccess(true)
       setTimeout(() => {
         if (required) {
@@ -54,7 +56,7 @@ export function ChangePasswordForm() {
         }
       }, 2000)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update password')
+      setError(err instanceof Error ? err.message : t('auth.err.updateFailed'))
     } finally {
       setLoading(false)
     }
@@ -64,7 +66,7 @@ export function ChangePasswordForm() {
     return (
       <div className="flex flex-col items-center gap-3 py-4 text-center">
         <CheckCircle2 size={40} className="text-green-500" />
-        <p className="font-semibold text-gray-900">Password updated</p>
+        <p className="font-semibold text-gray-900">{t('auth.passwordUpdated')}</p>
         <p className="text-sm text-gray-500">Redirecting you back…</p>
       </div>
     )
@@ -73,25 +75,25 @@ export function ChangePasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input
-        label="New password"
+        label={t('auth.newPassword')}
         type="password"
         required
         autoFocus
-        placeholder="At least 8 characters"
+        placeholder={t('auth.atLeast8')}
         value={password}
         onChange={e => { setPassword(e.target.value); setError('') }}
       />
       <Input
-        label="Confirm new password"
+        label={t('auth.confirmNewPassword')}
         type="password"
         required
-        placeholder="Repeat new password"
+        placeholder={t('auth.repeatNewPassword')}
         value={confirm}
         onChange={e => { setConfirm(e.target.value); setError('') }}
       />
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
       <Button type="submit" loading={loading} className="w-full">
-        Update Password
+        {t('auth.updatePassword')}
       </Button>
       {!required && (
         <button
@@ -99,7 +101,7 @@ export function ChangePasswordForm() {
           onClick={() => router.back()}
           className="w-full text-sm text-gray-500 hover:text-gray-700 hover:underline"
         >
-          Cancel
+          {t('auth.cancel')}
         </button>
       )}
     </form>

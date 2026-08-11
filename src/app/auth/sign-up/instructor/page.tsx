@@ -6,8 +6,8 @@ export const metadata: Metadata = { title: 'Create Instructor Account' }
 export default function InstructorSignUpPage() {
   return (
     <SignUpCard
-      heading="Create your instructor account"
-      subheading="Instructor accounts are free · approved by an admin before first sign-in"
+      headingKey="auth.createInstructorAccount"
+      subheadingKey="auth.instructorSubheading"
       lockedRole="INSTRUCTOR"
     />
   )

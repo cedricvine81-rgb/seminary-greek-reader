@@ -4,10 +4,12 @@ import type { Metadata } from 'next'
 import { ProfileForm } from '@/components/auth/ProfileForm'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Edit Profile' }
 
 export default async function ProfilePage() {
+  const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload) redirect('/auth/sign-in')
@@ -35,8 +37,8 @@ export default async function ProfilePage() {
             <Link href="/" className="inline-flex items-center justify-center w-12 h-12 bg-brand-800 hover:bg-brand-700 rounded-xl mx-auto mb-3 transition-colors">
               <span className="text-parchment-100 font-greek text-2xl font-bold">Σ</span>
             </Link>
-            <h1 className="text-xl font-bold text-ink-900">Edit Profile</h1>
-            <p className="text-sm text-gray-500 mt-1">Update your name and institution</p>
+            <h1 className="text-xl font-bold text-ink-900">{t('auth.editProfile')}</h1>
+            <p className="text-sm text-gray-500 mt-1">{t('auth.updateNameInstitution')}</p>
           </div>
           <ProfileForm
             initialFirstName={user.firstName}

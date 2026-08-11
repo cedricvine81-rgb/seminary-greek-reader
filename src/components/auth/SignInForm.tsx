@@ -3,9 +3,11 @@ import { useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 export function SignInForm() {
   const router = useRouter()
+  const t = useT()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [email, setEmail] = useState('')
@@ -22,7 +24,7 @@ export function SignInForm() {
         body: JSON.stringify({ action: 'signin', email, password }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Sign-in failed')
+      if (!res.ok) throw new Error(data.error ?? t('auth.signInFailed'))
       // If the admin created this account with a temporary password, force the
       // user through the change-password screen before they can use the app.
       if (data.mustChangePassword) {
@@ -36,7 +38,7 @@ export function SignInForm() {
       }
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sign-in failed')
+      setError(err instanceof Error ? err.message : t('auth.signInFailed'))
     } finally {
       setLoading(false)
     }
@@ -45,15 +47,15 @@ export function SignInForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input
-        label="Email"
+        label={t('auth.email')}
         type="email"
         required
         value={email}
         onChange={e => setEmail(e.target.value)}
-        placeholder="jane@seminary.edu"
+        placeholder={t('auth.emailExample')}
       />
       <Input
-        label="Password"
+        label={t('auth.password')}
         type="password"
         required
         value={password}
@@ -63,7 +65,7 @@ export function SignInForm() {
 
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
-      <Button type="submit" loading={loading} className="w-full">Sign In</Button>
+      <Button type="submit" loading={loading} className="w-full">{t('auth.signIn')}</Button>
 
     </form>
   )

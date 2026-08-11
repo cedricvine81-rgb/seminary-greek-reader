@@ -111,6 +111,13 @@ async function checkKeys() {
       for (const m of line.matchAll(/\b\w*[Kk]ey:\s*'([a-z]\w*\.[\w.]+)'/g)) {
         if (!known.has(m[1])) bad.push(`${f}:${i + 1}  ${m[1]}`)
       }
+      // The same thing written as a JSX ATTRIBUTE — headingKey="auth.signIn". A key passed as a
+      // prop is the standard fix for a string-typed display prop, so this shape appears exactly
+      // where the risk is highest: the literal has moved out of the component that renders it,
+      // and nothing else checks that the two still agree.
+      for (const m of line.matchAll(/\b\w*[Kk]ey="([a-z]\w*\.[\w.]+)"/g)) {
+        if (!known.has(m[1])) bad.push(`${f}:${i + 1}  ${m[1]}`)
+      }
     })
   }
   if (bad.length) {
