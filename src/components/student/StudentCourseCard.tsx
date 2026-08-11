@@ -10,7 +10,8 @@ import type { CategoryWeights } from '@/lib/grade-weights'
 import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 import { clsx } from 'clsx'
 import { courseStatus, courseTiming } from '@/lib/course-status'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDateShort } from '@/lib/i18n/format'
 
 export interface StudentCourse {
   id: string
@@ -45,11 +46,12 @@ function assignmentHref(a: { id: string; type: string }): string {
 
 function DueLabel({ dueDate }: { dueDate: string }) {
   const t = useT()
+  const locale = useLocale()
   const days = differenceInCalendarDays(new Date(dueDate), new Date())
   if (days === 0) return <span className="text-xs text-red-500 font-semibold">{t('course.dueToday')}</span>
   if (days === 1) return <span className="text-xs text-amber-600 font-medium">{t('course.dueTomorrow')}</span>
-  if (days > 1 && days <= 3) return <span className="text-xs text-amber-500 font-medium">Due in {days} days</span>
-  return <span className="text-xs text-gray-400">Due {new Date(dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+  if (days > 1 && days <= 3) return <span className="text-xs text-amber-500 font-medium">{t('course.dueInDays', { count: days, n: days })}</span>
+  return <span className="text-xs text-gray-400">{t('student.dueOn', { date: formatDateShort(dueDate, locale) })}</span>
 }
 
 export function StudentCourseCard({ course, studentName }: { course: StudentCourse; studentName: string }) {

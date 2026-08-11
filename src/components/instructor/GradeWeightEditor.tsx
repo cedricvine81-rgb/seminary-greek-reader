@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { GRADE_CATEGORIES, type GradeCategory, type CategoryWeights } from '@/lib/grade-weights'
@@ -14,19 +15,20 @@ export function GradeWeightEditor({ courseId, activeTypes, initial }: {
   activeTypes: GradeCategory[]
   initial: CategoryWeights | null
 }) {
+  const t = useT()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
-  const cats = GRADE_CATEGORIES.filter(c => activeTypes.includes(c.type))
+  const cats = GRADE_CATEGORIES.filter(c => activeTypes.includes(c))
   // Pre-fill from saved weights, else an even split across the active categories.
   const evenly = cats.length ? Math.round(100 / cats.length) : 0
   const [weights, setWeights] = useState<Record<string, string>>(
-    Object.fromEntries(cats.map(c => [c.type, String(initial?.[c.type] ?? (initial ? 0 : evenly))])),
+    Object.fromEntries(cats.map(c => [c, String(initial?.[c] ?? (initial ? 0 : evenly))])),
   )
 
-  const total = cats.reduce((s, c) => s + (Number(weights[c.type]) || 0), 0)
+  const total = cats.reduce((s, c) => s + (Number(weights[c]) || 0), 0)
   const enabled = initial !== null
 
   async function save(clear = false) {
@@ -35,7 +37,7 @@ export function GradeWeightEditor({ courseId, activeTypes, initial }: {
     try {
       const payload = clear
         ? null
-        : Object.fromEntries(cats.map(c => [c.type, Number(weights[c.type]) || 0]))
+        : Object.fromEntries(cats.map(c => [c, Number(weights[c]) || 0]))
       const res = await fetch(`/api/courses/${courseId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -63,7 +65,7 @@ export function GradeWeightEditor({ courseId, activeTypes, initial }: {
         </button>
         <span className="text-xs text-gray-500">
           {enabled
-            ? `Final grade is weighted: ${cats.filter(c => (initial?.[c.type] ?? 0) > 0).map(c => `${c.label.replace(/ies$/, 'y').replace(/s$/, '')} ${initial?.[c.type]}%`).join(' · ') || '—'}`
+            ? `Final grade is weighted: ${cats.filter(c => (initial?.[c] ?? 0) > 0).map(c => `${t(`assign.type.${c}`)} ${initial?.[c]}%`).join(' · ') || '—'}`
             : 'Final grade is a flat average of all assignments.'}
         </span>
       </div>
@@ -76,12 +78,12 @@ export function GradeWeightEditor({ courseId, activeTypes, initial }: {
           </p>
           <div className="space-y-2">
             {cats.map(c => (
-              <div key={c.type} className="flex items-center gap-3">
-                <label className="flex-1 text-sm text-gray-700">{c.label}</label>
+              <div key={c} className="flex items-center gap-3">
+                <label className="flex-1 text-sm text-gray-700">{t(`assign.typePlural.${c}`)}</label>
                 <input
                   type="number" min={0} max={100}
-                  value={weights[c.type]}
-                  onChange={e => setWeights(w => ({ ...w, [c.type]: e.target.value }))}
+                  value={weights[c]}
+                  onChange={e => setWeights(w => ({ ...w, [c]: e.target.value }))}
                   className="w-20 rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 />
                 <span className="w-4 text-xs text-gray-400">%</span>

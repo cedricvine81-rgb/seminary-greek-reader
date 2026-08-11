@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import type { Assignment } from '@/types/assignment'
-import { format } from 'date-fns'
 import { ChevronRight } from 'lucide-react'
 import { LocalDeadline } from './LocalDeadline'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate } from '@/lib/i18n/format'
 
 interface AssignmentListProps {
   assignments: Assignment[]
@@ -25,17 +25,6 @@ const typeColors: Record<string, 'blue' | 'purple' | 'green'> = {
   CONSTRUCT_SEARCH: 'green',
 }
 
-const typeLabels: Record<string, string> = {
-  VOCABULARY_QUIZ: 'Vocabulary',
-  PASSAGE_VOCABULARY: 'Passage Vocab',
-  MORPHOLOGY_QUIZ: 'Morphology',
-  TRANSLATION_EXERCISE: 'Translation',
-  TRANSLATION_EXAM: 'Translation Exam',
-  COURSE_NOTES: 'Course Notes',
-  GROUP_PRESENTATION: 'Group Presentation',
-  CONSTRUCT_SEARCH: 'Construct Search',
-}
-
 // Group presentations are worked on in a dedicated collaborative page, not the generic
 // single-assignment view.
 const hrefFor = (a: { id: string; type: string }) =>
@@ -43,12 +32,13 @@ const hrefFor = (a: { id: string; type: string }) =>
 
 export function AssignmentList({ assignments, completedIds = new Set(), courseNames = {} }: AssignmentListProps) {
   const t = useT()
+  const locale = useLocale()
   if (assignments.length === 0) {
     return (
       <div className="text-center py-10 space-y-2">
         <p className="text-sm text-gray-400">{t('assign.noAssignments')}</p>
         <p className="text-sm text-gray-400">
-          Your instructor hasn't published any assignments.{' '}
+          {t('student.notPublished')}{' '}
           <Link href="/student/courses" className="text-brand-600 hover:underline">{t('assign.checkCourses')}</Link>
         </p>
       </div>
@@ -72,11 +62,11 @@ export function AssignmentList({ assignments, completedIds = new Set(), courseNa
             <div className="flex flex-col gap-1 min-w-0">
               <p className="text-sm font-semibold text-gray-900 truncate">{a.title}</p>
               <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant={typeColors[a.type] ?? 'gray'}>{typeLabels[a.type] ?? a.type}</Badge>
+                <Badge variant={typeColors[a.type] ?? 'gray'}>{t(`assign.typeShort.${a.type}`)}</Badge>
                 {courseNames[a.courseId] && (
                   <span className="text-xs font-medium text-gray-500">{courseNames[a.courseId]}</span>
                 )}
-                <span className="text-xs text-gray-400">Week {a.weekNumber} · Due {format(new Date(finalDue), 'MMM d, yyyy')}</span>
+                <span className="text-xs text-gray-400">{t('student.weekN', { n: a.weekNumber })} · {t('student.dueOn', { date: formatDate(finalDue, locale) })}</span>
               </div>
               {(a.round1Deadline || a.round2Deadline) && (
                 <div className="flex flex-col gap-0.5 mt-0.5">
@@ -88,16 +78,16 @@ export function AssignmentList({ assignments, completedIds = new Set(), courseNa
             <div className="flex items-center gap-2 shrink-0">
               {done ? (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                  Done
+                  {t('student.done')}
                 </span>
               ) : overdue ? (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-red-600 text-white">
-                  Overdue — Submit
+                  {t('student.overdueSubmit')}
                   <ChevronRight size={13} />
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-700 text-white group-hover:bg-brand-800 transition-colors">
-                  Start
+                  {t('student.start')}
                   <ChevronRight size={13} />
                 </span>
               )}

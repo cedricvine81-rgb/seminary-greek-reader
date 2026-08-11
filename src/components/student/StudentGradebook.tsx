@@ -1,14 +1,19 @@
+'use client'
+
+// A CLIENT component, and it has to be: it is rendered both by the server page /student/scores
+// and by StudentCourseCard, which is 'use client'. getServerT() reaches for next/headers, which
+// cannot exist in a client bundle — importing it here broke the build for EVERY route, not just
+// this one. A presentational component shared across the boundary must use the hook.
 import { Fragment } from 'react'
 import { weightedOverall, type CategoryWeights, type GradeCategory } from '@/lib/grade-weights'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 // Mirrors the instructor CourseGradebook layout, scoped to a single student:
 // assignment columns grouped by type → per-group Avg → Overall.
+// Labels come from the shared assign.typePlural.* namespace rather than a local copy — this
+// list, GRADE_CATEGORIES and ASSIGNMENT_TYPES had already drifted apart.
 const GROUPS = [
-  { type: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quizzes' },
-  { type: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quizzes' },
-  { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
-  { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
-  { type: 'CONSTRUCT_SEARCH',     label: 'Construct Searches' },
+  'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM', 'CONSTRUCT_SEARCH',
 ] as const
 
 export interface GradebookRow {
@@ -39,8 +44,10 @@ function avg(nums: (number | null)[]): number | null {
 }
 
 export function StudentGradebook({ studentName, rows, weights = null }: { studentName: string; rows: GradebookRow[]; weights?: CategoryWeights | null }) {
-  const activeGroups = GROUPS.map(({ type, label }) => ({
-    type, label,
+  const t = useT()
+  const activeGroups = GROUPS.map(type => ({
+    type,
+    label: t(`assign.typePlural.${type}`),
     cols: rows.filter(r => r.type === type),
   })).filter(g => g.cols.length > 0)
 
@@ -79,7 +86,7 @@ export function StudentGradebook({ studentName, rows, weights = null }: { studen
               </th>
             ))}
             <th className="px-3 py-2 text-center font-semibold text-brand-700 bg-brand-50 border-l-2 border-gray-300 whitespace-nowrap">
-              Overall
+              {t('student.overall')}
             </th>
           </tr>
           {/* Row 2: per-assignment labels + Avg */}
@@ -93,10 +100,10 @@ export function StudentGradebook({ studentName, rows, weights = null }: { studen
                     className="px-2 py-2 text-center font-medium text-gray-500 border-l border-gray-100 overflow-hidden"
                   >
                     <span className="block truncate text-xs leading-tight">{a.title}</span>
-                    <span className="block text-[10px] text-gray-400 leading-tight">Wk {a.weekNumber}</span>
+                    <span className="block text-[10px] text-gray-400 leading-tight">{t('student.wkN', { n: a.weekNumber })}</span>
                   </th>
                 ))}
-                <th className="px-2 py-2 text-center font-semibold text-gray-600 bg-gray-100 border-l border-gray-200">Avg</th>
+                <th className="px-2 py-2 text-center font-semibold text-gray-600 bg-gray-100 border-l border-gray-200">{t('student.avg')}</th>
               </Fragment>
             ))}
             <th className="px-2 py-2 bg-brand-50 border-l border-gray-200" />

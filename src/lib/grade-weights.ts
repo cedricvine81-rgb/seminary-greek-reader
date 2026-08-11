@@ -5,14 +5,13 @@
 
 export type GradeCategory = 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES' | 'GROUP_PRESENTATION' | 'CONSTRUCT_SEARCH'
 
-export const GRADE_CATEGORIES: { type: GradeCategory; label: string }[] = [
-  { type: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quizzes' },
-  { type: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quizzes' },
-  { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
-  { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
-  { type: 'COURSE_NOTES',         label: 'Course Notes' },
-  { type: 'GROUP_PRESENTATION',   label: 'Group Presentations' },
-  { type: 'CONSTRUCT_SEARCH',     label: 'Construct Searches' },
+// Types only. Labels live in the shared assign.type.* / assign.typePlural.* namespace, so a
+// caller picks the number it needs instead of de-pluralizing a plural — GradeWeightEditor used
+// to do that with `.replace(/ies$/, 'y').replace(/s$/, '')`, which is English morphology
+// written into the app and produces nothing at all in Spanish.
+export const GRADE_CATEGORIES: GradeCategory[] = [
+  'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
 ]
 
 export type CategoryWeights = Partial<Record<GradeCategory, number>>
@@ -22,7 +21,7 @@ export function normalizeCategoryWeights(raw: unknown): CategoryWeights | null {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null
   const src = raw as Record<string, unknown>
   const out: CategoryWeights = {}
-  for (const { type } of GRADE_CATEGORIES) {
+  for (const type of GRADE_CATEGORIES) {
     const n = Number(src[type])
     if (!isNaN(n) && n > 0) out[type] = n
   }
