@@ -260,6 +260,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // CURRENT choice rather than the one captured when it was created.
   const translationIdRef = useRef<string | null>(null)
   useEffect(() => { translationIdRef.current = translationId }, [translationId])
+  // Switching translation has to REFETCH what is already on screen: the parallel text is baked
+  // into Row.english when the chapter loads, not read at render. Until Spanish was offered no
+  // work had two options, so a switch was impossible and nothing invalidated the rows — picking
+  // Spanish left Brenton's English sitting in the column.
+  const lastTransSigRef = useRef('')
   // For Greek (lxx) works with a translation, hide the Greek and read the translation alone.
   const [greekHiddenPref, setGreekHiddenPref] = useState(false)
   // Display mode for greek-prose works (Josephus, Epictetus): Greek | Greek+English | English.
@@ -669,6 +674,30 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   function blockFor(item: QueueItem, rows: Row[]): ChapterBlock {
     return { key: keyFor(item), book: item.book, chapter: item.chapter, rows }
   }
+
+  useEffect(() => {
+    const workKey = work?.osisId ?? ''
+    const sig = `${workKey}|${translationId ?? ''}`
+    const prev = lastTransSigRef.current
+    lastTransSigRef.current = sig
+    // A new work already fetched its rows with the right translation on open; only re-run when
+    // the choice changed WITHIN the same work.
+    if (!prev || prev.split('|')[0] !== workKey) return
+    const w = workRef.current
+    const secs = seriesRef.current.sections
+    if (!w || secs.length === 0) return
+    let cancelled = false
+    void (async () => {
+      const rows = await Promise.all(secs.map(sec => fetchChapterRows(w, { book: sec.book, chapter: sec.chapter })))
+      if (cancelled) return
+      setSeries(cur => ({
+        ...cur,
+        sections: cur.sections.map((sec, i) => (rows[i] ? { ...sec, rows: rows[i] } : sec)),
+      }))
+    })()
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [translationId, work])
 
   // ── Forward (downward) and backward (upward) lazy loading ──
   const loadMore = useCallback(async () => {
