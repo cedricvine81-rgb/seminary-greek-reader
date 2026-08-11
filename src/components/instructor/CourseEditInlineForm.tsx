@@ -1,5 +1,6 @@
 'use client'
 import { useState, FormEvent } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { ASSESSMENT_LANGUAGES, ASSESSMENT_LANGUAGE_LABEL } from '@/lib/assessment-languages'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2 } from 'lucide-react'
@@ -23,6 +24,7 @@ interface Props {
 export function CourseEditInlineForm({
   courseId, initialName, initialListing, initialLevel, initialLanguage, initialStartDate, initialEndDate,
 }: Props) {
+  const t = useT()
   const router = useRouter()
   const [name, setName] = useState(initialName)
   const [listing, setListing] = useState(initialListing)
@@ -46,12 +48,12 @@ export function CourseEditInlineForm({
         body: JSON.stringify({ name, listing, level, language, startDate, endDate }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to save')
+      if (!res.ok) throw new Error(data.error ?? t('inst.err.save'))
       setSaved(true)
       router.refresh()
       setTimeout(() => setSaved(false), 3000)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save')
+      setError(err instanceof Error ? err.message : t('inst.err.save'))
     } finally {
       setSaving(false)
     }
@@ -62,40 +64,40 @@ export function CourseEditInlineForm({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="sm:col-span-2">
           <Input
-            label="Course name"
+            label={t('inst.courseName')}
             required
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="Beginning Greek"
+            placeholder={t('inst.courseNameExample')}
           />
         </div>
         <Input
-          label="Course listing / code"
+          label={t('inst.courseListing')}
           value={listing}
           onChange={e => setListing(e.target.value)}
-          placeholder="GREK 301"
+          placeholder={t('inst.courseListingExample')}
         />
         <Select
-          label="Level"
+          label={t('inst.col.level')}
           value={level}
           onChange={e => setLevel(e.target.value as CourseLevel)}
-          options={COURSE_LEVELS.map(l => ({ value: l.value, label: l.label }))}
+          options={COURSE_LEVELS.map(l => ({ value: l, label: t(`course.level.${l}`) }))}
         />
         <Select
-          label="Assessment language"
+          label={t('inst.assessmentLanguage')}
           value={language}
           onChange={e => setLanguage(e.target.value)}
           options={ASSESSMENT_LANGUAGES.map(l => ({ value: l, label: ASSESSMENT_LANGUAGE_LABEL[l] }))}
         />
         <Input
-          label="Start date"
+          label={t('inst.startDate')}
           type="date"
           required
           value={startDate}
           onChange={e => setStartDate(e.target.value)}
         />
         <Input
-          label="End date"
+          label={t('inst.endDate')}
           type="date"
           required
           value={endDate}

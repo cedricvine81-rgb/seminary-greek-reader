@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useRouter } from 'next/navigation'
 import { UserPlus, X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -19,6 +20,7 @@ export function CoInstructorManager({
   initialCoInstructors: CoInstructor[]
   isPrimaryInstructor: boolean
 }) {
+  const t = useT()
   const router = useRouter()
   const [coInstructors, setCoInstructors] = useState(initialCoInstructors)
   const [email, setEmail] = useState('')
@@ -37,12 +39,12 @@ export function CoInstructorManager({
         body: JSON.stringify({ email: email.trim() }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to add co-instructor')
+      if (!res.ok) throw new Error(data.error ?? t('inst.err.addCoInstructor'))
       setCoInstructors(prev => [...prev, data.coInstructor])
       setEmail('')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add co-instructor')
+      setError(err instanceof Error ? err.message : t('inst.err.addCoInstructor'))
     } finally {
       setAdding(false)
     }
@@ -82,7 +84,7 @@ export function CoInstructorManager({
                   onClick={() => handleRemove(ci.user.id)}
                   disabled={removing === ci.user.id}
                   className="text-gray-400 hover:text-red-500 transition-colors disabled:opacity-40"
-                  title="Remove co-instructor"
+                  title={t('inst.removeCoInstructor')}
                 >
                   <X size={15} />
                 </button>
@@ -96,7 +98,7 @@ export function CoInstructorManager({
         <div className="space-y-2">
           <div className="flex gap-2 justify-end">
             <Input
-              placeholder="instructor@seminary.edu"
+              placeholder={t('inst.coInstructorEmailExample')}
               value={email}
               onChange={e => { setEmail(e.target.value); setError('') }}
               onKeyDown={e => e.key === 'Enter' && handleAdd()}

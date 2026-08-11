@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { getServerT } from '@/lib/i18n/server'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { format } from 'date-fns'
@@ -7,13 +8,14 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { ArchiveCourseButton } from '@/components/instructor/ArchiveCourseButton'
 import { Users, ClipboardList } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Course Archive' }
 
 export default async function ArchivePage() {
+  const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
@@ -66,7 +68,7 @@ export default async function ArchivePage() {
                       <span className="text-xs text-gray-400">{course.listing}</span>
                     )}
                     <Badge variant={COURSE_LEVEL_VARIANTS[course.level] ?? 'gray'}>
-                      {COURSE_LEVEL_LABELS[course.level] ?? course.level}
+                      {t(`course.level.${course.level}`)}
                     </Badge>
                   </div>
                   <p className="text-xs text-gray-500">

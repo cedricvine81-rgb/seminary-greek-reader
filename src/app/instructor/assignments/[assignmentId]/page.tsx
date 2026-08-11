@@ -1,4 +1,5 @@
 import { redirect, notFound } from 'next/navigation'
+import { getServerT } from '@/lib/i18n/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
@@ -13,13 +14,14 @@ import { Badge } from '@/components/ui/Badge'
 import { Eye } from 'lucide-react'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { constructCorpusLabel, constructLinkFromReference } from '@/lib/construct-assignment'
 
 export const metadata: Metadata = { title: 'Edit Assignment' }
 
 export default async function AssignmentDetailPage({ params }: { params: { assignmentId: string } }) {
+  const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
@@ -63,7 +65,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
         <div className="flex gap-2 flex-wrap items-center">
           <Badge variant="gray">Week {assignment.weekNumber}</Badge>
           <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
-            {COURSE_LEVEL_LABELS[assignment.level] ?? assignment.level}
+            {t(`course.level.${assignment.level}`)}
           </Badge>
           {assignment.type === 'TRANSLATION_EXERCISE' ? (
             assignment.reference && (

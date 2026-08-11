@@ -68,25 +68,13 @@ export const LXX_BOOKS = [
   { osisId: 'Dan', name: 'Daniel', abbrev: 'Dan', chapters: 12 },
 ] as const
 
+// Values only. Labels live in the shared course.level.* namespace — they were previously
+// spelled three ways: here, in COURSE_LEVEL_LABELS below, and in CourseForm's own list, which
+// offered three of the seven and called BEGINNING "Beginner".
 export const COURSE_LEVELS = [
-  { value: 'BEGINNING',    label: 'Beginning Greek' },
-  { value: 'INTERMEDIATE', label: 'Intermediate Greek' },
-  { value: 'ADVANCED',     label: 'Advanced Greek' },
-  { value: 'GREEK_I',      label: 'Greek I' },
-  { value: 'GREEK_II',     label: 'Greek II' },
-  { value: 'GREEK_III',    label: 'Greek III' },
-  { value: 'SEPTUAGINT',   label: 'Septuagint Greek' },
+  'BEGINNING', 'INTERMEDIATE', 'ADVANCED', 'GREEK_I', 'GREEK_II', 'GREEK_III', 'SEPTUAGINT',
 ] as const
-
-export const COURSE_LEVEL_LABELS: Record<string, string> = {
-  BEGINNING:    'Beginning Greek',
-  INTERMEDIATE: 'Intermediate Greek',
-  ADVANCED:     'Advanced Greek',
-  GREEK_I:      'Greek I',
-  GREEK_II:     'Greek II',
-  GREEK_III:    'Greek III',
-  SEPTUAGINT:   'Septuagint Greek',
-}
+export type CourseLevel = typeof COURSE_LEVELS[number]
 
 export const COURSE_LEVEL_VARIANTS: Record<string, 'blue' | 'purple' | 'green' | 'gray'> = {
   BEGINNING:    'blue',

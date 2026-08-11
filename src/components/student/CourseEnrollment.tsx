@@ -6,7 +6,7 @@ import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
-import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 
 interface AvailableCourse {
   id: string

@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useRouter } from 'next/navigation'
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -13,6 +14,7 @@ export function DeleteCourseButton({
   courseId: string
   courseName: string
 }) {
+  const t = useT()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [password, setPassword] = useState('')
@@ -33,7 +35,7 @@ export function DeleteCourseButton({
   }
 
   async function handleDelete() {
-    if (!password) { setError('Please enter your password'); return }
+    if (!password) { setError(t('inst.err.enterPassword')); return }
     setError('')
     setDeleting(true)
     try {
@@ -43,11 +45,11 @@ export function DeleteCourseButton({
         body: JSON.stringify({ password }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to delete course')
+      if (!res.ok) throw new Error(data.error ?? t('inst.err.deleteCourse'))
       router.push('/instructor')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete course')
+      setError(err instanceof Error ? err.message : t('inst.err.deleteCourse'))
       setDeleting(false)
     }
   }
@@ -64,7 +66,7 @@ export function DeleteCourseButton({
         Delete Course
       </Button>
 
-      <Modal open={open} onClose={handleClose} title="Delete Course" size="sm">
+      <Modal open={open} onClose={handleClose} title={t('inst.deleteCourse')} size="sm">
         <div className="space-y-4">
           <p className="text-sm text-gray-600">
             You are about to permanently delete <span className="font-semibold text-gray-900">{courseName}</span>.
@@ -72,9 +74,9 @@ export function DeleteCourseButton({
             This action cannot be undone.
           </p>
           <Input
-            label="Confirm with your password"
+            label={t('inst.confirmWithPassword')}
             type="password"
-            placeholder="Enter your password"
+            placeholder={t('inst.enterYourPassword')}
             value={password}
             onChange={e => { setPassword(e.target.value); setError('') }}
             onKeyDown={e => e.key === 'Enter' && handleDelete()}

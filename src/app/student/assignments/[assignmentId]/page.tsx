@@ -1,4 +1,5 @@
 import { redirect, notFound } from 'next/navigation'
+import { getServerT } from '@/lib/i18n/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { addDays } from 'date-fns'
@@ -13,7 +14,7 @@ import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, isPreviewMode } from '@/lib/preview'
 import { prisma } from '@/lib/db'
-import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { effectiveDeadline } from '@/lib/assignment-deadline'
 import { ArrowLeft } from 'lucide-react'
 import { LocalDateTime } from '@/components/ui/LocalDateTime'
@@ -22,6 +23,7 @@ import { constructCorpusLabel, constructLinkFromReference } from '@/lib/construc
 export const metadata: Metadata = { title: 'Assignment' }
 
 export default async function StudentAssignmentPage({ params }: { params: { assignmentId: string } }) {
+  const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
@@ -161,7 +163,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             <div className="flex gap-2 flex-wrap">
               <Badge variant="gray">Week {assignment.weekNumber}</Badge>
               <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
-                {COURSE_LEVEL_LABELS[assignment.level] ?? assignment.level}
+                {t(`course.level.${assignment.level}`)}
               </Badge>
               {assignment.type === 'CONSTRUCT_SEARCH'
                 ? (() => {

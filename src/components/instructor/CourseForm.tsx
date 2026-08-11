@@ -1,5 +1,7 @@
 'use client'
 import { useState, FormEvent } from 'react'
+import { COURSE_LEVELS } from '@/lib/constants'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
@@ -13,6 +15,7 @@ interface CourseFormProps {
 }
 
 export function CourseForm({ initialData, courseId }: CourseFormProps) {
+  const t = useT()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -43,11 +46,11 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
         body: JSON.stringify(form),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to save course')
+      if (!res.ok) throw new Error(data.error ?? t('inst.err.saveCourse'))
       router.push('/instructor')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save course')
+      setError(err instanceof Error ? err.message : t('inst.err.saveCourse'))
     } finally {
       setLoading(false)
     }
@@ -55,21 +58,19 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-lg">
-      <Input label="Course name" required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Beginning Greek" />
-      <Input label="Course listing" value={form.listing ?? ''} onChange={e => set('listing', e.target.value)} placeholder="SU2026-NTST-551" />
-      <Input label="Institution" value={form.institutionName ?? ''} onChange={e => set('institutionName', e.target.value)} placeholder="Seminary name" />
+      <Input label={t('inst.courseName')} required value={form.name} onChange={e => set('name', e.target.value)} placeholder={t('inst.courseNameExample')} />
+      <Input label={t('inst.courseListing')} value={form.listing ?? ''} onChange={e => set('listing', e.target.value)} placeholder="SU2026-NTST-551" />
+      <Input label={t('inst.col.institution')} value={form.institutionName ?? ''} onChange={e => set('institutionName', e.target.value)} placeholder={t('inst.institutionExample')} />
       <Select
-        label="Level"
+        label={t('inst.col.level')}
         value={form.level}
         onChange={e => set('level', e.target.value as CourseLevel)}
-        options={[
-          { value: 'BEGINNING',    label: 'Beginner' },
-          { value: 'INTERMEDIATE', label: 'Intermediate' },
-          { value: 'ADVANCED',     label: 'Advanced' },
-        ]}
+        // All seven levels, from the shared list — this form used to offer three, under
+        // different names than the badge that displays them afterwards.
+        options={COURSE_LEVELS.map(l => ({ value: l, label: t(`course.level.${l}`) }))}
       />
       <Select
-        label="Assessment language"
+        label={t('inst.assessmentLanguage')}
         value={form.language ?? 'en'}
         onChange={e => set('language', e.target.value)}
         options={ASSESSMENT_LANGUAGES.map(l => ({ value: l, label: ASSESSMENT_LANGUAGE_LABEL[l] }))}
@@ -86,8 +87,8 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
       <div className="flex gap-3 justify-end">
-        <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
-        <Button type="submit" loading={loading}>{courseId ? 'Save Changes' : 'Create Course'}</Button>
+        <Button type="button" variant="ghost" onClick={() => router.back()}>{t('inst.cancel')}</Button>
+        <Button type="submit" loading={loading}>{courseId ? t('inst.saveChanges') : t('inst.createCourse')}</Button>
       </div>
     </form>
   )

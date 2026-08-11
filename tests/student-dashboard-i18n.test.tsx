@@ -138,3 +138,24 @@ describe('LocalDeadline', () => {
     expect(screen.getByText('Cerrado')).toBeInTheDocument()
   })
 })
+
+describe('course levels — one namespace, three former spellings', () => {
+  // COURSE_LEVELS, COURSE_LEVEL_LABELS and CourseForm's own list each named these differently;
+  // CourseForm offered three of the seven and called BEGINNING "Beginner". This pins that every
+  // level the app can store has a label, in both languages, from the one namespace that is left.
+  const { COURSE_LEVELS } = require('@/lib/constants') as typeof import('@/lib/constants')
+  const { translate } = require('@/lib/i18n/translate') as typeof import('@/lib/i18n/translate')
+
+  it.each(['en', 'es'] as const)('covers every level in %s', locale => {
+    const missing = COURSE_LEVELS.filter(l => {
+      const key = `course.level.${l}`
+      return translate(locale, key) === key
+    })
+    expect(missing).toEqual([])
+  })
+
+  it('still reads Beginning Greek in English, not "Beginner"', () => {
+    expect(translate('en', 'course.level.BEGINNING')).toBe('Beginning Greek')
+    expect(translate('es', 'course.level.BEGINNING')).toBe('Griego inicial')
+  })
+})

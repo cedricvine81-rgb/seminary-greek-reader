@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -10,6 +11,7 @@ interface PublishButtonProps {
 }
 
 export function PublishButton({ assignmentId, isPublished: initial }: PublishButtonProps) {
+  const t = useT()
   const router = useRouter()
   const [published, setPublished] = useState(initial)
   const [loading, setLoading] = useState(false)
@@ -39,7 +41,7 @@ export function PublishButton({ assignmentId, isPublished: initial }: PublishBut
       onClick={toggle}
     >
       {published ? <EyeOff size={14} /> : <Eye size={14} />}
-      {published ? 'Unpublish' : 'Publish'}
+      {published ? t('inst.unpublish') : t('inst.publish')}
     </Button>
   )
 }

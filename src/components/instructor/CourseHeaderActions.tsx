@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { Button } from '@/components/ui/Button'
 import { ArchiveCourseButton } from './ArchiveCourseButton'
 import { Users } from 'lucide-react'
@@ -16,6 +17,7 @@ interface CourseHeaderActionsProps {
 export function CourseHeaderActions({
   courseId, courseName, studentCount, isArchived,
 }: CourseHeaderActionsProps) {
+  const t = useT()
   const stop = (e: React.MouseEvent) => e.stopPropagation()
 
   return (
@@ -34,7 +36,7 @@ export function CourseHeaderActions({
           <span>{studentCount} student{studentCount !== 1 ? 's' : ''}</span>
         </div>
         <Link href={`/instructor/courses/${courseId}`}>
-          <Button size="sm" variant="secondary">Manage Course</Button>
+          <Button size="sm" variant="secondary">{t('inst.manageCourse')}</Button>
         </Link>
         <ArchiveCourseButton courseId={courseId} isArchived={isArchived} />
       </div>

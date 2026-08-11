@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useRouter } from 'next/navigation'
 import { Archive, ArchiveRestore } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function ArchiveCourseButton({ courseId, isArchived }: Props) {
+  const t = useT()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -34,7 +36,7 @@ export function ArchiveCourseButton({ courseId, isArchived }: Props) {
       loading={loading}
       onClick={toggle}
       className="flex items-center gap-1.5 text-gray-500 hover:text-gray-700"
-      title={isArchived ? 'Restore to dashboard' : 'Archive this course'}
+      title={t(isArchived ? 'inst.restoreCourse' : 'inst.archiveCourse')}
     >
       {isArchived
         ? <><ArchiveRestore size={14} /> Restore</>
