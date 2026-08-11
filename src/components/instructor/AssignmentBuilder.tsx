@@ -18,6 +18,9 @@ import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-fields'
 import { SUBTYPE_FIELD_OPTIONS, VERB_TENSES, VERB_VOICES, VERB_MOODS, PERSONS, NUMBERS, NOUN_CASES, GENDERS, PRONOUN_TYPES } from '@/lib/quiz-fields'
 import type { CourseLevel } from '@/types/course'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate, formatDateLong } from '@/lib/i18n/format'
+import { featureLabel, groupLabel } from '@/lib/i18n/morph-labels'
 import { getLessonForWeek, minOccurrencesThrough, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-lesson-map'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -43,34 +46,42 @@ const DEFAULT_PARSE_FILTER: MorphParseFilter = {
   pronounTypes: [...PRONOUN_TYPES],
 }
 
-const MORPH_SUBTYPE_SHORT: Record<MorphologySubtype, string> = {
-  VERB_PARSING:      'Verb Parsing',
-  NOUN_PARSING:      'Noun Parsing',
-  ADJECTIVE_PARSING: 'Adjective Parsing',
-  PRONOUN_PARSING:   'Pronoun Parsing',
-  CONDITIONALS:      'Conditionals',
-  SUBJUNCTIVES:      'Subjunctives',
-  MIXED:             'Mixed',
-}
+/**
+ * The subtypes, in the order the pickers show them. THREE maps of these seven values used to
+ * live here — the picker's label+description, a `SUBTYPE_LABEL_FALLBACK` copy of the labels, and
+ * a short form for the schedule badge — so a rename had to be made in three places to hold. The
+ * values are the list; every name comes from the catalogue.
+ */
+const MORPHOLOGY_SUBTYPES: MorphologySubtype[] =
+  ['VERB_PARSING', 'NOUN_PARSING', 'ADJECTIVE_PARSING', 'PRONOUN_PARSING', 'CONDITIONALS', 'SUBJUNCTIVES', 'MIXED']
 
-const MORPHOLOGY_SUBTYPES: { value: MorphologySubtype; label: string; description: string }[] = [
-  { value: 'VERB_PARSING',      label: 'Verb Parsing',       description: 'Identify tense, voice, mood, person, number' },
-  { value: 'NOUN_PARSING',      label: 'Noun Parsing',       description: 'Identify case, number, gender' },
-  { value: 'ADJECTIVE_PARSING', label: 'Adjective Parsing',  description: 'Identify case, number, gender of adjectives' },
-  { value: 'PRONOUN_PARSING',   label: 'Pronoun Parsing',    description: 'Identify case, number, gender of pronouns' },
-  { value: 'CONDITIONALS',      label: 'Conditional Sentences', description: 'Identify conditional sentence class from NT examples' },
-  { value: 'SUBJUNCTIVES',      label: 'Subjunctive Uses',   description: 'Identify the use of the subjunctive mood' },
-  { value: 'MIXED',             label: 'Mixed Parsing',      description: 'Verbs, nouns, adjectives, and pronouns combined' },
+const DAYS_OF_WEEK = [0, 1, 2, 3, 4, 5, 6]
+
+/** What a single assignment can be. PASSAGE_VOCABULARY is generated, never authored here. */
+const SINGLE_ASSIGNMENT_TYPES: AssignmentType[] = [
+  'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
 ]
 
-const DAYS_OF_WEEK = [
-  { value: 0, label: 'Sun' },
-  { value: 1, label: 'Mon' },
-  { value: 2, label: 'Tue' },
-  { value: 3, label: 'Wed' },
-  { value: 4, label: 'Thu' },
-  { value: 5, label: 'Fri' },
-  { value: 6, label: 'Sat' },
+/** A repeated series is always a quiz — the other types have no weekly form. */
+const SERIES_ASSIGNMENT_TYPES: AssignmentType[] = ['VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ']
+
+type T = (key: string, vars?: Record<string, string | number>) => string
+
+/** Retake and appeal counts, offered identically by both forms. */
+const retakeOptions = (t: T) =>
+  [0, 1, 2, 3, 5].map(n => ({ value: String(n), label: t(`inst.b.retakes${n}`) }))
+
+const appealOptions = (t: T) => [
+  { value: '0', label: t('inst.b.appealsOff') },
+  ...[1, 2, 3, 5].map(n => ({ value: String(n), label: t('inst.b.appealsN', { count: n, n }) })),
+]
+
+/** The glossary threshold, offered by both the exam and the exercise. */
+const glossaryOptions = (t: T) => [
+  { value: '', label: t('inst.b.glossaryOff') },
+  { value: '50', label: t('inst.b.glossaryBeginner') },
+  { value: '30', label: t('inst.b.glossaryIntermediate') },
 ]
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -126,9 +137,10 @@ function LatePolicyFields({
   onAllowLateChange: (v: boolean) => void
   onLateDaysLimitChange: (v: number) => void
 }) {
+  const t = useT()
   return (
     <fieldset className="border border-gray-200 rounded-xl p-5 space-y-4">
-      <legend className="text-sm font-semibold text-gray-700 px-1">Late Submissions</legend>
+      <legend className="text-sm font-semibold text-gray-700 px-1">{t('inst.b.lateLegend')}</legend>
       <label className="flex items-center gap-3 cursor-pointer">
         <input
           type="checkbox"
@@ -136,12 +148,12 @@ function LatePolicyFields({
           onChange={e => onAllowLateChange(e.target.checked)}
           className="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
         />
-        <span className="text-sm text-gray-700">Allow students to submit after the due date</span>
+        <span className="text-sm text-gray-700">{t('inst.b.allowLate')}</span>
       </label>
       {allowLate && (
         <div className="pl-7">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Deadline (days after due date)
+            {t('inst.b.lateDeadline')}
           </label>
           <div className="flex items-center gap-3">
             <input
@@ -153,7 +165,7 @@ function LatePolicyFields({
               className="input w-28"
             />
             <span className="text-sm text-gray-500">
-              {lateDaysLimit === 0 ? 'No time limit — accept indefinitely' : `days after due date`}
+              {lateDaysLimit === 0 ? t('inst.b.lateNoLimit') : t('inst.b.lateDaysAfter')}
             </span>
           </div>
         </div>
@@ -165,7 +177,6 @@ function LatePolicyFields({
 interface ScheduledQuiz {
   week: number
   date: Date
-  label: string
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -192,7 +203,7 @@ function buildSchedule(startDate: string, weeks: number, days: number[], courseS
     const date = addDays(start, d)
     if (days.includes(getDay(date))) {
       const week = Math.floor((lead + d) / 7) + 1
-      result.push({ week, date, label: format(date, 'EEE, MMM d, yyyy') })
+      result.push({ week, date })
     }
   }
   return result
@@ -207,25 +218,26 @@ function MorphologySubtypePicker({
   value: MorphologySubtype
   onChange: (v: MorphologySubtype) => void
 }) {
+  const t = useT()
   return (
     <div>
-      <p className="block text-sm font-medium text-gray-700 mb-2">Morphology focus</p>
+      <p className="block text-sm font-medium text-gray-700 mb-2">{t('inst.b.morphFocus')}</p>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {MORPHOLOGY_SUBTYPES.map(opt => (
           <button
-            key={opt.value}
+            key={opt}
             type="button"
-            onClick={() => onChange(opt.value)}
+            onClick={() => onChange(opt)}
             className={`text-left px-3 py-2.5 rounded-lg border transition-colors ${
-              value === opt.value
+              value === opt
                 ? 'bg-brand-50 border-brand-400 ring-1 ring-brand-300'
                 : 'bg-surface border-gray-200 hover:border-brand-300'
             }`}
           >
-            <span className={`block text-sm font-medium ${value === opt.value ? 'text-brand-800' : 'text-gray-800'}`}>
-              {opt.label}
+            <span className={`block text-sm font-medium ${value === opt ? 'text-brand-800' : 'text-gray-800'}`}>
+              {t(`morph.subtype.${opt}`)}
             </span>
-            <span className="block text-xs text-gray-500 mt-0.5">{opt.description}</span>
+            <span className="block text-xs text-gray-500 mt-0.5">{t(`morph.subtypeDesc.${opt}`)}</span>
           </button>
         ))}
       </div>
@@ -236,6 +248,7 @@ function MorphologySubtypePicker({
 // ── Single Assignment Form ────────────────────────────────────────────────────
 
 function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCourseId?: string }) {
+  const t = useT()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -289,20 +302,20 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     // Client-side validation for passage exercises/exams
     if ((form.type === 'TRANSLATION_EXERCISE' || form.type === 'TRANSLATION_EXAM') && !form.reference?.trim()
         && !(form.type === 'TRANSLATION_EXERCISE' && form.homeworkSet)) {
-      setError('At least one passage reference is required (e.g. "John 1:1–18").')
+      setError(t('inst.b.err.passageRequired'))
       return
     }
     if (form.type === 'COURSE_NOTES' && !form.notesFolderName?.trim()) {
-      setError('A folder name is required (e.g. "Judaism").')
+      setError(t('inst.b.err.folderRequired'))
       return
     }
     // The construct link IS the assignment, so it has to be one the app can actually run.
     if (form.type === 'CONSTRUCT_SEARCH' && !parseConstructLink(form.constructUrl ?? '')) {
-      setError('Paste a construct search link — run your search on the Construct page, then use its “Copy link” button.')
+      setError(t('inst.b.err.constructLink'))
       return
     }
     if (form.round1Deadline && form.round2Deadline && new Date(form.round2Deadline) <= new Date(form.round1Deadline)) {
-      setError('The Round 2 deadline must be after the Round 1 deadline.')
+      setError(t('inst.b.err.roundOrder'))
       return
     }
 
@@ -342,13 +355,13 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           ...(form.type === 'CONSTRUCT_SEARCH' ? { constructUrl: form.constructUrl, constructCount: form.constructCount, constructAskTranslation: form.constructAskTranslation, constructAskComment: form.constructAskComment } : {}) }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
+      if (!res.ok) throw new Error(data.error ?? t('inst.b.err.createAssignment'))
       // Return to the assignment's course (the one launched from, or the one the
       // instructor picked in the selector) so the new assignment is immediately visible.
       router.push(`/instructor/courses/${defaultCourseId ?? courseId}`)
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error creating assignment')
+      setError(err instanceof Error ? err.message : t('inst.b.err.creatingAssignment'))
     } finally {
       publishRef.current = false
       setLoading(false)
@@ -361,7 +374,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           the dashboard (no course pre-selected) so the instructor allocates it explicitly. */}
       {(courses.length > 1 || !defaultCourseId) && (
         <Select
-          label="Course"
+          label={t('inst.b.course')}
           value={courseId}
           onChange={e => {
             const c = courses.find(c => c.id === e.target.value)
@@ -372,21 +385,15 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         />
       )}
 
-      <Input label="Title" required value={form.title} onChange={e => set('title', e.target.value)} placeholder="Week 1: John 1 Vocabulary" />
+      <Input label={t('inst.b.title')} required value={form.title} onChange={e => set('title', e.target.value)} placeholder={t('inst.b.titleExample')} />
 
+      {/* Names come from assign.type.*, the namespace the student side reads too — this list
+          and the series form's were the fifth and sixth hand-maintained copies of this enum. */}
       <Select
-        label="Assignment type"
+        label={t('inst.b.assignmentType')}
         value={form.type}
         onChange={e => set('type', e.target.value as AssignmentType)}
-        options={[
-          { value: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quiz' },
-          { value: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quiz' },
-          { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
-          { value: 'TRANSLATION_EXAM',     label: 'Translation Exam' },
-          { value: 'COURSE_NOTES',         label: 'Course Notes' },
-          { value: 'GROUP_PRESENTATION',   label: 'Group Presentation' },
-          { value: 'CONSTRUCT_SEARCH',     label: 'Construct Search' },
-        ]}
+        options={SINGLE_ASSIGNMENT_TYPES.map(v => ({ value: v, label: t(`assign.type.${v}`) }))}
       />
 
       {form.type === 'CONSTRUCT_SEARCH' && (
@@ -404,31 +411,22 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'COURSE_NOTES' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-brand-800">📓 Course Notes</p>
-          <p className="text-xs text-brand-700">
-            Every enrolled student is given a notes folder with the name below. They write study notes into it
-            (from the reader or the Notes page) and submit the folder for grading. You read their notes and enter
-            a grade out of 100; it flows into the gradebook like any other assignment.
-          </p>
+          <p className="text-sm font-semibold text-brand-800">📓 {t('inst.b.notes.heading')}</p>
+          <p className="text-xs text-brand-700">{t('inst.b.notes.desc')}</p>
           <Input
-            label="Folder name (required)"
+            label={t('inst.b.notes.folderName')}
             required
             value={form.notesFolderName ?? ''}
             onChange={e => set('notesFolderName', e.target.value)}
-            placeholder="e.g. Judaism"
+            placeholder={t('inst.b.notes.folderExample')}
           />
         </div>
       )}
 
       {form.type === 'GROUP_PRESENTATION' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-2">
-          <p className="text-sm font-semibold text-brand-800">👥 Group Presentation</p>
-          <p className="text-xs text-brand-700">
-            Assign students to groups from the <span className="font-medium">Course groups</span> panel on the course page,
-            then link each group to this presentation. Each member writes their own section in a shared pane and signs an
-            individual AI/sources statement; the group submits once for a single group grade. The <span className="font-medium">Due date</span> below
-            is the submission deadline — after it passes you can approve a late submission per group from the grading page.
-          </p>
+          <p className="text-sm font-semibold text-brand-800">👥 {t('inst.b.group.heading')}</p>
+          <p className="text-xs text-brand-700">{t('inst.b.group.desc')}</p>
         </div>
       )}
 
@@ -445,7 +443,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           />
           {SUBTYPE_FIELD_OPTIONS[morphologySubtype].length > 0 && (
             <div>
-              <p className="text-sm font-medium text-gray-700 mb-1.5">Fields to identify</p>
+              <p className="text-sm font-medium text-gray-700 mb-1.5">{t('inst.b.fieldsToIdentify')}</p>
               <div className="flex flex-wrap gap-2">
                 {SUBTYPE_FIELD_OPTIONS[morphologySubtype].map(opt => {
                   const checked = morphologyFields.includes(opt.key)
@@ -468,13 +466,13 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                           )
                         }}
                       />
-                      {opt.label}
+                      {featureLabel(opt.label, t)}
                     </label>
                   )
                 })}
               </div>
               {morphologyFields.length === 0 && (
-                <p className="text-xs text-red-500 mt-1">Select at least one field.</p>
+                <p className="text-xs text-red-500 mt-1">{t('inst.b.selectOneField')}</p>
               )}
             </div>
           )}
@@ -485,7 +483,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                 onClick={() => setFilterOpen(v => !v)}
                 className="w-full flex items-center justify-between px-4 py-2.5 bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"
               >
-                <span>Restrict to specific forms…</span>
+                <span>{t('inst.b.restrictForms')}</span>
                 <span className="text-gray-400">{filterOpen ? '▲' : '▼'}</span>
               </button>
               {filterOpen && (
@@ -514,11 +512,11 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           {earlierWordCount > 0 && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Review from earlier sections —{' '}
+                {t('inst.b.reviewEarlierSections')} —{' '}
                 <span className="text-brand-700 font-semibold">
                   {vocabReviewPct === 0
-                    ? 'Selected sections only'
-                    : `${vocabReviewPct}% earlier / ${100 - vocabReviewPct}% selected`}
+                    ? t('inst.b.reviewSelectedOnly')
+                    : t('inst.b.reviewMix', { earlier: vocabReviewPct, rest: 100 - vocabReviewPct })}
                 </span>
               </label>
               <input
@@ -529,19 +527,17 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                 className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
               />
               <p className="text-xs text-gray-500 mt-1">
-                Blends in words from the {earlierWordCount} words in sections before your
-                selection, so students keep reviewing. The quiz stores the whole pool and draws
-                a fresh sample each attempt, so this sets the mix of the pool.
+                {t('inst.b.reviewHelp', { n: earlierWordCount })}
               </p>
             </div>
           )}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Type of Quiz —{' '}
+              {t('inst.b.quizStyle')} —{' '}
               <span className="text-brand-700 font-semibold">
-                {quizStylePct === 0 ? 'All multiple-choice'
-                  : quizStylePct === 100 ? 'All open-ended'
-                  : `${100 - quizStylePct}% multiple-choice / ${quizStylePct}% open-ended`}
+                {quizStylePct === 0 ? t('inst.b.styleAllMc')
+                  : quizStylePct === 100 ? t('inst.b.styleAllOpen')
+                  : t('inst.b.styleMix', { mc: 100 - quizStylePct, open: quizStylePct })}
               </span>
             </label>
             <input
@@ -552,8 +548,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
             />
             <div className="flex justify-between text-xs text-gray-400 mt-0.5">
-              <span>Choose Definition</span>
-              <span>Provide Definition</span>
+              <span>{t('inst.b.chooseDefinition')}</span>
+              <span>{t('inst.b.provideDefinition')}</span>
             </div>
           </div>
         </>
@@ -561,22 +557,22 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type !== 'TRANSLATION_EXAM' && (
         <div className="grid grid-cols-2 gap-4">
-          <Input label="Week number" type="number" min={1} required value={form.weekNumber}
+          <Input label={t('inst.b.weekNumber')} type="number" min={1} required value={form.weekNumber}
             onChange={e => set('weekNumber', Number(e.target.value))} />
           {/* Translation exercises take their close date from the Round deadlines, so the
               Due date is derived on save rather than entered here. */}
           {form.type !== 'TRANSLATION_EXERCISE' && (
-            <Input label="Due date" type="date" required value={form.dueDate}
+            <Input label={t('inst.b.dueDate')} type="date" required value={form.dueDate}
               onChange={e => set('dueDate', e.target.value)} />
           )}
           {/* Optional. Blank closes the assignment at the end of the due date, which is how
               every assignment behaved before timed deadlines existed. */}
           {form.type !== 'TRANSLATION_EXERCISE' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Due time (optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.dueTime')}</label>
               <input type="time" value={dueTime} onChange={e => setDueTime(e.target.value)} className="input" />
               <p className="text-xs text-gray-500 mt-1">
-                {dueTime ? `Closes at ${dueTime} your time.` : 'Blank = end of the due date (11:59 pm).'}
+                {dueTime ? t('inst.b.dueTimeSet', { time: dueTime }) : t('inst.b.dueTimeBlank')}
               </p>
             </div>
           )}
@@ -585,13 +581,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'TRANSLATION_EXAM' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-brand-800">📜 Translation Exam</p>
-          <p className="text-xs text-brand-700">
-            Students translate several passages in one sitting (parsing · syntax · translation per word),
-            with a single cut-off after which the exam locks and auto-submits. No Round 2, no PDF.
-          </p>
+          <p className="text-sm font-semibold text-brand-800">📜 {t('inst.b.exam.heading')}</p>
+          <p className="text-xs text-brand-700">{t('inst.b.exam.desc')}</p>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Passages (one reference per line, required)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.exam.passages')}</label>
             <textarea
               value={form.reference ?? ''}
               onChange={e => set('reference', e.target.value)}
@@ -601,46 +594,44 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Exam opens (date &amp; time)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.exam.opens')}</label>
             <input
               type="datetime-local"
               value={form.opensAt ?? ''}
               onChange={e => set('opensAt', e.target.value || undefined)}
               className="input"
             />
-            <p className="mt-1 text-xs text-brand-600">Students cannot start the exam before this time. Leave blank to open immediately.</p>
+            <p className="mt-1 text-xs text-brand-600">{t('inst.b.exam.opensHelp')}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Exam closes (date &amp; time)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.exam.closes')}</label>
             <input
               type="datetime-local"
               value={form.round1Deadline ?? ''}
               onChange={e => set('round1Deadline', e.target.value || undefined)}
               className="input"
             />
-            <p className="mt-1 text-xs text-brand-600">At this cut-off the exam locks and auto-submits.</p>
+            <p className="mt-1 text-xs text-brand-600">{t('inst.b.exam.closesHelp')}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Definition glossary</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.glossary')}</label>
             <select
               value={form.glossFrequency ?? ''}
               onChange={e => set('glossFrequency', e.target.value ? Number(e.target.value) : undefined)}
               className="input"
             >
-              <option value="">Off — no glossary</option>
-              <option value="50">Beginner — words less frequent than 50×</option>
-              <option value="30">Intermediate — words less frequent than 30×</option>
+              {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
-            <p className="mt-1 text-xs text-brand-600">Lists definitions for each passage&rsquo;s less-frequent words beneath its verse translation box.</p>
+            <p className="mt-1 text-xs text-brand-600">{t('inst.b.glossaryHelpExam')}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Grade weights (parsing / syntax / translation)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.exam.weights')}</label>
             <div className="flex flex-wrap gap-3">
               {(['parsing', 'syntax', 'translation'] as const).map(c => {
                 const w = form.gradeWeights ?? { parsing: 33, syntax: 33, translation: 34 }
                 return (
                   <div key={c} className="flex items-center gap-1.5">
-                    <span className="text-xs text-gray-600 capitalize w-20">{c === 'translation' ? 'Translation' : c}</span>
+                    <span className="text-xs text-gray-600 capitalize w-20">{t(`inst.b.exam.w${c[0].toUpperCase()}${c.slice(1)}`)}</span>
                     <input
                       type="number" min={0} max={100}
                       value={w[c]}
@@ -652,7 +643,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                 )
               })}
             </div>
-            <p className="mt-1 text-xs text-brand-600">Each passage grade is the weighted average of its parsing, syntax, and translation sub-scores.</p>
+            <p className="mt-1 text-xs text-brand-600">{t('inst.b.exam.weightsHelp')}</p>
           </div>
           <div className="border-t border-brand-200 pt-3">
             <label className="flex items-start gap-2 cursor-pointer">
@@ -663,17 +654,14 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                 className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
               />
               <div>
-                <span className="text-sm font-medium text-gray-700">Lockdown mode</span>
-                <p className="text-xs text-brand-600 mt-0.5">
-                  Requires fullscreen, detects tab/window switching, blocks copy &amp; paste, and logs integrity
-                  events for you to review. Note: a browser can deter and detect, but cannot fully prevent cheating.
-                </p>
+                <span className="text-sm font-medium text-gray-700">{t('inst.b.lockdown')}</span>
+                <p className="text-xs text-brand-600 mt-0.5">{t('inst.b.lockdownHelp')}</p>
               </div>
             </label>
             {form.lockdown && (
               <div className="mt-2 ml-6">
                 <div className="flex items-center gap-2">
-                  <label className="text-xs text-gray-600">Auto-submit after</label>
+                  <label className="text-xs text-gray-600">{t('inst.b.autoSubmitAfter')}</label>
                   <input
                     type="number" min={MIN_LOCKDOWN_AUTOSUBMIT} max={50}
                     value={form.lockdownMaxViolations ?? ''}
@@ -686,10 +674,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                     placeholder="—"
                     className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
-                  <span className="text-xs text-gray-600">violations (blank = warn only, never auto-submit)</span>
+                  <span className="text-xs text-gray-600">{t('inst.b.violations')}</span>
                 </div>
                 <p className="text-[11px] text-gray-500 mt-1">
-                  Leave blank to only log violations (recommended — pair with proctoring). If set, the minimum is {MIN_LOCKDOWN_AUTOSUBMIT}, so an accidental focus-loss can&rsquo;t end an exam.
+                  {t('inst.b.violationsHelp', { n: MIN_LOCKDOWN_AUTOSUBMIT })}
                 </p>
               </div>
             )}
@@ -699,91 +687,76 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'TRANSLATION_EXERCISE' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-brand-800">Exegesis Workspace Exercise</p>
-          <p className="text-xs text-brand-700">
-            Students will open the Exegesis Workspace with this passage pre-loaded. They can annotate
-            each word (Parsing · Syntax · Translation) and submit their analysis.
-          </p>
+          <p className="text-sm font-semibold text-brand-800">{t('inst.b.ex.heading')}</p>
+          <p className="text-xs text-brand-700">{t('inst.b.ex.desc')}</p>
           <div>
             <Select
-              label="Grammar homework set (optional)"
+              label={t('inst.b.ex.homeworkSet')}
               value={form.homeworkSet ?? ''}
               onChange={e => set('homeworkSet', e.target.value)}
-              placeholder="None — passage-based exercise"
+              placeholder={t('inst.b.ex.homeworkNone')}
               options={GRAMMAR_HOMEWORK_SETS.map(s => ({ value: s.id, label: s.title }))}
             />
-            <p className="mt-1 text-xs text-brand-600">
-              A homework set replaces the passage: students work the deck&rsquo;s Exercises sentences
-              word-by-word (parsing · syntax · translation) in the homework pane, and you grade each
-              sentence into the gradebook. No passage reference needed.
-            </p>
+            <p className="mt-1 text-xs text-brand-600">{t('inst.b.ex.homeworkHelp')}</p>
           </div>
           {form.homeworkSet ? (
             <Input
-              label="Deadline"
+              label={t('inst.b.ex.deadline')}
               type="date"
               value={form.dueDate}
               onChange={e => set('dueDate', e.target.value)}
             />
           ) : (
           <Input
-            label="Passage reference (required)"
+            label={t('inst.b.ex.passage')}
             value={form.reference ?? ''}
             onChange={e => set('reference', e.target.value)}
-            placeholder="e.g. John 1:1–18"
+            placeholder={t('inst.b.ex.passageExample')}
           />
           )}
           <div>
             <Input
-              label="Stage 1 time limit — annotation phase (minutes, 0 = no limit)"
+              label={t('inst.b.ex.stage1')}
               type="number"
               min={0}
               max={180}
               value={form.timePerQuestion ? Math.round(form.timePerQuestion / 60) : 0}
               onChange={e => set('timePerQuestion', Number(e.target.value) * 60 || undefined)}
             />
-            <p className="mt-1 text-xs text-brand-600">
-              Students annotate each word (Parsing · Syntax · Translation). When the timer reaches zero, annotations lock and review mode begins.
-            </p>
+            <p className="mt-1 text-xs text-brand-600">{t('inst.b.ex.stage1Help')}</p>
           </div>
           <div>
             <Input
-              label="Stage 2 time limit — review & correction phase (minutes, 0 = no limit)"
+              label={t('inst.b.ex.stage2')}
               type="number"
               min={0}
               max={60}
               value={form.reviewTimeSeconds ? Math.round(form.reviewTimeSeconds / 60) : 0}
               onChange={e => set('reviewTimeSeconds', Number(e.target.value) * 60 || undefined)}
             />
-            <p className="mt-1 text-xs text-brand-600">
-              After Stage 1 ends, students see the passage reader and can make corrections in red. When this timer expires, all edits lock and the exercise is submitted for grading.
-            </p>
+            <p className="mt-1 text-xs text-brand-600">{t('inst.b.ex.stage2Help')}</p>
           </div>
 
           <div className="border-t border-brand-200 pt-3 space-y-3">
-            <p className="text-sm font-semibold text-brand-800">Absolute deadlines (optional)</p>
-            <p className="text-xs text-brand-700">
-              Set a fixed date &amp; time (to the minute) after which students can no longer edit. These apply
-              regardless of when a student starts, and work alongside the per-session timers above. The exercise
-              closes at the Round 2 deadline (or Round 1 if there&rsquo;s no Round 2); the due date is set from these.
-            </p>
+            <p className="text-sm font-semibold text-brand-800">{t('inst.b.ex.absolute')}</p>
+            <p className="text-xs text-brand-700">{t('inst.b.ex.absoluteHelp')}</p>
             <div>
               <Input
-                label="Round 1 deadline — annotations lock after this time"
+                label={t('inst.b.ex.round1')}
                 type="datetime-local"
                 value={form.round1Deadline ?? ''}
                 onChange={e => set('round1Deadline', e.target.value || undefined)}
               />
-              <p className="mt-1 text-xs text-brand-600">Leave blank for no fixed Round 1 deadline.</p>
+              <p className="mt-1 text-xs text-brand-600">{t('inst.b.ex.round1Help')}</p>
             </div>
             <div>
               <Input
-                label="Round 2 deadline — corrections lock after this time"
+                label={t('inst.b.ex.round2')}
                 type="datetime-local"
                 value={form.round2Deadline ?? ''}
                 onChange={e => set('round2Deadline', e.target.value || undefined)}
               />
-              <p className="mt-1 text-xs text-brand-600">Leave blank for no fixed Round 2 deadline.</p>
+              <p className="mt-1 text-xs text-brand-600">{t('inst.b.ex.round2Help')}</p>
             </div>
 
             <div className="border-t border-brand-200 pt-3">
@@ -795,26 +768,22 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                   className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                 />
                 <div>
-                  <span className="text-sm font-medium text-brand-800">Allow Reader tools in Round 2</span>
-                  <p className="text-xs text-brand-600 mt-0.5">
-                    When on, students clicking a word in Round 2 can see the Reader's parsing, gloss, and lexicon entry alongside their correction box. Off by default.
-                  </p>
+                  <span className="text-sm font-medium text-brand-800">{t('inst.b.ex.readerRound2')}</span>
+                  <p className="text-xs text-brand-600 mt-0.5">{t('inst.b.ex.readerRound2Help')}</p>
                 </div>
               </label>
             </div>
 
             <div className="border-t border-brand-200 pt-3">
-              <label className="block text-sm font-medium text-brand-800 mb-1">Definition glossary</label>
+              <label className="block text-sm font-medium text-brand-800 mb-1">{t('inst.b.glossary')}</label>
               <select
                 value={form.glossFrequency ?? ''}
                 onChange={e => set('glossFrequency', e.target.value ? Number(e.target.value) : undefined)}
                 className="input"
               >
-                <option value="">Off — no glossary</option>
-                <option value="50">Beginner — words less frequent than 50×</option>
-                <option value="30">Intermediate — words less frequent than 30×</option>
+                {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
-              <p className="text-xs text-brand-600 mt-1">Lists definitions for the verse&rsquo;s less-frequent words beneath each Verse Translation box.</p>
+              <p className="text-xs text-brand-600 mt-1">{t('inst.b.glossaryHelpExercise')}</p>
             </div>
           </div>
         </div>
@@ -822,19 +791,19 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Instructions (optional)</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.instructions')}</label>
         <textarea value={form.instructions ?? ''} onChange={e => set('instructions', e.target.value)}
-          rows={3} className="input" placeholder="Additional instructions for students…" />
+          rows={3} className="input" placeholder={t('inst.b.instructionsExample')} />
       </div>
 
       {isQuizType && (
-        <Input label="Number of questions" type="number" min={1} max={50} value={form.numQuestions}
+        <Input label={t('inst.b.numQuestions')} type="number" min={1} max={50} value={form.numQuestions}
           onChange={e => set('numQuestions', Number(e.target.value))} />
       )}
 
       {isQuizType && (
         <Input
-          label="Time per question (seconds, 0 = untimed)"
+          label={t('inst.b.timePerQuestion')}
           type="number"
           min={0}
           max={300}
@@ -845,39 +814,23 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {isQuizType && (
         <Select
-          label="Quiz retakes allowed"
+          label={t('inst.b.retakes')}
           value={maxRetakes === null ? '' : String(maxRetakes)}
           onChange={e => setMaxRetakes(e.target.value === '' ? null : Number(e.target.value))}
-          options={[
-            { value: '0', label: 'No retakes (1 attempt only)' },
-            { value: '1', label: '1 retake (2 attempts total)' },
-            { value: '2', label: '2 retakes (3 attempts total)' },
-            { value: '3', label: '3 retakes (4 attempts total)' },
-            { value: '5', label: '5 retakes (6 attempts total)' },
-          ]}
-          placeholder="Unlimited retakes"
+          options={retakeOptions(t)}
+          placeholder={t('inst.b.retakesUnlimited')}
         />
       )}
 
       {form.type === 'VOCABULARY_QUIZ' && (
         <div>
           <Select
-            label="Wrong-answer appeals per attempt"
+            label={t('inst.b.appeals')}
             value={String(maxAppeals)}
             onChange={e => setMaxAppeals(Number(e.target.value))}
-            options={[
-              { value: '0', label: 'Off — students cannot appeal' },
-              { value: '1', label: '1 appeal per attempt' },
-              { value: '2', label: '2 appeals per attempt' },
-              { value: '3', label: '3 appeals per attempt' },
-              { value: '5', label: '5 appeals per attempt' },
-            ]}
+            options={appealOptions(t)}
           />
-          <p className="mt-1 text-xs text-gray-500">
-            When enabled, students see an &ldquo;Appeal this answer&rdquo; link beside each wrong answer on the results screen.
-            You review pending appeals on the Appeals page. Accepting updates the student&rsquo;s score; the admin separately
-            decides whether to add the answer to the global lexicon.
-          </p>
+          <p className="mt-1 text-xs text-gray-500">{t('inst.b.appealsHelp')}</p>
         </div>
       )}
 
@@ -893,9 +846,9 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
       <div className="flex gap-3 justify-end">
-        <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
-        <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>Save Draft</Button>
-        <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>Save &amp; Post</Button>
+        <Button type="button" variant="ghost" onClick={() => router.back()}>{t('inst.b.cancel')}</Button>
+        <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>{t('inst.b.saveDraft')}</Button>
+        <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>{t('inst.b.savePost')}</Button>
       </div>
     </form>
   )
@@ -931,6 +884,7 @@ function FilterChipGroup({
   onChange: (v: string[]) => void
   compact?: boolean
 }) {
+  const t = useT()
   const allOn = options.every(o => selected.includes(o))
 
   function toggle(opt: string) {
@@ -953,7 +907,7 @@ function FilterChipGroup({
                   : 'bg-surface border-gray-300 text-gray-500 hover:border-gray-400'
               }`}
             >
-              {opt}
+              {featureLabel(opt, t)}
             </button>
           ))}
           <button
@@ -961,12 +915,12 @@ function FilterChipGroup({
             onClick={() => onChange(allOn ? [] : [...options])}
             className="px-2 py-0.5 text-xs rounded-lg border border-dashed border-gray-300 text-gray-400 hover:border-gray-500 transition-colors"
           >
-            {allOn ? 'none' : 'all'}
+            {allOn ? t('inst.b.filterNone') : t('inst.b.filterAll')}
           </button>
         </div>
       </div>
       {selected.length === 0 && (
-        <p className="text-xs text-red-500 pl-28">Select at least one.</p>
+        <p className="text-xs text-red-500 pl-28">{t('inst.b.selectOne')}</p>
       )}
     </div>
   )
@@ -985,6 +939,7 @@ function ParseFilterPicker({
   onChange: (f: MorphParseFilter) => void
   compact?: boolean
 }) {
+  const t = useT()
   const isVerb     = subtype === 'VERB_PARSING' || subtype === 'MIXED'
   const isNominal  = subtype === 'NOUN_PARSING' || subtype === 'ADJECTIVE_PARSING'
                      || subtype === 'PRONOUN_PARSING' || subtype === 'MIXED'
@@ -994,7 +949,7 @@ function ParseFilterPicker({
   const hasParticiple  = selectedMoods.includes('Participle')
   // Case/gender belong to nominals always, and to verbs only once participles are in scope.
   const showCaseGender = isNominal || (isVerb && hasParticiple)
-  const cgPrefix       = !isNominal && isVerb ? 'Ptc. ' : ''
+  const cgPrefix       = !isNominal && isVerb ? t('inst.b.ptcPrefix') : ''
 
   function patch(partial: Partial<MorphParseFilter>) {
     onChange({ ...filter, ...partial })
@@ -1003,22 +958,22 @@ function ParseFilterPicker({
   return (
     <div className="space-y-2">
       {isVerb && <>
-        <FilterChipGroup compact={compact} label="Tense"   options={VERB_TENSES} selected={filter.tenses  ?? VERB_TENSES}  onChange={v => patch({ tenses: v })}  />
-        <FilterChipGroup compact={compact} label="Voice"   options={VERB_VOICES} selected={filter.voices  ?? VERB_VOICES}  onChange={v => patch({ voices: v })}  />
-        <FilterChipGroup compact={compact} label="Mood"    options={VERB_MOODS}  selected={filter.moods   ?? VERB_MOODS}   onChange={v => patch({ moods: v })}   />
+        <FilterChipGroup compact={compact} label={groupLabel('tense', t, 'Tense')} options={VERB_TENSES} selected={filter.tenses  ?? VERB_TENSES}  onChange={v => patch({ tenses: v })}  />
+        <FilterChipGroup compact={compact} label={groupLabel('voice', t, 'Voice')} options={VERB_VOICES} selected={filter.voices  ?? VERB_VOICES}  onChange={v => patch({ voices: v })}  />
+        <FilterChipGroup compact={compact} label={groupLabel('mood', t, 'Mood')}   options={VERB_MOODS}  selected={filter.moods   ?? VERB_MOODS}   onChange={v => patch({ moods: v })}   />
       </>}
       {((isVerb && hasNonPart) || isPronoun) && (
-        <FilterChipGroup compact={compact} label="Person" options={PERSONS}    selected={filter.persons ?? PERSONS}      onChange={v => patch({ persons: v })} />
+        <FilterChipGroup compact={compact} label={groupLabel('person', t, 'Person')} options={PERSONS} selected={filter.persons ?? PERSONS} onChange={v => patch({ persons: v })} />
       )}
-      <FilterChipGroup compact={compact} label="Number"  options={NUMBERS}     selected={filter.numbers ?? NUMBERS}      onChange={v => patch({ numbers: v })} />
+      <FilterChipGroup compact={compact} label={groupLabel('number', t, 'Number')} options={NUMBERS} selected={filter.numbers ?? NUMBERS} onChange={v => patch({ numbers: v })} />
       {showCaseGender && (
         <>
-          <FilterChipGroup compact={compact} label={`${cgPrefix}Case`}   options={NOUN_CASES} selected={filter.cases   ?? NOUN_CASES} onChange={v => patch({ cases: v })}   />
-          <FilterChipGroup compact={compact} label={`${cgPrefix}Gender`} options={GENDERS}    selected={filter.genders ?? GENDERS}    onChange={v => patch({ genders: v })} />
+          <FilterChipGroup compact={compact} label={`${cgPrefix}${groupLabel('case', t, 'Case')}`}     options={NOUN_CASES} selected={filter.cases   ?? NOUN_CASES} onChange={v => patch({ cases: v })}   />
+          <FilterChipGroup compact={compact} label={`${cgPrefix}${groupLabel('gender', t, 'Gender')}`} options={GENDERS}    selected={filter.genders ?? GENDERS}    onChange={v => patch({ genders: v })} />
         </>
       )}
       {isPronoun && (
-        <FilterChipGroup compact={compact} label="Pronoun type" options={PRONOUN_TYPES} selected={filter.pronounTypes ?? PRONOUN_TYPES} onChange={v => patch({ pronounTypes: v })} />
+        <FilterChipGroup compact={compact} label={groupLabel('pronounType', t, 'Pronoun type')} options={PRONOUN_TYPES} selected={filter.pronounTypes ?? PRONOUN_TYPES} onChange={v => patch({ pronounTypes: v })} />
       )}
     </div>
   )
@@ -1033,10 +988,11 @@ function VocabLessonFilter({
   value: number | null
   onChange: (v: number | null) => void
 }) {
+  const t = useT()
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        Limit words to vocabulary already learned
+        {t('inst.b.vocabLimit')}
       </label>
       <div className="flex items-center gap-3">
         <select
@@ -1044,30 +1000,24 @@ function VocabLessonFilter({
           onChange={e => onChange(e.target.value === '' ? null : Number(e.target.value))}
           className="input w-64"
         >
-          <option value="">No limit — use all parsing examples</option>
+          <option value="">{t('inst.b.vocabNoLimit')}</option>
           {VOCAB_LESSONS.map(l => (
             <option key={l.lesson} value={l.lesson}>
-              Through Lesson {l.lesson} ({l.section}, ≥{minOccurrencesThrough(l.lesson) ?? l.occMin} occ.)
+              {t('inst.b.vocabThrough', {
+                n: l.lesson, section: l.section, occ: minOccurrencesThrough(l.lesson) ?? l.occMin,
+              })}
             </option>
           ))}
         </select>
       </div>
       {value && (
-        <p className="text-xs text-amber-700 mt-1">
-          Only parsing examples whose lexeme appears in vocab lessons 1–{value} will be used.
-        </p>
+        <p className="text-xs text-amber-700 mt-1">{t('inst.b.vocabLimitNote', { n: value })}</p>
       )}
     </div>
   )
 }
 
 // ── Morph Series Builder ──────────────────────────────────────────────────────
-
-const SUBTYPE_LABEL_FALLBACK: Record<string, string> = {
-  VERB_PARSING: 'Verb Parsing', NOUN_PARSING: 'Noun Parsing', ADJECTIVE_PARSING: 'Adjective Parsing',
-  PRONOUN_PARSING: 'Pronoun Parsing', CONDITIONALS: 'Conditional Sentences',
-  SUBJUNCTIVES: 'Subjunctive Uses', MIXED: 'Mixed Parsing',
-}
 
 function MorphSeriesBuilder({
   series,
@@ -1078,6 +1028,7 @@ function MorphSeriesBuilder({
   onChange: (s: MorphTestConfig[]) => void
   availableDates: number
 }) {
+  const t = useT()
   const [filterOpen, setFilterOpen] = useState<Record<number, boolean>>({})
 
   function toggleFilter(i: number) {
@@ -1111,7 +1062,7 @@ function MorphSeriesBuilder({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-gray-700">Tests in series</label>
+        <label className="text-sm font-medium text-gray-700">{t('inst.b.m.testsInSeries')}</label>
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -1131,8 +1082,7 @@ function MorphSeriesBuilder({
 
       {tooFewDates && (
         <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-          {series.length} tests configured but only {availableDates} date{availableDates !== 1 ? 's' : ''} in the schedule.
-          Update semester dates above or reduce the number of tests.
+          {t('inst.b.m.tooFewDates', { count: availableDates, n: series.length, dates: availableDates })}
         </p>
       )}
 
@@ -1142,7 +1092,7 @@ function MorphSeriesBuilder({
             {/* Header row */}
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
-                Test {i + 1}
+                {t('inst.b.s.testN', { n: i + 1 })}
               </span>
               {series.length > 1 && (
                 <button
@@ -1150,7 +1100,7 @@ function MorphSeriesBuilder({
                   onClick={() => removeTest(i)}
                   className="text-xs text-gray-400 hover:text-red-500 transition-colors"
                 >
-                  Remove
+                  {t('inst.b.m.remove')}
                 </button>
               )}
             </div>
@@ -1159,20 +1109,20 @@ function MorphSeriesBuilder({
             <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-4">
               {MORPHOLOGY_SUBTYPES.map(opt => (
                 <button
-                  key={opt.value}
+                  key={opt}
                   type="button"
                   onClick={() => updateTest(i, {
-                    subtype: opt.value,
-                    fields: SUBTYPE_FIELD_OPTIONS[opt.value].map(f => f.key),
-                    parseFilter: PARSE_FILTER_SUBTYPES.includes(opt.value) ? { ...DEFAULT_PARSE_FILTER } : undefined,
+                    subtype: opt,
+                    fields: SUBTYPE_FIELD_OPTIONS[opt].map(f => f.key),
+                    parseFilter: PARSE_FILTER_SUBTYPES.includes(opt) ? { ...DEFAULT_PARSE_FILTER } : undefined,
                   })}
                   className={`text-left px-2.5 py-2 rounded-lg border text-xs transition-colors ${
-                    test.subtype === opt.value
+                    test.subtype === opt
                       ? 'bg-brand-50 border-brand-400 text-brand-800 font-medium'
                       : 'bg-surface border-gray-200 text-gray-700 hover:border-brand-300'
                   }`}
                 >
-                  {opt.label}
+                  {t(`morph.subtype.${opt}`)}
                 </button>
               ))}
             </div>
@@ -1180,7 +1130,7 @@ function MorphSeriesBuilder({
             {/* Field checkboxes — shown when the subtype has configurable fields */}
             {SUBTYPE_FIELD_OPTIONS[test.subtype].length > 0 && (
               <div>
-                <p className="text-xs font-medium text-gray-600 mb-1.5">Fields to identify</p>
+                <p className="text-xs font-medium text-gray-600 mb-1.5">{t('inst.b.fieldsToIdentify')}</p>
                 <div className="flex flex-wrap gap-2">
                   {SUBTYPE_FIELD_OPTIONS[test.subtype].map(opt => {
                     const checked = test.fields.includes(opt.key)
@@ -1204,25 +1154,25 @@ function MorphSeriesBuilder({
                             updateTest(i, { fields: next })
                           }}
                         />
-                        {opt.label}
+                        {featureLabel(opt.label, t)}
                       </label>
                     )
                   })}
                 </div>
                 {test.fields.length === 0 && (
-                  <p className="text-xs text-red-500 mt-1">Select at least one field.</p>
+                  <p className="text-xs text-red-500 mt-1">{t('inst.b.selectOneField')}</p>
                 )}
               </div>
             )}
 
             {/* Topic — names the quiz: "Week N — <series> (<topic>)" */}
             <div className="flex items-center gap-2">
-              <label className="text-xs font-medium text-gray-600 shrink-0">Topic (for the title)</label>
+              <label className="text-xs font-medium text-gray-600 shrink-0">{t('inst.b.m.topic')}</label>
               <input
                 type="text"
                 value={test.topic ?? ''}
                 onChange={e => updateTest(i, { topic: e.target.value })}
-                placeholder={SUBTYPE_LABEL_FALLBACK[test.subtype] ?? ''}
+                placeholder={t(`morph.subtype.${test.subtype}`)}
                 className="input text-sm flex-1"
               />
             </div>
@@ -1231,7 +1181,7 @@ function MorphSeriesBuilder({
                 so "Nouns I: 1st & 2nd Declension" / "Nouns II: 3rd" can be built here). */}
             {test.subtype === 'NOUN_PARSING' && (
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-gray-600">Declensions</span>
+                <span className="text-xs font-medium text-gray-600">{t('inst.b.m.declensions')}</span>
                 {([1, 2, 3] as const).map(d => {
                   const on = test.declensions?.includes(d) ?? false
                   return (
@@ -1244,11 +1194,11 @@ function MorphSeriesBuilder({
                       }}
                       className={`px-2.5 py-1 rounded-md border text-xs font-medium transition-colors ${
                         on ? 'bg-brand-600 text-white border-brand-600' : 'bg-surface text-gray-600 border-gray-300 hover:bg-gray-50'}`}>
-                      {d === 1 ? '1st' : d === 2 ? '2nd' : '3rd'}
+                      {t(`inst.b.m.decl${d}`)}
                     </button>
                   )
                 })}
-                <span className="text-xs text-gray-400">none selected = all declensions</span>
+                <span className="text-xs text-gray-400">{t('inst.b.m.declNone')}</span>
               </div>
             )}
 
@@ -1260,7 +1210,7 @@ function MorphSeriesBuilder({
                   onClick={() => toggleFilter(i)}
                   className="w-full flex items-center justify-between px-3 py-2 bg-gray-100 hover:bg-gray-200 transition-colors text-xs font-medium text-gray-700"
                 >
-                  <span>Restrict to specific forms…</span>
+                  <span>{t('inst.b.restrictForms')}</span>
                   <span>{filterOpen[i] ? '▲' : '▼'}</span>
                 </button>
                 {filterOpen[i] && (
@@ -1279,7 +1229,7 @@ function MorphSeriesBuilder({
             {/* Questions + vocab row */}
             <div className="flex flex-wrap items-end gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Questions</label>
+                <label className="block text-xs font-medium text-gray-600 mb-1">{t('inst.b.m.questions')}</label>
                 <input
                   type="number"
                   min={1}
@@ -1291,7 +1241,7 @@ function MorphSeriesBuilder({
               </div>
               <div className="flex-1 min-w-48">
                 <label className="block text-xs font-medium text-gray-600 mb-1">
-                  Vocab filter
+                  {t('inst.b.m.vocabFilter')}
                 </label>
                 <select
                   value={test.vocabAuto ? 'AUTO' : test.vocabThruLesson ?? ''}
@@ -1300,19 +1250,17 @@ function MorphSeriesBuilder({
                     : { vocabAuto: false, vocabThruLesson: e.target.value === '' ? null : Number(e.target.value) })}
                   className="input text-sm w-full"
                 >
-                  <option value="">All parsing examples</option>
+                  <option value="">{t('inst.b.m.vocabAll')}</option>
                   {/* Ties each week's morphology quiz to the vocabulary taught by that week. */}
-                  <option value="AUTO">Match vocabulary schedule (words taught so far)</option>
+                  <option value="AUTO">{t('inst.b.m.vocabAuto')}</option>
                   {VOCAB_LESSONS.map(l => (
                     <option key={l.lesson} value={l.lesson}>
-                      Words through Lesson {l.lesson} ({l.section})
+                      {t('inst.b.m.vocabThrough', { n: l.lesson, section: l.section })}
                     </option>
                   ))}
                 </select>
                 {test.vocabAuto && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Week 1 uses Lesson 1 words, week 2 Lessons 1–2, and so on.
-                  </p>
+                  <p className="text-xs text-gray-500 mt-1">{t('inst.b.m.vocabAutoHelp')}</p>
                 )}
               </div>
             </div>
@@ -1326,7 +1274,7 @@ function MorphSeriesBuilder({
         disabled={series.length >= 20}
         className="text-sm text-brand-700 hover:text-brand-900 hover:underline font-medium disabled:opacity-40"
       >
-        + Add another test
+        {t('inst.b.m.addTest')}
       </button>
     </div>
   )
@@ -1335,6 +1283,7 @@ function MorphSeriesBuilder({
 // ── Morphology Answer Display ─────────────────────────────────────────────────
 
 function MorphAnswerDisplay({ raw }: { raw: string }) {
+  const t = useT()
   let parsed: Record<string, string | null> = {}
   try { parsed = JSON.parse(raw) } catch { return <p className="text-xs text-green-700 mt-1">{raw}</p> }
   const fields = Object.entries(parsed).filter(([, v]) => v != null && v !== '')
@@ -1342,8 +1291,8 @@ function MorphAnswerDisplay({ raw }: { raw: string }) {
     <div className="flex flex-wrap gap-1.5 mt-1">
       {fields.map(([k, v]) => (
         <span key={k} className="inline-flex items-center gap-1 text-xs bg-green-50 border border-green-200 text-green-800 px-2 py-0.5 rounded-full">
-          <span className="text-green-500 font-medium capitalize">{k === 'casus' ? 'case' : k}:</span>
-          {v}
+          <span className="text-green-500 font-medium capitalize">{groupLabel(k === 'casus' ? 'case' : k, t, k)}:</span>
+          {featureLabel(String(v), t)}
         </span>
       ))}
     </div>
@@ -1362,6 +1311,7 @@ function SampleQuizModal({
   quizType: AssignmentType
   provideDefinition: boolean
 }) {
+  const t = useT()
   const [revealed, setRevealed] = useState<Set<number>>(new Set())
 
   function toggleReveal(pos: number) {
@@ -1373,22 +1323,22 @@ function SampleQuizModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="Sample Quiz Preview" size="xl">
+    <Modal open={open} onClose={onClose} title={t('inst.b.sample.title')} size="xl">
       {loading && (
-        <p className="text-sm text-gray-500 py-6 text-center">Generating sample questions…</p>
+        <p className="text-sm text-gray-500 py-6 text-center">{t('inst.b.sample.generating')}</p>
       )}
 
       {!loading && data && (
         <div className="space-y-4">
           {data.lesson && (
             <div className="text-xs text-brand-700 bg-brand-50 rounded-lg px-3 py-2">
-              Week 1 vocabulary · {data.lesson.section} · {data.lesson.pages} of the Vocabulary Builder
+              {t('inst.b.sample.week1', { section: data.lesson.section, pages: data.lesson.pages })}
             </div>
           )}
 
           {data.questions.length === 0 && (
             <p className="text-sm text-gray-400 italic py-4 text-center">
-              No questions could be generated — check that vocabulary data is loaded.
+              {t('inst.b.sample.none')}
             </p>
           )}
 
@@ -1410,14 +1360,14 @@ function SampleQuizModal({
 
                 {quizType === 'MORPHOLOGY_QUIZ' && q.type === 'MORPHOLOGY_IDENTIFY' ? (
                   <div className="mt-2 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-400 italic">
-                    Student selects each parse category (part of speech, tense, voice, mood…)
+                    {t('inst.b.sample.selectsParse')}
                   </div>
                 ) : quizType === 'VOCABULARY_QUIZ' && provideDefinition ? (
                   <div className="mt-2">
                     <div className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-400 italic">
-                      Student types their answer here…
+                      {t('inst.b.sample.typesAnswer')}
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">Fuzzy matching accepts minor spelling variations.</p>
+                    <p className="text-xs text-gray-400 mt-1">{t('inst.b.sample.fuzzy')}</p>
                   </div>
                 ) : q.options.length > 0 && (
                   <ul className="grid grid-cols-2 gap-1.5 mt-2">
@@ -1441,7 +1391,7 @@ function SampleQuizModal({
                   onClick={() => toggleReveal(q.position)}
                   className="text-xs text-brand-600 hover:text-brand-800 hover:underline mt-1"
                 >
-                  {revealed.has(q.position) ? 'Hide answer' : 'Show answer'}
+                  {revealed.has(q.position) ? t('inst.b.sample.hideAnswer') : t('inst.b.sample.showAnswer')}
                 </button>
 
                 {revealed.has(q.position) && (
@@ -1449,7 +1399,7 @@ function SampleQuizModal({
                     <MorphAnswerDisplay raw={q.correctAnswer} />
                   ) : (
                     <p className="text-xs text-green-700 mt-1">
-                      Answer: <span className="font-medium">{q.correctAnswer}</span>
+                      {t('inst.b.sample.answer')} <span className="font-medium">{q.correctAnswer}</span>
                     </p>
                   )
                 )}
@@ -1458,7 +1408,7 @@ function SampleQuizModal({
           </ol>
 
           <p className="text-xs text-gray-400 text-center pt-2">
-            Sample questions are randomly drawn and will differ in the actual quiz.
+            {t('inst.b.sample.random')}
           </p>
         </div>
       )}
@@ -1469,6 +1419,8 @@ function SampleQuizModal({
 // ── Semester Schedule Form ────────────────────────────────────────────────────
 
 function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; defaultCourseId?: string }) {
+  const t = useT()
+  const locale = useLocale()
   // Saved series templates: the form snapshot minus course and dates, so the same series
   // can be rebuilt next term against a new course and start date.
   type Template = { id: string; name: string; quizType: string; config: Partial<SemesterForm> }
@@ -1480,8 +1432,9 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
   }, [])
 
   async function saveTemplate(current: SemesterForm) {
-    const name = window.prompt('Template name (an existing name is overwritten):',
-      current.seriesName || (current.quizType === 'MORPHOLOGY_QUIZ' ? 'Morphology series' : 'Vocabulary series'))
+    const name = window.prompt(t('inst.b.s.templatePrompt'),
+      current.seriesName || t(current.quizType === 'MORPHOLOGY_QUIZ'
+        ? 'inst.b.s.templateDefaultMorph' : 'inst.b.s.templateDefaultVocab'))
     if (!name?.trim()) return
     const { courseId: _c, startDate: _d, ...config } = current
     const res = await fetch('/api/series-templates', {
@@ -1490,20 +1443,20 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     })
     if (res.ok) {
       const d = await res.json()
-      setTemplateMsg(d.updated ? `Updated template “${name.trim()}”.` : `Saved template “${name.trim()}”.`)
+      setTemplateMsg(t(d.updated ? 'inst.b.s.templateUpdated' : 'inst.b.s.templateSaved', { name: name.trim() }))
       const list = await fetch('/api/series-templates').then(r => r.json()).catch(() => null)
       if (list) setTemplates(list.templates ?? [])
     } else {
-      setTemplateMsg('Could not save the template.')
+      setTemplateMsg(t('inst.b.s.templateFailed'))
     }
   }
 
   function loadTemplate(id: string) {
-    const t = templates.find(x => x.id === id)
-    if (!t) return
+    const tpl = templates.find(x => x.id === id)
+    if (!tpl) return
     // Course and start date stay: the template is the series recipe, not the term.
-    setForm(prev => ({ ...prev, ...t.config, courseId: prev.courseId, startDate: prev.startDate }))
-    setTemplateMsg(`Loaded “${t.name}” — pick the start date and course, then create.`)
+    setForm(prev => ({ ...prev, ...tpl.config, courseId: prev.courseId, startDate: prev.startDate }))
+    setTemplateMsg(t('inst.b.s.templateLoaded', { name: tpl.name }))
   }
 
   const router = useRouter()
@@ -1605,7 +1558,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (schedule.length === 0) { setError('No quiz dates generated — check start date and days.'); return }
+    if (schedule.length === 0) { setError(t('inst.b.err.noDates')); return }
     setError('')
     setLoading(true)
     try {
@@ -1622,11 +1575,11 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to create schedule')
+      if (!res.ok) throw new Error(data.error ?? t('inst.b.err.createSchedule'))
       setSuccess(data.count)
       setTimeout(() => { router.push(`/instructor/courses/${form.courseId}`); router.refresh() }, 1800)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error creating schedule')
+      setError(err instanceof Error ? err.message : t('inst.b.err.creatingSchedule'))
     } finally {
       publishRef.current = false
       setLoading(false)
@@ -1652,28 +1605,33 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         <div className="flex flex-wrap items-end gap-2">
           {templates.length > 0 && (
             <div className="flex-1 min-w-48">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Start from a saved series</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.s.savedSeries')}</label>
               <select
                 className="input w-full text-sm"
                 defaultValue=""
                 onChange={e => { if (e.target.value) loadTemplate(e.target.value) }}
               >
-                <option value="">— choose a template —</option>
-                {templates.map(t => (
-                  <option key={t.id} value={t.id}>{t.name} ({t.quizType === 'MORPHOLOGY_QUIZ' ? 'morphology' : 'vocabulary'})</option>
+                <option value="">{t('inst.b.s.chooseTemplate')}</option>
+                {templates.map(tpl => (
+                  <option key={tpl.id} value={tpl.id}>
+                    {t('inst.b.s.templateOption', {
+                      name: tpl.name,
+                      kind: t(tpl.quizType === 'MORPHOLOGY_QUIZ' ? 'inst.b.s.kindMorphology' : 'inst.b.s.kindVocabulary'),
+                    })}
+                  </option>
                 ))}
               </select>
             </div>
           )}
           <Button type="button" size="sm" variant="secondary" onClick={() => void saveTemplate(form)}>
-            Save current setup as template
+            {t('inst.b.s.saveTemplate')}
           </Button>
           {templateMsg && <p className="basis-full text-xs text-emerald-700">{templateMsg}</p>}
         </div>
 
         {(courses.length > 1 || !defaultCourseId) && (
           <Select
-            label="Course"
+            label={t('inst.b.course')}
             value={form.courseId}
             onChange={e => {
               const c = courses.find(c => c.id === e.target.value)
@@ -1685,17 +1643,17 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
         {/* Semester timing */}
         <fieldset className="border border-gray-200 rounded-xl p-5 space-y-4">
-          <legend className="text-sm font-semibold text-gray-700 px-1">Semester Timing</legend>
+          <legend className="text-sm font-semibold text-gray-700 px-1">{t('inst.b.s.timingLegend')}</legend>
           <div className="grid grid-cols-2 gap-4">
             <Input
-              label="Start of semester"
+              label={t('inst.b.s.startOfSemester')}
               type="date"
               required
               value={form.startDate}
               onChange={e => setF('startDate', e.target.value)}
             />
             <Input
-              label="Length of semester (weeks)"
+              label={t('inst.b.s.lengthWeeks')}
               type="number"
               min={1}
               max={52}
@@ -1707,51 +1665,49 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
           {/* Day selector */}
           <div>
-            <p className="text-sm font-medium text-gray-700 mb-2">Quiz days</p>
+            <p className="text-sm font-medium text-gray-700 mb-2">{t('inst.b.s.quizDays')}</p>
             <div className="flex gap-2 flex-wrap">
               {DAYS_OF_WEEK.map(d => (
                 <button
-                  key={d.value}
+                  key={d}
                   type="button"
-                  onClick={() => toggleDay(d.value)}
+                  onClick={() => toggleDay(d)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
-                    form.days.includes(d.value)
+                    form.days.includes(d)
                       ? 'bg-brand-600 border-brand-600 text-white'
                       : 'bg-surface border-gray-300 text-gray-600 hover:border-brand-400'
                   }`}
                 >
-                  {d.label}
+                  {t(`day.short.${d}`)}
                 </button>
               ))}
             </div>
             {form.days.length === 0 && (
-              <p className="text-xs text-red-500 mt-1">Select at least one quiz day.</p>
+              <p className="text-xs text-red-500 mt-1">{t('inst.b.s.selectOneDay')}</p>
             )}
           </div>
         </fieldset>
 
         {/* Quiz settings */}
         <fieldset className="border border-gray-200 rounded-xl p-5 space-y-4">
-          <legend className="text-sm font-semibold text-gray-700 px-1">Quiz Settings</legend>
+          <legend className="text-sm font-semibold text-gray-700 px-1">{t('inst.b.s.quizLegend')}</legend>
 
           <Select
-            label="Quiz type"
+            label={t('inst.b.s.quizType')}
             value={form.quizType}
             onChange={e => setF('quizType', e.target.value as AssignmentType)}
-            options={[
-              { value: 'VOCABULARY_QUIZ',  label: 'Vocabulary Quiz' },
-              { value: 'MORPHOLOGY_QUIZ',  label: 'Morphology Quiz' },
-            ]}
+            options={SERIES_ASSIGNMENT_TYPES.map(v => ({ value: v, label: t(`assign.type.${v}`) }))}
           />
 
           {/* Names the whole run: quizzes become "Week N — <name> (<topic|section>)" and the
               course page groups them under this name in the series editor. */}
           <Input
-            label="Series name (optional)"
+            label={t('inst.b.s.seriesName')}
             type="text"
             value={form.seriesName}
             onChange={e => setF('seriesName', e.target.value)}
-            placeholder={form.quizType === 'MORPHOLOGY_QUIZ' ? 'e.g. Beginning Greek Morphology' : 'e.g. Weekly Vocabulary'}
+            placeholder={t(form.quizType === 'MORPHOLOGY_QUIZ'
+              ? 'inst.b.s.seriesNameMorphExample' : 'inst.b.s.seriesNameVocabExample')}
           />
 
           {form.quizType === 'MORPHOLOGY_QUIZ' && (
@@ -1771,11 +1727,11 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
               {form.vocabSubsections.length === 0 && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Review from earlier lessons —{' '}
+                    {t('inst.b.reviewEarlierLessons')} —{' '}
                     <span className="text-brand-700 font-semibold">
                       {form.prevSectionsPct === 0
-                        ? 'This week’s words only'
-                        : `${form.prevSectionsPct}% earlier / ${100 - form.prevSectionsPct}% this week`}
+                        ? t('inst.b.reviewThisWeekOnly')
+                        : t('inst.b.reviewMixWeek', { earlier: form.prevSectionsPct, rest: 100 - form.prevSectionsPct })}
                     </span>
                   </label>
                   <input
@@ -1785,20 +1741,16 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                     onChange={e => setF('prevSectionsPct', Number(e.target.value))}
                     className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Each week&rsquo;s quiz draws this share of its questions from <em>all</em> vocabulary
-                    covered in earlier weeks, so students keep reviewing. Week 1 has nothing earlier,
-                    so it uses its own list only.
-                  </p>
+                  <p className="text-xs text-gray-500 mt-1">{t('inst.b.reviewHelpSeries')}</p>
                 </div>
               )}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Type of Quiz —{' '}
+                  {t('inst.b.quizStyle')} —{' '}
                   <span className="text-brand-700 font-semibold">
-                    {form.quizStylePct === 0 ? 'All multiple-choice'
-                      : form.quizStylePct === 100 ? 'All open-ended'
-                      : `${100 - form.quizStylePct}% multiple-choice / ${form.quizStylePct}% open-ended`}
+                    {form.quizStylePct === 0 ? t('inst.b.styleAllMc')
+                      : form.quizStylePct === 100 ? t('inst.b.styleAllOpen')
+                      : t('inst.b.styleMix', { mc: 100 - form.quizStylePct, open: form.quizStylePct })}
                   </span>
                 </label>
                 <input
@@ -1809,8 +1761,8 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                   className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
                 />
                 <div className="flex justify-between text-xs text-gray-400 mt-0.5">
-                  <span>Choose Definition</span>
-                  <span>Provide Definition</span>
+                  <span>{t('inst.b.chooseDefinition')}</span>
+                  <span>{t('inst.b.provideDefinition')}</span>
                 </div>
               </div>
             </>
@@ -1818,7 +1770,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
           {form.quizType !== 'MORPHOLOGY_QUIZ' && (
             <Input
-              label="Questions per quiz"
+              label={t('inst.b.s.questionsPerQuiz')}
               type="number"
               min={1}
               max={50}
@@ -1828,7 +1780,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           )}
 
           <Input
-            label="Time per question (seconds, 0 = untimed)"
+            label={t('inst.b.timePerQuestion')}
             type="number"
             min={0}
             max={300}
@@ -1842,42 +1794,27 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             className="inline-flex items-center gap-2 text-sm text-brand-700 hover:text-brand-900 hover:underline transition-colors font-medium"
           >
             <Eye size={14} />
-            View sample quiz
+            {t('inst.b.s.viewSample')}
           </button>
         </fieldset>
 
         <Select
-          label="Quiz retakes allowed"
+          label={t('inst.b.retakes')}
           value={form.maxRetakes === null ? '' : String(form.maxRetakes)}
           onChange={e => setF('maxRetakes', e.target.value === '' ? null : Number(e.target.value))}
-          options={[
-            { value: '0', label: 'No retakes (1 attempt only)' },
-            { value: '1', label: '1 retake (2 attempts total)' },
-            { value: '2', label: '2 retakes (3 attempts total)' },
-            { value: '3', label: '3 retakes (4 attempts total)' },
-            { value: '5', label: '5 retakes (6 attempts total)' },
-          ]}
-          placeholder="Unlimited retakes"
+          options={retakeOptions(t)}
+          placeholder={t('inst.b.retakesUnlimited')}
         />
 
         {form.quizType === 'VOCABULARY_QUIZ' && (
           <div>
             <Select
-              label="Wrong-answer appeals per attempt"
+              label={t('inst.b.appeals')}
               value={String(form.maxAppeals)}
               onChange={e => setF('maxAppeals', Number(e.target.value))}
-              options={[
-                { value: '0', label: 'Off — students cannot appeal' },
-                { value: '1', label: '1 appeal per attempt' },
-                { value: '2', label: '2 appeals per attempt' },
-                { value: '3', label: '3 appeals per attempt' },
-                { value: '5', label: '5 appeals per attempt' },
-              ]}
+              options={appealOptions(t)}
             />
-            <p className="mt-1 text-xs text-gray-500">
-              Applied to <strong>every</strong> quiz created in this schedule. You can still adjust each one
-              afterwards in its individual settings.
-            </p>
+            <p className="mt-1 text-xs text-gray-500">{t('inst.b.appealsHelpSeries')}</p>
           </div>
         )}
 
@@ -1896,7 +1833,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             className="inline-flex items-center gap-2 text-sm text-brand-700 hover:text-brand-900 hover:underline transition-colors"
           >
             <Download size={14} />
-            Download Biblical Greek Vocabulary Builder (PDF)
+            {t('inst.b.downloadBgvb')}
           </a>
         )}
 
@@ -1904,21 +1841,26 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         {overrun && (
           <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
             <p className="font-semibold">
-              {overrun.count} quiz{overrun.count !== 1 ? 'zes' : ''} fall after this course ends
-              ({format(overrun.courseEnd, 'MMM d, yyyy')}).
+              {t('inst.b.s.overrunTitle', {
+                count: overrun.count, n: overrun.count, date: formatDate(overrun.courseEnd, locale),
+              })}
             </p>
             <p className="mt-1 text-amber-800">
-              Only {overrun.weeksThatFit} week{overrun.weeksThatFit !== 1 ? 's' : ''} fit inside the
-              course. Students would never see the later quizzes
-              {form.quizType === 'VOCABULARY_QUIZ' && ', so the last vocabulary sections would go untaught'}.
-              {' '}Reduce the length of the semester to {overrun.weeksThatFit}, or extend the course dates.
+              {t('inst.b.s.overrunBody', {
+                count: overrun.weeksThatFit,
+                n: overrun.weeksThatFit,
+                // The vocabulary clause is a fragment of the same sentence, so it is a variable
+                // rather than a second paragraph — a translator needs to place it, and Spanish
+                // does not put it where English does.
+                vocab: form.quizType === 'VOCABULARY_QUIZ' ? t('inst.b.s.overrunVocab') : '',
+              })}
             </p>
             <button
               type="button"
               onClick={() => setF('weeks', overrun.weeksThatFit)}
               className="mt-2 text-sm font-medium text-amber-900 underline hover:no-underline"
             >
-              Set to {overrun.weeksThatFit} weeks
+              {t('inst.b.s.overrunSet', { count: overrun.weeksThatFit, n: overrun.weeksThatFit })}
             </button>
           </div>
         )}
@@ -1929,11 +1871,13 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             <div className="bg-brand-50 px-4 py-2.5 flex items-center justify-between">
               <span className="text-sm font-semibold text-brand-800">
                 {form.quizType === 'MORPHOLOGY_QUIZ'
-                  ? `Schedule preview — ${form.morphologySeries.length} test${form.morphologySeries.length !== 1 ? 's' : ''} (using first ${form.morphologySeries.length} date${form.morphologySeries.length !== 1 ? 's' : ''})`
-                  : `Schedule preview — ${schedule.length} quiz${schedule.length !== 1 ? 'zes' : ''}`}
+                  ? t('inst.b.s.previewTests', { count: form.morphologySeries.length, n: form.morphologySeries.length })
+                  : t('inst.b.s.previewQuizzes', { count: schedule.length, n: schedule.length })}
               </span>
               <span className="text-xs text-brand-600">
-                {form.weeks} week{form.weeks !== 1 ? 's' : ''} · {form.days.length} day{form.days.length !== 1 ? 's' : ''}/week
+                {t('inst.b.s.previewWeeks', { count: form.weeks, n: form.weeks })}
+                {' · '}
+                {t('inst.b.s.previewDays', { count: form.days.length, n: form.days.length })}
               </span>
             </div>
             <div className="max-h-64 overflow-y-auto divide-y divide-gray-100">
@@ -1941,16 +1885,16 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                 const lesson = form.quizType === 'VOCABULARY_QUIZ' ? getLessonForWeek(s.week) : null
                 const sectionLabel = lesson ? lesson.section.replace('-', ':') : null
                 const morphTest = form.quizType === 'MORPHOLOGY_QUIZ' ? form.morphologySeries[i] : null
-                const morphLabel = morphTest ? MORPH_SUBTYPE_SHORT[morphTest.subtype] : null
+                const morphLabel = morphTest ? t(`morph.subtypeShort.${morphTest.subtype}`) : null
                 const vocabLabel = morphTest?.vocabThruLesson
-                  ? `vocab ≤ L${morphTest.vocabThruLesson}`
+                  ? t('inst.b.s.vocabThru', { n: morphTest.vocabThruLesson })
                   : null
                 return (
                   <div key={i} className="flex items-center gap-3 px-4 py-2 text-sm">
-                    <span className="text-gray-400 w-16 shrink-0 text-xs">Wk {s.week}</span>
+                    <span className="text-gray-400 w-16 shrink-0 text-xs">{t('inst.b.s.wk', { n: s.week })}</span>
                     {morphTest && (
                       <span className="shrink-0 text-xs font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">
-                        Test {i + 1}
+                        {t('inst.b.s.testN', { n: i + 1 })}
                       </span>
                     )}
                     {morphLabel && (
@@ -1962,7 +1906,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                     {sectionLabel && (
                       <span className="text-xs font-medium text-brand-600 shrink-0">{sectionLabel}</span>
                     )}
-                    <span className="text-gray-700 truncate">{s.label}</span>
+                    <span className="text-gray-700 truncate">{formatDateLong(s.date, locale)}</span>
                   </div>
                 )
               })}
@@ -1975,7 +1919,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         {success !== null && (
           <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-3">
             <CheckCircle2 size={16} />
-            {success} assignments created — redirecting…
+            {t('inst.b.s.created', { n: success })}
           </div>
         )}
 
@@ -1987,14 +1931,14 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             (form.quizType === 'MORPHOLOGY_QUIZ' && form.morphologySeries.length === 0)
           return (
             <div className="flex gap-3 justify-end">
-              <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
+              <Button type="button" variant="ghost" onClick={() => router.back()}>{t('inst.b.cancel')}</Button>
               <Button
                 type="button"
                 variant="secondary"
                 disabled={disabled}
                 onClick={handleUpdate}
               >
-                Update Preview{effectiveCount > 0 ? ` (${effectiveCount})` : ''}
+                {t('inst.b.s.updatePreview')}{effectiveCount > 0 ? ` (${effectiveCount})` : ''}
               </Button>
               <Button
                 type="submit"
@@ -2002,7 +1946,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                 disabled={disabled}
                 onClick={() => { publishRef.current = true }}
               >
-                Save &amp; Post{effectiveCount > 0 ? ` (${effectiveCount})` : ''}
+                {t('inst.b.savePost')}{effectiveCount > 0 ? ` (${effectiveCount})` : ''}
               </Button>
             </div>
           )
@@ -2022,6 +1966,7 @@ interface AssignmentBuilderProps {
 type Mode = 'single' | 'semester'
 
 export function AssignmentBuilder({ courses, defaultCourseId }: AssignmentBuilderProps) {
+  const t = useT()
   const [mode, setMode] = useState<Mode>('single')
 
   return (
@@ -2029,8 +1974,8 @@ export function AssignmentBuilder({ courses, defaultCourseId }: AssignmentBuilde
       {/* Mode toggle */}
       <div className="flex gap-2 p-1 bg-gray-100 rounded-xl w-fit">
         {([
-          { value: 'single'   as Mode, label: 'Create Individual Assignment', Icon: FileText },
-          { value: 'semester' as Mode, label: 'Create Repeated Assignments',  Icon: CalendarDays },
+          { value: 'single'   as Mode, label: t('inst.b.modeSingle'),   Icon: FileText },
+          { value: 'semester' as Mode, label: t('inst.b.modeSemester'), Icon: CalendarDays },
         ] as const).map(({ value, label, Icon }) => (
           <button
             key={value}
