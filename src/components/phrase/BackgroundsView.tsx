@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { translatable, greekText } from '@/lib/i18n/machine-translation'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { ExternalLink, BookOpen, ChevronDown, X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -882,6 +883,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                 <div
                   className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`}
                   style={{ fontSize: isGreek ? GREEK_FS : TRANS_FS }}
+                  {...(isGreek ? greekText : translatable)}
                 >
                   {leftVerses.map(v => {
                     const layer = v.tokens && v.tokens.length > 0 ? 'grc' : 'en'
@@ -1117,6 +1119,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     <div
                       className="space-y-1 leading-relaxed text-gray-900 font-reading"
                       style={{ fontSize: TRANS_FS }}
+                      {...translatable}
                     >
                       {(() => {
                         // English is stored once per Whiston section (its first Niese §), so
@@ -1165,6 +1168,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     <div
                       className="space-y-1 leading-relaxed text-gray-900 font-reading"
                       style={{ fontSize: TRANS_FS }}
+                      {...translatable}
                     >
                       {proseChapter.verses.map(v => {
                         const verseHighlights = highlights.forVerse(rightProse.work.noteBook, proseChapter.number, v.number, 'en')

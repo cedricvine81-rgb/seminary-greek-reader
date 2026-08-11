@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { translatable, greekText } from '@/lib/i18n/machine-translation'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { X, ExternalLink } from 'lucide-react'
 import { findProseWork, type ProseDoc, type ProseVerse } from '@/lib/prose-texts'
@@ -201,7 +202,7 @@ export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTar
                     <SearchWords
                       text={v.greek}
                       terms={[]}
-                      className="font-greek text-[1.05rem] leading-relaxed text-gray-900 block"
+                      className="font-greek text-[1.05rem] leading-relaxed text-gray-900 block" {...greekText}
                       payload={() => ({
                         kind: isGreekWork ? 'greek' : 'translation',
                         reference: citeFor(v),
@@ -215,7 +216,7 @@ export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTar
                     <SearchWords
                       text={v.text}
                       terms={[]}
-                      className={`font-reading leading-relaxed text-gray-700 block ${hasOriginal && v.greek && show === 'both' ? 'mt-2' : ''}`}
+                      className={`font-reading leading-relaxed text-gray-700 block ${hasOriginal && v.greek && show === 'both' ? 'mt-2' : ''}`} {...translatable}
                       payload={() => ({
                         kind: 'translation',
                         reference: citeFor(v),

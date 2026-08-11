@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent } from 'react'
+import { translatable, greekText } from '@/lib/i18n/machine-translation'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, ArrowUpRight, MoreVertical, Blocks, Map as MapIcon} from 'lucide-react'
@@ -892,7 +893,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
     // Primary (Greek, or English for an English scope) column.
     const primary = hasCtx ? (
-      <span className={`block leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}>
+      <span className={`block leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}
+        {...(isGrc ? greekText : translatable)}>
         {ctx!.map(cv => {
           const isHit = isHitVerse(cv)
           return (
@@ -910,7 +912,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         })}
       </span>
     ) : (
-      <span className={`block text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}>
+      <span className={`block text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}
+        {...(isGrc ? greekText : translatable)}>
         {isGrc ? bgGreekTokens(h, rowKey, h.text, false, undefined, true)
                : <SearchWords text={h.text} terms={terms}
                    payload={() => ({ kind: 'translation', reference: h.ref, transLang: 'en',

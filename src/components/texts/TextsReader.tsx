@@ -1,5 +1,6 @@
 'use client'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { translatable, greekText } from '@/lib/i18n/machine-translation'
 import { Search, ChevronDown, MoreVertical, X} from 'lucide-react'
 import Link from 'next/link'
 import { betaCodeToGreek } from '@/lib/greek-translit'
@@ -1433,7 +1434,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               highlight can only safely belong to one of them). Hidden in
                               translation-only mode (lxx works, "<translation> only"). */}
                           {!greekHidden && (
-                          <p className="leading-relaxed text-gray-900 font-reading">
+                          <p className="leading-relaxed text-gray-900 font-reading"
+                            {...(isGreek || greekProse ? greekText : translatable)}>
                             {isAuthenticated && (
                               <span className="font-sans align-middle mr-0.5">
                                 <VerseNoteButton book={noteBook} chapter={section.chapter} verse={row.num} noted={notedKeys.has(row.num)}
@@ -1544,6 +1546,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               (Greek hidden) it's the sole column and carries the note button. */}
                           {englishColShown && (
                             <p className={`font-reading leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
+                              {...translatable}
                               {...verseAnchorProps(noteBook, section.chapter, row.num, 'en')}>
                               {isAuthenticated && greekHidden && (
                                 <span className="font-sans align-middle mr-0.5">

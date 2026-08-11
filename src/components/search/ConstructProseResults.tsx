@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { translatable, greekText } from '@/lib/i18n/machine-translation'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { ArrowUpRight } from 'lucide-react'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
@@ -88,7 +89,7 @@ export function ConstructProseResults({ hits, showEnglish, onOpen }: {
               )}
             </div>
             {words.length > 0 ? (
-              <p className="greek-text mt-1 leading-relaxed text-gray-900">
+              <p className="greek-text mt-1 leading-relaxed text-gray-900" {...greekText}>
                 {ranges.map((rg, ri) => (
                   <span key={ri}>
                     {(ri > 0 || rg.from > 0) && <span className="text-gray-300">… </span>}
@@ -114,7 +115,7 @@ export function ConstructProseResults({ hits, showEnglish, onOpen }: {
               <p className="mt-1 text-xs italic text-gray-300">No Greek text stored for this passage.</p>
             )}
             {showEnglish && h.english && (
-              <p className="font-reading mt-1 leading-relaxed text-gray-500">{h.english}</p>
+              <p className="font-reading mt-1 leading-relaxed text-gray-500" {...translatable}>{h.english}</p>
             )}
           </div>
         )

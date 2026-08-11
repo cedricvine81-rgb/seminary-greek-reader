@@ -92,7 +92,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           rel="stylesheet"
         />
       </head>
-      <body className={inter.className}>
+      {/*
+        Browser translation (Chrome/Safari/Edge "Translate this page") is DENIED BY DEFAULT and
+        opted into per block — see the `translate="yes"` markers on the English source texts.
+        Not because translation is unwelcome: a Spanish student reading Philo in a Victorian
+        English translation has no other way in, and the browser's own translator costs nothing
+        and needs no API key.
+
+        Default-deny because of what page translation would otherwise reach:
+          • the GREEK and HEBREW — mangling the text the whole app exists to read;
+          • the interface, which is already properly translated, so it would be re-translated
+            Spanish→Spanish and reworded away from the terminology the course teaches;
+          • names, assignment titles and the instructor's own words.
+
+        Opting back in is inherited and overridable — verified in-browser that translate="yes"
+        inside a translate="no" subtree re-enables it for that subtree and its descendants — so
+        one attribute here plus a marker per English-prose column is the whole mechanism.
+      */}
+      <body className={inter.className} translate="no">
         <ChunkErrorReload />
         <LocaleProvider locale={locale}>
         <div className="min-h-screen flex flex-col">
