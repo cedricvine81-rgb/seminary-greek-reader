@@ -36,10 +36,17 @@ const nfc = (s: string) => s.normalize('NFC')
 const bare = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').normalize('NFC')
 
 async function build(locale: string, deck: Deck): Promise<GlossResolver> {
-  const [cat, english] = await Promise.all([
+  // Three files: the deck's translations and its English, plus the LEXICON layer — a short gloss
+  // for the ~4,300 New Testament lemmas the deck does not carry. The deck is a curated course
+  // list and wins where the two overlap; the lexicon covers the long tail of rarer words that
+  // used to fall through to English entirely.
+  const [cat, english, lexCat] = await Promise.all([
     fetch(`/data/vocab/${locale}/${deck}.json`).then(r => (r.ok ? r.json() : NO_CONTENT)).catch(() => NO_CONTENT),
     fetch(`/data/vocab/${deck}.en.json`).then(r => (r.ok ? r.json() : {})).catch(() => ({})),
-  ]) as [ContentCatalogue, Record<string, string>]
+    deck === 'greek'
+      ? fetch(`/data/lexicon-gloss/${locale}/greek.json`).then(r => (r.ok ? r.json() : NO_CONTENT)).catch(() => NO_CONTENT)
+      : Promise.resolve(NO_CONTENT),
+  ]) as [ContentCatalogue, Record<string, string>, ContentCatalogue]
 
   const words = Object.entries(english).map(([word, gloss]) => ({ word, gloss }))
   const dup = duplicatedLemmas(words)
@@ -48,16 +55,34 @@ async function build(locale: string, deck: Deck): Promise<GlossResolver> {
   const byBare = new Map<string, string>()
   for (const w of words) if (!byBare.has(bare(w.word))) byBare.set(bare(w.word), w.word)
 
+  // The lexicon layer is keyed by the lemma exactly as the corpus spells it, and holds {fp,text}
+  // like every other catalogue — but the English it fingerprints lives in the same entry's key
+  // space rather than a second file, so it is read back through the catalogue itself.
+  const lexBare = new Map<string, string>()
+  for (const k of Object.keys(lexCat)) {
+    const lemma = k.slice('lex.gloss.'.length)
+    if (!lexBare.has(bare(lemma))) lexBare.set(bare(lemma), k)
+  }
+
   return (lexeme: string) => {
     if (!lexeme) return null
-    const lemma = byBare.get(bare(nfc(lexeme))) ?? nfc(lexeme)
+    const raw = nfc(lexeme)
+
+    // 1. The deck, which carries the teaching gloss and wins where it has one.
+    const lemma = byBare.get(bare(raw)) ?? raw
     const eng = english[lemma]
-    if (eng === undefined) return null            // not in the deck at all
-    const out = content(cat, glossKey(deck, lemma, eng, dup), eng)
-    // content() returns the English when there is no translation or the fingerprint is stale.
-    // Report that as "no Spanish gloss" so the caller can fall back to its own English source
-    // rather than showing the deck's English under a Spanish label.
-    return out === eng ? null : out
+    if (eng !== undefined) {
+      const out = content(cat, glossKey(deck, lemma, eng, dup), eng)
+      // content() returns the English when there is no translation or the fingerprint is stale.
+      // Report that as "no Spanish gloss" so the caller falls back to its own English source
+      // rather than showing the deck's English under a Spanish label.
+      if (out !== eng) return out
+    }
+
+    // 2. The lexicon layer, for everything else.
+    const lexKey = lexBare.get(bare(raw))
+    const hit = lexKey ? (lexCat as Record<string, { fp: string; text: string } | undefined>)[lexKey] : undefined
+    return hit?.text ?? null
   }
 }
 

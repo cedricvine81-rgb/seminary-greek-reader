@@ -67,15 +67,27 @@ describe('Spanish glosses resolve through the fingerprint', () => {
 })
 
 describe('coverage of running New Testament text', () => {
-  it('the deck glosses carry most of what a student actually clicks', () => {
-    const lemmas = JSON.parse(
-      zlib.gunzipSync(fs.readFileSync(path.join(process.cwd(), 'public/data/lemma-index.json.gz'))).toString('utf8'),
-    ) as { l: string; f: number }[]
-    const english = read('public/data/vocab/greek.en.json') as Record<string, string>
-    const known = new Set(Object.keys(english))
+  // Two layers: the course deck (1,120 words, ~90% of running text on its own) and the lexicon
+  // gloss layer that covers the long tail. Asserted as a floor because a regression would not
+  // throw — it would quietly leave more words English, which is invisible until a student
+  // notices. Raise the floor as the tail is filled in.
+  const lemmas = JSON.parse(
+    zlib.gunzipSync(fs.readFileSync(path.join(process.cwd(), 'public/data/lemma-index.json.gz'))).toString('utf8'),
+  ) as { l: string; f: number }[]
+  const known = new Set([
+    ...Object.keys(read('public/data/vocab/greek.en.json') as Record<string, string>),
+    ...Object.keys(read('public/data/lexicon-gloss/es/greek.json') as Record<string, unknown>)
+      .map(k => k.slice('lex.gloss.'.length)),
+  ])
+
+  it('covers the large majority of what a student actually clicks', () => {
     const total = lemmas.reduce((n, e) => n + e.f, 0)
     const covered = lemmas.filter(e => known.has(e.l.normalize('NFC'))).reduce((n, e) => n + e.f, 0)
-    // ~90% at the time of writing. The floor guards against a build that silently drops entries.
-    expect(covered / total).toBeGreaterThan(0.85)
+    expect(covered / total).toBeGreaterThan(0.95)
+  })
+
+  it('every lemma occurring three times or more has a gloss', () => {
+    const gaps = lemmas.filter(e => e.f >= 3 && !known.has(e.l.normalize('NFC'))).map(e => e.l)
+    expect(gaps).toEqual([])
   })
 })
