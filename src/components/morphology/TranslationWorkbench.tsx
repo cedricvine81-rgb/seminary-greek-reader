@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
+import { translateParsing } from '@/lib/i18n/morph-labels'
 import { X, Check, RotateCcw } from 'lucide-react'
 import clsx from 'clsx'
 import { Select } from '@/components/ui/Select'
@@ -31,6 +33,7 @@ const emptyEntry = (): WordEntry => ({ parsing: '', syntax: '', gloss: '', check
 const SYNTAX_OPTS = Array.from(new Set(ALL_SYNTAX_OPTIONS)).map(o => ({ value: o, label: o }))
 
 export function TranslationWorkbench() {
+  const t = useT()
   const [sentence, setSentence] = useState<WorkbenchSentence | null>(null)
   const [entries, setEntries] = useState<WordEntry[]>([])
   const [selected, setSelected] = useState(0)
@@ -182,12 +185,12 @@ export function TranslationWorkbench() {
               <input
                 type="text"
                 className={inputCls}
-                placeholder="case, number, gender / tense, voice, mood… — lexical form"
+                placeholder={t('ms.parsingFormatHint')}
                 value={entry.parsing}
                 onChange={e => update({ parsing: e.target.value, checked: false })}
               />
               {entry.checked && (
-                <p className="mt-1 border-l-2 border-brand-300 pl-2 text-sm text-gray-700">{word.parsing}</p>
+                <p className="mt-1 border-l-2 border-brand-300 pl-2 text-sm text-gray-700">{translateParsing(word.parsing, t)}</p>
               )}
             </div>
           )}

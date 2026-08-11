@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { translateParsing } from '@/lib/i18n/morph-labels'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { VOCAB_GLOSSES } from '@/lib/vocab-glosses'
@@ -124,7 +125,7 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
           </div>
           <p className="text-gray-600 mb-2">
             <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('study.parsing')}</span>
-            {info.parsing}
+            {translateParsing(info.parsing, t)}
           </p>
 
           {/* Hebrew: morpheme segment breakdown (prefixes/suffixes) */}

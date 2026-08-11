@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { X, Search } from 'lucide-react'
 import { MORPH_GROUPS } from '@/lib/morph-features'
+import { featureLabel, groupLabel } from '@/lib/i18n/morph-labels'
 
 // "Search by morphology". Opens pre-filled with some initial features (e.g. the right-clicked
 // word's own parsing); toggle which to keep, optionally restrict to a lemma, then search the GNT
@@ -59,7 +60,7 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
         <div className="p-4 space-y-3 overflow-y-auto">
           {MORPH_GROUPS.map(g => (
             <div key={g.key}>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">{g.label}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">{groupLabel(g.key, t, g.label)}</p>
               <div className="flex flex-wrap gap-1.5">
                 {g.features.map(feat => {
                   const on = selected.has(feat.value)
@@ -68,7 +69,7 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
                       className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${on
                         ? 'bg-brand-600 border-brand-600 text-white'
                         : 'bg-surface border-gray-200 text-gray-600 hover:border-brand-300 hover:text-brand-700'}`}>
-                      {feat.label}
+                      {featureLabel(feat.value, t)}
                     </button>
                   )
                 })}

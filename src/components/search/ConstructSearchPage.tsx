@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { READING_LANGS, defaultReadingLang } from '@/lib/reading-language'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { featureLabel } from '@/lib/i18n/morph-labels'
 import { formatNumber } from '@/lib/i18n/format'
 import { useRouter } from 'next/navigation'
 import { Check, ChevronDown, Library, Lightbulb, Link2, Loader2, Plus, Search } from 'lucide-react'
@@ -45,7 +46,7 @@ function NoMatches({ query, termTotals }: { query: ConstructQuery; termTotals: n
   const t = useT()
   const used = query.terms.filter(term => !termIsEmpty(term) && !term.negate)
   const describe = (term: ConstructTerm) => {
-    const feats = Object.values(term.features).flat().map(v => FEATURE_LABEL.get(v) ?? v)
+    const feats = Object.values(term.features).flat().map(v => featureLabel(v, t))
     const desc = feats.length ? feats.join(' ') : t('cq.anyWord')
     return term.lemma ? `${desc} (${term.lemma})` : desc
   }

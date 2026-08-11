@@ -4,6 +4,7 @@
 // document-level key listener below relies on.
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { featureLabel, groupLabel } from '@/lib/i18n/morph-labels'
 import { ChevronDown, Trash2, Check } from 'lucide-react'
 import { type MorphGroup } from '@/lib/morph-features'
 import { vocabFor, type MorphVocab } from '@/lib/morph-vocab'
@@ -60,12 +61,12 @@ function MorphSelect({ group, selected, onChange, vocab }: {
   const label = selected.length === 0
     ? t('cq.any')
     : selected.length <= 2
-      ? selected.map(v => vocab.label(v)).join(', ')
+      ? selected.map(v => featureLabel(v, t)).join(', ')
       : t('cq.nSelected', { n: selected.length })
 
   return (
     <div className="relative" ref={ref}>
-      <label className="block text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-1">{group.label}</label>
+      <label className="block text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-1">{groupLabel(group.key, t, group.label)}</label>
       <button type="button" onClick={() => setOpen(v => !v)} aria-expanded={open}
         className={`inline-flex w-full items-center justify-between gap-1 rounded-md border px-2 py-1.5 text-xs transition-colors ${
           selected.length > 0
@@ -79,7 +80,7 @@ function MorphSelect({ group, selected, onChange, vocab }: {
           {selected.length > 0 && (
             <button type="button" onClick={() => { onChange([]); setOpen(false) }}
               className="mb-1 w-full rounded px-2 py-1 text-left text-[11px] text-gray-400 hover:bg-gray-50 hover:text-gray-600">
-              {t('cq.clearAny', { group: group.label.toLowerCase() })}
+              {t('cq.clearAny', { group: groupLabel(group.key, t, group.label).toLowerCase() })}
             </button>
           )}
           {group.features.map(f => {
@@ -452,7 +453,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
         {/* Part of speech: a dropdown only while it's still open. Once the word settles it
             (λόγος can only be a noun) there is nothing to pick, so it reads as a fact. */}
         {posOptions.length === 1 && forms ? (
-          <Fixed label={t('cq.partOfSpeech')} value={vocab.label(posOptions[0])} />
+          <Fixed label={t('cq.partOfSpeech')} value={featureLabel(posOptions[0], t)} />
         ) : (
           <div>
             <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">Part of speech</label>
@@ -469,7 +470,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
             Where a choice remains, the menu lists only forms the word actually occurs in. */}
         {categories.map(g => {
           const opts = optionsFor(g)
-          if (opts.length === 1) return <Fixed key={g.key} label={g.label} value={vocab.label(opts[0])} />
+          if (opts.length === 1) return <Fixed key={g.key} label={groupLabel(g.key, t, g.label)} value={featureLabel(opts[0], t)} />
           return (
             <MorphSelect key={g.key}
               group={opts.length === g.features.length ? g : { ...g, features: g.features.filter(f => opts.includes(f.value)) }}

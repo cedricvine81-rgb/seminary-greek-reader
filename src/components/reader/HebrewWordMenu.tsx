@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { translateParsing } from '@/lib/i18n/morph-labels'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { X } from 'lucide-react'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -118,7 +119,7 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
         {/* Parsing */}
         <p className="text-gray-600">
           <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">{t('study.parsing')}</span>
-          {info.parsing}
+          {translateParsing(info.parsing, t)}
         </p>
 
         {/* Morpheme segments (compounds) */}

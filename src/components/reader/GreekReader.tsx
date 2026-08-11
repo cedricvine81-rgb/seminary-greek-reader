@@ -101,6 +101,8 @@ function loadSyntax(): Promise<Record<string, SyntaxEntry>> {
 
 interface TextSection {
   key: string
+  osisId: string
+  /** The book's ENGLISH name, as data. The heading is localized at render — see renderSections. */
   bookName: string
   corpus: string
   verses: BiblicalVerse[]
@@ -165,15 +167,18 @@ const LOOKAHEAD = 1600   // px ahead of sentinel to start loading next chapter
 const NAV_PRE   = 3      // chapters to preload before the search target
 const NAV_FWD   = 2      // chapters to preload after the search target
 
-// `bookName` here is the DISPLAY heading the reader prints above a book, and the value
-// renderSections() compares to decide where a new book starts — so localizing it at the source
-// keeps those two in step. Navigation is unaffected: every jump carries the osisId.
-function buildQueue(books: BiblicalBook[], locale: string): ChapterItem[] {
+// The queue is DATA and is built once, then cached in state across the session. An earlier
+// version localized bookName here, which put a translated string inside cached state: switching
+// language re-rendered everything except the already-loaded sections, so an English reader who
+// had been reading in Spanish still saw "MATEO" above a chapter headed "CHAPTER 1". Names are
+// resolved at RENDER instead, from the osisId — the general rule is never to localize into
+// state that outlives the render.
+function buildQueue(books: BiblicalBook[]): ChapterItem[] {
   return books.flatMap(b =>
     Array.from({ length: b.totalChapters }, (_, i) => ({
       osisId: b.osisId,
       chapter: i + 1,
-      bookName: bookNameFor(b.osisId, locale, b.name),
+      bookName: b.name,
       corpus: b.corpus,
     }))
   )
@@ -466,7 +471,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         const res  = await fetch(`/data/mt/${item.osisId}_${item.chapter}.json`)
         const data = await res.json()
         if (!data.verses?.length) return null
-        return { key: `${item.osisId}-${item.chapter}`, bookName: item.bookName, corpus: 'MT', verses: data.verses }
+        return { key: `${item.osisId}-${item.chapter}`, osisId: item.osisId, bookName: item.bookName, corpus: 'MT', verses: data.verses }
       }
       // Pass the queue item's corpus so the selected GNT edition (Tischendorf vs Nestle
       // 1904) actually loads its own text; the API falls back to the book's native corpus
@@ -474,7 +479,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
       const res  = await fetch(`/api/reader?book=${item.osisId}&chapter=${item.chapter}&corpus=${item.corpus}`)
       const data = await res.json()
       if (!data.verses?.length) return null
-      return { key: `${item.osisId}-${item.chapter}`, bookName: item.bookName, corpus: item.corpus, verses: data.verses }
+      return { key: `${item.osisId}-${item.chapter}`, osisId: item.osisId, bookName: item.bookName, corpus: item.corpus, verses: data.verses }
     } catch { return null }
   }, [])
 
@@ -610,7 +615,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     fetch('/api/reader?corpus=LXX')
       .then(r => r.json())
       .then(lxxData => {
-        const lxxQ = buildQueue(lxxData.books ?? [], locale)
+        const lxxQ = buildQueue(lxxData.books ?? [])
         setLxxQueue(lxxQ)
         if (lxxQ[0]) {
           lxxLoading.current = true
@@ -636,7 +641,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     fetch('/api/reader?corpus=MT')
       .then(r => r.json())
       .then(data => {
-        const q = buildQueue(data.books ?? [], locale)
+        const q = buildQueue(data.books ?? [])
         setMtQueue(q)
         if (q[0]) {
           mtLoading.current = true
@@ -663,7 +668,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     fetch(`/api/reader?corpus=${corpus}`)
       .then(r => r.json())
       .then(data => {
-        const q = buildQueue(data.books ?? [], locale)
+        const q = buildQueue(data.books ?? [])
         setGntQueue(q)
         if (q[0]) {
           gntLoading.current = true
@@ -1675,14 +1680,14 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   function renderSections(sections: TextSection[]) {
     let lastBook = ''
     return sections.map(sec => {
-      const bookChanged = sec.bookName !== lastBook
-      lastBook = sec.bookName
+      const bookChanged = sec.osisId !== lastBook
+      lastBook = sec.osisId
       const chapter = sec.verses[0]?.chapter ?? null
       return (
         <div key={sec.key}>
           {bookChanged && (
             <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-5 mb-1 pb-1 border-b border-gray-100">
-              {sec.bookName}
+              {bookNameFor(sec.osisId, locale, sec.bookName)}
             </h3>
           )}
           {chapter !== null && (
@@ -1757,13 +1762,13 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   function renderHebrewSections(sections: TextSection[]) {
     let lastBook = ''
     return sections.map(sec => {
-      const bookChanged = sec.bookName !== lastBook
-      lastBook = sec.bookName
+      const bookChanged = sec.osisId !== lastBook
+      lastBook = sec.osisId
       const chapter = sec.verses[0]?.chapter ?? null
       return (
         <div key={sec.key}>
           {bookChanged && (
-            <h3 dir="ltr" className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-5 mb-1 pb-1 border-b border-gray-100 font-sans">{sec.bookName}</h3>
+            <h3 dir="ltr" className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-5 mb-1 pb-1 border-b border-gray-100 font-sans">{bookNameFor(sec.osisId, locale, sec.bookName)}</h3>
           )}
           {chapter !== null && (
             <h4 dir="ltr" className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none font-sans">{t('reader.chapterN', { n: chapter })}</h4>
@@ -1957,10 +1962,13 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                           {group.books.map(([osisId, name]) => (
                             <button
                               key={osisId}
-                              onClick={() => { handleSearch(`${name} 1`, 'reference'); setShowSettings(false); setSettingsFlyout(null) }}
+                              // Navigate by the OSIS id, not the label: the id resolves in any
+                              // language, whereas a localized label only parses because
+                              // parseReference was taught the same vocabulary.
+                              onClick={() => { handleSearch(`${osisId} 1`, 'reference'); setShowSettings(false); setSettingsFlyout(null) }}
                               className="px-2 py-1 text-xs rounded border border-gray-200 text-gray-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
                             >
-                              {name}
+                              {bookNameFor(osisId, locale, name)}
                             </button>
                           ))}
                         </div>

@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { translateParsing } from '@/lib/i18n/morph-labels'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronUp, X } from 'lucide-react'
@@ -55,7 +56,7 @@ export function MobileParsingSheet({ info, locked }: MobileParsingSheetProps) {
             <div className="min-w-0 flex-1">
               <div className="flex items-baseline gap-2">
                 <span className="greek-text text-base font-semibold text-brand-800 shrink-0">{info.surface}</span>
-                <span className="text-xs text-gray-500 truncate">{info.parsing}</span>
+                <span className="text-xs text-gray-500 truncate">{translateParsing(info.parsing, t)}</span>
               </div>
               {info.gloss && <p className="text-xs text-gray-400 truncate mt-0.5">{info.gloss}</p>}
             </div>

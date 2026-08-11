@@ -1,11 +1,14 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
+import { READING_LANGS } from '@/lib/reading-language'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Loader2, Pencil, X } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { MorphSearchPicker } from '@/components/reader/MorphSearchPicker'
 import { MORPH_GROUPS } from '@/lib/morph-features'
+import { featureLabel, groupLabel } from '@/lib/i18n/morph-labels'
 import { normalizeFold } from '@/lib/highlight-terms'
 import { markScrollRestore } from '@/lib/scroll-restore'
 
@@ -21,7 +24,6 @@ import { markScrollRestore } from '@/lib/scroll-restore'
 // The matching word in each verse is red-highlighted (matchedLemmas from the API).
 
 // value → human label, for the criteria chips.
-const FEATURE_LABEL = new Map(MORPH_GROUPS.flatMap(g => g.features.map(f => [f.value, f.label] as const)))
 
 function returnLabelFor(from?: string): string {
   if (!from) return 'page'
@@ -38,6 +40,7 @@ export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma
   embedded?: boolean
   onRequestClose?: () => void
 }) {
+  const t = useT()
   const router = useRouter()
   // Criteria are state so an embedded "Edit criteria" re-searches in place; the full page
   // routes instead (and remounts), so there the state simply mirrors the props.
@@ -109,14 +112,14 @@ export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex items-baseline gap-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Search by morphology</span>
-              <span className="text-[10px] text-gray-400">· New Testament</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{t('ms.searchByMorphology')}</span>
+              <span className="text-[10px] text-gray-400">{t('ms.newTestament')}</span>
             </div>
             <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-              {features.length === 0 && !lemma && <span className="text-xs text-gray-400 italic">No criteria — click Edit to choose.</span>}
+              {features.length === 0 && !lemma && <span className="text-xs text-gray-400 italic">{t('ms.noCriteria')}</span>}
               {features.map(f => (
                 <span key={f} className="rounded-md bg-brand-50 border border-brand-100 px-2 py-0.5 text-xs text-brand-700">
-                  {FEATURE_LABEL.get(f) ?? f}
+                  {featureLabel(f, t)}
                 </span>
               ))}
               {lemma && (
@@ -129,10 +132,10 @@ export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma
           <div className="flex flex-none items-center gap-1.5">
             <button type="button" onClick={() => setEditing(true)}
               className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-surface px-2.5 py-1.5 text-xs text-gray-600 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              <Pencil size={13} /> Edit criteria
+              <Pencil size={13} /> {t('ms.editCriteria')}
             </button>
             {embedded && onRequestClose && (
-              <button type="button" onClick={onRequestClose} title="Close search"
+              <button type="button" onClick={onRequestClose} title={t('ms.closeSearch')}
                 className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
                 <X size={16} />
               </button>
@@ -151,12 +154,10 @@ export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma
             <div className="flex items-center justify-between gap-3 pb-2">
               <p className="text-xs text-gray-400">{hits.length}{hits.length >= 300 ? '+' : ''} verse{hits.length === 1 ? '' : 's'}</p>
               <select value={transLang} onChange={e => setTransLang(e.target.value)}
-                title="Parallel translation column"
+                title={t('search.parallelTitle')}
                 className="rounded-md border border-gray-200 bg-surface px-2 py-1 text-[11px] text-gray-600">
-                <option value="none">No translation</option>
-                <option value="en">English (WEB)</option><option value="bsb">English (BSB)</option>
-                <option value="es">Spanish</option><option value="fr">French</option><option value="pt">Portuguese</option>
-                <option value="ru">Russian</option><option value="ko">Korean</option><option value="zh">Mandarin</option>
+                <option value="none">{t('search.noTranslation')}</option>
+                {READING_LANGS.map(l => <option key={l.code} value={l.code}>{t(l.labelKey)}</option>)}
               </select>
             </div>
             <GreekSearchResults
@@ -180,7 +181,7 @@ export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma
           initialFeatures={features}
           lemma={lemma || null}
           initialRestrictLemma={!!lemma}
-          subject="Morphology criteria"
+          subject={t('ms.morphologyCriteria')}
           onSearch={applyEdit}
           onClose={() => setEditing(false)}
         />
