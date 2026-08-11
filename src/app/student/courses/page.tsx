@@ -175,7 +175,7 @@ export default async function StudentCoursesPage() {
         <CourseEnrollment
           initialCourses={openCourses}
           sectionTitle={t('courses.available')}
-          sectionDescription="Open courses you can request to join. Your instructor will confirm your place."
+          sectionDescription={t('courses.openDesc')}
           buttonLabel={t('courses.requestToJoin')}
           isPreview={preview}
         />
@@ -184,8 +184,8 @@ export default async function StudentCoursesPage() {
         {hasInstitution ? (
           <CourseEnrollment
             initialCourses={institutionCourses}
-            sectionTitle={`Courses at ${student!.institution}`}
-            sectionDescription="Courses run by your institution. Request to join and your instructor will approve."
+            sectionTitle={t('courses.atInstitution', { name: student!.institution ?? '' })}
+            sectionDescription={t('courses.institutionDesc')}
             buttonLabel={t('courses.requestToJoin')}
             isPreview={preview}
           />
@@ -193,7 +193,7 @@ export default async function StudentCoursesPage() {
           <CourseEnrollment
             initialCourses={institutionCourses}
             sectionTitle={t('courses.institutional')}
-            sectionDescription="These courses are run by specific institutions. You can request access — the instructor will review your application."
+            sectionDescription={t('courses.institutionalDesc')}
             buttonLabel={t('courses.requestAccess')}
             showInstitution
             isPreview={preview}

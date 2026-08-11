@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { BookOpen, Building2 } from 'lucide-react'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -36,6 +37,8 @@ export function CourseEnrollment({
   showInstitution = false,
   isPreview = false,
 }: Props) {
+  const t = useT()
+  const locale = useLocale()
   const router = useRouter()
   const [courses, setCourses] = useState(initialCourses)
   const [requesting, setRequesting] = useState<string | null>(null)
@@ -57,7 +60,7 @@ export function CourseEnrollment({
       })
       if (!res.ok) {
         const data = await res.json()
-        setErrors(prev => ({ ...prev, [courseId]: data.error ?? 'Failed to submit request' }))
+        setErrors(prev => ({ ...prev, [courseId]: data.error ?? t('courses.requestFailed') }))
         return
       }
       setCourses(prev => prev.filter(c => c.id !== courseId))
@@ -79,8 +82,9 @@ export function CourseEnrollment({
         {courses.map(course => {
           const instructorName = [course.instructor.title, course.instructor.firstName, course.instructor.surname]
             .filter(Boolean).join(' ')
-          const start = new Date(course.startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
-          const end = new Date(course.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+          const opts = { month: 'short', year: 'numeric' } as const
+          const start = new Date(course.startDate).toLocaleDateString(locale, opts)
+          const end = new Date(course.endDate).toLocaleDateString(locale, opts)
 
           return (
             <Card key={course.id} className="space-y-3">
@@ -102,7 +106,7 @@ export function CourseEnrollment({
                     {course.institution.name}
                   </p>
                 )}
-                <p>{start} – {end} · {course._count.assignments} assignments · {course._count.enrollments} students</p>
+                <p>{start} – {end} · {t('courses.assignmentCount', { count: course._count.assignments, n: course._count.assignments })} · {t('courses.studentCount', { count: course._count.enrollments, n: course._count.enrollments })}</p>
               </div>
 
               {errors[course.id] && (
@@ -111,7 +115,7 @@ export function CourseEnrollment({
 
               {isPreview ? (
                 <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-center">
-                  Enrollment disabled in preview mode
+                  {t('courses.enrollDisabledPreview')}
                 </p>
               ) : (
                 <Button

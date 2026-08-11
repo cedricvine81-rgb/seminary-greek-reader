@@ -6,7 +6,15 @@ import { render, screen } from '@testing-library/react'
 import { LocaleProvider } from '@/lib/i18n/LocaleProvider'
 import { AssignmentList } from '@/components/student/AssignmentList'
 import { StudentGradebook, type GradebookRow } from '@/components/student/StudentGradebook'
+import { ExamOpensNotice } from '@/components/student/ExamOpensNotice'
+import { LocalDeadline } from '@/components/student/LocalDeadline'
 import type { Locale } from '@/lib/i18n/locale'
+
+// ExamOpensNotice calls useRouter() to re-run the server component the moment the exam opens.
+// There is no app router in a jsdom test, so stub the two methods it touches.
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ refresh: jest.fn(), push: jest.fn(), back: jest.fn() }),
+}))
 
 /**
  * The student dashboard sits behind a sign-in, so the --snapshot guard cannot reach it: it
@@ -90,5 +98,43 @@ describe('StudentGradebook', () => {
     // They are the instructor's own words, stored on the row.
     wrap('es', <StudentGradebook studentName="Ada" rows={ROWS} />)
     expect(screen.getAllByText('Week 3 Vocabulary').length).toBeGreaterThan(0)
+  })
+})
+
+describe('ExamOpensNotice', () => {
+  // Behind a sign-in AND behind a clock, so neither the snapshot nor a browser check reaches
+  // the countdown reliably. The unit letters matter: Spanish abbreviates minutes "min".
+  const soon = new Date(Date.now() + 3 * 3600_000 + 4 * 60_000).toISOString()
+
+  it('counts down in English', async () => {
+    wrap('en', <ExamOpensNotice opensAtIso={soon} />)
+    expect(await screen.findByText(/This exam isn/)).toBeInTheDocument()
+    expect(await screen.findByText(/\dh \d\dm/)).toBeInTheDocument()
+  })
+
+  it('counts down in Spanish, with its own minute abbreviation', async () => {
+    wrap('es', <ExamOpensNotice opensAtIso={soon} />)
+    expect(await screen.findByText(/Este examen todav/)).toBeInTheDocument()
+    expect(await screen.findByText(/\dh \d\dmin/)).toBeInTheDocument()
+  })
+})
+
+describe('LocalDeadline', () => {
+  it('renders the date in the interface language, not the browser’s', () => {
+    const iso = '2026-08-14T12:00:00.000Z'
+    const { unmount } = wrap('en', <LocalDeadline label="Closes" iso={iso} />)
+    expect(screen.getByText(/Aug/)).toBeInTheDocument()
+    unmount()
+    wrap('es', <LocalDeadline label="Cierra" iso={iso} />)
+    expect(screen.getByText(/ago/)).toBeInTheDocument()
+  })
+
+  it('marks a passed deadline Closed / Cerrado', () => {
+    const past = '2020-01-01T00:00:00.000Z'
+    const { unmount } = wrap('en', <LocalDeadline label="Closes" iso={past} />)
+    expect(screen.getByText('Closed')).toBeInTheDocument()
+    unmount()
+    wrap('es', <LocalDeadline label="Cierra" iso={past} />)
+    expect(screen.getByText('Cerrado')).toBeInTheDocument()
   })
 })

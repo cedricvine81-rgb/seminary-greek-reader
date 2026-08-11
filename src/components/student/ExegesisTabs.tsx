@@ -305,7 +305,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
               onKeyDown={onKeyDown}
               onFocus={() => { if (chapterSecs.length) setPredOpen(true) }}
               onBlur={() => { commitPassage(input.trim()); setGhost(''); setPredOpen(false) }}
-              placeholder="e.g. Matthew 3:1-3"
+              placeholder={t('exeg.passagePlaceholder')}
               className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-full lg:w-32 xl:w-40 min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
 
@@ -388,16 +388,16 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                   <>
                     {/* Vocabulary */}
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Vocabulary</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t('exeg.vocabulary')}</p>
                       <Select
                         value={glossPref ?? ''}
                         onChange={e => setGlossPref(e.target.value ? Number(e.target.value) : null)}
-                        title="Show glosses for less common words"
-                        aria-label="Vocabulary glosses"
+                        title={t('exeg.glossTitle')}
+                        aria-label={t('exeg.glossAria')}
                         options={[
-                          { value: '',   label: 'Off' },
-                          { value: '50', label: 'Words less frequent than 50×' },
-                          { value: '30', label: 'Words less frequent than 30×' },
+                          { value: '',   label: t('exeg.glossOff') },
+                          { value: '50', label: t('exeg.glossBelow', { n: 50 }) },
+                          { value: '30', label: t('exeg.glossBelow', { n: 30 }) },
                         ]}
                       />
                     </div>
@@ -409,7 +409,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                       onClick={() => { setShowToolsMenu(false); setTimeout(() => workspaceRef.current?.exportPDF(), 0) }}
                       className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      <Download size={15} className="text-gray-400" /> Download as PDF
+                      <Download size={15} className="text-gray-400" /> {t('exeg.downloadPdf')}
                     </button>
 
                     {/* My Sessions */}
@@ -435,7 +435,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                                 type="button"
                                 onClick={() => workspaceRef.current?.deleteSession(s.id)}
                                 className="ml-2 text-red-400 hover:text-red-600 text-xs p-1"
-                                title="Delete session"
+                                title={t('exeg.deleteSession')}
                               >
                                 ✕
                               </button>
@@ -459,7 +459,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                     <TextSizeSlider options={FONT_SIZES} value={synFontSize} onChange={setSynFontSize} />
                     {synopsisAttribution && (
                       <details className="border-t border-gray-100 pt-2">
-                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">{t('exeg.sourcesCopyright')}</summary>
                         <p className="text-xs text-gray-600 mt-2">{synopsisAttribution}</p>
                       </details>
                     )}
@@ -478,7 +478,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                     </div>
                     {variantsAttribution && (
                       <details className="border-t border-gray-100 pt-2">
-                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">{t('exeg.sourcesCopyright')}</summary>
                         <p className="text-xs text-gray-600 mt-2">{variantsAttribution}</p>
                       </details>
                     )}
@@ -487,7 +487,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
 
                 {tab === 'rhetoric' && rhetoricAttribution && (
                   <details className="pt-1" open>
-                    <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                    <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">{t('exeg.sourcesCopyright')}</summary>
                     <p className="text-xs text-gray-600 mt-2">{rhetoricAttribution}</p>
                   </details>
                 )}
@@ -521,8 +521,8 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                       </div>
                     </details>
                     <details className="border-t border-gray-100 pt-2">
-                      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Online source texts</summary>
-                      <p className="mt-2 mb-1.5 text-[11px] text-gray-400">Browse whole works — opens in a new tab.</p>
+                      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">{t('exeg.onlineSources')}</summary>
+                      <p className="mt-2 mb-1.5 text-[11px] text-gray-400">{t('exeg.browseWholeWorks')}</p>
                       <div className="space-y-0.5">
                         {LIBRARY_WORKS.map(w => (
                           <a
@@ -539,7 +539,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                     </details>
                     {backgroundsAttribution && (
                       <details className="border-t border-gray-100 pt-2">
-                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">{t('exeg.sourcesCopyright')}</summary>
                         <p className="text-xs text-gray-600 mt-2">{backgroundsAttribution}</p>
                       </details>
                     )}
@@ -554,7 +554,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                     />
                     {commentaryAttribution && (
                       <div className="pt-3 border-t border-gray-100">
-                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Copyright</p>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">{t('exeg.copyright')}</p>
                         <p className="text-[11px] leading-relaxed text-gray-500">{commentaryAttribution}</p>
                       </div>
                     )}

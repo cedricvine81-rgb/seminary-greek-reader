@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/Card'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface PendingEnrollment {
   courseId: string
@@ -17,6 +18,7 @@ interface Props {
 
 export function PendingEnrollments({ pending }: Props) {
   const router = useRouter()
+  const t = useT()
   // Keep a stable ref so the interval closure always sees the latest list
   const pendingRef = useRef(pending)
   useEffect(() => { pendingRef.current = pending }, [pending])
@@ -49,7 +51,7 @@ export function PendingEnrollments({ pending }: Props) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-base font-semibold text-gray-900">Pending Requests</h2>
+      <h2 className="text-base font-semibold text-gray-900">{t('courses.pendingRequests')}</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {pending.map(e => {
           const instructorName = [
@@ -63,7 +65,7 @@ export function PendingEnrollments({ pending }: Props) {
                 <h3 className="font-semibold text-gray-900">{e.course.name}</h3>
               </div>
               <p className="text-xs text-gray-500">{instructorName}</p>
-              <p className="text-xs text-amber-700">Awaiting instructor approval…</p>
+              <p className="text-xs text-amber-700">{t('courses.awaitingApproval')}</p>
             </Card>
           )
         })}

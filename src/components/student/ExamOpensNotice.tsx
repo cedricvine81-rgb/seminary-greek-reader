@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 
 /**
  * Pre-exam gate shown to a student who opens a Translation Exam before its start
@@ -17,6 +18,8 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
   const [now, setNow] = useState(opensAt)   // placeholder value until mounted (never rendered)
   const [localTime, setLocalTime] = useState('')
   const router = useRouter()
+  const t = useT()
+  const locale = useLocale()
   const refreshedRef = useRef(false)
 
   // Everything time-dependent runs only in the browser, after hydration.
@@ -25,10 +28,10 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
     setNow(Date.now())
     // Explicit field options (not dateStyle/timeStyle) so timeZoneName is allowed —
     // Safari throws a TypeError if dateStyle/timeStyle are mixed with other options.
-    setLocalTime(new Date(opensAtIso).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }))
+    setLocalTime(new Date(opensAtIso).toLocaleString(locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }))
     const id = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(id)
-  }, [opensAtIso])
+  }, [opensAtIso, locale])
 
   const remaining = opensAt - now
   const isOpen = mounted && remaining <= 0
@@ -46,10 +49,12 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
     const m = Math.floor((s % 3600) / 60)
     const sec = s % 60
     const pad = (n: number) => n.toString().padStart(2, '0')
-    if (d > 0) return `${d}d ${h}h ${pad(m)}m`
-    if (h > 0) return `${h}h ${pad(m)}m ${pad(sec)}s`
-    if (m > 0) return `${m}m ${pad(sec)}s`
-    return `${sec}s`
+    // Unit letters are keys: Spanish abbreviates minutes "min", not "m".
+    const [D, H, M, S] = [t('exam.unit.d'), t('exam.unit.h'), t('exam.unit.m'), t('exam.unit.s')]
+    if (d > 0) return `${d}${D} ${h}${H} ${pad(m)}${M}`
+    if (h > 0) return `${h}${H} ${pad(m)}${M} ${pad(sec)}${S}`
+    if (m > 0) return `${m}${M} ${pad(sec)}${S}`
+    return `${sec}${S}`
   }
 
   // Server + first client render: a static placeholder with no time math, so SSR and
@@ -58,8 +63,8 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
     return (
       <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-6 text-center">
         <div className="text-3xl mb-2">⏳</div>
-        <p className="text-sm font-semibold text-brand-800">This exam isn&rsquo;t open yet</p>
-        <p className="mt-3 text-sm text-brand-600">Loading the countdown…</p>
+        <p className="text-sm font-semibold text-brand-800">{t('exam.notOpenYet')}</p>
+        <p className="mt-3 text-sm text-brand-600">{t('exam.loadingCountdown')}</p>
       </div>
     )
   }
@@ -68,12 +73,12 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
     return (
       <div className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-6 text-center">
         <div className="text-3xl mb-2">✅</div>
-        <p className="text-lg font-semibold text-emerald-800">The exam is now open.</p>
+        <p className="text-lg font-semibold text-emerald-800">{t('exam.nowOpen')}</p>
         <button
           onClick={() => router.refresh()}
           className="mt-4 rounded-lg bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
         >
-          Start exam
+          {t('exam.startExam')}
         </button>
       </div>
     )
@@ -82,10 +87,10 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
   return (
     <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-6 text-center">
       <div className="text-3xl mb-2">⏳</div>
-      <p className="text-sm font-semibold text-brand-800">This exam isn&rsquo;t open yet</p>
+      <p className="text-sm font-semibold text-brand-800">{t('exam.notOpenYet')}</p>
       <p className="mt-3 text-4xl font-bold tabular-nums text-brand-800">{fmt(remaining)}</p>
-      <p className="mt-2 text-sm text-brand-700">Opens {localTime || '…'}</p>
-      <p className="mt-3 text-xs text-brand-500">Keep this page open — it will start the exam automatically when the time arrives.</p>
+      <p className="mt-2 text-sm text-brand-700">{t('exam.opensAt', { when: localTime || '…' })}</p>
+      <p className="mt-3 text-xs text-brand-500">{t('exam.keepPageOpen')}</p>
     </div>
   )
 }
