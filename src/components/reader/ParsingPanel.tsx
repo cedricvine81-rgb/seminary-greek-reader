@@ -4,6 +4,9 @@ import { translateParsing } from '@/lib/i18n/morph-labels'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { VOCAB_GLOSSES } from '@/lib/vocab-glosses'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { resolverFor, type GlossResolver } from '@/lib/vocab-gloss-lookup'
+import { translatable } from '@/lib/i18n/machine-translation'
 
 function lookupVocabGloss(lexeme: string | undefined): string | null {
   if (!lexeme) return null
@@ -72,9 +75,21 @@ interface ParsingPanelProps {
 
 export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = 'panel' }: ParsingPanelProps) {
   const t = useT()
+  const locale = useLocale()
   const [entry, setEntry] = useState<LexiconEntry | null>(null)
   const [lsjEntry, setLsjEntry] = useState<string | null>(null)
   const isHebrew = info?.script === 'hebrew'
+
+  // The deck gloss in the reader's language. Both decks are covered, so the Hebrew pane gets one
+  // too — it previously had none at all, and Hebrew is where a student is least able to guess.
+  const [localGloss, setLocalGloss] = useState<GlossResolver>(() => () => null)
+  useEffect(() => {
+    let alive = true
+    resolverFor(locale, isHebrew ? 'hebrew' : 'greek').then(r => { if (alive) setLocalGloss(() => r) })
+    return () => { alive = false }
+  }, [locale, isHebrew])
+  const translatedGloss = info?.lexeme ? localGloss(info.lexeme) : null
+  // English readers keep exactly what they had.
   const vocabGloss = isHebrew ? null : lookupVocabGloss(info?.lexeme)
 
   // Load Strong's-keyed lexicon (Thayer, Mounce, Abbott-Smith) — Greek only.
@@ -146,21 +161,21 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
               lexicon (falling back to the Strong's concise definition where BDB has none). */}
           {isHebrew && (
             <div className="text-gray-800">
-              {info.gloss && (
+              {(translatedGloss || info.gloss) && (
                 <p className="mb-0">
                   <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('reader.gloss')}</span>
-                  {info.gloss}
+                  {translatedGloss ?? info.gloss}
                 </p>
               )}
               {info.bdbDefinition ? (
                 <p className="mb-0 leading-relaxed">
                   <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">BDB</span>
-                  {info.bdbDefinition}
+                  <span {...translatable}>{info.bdbDefinition}</span>
                 </p>
               ) : info.definition && info.definition !== info.gloss ? (
                 <p className="mb-0">
                   <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Strong&apos;s</span>
-                  {info.definition}
+                  <span {...translatable}>{info.definition}</span>
                 </p>
               ) : null}
             </div>
@@ -168,37 +183,45 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
 
           {/* Lexical definitions (Greek) */}
           <div className={`text-gray-800 ${isHebrew ? 'hidden' : ''}`}>
+            {/* The reader's own language first — a student should not have to read past four
+                English lexicons to reach the one line written for them. */}
+            {translatedGloss && (
+              <p className="mb-0">
+                <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('reader.glossLocal')}</span>
+                {translatedGloss}
+              </p>
+            )}
             {entry?.thayer && (
               <p className="mb-0">
                 <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Thayer&apos;s</span>
-                {entry.thayer}
+                <span {...translatable}>{entry.thayer}</span>
               </p>
             )}
             {entry?.mounce && (
               <p className="mb-0">
                 <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Open GNT</span>
-                {entry.mounce}
+                <span {...translatable}>{entry.mounce}</span>
               </p>
             )}
             {entry?.abbottSmith && (
               <p className="mb-0">
                 <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Abbott-Smith</span>
-                {entry.abbottSmith}
+                <span {...translatable}>{entry.abbottSmith}</span>
               </p>
             )}
             {lsjEntry && (
               <p className="mb-0">
                 <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Liddell-Scott</span>
-                {lsjEntry}
+                <span {...translatable}>{lsjEntry}</span>
               </p>
             )}
-            {vocabGloss && (
+            {vocabGloss && !translatedGloss && (
               <p className="mb-0">
                 <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('reader.vocabBuilder')}</span>
                 {vocabGloss}
               </p>
             )}
-            {!entry?.thayer && !entry?.mounce && !entry?.abbottSmith && !lsjEntry && !vocabGloss && info.gloss && (
+            {!entry?.thayer && !entry?.mounce && !entry?.abbottSmith && !lsjEntry && !vocabGloss && !translatedGloss && info.gloss && (
               <p className="mb-0">
                 <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{t('reader.gloss')}</span>
                 {info.gloss}

@@ -125,6 +125,19 @@ export function vocabItems(): Item[] {
         : `vocab.gloss.${deck}.${lemma}`
       items.push({ key, english: w.gloss, bucket: deck })
     }
+    // The deck's own English, emitted for the client.
+    //
+    // The reader's parsing pane needs it to VERIFY a translation rather than merely display one:
+    // content() compares fingerprint(english) against the catalogue's fp, and without the English
+    // there is nothing to compare, so a gloss whose English had since been edited would show its
+    // stale Spanish. The pane cannot reuse VOCAB_GLOSSES for this — that is a different, fuller
+    // gloss set (αὐτός is "he, she, it, himself…" there and "he, she, it; same" here), so its
+    // fingerprints would never match.
+    fs.mkdirSync('public/data/vocab', { recursive: true })
+    fs.writeFileSync(`public/data/vocab/${deck}.en.json`,
+      JSON.stringify(Object.fromEntries(
+        words.filter(w => w.gloss?.trim()).map(w => [w.word.normalize('NFC'), w.gloss]),
+      )))
   }
   return items
 }

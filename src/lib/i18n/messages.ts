@@ -117,6 +117,8 @@ const en: Catalogue = {
   'course.level.GREEK_III': 'Greek III',
   'course.level.SEPTUAGINT': 'Septuagint Greek',
   // ── Instructor: dashboard and courses ──
+  // The parsing pane's own gloss, from the vocabulary decks, in the reader's language.
+  'reader.glossLocal': 'Gloss',
   'inst.welcome': 'Welcome back, {name}',
   'inst.overview': 'Here’s an overview of your courses and student activity.',
   'inst.stat.courses': 'Courses',
@@ -1587,6 +1589,7 @@ const es: Catalogue = {
   'course.level.GREEK_III': 'Griego III',
   'course.level.SEPTUAGINT': 'Griego de la Septuaginta',
   // ── Profesor: panel y cursos ──
+  'reader.glossLocal': 'Glosa',
   'inst.welcome': 'Hola de nuevo, {name}',
   'inst.overview': 'Este es un resumen de tus cursos y de la actividad de tus estudiantes.',
   'inst.stat.courses': 'Cursos',
