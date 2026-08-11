@@ -6,6 +6,8 @@ import { ChevronDown, ChevronRight, CheckCircle2, Loader2 } from 'lucide-react'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { useApi } from '@/lib/api-client'
 import type { HomeworkWord } from '@/data/grammar-homework'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate, formatDateTime } from '@/lib/i18n/format'
 
 // Grading view for grammar-homework Translation Exercises: each student's
 // submitted word-by-word answers side by side with the model, with a points
@@ -48,6 +50,7 @@ function parseAnswer(raw: string): StudentAnswer | null {
 function GradeCell({ r1, r2, model, exactMatch }: {
   r1?: string; r2?: string; model?: string; exactMatch?: boolean
 }) {
+  const t = useT()
   const hasR2 = r2 !== undefined
   const final = hasR2 ? r2 : r1
   const revised = hasR2 && (r2 ?? '').trim() !== (r1 ?? '').trim()
@@ -58,7 +61,7 @@ function GradeCell({ r1, r2, model, exactMatch }: {
       </span>
       {revised && (
         <span className="block text-[11px] text-amber-600">
-          R1: <span className="line-through decoration-amber-400/70">{(r1 ?? '').trim() || '—'}</span>
+          {t('hw.r1Prefix')} <span className="line-through decoration-amber-400/70">{(r1 ?? '').trim() || '—'}</span>
         </span>
       )}
       {model && <span className="block text-gray-400">{model}</span>}
@@ -67,14 +70,16 @@ function GradeCell({ r1, r2, model, exactMatch }: {
 }
 
 export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }) {
+  const t = useT()
+  const locale = useLocale()
   const { data, isLoading, mutate } = useApi<HwData>(`/api/assignments/${assignmentId}/homework`)
   const [openStudent, setOpenStudent] = useState<string | null>(null)
   const [scores, setScores] = useState<Record<string, string>>({})   // responseId -> input value
   const [saving, setSaving] = useState<string | null>(null)
   const [savedFlash, setSavedFlash] = useState<string | null>(null)
 
-  if (isLoading) return <p className="py-10 text-center text-sm text-gray-400"><Loader2 size={16} className="inline animate-spin" /> Loading…</p>
-  if (!data) return <p className="py-10 text-center text-sm text-gray-400">Could not load submissions.</p>
+  if (isLoading) return <p className="py-10 text-center text-sm text-gray-400"><Loader2 size={16} className="inline animate-spin" /> {t('hw.loading')}</p>
+  if (!data) return <p className="py-10 text-center text-sm text-gray-400">{t('hw.loadFailed')}</p>
 
   async function saveScore(responseId: string, max: number) {
     const raw = scores[responseId]
@@ -99,10 +104,8 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
 
   return (
     <Card>
-      <CardTitle>Grade homework — {data.title}</CardTitle>
-      <p className="mt-1 text-xs text-gray-500">
-        Scores save per sentence and roll up to the student&rsquo;s grade in the gradebook.
-      </p>
+      <CardTitle>{t('hw.title', { title: data.title })}</CardTitle>
+      <p className="mt-1 text-xs text-gray-500">{t('hw.intro')}</p>
 
       <div className="mt-4 divide-y divide-gray-100">
         {data.students.map(s => {
@@ -118,8 +121,8 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
                 <span className="text-sm font-medium text-gray-800">{s.name}</span>
                 <span className="flex items-center gap-3 text-xs text-gray-400">
                   {s.submittedAt
-                    ? <>Submitted {new Date(s.submittedAt).toLocaleDateString()} · {graded}/{data.questions.length} graded</>
-                    : 'Not submitted'}
+                    ? t('hw.submittedGraded', { date: formatDate(s.submittedAt, locale), graded, total: data.questions.length })
+                    : t('hw.notSubmitted')}
                   {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 </span>
               </button>
@@ -137,19 +140,17 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
                           <>
                             {ans.r2At && (
                               <p className="mt-1 inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-                                Round 2 corrections submitted
-                                {' '}{new Date(ans.r2At).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
-                                {' '}· revised fields show the Round 1 answer struck through
+                                {t('hw.round2Submitted', { when: formatDateTime(ans.r2At, locale) })}
                               </p>
                             )}
                             <div className="mt-2 overflow-x-auto">
                               <table className="text-xs border-collapse min-w-full">
                                 <thead>
                                   <tr className="text-left text-gray-400">
-                                    <th className="pr-3 py-1 font-medium">Word</th>
-                                    <th className="pr-3 py-1 font-medium">Parsing (student / model)</th>
-                                    <th className="pr-3 py-1 font-medium">Syntax (student / model)</th>
-                                    <th className="py-1 font-medium">Gloss (student / model)</th>
+                                    <th className="pr-3 py-1 font-medium">{t('hw.colWord')}</th>
+                                    <th className="pr-3 py-1 font-medium">{t('hw.colParsing')}</th>
+                                    <th className="pr-3 py-1 font-medium">{t('hw.colSyntax')}</th>
+                                    <th className="py-1 font-medium">{t('hw.colGloss')}</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -180,25 +181,25 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
                             <div className="mt-2 rounded-lg bg-gray-50 px-3 py-2 text-sm">
                               {ans.r2 ? (
                                 <>
-                                  <p className="text-gray-800"><span className="text-xs text-gray-400 mr-1.5">Round 2:</span>{ans.r2.translation || <em className="text-gray-300">no translation</em>}</p>
+                                  <p className="text-gray-800"><span className="text-xs text-gray-400 mr-1.5">{t('hw.round2')}</span>{ans.r2.translation || <em className="text-gray-300">{t('hw.noTranslation')}</em>}</p>
                                   {ans.r2.translation.trim() !== ans.translation.trim() && (
-                                    <p className="text-amber-700/80 text-xs"><span className="text-gray-400 mr-1.5">Round 1:</span><span className="line-through decoration-amber-400/70">{ans.translation || '—'}</span></p>
+                                    <p className="text-amber-700/80 text-xs"><span className="text-gray-400 mr-1.5">{t('hw.round1')}</span><span className="line-through decoration-amber-400/70">{ans.translation || '—'}</span></p>
                                   )}
                                 </>
                               ) : (
-                                <p className="text-gray-800"><span className="text-xs text-gray-400 mr-1.5">Student:</span>{ans.translation || <em className="text-gray-300">no translation</em>}</p>
+                                <p className="text-gray-800"><span className="text-xs text-gray-400 mr-1.5">{t('hw.student')}</span>{ans.translation || <em className="text-gray-300">{t('hw.noTranslation')}</em>}</p>
                               )}
-                              <p className="text-gray-500"><span className="text-xs text-gray-400 mr-1.5">Model:</span>{q.modelTranslation}</p>
+                              <p className="text-gray-500"><span className="text-xs text-gray-400 mr-1.5">{t('hw.model')}</span>{q.modelTranslation}</p>
                               {q.model?.note && <p className="mt-0.5 text-xs text-gray-400">{q.model.note}</p>}
                             </div>
                           </>
                         ) : (
-                          <p className="mt-2 text-sm text-gray-400 italic">No answer recorded for this sentence.</p>
+                          <p className="mt-2 text-sm text-gray-400 italic">{t('hw.noAnswer')}</p>
                         )}
 
                         {r && (
                           <div className="mt-2 flex items-center gap-2">
-                            <label className="text-xs font-medium text-gray-600">Score</label>
+                            <label className="text-xs font-medium text-gray-600">{t('hw.score')}</label>
                             <input
                               type="number" min={0} max={q.points} step={0.5}
                               value={scores[r.id] ?? (r.score ?? '')}
@@ -212,10 +213,10 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
                               disabled={saving === r.id}
                               className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-60"
                             >
-                              {saving === r.id ? 'Saving…' : 'Save'}
+                              {t(saving === r.id ? 'hw.saving' : 'gr.save')}
                             </button>
                             {savedFlash === r.id && (
-                              <span className="text-xs text-green-700 inline-flex items-center gap-1"><CheckCircle2 size={12} /> Saved</span>
+                              <span className="text-xs text-green-700 inline-flex items-center gap-1"><CheckCircle2 size={12} /> {t('gr.saved')}</span>
                             )}
                           </div>
                         )}

@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { AssignmentResultsGrid } from './AssignmentResultsGrid'
 import { ClipboardCheck, ChevronDown, ChevronUp } from 'lucide-react'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate } from '@/lib/i18n/format'
 
 interface Assignment {
   id: string
@@ -17,6 +19,8 @@ interface Props {
 }
 
 export function CourseTranslationGrader({ assignments }: Props) {
+  const t = useT()
+  const locale = useLocale()
   const [openId, setOpenId] = useState<string | null>(null)
 
   if (assignments.length === 0) return null
@@ -33,7 +37,7 @@ export function CourseTranslationGrader({ assignments }: Props) {
                 <ClipboardCheck size={15} className="shrink-0 text-brand-500" />
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-gray-800 truncate">
-                    Week {a.weekNumber}: {a.title}
+                    {t('tg.weekTitle', { n: a.weekNumber, title: a.title })}
                   </p>
                   {a.reference && (
                     <p className="text-xs text-gray-400">{a.reference}</p>
@@ -42,7 +46,7 @@ export function CourseTranslationGrader({ assignments }: Props) {
               </div>
               <div className="flex items-center gap-3 shrink-0 ml-4">
                 <span className="text-xs text-gray-400 hidden sm:block">
-                  Due {new Date(a.dueDate).toLocaleDateString()}
+                  {t('tg.due', { date: formatDate(a.dueDate, locale) })}
                 </span>
                 <Button
                   size="sm"
@@ -51,9 +55,9 @@ export function CourseTranslationGrader({ assignments }: Props) {
                   className="flex items-center gap-1.5"
                 >
                   {isOpen ? (
-                    <><ChevronUp size={13} /> Close</>
+                    <><ChevronUp size={13} /> {t('tg.close')}</>
                   ) : (
-                    <><ClipboardCheck size={13} /> Grade Exercise</>
+                    <><ClipboardCheck size={13} /> {t('tg.gradeExercise')}</>
                   )}
                 </Button>
               </div>

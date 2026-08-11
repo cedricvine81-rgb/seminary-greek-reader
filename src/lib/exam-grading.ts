@@ -7,11 +7,8 @@
 
 export type GradeComponent = 'parsing' | 'syntax' | 'translation'
 export const GRADE_COMPONENTS: GradeComponent[] = ['parsing', 'syntax', 'translation']
-export const GRADE_COMPONENT_LABELS: Record<GradeComponent, string> = {
-  parsing: 'Parsing',
-  syntax: 'Syntax',
-  translation: 'Translation',
-}
+// The components' NAMES live in the catalogue under grade.component.* — four copies of them
+// had accumulated, one of them in the same file that imported this map.
 
 export interface GradeWeights { parsing: number; syntax: number; translation: number }
 export const DEFAULT_WEIGHTS: GradeWeights = { parsing: 33, syntax: 33, translation: 34 }

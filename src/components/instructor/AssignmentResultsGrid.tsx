@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { ExternalLink, Trash2 } from 'lucide-react'
 import { useApi } from '@/lib/api-client'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate } from '@/lib/i18n/format'
 
 interface StudentResult {
   userId: string
@@ -56,6 +58,8 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
   const loaded = data !== undefined
   const loading = isLoading
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const t = useT()
+  const locale = useLocale()
 
   function refresh() {
     if (!enabled) setEnabled(true)
@@ -65,7 +69,7 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
   async function deleteSubmission(row: StudentResult) {
     if (!row.sessionId) return
     const ok = window.confirm(
-      `Delete ${row.name}'s submission?\n\nThis re-opens it so the student can finish and resubmit. Their work is kept, but any grade is cleared.`
+      t('res.deleteConfirm', { name: row.name })
     )
     if (!ok) return
     setDeletingId(row.sessionId)
@@ -76,12 +80,12 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
       )
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
-        alert(body.error || 'Could not delete the submission. Please try again.')
+        alert(body.error || t('res.deleteFailed'))
         return
       }
       await mutate()
     } catch {
-      alert('Could not delete the submission. Please try again.')
+      alert(t('res.deleteFailed'))
     } finally {
       setDeletingId(null)
     }
@@ -92,18 +96,18 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
   return (
     <Card>
       <div className="flex items-center justify-between mb-4">
-        <CardTitle>Student Results</CardTitle>
+        <CardTitle>{t('res.title')}</CardTitle>
         <Button variant="ghost" onClick={refresh} loading={loading} size="sm">
-          {loaded ? 'Refresh' : 'Load results'}
+          {t(loaded ? 'res.refresh' : 'res.load')}
         </Button>
       </div>
 
       {!loaded && !loading && (
-        <p className="text-sm text-gray-400 italic">Click "Load results" to see student submissions.</p>
+        <p className="text-sm text-gray-400 italic">{t('res.clickLoad')}</p>
       )}
 
       {loaded && data && data.rows.length === 0 && (
-        <p className="text-sm text-gray-400 italic">No enrolled students found.</p>
+        <p className="text-sm text-gray-400 italic">{t('res.noStudents')}</p>
       )}
 
       {loaded && data && data.rows.length > 0 && (
@@ -111,20 +115,20 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
           {/* Summary row */}
           <div className="flex gap-6 text-sm px-1">
             <div>
-              <span className="text-gray-500">Submitted: </span>
+              <span className="text-gray-500">{t('res.submitted')}: </span>
               <span className="font-semibold text-gray-800">
                 {data.rows.filter(r => r.attempted).length} / {data.rows.length}
               </span>
             </div>
             {data.runningPct !== null && (
               <div>
-                <span className="text-gray-500">{isTranslation ? 'Avg grade (graded)' : 'Running avg'}: </span>
+                <span className="text-gray-500">{t(isTranslation ? 'res.avgGraded' : 'res.runningAvg')}: </span>
                 <span className="font-semibold text-brand-700">{data.runningPct}%</span>
               </div>
             )}
             {!isTranslation && data.overallPct !== null && (
               <div>
-                <span className="text-gray-500">Overall avg: </span>
+                <span className="text-gray-500">{t('res.overallAvg')}: </span>
                 <span className="font-semibold text-brand-700">{data.overallPct}%</span>
               </div>
             )}
@@ -135,19 +139,19 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">Student</th>
-                  <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">{t('res.colStudent')}</th>
+                  <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">{t('res.colStatus')}</th>
                   {isTranslation ? (
                     <>
-                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Submitted</th>
-                      <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 bg-brand-50">Grade</th>
-                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">View work</th>
-                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Delete</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">{t('res.colSubmitted')}</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 bg-brand-50">{t('res.colGrade')}</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">{t('res.colViewWork')}</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">{t('res.colDelete')}</th>
                     </>
                   ) : (
                     <>
-                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Score</th>
-                      <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 bg-brand-50">Grade</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">{t('res.colScore')}</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 bg-brand-50">{t('res.colGrade')}</th>
                     </>
                   )}
                 </tr>
@@ -161,16 +165,16 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
                     </td>
                     <td className="px-3 py-2 text-center">
                       {row.attempted
-                        ? <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md">Submitted</span>
+                        ? <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md">{t('res.statusSubmitted')}</span>
                         : isTranslation && row.sessionId
-                          ? <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">In progress</span>
-                          : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not submitted</span>
+                          ? <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">{t('res.statusInProgress')}</span>
+                          : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">{t('res.statusNotSubmitted')}</span>
                       }
                     </td>
                     {isTranslation ? (
                       <>
                         <td className="px-3 py-2 text-center text-xs text-gray-500">
-                          {row.submittedAt ? new Date(row.submittedAt).toLocaleDateString() : '—'}
+                          {row.submittedAt ? formatDate(row.submittedAt, locale) : '—'}
                         </td>
                         <td className="px-3 py-2 text-center bg-brand-50/30">
                           <PctBadge pct={row.grade} />
@@ -181,7 +185,7 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
                               href={`/instructor/assignments/${assignmentId}/submissions/${row.sessionId}`}
                               className="inline-flex items-center gap-1 text-xs text-brand-600 hover:text-brand-800 font-medium"
                             >
-                              View <ExternalLink size={11} />
+                              {t('res.view')} <ExternalLink size={11} />
                             </Link>
                           ) : (
                             <span className="text-xs text-gray-300">—</span>
@@ -192,10 +196,10 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
                             <button
                               onClick={() => deleteSubmission(row)}
                               disabled={deletingId === row.sessionId}
-                              title="Delete submission so the student can resubmit"
+                              title={t('res.deleteTitle')}
                               className="inline-flex items-center gap-1 text-xs text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
                             >
-                              <Trash2 size={12} /> {deletingId === row.sessionId ? 'Deleting…' : 'Delete'}
+                              <Trash2 size={12} /> {t(deletingId === row.sessionId ? 'res.deleting' : 'res.delete')}
                             </button>
                           ) : (
                             <span className="text-xs text-gray-300">—</span>
@@ -219,7 +223,7 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
               <tfoot>
                 <tr className="border-t-2 border-gray-200 bg-gray-50">
                   <td className="px-4 py-2.5 text-xs font-semibold text-gray-600" colSpan={isTranslation ? 3 : 2}>
-                    {isTranslation ? 'Average grade (graded only)' : 'Class average (attempted only)'}
+                    {t(isTranslation ? 'res.footAvgGraded' : 'res.footClassAvg')}
                   </td>
                   <td className="px-3 py-2 text-center bg-brand-50/30">
                     <PctBadge pct={data.runningPct} />

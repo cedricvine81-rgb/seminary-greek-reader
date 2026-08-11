@@ -391,7 +391,8 @@ function parsePassageRef(ref: string, books: BiblicalBook[], locale = 'en'): {
 // PDF/print: field order + labels for the Round 1 / Round 2 word table.
 const PRINT_ANN_FIELDS = ['parsing', 'syntax', 'translation'] as const
 type PrintAnnField = typeof PRINT_ANN_FIELDS[number]
-const PRINT_ANN_LABELS: Record<PrintAnnField, string> = { parsing: 'Parse', syntax: 'Syntax', translation: 'Trans.' }
+// Labels come from grade.componentShort.* — this map was a character-for-character copy of
+// ANN_LABELS in the instructor's SubmissionViewer, which shows the same annotations.
 
 // ── Fullscreen helpers (with WebKit fallback for older Safari) ──────────────────
 type FsElement = HTMLElement & { webkitRequestFullscreen?: () => Promise<void> | void }
@@ -2411,10 +2412,10 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                                 <td rowSpan={fields.length} className="py-1.5 pr-3 align-top font-greek text-sm">{w.surface}</td>
                               )}
                               <td className="py-0.5 pr-3 text-gray-800">
-                                {ann[f] && <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{PRINT_ANN_LABELS[f]}</span>{ann[f]}</>}
+                                {ann[f] && <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{t(`grade.componentShort.${f}`)}</span>{ann[f]}</>}
                               </td>
                               <td className="py-0.5 text-red-700">
-                                {corr[f] && <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{PRINT_ANN_LABELS[f]}</span>{corr[f]}</>}
+                                {corr[f] && <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{t(`grade.componentShort.${f}`)}</span>{corr[f]}</>}
                               </td>
                             </tr>
                           ))

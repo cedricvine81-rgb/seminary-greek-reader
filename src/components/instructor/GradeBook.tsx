@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
 import { useApi } from '@/lib/api-client'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface Course { id: string; name: string }
 
@@ -42,6 +43,7 @@ function ScoreCell({ pct }: { pct: number | null }) {
 }
 
 export function GradeBook({ courses }: { courses: Course[] }) {
+  const t = useT()
   const [courseId, setCourseId] = useState('')
   // The course actually fetched (set on "Load"); drives the SWR key.
   const [requested, setRequested] = useState('')
@@ -54,18 +56,18 @@ export function GradeBook({ courses }: { courses: Course[] }) {
     <div className="space-y-5">
       <div className="flex items-end gap-3">
         <Select
-          label="Select course"
+          label={t('gb.selectCourse')}
           value={courseId}
           onChange={e => { setCourseId(e.target.value); setRequested('') }}
-          placeholder="Choose a course…"
+          placeholder={t('gb.chooseCourse')}
           options={courses.map(c => ({ value: c.id, label: c.name }))}
           className="max-w-xs"
         />
-        <Button onClick={() => setRequested(courseId)} loading={isLoading} disabled={!courseId}>Load Grade Book</Button>
+        <Button onClick={() => setRequested(courseId)} loading={isLoading} disabled={!courseId}>{t('gb.load')}</Button>
       </div>
 
       {data && data.rows.length === 0 && (
-        <p className="text-sm text-gray-400 italic">No enrolled students found for this course.</p>
+        <p className="text-sm text-gray-400 italic">{t('gb.noStudentsForCourse')}</p>
       )}
 
       {data && data.rows.length > 0 && (
@@ -74,21 +76,21 @@ export function GradeBook({ courses }: { courses: Course[] }) {
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
                 <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 whitespace-nowrap sticky left-0 bg-gray-50">
-                  Student
+                  {t('gb.student')}
                 </th>
                 {data.assignments.map(a => (
                   <th key={a.id} className="px-3 py-3 text-center text-xs font-semibold text-gray-600 whitespace-nowrap max-w-[90px]">
-                    <span className="block text-gray-400 font-normal">Wk {a.weekNumber}</span>
+                    <span className="block text-gray-400 font-normal">{t('gb.wk', { n: a.weekNumber })}</span>
                     <span className="block truncate">{a.title.replace(/^Week \d+ — /, '')}</span>
                   </th>
                 ))}
                 <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 whitespace-nowrap bg-brand-50">
-                  Running %
-                  <span className="block font-normal text-gray-400">(attempted)</span>
+                  {t('gb.runningPct')}
+                  <span className="block font-normal text-gray-400">{t('gb.attempted')}</span>
                 </th>
                 <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 whitespace-nowrap bg-brand-50">
-                  Overall %
-                  <span className="block font-normal text-gray-400">(all quizzes)</span>
+                  {t('gb.overallPct')}
+                  <span className="block font-normal text-gray-400">{t('gb.allQuizzes')}</span>
                 </th>
               </tr>
             </thead>

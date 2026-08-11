@@ -4,19 +4,17 @@ import { prisma } from '@/lib/db'
 import { compareStudentsByName } from '@/lib/sort-students'
 import { GradeWeightEditor } from './GradeWeightEditor'
 import { normalizeCategoryWeights, weightedOverall, type GradeCategory } from '@/lib/grade-weights'
+import { getServerT } from '@/lib/i18n/server'
 
 interface Props {
   courseId: string
 }
 
+// Column groups, in display order. The NAMES come from assign.typePlural.* — this list held
+// the seventh copy of that enum's labels.
 const GROUPS = [
-  { type: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quizzes' },
-  { type: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quizzes' },
-  { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
-  { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
-  { type: 'COURSE_NOTES',         label: 'Course Notes' },
-  { type: 'GROUP_PRESENTATION',   label: 'Group Presentations' },
-  { type: 'CONSTRUCT_SEARCH',     label: 'Construct Searches' },
+  'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
 ] as const
 
 function PctCell({ pct, muted = false }: { pct: number | null; muted?: boolean }) {
@@ -41,6 +39,7 @@ function avg(nums: (number | null)[]): number | null {
 }
 
 export async function CourseGradebook({ courseId }: Props) {
+  const t = getServerT()
   const [enrollments, assignments, course] = await Promise.all([
     prisma.enrollment.findMany({
       where: { courseId, status: 'APPROVED', user: { deletedAt: null } },
@@ -169,8 +168,9 @@ export async function CourseGradebook({ courseId }: Props) {
   }
 
   // Pre-compute groups so every render section uses identical structure
-  const activeGroups = GROUPS.map(({ type, label }) => ({
-    type, label,
+  const activeGroups = GROUPS.map(type => ({
+    type,
+    label: t(`assign.typePlural.${type}`),
     cols: assignments.filter(a => a.type === type),
   })).filter(g => g.cols.length > 0)
 
@@ -210,7 +210,7 @@ export async function CourseGradebook({ courseId }: Props) {
               </th>
             ))}
             <th className="px-3 py-2 text-center font-semibold text-brand-700 bg-brand-50 border-l-2 border-gray-300 whitespace-nowrap">
-              Overall
+              {t('gb.overall')}
             </th>
           </tr>
 
@@ -225,11 +225,11 @@ export async function CourseGradebook({ courseId }: Props) {
                     className="px-2 py-2 text-center font-medium text-gray-500 border-l border-gray-100 overflow-hidden"
                   >
                     <span className="block truncate text-xs leading-tight">{a.title}</span>
-                    <span className="block text-[10px] text-gray-400 leading-tight">Wk {a.weekNumber}</span>
+                    <span className="block text-[10px] text-gray-400 leading-tight">{t('gb.wk', { n: a.weekNumber })}</span>
                   </th>
                 ))}
                 <th className="px-2 py-2 text-center font-semibold text-gray-600 bg-gray-100 border-l border-gray-200">
-                  Avg
+                  {t('gb.avg')}
                 </th>
               </Fragment>
             ))}
@@ -273,7 +273,7 @@ export async function CourseGradebook({ courseId }: Props) {
         <tfoot>
           <tr className="border-t-2 border-gray-200 bg-gray-50">
             <td className="sticky left-0 z-10 bg-gray-50 px-4 py-2.5 font-semibold text-gray-600 text-xs shadow-[1px_0_0_0_#e5e7eb]">
-              Class average
+              {t('gb.classAverage')}
             </td>
             {(() => {
               const cells: ReactNode[] = []

@@ -30,6 +30,19 @@ export function formatDateLong(value: string | number | Date, locale: string): s
 }
 
 /**
+ * A date AND time, in the app's language.
+ *
+ * Deliberately just the locale, with no option set. A bare `toLocaleString()` follows the
+ * BROWSER, so a Spanish page on an English browser printed English timestamps; passing the
+ * locale is the whole fix. Adding options would be a second change — and the one option
+ * combination this app tried before (dateStyle with timeZoneName) is exactly the one Safari
+ * rejected and Chrome accepted, which is why these helpers stay plain.
+ */
+export function formatDateTime(value: string | number | Date, locale: string): string {
+  return new Date(value).toLocaleString(locale)
+}
+
+/**
  * A number with the reader's own grouping. Spanish writes 1.234 where English writes 1,234, so
  * a bare toLocaleString() — which follows the BROWSER, not the app — puts English separators in
  * a Spanish page whenever the two disagree.

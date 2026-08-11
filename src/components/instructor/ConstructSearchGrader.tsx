@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { useApi } from '@/lib/api-client'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { Check, ChevronDown, ChevronRight, ExternalLink, Loader2, Search, Undo2 } from 'lucide-react'
 import {
   constructCorpusLabel, describeConstruct, parseConstructLink,
@@ -30,6 +31,7 @@ interface Data {
 // examples they found, their find-list in full, and a grade + feedback field. Lists stay
 // readable before they're handed in, so you can see who is stuck mid-week.
 export function ConstructSearchGrader({ assignmentId }: { assignmentId: string }) {
+  const t = useT()
   const { data, isLoading, mutate } = useApi<Data>(`/api/assignments/${assignmentId}/construct-search/grade`)
   const [open, setOpen] = useState<string | null>(null)
   const search = useMemo(
@@ -54,9 +56,9 @@ export function ConstructSearchGrader({ assignmentId }: { assignmentId: string }
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between gap-4">
-        <CardTitle>Construct Search — {data.assignment.title}</CardTitle>
+        <CardTitle>{t('cs.title', { title: data.assignment.title })}</CardTitle>
         <span className="text-sm text-gray-500">
-          Handed in: <span className="font-semibold text-gray-800">{submitted} / {data.rows.length}</span>
+          {t('cs.handedInCount')}: <span className="font-semibold text-gray-800">{submitted} / {data.rows.length}</span>
         </span>
       </div>
 
@@ -73,11 +75,11 @@ export function ConstructSearchGrader({ assignmentId }: { assignmentId: string }
               target="_blank"
               className="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 hover:underline"
             >
-              Run it yourself <ExternalLink size={12} />
+              {t('cs.runItYourself')} <ExternalLink size={12} />
             </Link>
           )}
           <p className="mt-1.5 text-xs text-brand-600">
-            Target: {data.assignment.config.requiredCount} example{data.assignment.config.requiredCount === 1 ? '' : 's'} each.
+            {t('cs.target', { count: data.assignment.config.requiredCount, n: data.assignment.config.requiredCount })}
           </p>
         </div>
       )}
@@ -111,6 +113,7 @@ function StudentRow({ row, assignmentId, config, expanded, onToggle, onSaved }: 
   const [gradeNote, setGradeNote] = useState(row.gradeNote ?? '')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const t = useT()
 
   useEffect(() => {
     setGrade(row.grade !== null ? String(row.grade) : '')
@@ -138,26 +141,26 @@ function StudentRow({ row, assignmentId, config, expanded, onToggle, onSaved }: 
       setTimeout(() => setSaved(false), 2500)
       onSaved()
     } catch {
-      alert('Could not save the grade. Please try again.')
+      alert(t('gr.saveFailed'))
     } finally {
       setSaving(false)
     }
   }
 
   async function reopen() {
-    if (!window.confirm(`Reopen ${row.name}'s find-list so they can keep working on it?`)) return
+    if (!window.confirm(t('cs.reopenConfirm', { name: row.name }))) return
     try {
       await post({ reopen: true })
       onSaved()
     } catch {
-      alert('Could not reopen this submission. Please try again.')
+      alert(t('cs.reopenFailed'))
     }
   }
 
   return (
     <div>
       <div className="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50">
-        <button onClick={onToggle} className="shrink-0 text-gray-400 hover:text-gray-700" title={expanded ? 'Collapse' : 'Expand find-list'}>
+        <button onClick={onToggle} className="shrink-0 text-gray-400 hover:text-gray-700" title={t(expanded ? 'cs.collapse' : 'cs.expand')}>
           {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
         </button>
         <button onClick={onToggle} className="min-w-0 flex-1 text-left">
@@ -167,10 +170,10 @@ function StudentRow({ row, assignmentId, config, expanded, onToggle, onSaved }: 
 
         <div className="w-24 shrink-0 text-center">
           {row.submittedAt
-            ? <span className="rounded-md bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">Handed in</span>
-            : <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-400">In progress</span>}
+            ? <span className="rounded-md bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">{t('cs.statusHandedIn')}</span>
+            : <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-400">{t('cs.statusInProgress')}</span>}
           <p className={`mt-1 text-[11px] ${short ? 'text-amber-600' : 'text-gray-400'}`}>
-            {row.completeCount} / {config.requiredCount} found
+            {t('cs.found', { done: row.completeCount, total: config.requiredCount })}
           </p>
         </div>
 
@@ -180,11 +183,11 @@ function StudentRow({ row, assignmentId, config, expanded, onToggle, onSaved }: 
             onChange={e => setGrade(e.target.value)}
             placeholder="—"
             className="w-16 rounded-lg border border-gray-200 px-2 py-1 text-center text-sm focus:outline-none focus:ring-1 focus:ring-brand-500"
-            title="Grade (0–100)"
+            title={t('gr.gradeTitle')}
           />
           <span className="text-xs text-gray-400">%</span>
           <Button size="sm" onClick={save} loading={saving} disabled={!dirty && !saved}>
-            {saved ? <><Check size={13} /> Saved</> : 'Save'}
+            {saved ? <><Check size={13} /> {t('gr.saved')}</> : t('gr.save')}
           </Button>
         </div>
       </div>
@@ -192,25 +195,25 @@ function StudentRow({ row, assignmentId, config, expanded, onToggle, onSaved }: 
       {expanded && (
         <div className="space-y-3 bg-gray-50/60 px-3 pb-4 pt-1">
           <div>
-            <label className="mb-1 block text-xs font-medium text-gray-500">Feedback to student</label>
+            <label className="mb-1 block text-xs font-medium text-gray-500">{t('gr.feedbackToStudent')}</label>
             <textarea
               value={gradeNote}
               onChange={e => setGradeNote(e.target.value)}
               rows={2}
-              placeholder="Optional feedback shown to the student with their grade."
+              placeholder={t('gr.feedbackExample')}
               className="w-full rounded-lg border border-gray-200 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-brand-500"
             />
           </div>
 
           {row.findings.length === 0 ? (
-            <p className="py-2 text-sm italic text-gray-400">This student hasn&rsquo;t entered any examples yet.</p>
+            <p className="py-2 text-sm italic text-gray-400">{t('cs.noExamples')}</p>
           ) : (
             <div className="space-y-2">
               {row.findings.map((f, i) => (
                 <div key={i} className="rounded-lg border border-gray-200 bg-surface p-3">
                   <div className="flex flex-wrap items-baseline gap-2">
                     <span className="text-xs text-gray-400">{i + 1}.</span>
-                    <span className="text-xs font-semibold text-brand-700">{f.ref || 'no reference'}</span>
+                    <span className="text-xs font-semibold text-brand-700">{f.ref || t('cs.noReference')}</span>
                     <span className="font-reading text-sm text-gray-800">{f.greek}</span>
                   </div>
                   {f.translation && <p className="mt-1 text-sm text-gray-700">{f.translation}</p>}
@@ -222,7 +225,7 @@ function StudentRow({ row, assignmentId, config, expanded, onToggle, onSaved }: 
 
           {row.notes && (
             <div className="rounded-lg border border-gray-200 bg-surface p-3">
-              <p className="mb-1 text-xs font-semibold text-gray-600">What they noticed</p>
+              <p className="mb-1 text-xs font-semibold text-gray-600">{t('cs.whatTheyNoticed')}</p>
               <p className="whitespace-pre-wrap text-sm text-gray-700">{row.notes}</p>
             </div>
           )}
@@ -232,7 +235,7 @@ function StudentRow({ row, assignmentId, config, expanded, onToggle, onSaved }: 
               onClick={reopen}
               className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-brand-700"
             >
-              <Undo2 size={13} /> Reopen for this student
+              <Undo2 size={13} /> {t('cs.reopen')}
             </button>
           )}
         </div>

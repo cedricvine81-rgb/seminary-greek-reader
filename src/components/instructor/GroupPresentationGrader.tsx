@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { useApi } from '@/lib/api-client'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatDate, formatDateTime } from '@/lib/i18n/format'
 import { sanitizeNoteHtml, toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { ChevronDown, ChevronRight, Check, Loader2, CheckCircle2, XCircle, Clock, RotateCcw } from 'lucide-react'
 
@@ -99,6 +101,8 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
   const [saved, setSaved] = useState(false)
   const [approving, setApproving] = useState(false)
   const [reopening, setReopening] = useState(false)
+  const t = useT()
+  const locale = useLocale()
 
   useEffect(() => {
     setGrade(group.grade !== null ? String(group.grade) : '')
@@ -120,22 +124,22 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
     try {
       await post({ grade: grade === '' ? null : Number(grade), gradeNote: gradeNote || null })
       setSaved(true); setTimeout(() => setSaved(false), 2500); onChanged()
-    } catch { alert('Could not save the grade. Please try again.') }
+    } catch { alert(t('gr.saveFailed')) }
     finally { setSaving(false) }
   }
 
   async function toggleLate() {
     setApproving(true)
     try { await post({ lateApproved: !group.lateApproved }); onChanged() }
-    catch { alert('Could not update late approval. Please try again.') }
+    catch { alert(t('gp.lateFailed')) }
     finally { setApproving(false) }
   }
 
   async function reopen() {
-    if (!window.confirm(`Reopen ${group.name}? This clears the submitted status of all ${group.memberCount} members — including any who have already handed in — and lets them edit and resubmit (late approval is granted).`)) return
+    if (!window.confirm(t('gp.reopenConfirm', { name: group.name, n: group.memberCount }))) return
     setReopening(true)
     try { await post({ reopen: true }); onChanged() }
-    catch { alert('Could not reopen the submission. Please try again.') }
+    catch { alert(t('gp.reopenFailed')) }
     finally { setReopening(false) }
   }
 
@@ -150,21 +154,21 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
         </button>
         <button onClick={onToggle} className="min-w-0 flex-1 text-left">
           <p className="font-semibold text-gray-800 truncate">{group.name}</p>
-          <p className="text-xs text-gray-400">{contributed} / {group.members.length} contributed</p>
+          <p className="text-xs text-gray-400">{t('gp.contributed', { done: contributed, total: group.members.length })}</p>
         </button>
 
         <div className="shrink-0 text-center">
           {group.submitted
-            ? <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md">All submitted</span>
+            ? <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md">{t('gp.allSubmitted')}</span>
             : group.submittedCount > 0
-              ? <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">{group.submittedCount} / {group.memberCount} submitted</span>
+              ? <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">{t('gp.someSubmitted', { done: group.submittedCount, total: group.memberCount })}</span>
               : group.pastDeadline
-                ? <span className="text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md">Past deadline</span>
-                : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not submitted</span>}
-          {group.submittedAt && <p className="mt-1 text-[11px] text-gray-400">{new Date(group.submittedAt).toLocaleDateString()}</p>}
+                ? <span className="text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md">{t('gp.pastDeadline')}</span>
+                : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">{t('gp.notSubmitted')}</span>}
+          {group.submittedAt && <p className="mt-1 text-[11px] text-gray-400">{formatDate(group.submittedAt, locale)}</p>}
           {(group.submitted || group.submittedCount > 0) && (
             <button onClick={reopen} disabled={reopening} className="mt-1 inline-flex items-center gap-1 text-[11px] text-gray-500 hover:text-brand-700 disabled:opacity-50">
-              <RotateCcw size={11} /> {reopening ? 'Reopening…' : 'Reopen'}
+              <RotateCcw size={11} /> {t(reopening ? 'gp.reopening' : 'gp.reopen')}
             </button>
           )}
         </div>
@@ -175,11 +179,11 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
             onChange={e => setGrade(e.target.value)}
             placeholder="—"
             className="w-16 text-center text-sm rounded-lg border border-gray-200 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
-            title="Group grade (0–100)"
+            title={t('gp.groupGradeTitle')}
           />
           <span className="text-xs text-gray-400">%</span>
           <Button size="sm" onClick={saveGrade} loading={saving} disabled={!dirty && !saved}>
-            {saved ? <><Check size={13} /> Saved</> : 'Save'}
+            {saved ? <><Check size={13} /> {t('gr.saved')}</> : t('gr.save')}
           </Button>
         </div>
       </div>
@@ -189,10 +193,10 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
         <div className="mx-3 mb-2 flex items-center justify-between gap-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-1.5">
           <span className="text-xs text-amber-800 flex items-center gap-1.5">
             <Clock size={13} />
-            {group.lateApproved ? 'Late submission approved — this group can still submit.' : 'Deadline passed. Approve a late submission to let this group submit.'}
+            {t(group.lateApproved ? 'gp.lateApproved' : 'gp.lateNotApproved')}
           </span>
           <Button size="sm" variant={group.lateApproved ? 'secondary' : 'primary'} onClick={toggleLate} loading={approving}>
-            {group.lateApproved ? 'Revoke' : 'Approve late'}
+            {t(group.lateApproved ? 'gp.revoke' : 'gp.approveLate')}
           </Button>
         </div>
       )}
@@ -201,23 +205,22 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
       {expanded && (
         <div className="px-3 pb-4 pt-1 bg-gray-50/60 space-y-3 border-t border-gray-100">
           <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1 mt-2">Feedback to group</label>
+            <label className="block text-xs font-medium text-gray-500 mb-1 mt-2">{t('gp.feedbackToGroup')}</label>
             <textarea
               value={gradeNote}
               onChange={e => setGradeNote(e.target.value)}
               rows={2}
-              placeholder="Optional feedback shown to every group member with their grade."
+              placeholder={t('gp.feedbackExample')}
               className="w-full text-sm rounded-lg border border-gray-200 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-500"
             />
           </div>
 
           {group.members.length === 0 ? (
-            <p className="text-sm text-gray-400 italic py-2">This group has no members.</p>
+            <p className="text-sm text-gray-400 italic py-2">{t('gp.noMembers')}</p>
           ) : (
             <>
               <p className="text-xs text-gray-500">
-                Each member gets the group grade{group.grade !== null ? ` (${group.grade}%)` : ''} unless you set an
-                individual grade below.
+                {t('gp.inheritNote', { pct: group.grade !== null ? ` (${group.grade}%)` : '' })}
               </p>
               <div className="space-y-2">
                 {group.members.map(m => (
@@ -252,6 +255,8 @@ function MemberSection({ member, groupGrade, assignmentId, groupId, onChanged }:
   const [grade, setGrade] = useState(member.grade !== null ? String(member.grade) : '')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const t = useT()
+  const locale = useLocale()
 
   useEffect(() => { setGrade(member.grade !== null ? String(member.grade) : '') }, [member.grade])
 
@@ -266,7 +271,7 @@ function MemberSection({ member, groupGrade, assignmentId, groupId, onChanged }:
       })
       if (!res.ok) throw new Error('failed')
       setSaved(true); setTimeout(() => setSaved(false), 2000); onChanged()
-    } catch { alert('Could not save this member’s grade. Please try again.') }
+    } catch { alert(t('gp.memberSaveFailed')) }
     finally { setSaving(false) }
   }
 
@@ -275,14 +280,14 @@ function MemberSection({ member, groupGrade, assignmentId, groupId, onChanged }:
       <div className="flex items-center gap-2 mb-1.5 flex-wrap">
         <span className="text-sm font-semibold text-gray-800">{member.name}</span>
         {member.contributed
-          ? <span className="inline-flex items-center gap-1 text-[11px] text-green-700"><CheckCircle2 size={12} /> Contributed</span>
-          : <span className="inline-flex items-center gap-1 text-[11px] text-gray-400"><XCircle size={12} /> No contribution</span>}
+          ? <span className="inline-flex items-center gap-1 text-[11px] text-green-700"><CheckCircle2 size={12} /> {t('gp.memberContributed')}</span>
+          : <span className="inline-flex items-center gap-1 text-[11px] text-gray-400"><XCircle size={12} /> {t('gp.memberNoContribution')}</span>}
         {member.attested
-          ? <span className="inline-flex items-center gap-1 text-[11px] text-brand-700"><CheckCircle2 size={12} /> Attested</span>
-          : <span className="inline-flex items-center gap-1 text-[11px] text-amber-600"><Clock size={12} /> Not attested</span>}
+          ? <span className="inline-flex items-center gap-1 text-[11px] text-brand-700"><CheckCircle2 size={12} /> {t('gp.memberAttested')}</span>
+          : <span className="inline-flex items-center gap-1 text-[11px] text-amber-600"><Clock size={12} /> {t('gp.memberNotAttested')}</span>}
         {member.submitted
-          ? <span className="inline-flex items-center gap-1 text-[11px] text-green-700" title={member.submittedAt ? new Date(member.submittedAt).toLocaleString() : undefined}><CheckCircle2 size={12} /> Submitted</span>
-          : <span className="inline-flex items-center gap-1 text-[11px] text-gray-400"><Clock size={12} /> Not submitted</span>}
+          ? <span className="inline-flex items-center gap-1 text-[11px] text-green-700" title={member.submittedAt ? formatDateTime(member.submittedAt, locale) : undefined}><CheckCircle2 size={12} /> {t('gp.memberSubmitted')}</span>
+          : <span className="inline-flex items-center gap-1 text-[11px] text-gray-400"><Clock size={12} /> {t('gp.memberNotSubmitted')}</span>}
 
         {/* Per-member grade override */}
         <div className="ml-auto flex items-center gap-1.5">
@@ -290,24 +295,26 @@ function MemberSection({ member, groupGrade, assignmentId, groupId, onChanged }:
             type="number" min={0} max={100} value={grade}
             onChange={e => setGrade(e.target.value)}
             placeholder={groupGrade !== null ? String(groupGrade) : '—'}
-            title="Individual grade (blank = inherit group grade)"
+            title={t('gp.individualTitle')}
             className="w-16 text-center text-sm rounded-lg border border-gray-200 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
           <span className="text-xs text-gray-400">%</span>
           <Button size="sm" variant="secondary" onClick={save} loading={saving} disabled={!dirty && !saved}>
-            {saved ? <><Check size={12} /> Saved</> : 'Set'}
+            {saved ? <><Check size={12} /> {t('gr.saved')}</> : t('gp.set')}
           </Button>
         </div>
       </div>
       <p className="mb-1.5 text-[11px] text-gray-400">
-        {member.grade !== null ? `Individual grade: ${member.grade}%` : `Inherits group grade${groupGrade !== null ? ` (${groupGrade}%)` : ''}`}
+        {member.grade !== null
+          ? t('gp.individualGrade', { pct: member.grade })
+          : t('gp.inheritsGroupGrade', { pct: groupGrade !== null ? ` (${groupGrade}%)` : '' })}
       </p>
       {empty
-        ? <p className="text-xs text-gray-400 italic">No section written yet.</p>
+        ? <p className="text-xs text-gray-400 italic">{t('gp.noSection')}</p>
         : <div className="prose-notes text-sm leading-snug text-gray-700 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: html }} />}
       {member.aiDeclaration.trim() !== '' && (
         <p className="mt-2 border-t border-gray-100 pt-1.5 text-xs text-gray-500">
-          <span className="font-medium text-gray-600">AI / sources statement:</span> {member.aiDeclaration}
+          <span className="font-medium text-gray-600">{t('gp.aiStatement')}</span> {member.aiDeclaration}
         </p>
       )}
     </div>
