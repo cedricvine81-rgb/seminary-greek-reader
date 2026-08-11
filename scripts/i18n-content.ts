@@ -14,6 +14,7 @@
  *   npx tsx scripts/i18n-content.ts --audit                  # coverage, and what went stale
  */
 import fs from 'node:fs'
+import zlib from 'node:zlib'
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS } from '../src/lib/themes'
 import { workDate } from '../src/lib/work-dates'
 import { DEVICES, GROUP_LABEL, GROUP_DESC } from '../src/lib/rhetoric-devices'
@@ -445,10 +446,42 @@ export function constructPresetItems(): Item[] {
   return items
 }
 
+
+/**
+ * A short gloss for every lemma of the Greek New Testament, so the reader's parsing pane can
+ * name a word in the reader's language whatever they click.
+ *
+ * SEPARATE FROM THE VOCAB DECK, which is a course vocabulary list of 1,120 words carrying its
+ * own licence and its own teaching glosses. That deck covers about 90% of running text but only
+ * a fifth of the vocabulary, so the fifth of clicks that land on a rarer word fell through to
+ * English. This source is the rest of the lexicon: the concise gloss the lemma index already
+ * carries, which is the same one the app shows elsewhere.
+ *
+ * Keyed by the lemma exactly as the index stores it, homograph markers included — "δοῦλος (II)"
+ * is a distinct entry with a distinct sense, and that string is what reaches the pane.
+ *
+ * Deck entries are SKIPPED: a lemma the deck already glosses is translated there, in its
+ * teaching form, and having two Spanish glosses for one word is how they come to disagree.
+ */
+export function lexiconGlossItems(): Item[] {
+  const lemmas = JSON.parse(
+    zlib.gunzipSync(fs.readFileSync('public/data/lemma-index.json.gz')).toString('utf8'),
+  ) as { l: string; g?: string; f: number }[]
+  const deck = new Set(Object.keys(
+    JSON.parse(fs.readFileSync('public/data/vocab/greek.en.json', 'utf8')) as Record<string, string>,
+  ))
+  // Frequency order, so --list hands back the words a student is likeliest to meet first.
+  return lemmas
+    .filter(e => (e.g ?? '').trim() && !deck.has(e.l.normalize('NFC')))
+    .sort((a, b) => b.f - a.f)
+    .map(e => ({ key: `lex.gloss.${e.l.normalize('NFC')}`, english: e.g!.trim(), bucket: 'greek' }))
+}
+
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
   rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems, vocab: vocabItems,
   constructPresets: constructPresetItems,
+  lexiconGlosses: lexiconGlossItems,
 }
 /**
  * Sources emitted as per-bucket JSON under public/ and fetched by the client, instead of as one
@@ -465,6 +498,9 @@ const SPLIT: Record<string, SplitPath | undefined> = {
   morphology: (loc, chapter) => `public/data/morphology/${loc}/${chapter}.json`,
   // One file per deck. A Greek reader never downloads the Hebrew glosses.
   vocab: (loc, deck) => `public/data/vocab/${loc}/${deck}.json`,
+  // ~4,300 short glosses. Too many for a page payload, and only the reader needs them, so it
+  // fetches this the same way it fetches the deck.
+  lexiconGlosses: (loc, deck) => `public/data/lexicon-gloss/${loc}/${deck}.json`,
 }
 /** Sources whose generated catalogue is expanded from the translated one. */
 const FAN_OUT: Record<string, (t: Record<string, string>) => { key: string; english: string; text: string }[]> = {

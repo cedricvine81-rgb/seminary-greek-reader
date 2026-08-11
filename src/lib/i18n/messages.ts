@@ -118,6 +118,10 @@ const en: Catalogue = {
   'course.level.SEPTUAGINT': 'Septuagint Greek',
   // ── Instructor: dashboard and courses ──
   // The parsing pane's own gloss, from the vocabulary decks, in the reader's language.
+  // Browser-translation hint. Names the two browsers our students actually use, because "use
+  // your browser's translation" is not actionable if you have never done it.
+  'mt.englishOnly': 'This text exists only in English.',
+  'mt.howTo': 'Your browser can translate it: right-click the page and choose Translate (Chrome), or use the translate button in the address bar (Safari).',
   'reader.glossLocal': 'Gloss',
   'inst.welcome': 'Welcome back, {name}',
   'inst.overview': 'Here’s an overview of your courses and student activity.',
@@ -1589,6 +1593,8 @@ const es: Catalogue = {
   'course.level.GREEK_III': 'Griego III',
   'course.level.SEPTUAGINT': 'Griego de la Septuaginta',
   // ── Profesor: panel y cursos ──
+  'mt.englishOnly': 'Este texto solo existe en inglés.',
+  'mt.howTo': 'Tu navegador puede traducirlo: haz clic derecho en la página y elige «Traducir» (Chrome), o usa el botón de traducción de la barra de direcciones (Safari).',
   'reader.glossLocal': 'Glosa',
   'inst.welcome': 'Hola de nuevo, {name}',
   'inst.overview': 'Este es un resumen de tus cursos y de la actividad de tus estudiantes.',

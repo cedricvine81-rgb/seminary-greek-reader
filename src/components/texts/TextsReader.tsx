@@ -1,5 +1,6 @@
 'use client'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { MachineTranslationHint } from '@/components/texts/MachineTranslationHint'
 import { translatable, greekText } from '@/lib/i18n/machine-translation'
 import { Search, ChevronDown, MoreVertical, X} from 'lucide-react'
 import Link from 'next/link'
@@ -1372,6 +1373,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
           ) : (
             <div className="space-y-4">
+              {/* Shown only where there is English the reader may want translated: a Greek work
+                  with its English column hidden has nothing for the browser to act on. */}
+              {(englishColShown || (!isGreek && !greekProse)) && <MachineTranslationHint />}
               <div ref={topSentinel} />
               {!series.backDone && <p className="text-xs text-gray-300 italic text-center">{t('texts.loadingPrev')}</p>}
 
