@@ -19,6 +19,8 @@ import { workDate } from '../src/lib/work-dates'
 import { DEVICES, GROUP_LABEL, GROUP_DESC } from '../src/lib/rhetoric-devices'
 import { getTextSummary } from '../src/lib/texts-summaries'
 import { TEXT_CATEGORIES } from '../src/lib/texts-catalog'
+import { CONSTRUCT_PRESETS } from '../src/lib/construct-presets'
+import { HEBREW_CONSTRUCT_PRESETS } from '../src/lib/construct-presets-hebrew'
 import { fingerprint } from '../src/lib/i18n/content'
 import { serialize, greekRuns } from '../src/lib/i18n/morph-markup'
 import { fieldsOf, FIELD_COMPONENTS } from '../src/lib/i18n/morph-fields'
@@ -404,9 +406,36 @@ function summaryFanOut(t: Record<string, string>): { key: string; english: strin
   return out
 }
 
+
+/**
+ * The worked examples of Construct search — the group headings, and each preset's label and its
+ * explanatory note.
+ *
+ * Content rather than chrome, which is why these are here and not in messages.ts. "The strongest
+ * negation in Greek: 'will certainly not'" is a grammar explanation, and the fingerprint is the
+ * point: reword the English and a Spanish reader gets the English back rather than a note that
+ * now says something subtly different from the one beside it.
+ *
+ * Keyed by the preset's own `id`, never its position — these lists grow by insertion into the
+ * middle of a group, and an index-keyed catalogue would silently reattach every note to the
+ * wrong construction the first time one was added.
+ */
+export function constructPresetItems(): Item[] {
+  const items: Item[] = []
+  for (const group of [...CONSTRUCT_PRESETS, ...HEBREW_CONSTRUCT_PRESETS]) {
+    items.push({ key: `cpreset.group.${group.id}`, english: group.heading })
+    for (const p of group.presets) {
+      items.push({ key: `cpreset.${p.id}.label`, english: p.label })
+      items.push({ key: `cpreset.${p.id}.note`, english: p.note })
+    }
+  }
+  return items
+}
+
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
   rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems, vocab: vocabItems,
+  constructPresets: constructPresetItems,
 }
 /**
  * Sources emitted as per-bucket JSON under public/ and fetched by the client, instead of as one

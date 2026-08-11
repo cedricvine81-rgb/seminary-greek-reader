@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { content, NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
 import { READING_LANGS, defaultReadingLang } from '@/lib/reading-language'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { featureLabel } from '@/lib/i18n/morph-labels'
@@ -78,11 +79,15 @@ function NoMatches({ query, termTotals }: { query: ConstructQuery; termTotals: n
   )
 }
 
-export function ConstructSearchPage({ initial, isAuthenticated = false }: {
+export function ConstructSearchPage({ initial, isAuthenticated = false, translations = NO_CONTENT }: {
   initial: ConstructQuery
   isAuthenticated?: boolean
+  translations?: ContentCatalogue
 }) {
   const t = useT()
+  // Preset labels and notes are content, keyed by the preset's own stable id. The English is
+  // always the fallback, so an edited note shows English rather than a stale translation.
+  const cp = (key: string, english: string) => content(translations, `cpreset.${key}`, english)
   const locale = useLocale()
   const router = useRouter()
   const [query, setQuery] = useState<ConstructQuery>(initial)
@@ -350,11 +355,13 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         {showExamples && (
           <div className="mt-2 max-h-[46vh] space-y-3 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-3">
             {(query.corpus === 'MT' ? HEBREW_CONSTRUCT_PRESETS : CONSTRUCT_PRESETS).map(group => (
-              <div key={group.heading}>
-                <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-400">{group.heading}</p>
+              <div key={group.id}>
+                <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                  {cp(`group.${group.id}`, group.heading)}
+                </p>
                 <div className="space-y-1">
                   {group.presets.map(preset => (
-                    <button key={preset.label} type="button"
+                    <button key={preset.id} type="button"
                       onClick={() => {
                         const next = { ...preset.query, corpus: query.corpus } as ConstructQuery
                         setQuery(next)
@@ -364,10 +371,10 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                       }}
                       className="w-full rounded-lg border border-gray-100 px-2.5 py-1.5 text-left transition-colors hover:border-brand-200 hover:bg-brand-50">
                       <span className="flex items-baseline justify-between gap-3">
-                        <span className="text-xs font-medium text-gray-800">{preset.label}</span>
+                        <span className="text-xs font-medium text-gray-800">{cp(`${preset.id}.label`, preset.label)}</span>
                         <span className="flex-none text-[10px] tabular-nums text-gray-400">{t('cq.approxIn', { n: formatNumber(preset.approx, locale), corpus: query.corpus === 'MT' ? 'MT' : 'NT' })}</span>
                       </span>
-                      <span className="mt-0.5 block text-[11px] leading-snug text-gray-500">{preset.note}</span>
+                      <span className="mt-0.5 block text-[11px] leading-snug text-gray-500">{cp(`${preset.id}.note`, preset.note)}</span>
                     </button>
                   ))}
                 </div>

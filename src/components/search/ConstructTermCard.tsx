@@ -453,10 +453,10 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
         {/* Part of speech: a dropdown only while it's still open. Once the word settles it
             (λόγος can only be a noun) there is nothing to pick, so it reads as a fact. */}
         {posOptions.length === 1 && forms ? (
-          <Fixed label={t('cq.partOfSpeech')} value={featureLabel(posOptions[0], t)} />
+          <Fixed label={groupLabel('pos', t)} value={featureLabel(posOptions[0], t)} />
         ) : (
           <div>
-            <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">Part of speech</label>
+            <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">{groupLabel('pos', t)}</label>
             <select value={pos} onChange={e => setCategory('pos', e.target.value ? [e.target.value] : [])}
               className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
               <option value="">{t('cq.any')}</option>

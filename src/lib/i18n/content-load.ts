@@ -15,7 +15,7 @@ import { NO_CONTENT, type ContentCatalogue } from './content'
  * An unknown locale or an untranslated surface returns the empty catalogue, which makes
  * content() fall back to English — the same path a partial translation takes.
  */
-export type ContentSource = 'themes' | 'rhetoric' | 'summaries'
+export type ContentSource = 'themes' | 'rhetoric' | 'summaries' | 'constructPresets'
 
 export async function loadContent(
   locale: Locale, source: ContentSource,
@@ -29,6 +29,9 @@ export async function loadContent(
   }
   if (locale === 'es' && source === 'summaries') {
     return (await import('./generated/es.summaries')).ES_SUMMARIES
+  }
+  if (locale === 'es' && source === 'constructPresets') {
+    return (await import('./generated/es.constructPresets')).ES_CONSTRUCTPRESETS
   }
   return NO_CONTENT
 }
