@@ -1595,6 +1595,12 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
   }
 
   const selectedCourse = courses.find(c => c.id === form.courseId)
+  // DERIVED, never stored: form.level was seeded from courses[0] while courseId honoured
+  // defaultCourseId, so arriving from a course page (…/assignments/new?courseId=…) built the
+  // series at the FIRST course's level. On a Hebrew course that meant a Greek quiz. The
+  // course is the single source of truth for the language; form.level is only a fallback
+  // for the (impossible) case of no course selected.
+  const courseLevel = selectedCourse?.level ?? form.level
   const schedule = useMemo(
     () => buildSchedule(form.startDate, form.weeks, form.days, selectedCourse?.startDate),
     [form.startDate, form.weeks, form.days, selectedCourse?.startDate]
@@ -1627,7 +1633,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
       const previewFields = form.quizType === 'MORPHOLOGY_QUIZ' ? (firstTest?.fields ?? []) : []
       const params = new URLSearchParams({
         quizType: form.quizType,
-        level:    form.level,
+        level:    courseLevel,
         count:    '5',
         week:     '1',
         ...(form.quizType === 'VOCABULARY_QUIZ'
@@ -1650,7 +1656,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     } finally {
       setSampleLoading(false)
     }
-  }, [form.quizType, form.level, form.morphologySubtype, form.morphologySeries,
+  }, [form.quizType, courseLevel, form.morphologySubtype, form.morphologySeries,
       form.vocabSubsections, form.prevSectionsPct])
 
   async function handleSubmit(e: FormEvent) {
@@ -1664,6 +1670,8 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
+          // ...form carries the seeded level, which may not be the selected course's.
+          level: courseLevel,
           lateDaysLimit: form.allowLate ? form.lateDaysLimit : null,
           provideDefinition: form.quizType === 'VOCABULARY_QUIZ' ? form.quizStylePct >= 50 : false,
           isPublished: publishRef.current,
@@ -1812,14 +1820,14 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
               series={form.morphologySeries}
               onChange={s => setF('morphologySeries', s)}
               availableDates={schedule.length}
-              level={form.level}
+              level={courseLevel}
             />
           )}
 
           {form.quizType === 'VOCABULARY_QUIZ' && (
             <>
               <FrequencySectionPicker
-                lang={isHebrewLevel(form.level) ? 'hebrew' : 'greek'}
+                lang={isHebrewLevel(courseLevel) ? 'hebrew' : 'greek'}
                 selectedSubsections={form.vocabSubsections}
                 onChange={keys => setF('vocabSubsections', keys)}
               />
@@ -2026,9 +2034,24 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           const effectiveCount = form.quizType === 'MORPHOLOGY_QUIZ'
             ? Math.min(form.morphologySeries.length, schedule.length)
             : schedule.length
+          // Both buttons are disabled until the series has dates. Say WHY: a dead Save
+          // button with no message reads as "the app is broken", which is how this was
+          // reported. Each reason names the field to go and fix.
+          const blockers: string[] = []
+          if (!form.startDate)               blockers.push(t('inst.b.s.blk.startDate'))
+          if (form.days.length === 0)        blockers.push(t('inst.b.s.blk.days'))
+          if (form.weeks < 1)                blockers.push(t('inst.b.s.blk.weeks'))
+          if (form.quizType === 'MORPHOLOGY_QUIZ' && form.morphologySeries.length === 0)
+                                             blockers.push(t('inst.b.s.blk.tests'))
           const disabled = schedule.length === 0 || form.days.length === 0 ||
             (form.quizType === 'MORPHOLOGY_QUIZ' && form.morphologySeries.length === 0)
           return (
+            <div className="flex flex-col items-end gap-2">
+            {disabled && blockers.length > 0 && (
+              <p className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                {t('inst.b.s.blk.intro')} {blockers.join(' · ')}
+              </p>
+            )}
             <div className="flex gap-3 justify-end">
               <Button type="button" variant="ghost" onClick={() => router.back()}>{t('inst.b.cancel')}</Button>
               <Button
@@ -2047,6 +2070,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
               >
                 {t('inst.b.savePost')}{effectiveCount > 0 ? ` (${effectiveCount})` : ''}
               </Button>
+            </div>
             </div>
           )
         })()}

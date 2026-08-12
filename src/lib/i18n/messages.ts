@@ -391,6 +391,12 @@ const en: Catalogue = {
   'inst.b.s.questionsPerQuiz': 'Questions per quiz',
   'inst.b.s.viewSample': 'View sample quiz',
   'inst.b.s.updatePreview': 'Update Preview',
+  // Why Save & Post is disabled. A dead button with no explanation reads as a broken app.
+  'inst.b.s.blk.intro': 'Add the following before saving:',
+  'inst.b.s.blk.startDate': 'a start of semester date',
+  'inst.b.s.blk.days': 'at least one day of the week',
+  'inst.b.s.blk.weeks': 'a number of weeks',
+  'inst.b.s.blk.tests': 'at least one test in the series',
   'inst.b.s.created': '{n} assignments created — redirecting…',
   // Series overrun warning
   'inst.b.s.overrunTitle': {
@@ -2623,6 +2629,11 @@ const es: Catalogue = {
   'inst.b.s.questionsPerQuiz': 'Preguntas por prueba',
   'inst.b.s.viewSample': 'Ver prueba de muestra',
   'inst.b.s.updatePreview': 'Actualizar vista previa',
+  'inst.b.s.blk.intro': 'Agrega lo siguiente antes de guardar:',
+  'inst.b.s.blk.startDate': 'una fecha de inicio del semestre',
+  'inst.b.s.blk.days': 'al menos un día de la semana',
+  'inst.b.s.blk.weeks': 'un número de semanas',
+  'inst.b.s.blk.tests': 'al menos una prueba en la serie',
   'inst.b.s.created': 'Se crearon {n} tareas: redirigiendo…',
   'inst.b.s.overrunTitle': {
     one: '{n} prueba queda después de que termina este curso ({date}).',
