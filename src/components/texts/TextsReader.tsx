@@ -97,23 +97,53 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
  */
 const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd', '3Macc', '4Macc'])
 
+/**
+ * Works OUTSIDE the LXX that carry our own Spanish, made from the Greek this reader shows.
+ * Keyed by catalog work id; the value is the folder under public/data/es/. The LXX books above
+ * are keyed by osisId + chapter, but a prose work is addressed by book + section, so it needs
+ * its own path — hence two registries rather than one.
+ *
+ * Registering a work here is what puts "Español (traducción propia)" in its translation menu.
+ * Books with no file yet simply leave the column blank, exactly as a Brenton gap does.
+ */
+const ES_PROSE_WORKS: Record<string, string> = {
+  antiquities: 'josephus/antiquities',
+}
+
+// Both ids mean "the Spanish we made ourselves" and both must carry the same credit line. They
+// stay distinct because they load by different keys, not because they are different translations.
+const OUR_SPANISH_IDS = new Set(['deutero-es', 'es'])
+
 // Books where Rahlfs prints the Old Greek and not Theodotion — the recension behind every
 // printed Bible a student is likely to own. See reader.oldGreekNote.
 const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel'])
 
-// The parallel translations available for a work. Only Greek (LXX) works carry one.
+// The parallel translations available for a work. A work only gets a selector once it has more
+// than one option — a single column needs no menu, which is why most works still return [].
 function translationsFor(w: CatalogWork | null, t: (k: string) => string): { id: string; label: string }[] {
-  if (!w || w.source !== 'lxx') return []
+  if (!w) return []
   const out: { id: string; label: string }[] = []
-  if (w.english) {
-    const own = w.osisId ? ENGLISH_BY_WORK[w.osisId] : undefined
-    out.push({ id: w.english, label: own?.label ?? TRANSLATION_LABELS[w.english] ?? w.english })
+  if (w.source === 'lxx') {
+    if (w.english) {
+      const own = w.osisId ? ENGLISH_BY_WORK[w.osisId] : undefined
+      out.push({ id: w.english, label: own?.label ?? TRANSLATION_LABELS[w.english] ?? w.english })
+    }
+    if (w.osisId && DEUTERO_ES_BOOKS.has(w.osisId)) {
+      out.push({ id: 'deutero-es', label: t('texts.spanishOurs') })
+    }
+    return out
   }
-  if (w.osisId && DEUTERO_ES_BOOKS.has(w.osisId)) {
-    out.push({ id: 'deutero-es', label: t('texts.spanishOurs') })
+  if (ES_PROSE_WORKS[w.id]) {
+    // The work's own published English is always the first option, so the reader can switch back.
+    out.push({ id: 'source', label: PROSE_ENGLISH_LABELS[w.id] ?? 'English' })
+    out.push({ id: 'es', label: t('texts.spanishOurs') })
   }
   return out
 }
+
+// Who translated the English a prose work ships with — named so the selector never implies our
+// Spanish and the published English come from the same hand.
+const PROSE_ENGLISH_LABELS: Record<string, string> = { antiquities: 'Whiston (1737)' }
 
 const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
 const LOOKAHEAD = 1600   // px ahead of the sentinel to start loading the next/previous chapter
@@ -401,11 +431,14 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const translationLabel = translationId
     ? (availableTranslations.find(t => t.id === translationId)?.label ?? t('texts.translationFallback'))
     : null
-  const currentTranslationLabel = !translationId
-    ? t('texts.greekOnly')
-    : greekHidden
-      ? t('texts.langOnly', { lang: translationLabel ?? '' })
-      : t('texts.greekPlus', { lang: translationLabel ?? '' })
+  const currentTranslationLabel = !isGreek
+    // Prose works pick Greek/both/English separately, so their button names the column only.
+    ? (translationLabel ?? '')
+    : !translationId
+      ? t('texts.greekOnly')
+      : greekHidden
+        ? t('texts.langOnly', { lang: translationLabel ?? '' })
+        : t('texts.greekPlus', { lang: translationLabel ?? '' })
   // The second column is English for most prose works, but Latin for the Greek Sibylline
   // (Augustine's rendering of the Book 8 acrostic).
   const secondLabel = work?.secondaryLabel ?? 'English'
@@ -571,7 +604,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (work.source === 'josephus') parts.push('Greek: B. Niese’s edition (1885–1895); English: William Whiston’s translation (1737); both public domain. Sections numbered per Niese. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.')
     // The one text here with no published edition behind it, because we made it — so it says so
     // whenever it is the column being read.
-    if (translationId === 'deutero-es') parts.push(t('texts.spanishOursCredit'))
+    if (translationId && OUR_SPANISH_IDS.has(translationId)) parts.push(t('texts.spanishOursCredit'))
     if (work.osisId && OLD_GREEK_BOOKS.has(work.osisId)) {
       parts.push(t('reader.oldGreekNote'))
       if (translationId === 'brenton') parts.push(t('reader.oldGreekBrenton'))
@@ -591,6 +624,19 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     for (const [n, text] of Object.entries(d.verses ?? {})) out[`${osisId}.${chapter}.${n}`] = text
     deuteroEsCache.current[key] = out
     return out
+  }
+
+  /** Our Spanish for one book of a prose work, keyed by the section number the reader shows
+   *  (Niese §§ for Josephus). Missing books resolve to {} and leave the column blank. */
+  async function loadProseEs(workId: string, book: number): Promise<Record<string, string>> {
+    const dir = ES_PROSE_WORKS[workId]
+    if (!dir) return {}
+    const key = `${workId}.${book}`
+    if (deuteroEsCache.current[key]) return deuteroEsCache.current[key]
+    const r = await fetch(`/data/es/${dir}/${book}.json`)
+    const d = r.ok ? await r.json() as { sections?: Record<string, string> } : {}
+    deuteroEsCache.current[key] = d.sections ?? {}
+    return deuteroEsCache.current[key]
   }
 
   async function loadBrenton(osisId: string): Promise<Record<string, string>> {
@@ -661,10 +707,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       const d = await fetchWorkJson(`/data/josephus/${w.work}/${item.book}.json`) as { chapters?: { number: number; sections?: { number: number; text: string; greek?: string }[] }[] } | null
       const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
       const morph = await loadMorph(w.work!, item.book!)
+      // Our Spanish is keyed by § and so lines up section-for-section with the Greek, unlike
+      // Whiston's English, which is attached once per Whiston section (its first §).
+      const es = translationIdRef.current === 'es' ? await loadProseEs(w.id, item.book!) : null
       // Niese §§ carry parallel Greek; the Whiston English is attached once per Whiston
       // section (its first §), so most §§ have Greek only in the English column.
       return (ch?.sections ?? []).map((s: { number: number; text: string; greek?: string }) =>
-        ({ num: s.number, english: s.text, greek: s.greek, morph: morph?.[String(s.number)] }))
+        ({ num: s.number, english: es ? es[String(s.number)] : s.text, greek: s.greek, morph: morph?.[String(s.number)] }))
     }
     // 2 Esdras / 1 Enoch / Jubilees / 2 Baruch / 2 Enoch — plain English prose stored as
     // chapter→verses; the registry knows where each one's JSON lives.
@@ -1333,7 +1382,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               )}
             </div>
 
-            {isGreek && availableTranslations.length > 0 && (
+            {availableTranslations.length > 0 && (
               <div className="relative" ref={translationMenuRef}>
                 <button
                   type="button"
@@ -1347,13 +1396,15 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
                 {translationMenuOpen && (
                   <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
-                    <button
-                      type="button"
-                      onClick={() => { setTranslationId(null); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
-                      className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${!translationId ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
-                    >
-                      {t('texts.greekOnly')}
-                    </button>
+                    {isGreek && (
+                      <button
+                        type="button"
+                        onClick={() => { setTranslationId(null); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
+                        className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${!translationId ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      >
+                        {t('texts.greekOnly')}
+                      </button>
+                    )}
                     {availableTranslations.map(tr => (
                       <Fragment key={tr.id}>
                         <button
@@ -1361,15 +1412,19 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                           onClick={() => { setTranslationId(tr.id); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
                           className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === tr.id && !greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
-                          {t('texts.greekPlus', { lang: tr.label })}
+                          {/* Prose works already have their own Greek/both/English control, so their
+                              menu names the column plainly instead of offering it twice. */}
+                          {isGreek ? t('texts.greekPlus', { lang: tr.label }) : tr.label}
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => { setTranslationId(tr.id); setGreekHiddenPref(true); setTranslationMenuOpen(false) }}
-                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === tr.id && greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
-                        >
-                          {t('texts.onlyLabel', { label: tr.label })}
-                        </button>
+                        {isGreek && (
+                          <button
+                            type="button"
+                            onClick={() => { setTranslationId(tr.id); setGreekHiddenPref(true); setTranslationMenuOpen(false) }}
+                            className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === tr.id && greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                          >
+                            {t('texts.onlyLabel', { label: tr.label })}
+                          </button>
+                        )}
                       </Fragment>
                     ))}
                   </div>
@@ -1448,8 +1503,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
           ) : (
             <div className="space-y-4">
               {/* Shown only where there is English the reader may want translated: a Greek work
-                  with its English column hidden has nothing for the browser to act on. */}
-              {(englishColShown || (!isGreek && !greekProse)) && <MachineTranslationHint />}
+                  with its English column hidden has nothing for the browser to act on, and a work
+                  already showing our own Spanish is not English-only, so offering to machine
+                  translate it would be false. */}
+              {(englishColShown || (!isGreek && !greekProse))
+                && !(translationId && OUR_SPANISH_IDS.has(translationId))
+                && <MachineTranslationHint />}
               <div ref={topSentinel} />
               {!series.backDone && <p className="text-xs text-gray-300 italic text-center">{t('texts.loadingPrev')}</p>}
 
