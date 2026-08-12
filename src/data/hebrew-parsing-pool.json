@@ -1021,16 +1021,6 @@
 "state": "Absolute"
 },
 {
-"surface": "פלשתיים",
-"lexeme": "פְּלִשְׁתִּי",
-"gloss": "a Pelishtite or inhabitant of Pelesheth",
-"reference": "1 Chronicles 14:10",
-"partOfSpeech": "Noun",
-"gender": "Masculine",
-"number": "Plural",
-"state": "Absolute"
-},
-{
 "surface": "מַחֲנֵ֥ה",
 "lexeme": "מַחֲנֶה",
 "gloss": "an encampment (of travellers or troops)",
@@ -1217,6 +1207,16 @@
 "reference": "1 Chronicles 17:24",
 "partOfSpeech": "Noun",
 "gender": "Both",
+"number": "Plural",
+"state": "Absolute"
+},
+{
+"surface": "פְּלִשְׁתִּֽים",
+"lexeme": "פְּלִשְׁתִּי",
+"gloss": "a Pelishtite or inhabitant of Pelesheth",
+"reference": "1 Chronicles 18:1",
+"partOfSpeech": "Noun",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -2551,26 +2551,6 @@
 "state": "Absolute"
 },
 {
-"surface": "אשדודיות",
-"lexeme": "אַשְׁדּוֹדִי",
-"gloss": "an Ashdodite (often collectively) or inhabitant of Asdod",
-"reference": "Nehemiah 13:23",
-"partOfSpeech": "Noun",
-"gender": "Feminine",
-"number": "Plural",
-"state": "Absolute"
-},
-{
-"surface": "עמוניות",
-"lexeme": "עַמּוֹנִי",
-"gloss": "an Ammonite or (the adjective) Ammonitish",
-"reference": "Nehemiah 13:23",
-"partOfSpeech": "Noun",
-"gender": "Feminine",
-"number": "Plural",
-"state": "Absolute"
-},
-{
 "surface": "מוֹאֲבִיּֽוֹת",
 "lexeme": "מוֹאָבִי",
 "gloss": "a Moabite or Moabitess, i.e. a descendant from Moab",
@@ -3599,18 +3579,6 @@
 "state": "Absolute"
 },
 {
-"surface": "ויתאו",
-"lexeme": "אָוָה",
-"gloss": "to wish for",
-"reference": "1 Chronicles 11:17",
-"partOfSpeech": "Verb",
-"stem": "Hithpael",
-"conjugation": "Sequential imperfect",
-"person": "3rd",
-"gender": "Masculine",
-"number": "Singular"
-},
-{
 "surface": "וַיָּבִ֣אוּ",
 "lexeme": "בּוֹא",
 "gloss": "to go or come (in a wide variety of applications)",
@@ -4517,18 +4485,6 @@
 "conjugation": "Active participle",
 "gender": "Masculine",
 "number": "Singular",
-"state": "Absolute"
-},
-{
-"surface": "מחצצרים",
-"lexeme": "חָצַר",
-"gloss": "to trumpet, i.e. blow on that instrument",
-"reference": "1 Chronicles 15:24",
-"partOfSpeech": "Verb",
-"stem": "Hiphil",
-"conjugation": "Active participle",
-"gender": "Masculine",
-"number": "Plural",
 "state": "Absolute"
 },
 {
@@ -8864,18 +8820,6 @@
 "number": "Singular"
 },
 {
-"surface": "יהי",
-"lexeme": "הָיָה",
-"gloss": "to exist",
-"reference": "1 Kings 1:37",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Jussive",
-"person": "3rd",
-"gender": "Masculine",
-"number": "Singular"
-},
-{
 "surface": "מְחַלְּלִ֣ים",
 "lexeme": "חָלַל",
 "gloss": "to bore",
@@ -10952,15 +10896,6 @@
 "number": "Singular"
 },
 {
-"surface": "תתן",
-"lexeme": "נָתַן",
-"gloss": "to give",
-"reference": "1 Kings 17:14",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Infinitive construct"
-},
-{
 "surface": "נֽוֹתְרָה",
 "lexeme": "יָתַר",
 "gloss": "to jut over or exceed",
@@ -12251,18 +12186,6 @@
 "number": "Singular"
 },
 {
-"surface": "מבי",
-"lexeme": "בּוֹא",
-"gloss": "to go or come (in a wide variety of applications)",
-"reference": "1 Kings 21:21",
-"partOfSpeech": "Verb",
-"stem": "Hiphil",
-"conjugation": "Active participle",
-"gender": "Masculine",
-"number": "Singular",
-"state": "Absolute"
-},
-{
 "surface": "וּבִעַרְתִּ֖י",
 "lexeme": "בָּעַר",
 "gloss": "to kindle, i.e. consume (by fire or by eating)",
@@ -12320,18 +12243,6 @@
 "conjugation": "Perfect",
 "person": "3rd",
 "gender": "Feminine",
-"number": "Singular"
-},
-{
-"surface": "אבי",
-"lexeme": "בּוֹא",
-"gloss": "to go or come (in a wide variety of applications)",
-"reference": "1 Kings 21:29",
-"partOfSpeech": "Verb",
-"stem": "Hiphil",
-"conjugation": "Imperfect",
-"person": "1st",
-"gender": "Common",
 "number": "Singular"
 },
 {
@@ -12615,18 +12526,6 @@
 "gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
-},
-{
-"surface": "נשברה",
-"lexeme": "שָׁבַר",
-"gloss": "to burst",
-"reference": "1 Kings 22:49",
-"partOfSpeech": "Verb",
-"stem": "Niphal",
-"conjugation": "Perfect",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Singular"
 },
 {
 "surface": "יֵלְכ֧וּ",
@@ -12935,6 +12834,18 @@
 "state": "Absolute"
 },
 {
+"surface": "מַגִּשִׁ֥ים",
+"lexeme": "נָגַשׁ",
+"gloss": "to be or come (causatively, bring) near (for any purpose)",
+"reference": "1 Kings 5:1",
+"partOfSpeech": "Verb",
+"stem": "Hiphil",
+"conjugation": "Active participle",
+"gender": "Masculine",
+"number": "Plural",
+"state": "Absolute"
+},
+{
 "surface": "אֲבוּסִֽים",
 "lexeme": "אָבַס",
 "gloss": "to fodder",
@@ -13023,6 +12934,15 @@
 "gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
+},
+{
+"surface": "אֲחֹ֥ז",
+"lexeme": "אָחַז",
+"gloss": "to seize (often with the accessory idea of holding in possession)",
+"reference": "1 Kings 6:6",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Infinitive construct"
 },
 {
 "surface": "וַהֲקִמֹתִ֤י",
@@ -13883,18 +13803,6 @@
 "number": "Singular"
 },
 {
-"surface": "וישתחו",
-"lexeme": "שָׁחָה",
-"gloss": "to depress",
-"reference": "1 Kings 9:9",
-"partOfSpeech": "Verb",
-"stem": "Hishtaphel",
-"conjugation": "Sequential imperfect",
-"person": "3rd",
-"gender": "Masculine",
-"number": "Singular"
-},
-{
 "surface": "תֹאכַֽל",
 "lexeme": "אָכַל",
 "gloss": "to eat",
@@ -14249,18 +14157,6 @@
 "number": "Singular"
 },
 {
-"surface": "תבאינה",
-"lexeme": "בּוֹא",
-"gloss": "to go or come (in a wide variety of applications)",
-"reference": "1 Samuel 10:7",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Imperfect",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Plural"
-},
-{
 "surface": "תִּמְצָ֣א",
 "lexeme": "מָצָא",
 "gloss": "properly, to come forth to, i.e. appear or exist",
@@ -14448,6 +14344,18 @@
 "gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
+},
+{
+"surface": "וַיִּתְיַצֵּ֖ב",
+"lexeme": "יָצַב",
+"gloss": "to place (any thing so as to stay)",
+"reference": "1 Samuel 10:23",
+"partOfSpeech": "Verb",
+"stem": "Hithpael",
+"conjugation": "Sequential imperfect",
+"person": "3rd",
+"gender": "Masculine",
+"number": "Singular"
 },
 {
 "surface": "יְחִ֥י",
@@ -15263,16 +15171,16 @@
 "number": "Singular"
 },
 {
-"surface": "ותראנה",
-"lexeme": "רָאָה",
-"gloss": "to see",
-"reference": "1 Samuel 14:27",
+"surface": "מַשִּׂ֤יג",
+"lexeme": "נָשַׂג",
+"gloss": "to reach",
+"reference": "1 Samuel 14:26",
 "partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Sequential imperfect",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Plural"
+"stem": "Hiphil",
+"conjugation": "Active participle",
+"gender": "Masculine",
+"number": "Singular",
+"state": "Absolute"
 },
 {
 "surface": "הַשְׁבֵּעַ֩",
@@ -15756,6 +15664,18 @@
 "gender": "Masculine",
 "number": "Singular",
 "state": "Construct"
+},
+{
+"surface": "יַעֲמָד",
+"lexeme": "עָמַד",
+"gloss": "to stand",
+"reference": "1 Samuel 16:22",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Jussive",
+"person": "3rd",
+"gender": "Masculine",
+"number": "Singular"
 },
 {
 "surface": "וְסָ֥רָה",
@@ -16598,6 +16518,18 @@
 "number": "Singular"
 },
 {
+"surface": "אוֹרֶ֑ה",
+"lexeme": "יָרָה",
+"gloss": "properly, to flow as water (i.e. to rain)",
+"reference": "1 Samuel 20:20",
+"partOfSpeech": "Verb",
+"stem": "Hiphil",
+"conjugation": "Imperfect",
+"person": "1st",
+"gender": "Common",
+"number": "Singular"
+},
+{
 "surface": "דִּבַּ֖רְנוּ",
 "lexeme": "דָבַר",
 "gloss": "perhaps properly, to arrange",
@@ -17132,18 +17064,6 @@
 "number": "Singular"
 },
 {
-"surface": "עשוות",
-"lexeme": "עָשָׂה",
-"gloss": "to do or make, in the broadest sense and widest application",
-"reference": "1 Samuel 25:18",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Passive participle",
-"gender": "Feminine",
-"number": "Plural",
-"state": "Absolute"
-},
-{
 "surface": "הִגִּֽידָה",
 "lexeme": "נָגַד",
 "gloss": "properly, to front, i.e. stand boldly out opposite",
@@ -17259,18 +17179,6 @@
 "partOfSpeech": "Verb",
 "stem": "Piel",
 "conjugation": "Perfect",
-"person": "2nd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
-"surface": "ותבאתי",
-"lexeme": "בּוֹא",
-"gloss": "to go or come (in a wide variety of applications)",
-"reference": "1 Samuel 25:34",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Sequential imperfect",
 "person": "2nd",
 "gender": "Feminine",
 "number": "Singular"
@@ -17924,15 +17832,6 @@
 "number": "Plural"
 },
 {
-"surface": "יך",
-"lexeme": "נָכָה",
-"gloss": "to strike (lightly or severely, literally or figuratively)",
-"reference": "1 Samuel 4:13",
-"partOfSpeech": "Verb",
-"stem": "Hiphil",
-"conjugation": "Infinitive construct"
-},
-{
 "surface": "נִלְקָֽחָה",
 "lexeme": "לָקַח",
 "gloss": "to take (in the widest variety of applications)",
@@ -18437,6 +18336,18 @@
 "surface": "וַתַּעֲנֶ֧ינָה",
 "lexeme": "עָנָה",
 "gloss": "properly, to eye or (generally) to heed, i.e. pay attention",
+"reference": "1 Samuel 9:12",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Sequential imperfect",
+"person": "3rd",
+"gender": "Feminine",
+"number": "Plural"
+},
+{
+"surface": "וַתֹּאמַ֥רְנָה",
+"lexeme": "אָמַר",
+"gloss": "to say (used with great latitude)",
 "reference": "1 Samuel 9:12",
 "partOfSpeech": "Verb",
 "stem": "Qal",
@@ -20282,6 +20193,18 @@
 "number": "Plural"
 },
 {
+"surface": "נִלְכְּדָ֖ה",
+"lexeme": "לָכַד",
+"gloss": "to catch (in a net, trap or pit)",
+"reference": "2 Kings 18:10",
+"partOfSpeech": "Verb",
+"stem": "Niphal",
+"conjugation": "Perfect",
+"person": "3rd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "הִתְעָ֣רֶב",
 "lexeme": "עָרַב",
 "gloss": "to braid, i.e. intermix",
@@ -20828,18 +20751,6 @@
 "number": "Singular"
 },
 {
-"surface": "מיצקת",
-"lexeme": "יָצַק",
-"gloss": "properly, to pour out (transitive or intransitive)",
-"reference": "2 Kings 4:5",
-"partOfSpeech": "Verb",
-"stem": "Hiphil",
-"conjugation": "Active participle",
-"gender": "Feminine",
-"number": "Singular",
-"state": "Absolute"
-},
-{
 "surface": "וַתַּגֵּד֙",
 "lexeme": "נָגַד",
 "gloss": "properly, to front, i.e. stand boldly out opposite",
@@ -21332,18 +21243,6 @@
 "number": "Singular"
 },
 {
-"surface": "והית",
-"lexeme": "הָיָה",
-"gloss": "to exist",
-"reference": "2 Kings 9:37",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Sequential perfect",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
 "surface": "נִמְלָֽטְתִּי",
 "lexeme": "מָלַט",
 "gloss": "to be smooth",
@@ -21696,6 +21595,18 @@
 "person": "3rd",
 "gender": "Feminine",
 "number": "Plural"
+},
+{
+"surface": "וְזָעָֽקָה",
+"lexeme": "זָעַק",
+"gloss": "to shriek (from anguish or danger)",
+"reference": "2 Samuel 13:19",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Sequential perfect",
+"person": "3rd",
+"gender": "Feminine",
+"number": "Singular"
 },
 {
 "surface": "הַחֲרִ֨ישִׁי֙",
@@ -22211,18 +22122,6 @@
 "number": "Plural"
 },
 {
-"surface": "נפצית",
-"lexeme": "פּוּץ",
-"gloss": "to dash in pieces",
-"reference": "2 Samuel 18:8",
-"partOfSpeech": "Verb",
-"stem": "Niphal",
-"conjugation": "Passive participle",
-"gender": "Feminine",
-"number": "Plural",
-"state": "Absolute"
-},
-{
 "surface": "וַיֻּתַּן֙",
 "lexeme": "נָתַן",
 "gloss": "to give",
@@ -22574,18 +22473,6 @@
 "number": "Plural"
 },
 {
-"surface": "ינתן",
-"lexeme": "נָתַן",
-"gloss": "to give",
-"reference": "2 Samuel 21:6",
-"partOfSpeech": "Verb",
-"stem": "Niphal",
-"conjugation": "Jussive",
-"person": "3rd",
-"gender": "Masculine",
-"number": "Singular"
-},
-{
 "surface": "הֻמְת֜וּ",
 "lexeme": "מוּת",
 "gloss": "to die",
@@ -22596,6 +22483,15 @@
 "person": "3rd",
 "gender": "Common",
 "number": "Plural"
+},
+{
+"surface": "הַכּ֧וֹת",
+"lexeme": "נָכָה",
+"gloss": "to strike (lightly or severely, literally or figuratively)",
+"reference": "2 Samuel 21:12",
+"partOfSpeech": "Verb",
+"stem": "Hiphil",
+"conjugation": "Infinitive construct"
 },
 {
 "surface": "יֻלַּ֥ד",
@@ -22764,18 +22660,6 @@
 "person": "3rd",
 "gender": "Masculine",
 "number": "Plural"
-},
-{
-"surface": "מגדיל",
-"lexeme": "גָּדַל",
-"gloss": "to be (causatively make) large (in various senses",
-"reference": "2 Samuel 22:51",
-"partOfSpeech": "Verb",
-"stem": "Hiphil",
-"conjugation": "Active participle",
-"gender": "Masculine",
-"number": "Singular",
-"state": "Construct"
 },
 {
 "surface": "הֻ֣קַם",
@@ -23555,18 +23439,6 @@
 "surface": "וְנִגְרְשָׁ֥ה",
 "lexeme": "גָּרַשׁ",
 "gloss": "to drive out from a possession",
-"reference": "Amos 8:8",
-"partOfSpeech": "Verb",
-"stem": "Niphal",
-"conjugation": "Sequential perfect",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
-"surface": "ונשקה",
-"lexeme": "שָׁקָה",
-"gloss": "to quaff",
 "reference": "Amos 8:8",
 "partOfSpeech": "Verb",
 "stem": "Niphal",
@@ -25715,6 +25587,18 @@
 "number": "Singular"
 },
 {
+"surface": "תִמְצֶ֨אןָ",
+"lexeme": "מָצָא",
+"gloss": "properly, to come forth to, i.e. appear or exist",
+"reference": "Deuteronomy 31:21",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Imperfect",
+"person": "3rd",
+"gender": "Feminine",
+"number": "Plural"
+},
+{
 "surface": "אַסְתִּ֤ירָה",
 "lexeme": "סָתַר",
 "gloss": "to hide (by covering), literally or figuratively",
@@ -26468,18 +26352,6 @@
 "number": "Singular"
 },
 {
-"surface": "יבחר",
-"lexeme": "בָּחַר",
-"gloss": "properly, to try, i.e. (by implication) select",
-"reference": "Ecclesiastes 9:4",
-"partOfSpeech": "Verb",
-"stem": "Pual",
-"conjugation": "Imperfect",
-"person": "3rd",
-"gender": "Masculine",
-"number": "Singular"
-},
-{
 "surface": "יֽוּקָשִׁים֙",
 "lexeme": "יָקֹשׁ",
 "gloss": "to ensnare",
@@ -27209,18 +27081,6 @@
 "number": "Plural"
 },
 {
-"surface": "תלונו",
-"lexeme": "לוּן",
-"gloss": "to stop (usually over night)",
-"reference": "Exodus 16:7",
-"partOfSpeech": "Verb",
-"stem": "Niphal",
-"conjugation": "Imperfect",
-"person": "2nd",
-"gender": "Masculine",
-"number": "Plural"
-},
-{
 "surface": "תְּבַשְּׁלוּ֙",
 "lexeme": "בָּשַׁל",
 "gloss": "properly, to boil up",
@@ -27693,6 +27553,18 @@
 "person": "3rd",
 "gender": "Common",
 "number": "Plural"
+},
+{
+"surface": "בְּלוּלֹ֣ת",
+"lexeme": "בָּלַל",
+"gloss": "to overflow (specifically with oil.)",
+"reference": "Exodus 29:2",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Passive participle",
+"gender": "Feminine",
+"number": "Plural",
+"state": "Absolute"
 },
 {
 "surface": "הוּנַ֖ף",
@@ -28868,18 +28740,6 @@
 "number": "Singular"
 },
 {
-"surface": "אכלתי",
-"lexeme": "אָכַל",
-"gloss": "to eat",
-"reference": "Ezekiel 16:13",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Perfect",
-"person": "2nd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
 "surface": "וַתִּ֨יפִי֙",
 "lexeme": "יָפָה",
 "gloss": "properly, to be bright, i.e. (by implication) beautiful",
@@ -28952,13 +28812,13 @@
 "number": "Singular"
 },
 {
-"surface": "נתתי",
-"lexeme": "נָתַן",
-"gloss": "to give",
-"reference": "Ezekiel 16:18",
+"surface": "וַתַּֽעֲשִׂי",
+"lexeme": "עָשָׂה",
+"gloss": "to do or make, in the broadest sense and widest application",
+"reference": "Ezekiel 16:16",
 "partOfSpeech": "Verb",
 "stem": "Qal",
-"conjugation": "Perfect",
+"conjugation": "Sequential imperfect",
 "person": "2nd",
 "gender": "Feminine",
 "number": "Singular"
@@ -28968,18 +28828,6 @@
 "lexeme": "יָלַד",
 "gloss": "to bear young",
 "reference": "Ezekiel 16:20",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Perfect",
-"person": "2nd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
-"surface": "זכרתי",
-"lexeme": "זָכַר",
-"gloss": "properly, to mark (so as to be recognized), i.e. to remember",
-"reference": "Ezekiel 16:22",
 "partOfSpeech": "Verb",
 "stem": "Qal",
 "conjugation": "Perfect",
@@ -29004,6 +28852,18 @@
 "lexeme": "הָיָה",
 "gloss": "to exist",
 "reference": "Ezekiel 16:22",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Perfect",
+"person": "2nd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "בָּנִית֙",
+"lexeme": "בָּנָה",
+"gloss": "to build",
+"reference": "Ezekiel 16:25",
 "partOfSpeech": "Verb",
 "stem": "Qal",
 "conjugation": "Perfect",
@@ -29060,6 +28920,18 @@
 "number": "Singular"
 },
 {
+"surface": "שָׂבָֽעַתְּ",
+"lexeme": "שָׂבַע",
+"gloss": "to sate, i.e. fill to satisfaction",
+"reference": "Ezekiel 16:28",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Perfect",
+"person": "2nd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "וַתַּרְבִּ֧י",
 "lexeme": "רָבָה",
 "gloss": "to increase (in whatever respect)",
@@ -29067,6 +28939,18 @@
 "partOfSpeech": "Verb",
 "stem": "Hiphil",
 "conjugation": "Sequential imperfect",
+"person": "2nd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "נָתַ֤תְּ",
+"lexeme": "נָתַן",
+"gloss": "to give",
+"reference": "Ezekiel 16:33",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Perfect",
 "person": "2nd",
 "gender": "Feminine",
 "number": "Singular"
@@ -29223,18 +29107,6 @@
 "person": "2nd",
 "gender": "Feminine",
 "number": "Plural"
-},
-{
-"surface": "ועשית",
-"lexeme": "עָשָׂה",
-"gloss": "to do or make, in the broadest sense and widest application",
-"reference": "Ezekiel 16:59",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Sequential perfect",
-"person": "2nd",
-"gender": "Feminine",
-"number": "Singular"
 },
 {
 "surface": "וְזָכַ֣רְתְּ",
@@ -30926,18 +30798,6 @@
 "state": "Construct"
 },
 {
-"surface": "תכשלי",
-"lexeme": "כָּשַׁל",
-"gloss": "to totter or waver (through weakness of the legs",
-"reference": "Ezekiel 36:14",
-"partOfSpeech": "Verb",
-"stem": "Piel",
-"conjugation": "Imperfect",
-"person": "2nd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
 "surface": "תַכְשִׁ֣לִי",
 "lexeme": "כָּשַׁל",
 "gloss": "to totter or waver (through weakness of the legs",
@@ -31715,6 +31575,18 @@
 "state": "Absolute"
 },
 {
+"surface": "וְקָרָ֤את",
+"lexeme": "קָרָא",
+"gloss": "to call out to (i.e. properly",
+"reference": "Genesis 16:11",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Sequential perfect",
+"person": "2nd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "הִתְהַלֵּ֥ךְ",
 "lexeme": "הָלַךְ",
 "gloss": "to walk (in a great variety of applications",
@@ -31961,18 +31833,6 @@
 "state": "Construct"
 },
 {
-"surface": "ויישם",
-"lexeme": "יָשַׂם",
-"gloss": "to place",
-"reference": "Genesis 24:33",
-"partOfSpeech": "Verb",
-"stem": "Qal passive",
-"conjugation": "Sequential imperfect",
-"person": "3rd",
-"gender": "Masculine",
-"number": "Singular"
-},
-{
 "surface": "וָֽאֶשְׁתַּחֲוֶ֖ה",
 "lexeme": "שָׁחָה",
 "gloss": "to depress",
@@ -32088,6 +31948,18 @@
 "person": "1st",
 "gender": "Common",
 "number": "Plural"
+},
+{
+"surface": "וְנִתְּנָ֨ה",
+"lexeme": "נָתַן",
+"gloss": "to give",
+"reference": "Genesis 29:27",
+"partOfSpeech": "Verb",
+"stem": "Niphal",
+"conjugation": "Sequential perfect",
+"person": "3rd",
+"gender": "Feminine",
+"number": "Singular"
 },
 {
 "surface": "וַתִּפָּקַ֨חְנָה֙",
@@ -33518,18 +33390,6 @@
 "state": "Construct"
 },
 {
-"surface": "מידעת",
-"lexeme": "יָדַע",
-"gloss": "to know (properly, to ascertain by seeing)",
-"reference": "Isaiah 12:5",
-"partOfSpeech": "Verb",
-"stem": "Pual",
-"conjugation": "Passive participle",
-"gender": "Feminine",
-"number": "Singular",
-"state": "Absolute"
-},
-{
 "surface": "יְרֻטְּשׁ֖וּ",
 "lexeme": "רָטָשׁ",
 "gloss": "to dash down",
@@ -33539,18 +33399,6 @@
 "conjugation": "Imperfect",
 "person": "3rd",
 "gender": "Masculine",
-"number": "Plural"
-},
-{
-"surface": "תשגלנה",
-"lexeme": "שָׁגַל",
-"gloss": "to copulate with",
-"reference": "Isaiah 13:16",
-"partOfSpeech": "Verb",
-"stem": "Niphal",
-"conjugation": "Imperfect",
-"person": "3rd",
-"gender": "Feminine",
 "number": "Plural"
 },
 {
@@ -34430,6 +34278,18 @@
 "number": "Plural"
 },
 {
+"surface": "מְלֻמָּדָֽה",
+"lexeme": "לָמַד",
+"gloss": "to goad",
+"reference": "Isaiah 29:13",
+"partOfSpeech": "Verb",
+"stem": "Pual",
+"conjugation": "Passive participle",
+"gender": "Feminine",
+"number": "Singular",
+"state": "Absolute"
+},
+{
 "surface": "תִּסְתַּתָּֽר",
 "lexeme": "סָתַר",
 "gloss": "to hide (by covering), literally or figuratively",
@@ -34751,6 +34611,18 @@
 "number": "Singular"
 },
 {
+"surface": "יְדֻשָּֽׁן",
+"lexeme": "דָּשֵׁן",
+"gloss": "to be fat",
+"reference": "Isaiah 34:7",
+"partOfSpeech": "Verb",
+"stem": "Pual",
+"conjugation": "Imperfect",
+"person": "3rd",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
 "surface": "תִּפָּקַ֖חְנָה",
 "lexeme": "פָּקַח",
 "gloss": "to open (the senses, especially the eyes)",
@@ -35001,6 +34873,18 @@
 "person": "3rd",
 "gender": "Feminine",
 "number": "Singular"
+},
+{
+"surface": "תִּבָּנֶ֔ינָה",
+"lexeme": "בָּנָה",
+"gloss": "to build",
+"reference": "Isaiah 44:26",
+"partOfSpeech": "Verb",
+"stem": "Niphal",
+"conjugation": "Imperfect",
+"person": "3rd",
+"gender": "Feminine",
+"number": "Plural"
 },
 {
 "surface": "אֲקוֹמֵֽם",
@@ -35394,6 +35278,18 @@
 "partOfSpeech": "Verb",
 "stem": "Niphal",
 "conjugation": "Perfect",
+"person": "2nd",
+"gender": "Masculine",
+"number": "Plural"
+},
+{
+"surface": "תִּגָּאֵֽלוּ",
+"lexeme": "גָּאַל",
+"gloss": "to be the next of kin (and as such to buy back a relative's property",
+"reference": "Isaiah 52:3",
+"partOfSpeech": "Verb",
+"stem": "Niphal",
+"conjugation": "Imperfect",
 "person": "2nd",
 "gender": "Masculine",
 "number": "Plural"
@@ -36653,18 +36549,6 @@
 "number": "Plural"
 },
 {
-"surface": "נושבה",
-"lexeme": "יָשַׁב",
-"gloss": "to sit down",
-"reference": "Jeremiah 22:6",
-"partOfSpeech": "Verb",
-"stem": "Niphal",
-"conjugation": "Passive participle",
-"gender": "Feminine",
-"number": "Singular",
-"state": "Absolute"
-},
-{
 "surface": "מְתַחֲרֶ֣ה",
 "lexeme": "תַּחָרָה",
 "gloss": "to vie with a rival",
@@ -36914,18 +36798,6 @@
 "conjugation": "Sequential perfect",
 "person": "3rd",
 "gender": "Masculine",
-"number": "Singular"
-},
-{
-"surface": "שגלת",
-"lexeme": "שָׁגַל",
-"gloss": "to copulate with",
-"reference": "Jeremiah 3:2",
-"partOfSpeech": "Verb",
-"stem": "Pual",
-"conjugation": "Perfect",
-"person": "2nd",
-"gender": "Feminine",
 "number": "Singular"
 },
 {
@@ -37505,6 +37377,18 @@
 "number": "Plural"
 },
 {
+"surface": "יִמָּלֵ֖ט",
+"lexeme": "מָלַט",
+"gloss": "to be smooth",
+"reference": "Jeremiah 46:6",
+"partOfSpeech": "Verb",
+"stem": "Niphal",
+"conjugation": "Jussive",
+"person": "3rd",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
 "surface": "יִתְגֹּ֣עֲשׁוּ",
 "lexeme": "גָּעַשׁ",
 "gloss": "to agitate violently",
@@ -37937,18 +37821,6 @@
 "state": "Absolute"
 },
 {
-"surface": "רפאנו",
-"lexeme": "רָפָא",
-"gloss": "to mend (by stitching)",
-"reference": "Jeremiah 51:9",
-"partOfSpeech": "Verb",
-"stem": "Piel",
-"conjugation": "Perfect",
-"person": "1st",
-"gender": "Common",
-"number": "Plural"
-},
-{
 "surface": "מֵכִ֥ין",
 "lexeme": "כּוּן",
 "gloss": "properly, to be erect (i.e. stand perpendicular)",
@@ -38061,30 +37933,6 @@
 "person": "1st",
 "gender": "Common",
 "number": "Plural"
-},
-{
-"surface": "תצאי",
-"lexeme": "יָצָא",
-"gloss": "to go (causatively",
-"reference": "Jeremiah 6:25",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Jussive",
-"person": "2nd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
-"surface": "תלכי",
-"lexeme": "יָלַךְ",
-"gloss": "to walk",
-"reference": "Jeremiah 6:25",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Jussive",
-"person": "2nd",
-"gender": "Feminine",
-"number": "Singular"
 },
 {
 "surface": "נִצַּ֑לְנוּ",
@@ -38349,18 +38197,6 @@
 "person": "1st",
 "gender": "Common",
 "number": "Singular"
-},
-{
-"surface": "חמרמרה",
-"lexeme": "חָמַר",
-"gloss": "properly, to boil up",
-"reference": "Job 16:16",
-"partOfSpeech": "Verb",
-"stem": "Pealal",
-"conjugation": "Perfect",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Plural"
 },
 {
 "surface": "תְּכַסִּ֣י",
@@ -38753,18 +38589,6 @@
 "number": "Singular"
 },
 {
-"surface": "תשוה",
-"lexeme": "שָׁוָה",
-"gloss": "to destroy",
-"reference": "Job 30:22",
-"partOfSpeech": "Verb",
-"stem": "Pual",
-"conjugation": "Imperfect",
-"person": "2nd",
-"gender": "Masculine",
-"number": "Singular"
-},
-{
 "surface": "יְשֹׁרָֽשׁוּ",
 "lexeme": "שָׁרַשׁ",
 "gloss": "to root",
@@ -39048,6 +38872,18 @@
 "person": "3rd",
 "gender": "Masculine",
 "number": "Plural"
+},
+{
+"surface": "מַעְלִ֥ים",
+"lexeme": "עָלַם",
+"gloss": "to veil from sight, i.e. conceal",
+"reference": "Job 42:3",
+"partOfSpeech": "Verb",
+"stem": "Hiphil",
+"conjugation": "Active participle",
+"gender": "Masculine",
+"number": "Singular",
+"state": "Construct"
 },
 {
 "surface": "נִפְלָא֥וֹת",
@@ -39371,6 +39207,30 @@
 "number": "Singular"
 },
 {
+"surface": "תֹּאכְלִ֖י",
+"lexeme": "אָכַל",
+"gloss": "to eat",
+"reference": "Judges 13:4",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Jussive",
+"person": "2nd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "תִּשְׁתִּ֣י",
+"lexeme": "שָׁתָה",
+"gloss": "to imbibe",
+"reference": "Judges 13:7",
+"partOfSpeech": "Verb",
+"stem": "Qal",
+"conjugation": "Jussive",
+"person": "2nd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "פַּתִּ֣י",
 "lexeme": "פָּתָה",
 "gloss": "to open, i.e. be (causatively, make) roomy",
@@ -39631,6 +39491,18 @@
 "stem": "Pealal",
 "conjugation": "Perfect",
 "person": "3rd",
+"gender": "Common",
+"number": "Plural"
+},
+{
+"surface": "בִּלָּ֑עְנוּ",
+"lexeme": "בָּלַע",
+"gloss": "to make away with (specifically by swallowing)",
+"reference": "Lamentations 2:16",
+"partOfSpeech": "Verb",
+"stem": "Piel",
+"conjugation": "Perfect",
+"person": "1st",
 "gender": "Common",
 "number": "Plural"
 },
@@ -39912,6 +39784,18 @@
 "lexeme": "נָשַׂג",
 "gloss": "to reach",
 "reference": "Leviticus 14:21",
+"partOfSpeech": "Verb",
+"stem": "Hiphil",
+"conjugation": "Active participle",
+"gender": "Feminine",
+"number": "Singular",
+"state": "Absolute"
+},
+{
+"surface": "מַמְאֶ֥רֶת",
+"lexeme": "מָאַר",
+"gloss": "to be bitter or (causatively) to embitter, i.e. be painful",
+"reference": "Leviticus 14:44",
 "partOfSpeech": "Verb",
 "stem": "Hiphil",
 "conjugation": "Active participle",
@@ -40352,18 +40236,6 @@
 "state": "Absolute"
 },
 {
-"surface": "התפלשתי",
-"lexeme": "פָּלַשׁ",
-"gloss": "to roll (in dust)",
-"reference": "Micah 1:10",
-"partOfSpeech": "Verb",
-"stem": "Hithpael",
-"conjugation": "Perfect",
-"person": "1st",
-"gender": "Common",
-"number": "Singular"
-},
-{
 "surface": "יְקוֹמֵ֔ם",
 "lexeme": "קוּם",
 "gloss": "to rise (in various applications",
@@ -40577,6 +40449,18 @@
 "conjugation": "Active participle",
 "gender": "Feminine",
 "number": "Plural",
+"state": "Absolute"
+},
+{
+"surface": "נַֽעֲלָמָ֑ה",
+"lexeme": "עָלַם",
+"gloss": "to veil from sight, i.e. conceal",
+"reference": "Nahum 3:11",
+"partOfSpeech": "Verb",
+"stem": "Niphal",
+"conjugation": "Passive participle",
+"gender": "Feminine",
+"number": "Singular",
 "state": "Absolute"
 },
 {
@@ -41402,18 +41286,6 @@
 "number": "Singular"
 },
 {
-"surface": "תתאו",
-"lexeme": "אָוָה",
-"gloss": "to wish for",
-"reference": "Proverbs 23:6",
-"partOfSpeech": "Verb",
-"stem": "Hithpael",
-"conjugation": "Jussive",
-"person": "2nd",
-"gender": "Masculine",
-"number": "Singular"
-},
-{
 "surface": "יְקַנֵּ֣א",
 "lexeme": "קָנָא",
 "gloss": "to be (causatively",
@@ -41424,18 +41296,6 @@
 "person": "3rd",
 "gender": "Masculine",
 "number": "Singular"
-},
-{
-"surface": "תרצנה",
-"lexeme": "רָצָה",
-"gloss": "to be pleased with",
-"reference": "Proverbs 23:26",
-"partOfSpeech": "Verb",
-"stem": "Qal",
-"conjugation": "Jussive",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Plural"
 },
 {
 "surface": "תְּדַבֵּֽרְנָה",
@@ -41556,6 +41416,18 @@
 "gender": "Masculine",
 "number": "Plural",
 "state": "Construct"
+},
+{
+"surface": "תִּ֭תְהַלֵּל",
+"lexeme": "הָלַל",
+"gloss": "to be clear (orig. of sound, but usually of color)",
+"reference": "Proverbs 27:1",
+"partOfSpeech": "Verb",
+"stem": "Hithpael",
+"conjugation": "Jussive",
+"person": "2nd",
+"gender": "Masculine",
+"number": "Singular"
 },
 {
 "surface": "נִשְׁתָּוָֽה",
@@ -41724,18 +41596,6 @@
 "person": "1st",
 "gender": "Common",
 "number": "Singular"
-},
-{
-"surface": "מלושני",
-"lexeme": "לָשַׁן",
-"gloss": "to wag the tongue, i.e. to calumniate",
-"reference": "Psalms 101:5",
-"partOfSpeech": "Verb",
-"stem": "Polel",
-"conjugation": "Active participle",
-"gender": "Masculine",
-"number": "Singular",
-"state": "Construct"
 },
 {
 "surface": "יְחֹנֵֽנוּ",
@@ -42086,18 +41946,6 @@
 "number": "Singular"
 },
 {
-"surface": "ימיטו",
-"lexeme": "מוֹט",
-"gloss": "to waver",
-"reference": "Psalms 140:11",
-"partOfSpeech": "Verb",
-"stem": "Hiphil",
-"conjugation": "Jussive",
-"person": "3rd",
-"gender": "Masculine",
-"number": "Plural"
-},
-{
 "surface": "וַתִּתְעַטֵּ֣ף",
 "lexeme": "עָטַף",
 "gloss": "to shroud, i.e. clothe (whether transitive or reflex.)",
@@ -42434,6 +42282,18 @@
 "number": "Singular"
 },
 {
+"surface": "הִתְהַלָּ֑כְתִּי",
+"lexeme": "הָלַךְ",
+"gloss": "to walk (in a great variety of applications",
+"reference": "Psalms 35:14",
+"partOfSpeech": "Verb",
+"stem": "Hithpael",
+"conjugation": "Perfect",
+"person": "1st",
+"gender": "Common",
+"number": "Singular"
+},
+{
 "surface": "כּוֹנָ֗נוּ",
 "lexeme": "כּוּן",
 "gloss": "properly, to be erect (i.e. stand perpendicular)",
@@ -42686,18 +42546,6 @@
 "state": "Construct"
 },
 {
-"surface": "ירימו",
-"lexeme": "רוּם",
-"gloss": "to be high actively",
-"reference": "Psalms 66:7",
-"partOfSpeech": "Verb",
-"stem": "Hiphil",
-"conjugation": "Jussive",
-"person": "3rd",
-"gender": "Masculine",
-"number": "Plural"
-},
-{
 "surface": "יִכָּ֣לְמוּ",
 "lexeme": "כָּלַם",
 "gloss": "properly, to wound",
@@ -42744,18 +42592,6 @@
 "person": "3rd",
 "gender": "Feminine",
 "number": "Plural"
-},
-{
-"surface": "שפכה",
-"lexeme": "שָׁפַךְ",
-"gloss": "to spill forth (blood, a libation, liquid metal",
-"reference": "Psalms 73:2",
-"partOfSpeech": "Verb",
-"stem": "Qal passive",
-"conjugation": "Perfect",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Singular"
 },
 {
 "surface": "אֶשְׁתּוֹנָֽן",
@@ -43907,17 +43743,6 @@
 "number": "Plural"
 },
 {
-"surface": "היא",
-"lexeme": "הוּא",
-"gloss": "he (she or it)",
-"reference": "1 Chronicles 29:16",
-"partOfSpeech": "Pronoun",
-"type": "Personal",
-"person": "3rd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
 "surface": "אַתָּה֙",
 "lexeme": "אַתָּה",
 "gloss": "thou and thee, or (plural) ye and you",
@@ -44061,17 +43886,6 @@
 "number": "Singular"
 },
 {
-"surface": "אתי",
-"lexeme": "אַתָּה",
-"gloss": "thou and thee, or (plural) ye and you",
-"reference": "1 Kings 14:2",
-"partOfSpeech": "Pronoun",
-"type": "Personal",
-"person": "2nd",
-"gender": "Feminine",
-"number": "Singular"
-},
-{
 "surface": "אַ֚תְּ",
 "lexeme": "אַתָּה",
 "gloss": "thou and thee, or (plural) ye and you",
@@ -44094,10 +43908,10 @@
 "number": "Singular"
 },
 {
-"surface": "הוא",
+"surface": "הוּא֙",
 "lexeme": "הוּא",
 "gloss": "he (she or it)",
-"reference": "1 Kings 17:15",
+"reference": "1 Kings 17:19",
 "partOfSpeech": "Pronoun",
 "type": "Personal",
 "person": "3rd",
@@ -44484,6 +44298,17 @@
 "number": "Plural"
 },
 {
+"surface": "הִֽיא",
+"lexeme": "הוּא",
+"gloss": "he (she or it)",
+"reference": "2 Kings 9:34",
+"partOfSpeech": "Pronoun",
+"type": "Personal",
+"person": "3rd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "אֲנַ֨חְנוּ",
 "lexeme": "אֲנַחְנוּ",
 "gloss": "we",
@@ -44647,6 +44472,17 @@
 "person": "3rd",
 "gender": "Feminine",
 "number": "Plural"
+},
+{
+"surface": "אַתְּ֒",
+"lexeme": "אַתָּה",
+"gloss": "thou and thee, or (plural) ye and you",
+"reference": "Genesis 24:47",
+"partOfSpeech": "Pronoun",
+"type": "Personal",
+"person": "2nd",
+"gender": "Feminine",
+"number": "Singular"
 },
 {
 "surface": "הֵ֥נָּה",

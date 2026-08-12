@@ -4,10 +4,13 @@ import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import {
   generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestions,
+  generateHebrewVocabPoolFromSelection, generateHebrewMorphologyQuestions,
   generateVerbParseQuestions, generateNounParseQuestions,
   generateAdjectiveParseQuestions, generatePronounParseQuestions,
   generateConditionalQuestions, generateSubjunctiveQuestions,
 } from '@/lib/quiz-generation'
+import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
+import { isHebrewLevel } from '@/lib/constants'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import type { QuestionType } from '@/types/assignment'
@@ -32,12 +35,15 @@ export async function POST(
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { type: true, level: true, morphSubtype: true, provideDefinition: true, vocabSelection: true,
-             course: { select: { language: true } } },
+    select: { type: true, level: true, morphSubtype: true, morphConfig: true, provideDefinition: true,
+             vocabSelection: true, course: { select: { language: true } } },
   })
   if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  const qType = (type as QuestionType) ?? 'GREEK_TO_ENGLISH'
+  // The assignment's own level decides the language: regeneration must not flip a Hebrew
+  // quiz into Greek just because the Greek question type is the historical default.
+  const hebrew = isHebrewLevel(String(level ?? assignment.level))
+  const qType = (type as QuestionType) ?? (hebrew ? 'HEBREW_TO_ENGLISH' : 'GREEK_TO_ENGLISH')
   const qCount = Math.min(Math.max(Number(count) || 10, 1), 50)  // per-attempt count
 
   // Effective word selection: a fresh one from the request wins; otherwise reuse
@@ -70,9 +76,23 @@ export async function POST(
     // already sat rather than flipping language under them.
     const resolve = glossResolver(assignment.course?.language ?? 'en')
     const glossOf = (w: { word: string; gloss: string }) => resolve(w.word, w.gloss)
-    questions = effectiveSel
-      ? generateVocabPoolFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, provideDefinitionPct, effectiveSel.reviewPct ?? 0, glossOf)
-      : await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct, assignment.course?.language ?? 'en')
+    questions = hebrew
+      // No selection means the whole Hebrew deck — the Greek fallback below reads the
+      // VocabularyItem table, which holds no Hebrew.
+      ? generateHebrewVocabPoolFromSelection(
+          effectiveSel?.subsections ?? [], effectiveSel?.pos ?? [], qType,
+          provideDefinitionPct, effectiveSel?.reviewPct ?? 0, glossOf)
+      : effectiveSel
+        ? generateVocabPoolFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, provideDefinitionPct, effectiveSel.reviewPct ?? 0, glossOf)
+        : await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct, assignment.course?.language ?? 'en')
+  } else if (assignment.type === 'MORPHOLOGY_QUIZ' && hebrew) {
+    // Rebuild from the stored recipe so a regenerated Hebrew quiz tests the same fields
+    // and parse values the instructor originally configured.
+    const cfg = (assignment.morphConfig ?? null) as
+      { fields?: string[]; parseFilter?: HebrewMorphParseFilter } | null
+    questions = generateHebrewMorphologyQuestions(
+      (assignment.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
+      qCount, cfg?.fields, cfg?.parseFilter)
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {
       case 'VERB':        questions = generateVerbParseQuestions(qCount);       break

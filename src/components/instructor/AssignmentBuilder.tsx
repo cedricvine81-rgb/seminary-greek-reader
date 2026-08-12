@@ -23,6 +23,7 @@ import {
   HEBREW_STATES, HEBREW_PRONOUN_TYPES, type HebrewMorphParseFilter,
 } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
+import { scriptProps } from '@/lib/script-detect'
 import type { CourseLevel } from '@/types/course'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { formatDate, formatDateLong } from '@/lib/i18n/format'
@@ -870,6 +871,7 @@ interface SampleQuestion {
 interface SampleData {
   questions: SampleQuestion[]
   lesson: VocabLesson | null
+  lang?: 'greek' | 'hebrew'   // which script the prompts are in
 }
 
 // ── Parse Filter Chip Group ───────────────────────────────────────────────────
@@ -1373,6 +1375,16 @@ function MorphAnswerDisplay({ raw }: { raw: string }) {
 
 // ── Sample Quiz Modal ─────────────────────────────────────────────────────────
 
+/**
+ * A question prompt in the preview. Script and direction are read from the text itself,
+ * by the same rule the student's quiz runner applies — so a Hebrew course previews in
+ * Hebrew, and a mixed Hebrew-plus-gloss parsing prompt stays left-to-right.
+ */
+function Prompt({ text, size }: { text: string; size: string }) {
+  const { className, dir } = scriptProps(text)
+  return <span className={`${className} ${size} text-ink-900`} dir={dir}>{text}</span>
+}
+
 function SampleQuizModal({
   open, onClose, data, loading, quizType, provideDefinition,
 }: {
@@ -1420,13 +1432,13 @@ function SampleQuizModal({
                 <p className="text-sm font-medium text-gray-700">
                   <span className="text-gray-400 mr-2">{q.position}.</span>
                   {quizType === 'MORPHOLOGY_QUIZ' && q.type === 'MORPHOLOGY_IDENTIFY' ? (
-                    <span className="font-greek text-xl text-ink-900">{q.prompt}</span>
+                    <Prompt text={q.prompt} size="text-xl" />
                   ) : quizType === 'MORPHOLOGY_QUIZ' ? (
                     <span className="whitespace-pre-line text-gray-900">{q.prompt}</span>
                   ) : quizType === 'VOCABULARY_QUIZ' ? (
-                    <span className="font-greek text-lg text-ink-900">{q.prompt}</span>
+                    <Prompt text={q.prompt} size="text-lg" />
                   ) : (
-                    <span className="font-greek text-ink-900">{q.prompt}</span>
+                    <Prompt text={q.prompt} size="" />
                   )}
                 </p>
 
@@ -1446,7 +1458,8 @@ function SampleQuizModal({
                     {q.options.map((opt, i) => (
                       <li
                         key={i}
-                        className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
+                        dir={scriptProps(opt).dir}
+                        className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${scriptProps(opt).className} ${
                           revealed.has(q.position) && opt === q.correctAnswer
                             ? 'bg-green-50 border-green-300 text-green-800 font-medium'
                             : 'bg-gray-50 border-gray-200 text-gray-700'
@@ -1471,7 +1484,9 @@ function SampleQuizModal({
                     <MorphAnswerDisplay raw={q.correctAnswer} />
                   ) : (
                     <p className="text-xs text-green-700 mt-1">
-                      {t('inst.b.sample.answer')} <span className="font-medium">{q.correctAnswer}</span>
+                      {t('inst.b.sample.answer')}{' '}
+                      <span className={`font-medium ${scriptProps(q.correctAnswer).className}`}
+                            dir={scriptProps(q.correctAnswer).dir}>{q.correctAnswer}</span>
                     </p>
                   )
                 )}
@@ -1609,13 +1624,22 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
       const previewVocab = form.quizType === 'MORPHOLOGY_QUIZ' && firstTest?.vocabThruLesson
         ? String(firstTest.vocabThruLesson)
         : undefined
+      const previewFields = form.quizType === 'MORPHOLOGY_QUIZ' ? (firstTest?.fields ?? []) : []
       const params = new URLSearchParams({
         quizType: form.quizType,
         level:    form.level,
         count:    '5',
         week:     '1',
-        ...(form.quizType === 'VOCABULARY_QUIZ' ? { prevPct: String(form.prevSectionsPct) } : {}),
-        ...(form.quizType === 'MORPHOLOGY_QUIZ' ? { morphologySubtype: previewSubtype } : {}),
+        ...(form.quizType === 'VOCABULARY_QUIZ'
+          ? { prevPct: String(form.prevSectionsPct),
+              // Preview the sections actually ticked, not the default lesson map.
+              ...(form.vocabSubsections.length > 0
+                ? { subsections: form.vocabSubsections.join(',') } : {}) }
+          : {}),
+        ...(form.quizType === 'MORPHOLOGY_QUIZ'
+          ? { morphologySubtype: previewSubtype,
+              ...(previewFields.length > 0 ? { fields: previewFields.join(',') } : {}) }
+          : {}),
         ...(previewVocab ? { vocabThruLesson: previewVocab } : {}),
       })
       const res = await fetch(`/api/assignments/sample?${params}`)
@@ -1626,7 +1650,8 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     } finally {
       setSampleLoading(false)
     }
-  }, [form.quizType, form.level, form.morphologySubtype, form.morphologySeries])
+  }, [form.quizType, form.level, form.morphologySubtype, form.morphologySeries,
+      form.vocabSubsections, form.prevSectionsPct])
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()

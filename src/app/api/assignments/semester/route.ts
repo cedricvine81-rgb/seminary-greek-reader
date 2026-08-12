@@ -6,16 +6,21 @@ import {
   generateVocabQuestions,
   generateVocabQuestionsForLesson,
   generateVocabQuestionsFromSelection,
+  generateHebrewVocabQuestionsFromSelection,
+  generateHebrewMorphologyQuestions,
   generateMorphologyQuestionsBySubtype,
   generateMorphQuestionsFromConfig,
   type MorphologySubtype,
   type MorphTestConfig,
 } from '@/lib/quiz-generation'
+import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
+import { isHebrewLevel } from '@/lib/constants'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import { getLessonForWeek } from '@/lib/vocab-lesson-map'
 import type { AssignmentType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 
+// Greek textbook sources, each implying a level. Not consulted for a Hebrew course.
 const SOURCE_LEVEL: Record<string, CourseLevel> = {
   VOCAB_BUILDER:      'BEGINNING',
   BEGINNING_VOCAB:    'BEGINNING',
@@ -116,8 +121,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Course not found.' }, { status: 404 })
   }
 
-  const resolvedLevel: CourseLevel = SOURCE_LEVEL[source] ?? (level as CourseLevel)
-  const useLessonMap = source === 'VOCAB_BUILDER' && resolvedLevel === 'BEGINNING'
+  // A Hebrew course keeps its own level — SOURCE_LEVEL maps Greek textbook sources, and
+  // letting it win here would store a Greek level on every quiz in the series.
+  const hebrew = isHebrewLevel(String(level))
+  const resolvedLevel: CourseLevel = hebrew ? (level as CourseLevel) : (SOURCE_LEVEL[source] ?? (level as CourseLevel))
+  // The lesson map is the BGVB week-by-week schedule: Greek only.
+  const useLessonMap = !hebrew && source === 'VOCAB_BUILDER' && resolvedLevel === 'BEGINNING'
 
   // Determine which schedule dates to process
   // For a morphology series, only create N assignments (one per test config)
@@ -164,7 +173,7 @@ export async function POST(req: NextRequest) {
 
     const instructions = lesson
       ? `Source: ${sourceLabel} · ${lesson.section} (${lesson.pages})`
-      : quizType === 'MORPHOLOGY_QUIZ' && testConfig?.vocabThruLesson
+      : quizType === 'MORPHOLOGY_QUIZ' && !hebrew && testConfig?.vocabThruLesson
         ? `Vocabulary through Lesson ${testConfig.vocabThruLesson}`
         : (source ? `Source: ${sourceLabel}` : '')
 
@@ -190,7 +199,9 @@ export async function POST(req: NextRequest) {
           : {}),
         ...(testConfig
           ? { morphSubtype: testConfig.subtype,
-              vocabThruLesson: testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson ?? null,
+              // The lesson cap is a BGVB (Greek) schedule; Hebrew has no lesson map, so
+              // storing one would make a later regeneration filter on nothing.
+              vocabThruLesson: hebrew ? null : testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson ?? null,
               // The full recipe, so the quiz can be regenerated faithfully later.
               morphConfig: JSON.parse(JSON.stringify({ fields: testConfig.fields ?? [],
                 ...(testConfig.parseFilter ? { parseFilter: testConfig.parseFilter } : {}),
@@ -211,7 +222,12 @@ export async function POST(req: NextRequest) {
     if (quizType === 'VOCABULARY_QUIZ') {
       const pct = Number(quizStylePct ?? 0)
       const glossOf = (w: { word: string; gloss: string }) => resolveGloss(w.word, w.gloss)
-      if (vocabSel) {
+      if (hebrew) {
+        // The Hebrew deck and its own question type, so the runner sets the prompt in
+        // Hebrew script right-to-left. An empty selection means the whole deck.
+        questions = generateHebrewVocabQuestionsFromSelection(
+          vocabSel?.subsections ?? [], vocabSel?.pos ?? [], 'HEBREW_TO_ENGLISH', qCount, pct, glossOf)
+      } else if (vocabSel) {
         // Instructor picked sections → draw every week's quiz from those words.
         questions = generateVocabQuestionsFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', qCount, pct, glossOf)
       } else if (lesson) {
@@ -221,6 +237,14 @@ export async function POST(req: NextRequest) {
       } else {
         questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount, pct)
       }
+    } else if (testConfig && hebrew) {
+      // Hebrew draws on its own pool and field vocabulary (binyan/conjugation/state rather
+      // than tense/voice/mood). vocabThruLesson is a BGVB lesson cap, so it does not apply.
+      questions = generateHebrewMorphologyQuestions(
+        testConfig.subtype as unknown as HebrewMorphologySubtype,
+        qCount,
+        testConfig.fields,
+        testConfig.parseFilter as unknown as HebrewMorphParseFilter | undefined)
     } else if (testConfig) {
       // vocabAuto ties the quiz to the vocabulary schedule: week N tests only words
       // taught through lesson N, so students are never parsing unseen vocabulary.

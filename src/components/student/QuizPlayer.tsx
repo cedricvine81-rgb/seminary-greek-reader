@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Select } from '@/components/ui/Select'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
 import { isAnswerCorrect, isMultipleChoiceCorrect } from '@/lib/answer-matching'
+import { hasGreek, hasHebrew, scriptProps } from '@/lib/script-detect'
 import type { QuizQuestion, QuizResult } from '@/types/quiz'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
@@ -26,34 +27,6 @@ interface QuizPlayerProps {
 }
 
 type Phase = 'answering' | 'feedback' | 'complete' | 'submitted'
-
-/** Returns true if the string contains any Greek Unicode characters */
-function hasGreek(s: string | undefined | null): boolean {
-  return /[Ͱ-Ͽἀ-῿]/.test(s ?? '')
-}
-
-/** Returns true if the string contains any Hebrew Unicode characters. */
-function hasHebrew(s: string | undefined | null): boolean {
-  return /[\u0590-\u05FF\uFB1D-\uFB4F]/.test(s ?? '')
-}
-
-/**
- * Font + direction for a piece of quiz text, chosen from the text itself so it is right
- * for mixed content (a Hebrew prompt, an English gloss, a Greek lemma) wherever it appears.
- * Hebrew must also carry dir="rtl": the pointing renders in the wrong order without it.
- */
-function scriptProps(s: string | undefined | null): { className: string; dir?: 'rtl' } {
-  if (hasHebrew(s)) {
-    // dir="rtl" only when the text is Hebrew throughout. A morphology prompt carries the
-    // form AND an English lexeme/gloss — "עָשָׂה  (עָשָׂה — to do)" — and forcing the line
-    // right-to-left would throw the English parenthetical to the wrong end. Left as LTR,
-    // Unicode bidi lays the Hebrew run out correctly on its own.
-    const mixed = /[A-Za-z]/.test(s ?? '')
-    return { className: 'font-hebrew', dir: mixed ? undefined : 'rtl' }
-  }
-  if (hasGreek(s))  return { className: 'font-greek' }
-  return { className: '' }
-}
 
 /** Fisher–Yates shuffle (returns a new array). */
 function shuffle<T>(arr: T[]): T[] {

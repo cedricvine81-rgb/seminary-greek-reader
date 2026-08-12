@@ -18,6 +18,10 @@ WHAT IS KEPT — and why the pool is smaller than the corpus:
     answer key that a Hebrew course never taught. Aramaic is dropped.
   • Words with a Strong's number that resolves in the lexicon, so every question can show a
     lexical form and gloss the way the Greek pool does.
+  • POINTED words only. A handful of forms are ketiv — the written consonantal reading,
+    whose vowels live on the qere instead — and reach us unpointed (יהי, תתן). The binyan
+    and conjugation of an unpointed form cannot be read off it, so asking a student to
+    parse one is asking them to guess. ~1% of otherwise-eligible forms.
 
 NORMALISATION: OSHB letter codes are decoded to the same traditional English vocabulary the
 Reader's parsing pane shows (src/lib/hebrew-morph.ts), so a student sees one set of terms
@@ -25,7 +29,7 @@ everywhere. Person is written "1st"/"2nd"/"3rd" to match the Greek pool.
 
 Usage:  python3 scripts/build-hebrew-parsing-pool.py [max_per_signature]
 """
-import json, glob, os, sys, collections
+import json, glob, os, re, sys, collections
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, os.pardir)
@@ -139,6 +143,14 @@ def decode_pronoun(code):
 
 DECODERS = (('V', decode_verb), ('N', decode_noun), ('A', decode_adjective), ('P', decode_pronoun))
 
+# Hebrew points and accents. A form carrying none of them is an unpointed ketiv, and its
+# binyan/conjugation cannot be determined from the consonants alone.
+POINTING = re.compile('[\u0591-\u05C7]')
+
+
+def is_pointed(surface):
+    return bool(POINTING.search(surface))
+
 
 def single_parse(word, code):
     """True when the word's whole surface is described by the one code `code`.
@@ -222,6 +234,9 @@ def main():
                     continue
                 if not single_parse(w, code):
                     skipped['multi-morpheme (clitics)'] += 1
+                    continue
+                if not is_pointed(w['surface']):
+                    skipped['unpointed (ketiv)'] += 1
                     continue
                 strongs = str(w.get('strongs') or '').strip()
                 entry = lexicon.get(strongs.lstrip('0'))
