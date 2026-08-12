@@ -71,6 +71,42 @@ export function stripVerbMarker(s: string): string {
 }
 
 /**
+ * Split a gloss into its acceptable alternatives on commas/semicolons, IGNORING any that
+ * fall inside brackets — "(with gen., dat.) from" is one alternative, not two.
+ */
+export function splitAlternatives(s: string): string[] {
+  const out: string[] = []
+  let depth = 0, buf = ''
+  for (const ch of s) {
+    if (ch === '(' || ch === '[') depth++
+    else if (ch === ')' || ch === ']') depth = Math.max(0, depth - 1)
+    if ((ch === ',' || ch === ';') && depth === 0) { out.push(buf); buf = '' }
+    else buf += ch
+  }
+  out.push(buf)
+  return out
+}
+
+/**
+ * Every form of a gloss we are willing to accept.
+ *
+ * Glosses carry parenthetical notes of two different kinds, and a student typing the
+ * correct answer must not be marked wrong for either:
+ *   • a grammatical note to skip — "(with dat.) in", "you (m.s.)" → accept "in", "you"
+ *   • the substance itself      — "(direct object marker)"       → accept the inner text
+ * Since we cannot tell them apart, both the outside and the inside are accepted, plus the
+ * whole thing with the brackets merely removed. The cost is over-generosity on a note like
+ * "with dat"; the alternative is failing אֵת and יְהֹוָה, the two commonest words in the
+ * Hebrew deck, and every Greek preposition.
+ */
+function glossForms(alt: string): string[] {
+  const outside = normalise(alt.replace(/[([][^)\]]*[)\]]/g, ' '))   // "you (m.s.)" → "you"
+  const inside  = Array.from(alt.matchAll(/[([]([^)\]]*)[)\]]/g)).map(m => normalise(m[1]))
+  const flat    = normalise(alt.replace(/[()[\]]/g, ' '))            // brackets dropped, text kept
+  return [normalise(alt), outside, flat, ...inside].filter(Boolean)
+}
+
+/**
  * Returns true if `studentAnswer` matches `correctAnswer`.
  * `correctAnswer` may contain comma-separated acceptable alternatives.
  * When `fuzzy` is true, small typos are tolerated (used in "provide definition" mode).
@@ -83,7 +119,10 @@ export function isAnswerCorrect(studentAnswer: string, correctAnswer: string, fu
   const studentForms = Array.from(new Set([student, stripVerbMarker(student)])).filter(Boolean)
   // Accept either commas OR semicolons as separators between acceptable alternatives.
   // Lexicon glosses use both conventions (e.g. "love, affection" vs "I raise; I rise").
-  const alts = correctAnswer.split(/[,;]/).map(a => normalise(a)).filter(Boolean)
+  // The WHOLE gloss is an alternative too: a student who writes out the complete
+  // definition as printed ("gift, offering, tribute") has plainly earned the mark, but
+  // matched only against the parts they were being marked wrong.
+  const alts = [...splitAlternatives(correctAnswer), correctAnswer].flatMap(glossForms)
   const altForms = Array.from(new Set(alts.flatMap(a => [a, stripVerbMarker(a)]))).filter(Boolean)
   return fuzzy
     ? studentForms.some(s => altForms.some(alt => fuzzyMatch(s, alt)))
