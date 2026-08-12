@@ -17,6 +17,12 @@ import { DEFAULT_CONSTRUCT_CONFIG, parseConstructLink } from '@/lib/construct-as
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-fields'
 import { SUBTYPE_FIELD_OPTIONS, VERB_TENSES, VERB_VOICES, VERB_MOODS, PERSONS, NUMBERS, NOUN_CASES, GENDERS, PRONOUN_TYPES } from '@/lib/quiz-fields'
+import {
+  morphSubtypesFor, morphFieldOptionsFor, HEBREW_DEFAULT_PARSE_FILTER,
+  HEBREW_STEMS, HEBREW_CONJUGATIONS, HEBREW_PERSONS, HEBREW_GENDERS, HEBREW_NUMBERS,
+  HEBREW_STATES, HEBREW_PRONOUN_TYPES, type HebrewMorphParseFilter,
+} from '@/lib/quiz-fields-hebrew'
+import { isHebrewLevel } from '@/lib/constants'
 import type { CourseLevel } from '@/types/course'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { formatDate, formatDateLong } from '@/lib/i18n/format'
@@ -49,14 +55,8 @@ const DEFAULT_PARSE_FILTER: MorphParseFilter = {
   pronounTypes: [...PRONOUN_TYPES],
 }
 
-/**
- * The subtypes, in the order the pickers show them. THREE maps of these seven values used to
- * live here — the picker's label+description, a `SUBTYPE_LABEL_FALLBACK` copy of the labels, and
- * a short form for the schedule badge — so a rename had to be made in three places to hold. The
- * values are the list; every name comes from the catalogue.
- */
-const MORPHOLOGY_SUBTYPES: MorphologySubtype[] =
-  ['VERB_PARSING', 'NOUN_PARSING', 'ADJECTIVE_PARSING', 'PRONOUN_PARSING', 'CONDITIONALS', 'SUBJUNCTIVES', 'MIXED']
+// The subtype list now comes from morphSubtypesFor(level) in quiz-fields-hebrew.ts, which
+// returns the Greek seven or the Hebrew five. Every NAME still comes from the catalogue.
 
 const DAYS_OF_WEEK = [0, 1, 2, 3, 4, 5, 6]
 
@@ -191,16 +191,20 @@ function buildSchedule(startDate: string, weeks: number, days: number[], courseS
 function MorphologySubtypePicker({
   value,
   onChange,
+  level,
 }: {
   value: MorphologySubtype
   onChange: (v: MorphologySubtype) => void
+  /** The course's level. Hebrew has no Conditionals/Subjunctives sets, so it offers five. */
+  level: string
 }) {
   const t = useT()
+  const subtypes = morphSubtypesFor(level) as MorphologySubtype[]
   return (
     <div>
       <p className="block text-sm font-medium text-gray-700 mb-2">{t('inst.b.morphFocus')}</p>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {MORPHOLOGY_SUBTYPES.map(opt => (
+        {subtypes.map(opt => (
           <button
             key={opt}
             type="button"
@@ -410,19 +414,24 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       {form.type === 'MORPHOLOGY_QUIZ' && (
         <>
           <MorphologySubtypePicker
+            level={courseLevel}
             value={morphologySubtype}
             onChange={v => {
               setMorphologySubtype(v)
-              setMorphologyFields(SUBTYPE_FIELD_OPTIONS[v].map(f => f.key))
-              setMorphParseFilter(v === 'VERB_PARSING' ? { ...DEFAULT_PARSE_FILTER } : {})
+              setMorphologyFields(morphFieldOptionsFor(courseLevel, v).map(f => f.key))
+              setMorphParseFilter(v === 'VERB_PARSING'
+                ? (isHebrewLevel(courseLevel)
+                    ? { ...HEBREW_DEFAULT_PARSE_FILTER } as MorphParseFilter
+                    : { ...DEFAULT_PARSE_FILTER })
+                : {})
               setFilterOpen(false)
             }}
           />
-          {SUBTYPE_FIELD_OPTIONS[morphologySubtype].length > 0 && (
+          {morphFieldOptionsFor(courseLevel, morphologySubtype).length > 0 && (
             <div>
               <p className="text-sm font-medium text-gray-700 mb-1.5">{t('inst.b.fieldsToIdentify')}</p>
               <div className="flex flex-wrap gap-2">
-                {SUBTYPE_FIELD_OPTIONS[morphologySubtype].map(opt => {
+                {morphFieldOptionsFor(courseLevel, morphologySubtype).map(opt => {
                   const checked = morphologyFields.includes(opt.key)
                   return (
                     <label
@@ -465,16 +474,29 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               </button>
               {filterOpen && (
                 <div className="p-4 space-y-2">
-                  <ParseFilterPicker
-                    subtype={morphologySubtype}
-                    filter={morphParseFilter}
-                    onChange={setMorphParseFilter}
-                  />
+                  {isHebrewLevel(courseLevel) ? (
+                    <HebrewParseFilterPicker
+                      subtype={morphologySubtype}
+                      filter={morphParseFilter as HebrewMorphParseFilter}
+                      onChange={f => setMorphParseFilter(f as MorphParseFilter)}
+                    />
+                  ) : (
+                    <ParseFilterPicker
+                      subtype={morphologySubtype}
+                      filter={morphParseFilter}
+                      onChange={setMorphParseFilter}
+                    />
+                  )}
                 </div>
               )}
             </div>
           )}
-          <VocabLessonFilter value={vocabThruLesson} onChange={setVocabThruLesson} />
+          {/* The vocab cap is a BGVB-lesson cap, so it applies to Greek only — a Hebrew
+              course has no lesson map yet, and offering it would suggest a filter that
+              silently does nothing. */}
+          {!isHebrewLevel(courseLevel) && (
+            <VocabLessonFilter value={vocabThruLesson} onChange={setVocabThruLesson} />
+          )}
         </>
       )}
 
@@ -903,6 +925,61 @@ function FilterChipGroup({
   )
 }
 
+// ── Hebrew Parse Filter Picker ────────────────────────────────────────────────
+// Kept separate from the Greek picker below rather than genericising it: that one has
+// Greek-specific display logic (case/gender appear only once participles are in scope,
+// prefixed "participle:"), and Hebrew's conditionals are different — state belongs to
+// nominals and participles, person to finite verbs and personal pronouns.
+
+function HebrewParseFilterPicker({
+  subtype,
+  filter,
+  onChange,
+  compact = false,
+}: {
+  subtype: MorphologySubtype
+  filter: HebrewMorphParseFilter
+  onChange: (f: HebrewMorphParseFilter) => void
+  compact?: boolean
+}) {
+  const t = useT()
+  const isVerb    = subtype === 'VERB_PARSING' || subtype === 'MIXED'
+  const isNominal = subtype === 'NOUN_PARSING' || subtype === 'ADJECTIVE_PARSING'
+                    || subtype === 'PRONOUN_PARSING' || subtype === 'MIXED'
+  const isPronoun = subtype === 'PRONOUN_PARSING' || subtype === 'MIXED'
+
+  const selectedConj = filter.conjugations ?? HEBREW_CONJUGATIONS
+  const hasFinite    = selectedConj.some(c => !c.includes('participle') && !c.startsWith('Infinitive'))
+  const hasParticiple = selectedConj.some(c => c.includes('participle'))
+  // State belongs to nominals always, and to verbs only once participles are in scope.
+  const showState = isNominal || (isVerb && hasParticiple)
+  const statePrefix = !isNominal && isVerb ? t('inst.b.ptcPrefix') : ''
+
+  function patch(partial: Partial<HebrewMorphParseFilter>) {
+    onChange({ ...filter, ...partial })
+  }
+
+  return (
+    <div className="space-y-2">
+      {isVerb && <>
+        <FilterChipGroup compact={compact} label={groupLabel('stem', t, 'Stem (binyan)')} options={HEBREW_STEMS} selected={filter.stems ?? HEBREW_STEMS} onChange={v => patch({ stems: v })} />
+        <FilterChipGroup compact={compact} label={groupLabel('conjugation', t, 'Conjugation')} options={HEBREW_CONJUGATIONS} selected={selectedConj} onChange={v => patch({ conjugations: v })} />
+      </>}
+      {((isVerb && hasFinite) || isPronoun) && (
+        <FilterChipGroup compact={compact} label={groupLabel('person', t, 'Person')} options={HEBREW_PERSONS} selected={filter.persons ?? HEBREW_PERSONS} onChange={v => patch({ persons: v })} />
+      )}
+      <FilterChipGroup compact={compact} label={groupLabel('gender', t, 'Gender')} options={HEBREW_GENDERS} selected={filter.genders ?? HEBREW_GENDERS} onChange={v => patch({ genders: v })} />
+      <FilterChipGroup compact={compact} label={groupLabel('number', t, 'Number')} options={HEBREW_NUMBERS} selected={filter.numbers ?? HEBREW_NUMBERS} onChange={v => patch({ numbers: v })} />
+      {showState && (
+        <FilterChipGroup compact={compact} label={`${statePrefix}${groupLabel('state', t, 'State')}`} options={HEBREW_STATES} selected={filter.states ?? HEBREW_STATES} onChange={v => patch({ states: v })} />
+      )}
+      {isPronoun && (
+        <FilterChipGroup compact={compact} label={groupLabel('pronounType', t, 'Pronoun type')} options={HEBREW_PRONOUN_TYPES} selected={filter.types ?? HEBREW_PRONOUN_TYPES} onChange={v => patch({ types: v })} />
+      )}
+    </div>
+  )
+}
+
 // ── Verb Parse Filter Picker ──────────────────────────────────────────────────
 
 function ParseFilterPicker({
@@ -1000,12 +1077,17 @@ function MorphSeriesBuilder({
   series,
   onChange,
   availableDates,
+  level,
 }: {
   series: MorphTestConfig[]
   onChange: (s: MorphTestConfig[]) => void
   availableDates: number
+  /** The course's level — decides whether the tests offer Greek or Hebrew parse fields. */
+  level: string
 }) {
   const t = useT()
+  const hebrew = isHebrewLevel(level)
+  const subtypes = morphSubtypesFor(level) as MorphologySubtype[]
   const [filterOpen, setFilterOpen] = useState<Record<number, boolean>>({})
 
   function toggleFilter(i: number) {
@@ -1084,13 +1166,13 @@ function MorphSeriesBuilder({
 
             {/* Subtype selector */}
             <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-4">
-              {MORPHOLOGY_SUBTYPES.map(opt => (
+              {subtypes.map(opt => (
                 <button
                   key={opt}
                   type="button"
                   onClick={() => updateTest(i, {
                     subtype: opt,
-                    fields: SUBTYPE_FIELD_OPTIONS[opt].map(f => f.key),
+                    fields: morphFieldOptionsFor(level, opt).map(f => f.key),
                     parseFilter: PARSE_FILTER_SUBTYPES.includes(opt) ? { ...DEFAULT_PARSE_FILTER } : undefined,
                   })}
                   className={`text-left px-2.5 py-2 rounded-lg border text-xs transition-colors ${
@@ -1105,11 +1187,11 @@ function MorphSeriesBuilder({
             </div>
 
             {/* Field checkboxes — shown when the subtype has configurable fields */}
-            {SUBTYPE_FIELD_OPTIONS[test.subtype].length > 0 && (
+            {morphFieldOptionsFor(level, test.subtype).length > 0 && (
               <div>
                 <p className="text-xs font-medium text-gray-600 mb-1.5">{t('inst.b.fieldsToIdentify')}</p>
                 <div className="flex flex-wrap gap-2">
-                  {SUBTYPE_FIELD_OPTIONS[test.subtype].map(opt => {
+                  {morphFieldOptionsFor(level, test.subtype).map(opt => {
                     const checked = test.fields.includes(opt.key)
                     return (
                       <label
@@ -1192,12 +1274,21 @@ function MorphSeriesBuilder({
                 </button>
                 {filterOpen[i] && (
                   <div className="p-3 bg-surface space-y-2">
-                    <ParseFilterPicker
-                      compact
-                      subtype={test.subtype}
-                      filter={test.parseFilter ?? DEFAULT_PARSE_FILTER}
-                      onChange={f => updateTest(i, { parseFilter: f })}
-                    />
+                    {hebrew ? (
+                      <HebrewParseFilterPicker
+                        compact
+                        subtype={test.subtype}
+                        filter={(test.parseFilter ?? HEBREW_DEFAULT_PARSE_FILTER) as HebrewMorphParseFilter}
+                        onChange={f => updateTest(i, { parseFilter: f as MorphParseFilter })}
+                      />
+                    ) : (
+                      <ParseFilterPicker
+                        compact
+                        subtype={test.subtype}
+                        filter={test.parseFilter ?? DEFAULT_PARSE_FILTER}
+                        onChange={f => updateTest(i, { parseFilter: f })}
+                      />
+                    )}
                   </div>
                 )}
               </div>
@@ -1692,6 +1783,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
               series={form.morphologySeries}
               onChange={s => setF('morphologySeries', s)}
               availableDates={schedule.length}
+              level={form.level}
             />
           )}
 

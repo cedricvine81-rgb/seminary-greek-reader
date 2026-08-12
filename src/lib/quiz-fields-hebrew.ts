@@ -7,7 +7,8 @@
 // mirrors the decoder in src/lib/hebrew-morph.ts — so a student meets one set of terms in
 // the Reader's parsing pane and in the quiz.
 
-import type { MorphFieldOption } from './quiz-fields'
+import { SUBTYPE_FIELD_OPTIONS, type MorphFieldOption, type MorphologySubtype } from './quiz-fields'
+import { isHebrewLevel } from './constants'
 
 export type HebrewMorphologySubtype =
   | 'VERB_PARSING'
@@ -113,4 +114,36 @@ export interface HebrewMorphParseFilter {
   numbers?: string[]
   states?: string[]
   types?: string[]
+}
+
+// ── Level-aware selection ─────────────────────────────────────────────────────
+// The instructor builder is one component serving both languages. These pick the right
+// vocabulary from the course's level, so a Hebrew course is never offered tense/voice/mood.
+
+/** The subtypes offered, in picker order. Hebrew has no Conditionals/Subjunctives set. */
+export function morphSubtypesFor(level: string): string[] {
+  return isHebrewLevel(level)
+    ? ['VERB_PARSING', 'NOUN_PARSING', 'ADJECTIVE_PARSING', 'PRONOUN_PARSING', 'MIXED']
+    : ['VERB_PARSING', 'NOUN_PARSING', 'ADJECTIVE_PARSING', 'PRONOUN_PARSING',
+       'CONDITIONALS', 'SUBJUNCTIVES', 'MIXED']
+}
+
+/** The parse fields tickable for a subtype, in the course's language. */
+export function morphFieldOptionsFor(level: string, subtype: string): MorphFieldOption[] {
+  if (isHebrewLevel(level)) {
+    return HEBREW_SUBTYPE_FIELD_OPTIONS[subtype as HebrewMorphologySubtype]
+      ?? HEBREW_SUBTYPE_FIELD_OPTIONS.VERB_PARSING
+  }
+  return SUBTYPE_FIELD_OPTIONS[subtype as MorphologySubtype] ?? []
+}
+
+/** Every value selected, i.e. no restriction — the starting state of the filter. */
+export const HEBREW_DEFAULT_PARSE_FILTER: HebrewMorphParseFilter = {
+  stems:        [...HEBREW_STEMS],
+  conjugations: [...HEBREW_CONJUGATIONS],
+  persons:      [...HEBREW_PERSONS],
+  genders:      [...HEBREW_GENDERS],
+  numbers:      [...HEBREW_NUMBERS],
+  states:       [...HEBREW_STATES],
+  types:        [...HEBREW_PRONOUN_TYPES],
 }
