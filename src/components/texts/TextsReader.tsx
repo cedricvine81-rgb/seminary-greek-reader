@@ -97,6 +97,10 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
  */
 const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel'])
 
+// Books where Rahlfs prints the Old Greek and not Theodotion — the recension behind every
+// printed Bible a student is likely to own. See reader.oldGreekNote.
+const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel'])
+
 // The parallel translations available for a work. Only Greek (LXX) works carry one.
 function translationsFor(w: CatalogWork | null, t: (k: string) => string): { id: string; label: string }[] {
   if (!w || w.source !== 'lxx') return []
@@ -568,6 +572,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     // The one text here with no published edition behind it, because we made it — so it says so
     // whenever it is the column being read.
     if (translationId === 'deutero-es') parts.push(t('texts.spanishOursCredit'))
+    if (work.osisId && OLD_GREEK_BOOKS.has(work.osisId)) {
+      parts.push(t('reader.oldGreekNote'))
+      if (translationId === 'brenton') parts.push(t('reader.oldGreekBrenton'))
+    }
     onAttribution?.(parts.join(' '))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [work, translationId, onAttribution])
@@ -1470,6 +1478,14 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     <p className={`text-xs font-semibold tracking-wide text-gray-400 mb-2 ${hebrewProse ? 'normal-case' : 'uppercase'}`}>
                       {blockHeadingFor(work, section, t)}
                     </p>
+                    {/* Sparse verse numbers read as missing data until you know the recension.
+                        Both these books are one chapter long, so this shows exactly once. */}
+                    {work.osisId && OLD_GREEK_BOOKS.has(work.osisId) && (
+                      <p className="text-[10px] text-amber-700 leading-relaxed mb-2">
+                        {t('reader.oldGreekNote')}
+                        {translationId === 'brenton' && ` ${t('reader.oldGreekBrenton')}`}
+                      </p>
+                    )}
                     <div className="space-y-2">
                       {filteredRows.map(row => {
                         // Layer per column. A verse's Greek and its translation are different

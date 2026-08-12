@@ -163,6 +163,10 @@ function scrollPanelToVerse(panel: HTMLElement | null, el: HTMLElement): void {
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
+// Books where Rahlfs prints the Old Greek and not Theodotion — the recension behind every
+// printed Bible a student is likely to own. See reader.oldGreekNote.
+const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel'])
+
 const LOOKAHEAD = 1600   // px ahead of sentinel to start loading next chapter
 const NAV_PRE   = 3      // chapters to preload before the search target
 const NAV_FWD   = 2      // chapters to preload after the search target
@@ -1695,6 +1699,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
             <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-5 mb-1 pb-1 border-b border-gray-100">
               {bookNameFor(sec.osisId, locale, sec.bookName)}
             </h3>
+          )}
+          {/* Once per book, under its heading: the two books whose Greek here is not the Greek
+              behind the reader's own Bible. Sparse verse numbers look like missing data until
+              you know why, and the settings panel that explains our sources is a click away. */}
+          {bookChanged && OLD_GREEK_BOOKS.has(sec.osisId) && (
+            <p className="text-[10px] text-amber-700 leading-relaxed mb-1">{t('reader.oldGreekNote')}</p>
           )}
           {chapter !== null && (
             <h4 className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none">
