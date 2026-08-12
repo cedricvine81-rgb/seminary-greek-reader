@@ -14,7 +14,7 @@ import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, isPreviewMode } from '@/lib/preview'
 import { prisma } from '@/lib/db'
-import { COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { COURSE_LEVEL_VARIANTS, isHebrewLevel } from '@/lib/constants'
 import { effectiveDeadline } from '@/lib/assignment-deadline'
 import { ArrowLeft } from 'lucide-react'
 import { LocalDateTime } from '@/components/ui/LocalDateTime'
@@ -177,6 +177,10 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             {assignment.instructions && assignment.type !== 'CONSTRUCT_SEARCH' && (
               <div className="text-sm text-gray-600 bg-gray-50 rounded-lg p-4 space-y-2">
                 <p>{assignment.instructions}</p>
+                {/* Greek: the published textbook the instructions cite by name.
+                    Hebrew: the word list generated from our own deck — there is no Hebrew
+                    textbook to ship, and Hebrew instructions never name one, so it hangs
+                    off the assignment's level rather than a string match. */}
                 {assignment.instructions.includes('Vocabulary Builder') && (
                   <Link
                     href="/downloads/BGVB-2024.pdf"
@@ -187,6 +191,16 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
                   </Link>
                 )}
               </div>
+            )}
+
+            {assignment.type === 'VOCABULARY_QUIZ' && isHebrewLevel(assignment.level) && (
+              <Link
+                href="/downloads/hebrew-vocabulary-list.pdf"
+                target="_blank"
+                className="inline-flex items-center gap-1.5 text-sm text-brand-700 hover:text-brand-900 hover:underline font-medium"
+              >
+                ↓ Download Hebrew Vocabulary List (PDF)
+              </Link>
             )}
           </>
         )}

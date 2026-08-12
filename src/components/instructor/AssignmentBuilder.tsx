@@ -1932,15 +1932,18 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           onLateDaysLimitChange={v => setF('lateDaysLimit', v)}
         />
 
-        {/* BGVB download */}
+        {/* Word-list download. Greek gets the published textbook; Hebrew gets the list
+            generated from our own deck by scripts/build-hebrew-vocab-pdf.ts. */}
         {form.quizType === 'VOCABULARY_QUIZ' && (
           <a
-            href="/downloads/BGVB-2024.pdf"
+            href={isHebrewLevel(courseLevel)
+              ? '/downloads/hebrew-vocabulary-list.pdf'
+              : '/downloads/BGVB-2024.pdf'}
             download
             className="inline-flex items-center gap-2 text-sm text-brand-700 hover:text-brand-900 hover:underline transition-colors"
           >
             <Download size={14} />
-            {t('inst.b.downloadBgvb')}
+            {isHebrewLevel(courseLevel) ? t('inst.b.downloadHebrewList') : t('inst.b.downloadBgvb')}
           </a>
         )}
 

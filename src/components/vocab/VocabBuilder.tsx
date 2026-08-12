@@ -403,11 +403,13 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
           ))}
         </div>
 
-        {/* The printable BGVB handout these sections are taken from. Greek only —
-            the Hebrew deck comes from a different list. */}
-        {lang === 'greek' && (
+        {/* The printable word list these sections are taken from. Greek is the BGVB
+            handout; Hebrew is generated from this deck by build-hebrew-vocab-pdf.ts. */}
+        {(
           <a
-            href="/docs/bgvb-vocabulary-master-list.pdf"
+            href={lang === 'greek'
+              ? '/docs/bgvb-vocabulary-master-list.pdf'
+              : '/downloads/hebrew-vocabulary-list.pdf'}
             target="_blank"
             rel="noopener noreferrer"
             className="ml-auto mr-1 inline-flex items-center gap-1.5 text-sm text-brand-700 hover:underline"

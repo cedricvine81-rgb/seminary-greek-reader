@@ -318,6 +318,7 @@ const en: Catalogue = {
   'inst.b.chooseDefinition': 'Choose Definition',
   'inst.b.provideDefinition': 'Provide Definition',
   'inst.b.downloadBgvb': 'Download Biblical Greek Vocabulary Builder (PDF)',
+  'inst.b.downloadHebrewList': 'Download Hebrew Vocabulary List (PDF)',
   // Translation exam
   'inst.b.exam.heading': 'Translation Exam',
   'inst.b.exam.desc': 'Students translate several passages in one sitting (parsing · syntax · translation per word), with a single cut-off after which the exam locks and auto-submits. No Round 2, no PDF.',
@@ -2560,6 +2561,7 @@ const es: Catalogue = {
   'inst.b.chooseDefinition': 'Elegir la definición',
   'inst.b.provideDefinition': 'Dar la definición',
   'inst.b.downloadBgvb': 'Descargar el Biblical Greek Vocabulary Builder (PDF)',
+  'inst.b.downloadHebrewList': 'Descargar la lista de vocabulario hebreo (PDF)',
   'inst.b.exam.heading': 'Examen de traducción',
   'inst.b.exam.desc': 'Los estudiantes traducen varios pasajes en una sola sesión (análisis · sintaxis · traducción por palabra), con un único cierre tras el cual el examen se bloquea y se entrega automáticamente. Sin ronda 2 y sin PDF.',
   'inst.b.exam.passages': 'Pasajes (una referencia por línea, obligatorio)',
