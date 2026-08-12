@@ -1,0 +1,272 @@
+#!/usr/bin/env python3
+"""Build the HEBREW morphology-quiz parsing pool from the tagged MT corpus.
+
+The Hebrew counterpart to scripts/build-parsing-pool.py. Forms come from
+public/data/mt/*.json (OSHB morphology, built by scripts/build-hebrew-ot.py); lemmas and
+glosses from public/data/hebrew-lexicon.json, keyed by Strong's number.
+
+WHAT IS KEPT — and why the pool is smaller than the corpus:
+
+  • Words whose whole surface is described by ONE parse code. Hebrew writes clitics onto
+    the word: בְּרֵאשִׁית is בְּ (preposition) + רֵאשִׁית (noun), and OSHB tags each morpheme
+    separately, so "parse בְּרֵאשִׁית" has no single right answer. Such words are skipped.
+    The waw-consecutive is the deliberate exception — see single_parse() — because a
+    wayyiqtol is one verbal form and dropping it would cost the pool the commonest
+    narrative verb in the Hebrew Bible.
+  • Hebrew only. OSHB tags the Aramaic portions (Daniel, Ezra) with a different stem set
+    — Peal/Pael/Aphel rather than Qal/Piel/Hiphil — so mixing them would put values in the
+    answer key that a Hebrew course never taught. Aramaic is dropped.
+  • Words with a Strong's number that resolves in the lexicon, so every question can show a
+    lexical form and gloss the way the Greek pool does.
+
+NORMALISATION: OSHB letter codes are decoded to the same traditional English vocabulary the
+Reader's parsing pane shows (src/lib/hebrew-morph.ts), so a student sees one set of terms
+everywhere. Person is written "1st"/"2nd"/"3rd" to match the Greek pool.
+
+Usage:  python3 scripts/build-hebrew-parsing-pool.py [max_per_signature]
+"""
+import json, glob, os, sys, collections
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.join(HERE, os.pardir)
+MT   = os.path.join(ROOT, 'public', 'data', 'mt')
+LEX  = os.path.join(ROOT, 'public', 'data', 'hebrew-lexicon.json')
+OUT  = os.path.join(ROOT, 'src', 'data', 'hebrew-parsing-pool.json')
+
+# Distinct surface forms kept per parse signature. Nouns have few signatures (gender ×
+# number × state), so the cap is what gives those quizzes lexical variety.
+MAX_PER_SIG = int(sys.argv[1]) if len(sys.argv) > 1 else 12
+
+# ── OSHB code tables (mirror of src/lib/hebrew-morph.ts) ─────────────────────────
+GENDER = {'m': 'Masculine', 'f': 'Feminine', 'b': 'Both', 'c': 'Common'}
+NUMBER = {'s': 'Singular', 'p': 'Plural', 'd': 'Dual'}
+STATE  = {'a': 'Absolute', 'c': 'Construct', 'd': 'Determined'}
+PERSON = {'1': '1st', '2': '2nd', '3': '3rd'}
+
+STEM = {
+    'q': 'Qal', 'N': 'Niphal', 'p': 'Piel', 'P': 'Pual', 'h': 'Hiphil', 'H': 'Hophal',
+    't': 'Hithpael', 'Q': 'Qal passive', 'o': 'Polel', 'O': 'Polal', 'r': 'Poel',
+    'R': 'Poal', 'm': 'Polel', 'M': 'Polal', 'k': 'Palel', 'K': 'Palal', 'l': 'Pilpel',
+    'L': 'Polpal', 'f': 'Hithpalpel', 'D': 'Nithpael', 'j': 'Pealal', 'i': 'Pilel',
+    'u': 'Hothpaal', 'c': 'Tiphil', 'v': 'Hishtaphel', 'w': 'Nithpalel', 'y': 'Nithpael',
+    'z': 'Hithpoel', 'Z': 'Nithpoel',
+}
+CONJUGATION = {
+    'p': 'Perfect', 'q': 'Sequential perfect', 'i': 'Imperfect', 'w': 'Sequential imperfect',
+    'h': 'Cohortative', 'j': 'Jussive', 'v': 'Imperative',
+    'a': 'Infinitive absolute', 'c': 'Infinitive construct',
+    'r': 'Active participle', 's': 'Passive participle',
+}
+PRONOUN_TYPE = {
+    'Pd': 'Demonstrative', 'Pf': 'Indefinite', 'Pi': 'Interrogative',
+    'Pp': 'Personal', 'Pr': 'Relative',
+}
+# Participles and infinitives inflect like nouns/adjectives, not like finite verbs: they
+# have gender/number/state and NO person. The decoder below enforces that per conjugation.
+PARTICIPLES = {'Active participle', 'Passive participle'}
+INFINITIVES = {'Infinitive absolute', 'Infinitive construct'}
+
+
+def decode_verb(code):
+    """Vq p 3 m s  →  stem, conjugation, person, gender, number, state."""
+    if len(code) < 3:
+        return None
+    stem, conj = STEM.get(code[1]), CONJUGATION.get(code[2])
+    if not stem or not conj:
+        return None
+    out = {'partOfSpeech': 'Verb', 'stem': stem, 'conjugation': conj}
+    rest = code[3:]
+    if conj in PARTICIPLES:
+        # Vqr ms a  — gender, number, then optional state
+        if len(rest) >= 2:
+            out['gender'], out['number'] = GENDER.get(rest[0]), NUMBER.get(rest[1])
+        if len(rest) >= 3:
+            out['state'] = STATE.get(rest[2])
+    elif conj in INFINITIVES:
+        pass  # no agreement to test
+    else:
+        # Finite forms, imperatives included: OSHB writes person, gender, number (Vqv2ms).
+        if len(rest) >= 3:
+            out['person'] = PERSON.get(rest[0])
+            out['gender'], out['number'] = GENDER.get(rest[1]), NUMBER.get(rest[2])
+    return out if all(v is not None for v in out.values()) else None
+
+
+def decode_noun(code):
+    """Nc f s a  →  gender, number, state. Proper nouns (Np) carry no inflection."""
+    sub = code[:2]
+    if sub == 'Np':
+        return None
+    if sub not in ('Nc', 'Ng', 'Nx'):
+        return None
+    rest = code[2:]
+    if len(rest) < 2:
+        return None
+    out = {'partOfSpeech': 'Noun', 'gender': GENDER.get(rest[0]), 'number': NUMBER.get(rest[1])}
+    if len(rest) >= 3:
+        out['state'] = STATE.get(rest[2])
+    return out if all(v is not None for v in out.values()) else None
+
+
+def decode_adjective(code):
+    sub = code[:2]
+    if sub not in ('Aa', 'Ac', 'Ag', 'Ao'):
+        return None
+    rest = code[2:]
+    if len(rest) < 2:
+        return None
+    out = {'partOfSpeech': 'Adjective', 'gender': GENDER.get(rest[0]), 'number': NUMBER.get(rest[1])}
+    if len(rest) >= 3:
+        out['state'] = STATE.get(rest[2])
+    return out if all(v is not None for v in out.values()) else None
+
+
+def decode_pronoun(code):
+    sub = code[:2]
+    kind = PRONOUN_TYPE.get(sub)
+    if not kind:
+        return None
+    out = {'partOfSpeech': 'Pronoun', 'type': kind}
+    rest = code[2:]
+    # Personal pronouns carry person/gender/number; the others usually only gender/number.
+    if sub == 'Pp' and len(rest) >= 3:
+        out['person'] = PERSON.get(rest[0])
+        out['gender'], out['number'] = GENDER.get(rest[1]), NUMBER.get(rest[2])
+    elif len(rest) >= 2:
+        out['gender'], out['number'] = GENDER.get(rest[0]), NUMBER.get(rest[1])
+    return out if all(v is not None for v in out.values()) else None
+
+
+DECODERS = (('V', decode_verb), ('N', decode_noun), ('A', decode_adjective), ('P', decode_pronoun))
+
+
+def single_parse(word, code):
+    """True when the word's whole surface is described by the one code `code`.
+
+    Hebrew writes clitics onto the word, and OSHB tags each morpheme separately, so
+    בְּרֵאשִׁית is [R preposition, Nc noun]. "Parse בְּרֵאשִׁית" then has no single right
+    answer, and such words are excluded.
+
+    THE ONE EXCEPTION IS THE WAW-CONSECUTIVE. A wayyiqtol like וַיָּ֖מָת is tagged
+    [C, Vqw3ms] but is a single verbal form: the waw is part of it, and the word-level code
+    is the verb's own. A student parses it "Qal sequential imperfect 3ms". Excluding these
+    would drop the commonest narrative verb form in the Hebrew Bible from the quiz — 5,000+
+    forms — so [conjunction + sequential verb] is admitted.
+    """
+    morphemes = word.get('morphemes') or []
+    if len(morphemes) <= 1:
+        return True
+    if len(morphemes) != 2:
+        return False
+    first, second = morphemes
+    return (first.get('morph') == 'C'
+            and second.get('morph') == code
+            and code.startswith('V') and len(code) > 2 and code[2] in 'wq')
+
+
+def decode(code):
+    for letter, fn in DECODERS:
+        if code.startswith(letter):
+            return fn(code)
+    return None
+
+
+# A handful of Strong's entries have a gloss that is only the opening adverb of the
+# definition — "properly" — which tells a student nothing about which lexeme they are
+# looking at. Where that happens, take the substantive clause of `def` instead.
+USELESS_GLOSS = {'properly', 'a primitive root', 'of uncertain derivation', 'the same as'}
+
+
+def gloss_for(entry):
+    gloss = (entry.get('gloss') or '').strip()
+    if gloss.lower().rstrip('.,') not in USELESS_GLOSS:
+        return gloss
+    definition = (entry.get('def') or '').strip()
+    if not definition:
+        return gloss
+    # "properly, a mumble, i.e. a water skin (…)" → "a mumble"
+    body = definition
+    for lead in ('properly,', 'properly'):
+        if body.lower().startswith(lead):
+            body = body[len(lead):].lstrip(' ,')
+            break
+    for stop in (', i.e.', '; hence', ' (', ';', ','):
+        idx = body.find(stop)
+        if idx > 0:
+            body = body[:idx]
+            break
+    body = body.strip().rstrip('.,;')
+    return body or gloss
+
+
+def main():
+    lexicon = json.load(open(LEX))
+    pools = collections.defaultdict(list)
+    seen_sig = collections.Counter()
+    seen_surface = collections.defaultdict(set)
+    skipped = collections.Counter()
+
+    for path in sorted(glob.glob(os.path.join(MT, '*.json'))):
+        data = json.load(open(path))
+        for verse in data['verses']:
+            for w in verse['words']:
+                code = w.get('morph') or ''
+                if not code:
+                    skipped['no morph code'] += 1
+                    continue
+                # Aramaic (Daniel, Ezra) reuses the stem letters for a different set of
+                # binyanim — 'q' is Peal, not Qal — so decoding it with the Hebrew table
+                # would put values in the answer key that no Hebrew course teaches.
+                if w.get('lang') == 'A':
+                    skipped['Aramaic'] += 1
+                    continue
+                if not single_parse(w, code):
+                    skipped['multi-morpheme (clitics)'] += 1
+                    continue
+                strongs = str(w.get('strongs') or '').strip()
+                entry = lexicon.get(strongs.lstrip('0'))
+                if not entry or not entry.get('gloss'):
+                    skipped['no lexicon entry'] += 1
+                    continue
+                parsed = decode(code)
+                if not parsed:
+                    skipped['undecodable / not a tested POS'] += 1
+                    continue
+
+                pos = parsed['partOfSpeech'].lower()
+                sig = (code,)
+                surface = w['surface']
+                if surface in seen_surface[sig]:
+                    continue                      # same form, same parse — no new value
+                if seen_sig[sig] >= MAX_PER_SIG:
+                    continue
+                seen_sig[sig] += 1
+                seen_surface[sig].add(surface)
+
+                pools[pos].append({
+                    'surface': surface,
+                    'lexeme': entry['lemma'],
+                    'gloss': gloss_for(entry),
+                    'reference': verse['reference'],
+                    **parsed,
+                })
+
+    out = {k: v for k, v in pools.items()}
+    out['_generated'] = 'scripts/build-hebrew-parsing-pool.py'
+    out['_note'] = ('Single-morpheme Hebrew forms from the OSHB-tagged MT. Aramaic, clitic-'
+                    'bearing words and forms without a lexicon entry are excluded — see the '
+                    'script docstring.')
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    with open(OUT, 'w') as f:
+        json.dump(out, f, ensure_ascii=False, indent=0)
+
+    print(f'wrote {OUT}')
+    for k in ('verb', 'noun', 'adjective', 'pronoun'):
+        print(f'  {k:10s} {len(pools.get(k, [])):6,}')
+    print('  skipped:')
+    for reason, n in skipped.most_common():
+        print(f'    {reason:32s} {n:8,}')
+
+
+if __name__ == '__main__':
+    main()

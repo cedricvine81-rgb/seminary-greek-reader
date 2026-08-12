@@ -10,8 +10,10 @@ import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-as
 import {
   generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype,
   generateHebrewVocabQuestionsFromSelection, generateHebrewVocabPoolFromSelection,
+  generateHebrewMorphologyQuestions,
   type MorphologySubtype,
 } from '@/lib/quiz-generation'
+import type { HebrewMorphologySubtype } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
@@ -192,9 +194,18 @@ export async function POST(req: NextRequest) {
       questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct, course?.language ?? 'en')
     }
   } else if (type === 'MORPHOLOGY_QUIZ') {
-    const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
     const fields: string[] | undefined = body.fields?.length ? body.fields : undefined
-    questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null, fields, body.parseFilter ?? undefined)
+    if (isHebrewLevel(String(level))) {
+      // Hebrew draws on its own pool and field vocabulary (binyan/conjugation/state rather
+      // than tense/voice/mood). vocabThruLesson is Greek-only — it caps by BGVB lesson —
+      // so it is not applied here; a Hebrew course has no lesson map yet.
+      questions = generateHebrewMorphologyQuestions(
+        (morphologySubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
+        Number(numQuestions ?? 10), fields, body.parseFilter ?? undefined)
+    } else {
+      const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
+      questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null, fields, body.parseFilter ?? undefined)
+    }
   } else if (hwSet) {
     // Grammar homework: one TRANSLATION question per sentence. options[0] carries the
     // word-level model answers as JSON; correctAnswer holds the model translation.

@@ -43,7 +43,14 @@ function hasHebrew(s: string | undefined | null): boolean {
  * Hebrew must also carry dir="rtl": the pointing renders in the wrong order without it.
  */
 function scriptProps(s: string | undefined | null): { className: string; dir?: 'rtl' } {
-  if (hasHebrew(s)) return { className: 'font-hebrew', dir: 'rtl' }
+  if (hasHebrew(s)) {
+    // dir="rtl" only when the text is Hebrew throughout. A morphology prompt carries the
+    // form AND an English lexeme/gloss — "עָשָׂה  (עָשָׂה — to do)" — and forcing the line
+    // right-to-left would throw the English parenthetical to the wrong end. Left as LTR,
+    // Unicode bidi lays the Hebrew run out correctly on its own.
+    const mixed = /[A-Za-z]/.test(s ?? '')
+    return { className: 'font-hebrew', dir: mixed ? undefined : 'rtl' }
+  }
   if (hasGreek(s))  return { className: 'font-greek' }
   return { className: '' }
 }

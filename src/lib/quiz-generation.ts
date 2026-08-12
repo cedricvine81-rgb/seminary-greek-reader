@@ -363,6 +363,11 @@ export async function generateMorphologyQuestions(count: number) {
 // ─── Subtype generators (use static paradigm data) ────────────────────────────
 
 import { VERB_POOL, NOUN_POOL, ADJECTIVE_POOL, PRONOUN_POOL } from '@/data/greek-parsing-pool'
+import {
+  HEBREW_VERB_POOL, HEBREW_NOUN_POOL, HEBREW_ADJECTIVE_POOL, HEBREW_PRONOUN_POOL,
+  type HebrewParseEntry,
+} from '@/data/hebrew-parsing-pool'
+import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
 import type { GreekParseEntry } from '@/data/greek-parsing-data'
 import { CONDITIONAL_EXAMPLES, CONDITIONAL_TYPES } from '@/data/conditional-examples'
 import { SUBJUNCTIVE_EXAMPLES, SUBJUNCTIVE_TYPES } from '@/data/subjunctive-examples'
@@ -448,6 +453,100 @@ function getEntriesForSubtype(subtype: MorphologySubtype): GreekParseEntry[] {
     case 'MIXED':             return [...VERB_POOL, ...NOUN_POOL, ...ADJECTIVE_POOL, ...PRONOUN_POOL]
     default:                  return VERB_POOL
   }
+}
+
+// ── Hebrew morphology ─────────────────────────────────────────────────────────
+
+function hebrewEntriesForSubtype(subtype: HebrewMorphologySubtype): HebrewParseEntry[] {
+  switch (subtype) {
+    case 'VERB_PARSING':      return HEBREW_VERB_POOL
+    case 'NOUN_PARSING':      return HEBREW_NOUN_POOL
+    case 'ADJECTIVE_PARSING': return HEBREW_ADJECTIVE_POOL
+    case 'PRONOUN_PARSING':   return HEBREW_PRONOUN_POOL
+    case 'MIXED':             return [...HEBREW_VERB_POOL, ...HEBREW_NOUN_POOL,
+                                      ...HEBREW_ADJECTIVE_POOL, ...HEBREW_PRONOUN_POOL]
+    default:                  return HEBREW_VERB_POOL
+  }
+}
+
+function applyHebrewParseFilter(
+  entries: HebrewParseEntry[], filter?: HebrewMorphParseFilter,
+): HebrewParseEntry[] {
+  if (!filter) return entries
+  const has = (list: string[] | undefined, val: string | undefined) =>
+    !list?.length || (val != null && list.includes(val))
+  return entries.filter(e =>
+    has(filter.stems,        e.stem)        &&
+    has(filter.conjugations, e.conjugation) &&
+    has(filter.persons,      e.person)      &&
+    has(filter.genders,      e.gender)      &&
+    has(filter.numbers,      e.number)      &&
+    has(filter.states,       e.state)       &&
+    has(filter.types,        e.type)
+  )
+}
+
+/**
+ * Hebrew parsing questions. Mirrors the Greek generator: the answer is a JSON map of the
+ * tested fields, scored one point per field, and the question type stays
+ * MORPHOLOGY_IDENTIFY — the runner reads the field map, not the language.
+ *
+ * Forms that do not carry every tested field are dropped first, which is what makes the
+ * verb subtype conjugation-aware: ticking State yields a participle-only quiz, and ticking
+ * Person excludes participles and infinitives, which have none.
+ */
+export function generateHebrewMorphologyQuestions(
+  subtype: HebrewMorphologySubtype,
+  count: number,
+  fields?: string[],
+  parseFilter?: HebrewMorphParseFilter,
+) {
+  let entries = hebrewEntriesForSubtype(subtype)
+
+  if (parseFilter) {
+    const filtered = applyHebrewParseFilter(entries, parseFilter)
+    // Same rule as Greek: an over-narrow filter falls back rather than yielding nothing.
+    if (filtered.length >= Math.min(count, 3)) entries = filtered
+  }
+
+  const testable = fields?.length
+    ? entries.filter(e => fields.every(f =>
+        f === 'partOfSpeech' || (e as unknown as Record<string, unknown>)[f] != null))
+    : entries
+
+  return shuffle(testable).slice(0, count).map((entry, idx) => {
+    const full: Record<string, string | null> = {
+      partOfSpeech: entry.partOfSpeech,
+      stem:        entry.stem        ?? null,
+      conjugation: entry.conjugation ?? null,
+      person:      entry.person      ?? null,
+      gender:      entry.gender      ?? null,
+      number:      entry.number      ?? null,
+      state:       entry.state       ?? null,
+      type:        entry.type        ?? null,
+    }
+    const answer: Record<string, string | null> = {}
+    if (fields && fields.length > 0) {
+      // partOfSpeech is always kept so the runner can say "Parse this Verb:" even when it
+      // is not itself tested.
+      answer.partOfSpeech = full.partOfSpeech
+      for (const f of fields) answer[f] = full[f] ?? null
+    } else {
+      Object.assign(answer, full)
+    }
+    const testedCount = fields && fields.length > 0
+      ? fields.length
+      : Object.values(full).filter(v => v).length - 1
+    return {
+      position: idx + 1,
+      type: 'MORPHOLOGY_IDENTIFY' as QuestionType,
+      prompt: `${entry.surface}  (${entry.lexeme} — ${entry.gloss})`,
+      correctAnswer: JSON.stringify(answer),
+      options: [],
+      points: Math.max(1, testedCount),
+      reference: entry.reference ?? null,
+    }
+  })
 }
 
 export async function generateMorphologyQuestionsBySubtype(
