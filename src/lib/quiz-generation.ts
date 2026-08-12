@@ -1,4 +1,5 @@
 import { prisma } from './db'
+import { isHebrewLevel } from './constants'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
 import { wordsForSelection, subsectionKeysBefore, type BgvbWord } from './vocab-subsections'
@@ -211,6 +212,11 @@ export async function generateVocabQuestions(
    */
   locale = 'en',
 ) {
+  // VocabularyItem holds the GREEK deck only (LexicalEntry has no language column, and its
+  // frequency bands are NT counts). A Hebrew course must therefore get nothing rather than a
+  // silent fallback to Greek INTERMEDIATE, which is what the ternary below would otherwise do.
+  // The caller surfaces an empty pool as "no questions generated"; see HEBREW_VOCAB_TODO.
+  if (isHebrewLevel(level)) return []
   const freqLevel = level === 'BEGINNING' ? 'BEGINNING' : 'INTERMEDIATE'
   const items = await prisma.vocabularyItem.findMany({
     where: { level: freqLevel },

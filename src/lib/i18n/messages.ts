@@ -116,6 +116,8 @@ const en: Catalogue = {
   'course.level.GREEK_II': 'Greek II',
   'course.level.GREEK_III': 'Greek III',
   'course.level.SEPTUAGINT': 'Septuagint Greek',
+  'course.level.HEBREW_BEGINNING': 'Beginning Hebrew',
+  'course.level.HEBREW_INTERMEDIATE': 'Intermediate Hebrew',
   // ── Instructor: dashboard and courses ──
   // The parsing pane's own gloss, from the vocabulary decks, in the reader's language.
   // Browser-translation hint. Names the two browsers our students actually use, because "use
@@ -2383,6 +2385,8 @@ const es: Catalogue = {
   'course.level.GREEK_II': 'Griego II',
   'course.level.GREEK_III': 'Griego III',
   'course.level.SEPTUAGINT': 'Griego de la Septuaginta',
+  'course.level.HEBREW_BEGINNING': 'Hebreo inicial',
+  'course.level.HEBREW_INTERMEDIATE': 'Hebreo intermedio',
   // ── Profesor: panel y cursos ──
   'mt.englishOnly': 'Este texto solo existe en inglés.',
   'mt.howTo': 'Tu navegador puede traducirlo: haz clic derecho en la página y elige «Traducir» (Chrome), o usa el botón de traducción de la barra de direcciones (Safari).',

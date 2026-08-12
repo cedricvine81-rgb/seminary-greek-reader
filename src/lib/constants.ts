@@ -73,8 +73,31 @@ export const LXX_BOOKS = [
 // offered three of the seven and called BEGINNING "Beginner".
 export const COURSE_LEVELS = [
   'BEGINNING', 'INTERMEDIATE', 'ADVANCED', 'GREEK_I', 'GREEK_II', 'GREEK_III', 'SEPTUAGINT',
+  'HEBREW_BEGINNING', 'HEBREW_INTERMEDIATE',
 ] as const
 export type CourseLevel = typeof COURSE_LEVELS[number]
+
+/**
+ * Which language a course level is taught in. The unprefixed Greek values predate there
+ * being a second language, so the mapping cannot be read off the name alone.
+ *
+ * Quiz generation MUST branch on this rather than on the level string: a Hebrew course
+ * asking for vocabulary must not be served the Greek pool.
+ */
+export const COURSE_LEVEL_LANGUAGE: Record<CourseLevel, 'greek' | 'hebrew'> = {
+  BEGINNING:           'greek',
+  INTERMEDIATE:        'greek',
+  ADVANCED:            'greek',
+  GREEK_I:             'greek',
+  GREEK_II:            'greek',
+  GREEK_III:           'greek',
+  SEPTUAGINT:          'greek',
+  HEBREW_BEGINNING:    'hebrew',
+  HEBREW_INTERMEDIATE: 'hebrew',
+}
+
+export const isHebrewLevel = (level: string): boolean =>
+  COURSE_LEVEL_LANGUAGE[level as CourseLevel] === 'hebrew'
 
 export const COURSE_LEVEL_VARIANTS: Record<string, 'blue' | 'purple' | 'green' | 'gray'> = {
   BEGINNING:    'blue',
@@ -84,6 +107,8 @@ export const COURSE_LEVEL_VARIANTS: Record<string, 'blue' | 'purple' | 'green' |
   GREEK_II:     'purple',
   GREEK_III:    'green',
   SEPTUAGINT:   'gray',
+  HEBREW_BEGINNING:    'blue',
+  HEBREW_INTERMEDIATE: 'purple',
 }
 
 export const ASSIGNMENT_TYPES = [

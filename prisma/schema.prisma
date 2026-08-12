@@ -125,6 +125,8 @@ model Institution {
 // ─── Courses ─────────────────────────────────────────────────────
 
 enum CourseLevel {
+  // The unprefixed ladder is Greek, for historical reasons: these values predate there
+  // being a second language, and Course.level rows in production already hold them.
   BEGINNING
   INTERMEDIATE
   ADVANCED
@@ -132,6 +134,9 @@ enum CourseLevel {
   GREEK_II
   GREEK_III
   SEPTUAGINT
+  // Hebrew courses. Prefixed so the Greek rows above keep their meaning untouched.
+  HEBREW_BEGINNING
+  HEBREW_INTERMEDIATE
 }
 
 model Course {
