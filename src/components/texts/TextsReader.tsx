@@ -95,7 +95,7 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
  * Listed rather than probed because the menu has to be built before any chapter is fetched;
  * add a book here when its first chapter lands in public/data/deutero-es/.
  */
-const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc'])
+const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd'])
 
 // Books where Rahlfs prints the Old Greek and not Theodotion — the recension behind every
 // printed Bible a student is likely to own. See reader.oldGreekNote.
