@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
+import { isHebrewLevel } from '@/lib/constants'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { ConstructSearchFields } from '@/components/instructor/ConstructSearchFields'
 import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
@@ -44,6 +45,8 @@ interface Props {
     lockdownMaxViolations: number | null  // translation exams only
     constructConfig: unknown           // construct searches only; reference holds the search link
   }
+  /** The assignment's course level — decides which vocabulary deck the section picker shows. */
+  level?: string
 }
 
 // Convert an ISO string to the value a datetime-local input expects (local time, to the minute)
@@ -54,7 +57,7 @@ function toLocalInput(iso: string | null): string {
   return new Date(d.getTime() - off * 60000).toISOString().slice(0, 16)
 }
 
-export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocabQuiz, initial }: Props) {
+export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocabQuiz, level, initial }: Props) {
   const t = useT()
   const router = useRouter()
   const [saving, setSaving] = useState(false)
@@ -524,7 +527,11 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
         {isVocabQuiz && (
           <div className="space-y-4">
             <p className="text-sm font-semibold text-gray-800">{t('as.chooseWords')}</p>
-            <FrequencySectionPicker selectedSubsections={vocabSubsections} onChange={setVocabSubsections} />
+            <FrequencySectionPicker
+              lang={isHebrewLevel(level ?? '') ? 'hebrew' : 'greek'}
+              selectedSubsections={vocabSubsections}
+              onChange={setVocabSubsections}
+            />
             <p className="text-xs text-gray-500">
               {t('as.afterSelection')}
             </p>

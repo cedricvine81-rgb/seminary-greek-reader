@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { toEndOfDayLocalISO, toDueISO } from '@/lib/due-date'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
-import { subsectionKeysBefore, wordsForSelection } from '@/lib/vocab-subsections'
+import { DECKS, deckKeysBefore, deckWordsForSelection } from '@/lib/vocab-decks'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { ConstructSearchFields } from '@/components/instructor/ConstructSearchFields'
 import { DEFAULT_CONSTRUCT_CONFIG, parseConstructLink } from '@/lib/construct-assignment'
@@ -250,11 +250,14 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
   const [vocabReviewPct, setVocabReviewPct] = useState(0)   // % of the pool from earlier sections
   // How many words precede the selection — 0 means there is nothing to review, so hide the control.
+  // Counted against the COURSE's deck: on a Hebrew course the Greek helpers would report a
+  // review pool that does not exist, and the generator draws from the Hebrew deck.
   const earlierWordCount = useMemo(() => {
-    const keys = subsectionKeysBefore(vocabSubsections)
-    // NB wordsForSelection([]) means "all sections", so an empty key list must short-circuit.
-    return keys.length === 0 ? 0 : wordsForSelection(keys, []).length
-  }, [vocabSubsections])
+    const deck = DECKS[isHebrewLevel(courseLevel) ? 'hebrew' : 'greek']
+    const keys = deckKeysBefore(deck, vocabSubsections)
+    // NB an empty key list means "all sections" downstream, so short-circuit it.
+    return keys.length === 0 ? 0 : deckWordsForSelection(deck, keys, []).length
+  }, [vocabSubsections, courseLevel])
   const [morphologySubtype, setMorphologySubtype] = useState<MorphologySubtype>('VERB_PARSING')
   const [morphologyFields, setMorphologyFields] = useState<string[]>(
     SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key)
@@ -502,9 +505,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'VOCABULARY_QUIZ' && (
         <>
-          {/* Choose the words for the quiz from the BGVB frequency list, by section
-              (same source as the Vocab Builder / flashcards). */}
+          {/* Choose the words for the quiz by frequency section — the same deck the student
+              studies on /vocab, Greek or Hebrew according to the course. */}
           <FrequencySectionPicker
+            lang={isHebrewLevel(courseLevel) ? 'hebrew' : 'greek'}
             selectedSubsections={vocabSubsections}
             onChange={setVocabSubsections}
           />
@@ -1790,6 +1794,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           {form.quizType === 'VOCABULARY_QUIZ' && (
             <>
               <FrequencySectionPicker
+                lang={isHebrewLevel(form.level) ? 'hebrew' : 'greek'}
                 selectedSubsections={form.vocabSubsections}
                 onChange={keys => setF('vocabSubsections', keys)}
               />

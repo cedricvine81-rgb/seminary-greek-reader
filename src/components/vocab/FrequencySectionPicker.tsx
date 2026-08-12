@@ -4,12 +4,7 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 import { Check, ChevronRight, ChevronDown, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
-import {
-  ALL_SECTIONS,
-  SECTION_SUBSECTIONS,
-  SECTION_CUMULATIVE_COVERAGE,
-  ALL_SUBSECTION_KEYS,
-} from '@/lib/vocab-subsections'
+import { DECKS, type VocabLang } from '@/lib/vocab-decks'
 import type { Subsection } from '@/lib/vocab-subsections'
 
 /**
@@ -60,6 +55,12 @@ type SectionListMode = 'greek-english' | 'greek' | 'english'
 export interface FrequencySectionPickerProps {
   selectedSubsections: string[]
   onChange: (keys: string[]) => void
+  /**
+   * Which deck to pick sections from. Defaults to Greek so existing callers are unchanged.
+   * A Hebrew course must pass 'hebrew', or the instructor is offered the BGVB sections and
+   * the generated quiz would be Greek.
+   */
+  lang?: VocabLang
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -67,17 +68,23 @@ export interface FrequencySectionPickerProps {
 export function FrequencySectionPicker({
   selectedSubsections,
   onChange,
+  lang = 'greek',
 }: FrequencySectionPickerProps) {
   const t = useT()
   const bandL = useBandLabels()
-  const [expandedSections, setExpandedSections] = useState<number[]>(ALL_SECTIONS)
+  const deck = DECKS[lang]
+  // The Beginning/Intermediate bands are NT frequency bands — they describe which BGVB
+  // sections a Greek course covers. The Hebrew deck's sections mean something else, so the
+  // band legend and chips are Greek-only rather than mislabelled.
+  const showBands = lang === 'greek'
+  const [expandedSections, setExpandedSections] = useState<number[]>(deck.sections)
   const [listSubKey, setListSubKey] = useState<string | null>(null)
   const [subListMode, setSubListMode] = useState<Record<string, SectionListMode>>({})
 
   const subSet = new Set(selectedSubsections)
 
   const sectionState = (s: number): 'all' | 'none' | 'partial' => {
-    const keys = SECTION_SUBSECTIONS[s].map(sub => sub.key)
+    const keys = deck.subsections[s].map(sub => sub.key)
     const n = keys.filter(k => subSet.has(k)).length
     if (n === 0) return 'none'
     if (n === keys.length) return 'all'
@@ -85,7 +92,7 @@ export function FrequencySectionPicker({
   }
 
   const toggleSection = (s: number) => {
-    const sectionKeys = SECTION_SUBSECTIONS[s].map(sub => sub.key)
+    const sectionKeys = deck.subsections[s].map(sub => sub.key)
     if (sectionState(s) === 'all') {
       onChange(selectedSubsections.filter(k => !sectionKeys.includes(k)))
     } else {
@@ -116,7 +123,7 @@ export function FrequencySectionPicker({
         <div className="flex gap-3">
           <button
             type="button"
-            onClick={() => onChange([...ALL_SUBSECTION_KEYS])}
+            onClick={() => onChange([...deck.allSubsectionKeys])}
             className="text-sm text-gray-700 hover:underline font-medium"
           >
             {t('action.all')}
@@ -133,21 +140,23 @@ export function FrequencySectionPicker({
 
       {/* Which sections belong to which course — so an instructor building a quiz can
           see at a glance where Beginning ends and Intermediate begins. */}
-      <div className="flex flex-wrap items-center gap-2 mb-3">
-        {BAND_LEGEND.map(b => (
-          <span key={b.band} className={clsx('text-xs px-2 py-0.5 rounded-full border', b.chip)}>
-            {bandL.name(b.band)} · {bandL.freq(b.band)}
-          </span>
-        ))}
-      </div>
+      {showBands && (
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          {BAND_LEGEND.map(b => (
+            <span key={b.band} className={clsx('text-xs px-2 py-0.5 rounded-full border', b.chip)}>
+              {bandL.name(b.band)} · {bandL.freq(b.band)}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Section list */}
       <div className="space-y-1.5">
-        {ALL_SECTIONS.map(s => {
+        {deck.sections.map(s => {
           const state = sectionState(s)
           const isExpanded = expandedSections.includes(s)
-          const subs = SECTION_SUBSECTIONS[s]
-          const coverage = SECTION_CUMULATIVE_COVERAGE[s]
+          const subs = deck.subsections[s]
+          const coverage = deck.coverage[s]
           const band = bandForSection(s)
           const sectionRange = freqRange(subs.flatMap(sub => sub.words))
 
@@ -165,13 +174,15 @@ export function FrequencySectionPicker({
                 />
                 <div className="flex-1 min-w-0">
                   <span className="text-base font-medium text-gray-900">{t('vocab.sectionN', { n: s })}</span>
-                  <span className={clsx('text-xs px-2 py-0.5 rounded-full border ml-2 align-middle', band.chip)}>
-                    {bandL.short(band.band)}
-                  </span>
+                  {showBands && (
+                    <span className={clsx('text-xs px-2 py-0.5 rounded-full border ml-2 align-middle', band.chip)}>
+                      {bandL.short(band.band)}
+                    </span>
+                  )}
                   <span className="text-sm text-gray-500 ml-2">
                     {t('vocab.wordCount', { n: subs.reduce((n, sub) => n + sub.words.length, 0) })}
                     {sectionRange && <> · {sectionRange}</>}
-                    {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: 'GNT' })}
+                    {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: deck.corpusLabel })}
                   </span>
                 </div>
                 <button
@@ -265,7 +276,7 @@ export function FrequencySectionPicker({
                                       : 'text-gray-400 hover:text-gray-600',
                                   )}
                                 >
-                                  {m === 'greek-english' ? 'Greek-English' : m === 'greek' ? 'Greek' : 'English'}
+                                  {m === 'greek-english' ? `${deck.scriptName}-English` : m === 'greek' ? deck.scriptName : 'English'}
                                 </button>
                               ))}
                             </div>
@@ -292,9 +303,9 @@ export function FrequencySectionPicker({
                               {mode === 'greek-english' && (
                                 <div className="flex items-baseline justify-between gap-2 min-w-0">
                                   <div className="min-w-0 flex-1 truncate">
-                                    <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                                    <span dir={deck.rtl ? 'rtl' : undefined} className={clsx(deck.scriptClass, 'text-base font-semibold text-gray-900')}>{w.word}</span>
                                     {w.inflection && (
-                                      <span className="greek-text text-xs text-gray-400 ml-1">{w.inflection}</span>
+                                      <span dir={deck.rtl ? 'rtl' : undefined} className={clsx(deck.scriptClass, 'text-xs text-gray-400 ml-1')}>{w.inflection}</span>
                                     )}
                                     <span className="text-sm text-gray-600 ml-1.5">{w.gloss}</span>
                                   </div>
@@ -302,9 +313,9 @@ export function FrequencySectionPicker({
                               )}
                               {mode === 'greek' && (
                                 <div className="flex items-baseline gap-1.5 min-w-0">
-                                  <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                                  <span dir={deck.rtl ? 'rtl' : undefined} className={clsx(deck.scriptClass, 'text-base font-semibold text-gray-900')}>{w.word}</span>
                                   {w.inflection && (
-                                    <span className="greek-text text-xs text-gray-400">{w.inflection}</span>
+                                    <span dir={deck.rtl ? 'rtl' : undefined} className={clsx(deck.scriptClass, 'text-xs text-gray-400')}>{w.inflection}</span>
                                   )}
                                 </div>
                               )}

@@ -113,6 +113,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           assignmentId={assignment.id}
           assignmentType={assignment.type}
           isVocabQuiz={assignment.type === 'VOCABULARY_QUIZ'}
+          level={assignment.level}
           initial={{
             title: assignment.title,
             weekNumber: assignment.weekNumber,

@@ -43,6 +43,15 @@ export interface Deck {
   words: DeckWord[]
   sections: number[]
   allPos: string[]
+  /** Cumulative % of the deck's corpus covered through section N. */
+  coverage: Record<number, number>
+  /** What that corpus is called on screen: 'GNT' / 'the Hebrew Bible'. */
+  corpusLabel: string
+  /** Headword font class and direction, for any surface that prints the words. */
+  scriptClass: string
+  rtl: boolean
+  /** 'Greek' / 'Hebrew' — used in labels like "Hebrew-English". */
+  scriptName: string
   subsections: Record<number, DeckSubsection[]>
   /** word id → its subsection key. */
   wordSubsection: Record<string, string>
@@ -54,7 +63,15 @@ export type VocabLang = 'greek' | 'hebrew'
 /** Identity of a deck entry. See the homograph note at the top of the file. */
 export const wordId = (w: DeckWord): string => w.id ?? w.word
 
-function buildDeck(lang: VocabLang, words: DeckWord[]): Deck {
+interface DeckMeta {
+  coverage: Record<number, number>
+  corpusLabel: string
+  scriptClass: string
+  rtl: boolean
+  scriptName: string
+}
+
+function buildDeck(lang: VocabLang, words: DeckWord[], meta: DeckMeta): Deck {
   const sections = Array.from(new Set(words.map(w => w.section))).sort((a, b) => a - b)
   const allPos = Array.from(new Set(words.map(w => w.pos))).sort()
   const subsections: Record<number, DeckSubsection[]> = {}
@@ -118,11 +135,24 @@ function buildDeck(lang: VocabLang, words: DeckWord[]): Deck {
     subsections,
     wordSubsection,
     allSubsectionKeys: sections.flatMap(s => subsections[s].map(sub => sub.key)),
+    ...meta,
   }
 }
 
-export const GREEK_DECK  = buildDeck('greek',  bgvbData   as DeckWord[])
-export const HEBREW_DECK = buildDeck('hebrew', hebrewData as DeckWord[])
+export const GREEK_DECK = buildDeck('greek', bgvbData as DeckWord[], {
+  coverage: { 1: 69.5, 2: 77.2, 3: 81.6, 4: 84.4, 5: 86.4, 6: 87.8, 7: 89.2 },
+  corpusLabel: 'GNT',
+  scriptClass: 'greek-text',
+  rtl: false,
+  scriptName: 'Greek',
+})
+export const HEBREW_DECK = buildDeck('hebrew', hebrewData as DeckWord[], {
+  coverage: { 1: 60.8, 2: 71.1, 3: 76.9, 4: 80.3, 5: 82.8, 6: 84.9, 7: 86.8 },
+  corpusLabel: 'the Hebrew Bible',
+  scriptClass: 'font-hebrew',
+  rtl: true,
+  scriptName: 'Hebrew',
+})
 
 export const DECKS: Record<VocabLang, Deck> = { greek: GREEK_DECK, hebrew: HEBREW_DECK }
 
