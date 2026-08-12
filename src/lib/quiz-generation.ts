@@ -3,6 +3,7 @@ import { isHebrewLevel } from './constants'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
 import { wordsForSelection, subsectionKeysBefore, type BgvbWord } from './vocab-subsections'
+import { HEBREW_DECK, deckWordsForSelection, deckKeysBefore, type VocabLang } from './vocab-decks'
 import { lessonSubsectionKey, lessonSubsectionKeysBefore, lessonSubsectionKeysThrough } from './vocab-lesson-map'
 
 export interface GeneratedQuestion {
@@ -88,24 +89,38 @@ export function generateVocabQuestionsForLesson(
 export type GlossOf = (w: BgvbWord) => string
 const ENGLISH_GLOSS: GlossOf = w => w.gloss
 
+/**
+ * The two directions a vocabulary question can run in, per language. `toEnglish` is used
+ * when the student reads the headword and supplies the gloss; `fromEnglish` the reverse.
+ * The pair is what the quiz runner reads back to choose script and text direction, so a
+ * Hebrew quiz must not be written with the Greek pair. See prisma/migrations-manual/
+ * hebrew-question-types.sql.
+ */
+const DIRECTIONS = {
+  greek:  { toEnglish: 'GREEK_TO_ENGLISH',  fromEnglish: 'ENGLISH_TO_GREEK'  },
+  hebrew: { toEnglish: 'HEBREW_TO_ENGLISH', fromEnglish: 'ENGLISH_TO_HEBREW' },
+} as const satisfies Record<VocabLang, { toEnglish: QuestionType; fromEnglish: QuestionType }>
+
 function buildVocabQuestions(
   picked: BgvbWord[],
   pool: BgvbWord[],
   type: QuestionType,
   provideDefinitionPct: number,
   glossOf: GlossOf = ENGLISH_GLOSS,
+  lang: VocabLang = 'greek',
 ): GeneratedQuestion[] {
+  const dir = DIRECTIONS[lang]
   const allGlosses = pool.map(glossOf)
   const allLexemes = pool.map(w => w.word)
   const openEndedCount = Math.round((provideDefinitionPct / 100) * picked.length)
 
   return picked.map((w, idx) => {
     const isOpenEnded = idx < openEndedCount
-    if (type === 'ENGLISH_TO_GREEK') {
+    if (type === dir.fromEnglish) {
       const options = isOpenEnded ? [] : shuffle([w.word, ...pickDistractors(w.word, allLexemes)])
       return {
         position: idx + 1,
-        type: (isOpenEnded ? 'ENGLISH_TO_GREEK' : 'MULTIPLE_CHOICE') as QuestionType,
+        type: (isOpenEnded ? dir.fromEnglish : 'MULTIPLE_CHOICE') as QuestionType,
         prompt: glossOf(w),
         correctAnswer: w.word,
         options,
@@ -115,13 +130,71 @@ function buildVocabQuestions(
     const options = isOpenEnded ? [] : shuffle([glossOf(w), ...pickDistractors(glossOf(w), allGlosses)])
     return {
       position: idx + 1,
-      type: (isOpenEnded ? 'GREEK_TO_ENGLISH' : 'MULTIPLE_CHOICE') as QuestionType,
+      type: (isOpenEnded ? dir.toEnglish : 'MULTIPLE_CHOICE') as QuestionType,
       prompt: w.word,
       correctAnswer: glossOf(w),
       options,
       points: 1,
     }
   })
+}
+
+// ── Hebrew ────────────────────────────────────────────────────────────────────
+// The Hebrew deck is static (src/data/hebrew-vocabulary.json, built from the MT by
+// scripts/build-hebrew-vocabulary.py) — there is no Hebrew VocabularyItem table, and
+// LexicalEntry is Greek. These mirror the BGVB-backed generators above, section for
+// section, and differ only in the deck they draw from and the question types they stamp.
+
+/**
+ * Hebrew vocabulary questions from a section/subsection + part-of-speech selection.
+ * `subsections` are keys like "1-A"; empty = the whole deck. `pos` empty = every part of
+ * speech. `provideDefinitionPct` (0–100) is the share typed rather than multiple-choice.
+ */
+export function generateHebrewVocabQuestionsFromSelection(
+  subsections: string[],
+  pos: string[],
+  type: QuestionType,
+  count: number,
+  provideDefinitionPct = 0,
+  glossOf: GlossOf = ENGLISH_GLOSS,
+): GeneratedQuestion[] {
+  const words = deckWordsForSelection(HEBREW_DECK, subsections, pos).filter(w => w.word && w.gloss)
+  if (words.length === 0) return []
+  return buildVocabQuestions(
+    shuffle(words).slice(0, count), words, type, provideDefinitionPct, glossOf, 'hebrew')
+}
+
+/**
+ * The same, but for the ENTIRE selected pool rather than a sample of `count` — used when
+ * re-sampling on retake is enabled, so each attempt draws a different subset.
+ *
+ * `reviewPct` (0–100) blends in words from every subsection BEFORE the selection, the same
+ * cumulative-review rule the Greek generator uses.
+ */
+export function generateHebrewVocabPoolFromSelection(
+  subsections: string[],
+  pos: string[],
+  type: QuestionType,
+  provideDefinitionPct = 0,
+  reviewPct = 0,
+  glossOf: GlossOf = ENGLISH_GLOSS,
+): GeneratedQuestion[] {
+  const current = deckWordsForSelection(HEBREW_DECK, subsections, pos).filter(w => w.word && w.gloss)
+  if (current.length === 0) return []
+
+  const earlierKeys = deckKeysBefore(HEBREW_DECK, subsections)
+  const earlier = reviewPct > 0 && earlierKeys.length > 0
+    ? deckWordsForSelection(HEBREW_DECK, earlierKeys, pos).filter(w => w.word && w.gloss)
+    : []
+
+  // Same proportion rule as the Greek pool: reviewPct of the FINAL pool comes from earlier
+  // subsections, capped by how many earlier words there actually are.
+  const wantReview = Math.round((Math.min(100, Math.max(0, reviewPct)) / 100) * current.length)
+  const review = shuffle(earlier).slice(0, Math.min(wantReview, earlier.length))
+  const picked = shuffle([...current, ...review])
+
+  return buildVocabQuestions(
+    picked, [...current, ...earlier], type, provideDefinitionPct, glossOf, 'hebrew')
 }
 
 /**

@@ -7,6 +7,8 @@ export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOL
 export type QuestionType =
   | 'GREEK_TO_ENGLISH'
   | 'ENGLISH_TO_GREEK'
+  | 'HEBREW_TO_ENGLISH'
+  | 'ENGLISH_TO_HEBREW'
   | 'MULTIPLE_CHOICE'
   | 'MATCHING'
   | 'MORPHOLOGY_IDENTIFY'

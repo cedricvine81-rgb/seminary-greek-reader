@@ -7,7 +7,12 @@ import { getPayload } from '@/lib/auth'
 import { isInstructorOfCourse } from '@/lib/course-auth'
 import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
 import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
-import { generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
+import {
+  generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype,
+  generateHebrewVocabQuestionsFromSelection, generateHebrewVocabPoolFromSelection,
+  type MorphologySubtype,
+} from '@/lib/quiz-generation'
+import { isHebrewLevel } from '@/lib/constants'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -171,9 +176,18 @@ export async function POST(req: NextRequest) {
     const course = await prisma.course.findUnique({ where: { id: courseId }, select: { language: true } })
     const resolve = glossResolver(course?.language ?? 'en')
     const glossOf = (w: { word: string; gloss: string }) => resolve(w.word, w.gloss)
+    // A Hebrew course draws from the Hebrew deck and stamps Hebrew question types, so the
+    // quiz runner knows to render the prompt in Hebrew script, right-to-left.
+    const hebrew = isHebrewLevel(String(level))
     if (vocabSel) {
       // Store the full pool; the player draws perAttempt at random each attempt.
-      questions = generateVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', openEndedPct, vocabSel.reviewPct, glossOf)
+      questions = hebrew
+        ? generateHebrewVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'HEBREW_TO_ENGLISH', openEndedPct, vocabSel.reviewPct, glossOf)
+        : generateVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', openEndedPct, vocabSel.reviewPct, glossOf)
+    } else if (hebrew) {
+      // No section selection: draw from the whole Hebrew deck. (The Greek branch below goes
+      // to the VocabularyItem table, which holds no Hebrew — see generateVocabQuestions.)
+      questions = generateHebrewVocabQuestionsFromSelection([], [], 'HEBREW_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct, glossOf)
     } else {
       questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct, course?.language ?? 'en')
     }

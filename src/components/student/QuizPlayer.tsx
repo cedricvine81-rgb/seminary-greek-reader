@@ -32,6 +32,22 @@ function hasGreek(s: string | undefined | null): boolean {
   return /[Ͱ-Ͽἀ-῿]/.test(s ?? '')
 }
 
+/** Returns true if the string contains any Hebrew Unicode characters. */
+function hasHebrew(s: string | undefined | null): boolean {
+  return /[\u0590-\u05FF\uFB1D-\uFB4F]/.test(s ?? '')
+}
+
+/**
+ * Font + direction for a piece of quiz text, chosen from the text itself so it is right
+ * for mixed content (a Hebrew prompt, an English gloss, a Greek lemma) wherever it appears.
+ * Hebrew must also carry dir="rtl": the pointing renders in the wrong order without it.
+ */
+function scriptProps(s: string | undefined | null): { className: string; dir?: 'rtl' } {
+  if (hasHebrew(s)) return { className: 'font-hebrew', dir: 'rtl' }
+  if (hasGreek(s))  return { className: 'font-greek' }
+  return { className: '' }
+}
+
 /** Fisher–Yates shuffle (returns a new array). */
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -448,7 +464,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                             : <XCircle size={15} className="text-red-500 mt-0.5 shrink-0" />
                           }
                           <div className="flex-1 min-w-0">
-                            <span className={`${hasGreek(b.prompt) ? 'font-greek' : ''} text-base`}>{b.prompt}</span>
+                            <span {...scriptProps(b.prompt)} className={`${scriptProps(b.prompt).className} text-base`}>{b.prompt}</span>
                             {b.yourAnswer ? (
                               <p className="mt-0.5">{t('quiz.yourAnswer')}<span className={`${hasGreek(b.yourAnswer) ? 'font-greek' : ''} ${b.isCorrect ? 'text-green-700 font-medium' : 'text-red-600 line-through'}`}>{b.yourAnswer}</span></p>
                             ) : (
@@ -558,7 +574,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                   ? t('quiz.chooseDefinition')
                   : t('quiz.writeEnglish')}
           </p>
-          <p className={`${hasGreek(q?.prompt) ? 'font-greek' : ''} text-3xl text-ink-900 leading-relaxed`}>{q?.prompt}</p>
+          <p {...scriptProps(q?.prompt)}
+             className={`${scriptProps(q?.prompt).className} text-3xl text-ink-900 leading-relaxed`}>{q?.prompt}</p>
         </div>
 
         {/* Vocabulary questions — rendering is per-question so MIXED quizzes work:
@@ -574,13 +591,15 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             // Multiple-choice: tap a button
             // Detect Greek options (English→Greek questions have Greek words as options)
             const optionsAreGreek = q.options!.some(o => hasGreek(o))
+            const optionsAreHebrew = q.options!.some(o => hasHebrew(o))
             return (
               <div className="grid grid-cols-1 gap-2">
                 {q.options!.map(opt => (
                   <button
                     key={opt}
                     onClick={() => { setDraft(opt); handleCheck(false, opt) }}
-                    className={`text-left px-4 py-3 rounded-lg border border-gray-200 bg-surface hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors${optionsAreGreek ? ' font-greek text-base' : ''}`}
+                    dir={optionsAreHebrew ? 'rtl' : undefined}
+                    className={`${optionsAreHebrew ? 'text-right' : 'text-left'} px-4 py-3 rounded-lg border border-gray-200 bg-surface hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors${optionsAreGreek ? ' font-greek text-base' : ''}${optionsAreHebrew ? ' font-hebrew text-base' : ''}`}
                   >
                     {opt}
                   </button>
@@ -592,7 +611,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           // Open-ended: student types their answer
           const placeholder = q.type === 'ENGLISH_TO_GREEK'
             ? t('quiz.typeGreek')
-            : t('quiz.typeEnglish')
+            : q.type === 'ENGLISH_TO_HEBREW'
+              ? t('quiz.typeHebrew')
+              : t('quiz.typeEnglish')
+          // The answer is written in Hebrew only when the question asks for Hebrew; a
+          // HEBREW_TO_ENGLISH answer is English and must stay left-to-right.
+          const answerIsHebrew = q.type === 'ENGLISH_TO_HEBREW'
           return (
             <input
               ref={inputRef}
@@ -601,7 +625,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
               onChange={e => setDraft(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter' && draft.trim()) handleCheck() }}
               placeholder={placeholder}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              dir={answerIsHebrew ? 'rtl' : undefined}
+              className={`w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent${answerIsHebrew ? ' font-hebrew text-base text-right' : ''}`}
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
