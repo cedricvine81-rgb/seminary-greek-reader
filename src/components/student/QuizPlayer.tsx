@@ -7,6 +7,10 @@ import { Select } from '@/components/ui/Select'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
 import { isAnswerCorrect, isMultipleChoiceCorrect } from '@/lib/answer-matching'
 import { hasGreek, hasHebrew, scriptProps } from '@/lib/script-detect'
+import {
+  HEBREW_STEMS, HEBREW_CONJUGATIONS, HEBREW_PERSONS, HEBREW_GENDERS,
+  HEBREW_NUMBERS, HEBREW_STATES, HEBREW_PRONOUN_TYPES,
+} from '@/lib/quiz-fields-hebrew'
 import type { QuizQuestion, QuizResult } from '@/types/quiz'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
@@ -637,16 +641,34 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           try { correctObj = JSON.parse(q.correctAnswer ?? '{}') } catch {}
           const pos = correctObj.partOfSpeech
           // Fields to show as dropdowns (non-null fields except partOfSpeech which is shown as label)
-          const FIELD_MAP: Record<string, { label: string; optsKey: keyof typeof MORPH_OPTIONS | 'case' }> = {
-            tense:  { label: t('morph.tense'),  optsKey: 'tense'  },
-            voice:  { label: t('morph.voice'),  optsKey: 'voice'  },
-            mood:   { label: t('morph.mood'),   optsKey: 'mood'   },
-            person: { label: t('morph.person'), optsKey: 'person' },
-            number: { label: t('morph.number'), optsKey: 'number' },
-            casus:  { label: t('morph.case'),   optsKey: 'case'   },
-            gender: { label: t('morph.gender'), optsKey: 'gender' },
-            pronounType: { label: t('quiz.pronounType'), optsKey: 'pronounType' },
-          }
+          // Which fields get a dropdown, and what may be chosen in each.
+          //
+          // This MUST cover every field the generators can put in an answer key: a field
+          // with no entry here renders no input at all, so the student cannot answer it and
+          // is marked wrong automatically. Hebrew parses on stem/conjugation/state rather
+          // than tense/voice/mood, and its gender/number carry values Greek does not have
+          // (Common, Both, Dual) — hence a separate map rather than a shared one.
+          const isHeb = hasHebrew(q.prompt)
+          const FIELD_MAP: Record<string, { label: string; opts: string[] }> = isHeb
+            ? {
+                stem:        { label: t('morph.stem'),        opts: HEBREW_STEMS },
+                conjugation: { label: t('morph.conjugation'), opts: HEBREW_CONJUGATIONS },
+                person:      { label: t('morph.person'),      opts: HEBREW_PERSONS },
+                gender:      { label: t('morph.gender'),      opts: HEBREW_GENDERS },
+                number:      { label: t('morph.number'),      opts: HEBREW_NUMBERS },
+                state:       { label: t('morph.state'),       opts: HEBREW_STATES },
+                type:        { label: t('quiz.pronounType'),  opts: HEBREW_PRONOUN_TYPES },
+              }
+            : {
+                tense:  { label: t('morph.tense'),  opts: MORPH_OPTIONS.tense  },
+                voice:  { label: t('morph.voice'),  opts: MORPH_OPTIONS.voice  },
+                mood:   { label: t('morph.mood'),   opts: MORPH_OPTIONS.mood   },
+                person: { label: t('morph.person'), opts: MORPH_OPTIONS.person },
+                number: { label: t('morph.number'), opts: MORPH_OPTIONS.number },
+                casus:  { label: t('morph.case'),   opts: MORPH_OPTIONS.case   },
+                gender: { label: t('morph.gender'), opts: MORPH_OPTIONS.gender },
+                pronounType: { label: t('quiz.pronounType'), opts: MORPH_OPTIONS.pronounType },
+              }
           const activeFields = Object.keys(FIELD_MAP).filter(f => correctObj[f])
           const requiredFilled = activeFields.every(f => morphDraft[f])
           return (
@@ -658,8 +680,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
               )}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {activeFields.map(field => {
-                  const { label, optsKey } = FIELD_MAP[field]
-                  const opts = optsKey === 'case' ? MORPH_OPTIONS.case : MORPH_OPTIONS[optsKey as keyof typeof MORPH_OPTIONS]
+                  const { label, opts } = FIELD_MAP[field]
                   if (!Array.isArray(opts)) return null
                   return (
                     <Select

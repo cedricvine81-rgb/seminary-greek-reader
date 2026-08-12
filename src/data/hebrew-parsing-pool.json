@@ -43336,6 +43336,16 @@
 "number": "Singular"
 },
 {
+"surface": "אֵ֖לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 1:23",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
+},
+{
 "surface": "ה֥וּא",
 "lexeme": "הוּא",
 "gloss": "he (she or it)",
@@ -43345,6 +43355,16 @@
 "person": "3rd",
 "gender": "Masculine",
 "number": "Singular"
+},
+{
+"surface": "אֵ֥לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 1:31",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
 },
 {
 "surface": "הֵ֖ם",
@@ -43446,6 +43466,26 @@
 "number": "Singular"
 },
 {
+"surface": "זֹ֗את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Chronicles 11:19",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "אֵ֣לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 11:19",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
+},
+{
 "surface": "ה֤וּא",
 "lexeme": "הוּא",
 "gloss": "he (she or it)",
@@ -43476,6 +43516,16 @@
 "type": "Personal",
 "person": "3rd",
 "gender": "Masculine",
+"number": "Plural"
+},
+{
+"surface": "אֵ֜לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 12:39",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
 "number": "Plural"
 },
 {
@@ -43567,6 +43617,16 @@
 "number": "Singular"
 },
 {
+"surface": "זֹ֤את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Chronicles 17:17",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "אַתָּ֣ה",
 "lexeme": "אַתָּה",
 "gloss": "thou and thee, or (plural) ye and you",
@@ -43600,6 +43660,26 @@
 "number": "Singular"
 },
 {
+"surface": "אֵ֕לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 2:23",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
+},
+{
+"surface": "אֵ֤לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 2:50",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
+},
+{
 "surface": "הֵ֚מָּה",
 "lexeme": "הֵם",
 "gloss": "they (only used when emphatic)",
@@ -43609,6 +43689,26 @@
 "person": "3rd",
 "gender": "Masculine",
 "number": "Plural"
+},
+{
+"surface": "אֵ֛ל",
+"lexeme": "אֵל",
+"gloss": "these or those",
+"reference": "1 Chronicles 20:8",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
+},
+{
+"surface": "זֹאת֙",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Chronicles 21:3",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
 },
 {
 "surface": "אֲנִ֖י",
@@ -43633,6 +43733,26 @@
 "number": "Singular"
 },
 {
+"surface": "זֶ֣ה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Chronicles 22:1",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
+"surface": "אֵ֛לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 23:9",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
+},
+{
 "surface": "הֵ֖מָּה",
 "lexeme": "הֵם",
 "gloss": "they (only used when emphatic)",
@@ -43644,6 +43764,16 @@
 "number": "Plural"
 },
 {
+"surface": "אֵ֑לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 24:5",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
+},
+{
 "surface": "הֵ֨ם",
 "lexeme": "הֵם",
 "gloss": "they (only used when emphatic)",
@@ -43652,6 +43782,16 @@
 "type": "Personal",
 "person": "3rd",
 "gender": "Masculine",
+"number": "Plural"
+},
+{
+"surface": "אֵ֨לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 25:5",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
 "number": "Plural"
 },
 {
@@ -43677,6 +43817,16 @@
 "number": "Plural"
 },
 {
+"surface": "אֵ֗לֶּה",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 26:19",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
+},
+{
 "surface": "ה֧וּא",
 "lexeme": "הוּא",
 "gloss": "he (she or it)",
@@ -43686,6 +43836,16 @@
 "person": "3rd",
 "gender": "Masculine",
 "number": "Singular"
+},
+{
+"surface": "אֵ֨לֶּה֙",
+"lexeme": "אֵלֶּה",
+"gloss": "these or those",
+"reference": "1 Chronicles 27:31",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Plural"
 },
 {
 "surface": "ה֑וּא",
@@ -43762,6 +43922,26 @@
 "type": "Personal",
 "person": "1st",
 "gender": "Common",
+"number": "Singular"
+},
+{
+"surface": "זֹּ֣את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Chronicles 29:18",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "זֹ֚את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Chronicles 4:33",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
 "number": "Singular"
 },
 {
@@ -43864,6 +44044,16 @@
 "number": "Singular"
 },
 {
+"surface": "זֹ֑את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Kings 11:39",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "הֵ֣ם",
 "lexeme": "הֵם",
 "gloss": "they (only used when emphatic)",
@@ -43875,6 +44065,16 @@
 "number": "Plural"
 },
 {
+"surface": "זֶ֥ה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 13:12",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
 "surface": "אָֽנִי",
 "lexeme": "אֲנִי",
 "gloss": "I",
@@ -43883,6 +44083,16 @@
 "type": "Personal",
 "person": "1st",
 "gender": "Common",
+"number": "Singular"
+},
+{
+"surface": "זֶּ֗ה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 14:6",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
 "number": "Singular"
 },
 {
@@ -43926,6 +44136,16 @@
 "partOfSpeech": "Pronoun",
 "type": "Personal",
 "person": "2nd",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
+"surface": "זֶ֖ה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 18:7",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
 "gender": "Masculine",
 "number": "Singular"
 },
@@ -43985,6 +44205,16 @@
 "number": "Singular"
 },
 {
+"surface": "זֶ֤ה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 19:5",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
 "surface": "אַ֤תְּ",
 "lexeme": "אַתָּה",
 "gloss": "thou and thee, or (plural) ye and you",
@@ -44004,6 +44234,66 @@
 "type": "Personal",
 "person": "2nd",
 "gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "זֶֽה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 21:2",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
+"surface": "זֶּה֙",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 21:5",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
+"surface": "זֶה֙",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 22:20",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
+"surface": "זֶ֨ה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 22:24",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
+"surface": "זֹ֣את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Kings 3:23",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "זֶה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Kings 3:23",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
 "number": "Singular"
 },
 {
@@ -44029,6 +44319,16 @@
 "number": "Singular"
 },
 {
+"surface": "זֶ֔ה",
+"lexeme": "זֶה",
+"gloss": "the masculine demonstrative pronoun, this or that",
+"reference": "1 Samuel 10:27",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
 "surface": "אַתֶּ֗ם",
 "lexeme": "אַתָּה",
 "gloss": "thou and thee, or (plural) ye and you",
@@ -44051,6 +44351,16 @@
 "number": "Plural"
 },
 {
+"surface": "הַלָּ֑ז",
+"lexeme": "הַלָּז",
+"gloss": "this or that",
+"reference": "1 Samuel 14:1",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
+"number": "Singular"
+},
+{
 "surface": "אֲנַ֥חְנוּ",
 "lexeme": "אֲנַחְנוּ",
 "gloss": "we",
@@ -44071,6 +44381,36 @@
 "person": "2nd",
 "gender": "Masculine",
 "number": "Plural"
+},
+{
+"surface": "הַלָּ֔ז",
+"lexeme": "הַלָּז",
+"gloss": "this or that",
+"reference": "1 Samuel 17:26",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Masculine",
+"number": "Singular"
+},
+{
+"surface": "זֹֽאת",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Samuel 20:2",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "זֹ֥את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Samuel 20:3",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
 },
 {
 "surface": "אֲנַ֗חְנוּ",
@@ -44099,6 +44439,16 @@
 "partOfSpeech": "Pronoun",
 "type": "Personal",
 "person": "3rd",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "זֹ֔את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "1 Samuel 22:15",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
 "gender": "Feminine",
 "number": "Singular"
 },
@@ -44147,6 +44497,16 @@
 "number": "Plural"
 },
 {
+"surface": "זֹ֜את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "2 Chronicles 1:11",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "אֲנַ֔חְנוּ",
 "lexeme": "אֲנַחְנוּ",
 "gloss": "we",
@@ -44191,6 +44551,16 @@
 "number": "Plural"
 },
 {
+"surface": "זֹּ֔את",
+"lexeme": "זֹאת",
+"gloss": "this (often used adverb)",
+"reference": "2 Chronicles 25:16",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Feminine",
+"number": "Singular"
+},
+{
 "surface": "הִ֔יא",
 "lexeme": "הוּא",
 "gloss": "he (she or it)",
@@ -44232,6 +44602,16 @@
 "type": "Personal",
 "person": "3rd",
 "gender": "Feminine",
+"number": "Singular"
+},
+{
+"surface": "הַלָּ֔ז",
+"lexeme": "הַלָּז",
+"gloss": "this or that",
+"reference": "2 Kings 23:17",
+"partOfSpeech": "Pronoun",
+"type": "Demonstrative",
+"gender": "Common",
 "number": "Singular"
 },
 {

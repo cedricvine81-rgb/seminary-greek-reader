@@ -3,7 +3,8 @@ import { isHebrewLevel } from './constants'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
 import { wordsForSelection, subsectionKeysBefore, type BgvbWord } from './vocab-subsections'
-import { HEBREW_DECK, deckWordsForSelection, deckKeysBefore, type VocabLang } from './vocab-decks'
+import { HEBREW_DECK, GREEK_DECK, deckWordsForSelection, deckKeysBefore, type VocabLang } from './vocab-decks'
+import { isAnswerCorrect } from './answer-matching'
 import { lessonSubsectionKey, lessonSubsectionKeysBefore, lessonSubsectionKeysThrough } from './vocab-lesson-map'
 
 export interface GeneratedQuestion {
@@ -112,12 +113,25 @@ function buildVocabQuestions(
   const dir = DIRECTIONS[lang]
   const allGlosses = pool.map(glossOf)
   const allLexemes = pool.map(w => w.word)
+  // Last-resort distractor source. A single subsection is ~19 words, and once near-synonyms
+  // and repeats are excluded it can run out — the whole deck keeps every question at four
+  // options. Only reached when the selection itself cannot supply them.
+  const deckWords = (lang === 'hebrew' ? HEBREW_DECK : GREEK_DECK).words
+  const deckGlosses = deckWords.map(w => w.gloss)
+  const deckLexemes = deckWords.map(w => w.word)
+  // headword → the glosses of every OTHER deck entry spelled the same way.
+  const homographGlosses = new Map<string, Set<string>>()
+  for (const dw of deckWords) {
+    const set = homographGlosses.get(dw.word) ?? new Set<string>()
+    set.add(dw.gloss)
+    homographGlosses.set(dw.word, set)
+  }
   const openEndedCount = Math.round((provideDefinitionPct / 100) * picked.length)
 
   return picked.map((w, idx) => {
     const isOpenEnded = idx < openEndedCount
     if (type === dir.fromEnglish) {
-      const options = isOpenEnded ? [] : shuffle([w.word, ...pickDistractors(w.word, allLexemes)])
+      const options = isOpenEnded ? [] : shuffle([w.word, ...pickDistractors(w.word, allLexemes, 3, deckLexemes)])
       return {
         position: idx + 1,
         type: (isOpenEnded ? dir.fromEnglish : 'MULTIPLE_CHOICE') as QuestionType,
@@ -127,7 +141,12 @@ function buildVocabQuestions(
         points: 1,
       }
     }
-    const options = isOpenEnded ? [] : shuffle([glossOf(w), ...pickDistractors(glossOf(w), allGlosses)])
+    // A homograph is a DIFFERENT word spelled identically (Hebrew אֵת = the object marker
+    // and אֵת = "with"). Its gloss is a true meaning of what is on screen, so offering it
+    // as a wrong answer asks the student to read the examiner's mind.
+    const twins = homographGlosses.get(w.word)
+    const options = isOpenEnded ? [] : shuffle([glossOf(w),
+      ...pickDistractors(glossOf(w), allGlosses, 3, deckGlosses, twins ? Array.from(twins) : [])])
     return {
       position: idx + 1,
       type: (isOpenEnded ? dir.toEnglish : 'MULTIPLE_CHOICE') as QuestionType,
@@ -264,13 +283,46 @@ function glossKeywords(s: string): Set<string> {
 // gloss that shares a meaning-word with it (which would make it a second right answer, e.g.
 // "not, lest" beside "no, not"). If too few clean distractors exist, top up with the rest.
 // (For Greek-word pools the keyword sets are empty, so this reduces to "not equal".)
-function pickDistractors(correct: string, pool: string[], count = 3): string[] {
+/**
+ * Choose `count` wrong options for a multiple-choice question.
+ *
+ * Three rules, in order of importance:
+ *  1. **Never offer a distractor the grader would mark correct.** Two words can carry the
+ *     same gloss ("understanding, insight"), and a Hebrew homograph carries two — so an
+ *     unchecked distractor can be a second right answer. Checked with the real matcher,
+ *     both ways round, so what is offered and what is accepted cannot disagree.
+ *  2. **No repeats.** Deduped on the normalised gloss, not the raw string, or the same
+ *     meaning appears twice in the list and the question looks broken.
+ *  3. Prefer distractors sharing no keyword with the key, so the wrong answers are not
+ *     near-synonyms; fall back to the rest of the pool, then to `fallback` (the whole
+ *     deck) rather than return a short list — a two-option "multiple choice" is worse
+ *     than a distant distractor.
+ */
+function pickDistractors(correct: string, pool: string[], count = 3, fallback: string[] = [], forbidden: string[] = []): string[] {
   const correctKw = glossKeywords(correct)
   const shares = (s: string) => Array.from(glossKeywords(s)).some(t => correctKw.has(t))
-  const clean = shuffle(pool.filter(s => s !== correct && !shares(s)))
-  if (clean.length >= count) return clean.slice(0, count)
-  const rest = shuffle(pool.filter(s => s !== correct && !clean.includes(s)))
-  return [...clean, ...rest].slice(0, count)
+  const seen = new Set<string>([correct.trim().toLowerCase(), ...forbidden.map(f => f.trim().toLowerCase())])
+  const chosen: string[] = []
+
+  const usable = (s: string) => {
+    const norm = s.trim().toLowerCase()
+    if (!norm || seen.has(norm)) return false
+    // Would this "wrong" option be accepted as the answer? Then it is not wrong.
+    return !isAnswerCorrect(s, correct, true) && !isAnswerCorrect(correct, s, true)
+  }
+  const drain = (src: string[]) => {
+    for (const s of shuffle(src)) {
+      if (chosen.length >= count) return
+      if (!usable(s)) continue
+      seen.add(s.trim().toLowerCase())
+      chosen.push(s)
+    }
+  }
+
+  drain(pool.filter(s => !shares(s)))   // semantically distant first
+  if (chosen.length < count) drain(pool)
+  if (chosen.length < count) drain(fallback)
+  return chosen
 }
 
 export async function generateVocabQuestions(

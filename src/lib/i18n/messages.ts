@@ -1040,6 +1040,9 @@ const en: Catalogue = {
   'quiz.noAppeals': 'No appeals remaining for this attempt.',
   'quiz.yourAnswer': 'Your answer: ',
   'morph.gender': 'Gender',
+  'morph.stem': 'Stem (binyan)',
+  'morph.conjugation': 'Conjugation',
+  'morph.state': 'State',
   'morph.number': 'Number',
   'morph.person': 'Person',
   // Morphology chapter chrome (shared.tsx) — the frame around the translated chapter prose.
@@ -3235,6 +3238,9 @@ const es: Catalogue = {
   'quiz.noAppeals': 'No quedan apelaciones para este intento.',
   'quiz.yourAnswer': 'Su respuesta: ',
   'morph.gender': 'Género',
+  'morph.stem': 'Tema (binyán)',
+  'morph.conjugation': 'Conjugación',
+  'morph.state': 'Estado',
   'morph.number': 'Número',
   'morph.person': 'Persona',
   // Morphology chapter chrome (shared.tsx) — the frame around the translated chapter prose.
@@ -4517,6 +4523,9 @@ const ru: Catalogue = {
   'quiz.noAppeals': 'Апелляций для этой попытки не осталось.',
   'quiz.yourAnswer': 'Ваш ответ: ',
   'morph.gender': 'Род',
+  'morph.stem': 'Порода (биньян)',
+  'morph.conjugation': 'Спряжение',
+  'morph.state': 'Состояние',
   'morph.number': 'Число',
   'morph.person': 'Лицо',
   'msg.sentToMembers': {

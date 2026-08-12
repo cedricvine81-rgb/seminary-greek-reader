@@ -36,6 +36,9 @@ ROOT = os.path.join(HERE, os.pardir)
 MT   = os.path.join(ROOT, 'public', 'data', 'mt')
 LEX  = os.path.join(ROOT, 'public', 'data', 'hebrew-lexicon.json')
 OUT  = os.path.join(ROOT, 'src', 'data', 'hebrew-parsing-pool.json')
+# Tiny companion file: which values each parse field actually takes. Imported by the
+# CLIENT-side instructor UI, which must not pull in the pool itself.
+VALUES_OUT = os.path.join(ROOT, 'src', 'data', 'hebrew-pool-values.json')
 
 # Distinct surface forms kept per parse signature. Nouns have few signatures (gender ×
 # number × state), so the cap is what gives those quizzes lexical variety.
@@ -126,15 +129,23 @@ def decode_adjective(code):
 
 
 def decode_pronoun(code):
+    """Pp 3 m s / Pd x m s  →  type, person (if any), gender, number.
+
+    OSHB writes a person-gender-number triple for EVERY pronoun and fills the person slot
+    with 'x' where there is none — a demonstrative is Pdxms, not Pdms. Reading that 'x' as
+    a gender made every demonstrative undecodable, so זֶה / זֹאת / אֵלֶּה — core Beginning
+    Hebrew vocabulary — were absent from the pool entirely. src/lib/hebrew-morph.ts, which
+    the Reader's parsing pane uses, has always read positions 2/3/4 this way.
+    """
     sub = code[:2]
     kind = PRONOUN_TYPE.get(sub)
     if not kind:
         return None
     out = {'partOfSpeech': 'Pronoun', 'type': kind}
     rest = code[2:]
-    # Personal pronouns carry person/gender/number; the others usually only gender/number.
-    if sub == 'Pp' and len(rest) >= 3:
-        out['person'] = PERSON.get(rest[0])
+    if len(rest) >= 3:
+        if rest[0] in PERSON:            # 'x' = no person, and is simply not reported
+            out['person'] = PERSON[rest[0]]
         out['gender'], out['number'] = GENDER.get(rest[1]), NUMBER.get(rest[2])
     elif len(rest) >= 2:
         out['gender'], out['number'] = GENDER.get(rest[0]), NUMBER.get(rest[1])
@@ -267,6 +278,20 @@ def main():
                 })
 
     out = {k: v for k, v in pools.items()}
+    # The distinct value of every parse field actually present. The instructor's filter
+    # chips are built from this, so a chip can never promise a value the pool cannot
+    # supply (Hebrew has no Pr/Pi codes in OSHB, so there are no relative or interrogative
+    # pronouns to filter for).
+    values = collections.defaultdict(set)
+    for entries in pools.values():
+        for e in entries:
+            for f in ('stem', 'conjugation', 'person', 'gender', 'number', 'state', 'type'):
+                if e.get(f):
+                    values[f].add(e[f])
+    with open(VALUES_OUT, 'w') as f:
+        json.dump({k: sorted(v) for k, v in values.items()}, f, ensure_ascii=False, indent=1)
+    print(f'wrote {VALUES_OUT}')
+
     out['_generated'] = 'scripts/build-hebrew-parsing-pool.py'
     out['_note'] = ('Single-morpheme Hebrew forms from the OSHB-tagged MT. Aramaic, clitic-'
                     'bearing words and forms without a lexicon entry are excluded — see the '

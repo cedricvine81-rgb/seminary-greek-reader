@@ -1,0 +1,65 @@
+{
+ "gender": [
+  "Both",
+  "Common",
+  "Feminine",
+  "Masculine"
+ ],
+ "number": [
+  "Dual",
+  "Plural",
+  "Singular"
+ ],
+ "state": [
+  "Absolute",
+  "Construct"
+ ],
+ "stem": [
+  "Hiphil",
+  "Hishtaphel",
+  "Hithpael",
+  "Hithpalpel",
+  "Hithpoel",
+  "Hophal",
+  "Hothpaal",
+  "Niphal",
+  "Nithpael",
+  "Palal",
+  "Palel",
+  "Pealal",
+  "Piel",
+  "Pilel",
+  "Pilpel",
+  "Poel",
+  "Polal",
+  "Polel",
+  "Polpal",
+  "Pual",
+  "Qal",
+  "Qal passive",
+  "Tiphil"
+ ],
+ "conjugation": [
+  "Active participle",
+  "Cohortative",
+  "Imperative",
+  "Imperfect",
+  "Infinitive absolute",
+  "Infinitive construct",
+  "Jussive",
+  "Passive participle",
+  "Perfect",
+  "Sequential imperfect",
+  "Sequential perfect"
+ ],
+ "person": [
+  "1st",
+  "2nd",
+  "3rd"
+ ],
+ "type": [
+  "Demonstrative",
+  "Indefinite",
+  "Personal"
+ ]
+}

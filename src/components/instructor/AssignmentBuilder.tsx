@@ -19,8 +19,8 @@ import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib
 import { SUBTYPE_FIELD_OPTIONS, VERB_TENSES, VERB_VOICES, VERB_MOODS, PERSONS, NUMBERS, NOUN_CASES, GENDERS, PRONOUN_TYPES } from '@/lib/quiz-fields'
 import {
   morphSubtypesFor, morphFieldOptionsFor, HEBREW_DEFAULT_PARSE_FILTER,
-  HEBREW_STEMS, HEBREW_CONJUGATIONS, HEBREW_PERSONS, HEBREW_GENDERS, HEBREW_NUMBERS,
-  HEBREW_STATES, HEBREW_PRONOUN_TYPES, type HebrewMorphParseFilter,
+  POOL_STEMS, POOL_CONJUGATIONS, POOL_PERSONS, POOL_GENDERS, POOL_NUMBERS,
+  POOL_STATES, POOL_PRONOUN_TYPES, type HebrewMorphParseFilter,
 } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
 import { scriptProps } from '@/lib/script-detect'
@@ -954,7 +954,7 @@ function HebrewParseFilterPicker({
                     || subtype === 'PRONOUN_PARSING' || subtype === 'MIXED'
   const isPronoun = subtype === 'PRONOUN_PARSING' || subtype === 'MIXED'
 
-  const selectedConj = filter.conjugations ?? HEBREW_CONJUGATIONS
+  const selectedConj = filter.conjugations ?? POOL_CONJUGATIONS
   const hasFinite    = selectedConj.some(c => !c.includes('participle') && !c.startsWith('Infinitive'))
   const hasParticiple = selectedConj.some(c => c.includes('participle'))
   // State belongs to nominals always, and to verbs only once participles are in scope.
@@ -968,19 +968,19 @@ function HebrewParseFilterPicker({
   return (
     <div className="space-y-2">
       {isVerb && <>
-        <FilterChipGroup compact={compact} label={groupLabel('stem', t, 'Stem (binyan)')} options={HEBREW_STEMS} selected={filter.stems ?? HEBREW_STEMS} onChange={v => patch({ stems: v })} />
-        <FilterChipGroup compact={compact} label={groupLabel('conjugation', t, 'Conjugation')} options={HEBREW_CONJUGATIONS} selected={selectedConj} onChange={v => patch({ conjugations: v })} />
+        <FilterChipGroup compact={compact} label={groupLabel('stem', t, 'Stem (binyan)')} options={POOL_STEMS} selected={filter.stems ?? POOL_STEMS} onChange={v => patch({ stems: v })} />
+        <FilterChipGroup compact={compact} label={groupLabel('conjugation', t, 'Conjugation')} options={POOL_CONJUGATIONS} selected={selectedConj} onChange={v => patch({ conjugations: v })} />
       </>}
       {((isVerb && hasFinite) || isPronoun) && (
-        <FilterChipGroup compact={compact} label={groupLabel('person', t, 'Person')} options={HEBREW_PERSONS} selected={filter.persons ?? HEBREW_PERSONS} onChange={v => patch({ persons: v })} />
+        <FilterChipGroup compact={compact} label={groupLabel('person', t, 'Person')} options={POOL_PERSONS} selected={filter.persons ?? POOL_PERSONS} onChange={v => patch({ persons: v })} />
       )}
-      <FilterChipGroup compact={compact} label={groupLabel('gender', t, 'Gender')} options={HEBREW_GENDERS} selected={filter.genders ?? HEBREW_GENDERS} onChange={v => patch({ genders: v })} />
-      <FilterChipGroup compact={compact} label={groupLabel('number', t, 'Number')} options={HEBREW_NUMBERS} selected={filter.numbers ?? HEBREW_NUMBERS} onChange={v => patch({ numbers: v })} />
+      <FilterChipGroup compact={compact} label={groupLabel('gender', t, 'Gender')} options={POOL_GENDERS} selected={filter.genders ?? POOL_GENDERS} onChange={v => patch({ genders: v })} />
+      <FilterChipGroup compact={compact} label={groupLabel('number', t, 'Number')} options={POOL_NUMBERS} selected={filter.numbers ?? POOL_NUMBERS} onChange={v => patch({ numbers: v })} />
       {showState && (
-        <FilterChipGroup compact={compact} label={`${statePrefix}${groupLabel('state', t, 'State')}`} options={HEBREW_STATES} selected={filter.states ?? HEBREW_STATES} onChange={v => patch({ states: v })} />
+        <FilterChipGroup compact={compact} label={`${statePrefix}${groupLabel('state', t, 'State')}`} options={POOL_STATES} selected={filter.states ?? POOL_STATES} onChange={v => patch({ states: v })} />
       )}
       {isPronoun && (
-        <FilterChipGroup compact={compact} label={groupLabel('pronounType', t, 'Pronoun type')} options={HEBREW_PRONOUN_TYPES} selected={filter.types ?? HEBREW_PRONOUN_TYPES} onChange={v => patch({ types: v })} />
+        <FilterChipGroup compact={compact} label={groupLabel('pronounType', t, 'Pronoun type')} options={POOL_PRONOUN_TYPES} selected={filter.types ?? POOL_PRONOUN_TYPES} onChange={v => patch({ types: v })} />
       )}
     </div>
   )

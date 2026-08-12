@@ -9,6 +9,10 @@
 
 import { SUBTYPE_FIELD_OPTIONS, type MorphFieldOption, type MorphologySubtype } from './quiz-fields'
 import { isHebrewLevel } from './constants'
+// Which values each parse field actually takes in the pool, regenerated alongside it by
+// scripts/build-hebrew-parsing-pool.py. A few hundred bytes — safe in a client component,
+// unlike the pool itself. See POOL_* below for why the two lists differ.
+import poolValues from '@/data/hebrew-pool-values.json'
 
 export type HebrewMorphologySubtype =
   | 'VERB_PARSING'
@@ -137,13 +141,32 @@ export function morphFieldOptionsFor(level: string, subtype: string): MorphField
   return SUBTYPE_FIELD_OPTIONS[subtype as MorphologySubtype] ?? []
 }
 
+// ── What the pool actually holds ──────────────────────────────────────────────
+//
+// TWO lists, deliberately:
+//   • HEBREW_* above is the COMPLETE grammar, and is what the student's parsing dropdowns
+//     offer. It must stay complete: a value in an answer key with no matching option is a
+//     question the student cannot answer.
+//   • POOL_* below is only what the corpus yields, and is what the INSTRUCTOR's filter
+//     chips offer. A chip for a value the pool lacks silently narrows a quiz to nothing —
+//     OSHB tags no relative or interrogative pronouns at all, so those chips promised
+//     something undeliverable.
+const pv = poolValues as Record<string, string[]>
+export const POOL_STEMS         = pv.stem        ?? HEBREW_STEMS
+export const POOL_CONJUGATIONS  = pv.conjugation ?? HEBREW_CONJUGATIONS
+export const POOL_PERSONS       = pv.person      ?? HEBREW_PERSONS
+export const POOL_GENDERS       = pv.gender      ?? HEBREW_GENDERS
+export const POOL_NUMBERS       = pv.number      ?? HEBREW_NUMBERS
+export const POOL_STATES        = pv.state       ?? HEBREW_STATES
+export const POOL_PRONOUN_TYPES = pv.type        ?? HEBREW_PRONOUN_TYPES
+
 /** Every value selected, i.e. no restriction — the starting state of the filter. */
 export const HEBREW_DEFAULT_PARSE_FILTER: HebrewMorphParseFilter = {
-  stems:        [...HEBREW_STEMS],
-  conjugations: [...HEBREW_CONJUGATIONS],
-  persons:      [...HEBREW_PERSONS],
-  genders:      [...HEBREW_GENDERS],
-  numbers:      [...HEBREW_NUMBERS],
-  states:       [...HEBREW_STATES],
-  types:        [...HEBREW_PRONOUN_TYPES],
+  stems:        [...POOL_STEMS],
+  conjugations: [...POOL_CONJUGATIONS],
+  persons:      [...POOL_PERSONS],
+  genders:      [...POOL_GENDERS],
+  numbers:      [...POOL_NUMBERS],
+  states:       [...POOL_STATES],
+  types:        [...POOL_PRONOUN_TYPES],
 }
