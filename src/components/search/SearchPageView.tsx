@@ -29,6 +29,7 @@ import { isExamLocked } from '@/lib/exam-lockdown'
 import { parseSearchTerms, scoreRelevance } from '@/lib/search-query'
 import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
 import { betaCodeToGreek } from '@/lib/greek-translit'
+import { latinToHebrew, HEBREW_LEGEND } from '@/lib/hebrew-translit'
 
 // The full-page "Master Search" (/search). One input searches any biblical text (Greek NT/LXX,
 // or a translation) or any background collection, optionally scoped to books. Matches show in
@@ -264,6 +265,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const [ctxTransMap, setCtxTransMap] = useState<Record<string, { chapter: number; verse: number; text: string }[]>>({})
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [greekInput, setGreekInput] = useState(false)   // QWERTY→Greek (Beta Code) typing
+  const [hebrewInput, setHebrewInput] = useState(false) // QWERTY→Hebrew (phonetic), same idea
   const [suggestions, setSuggestions] = useState<{ word: string; sub?: string; strongs?: string }[]>([])
   const [showSug, setShowSug] = useState(false)
   // Seeded with the arrival query (preset / deep link) so the suggestions dropdown doesn't
@@ -389,6 +391,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   useEffect(() => { if (mounted) try { localStorage.setItem(SORT_STORAGE_KEY, sort) } catch {} }, [sort, mounted])
   useEffect(() => { if (mounted) try { localStorage.setItem(CONTEXT_STORAGE_KEY, String(context)) } catch {} }, [context, mounted])
   useEffect(() => { if (mounted) try { localStorage.setItem(GREEKINPUT_STORAGE_KEY, greekInput ? '1' : '0') } catch {} }, [greekInput, mounted])
+  // Keep the keyboard and the scope in step: leaving a Hebrew scope with the Hebrew keyboard
+  // still on would silently transliterate a Greek or English query into Hebrew letters.
+  useEffect(() => {
+    if (scope.kind !== 'hebrew' && hebrewInput) setHebrewInput(false)
+    if (scope.kind === 'hebrew' && greekInput) setGreekInput(false)
+  }, [scope.kind, hebrewInput, greekInput])
   useEffect(() => {
     if (!mounted) return
     try { if (query.trim()) localStorage.setItem(QUERY_STORAGE_KEY, query); else localStorage.removeItem(QUERY_STORAGE_KEY) } catch {}
@@ -582,8 +590,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   function onQueryChange(e: ChangeEvent<HTMLInputElement>) {
     const el = e.target
     const pos = el.selectionStart ?? el.value.length
-    if (greekInput) {
-      setQuery(betaCodeToGreek(el.value))
+    if (greekInput || hebrewInput) {
+      setQuery(greekInput ? betaCodeToGreek(el.value) : latinToHebrew(el.value))
       requestAnimationFrame(() => { try { el.setSelectionRange(pos, pos) } catch {} })
     } else {
       setQuery(el.value)
@@ -630,7 +638,13 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   function toggleGreekInput() {
     const nv = !greekInput
     setGreekInput(nv)
-    if (nv) setQuery(q => betaCodeToGreek(q))
+    if (nv) { setHebrewInput(false); setQuery(q => betaCodeToGreek(q)) }
+    inputRef.current?.focus()
+  }
+  function toggleHebrewInput() {
+    const nv = !hebrewInput
+    setHebrewInput(nv)
+    if (nv) { setGreekInput(false); setQuery(q => latinToHebrew(q)) }
     inputRef.current?.focus()
   }
 
@@ -1027,8 +1041,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               onChange={onQueryChange}
               onKeyDown={e => { if (e.key === 'Enter') { lastPickedRef.current = query.trim(); pushRecent(query); setShowSug(false) } if (e.key === 'Escape') { if (showSug) e.stopPropagation(); setShowSug(false) } }}
               onFocus={() => { if (suggestions.length) setShowSug(true) }}
-              placeholder={t('search.placeholder')}
-              className={`flex-1 min-w-0 text-base outline-none placeholder:text-gray-400 ${greekInput ? 'greek-text' : ''}`}
+              dir={hebrewInput ? 'rtl' : undefined}
+              placeholder={scope.kind === 'hebrew' ? t('search.placeholderHebrew') : t('search.placeholder')}
+              className={`flex-1 min-w-0 text-base outline-none placeholder:text-gray-400 ${greekInput ? 'greek-text' : hebrewInput ? 'font-hebrew' : ''}`}
             />
             {query && (
               <button type="button" onClick={() => { setQuery(''); setSuggestions([]); inputRef.current?.focus() }}
@@ -1036,11 +1051,22 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 <X size={16} />
               </button>
             )}
-            <button type="button" onClick={toggleGreekInput} aria-pressed={greekInput}
-              title={t('search.greekKeyboard')}
-              className={`flex-none w-7 h-7 flex items-center justify-center rounded-lg text-base font-semibold transition-colors greek-text ${greekInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
-              α
-            </button>
+            {/* Script keyboard. Which one is offered follows the scope: a Hebrew scope gets
+                the Hebrew keyboard, everything else the Greek one — so the button is always
+                the script the chosen corpus is actually written in. */}
+            {scope.kind === 'hebrew' ? (
+              <button type="button" onClick={toggleHebrewInput} aria-pressed={hebrewInput}
+                title={`${t('search.hebrewKeyboard')} — ${HEBREW_LEGEND}`}
+                className={`flex-none w-7 h-7 flex items-center justify-center rounded-lg text-base font-semibold transition-colors font-hebrew ${hebrewInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
+                א
+              </button>
+            ) : (
+              <button type="button" onClick={toggleGreekInput} aria-pressed={greekInput}
+                title={t('search.greekKeyboard')}
+                className={`flex-none w-7 h-7 flex items-center justify-center rounded-lg text-base font-semibold transition-colors greek-text ${greekInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
+                α
+              </button>
+            )}
           </div>
 
           {/* Predictive suggestions (complete the last word) */}
