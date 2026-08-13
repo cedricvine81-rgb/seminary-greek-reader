@@ -80,6 +80,11 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
   // reference, Greek or Hebrew, works on either track.
   const track = useTrackValue()
   const defaultRef = track === 'hebrew' ? 'Gen 1:1-5' : 'John 1:1-5'
+  // On the Hebrew track the Backgrounds tab is titled "Reception" — for an OT passage its
+  // contents (NT citations of the verse, targums, rabbinica) ARE reception history, and the
+  // instructor asked for the technically correct name. Same tab, same URL id, either way.
+  const tabLabelKey = (id: ExegesisTab, label: string) =>
+    id === 'backgrounds' && track === 'hebrew' ? 'tab.reception' : label
   const [input, setInput] = useState(initialRef || defaultRef)
   const [passage, setPassage] = useState(initialRef || defaultRef)
   // Grey ghost-text completion of the current pericope.
@@ -345,7 +350,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                 measured, Spanish still clips at 1600px with icons on. Labels alone fit from
                 lg upward, so below 1750px the icon is dropped rather than the last tab. */}
             {TAB_LIST.map(({ id, label, Icon }) => (
-              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}><Icon size={16} className="hidden min-[1750px]:block" /> {t(label)}</button>
+              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}><Icon size={16} className="hidden min-[1750px]:block" /> {t(tabLabelKey(id, label))}</button>
             ))}
           </div>
 
@@ -384,7 +389,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                           tab === id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
                         }`}
                       >
-                        <Icon size={16} className="shrink-0" /> {t(label)}
+                        <Icon size={16} className="shrink-0" /> {t(tabLabelKey(id, label))}
                       </button>
                     ))}
                   </div>

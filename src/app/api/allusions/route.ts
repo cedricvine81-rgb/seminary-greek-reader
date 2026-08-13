@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
-import { searchAllusions, strongsFrequencies, termFrequencies, type SourceToken, type AllusionTerm } from '@/lib/allusion-search'
+import { searchAllusions, strongsFrequencies, termFrequencies, type SourceToken, type AllusionTerm, type AllusionCorpus } from '@/lib/allusion-search'
 
 // Allusion search over the LXX (Exegesis → Allusions tab).
 //
@@ -41,12 +41,16 @@ export async function POST(req: NextRequest) {
           })
         : []
 
+    // NT anchors search the LXX; OT anchors the MT (inner-biblical allusion). The Strong's
+    // systems differ (Greek vs Hebrew numbers), so the corpus must match the anchor.
+    const corpus: AllusionCorpus = body.corpus === 'MT' ? 'MT' : 'LXX'
+
     if (body.action === 'freq') {
-      return NextResponse.json(strongsFrequencies(strs(body.strongs, MAX_STRONGS)))
+      return NextResponse.json(strongsFrequencies(strs(body.strongs, MAX_STRONGS), corpus))
     }
 
     if (body.action === 'termfreq') {
-      return NextResponse.json(termFrequencies(parseTerms(body.terms)))
+      return NextResponse.json(termFrequencies(parseTerms(body.terms), corpus))
     }
 
     if (body.action === 'search') {
@@ -61,7 +65,7 @@ export async function POST(req: NextRequest) {
           })
         : []
 
-      return NextResponse.json(searchAllusions({ terms, sourceTokens, useSynonyms: body.useSynonyms === true }))
+      return NextResponse.json(searchAllusions({ terms, sourceTokens, useSynonyms: body.useSynonyms === true, corpus }))
     }
 
     return NextResponse.json({ error: 'Unknown action' }, { status: 400 })

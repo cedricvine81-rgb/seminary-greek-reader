@@ -5,6 +5,7 @@ import { Search, ChevronDown, ChevronRight, Sparkles, X } from 'lucide-react'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { MT_OSIS } from '@/lib/mt-books'
 import { CITATION_STOP, detectCitation } from '@/lib/citation-formula'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -36,9 +37,35 @@ const NT_BOOKS: NT[] = [
   { osis: 'Rev', name: 'Revelation', abbr: ['re', 'rev', 'rv'] },
 ]
 const norm = (s: string) => s.toLowerCase().replace(/\s+/g, '')
+// The Hebrew Bible, so an OT reference anchors an inner-biblical search. NT books are
+// listed first and win ambiguous prefixes, as everywhere else in the app.
+const MT_BOOKS: NT[] = [
+  { osis: 'Gen', name: 'Genesis', abbr: ['gn', 'gen'] }, { osis: 'Exod', name: 'Exodus', abbr: ['ex', 'exod'] },
+  { osis: 'Lev', name: 'Leviticus', abbr: ['lv', 'lev'] }, { osis: 'Num', name: 'Numbers', abbr: ['nm', 'num'] },
+  { osis: 'Deut', name: 'Deuteronomy', abbr: ['dt', 'deut'] }, { osis: 'Josh', name: 'Joshua', abbr: ['jos', 'josh'] },
+  { osis: 'Judg', name: 'Judges', abbr: ['jdg', 'judg'] }, { osis: 'Ruth', name: 'Ruth', abbr: ['ru', 'ruth'] },
+  { osis: '1Sam', name: '1 Samuel', abbr: ['1sa', '1sam'] }, { osis: '2Sam', name: '2 Samuel', abbr: ['2sa', '2sam'] },
+  { osis: '1Kgs', name: '1 Kings', abbr: ['1ki', '1kgs'] }, { osis: '2Kgs', name: '2 Kings', abbr: ['2ki', '2kgs'] },
+  { osis: '1Chr', name: '1 Chronicles', abbr: ['1ch', '1chr'] }, { osis: '2Chr', name: '2 Chronicles', abbr: ['2ch', '2chr'] },
+  { osis: 'Ezra', name: 'Ezra', abbr: ['ezr', 'ezra'] }, { osis: 'Neh', name: 'Nehemiah', abbr: ['ne', 'neh'] },
+  { osis: 'Esth', name: 'Esther', abbr: ['est', 'esth'] }, { osis: 'Job', name: 'Job', abbr: ['jb', 'job'] },
+  { osis: 'Ps', name: 'Psalms', abbr: ['ps', 'psa', 'pss'] }, { osis: 'Prov', name: 'Proverbs', abbr: ['pr', 'prov'] },
+  { osis: 'Eccl', name: 'Ecclesiastes', abbr: ['ec', 'eccl', 'qoh'] }, { osis: 'Song', name: 'Song of Songs', abbr: ['sg', 'song', 'cant'] },
+  { osis: 'Isa', name: 'Isaiah', abbr: ['is', 'isa'] }, { osis: 'Jer', name: 'Jeremiah', abbr: ['je', 'jer'] },
+  { osis: 'Lam', name: 'Lamentations', abbr: ['la', 'lam'] }, { osis: 'Ezek', name: 'Ezekiel', abbr: ['eze', 'ezek'] },
+  { osis: 'Dan', name: 'Daniel', abbr: ['da', 'dan'] }, { osis: 'Hos', name: 'Hosea', abbr: ['ho', 'hos'] },
+  { osis: 'Joel', name: 'Joel', abbr: ['jl', 'joel'] }, { osis: 'Amos', name: 'Amos', abbr: ['am', 'amos'] },
+  { osis: 'Obad', name: 'Obadiah', abbr: ['ob', 'obad'] }, { osis: 'Jonah', name: 'Jonah', abbr: ['jon', 'jonah'] },
+  { osis: 'Mic', name: 'Micah', abbr: ['mi', 'mic'] }, { osis: 'Nah', name: 'Nahum', abbr: ['na', 'nah'] },
+  { osis: 'Hab', name: 'Habakkuk', abbr: ['hab'] }, { osis: 'Zeph', name: 'Zephaniah', abbr: ['zep', 'zeph'] },
+  { osis: 'Hag', name: 'Haggai', abbr: ['hag'] }, { osis: 'Zech', name: 'Zechariah', abbr: ['zec', 'zech'] },
+  { osis: 'Mal', name: 'Malachi', abbr: ['mal'] },
+]
+
 function matchBook(bp: string): NT | undefined {
   const b = norm(bp)
-  return NT_BOOKS.find(x => norm(x.name) === b || x.osis.toLowerCase() === b || x.abbr.includes(b)
+  const all = [...NT_BOOKS, ...MT_BOOKS]
+  return all.find(x => norm(x.name) === b || x.osis.toLowerCase() === b || x.abbr.includes(b)
     || norm(x.name).startsWith(b) || x.osis.toLowerCase().startsWith(b))
 }
 function parseRef(ref: string): { osis: string; name: string; chapter: number; vStart: number; vEnd: number } | null {
@@ -145,6 +172,9 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
 }) {
   const t = useT()
   const parsed = useMemo(() => parseRef(controlledPassage ?? ''), [controlledPassage])
+  // NT anchors hunt echoes in the LXX; OT anchors hunt the Hebrew Bible's reuse of itself
+  // (inner-biblical allusion) — same Allison machinery, MT index, Hebrew Strong's.
+  const searchCorpus = parsed && MT_OSIS.has(parsed.osis) ? 'MT' : 'LXX'
 
   // Passage words (na1904 phrase tree), per verse of the open chapter.
   const [verses, setVerses] = useState<{ verse: number; words: WordTok[] }[]>([])
@@ -265,7 +295,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
     const all = Array.from(new Set(shownVerses.flatMap(v => v.words.map(w => w.strongs)).filter((s): s is string => !!s)))
     if (all.length === 0) return
     fetch('/api/allusions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'freq', strongs: all }) })
+      body: JSON.stringify({ action: 'freq', strongs: all, corpus: searchCorpus }) })
       .then(r => r.json()).then((d: { counts?: Record<string, number>; totalVerses?: number }) => {
         if (d.counts) setFreqs(f => ({ ...f, ...d.counts }))
         if (d.totalVerses) setTotalVerses(d.totalVerses)
@@ -323,7 +353,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
     if (missing.length === 0) return
     const timer = setTimeout(() => {
       fetch('/api/allusions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'termfreq', terms: missing }) })
+        body: JSON.stringify({ action: 'termfreq', terms: missing, corpus: searchCorpus }) })
         .then(r => r.json()).then((d: { counts?: Record<string, number> }) => { if (d.counts) setTermFreqs(f => ({ ...f, ...d.counts })) })
         .catch(() => {})
     }, 250)
@@ -394,7 +424,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
       // Run detection reads the scoped verses only — narrowing to one verse narrows both.
       const sourceTokens = shownVerses.flatMap(v => v.words.filter(w => w.strongs).map(w => ({ s: w.strongs!, f: w.surface })))
       const r = await fetch('/api/allusions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'search', terms, sourceTokens, useSynonyms }) })
+        body: JSON.stringify({ action: 'search', terms, sourceTokens, useSynonyms, corpus: searchCorpus }) })
       const d = await r.json()
       setHits(Array.isArray(d.hits) ? d.hits : [])
       setSearchedFor(terms.map(t => t.kind === 'phrase' ? `“${t.forms.join(' ')}”` : t.forms[0]))
@@ -533,7 +563,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   })()
 
   if (loadState === 'idle') return <p className="text-gray-400 text-sm mt-6 text-center">{t('all.enterPassage')}</p>
-  if (loadState === 'missing') return <p className="text-gray-500 text-sm mt-6 text-center">Allusion search works from a <b>{t('var.newTestament')}</b> passage. Try e.g. <span className="font-medium">Mark 1:1-8</span>.</p>
+  if (loadState === 'missing') return <p className="text-gray-500 text-sm mt-6 text-center">Allusion search works from a <b>{t('var.newTestament')}</b> or Hebrew Bible passage. Try e.g. <span className="font-medium">Mark 1:1-8</span> or <span className="font-medium">Jonah 4:1-2</span>.</p>
   if (loadState === 'loading') return <p className="text-gray-400 text-sm mt-6 text-center">{t('reader.loading')}</p>
 
   return (
@@ -587,7 +617,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                             type="button"
                             onClick={() => toggleWord(v.verse, i, w)}
                             onMouseEnter={() => setParseInfo({ surface: w.surface, lexeme: w.lemma, gloss: w.gloss ?? '', partOfSpeech: '', parsing: w.parsing ?? '', strongs: w.strongs, reference: `${parsed!.name} ${parsed!.chapter}:${v.verse}` })}
-                            onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lemma || null, reference: `${parsed!.name} ${parsed!.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT', book: parsed!.osis }) }}
+                            onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lemma || null, reference: `${parsed!.name} ${parsed!.chapter}:${v.verse}`, ...(searchCorpus === 'MT' ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }), book: parsed!.osis }) }}
                             title={w.gloss ? `${w.gloss}${n != null ? ` — in ${n} LXX verses` : ''}` : undefined}
                             className={`rounded px-0.5 transition-colors ${
                               sel ? 'bg-brand-600 text-white'
@@ -608,7 +638,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
               ))}
             </div>
             <p className="mt-2.5 text-xs text-gray-400">
-              Dotted words are <b>{t('all.rareInLXX')}</b> — sharing one is worth far more than sharing a common word.
+              Dotted words are <b>{t(searchCorpus === 'MT' ? 'all.rareInMT' : 'all.rareInLXX')}</b> — sharing one is worth far more than sharing a common word.
               Tap <b>{t('all.adjacent')}</b> words and they become a phrase, searched as a sequence
               (&ldquo;ἐν ἀρχῇ&rdquo; is two common words but a rare pairing). Hover a word for its gloss.
             </p>
@@ -665,7 +695,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
             </button>
             <button type="button" disabled={terms.length === 0 || searching} onClick={runSearch}
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
-              <Search size={13} /> {searching ? t('all.searching') : t('all.searchLXX')}
+              <Search size={13} /> {searching ? t('all.searching') : t(searchCorpus === 'MT' ? 'all.searchMT' : 'all.searchLXX')}
             </button>
             <label className="inline-flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer"
               title="Let a close relative of a word count as a match — ἐξαποστέλλω for ἀποστέλλω, βοάω for κράζω. Marked ≈ in the results and scored below an exact match.">
@@ -828,7 +858,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                 hint={t('all.d3hint')} />
               <ChecklistRow label={t('all.d4')} hint={t('all.d4hint')}
                 auto={active ? (rareMatched >= 2 ? 'yes' : rareMatched === 1 ? 'partial' : 'no') : null}
-                autoNote={active ? t('all.d4note', { n: rareMatched, wordWord: rareMatched === 1 ? t('all.wordIs') : t('all.wordsAre'), rare: RARE }) : undefined} />
+                autoNote={active ? t(searchCorpus === 'MT' ? 'all.d4noteMT' : 'all.d4note', { n: rareMatched, wordWord: rareMatched === 1 ? t('all.wordIs') : t('all.wordsAre'), rare: RARE }) : undefined} />
               <ChecklistRow label={t('all.d5')} auto={null} manual={checks['d5']} onManual={v => setChecks(c => ({ ...c, d5: v }))}
                 hint={t('all.d5hint')} />
               <ChecklistRow label={t('all.d6')} hint={t('all.d6hint')}

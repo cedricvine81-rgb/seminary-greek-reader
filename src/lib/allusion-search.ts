@@ -68,7 +68,12 @@ export interface AllusionResult {
   frequencies: Record<string, number>
 }
 
-const CORPUS = 'LXX'
+// Which corpus a search scans. NT anchors echo the LXX (Greek Strong's numbers); OT anchors
+// search the MT itself — inner-biblical allusion, the same Allison machinery pointed at the
+// Hebrew Bible's own reuse of itself (Exod 34:6 across the Prophets, Gen 1 in Ps 8…). The
+// two cannot mix: LXX tokens carry Greek Strong's, MT tokens Hebrew ones.
+export type AllusionCorpus = 'LXX' | 'MT'
+const DEFAULT_CORPUS: AllusionCorpus = 'LXX'
 const WINDOW = 1          // verses of context either side: a 3-verse sliding window
 const MAX_HITS = 40
 const RUN_CANDIDATES = 200 // run detection only on the best N windows (it's O(n·m))
@@ -85,15 +90,16 @@ const SYNONYM_WEIGHT = 0.7
 // ─── Corpus statistics (computed once per process; the index is static) ────────────────
 
 interface Stats { totalVerses: number; verseFreq: Map<string, number> }
-let _stats: Stats | null = null
+const _stats = new Map<AllusionCorpus, Stats>()
 
 function verseRange(book: BookIndex, vi: number): [number, number] {
   return [book.v[vi][2], vi + 1 < book.v.length ? book.v[vi + 1][2] : book.w.length]
 }
 
-function getStats(): Stats {
-  if (_stats) return _stats
-  const index = getCorpusIndex(CORPUS)
+function getStats(corpus: AllusionCorpus): Stats {
+  const hit = _stats.get(corpus)
+  if (hit) return hit
+  const index = getCorpusIndex(corpus)
   const verseFreq = new Map<string, number>()
   let totalVerses = 0
   for (const book of Object.values(index)) {
@@ -107,13 +113,14 @@ function getStats(): Stats {
       }
     }
   }
-  _stats = { totalVerses, verseFreq }
-  return _stats
+  const stats = { totalVerses, verseFreq }
+  _stats.set(corpus, stats)
+  return stats
 }
 
 /** Rarity badges for the UI: LXX verse-frequency of each Strong's. */
-export function strongsFrequencies(strongs: string[]): { totalVerses: number; counts: Record<string, number> } {
-  const { totalVerses, verseFreq } = getStats()
+export function strongsFrequencies(strongs: string[], corpus: AllusionCorpus = DEFAULT_CORPUS): { totalVerses: number; counts: Record<string, number> } {
+  const { totalVerses, verseFreq } = getStats(corpus)
   const counts: Record<string, number> = {}
   for (const s of strongs) counts[s] = verseFreq.get(s) ?? 0
   return { totalVerses, counts }
@@ -123,12 +130,12 @@ export function strongsFrequencies(strongs: string[]): { totalVerses: number; co
 // the number that makes phrase search worth having: ἐν (G1722) and ἀρχή (G746) are common on
 // their own, but the SEQUENCE is not, and only the sequence count says so.
 const _phraseCounts = new Map<string, number>()
-export function phraseOccurrences(strongs: string[]): number {
+export function phraseOccurrences(strongs: string[], corpus: AllusionCorpus = DEFAULT_CORPUS): number {
   if (strongs.length < 2) return 0
-  const key = strongs.join('+')
+  const key = `${corpus}:${strongs.join('+')}`
   const cached = _phraseCounts.get(key)
   if (cached != null) return cached
-  const index = getCorpusIndex(CORPUS)
+  const index = getCorpusIndex(corpus)
   let total = 0
   for (const book of Object.values(index)) {
     for (let t = 0; t < book.w.length; t++) {
@@ -150,12 +157,12 @@ export function phraseOccurrences(strongs: string[]): number {
 }
 
 /** Frequencies for a mixed set of terms, keyed by strongs.join('+') — the UI's rarity badges. */
-export function termFrequencies(terms: AllusionTerm[]): { totalVerses: number; counts: Record<string, number> } {
-  const { totalVerses, verseFreq } = getStats()
+export function termFrequencies(terms: AllusionTerm[], corpus: AllusionCorpus = DEFAULT_CORPUS): { totalVerses: number; counts: Record<string, number> } {
+  const { totalVerses, verseFreq } = getStats(corpus)
   const counts: Record<string, number> = {}
   for (const t of terms) {
     counts[t.strongs.join('+')] = t.kind === 'phrase' && t.strongs.length > 1
-      ? phraseOccurrences(t.strongs)
+      ? phraseOccurrences(t.strongs, corpus)
       : verseFreq.get(t.strongs[0]) ?? 0
   }
   return { totalVerses, counts }
@@ -167,14 +174,16 @@ export function searchAllusions(input: {
   terms: AllusionTerm[]
   sourceTokens?: SourceToken[]             // the whole NT passage, in order (for run detection)
   useSynonyms?: boolean                    // let a near-synonym stand in for the exact lemma
+  corpus?: AllusionCorpus
 }): AllusionResult {
-  const index = getCorpusIndex(CORPUS)
-  const { totalVerses, verseFreq } = getStats()
+  const corpus = input.corpus ?? DEFAULT_CORPUS
+  const index = getCorpusIndex(corpus)
+  const { totalVerses, verseFreq } = getStats(corpus)
   const syn = !!input.useSynonyms
   const hits = (wanted: string, candidate: string) => matchesStrongs(wanted, candidate, syn)
 
   const terms = input.terms.filter(t => t.strongs.length > 0)
-  const freqOut = termFrequencies(terms).counts
+  const freqOut = termFrequencies(terms, corpus).counts
   if (terms.length === 0) return { totalVerses, hits: [], frequencies: freqOut }
 
   // With synonyms on, a term is as common as its whole set — otherwise a rare word paired
@@ -185,7 +194,7 @@ export function searchAllusions(input: {
   const idf = (s: string) => Math.log((totalVerses + 1) / (dfOf(s) + 1))
   // A phrase's weight comes from how rare the SEQUENCE is, not its member words.
   const termWeight = (t: AllusionTerm) => t.kind === 'phrase' && t.strongs.length > 1
-    ? Math.log((totalVerses + 1) / (phraseOccurrences(t.strongs) + 1)) * PHRASE_WEIGHT
+    ? Math.log((totalVerses + 1) / (phraseOccurrences(t.strongs, corpus) + 1)) * PHRASE_WEIGHT
     : idf(t.strongs[0])
 
   const termKey = (t: AllusionTerm) => t.strongs.join('+')
