@@ -35,6 +35,16 @@ export interface PageGuide {
   gestures?: GuideGesture[]
   /** Where to go next; hrefs are in-app routes. */
   related?: { label: string; href: string }[]
+  /** Seminary Hebrew overlay: fields here replace their counterparts when the language
+   *  track is Hebrew, so each surface describes the Hebrew experience (the MT reader, the
+   *  Hebrew deck, Reception rather than Backgrounds…). Arrays replace whole, not merge. */
+  hebrew?: Partial<Pick<PageGuide, 'title' | 'lede' | 'sections' | 'gestures' | 'related'>>
+}
+
+/** The guide as the current track should read it. */
+export function resolveGuide(g: PageGuide, hebrewTrack: boolean): PageGuide {
+  if (!hebrewTrack || !g.hebrew) return g
+  return { ...g, ...g.hebrew, hebrew: g.hebrew }
 }
 
 // ── The study tools ──────────────────────────────────────────────────────────────────────
@@ -76,6 +86,28 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'grammar',
+    hebrew: {
+      title: 'Hebrew Grammar',
+      lede: 'A full first-year Hebrew grammar, from the alphabet to the weak verbs.',
+      sections: [
+        {
+          heading: 'One text, twenty-two chapters',
+          body: 'The chapters run in a standard first-year order: the script and pointing, the noun system (article, prepositions, construct state, suffixes), then the verb — Qal first, the waw-consecutive that carries all narrative, and each derived stem in turn, with the weak verbs and a syntax chapter to close. There is no level toggle here; how the chapters map onto your course is your instructor\u2019s call.',
+        },
+        {
+          heading: 'Paradigms and drills',
+          body: 'Every paradigm is set out with the endings marked, and most chapters end with tap-to-reveal parse drills. The parsing vocabulary — stem, conjugation, person, gender, number — is exactly what the Reader\u2019s parsing pane and the morphology quizzes use, so nothing here needs translating between tools.',
+        },
+        {
+          heading: 'The weak-verb table',
+          body: 'The Weak Verbs chapter is built around one reference table: each class with its perfect, imperfect, wayyiqtol and infinitive side by side. It is meant for returning to, not memorising — the five narrative verbs listed beneath it are the ones to over-learn.',
+        },
+      ],
+      related: [
+        { label: 'Vocabulary — the Hebrew deck', href: '/vocab' },
+        { label: 'Reader — the forms in the text', href: '/reader' },
+      ],
+    },
     title: 'Grammar',
     lede: 'A full Greek grammar, from the alphabet to μι-verbs, written at two levels.',
     sections: [
@@ -214,6 +246,22 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis',
+    hebrew: {
+      sections: [
+        {
+          heading: 'How the tabs relate',
+          body: 'They are not a sequence to work through. Each is a different question you might ask of the same verses: how does it parse, how does it divide, where is this story told twice, what do the ancient versions read, what does Scripture itself reuse, how has the verse been received, what have commentators said, and what do you think. Move between them as the passage demands.',
+        },
+        {
+          heading: 'The passage box',
+          body: 'One reference drives every tab. Changing it moves every view at once, so you can parse a verse, then set it beside Chronicles, then read its Targum, without retyping anything.',
+        },
+        {
+          heading: 'Per-view settings',
+          body: 'Each tab has its own menu holding the settings that apply to that view — text size, source visibility, and the copyright statements for whatever data that tab is showing. On a phone, the same menu is also where you switch tabs.',
+        },
+      ],
+    },
     title: 'The Exegesis workspace',
     lede: 'Nine views of one passage — put a reference in the box at the top and every tab follows it.',
     sections: [
@@ -237,6 +285,23 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis:workspace',
+    hebrew: {
+      lede: 'Parse a Hebrew passage word by word and write your own translation of it.',
+      sections: [
+        {
+          heading: 'What to do here',
+          body: 'Each word can be given its parsing — stem, conjugation, person, gender, number, in whatever shorthand your course uses — and its syntactic function, and each verse has a box for your translation. The fields are free text: the app can already parse every word, so what this view records is your account of the passage, not its.',
+        },
+        {
+          heading: 'Reading help',
+          body: 'Clicking a word shows its dictionary parsing from the tagged text, so you can check your answer after committing to one. The verses run right to left as they should; your annotations sit with the word they belong to.',
+        },
+        {
+          heading: 'Keeping your work',
+          body: 'Signed in, sessions can be saved and reopened later, and a finished passage can be exported as a PDF to hand in or print.',
+        },
+      ],
+    },
     title: 'Exegesis · Syntax',
     lede: 'Parse a passage word by word and write your own translation of it.',
     sections: [
@@ -257,6 +322,19 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis:phrasing',
+    hebrew: {
+      lede: 'See the passage laid out by clause and phrase, right to left, rather than as a run of words.',
+      sections: [
+        {
+          heading: 'What you are looking at',
+          body: 'The indentation reflects the clause-and-phrase analysis of the tagged Hebrew Bible: subordinate elements sit under what they modify, and the whole tree mirrors right-to-left with the text. Where a written word is really two — a preposition welded to its noun — the pieces appear where the syntax puts them, each with its own gloss.',
+        },
+        {
+          heading: 'Using it',
+          body: 'This is the view for "where does the wayyiqtol chain break, and what is fronted?" — the questions Hebrew narrative turns on. A clause label at the top of each box gives the constituent order (V-S-O and its variations), so word-order departures are visible at a glance.',
+        },
+      ],
+    },
     title: 'Exegesis · Phrasing',
     lede: 'See the passage laid out by clause and phrase rather than as a run of words.',
     sections: [
@@ -273,6 +351,19 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis:synopsis',
+    hebrew: {
+      lede: 'Samuel–Kings beside Chronicles, with the Chronicler\u2019s editorial changes marked.',
+      sections: [
+        {
+          heading: 'Comparing accounts',
+          body: 'Anchor a passage with a parallel — most of Samuel and Kings, the Psalms doublets, Isaiah 36–39, Jeremiah 52 — and the accounts appear in columns of pointed Hebrew. This is where redaction criticism of the Old Testament starts: what the Chronicler adds, drops or rewords is visible immediately rather than reconstructed from memory.',
+        },
+        {
+          heading: 'Editorial changes',
+          body: 'The compare mode marks each word as kept, added, omitted, substituted or moved, and reports how much of the source\u2019s wording is retained — which turns an impression that "the Chronicler softened this" into something measurable.',
+        },
+      ],
+    },
     title: 'Exegesis · Synopsis',
     lede: 'Gospel parallels side by side, with the editorial changes marked.',
     sections: [
@@ -289,6 +380,23 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis:variants',
+    hebrew: {
+      lede: 'The Masoretic text beside the ancient versions, verse by verse.',
+      sections: [
+        {
+          heading: 'What you are looking at',
+          body: 'For the Old Testament the comparison is versional: the Hebrew beside the Septuagint, the Targum where one is embedded (the Pentateuch and Isaiah), and an English control. Where a version differs from the Hebrew in front of you, it may be witnessing a different Hebrew text — that observation is the beginning of Old Testament textual criticism.',
+        },
+        {
+          heading: 'A caution about verse numbers',
+          body: 'In a few books — Psalms, Jeremiah, Job, Esther, Daniel — the Septuagint\u2019s versification genuinely diverges, and the view says so when you are in one. There the rows pair by number, not necessarily by content: read the columns as texts, not as an alignment.',
+        },
+        {
+          heading: 'What this is not',
+          body: 'A manuscript apparatus like the one printed in BHS remains under copyright and is not reproduced here. What you see are complete ancient texts in parallel, which is also where a first course actually begins.',
+        },
+      ],
+    },
     title: 'Exegesis · Variants',
     lede: 'What the manuscripts actually read, witness by witness.',
     sections: [
@@ -305,6 +413,24 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis:backgrounds',
+    hebrew: {
+      title: 'Exegesis \u00b7 Reception',
+      lede: 'How this passage was received: where Scripture and the early readers took it.',
+      sections: [
+        {
+          heading: 'Reception, not background',
+          body: 'For an Old Testament passage the traffic mostly runs the other way: rather than asking what the verse draws on, this view gathers what draws on the verse — every New Testament citation of it in the apparatus, opened in place, with the note explaining the connection.',
+        },
+        {
+          heading: 'The Targums',
+          body: 'For the Pentateuch and Isaiah, each chapter links its Targum — the Aramaic interpretive rendering read in the synagogue. Where the Targum expands or softens the Hebrew, you are watching the earliest running commentary at work.',
+        },
+        {
+          heading: 'The library',
+          body: 'Citations into the Mishnah, the Talmud, Josephus, Philo and the rest open in place, and the whole library can be searched for a phrase — useful when a turn of expression feels formulaic and you want to know whose formula it was.',
+        },
+      ],
+    },
     title: 'Exegesis · Backgrounds',
     lede: 'What this passage quotes, echoes, or shares a world with.',
     sections: [
@@ -325,6 +451,23 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis:allusions',
+    hebrew: {
+      lede: 'Hunt the Hebrew Bible\u2019s reuse of itself, with the evidence weighed in front of you.',
+      sections: [
+        {
+          heading: 'Inner-biblical allusion',
+          body: 'Scripture quotes Scripture long before the New Testament does: the grace formula of Exodus 34 echoes through the Prophets and Psalms, Genesis 1 stands behind Psalm 8. Tap the loaded words of your passage and the search ranks the rest of the Hebrew Bible by how strongly it shares them.',
+        },
+        {
+          heading: 'Rarity is the argument',
+          body: 'Sharing a common word proves nothing; sharing a rare one, or a rare pair in sequence, is evidence. The dotted words are the rare ones, and the search weighs matches accordingly — the same method used for New Testament allusions to the Septuagint, pointed at the Hebrew.',
+        },
+        {
+          heading: 'You make the case',
+          body: 'The checklist beside the results walks the standard tests. The app fills in what can be measured; whether the parallel is an allusion, a formula, or a coincidence remains your judgment — which is the skill being practised.',
+        },
+      ],
+    },
     title: 'Exegesis · Allusions',
     lede: 'Hunt for Septuagint allusions behind a New Testament passage, following Allison’s method.',
     sections: [
@@ -361,6 +504,19 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis:commentary',
+    hebrew: {
+      lede: 'The Hebrew on the left, Keil & Delitzsch tracking your place on the right.',
+      sections: [
+        {
+          heading: 'Reading with the commentary',
+          body: 'The pointed Hebrew scrolls on the left with click-to-parse; the commentary pane follows whichever verse you are on. For the Old Testament the commentary is Keil & Delitzsch — still the fullest scholarly commentary on the whole Hebrew Bible in the public domain, philological enough to repay reading with the text open.',
+        },
+        {
+          heading: 'Its habits',
+          body: 'K&D often treats several verses as one unit, so the note shown for a verse may begin a few verses earlier — and a handful of stretches (genealogies especially) have no verse-by-verse note at all. Clicking a neighbouring verse finds the discussion.',
+        },
+      ],
+    },
     title: 'Exegesis · Commentary',
     lede: 'Public-domain commentary on the open passage.',
     sections: [

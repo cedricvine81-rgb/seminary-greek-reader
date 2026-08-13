@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { registerPageGuide } from '@/lib/page-guide-bus'
-import { guideById, guideForPath } from '@/lib/page-guides'
+import { guideById, guideForPath, resolveGuide } from '@/lib/page-guides'
+import { useTrackValue } from '@/lib/track-client'
 import { PageGuidePanel } from './PageGuidePanel'
 import { isExamLocked } from '@/lib/exam-lockdown'
 
@@ -22,6 +23,9 @@ import { isExamLocked } from '@/lib/exam-lockdown'
  */
 export function PageGuideProvider() {
   const pathname = usePathname()
+  // Guides describe the track's experience: on Seminary Hebrew each surface's Hebrew
+  // overlay replaces the Greek copy (see resolveGuide).
+  const hebrewTrack = useTrackValue() === 'hebrew'
   const [openId, setOpenId] = useState<string | null>(null)
 
   const doOpen = useCallback((guideId?: string) => {
@@ -41,7 +45,7 @@ export function PageGuideProvider() {
   useEffect(() => { setOpenId(null) }, [pathname])
 
   if (!openId) return null
-  const guide = guideById(openId)
-  if (!guide) return null
-  return <PageGuidePanel guide={guide} onClose={() => setOpenId(null)} />
+  const raw = guideById(openId)
+  if (!raw) return null
+  return <PageGuidePanel guide={resolveGuide(raw, hebrewTrack)} onClose={() => setOpenId(null)} />
 }

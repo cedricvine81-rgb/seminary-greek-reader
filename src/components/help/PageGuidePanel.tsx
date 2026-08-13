@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import Link from 'next/link'
 import { X, HelpCircle, ArrowRight } from 'lucide-react'
-import { PAGE_GUIDES, EXEGESIS_GUIDE_IDS, guideById, type PageGuide } from '@/lib/page-guides'
+import { PAGE_GUIDES, EXEGESIS_GUIDE_IDS, guideById, type PageGuide , resolveGuide } from '@/lib/page-guides'
+import { useTrackValue } from '@/lib/track-client'
 import { openPageGuide } from '@/lib/page-guide-bus'
 
 // The page guide as a side panel beside the current page, following the Master Search panel's
@@ -18,6 +19,7 @@ const WIDTH = 420
 
 export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: () => void }) {
   const t = useT()
+  const hebrewTrack = useTrackValue() === 'hebrew'
   // Which Exegesis sub-guide is being read, when the panel is showing one.
   const [tabPickerOpen, setTabPickerOpen] = useState(false)
 
@@ -102,7 +104,8 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
             {tabPickerOpen && (
               <div className="mt-2 space-y-0.5">
                 {EXEGESIS_GUIDE_IDS.filter(id => id !== guide.id).map(id => {
-                  const g = guideById(id)
+                  const raw = guideById(id)
+                  const g = raw && resolveGuide(raw, hebrewTrack)
                   if (!g) return null
                   return (
                     <button
