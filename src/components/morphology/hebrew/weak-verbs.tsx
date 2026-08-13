@@ -21,7 +21,7 @@ export const HB_WEAK_VERBS = (
 
     <InfoBox title="In plain English">
       <p className="mb-1">English has regular verbs (walk, walked) and irregular ones (sing/sang, go/went, be/was) that you simply learned by meeting them. Hebrew’s “weak” verbs are its irregulars — with one mercy: they are irregular by RULE. Certain letters (gutturals, <Hb>נ</Hb>, <Hb>ו</Hb>, <Hb>י</Hb>, final <Hb>ה</Hb>) misbehave in predictable ways wherever they sit in a root.</p>
-      <p>So instead of memorising thousands of odd forms, you learn a handful of letter-habits — “<Hb>נ</Hb> assimilates,” “gutturals refuse doubling” — and whole families of verbs fall into place at once.</p>
+      <p>So instead of memorising thousands of odd forms, you learn a handful of letter-habits — “<Hb>נ</Hb> assimilates (disappears into the next letter, leaving a doubling dot),” “gutturals refuse doubling” — and whole families of verbs fall into place at once.</p>
     </InfoBox>
 
     <SectionHeading n={1}>The classes at a glance (Qal)</SectionHeading>

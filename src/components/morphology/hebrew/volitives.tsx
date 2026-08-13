@@ -10,21 +10,31 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 export const HB_VOLITIVES = (
   <>
     <P>
-      <Term t="volitive">Volitives</Term> are the wanting-and-willing forms — commands and
-      wishes. Hebrew distributes &ldquo;let / may / must&rdquo; across the{' '}
-      <Term t="person">persons</Term>: the{' '}
-      <strong>cohortative</strong> for &ldquo;let <em>me/us</em>,&rdquo; the{' '}
-      <strong>imperative</strong> for direct commands to <em>you</em>, and the{' '}
-      <strong>jussive</strong> for &ldquo;let <em>him/them</em>.&rdquo; All three are the
-      imperfect, bent slightly.
+      <Term t="volitive">Volitives</Term> are the forms you use when you want something to
+      happen — commands and wishes. English uses a different trick for each person, and so
+      does Hebrew. Which form you need depends on <strong>who is meant to act</strong>:
     </P>
+    <MorphTable
+      title="Who is meant to act?"
+      headers={['Who', 'The form', 'In English', 'Hebrew', '']}
+      tCols={[0, 1, 2, 4]}
+      hCols={[3]}
+      firstColIsData
+      striped
+      rows={[
+        ['me, or us', 'cohortative (a wish about yourself)', '“let me go,” “let us build”', 'אֵלְכָה', 'let me go'],
+        ['you', 'imperative (a direct command)', '“Go!” “Listen!”', 'שְׁמַע', 'listen!'],
+        ['someone else', 'jussive (a wish about a third party)', '“may he live,” “let there be light”', 'יְהִי', 'let there be'],
+      ]}
+      note="All three are the ordinary future form (the imperfect), bent slightly: lengthened for the cohortative, stripped of its prefix for the imperative, shortened for the jussive."
+    />
 
     <InfoBox title="In plain English">
       <p className="mb-1">Volitives are the grammar of wanting. English covers the three persons with three different tricks: <em>“Let me / let’s go”</em> (myself), <em>“Go!”</em> (you), <em>“May he go / long live the king”</em> (someone else). Hebrew has a dedicated form for each — cohortative for “let me/us,” imperative for “you,” jussive for “may he.”</p>
       <p>Same wanting, three directions. The chapter is just those three forms and how to spot them.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The imperative</SectionHeading>
+    <SectionHeading n={1}>The imperative (a direct command to “you”)</SectionHeading>
     <P>
       Strip the prefix off the second-person imperfect and a command remains. Second person
       only — four forms:
@@ -44,7 +54,7 @@ export const HB_VOLITIVES = (
     />
     <HbEx he="שְׁמַע יִשְׂרָאֵל" en={<>“Hear, O Israel!” (Deut 6:4) — Qal imperative 2ms of שׁמע, a-class like its imperfect.</>} />
 
-    <SectionHeading n={2}>The cohortative</SectionHeading>
+    <SectionHeading n={2}>The cohortative (a wish about myself — “let me”)</SectionHeading>
     <P>
       First person + <Hb>־ָה</Hb>: self-encouragement, resolve, request.
     </P>
@@ -60,7 +70,7 @@ export const HB_VOLITIVES = (
     />
     <HbEx he="אָשִׁירָה לַיהוָה" en={<>“I will sing to the LORD” (Exod 15:1) — cohortative resolve.</>} />
 
-    <SectionHeading n={3}>The jussive</SectionHeading>
+    <SectionHeading n={3}>The jussive (a wish about someone else — “may he”)</SectionHeading>
     <P>
       Third person (and negated second person). Usually it looks <em>identical</em> to the
       imperfect; it is visibly shorter only where the verb has a form to shorten — the weak

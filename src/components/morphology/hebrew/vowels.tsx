@@ -97,7 +97,7 @@ export const HB_VOWELS = (
     />
     <P>
       Doubling matters grammatically: the article doubles the next letter, the Piel stem
-      doubles the middle root letter, and assimilated <Hb>נ</Hb> hides as a dagesh forte. When
+      doubles the middle root letter, and assimilated <Hb>נ</Hb> hides as a dagesh forte (a dot that doubles the letter). When
       you see a dagesh after a vowel, read the letter twice: <Hb>הַשָּׁמַיִם</Hb> ={' '}
       <em>hash-shamayim</em>.
     </P>

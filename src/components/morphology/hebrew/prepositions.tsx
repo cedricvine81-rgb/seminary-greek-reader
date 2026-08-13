@@ -48,7 +48,7 @@ export const HB_PREPOSITIONS = (
     <SectionHeading n={2}>מִן — “from”</SectionHeading>
     <P>
       <Hb>מִן</Hb> stands free with a maqqef (<Hb>מִן־הָעִיר</Hb>, &ldquo;from the city&rdquo;)
-      or fuses onto the word. When it fuses, its <Hb>נ</Hb> assimilates into the next letter as
+      or fuses onto the word. When it fuses, its <Hb>נ</Hb> assimilates (disappears into the next letter, leaving a doubling dot) into the next letter as
       a dagesh forte — and before a guttural, which cannot take the dagesh, the vowel
       lengthens to <Hb>מֵ</Hb>:
     </P>
@@ -89,7 +89,7 @@ export const HB_PREPOSITIONS = (
     <SectionHeading n={4}>The object marker אֵת</SectionHeading>
     <P>
       Hebrew flags a <strong>definite direct object</strong> with <Hb>אֵת</Hb> (usually{' '}
-      <Hb>אֶת־</Hb> with maqqef). It is untranslated — a grammatical signpost, not a word with
+      <Hb>אֶת־</Hb> with maqqef (the raised hyphen joining two words)). It is untranslated — a grammatical signpost, not a word with
       meaning. Indefinite objects go unmarked.
     </P>
     <HbEx he="בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ" en={<>“God created the heavens and the earth” (Gen 1:1) — both objects are definite, so both carry אֵת.</>} />
@@ -109,7 +109,7 @@ export const HB_PREPOSITIONS = (
       title="Try it"
       items={[
         { q: <>Combine: <Hb>בְּ</Hb> + <Hb>הַשָּׁמַיִם</Hb>.</>, a: <><Hb>בַּשָּׁמַיִם</Hb> — the ה drops, the preposition inherits patach and the dagesh stays.</> },
-        { q: <>Combine: <Hb>מִן</Hb> + <Hb>בַּיִת</Hb> (fused).</>, a: <><Hb>מִבַּיִת</Hb> — the נ assimilates as dagesh forte in the ב.</> },
+        { q: <>Combine: <Hb>מִן</Hb> + <Hb>בַּיִת</Hb> (fused).</>, a: <><Hb>מִבַּיִת</Hb> — the נ assimilates as dagesh forte (a dot that doubles the letter) in the ב.</> },
         { q: <>Combine: <Hb>מִן</Hb> + <Hb>עִיר</Hb> (fused).</>, a: <><Hb>מֵעִיר</Hb> — ayin refuses the dagesh, so the hireq lengthens to tsere.</> },
         { q: <>Why does Gen 1:1 read <Hb>אֵת הַשָּׁמַיִם</Hb> but no את before <Hb>אֱלֹהִים</Hb>?</>, a: <>Because אלהים is the <em>subject</em>. את marks only the definite direct object.</> },
       ]}

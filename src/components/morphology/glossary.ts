@@ -212,15 +212,55 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
   },
   volitive: {
     title: 'Volitive',
-    def: 'The will-and-wish forms: commands ("Go!"), wishes for oneself ("let me go"), and wishes for a third party ("let him go"). Hebrew has a distinct form for each person.',
+    def: 'The asking-and-telling forms — the ones you use to want something to happen: "Go!", "let me go", "may he go". Hebrew uses a different form depending on WHO is meant to act: me, you, or someone else.',
+  },
+  cohortative: {
+    title: 'Cohortative',
+    def: 'The “let me / let us” form — a wish or resolve about YOURSELF: “let me go,” “let us build.” In Hebrew it is the ordinary future form with a ־ָה added on the end.',
+  },
+  jussive: {
+    title: 'Jussive',
+    def: 'The “may he / let them” form — a wish about SOMEONE ELSE: “may the LORD bless you,” “let there be light.” In Hebrew it is the ordinary future form, usually shortened a little.',
+  },
+  imperative: {
+    title: 'Imperative',
+    def: 'A direct command to the person you are speaking to: “Go!”, “Listen!”. Hebrew builds it by taking the future form and dropping its front letter.',
+  },
+  stative: {
+    title: 'Stative verb',
+    def: 'A verb that describes a STATE rather than an action — “be heavy,” “be old,” “be able.” English usually turns these into “is” plus an adjective: he IS old.',
+  },
+  factitive: {
+    title: 'Factitive',
+    def: 'Making something be what the adjective says: “pure” → “purify,” “holy” → “make holy.” Hebrew does this by moving the same root into the Piel pattern.',
+  },
+  denominative: {
+    title: 'Denominative',
+    def: 'A verb made out of a noun, the way English turns “a text” into “to text” or “salt” into “to salt.” Hebrew: דָּבָר “word” → דִּבֶּר “speak.”',
+  },
+  assimilation: {
+    title: 'Assimilation',
+    def: 'A letter disappearing into the one after it, leaving a doubling dot behind — the way English says “impossible” rather than “inpossible.” Hebrew’s נ does this constantly.',
+  },
+  maqqef: {
+    title: 'Maqqef',
+    def: 'The small raised hyphen ־ that joins two words so they are read as one, with a single stress — like the hyphen in “father-in-law.”',
+  },
+  'materlectionis': {
+    title: 'Mater lectionis',
+    def: 'Literally “mother of reading”: a consonant (ו, י or ה) used to show a vowel, from the days before vowel points existed. It is why some long vowels are spelled with an extra letter.',
+  },
+  apocopation: {
+    title: 'Apocopation',
+    def: 'Chopping the end off a word — Hebrew shortens some verb forms this way, which is how the jussive is often told apart from the ordinary future.',
   },
   paradigm: {
     title: 'Paradigm',
-    def: 'A model word written out in all its forms, used as the pattern for every word like it — the way "amo, amas, amat" once stood for all of Latin. Learn the paradigm and you can read a thousand verbs.',
+    def: 'One word written out in every form it can take, used as the pattern for all the words that behave like it. Learn the one and you can read the thousands built the same way.',
   },
   conjugation: {
     title: 'Conjugation',
-    def: 'Running a verb through its forms for each subject: I keep, you keep, he keeps… English barely changes the verb; Hebrew changes it for every person, gender, and number.',
+    def: 'Changing a verb to match who is doing it: I keep, you keep, he keeps. English barely changes the word; Hebrew changes it for every person, gender and number — so one Hebrew word can say "you women will keep".',
   },
   passive: {
     title: 'Passive',

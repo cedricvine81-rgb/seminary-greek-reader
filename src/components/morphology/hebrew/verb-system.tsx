@@ -93,7 +93,7 @@ export const HB_VERB_SYSTEM = (
       items={[
         { q: <>What is the root of <Hb>הִמְלִיךְ</Hb> “he made king”?</>, a: <><Hb>מלך</Hb> — strip the Hiphil ה prefix and the hireq-yod pattern.</> },
         { q: <>Which stem is <Hb>נִשְׁבַּר</Hb> “it was broken”, and how do you know?</>, a: <>Niphal — the נ prefix on a perfect, and the passive sense of שׁבר “break.”</> },
-        { q: <>Which stem doubles the middle root letter?</>, a: <>Piel (with its passive Pual, and Hithpael) — the dagesh forte in the middle radical is the fingerprint.</> },
+        { q: <>Which stem doubles the middle root letter?</>, a: <>Piel (with its passive Pual, and Hithpael) — the dagesh forte (a dot that doubles the letter) in the middle radical is the fingerprint.</> },
         { q: <>Name the five parsing slots.</>, a: <>Stem, conjugation, person, gender, number — then add the root.</> },
       ]}
     />

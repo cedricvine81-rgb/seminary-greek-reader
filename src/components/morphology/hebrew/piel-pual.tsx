@@ -11,10 +11,10 @@ export const HB_PIEL_PUAL = (
   <>
     <P>
       The <Term t="piel">Piel</Term>&rsquo;s fingerprint is a{' '}
-      <Term t="dagesh"><strong>dagesh forte</strong></Term> — a doubling dot —{' '}
+      <Term t="dagesh"><strong>dagesh forte (a dot that doubles the letter)</strong></Term> — a doubling dot —{' '}
       <strong>in the middle root letter</strong>.
       Its meaning is not always &ldquo;intensive&rdquo;: more often it makes a state into an
-      action (<em>factitive</em>: <Hb>קִדֵּשׁ</Hb> &ldquo;make holy&rdquo;) or simply is the
+      action (<em>factitive (making something be what the adjective says)</em>: <Hb>קִדֵּשׁ</Hb> &ldquo;make holy&rdquo;) or simply is the
       stem a verb happens to live in (<Hb>דִּבֶּר</Hb> &ldquo;speak&rdquo;). The Pual is its
       passive.
     </P>
@@ -101,7 +101,7 @@ export const HB_PIEL_PUAL = (
       <Hb>סִפֵּר</Hb> recount, <Hb>שִׁלַּח</Hb> send away, <Hb>בֵּרַךְ</Hb> bless — that last
       with tsere, because <Hb>ר</Hb> refuses the dagesh and the vowel compensates.
     </P>
-    <HbEx he="הַלְלוּ־יָהּ" en={<>“Praise the LORD!” — Piel imperative 2mp of הלל + the short divine name. You have been parsing Piel since before you started.</>} />
+    <HbEx he="הַלְלוּ־יָהּ" en={<>“Praise the LORD!” — Piel imperative (a direct command to “you”) 2mp of הלל + the short divine name. You have been parsing Piel since before you started.</>} />
 
     <InfoBox title="Watch for">
       <p className="mb-1">A dagesh in the middle radical after a vowel = Piel family (Piel, Pual, or Hithpael). The vowels around it pick which.</p>

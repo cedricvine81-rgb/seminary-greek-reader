@@ -15,7 +15,7 @@ export const HB_NIPHAL = (
       (<Hb>נִכְתַּב</Hb> &ldquo;it was written&rdquo;), often <strong>middle or{' '}
       <Term t="reflexive">reflexive</Term></strong> (<Hb>נִסְתַּר</Hb> &ldquo;he hid
       himself&rdquo;). Its fingerprint is
-      a <Hb>נ</Hb> — visible in the perfect and participle, assimilated into a dagesh forte in
+      a <Hb>נ</Hb> — visible in the perfect and participle, assimilated into a dagesh forte (a dot that doubles the letter) in
       the first root letter everywhere else.
     </P>
 

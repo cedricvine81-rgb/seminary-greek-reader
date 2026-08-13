@@ -12,7 +12,7 @@ export const HB_WAW = (
     <P>
       Open any page of Hebrew narrative and most <Term t="clause">clauses</Term> begin the
       same way: <Hb>וַיּ…</Hb> &ldquo;and he…&rdquo;. This is the{' '}
-      <Term t="waw-consecutive"><strong>wayyiqtol</strong></Term> (sequential imperfect):
+      <Term t="waw-consecutive (the “and then” chain that carries Hebrew narrative)"><strong>wayyiqtol</strong></Term> (sequential imperfect):
       a special waw — <Hb>וַ</Hb> plus doubling — welded onto the imperfect, and the whole
       thing means simple <em>past</em>. It is how Hebrew tells a story: and he arose, and he
       went, and he said…
@@ -38,7 +38,7 @@ export const HB_WAW = (
       note="וַ + dagesh forte in the prefix letter. Before א (which refuses doubling) the vowel lengthens: וָאֶקְטֹל."
     />
     <P>
-      Where a verb has a shortened (jussive-style) imperfect, the wayyiqtol uses it — which is
+      Where a verb has a shortened (jussive (a wish about someone else — “may he”)-style) imperfect, the wayyiqtol uses it — which is
       why the commonest narrative verbs look clipped: <Hb>וַיְהִי</Hb> &ldquo;and it
       was&rdquo; (not <Hb>וַיִּהְיֶה</Hb>), <Hb>וַיַּרְא</Hb> &ldquo;and he saw,&rdquo;{' '}
       <Hb>וַיָּמָת</Hb> &ldquo;and he died,&rdquo; <Hb>וַיֹּאמֶר</Hb> &ldquo;and he

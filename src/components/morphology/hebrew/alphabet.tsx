@@ -83,7 +83,7 @@ export const HB_ALPHABET = (
     <SectionHeading n={3}>Begadkephat: the six two-sound letters</SectionHeading>
     <P>
       Six letters — <Hb>ב ג ד כ פ ת</Hb>, remembered as <em>begadkephat</em> — each have a hard
-      and a soft pronunciation. A dot inside the letter (the <em>dagesh lene</em>) marks the
+      and a soft pronunciation. A dot inside the letter (the <em>dagesh lene (a dot that hardens the letter)</em>) marks the
       hard sound; without it the letter is soft. In practice most readers today only
       distinguish three pairs: <Hb>בּ/ב</Hb> (b/v), <Hb>כּ/כ</Hb> (k/ch), <Hb>פּ/פ</Hb> (p/f).
     </P>

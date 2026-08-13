@@ -23,7 +23,7 @@ export const HB_ARTICLE = (
       <p>There is no word for “a” at all: a bare noun is indefinite by default. So every unglued noun you meet already means “a …”.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The article: הַ + dagesh forte</SectionHeading>
+    <SectionHeading n={1}>The article: הַ + dagesh forte (a dot that doubles the letter)</SectionHeading>
     <MorphTable
       title="The regular article"
       headers={['Without', 'With the article', '']}

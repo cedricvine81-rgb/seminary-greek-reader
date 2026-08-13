@@ -11,9 +11,9 @@ export const HB_INFINITIVES = (
   <>
     <P>
       Hebrew has two <Term t="infinitive">infinitives</Term> — &ldquo;to do&rdquo; forms
-      that name an action without saying who does it — with divided labor. The <strong>infinitive construct</strong>{' '}
+      that name an action without saying who does it — with divided labor. The <strong>infinitive construct (the “to do” form)</strong>{' '}
       (<Hb>קְטֹל</Hb>) is the &ldquo;to do&rdquo; form — it takes prepositions and suffixes
-      and builds clauses. The <strong>infinitive absolute</strong> (<Hb>קָטוֹל</Hb>) mostly
+      and builds clauses. The <strong>infinitive absolute (the emphasis form — “dying you shall die”)</strong> (<Hb>קָטוֹל</Hb>) mostly
       stands beside a finite verb to add emphasis. Neither inflects for person: no subject
       slots, which is why the morphology quizzes ask only stem and conjugation for them.
     </P>

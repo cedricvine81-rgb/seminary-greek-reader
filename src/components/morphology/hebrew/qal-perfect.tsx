@@ -50,7 +50,7 @@ export const HB_QAL_PERFECT = (
       you already know.
     </P>
 
-    <SectionHeading n={2}>Stative verbs</SectionHeading>
+    <SectionHeading n={2}>Stative (describing a state rather than an action) verbs</SectionHeading>
     <P>
       Verbs describing a <em>state</em> rather than an action take tsere or holem in the 3ms
       and often translate as an English adjective with &ldquo;be&rdquo;:
@@ -89,7 +89,7 @@ export const HB_QAL_PERFECT = (
     <InfoBox title="Watch for">
       <p className="mb-1"><Hb>קָטְלָה</Hb> (3fs perfect) vs a feminine noun in ־ָה: the verb has no article and its first vowel is qamets + vocal shewa.</p>
       <p className="mb-1">2ms <Hb>קָטַלְתָּ</Hb> and 2fs <Hb>קָטַלְתְּ</Hb> differ only in the final vowel — qamets = masculine.</p>
-      <p>The perfect + וְ (weqatal) is NOT simple “and” + past — it flips to future/command force. That surprise is the Waw-Consecutive chapter.</p>
+      <p>The perfect + וְ (weqatal) is NOT simple “and” + past — it flips to future/command force. That surprise is the Waw-Consecutive (the “and then” chain that carries Hebrew narrative) chapter.</p>
     </InfoBox>
 
     <HbExamples id="qal-perfect" />
