@@ -17,6 +17,12 @@ export const HB_QAL_PERFECT = (
       this ending set cold: every <Term t="binyan">stem</Term> in the language reuses it.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1"><strong>Reading the codes:</strong> “3ms” is shorthand for <em>third person, masculine, singular</em> — “he.” First person is the speaker (I / we), second is who you are talking to (you), third is who you are talking about (he / she / they). So 2fp = “you (women),” 1cs = “I,” 3cp = “they.” The “c” means <em>common</em>: one form serves both genders.</p>
+      <p className="mb-1"><strong>English changes the pronoun; Hebrew changes the ending.</strong> English says <em>I kept, you kept, she kept</em> — the verb never moves, the pronoun does the work. Hebrew welds the pronoun onto the verb as an ending: קָטַלְתִּי is “kept-I,” קָטַלְתָּ “kept-you,” one word each. That is why a Hebrew sentence can be a single word.</p>
+      <p><strong>“Complete” is a viewpoint, not a date.</strong> English tenses put events on a timeline (past / present / future). The Hebrew perfect instead views the action as a whole, finished package — usually that lands in English as past (“he kept”), but it can be “he has kept,” or with statives “he is old.”</p>
+    </InfoBox>
+
     <SectionHeading n={1}>The paradigm</SectionHeading>
     <MorphTable
       title="Qal perfect of קטל"
@@ -27,14 +33,14 @@ export const HB_QAL_PERFECT = (
       highlightCols={[2]}
       rows={[
         ['3ms', 'קָטַל', '—', 'he killed'],
-        ['3fs', 'קָטְלָה', '־ָה', 'she killed'],
-        ['2ms', 'קָטַלְתָּ', '־תָּ', 'you killed'],
-        ['2fs', 'קָטַלְתְּ', '־תְּ', 'you killed'],
-        ['1cs', 'קָטַלְתִּי', '־תִּי', 'I killed'],
-        ['3cp', 'קָטְלוּ', '־וּ', 'they killed'],
-        ['2mp', 'קְטַלְתֶּם', '־תֶּם', 'you killed'],
-        ['2fp', 'קְטַלְתֶּן', '־תֶּן', 'you killed'],
-        ['1cp', 'קָטַלְנוּ', '־נוּ', 'we killed'],
+        ['3fs', 'קָטְלָ|ה', '־ָה', 'she killed'],
+        ['2ms', 'קָטַלְ|תָּ', '־תָּ', 'you killed'],
+        ['2fs', 'קָטַלְ|תְּ', '־תְּ', 'you killed'],
+        ['1cs', 'קָטַלְ|תִּי', '־תִּי', 'I killed'],
+        ['3cp', 'קָטְל|וּ', '־וּ', 'they killed'],
+        ['2mp', 'קְטַלְ|תֶּם', '־תֶּם', 'you killed'],
+        ['2fp', 'קְטַלְ|תֶּן', '־תֶּן', 'you killed'],
+        ['1cp', 'קָטַלְ|נוּ', '־נוּ', 'we killed'],
       ]}
       note="Third plural and first person do not mark gender (“common”). Before the vowel-endings ־ָה and ־וּ the second qamets reduces to shewa; before the heavy endings ־תֶּם / ־תֶּן the FIRST one does."
     />

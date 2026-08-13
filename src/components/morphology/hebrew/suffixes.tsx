@@ -19,6 +19,11 @@ export const HB_SUFFIXES = (
       <Term t="definite">definite</Term> — no article needed or allowed.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1">English says <em>my horse, your horse, his horse</em> — a little word in front. Hebrew glues the owner on as an ENDING instead: סוּסִי “horse-my,” סוּסְךָ “horse-your,” סוּסוֹ “horse-his.” One word where English needs two.</p>
+      <p>The suffixes are the same little set everywhere — on nouns (“my horse”), on prepositions (“to-me,” לִי), and later on verbs (“he kept-me”). Learn the set once and you will meet it on every page of the Bible.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>On a singular noun</SectionHeading>
     <MorphTable
       title="סוּס “horse” + suffixes"

@@ -28,14 +28,14 @@ export const HB_PIEL_PUAL = (
       firstColIsData
       rows={[
         ['perfect 3ms', 'קִטֵּל', 'he slaughtered'],
-        ['perfect 3fs', 'קִטְּלָה', 'she slaughtered'],
-        ['perfect 2ms', 'קִטַּלְתָּ', 'you slaughtered'],
-        ['perfect 3cp', 'קִטְּלוּ', 'they slaughtered'],
-        ['imperfect 3ms', 'יְקַטֵּל', 'he will slaughter'],
-        ['imperfect 1cs', 'אֲקַטֵּל', 'I will slaughter'],
+        ['perfect 3fs', 'קִטְּלָ|ה', 'she slaughtered'],
+        ['perfect 2ms', 'קִטַּלְ|תָּ', 'you slaughtered'],
+        ['perfect 3cp', 'קִטְּל|וּ', 'they slaughtered'],
+        ['imperfect 3ms', 'יְ»קַטֵּל', 'he will slaughter'],
+        ['imperfect 1cs', 'אֲ»קַטֵּל', 'I will slaughter'],
         ['imperative 2ms', 'קַטֵּל', 'slaughter!'],
         ['infinitive construct', 'קַטֵּל', 'to slaughter'],
-        ['participle', 'מְקַטֵּל', 'slaughtering'],
+        ['participle', 'מְ»קַטֵּל', 'slaughtering'],
       ]}
       note="Perfect: hireq–tsere. Imperfect: shewa under the prefix (יְ) — a Piel tell, since Qal prefixes carry hireq. Participle: מְ prefix."
     />
@@ -49,25 +49,51 @@ export const HB_PIEL_PUAL = (
       firstColIsData
       rows={[
         ['perfect 3ms', 'קֻטַּל', 'he was slaughtered'],
-        ['imperfect 3ms', 'יְקֻטַּל', 'he will be slaughtered'],
-        ['participle', 'מְקֻטָּל', 'being slaughtered'],
+        ['imperfect 3ms', 'יְ»קֻטַּל', 'he will be slaughtered'],
+        ['participle', 'מְ»קֻטָּל', 'being slaughtered'],
       ]}
       note="Same skeleton with u-class vowels (qibbuts). Rare in the flesh; instantly recognisable."
     />
 
-    <SectionHeading n={3}>What Piel means</SectionHeading>
+    <SectionHeading n={3}>What Piel means — and what “intensive” really is</SectionHeading>
+    <P>
+      Older grammars call the Piel the <strong>“intensive” stem</strong>, and the label has a
+      certain logic: the middle letter is doubled, so — the thought ran — the action is
+      &ldquo;doubled&rdquo; too. Sometimes that is exactly right. <Hb>שָׁבַר</Hb> in Qal is
+      &ldquo;to break&rdquo; — one clean snap; the Piel <Hb>שִׁבַּר</Hb> is &ldquo;to
+      smash to pieces&rdquo; — the same act done thoroughly, violently, or over and over.
+      When Moses came down the mountain and <Hb>וַיְשַׁבֵּר</Hb> the tablets (Exod 32:19),
+      the text chose the Piel: not &ldquo;cracked&rdquo; but <em>shattered</em>.
+    </P>
+    <P>
+      But test that idea across the language and it fails more often than it works —
+      <Hb>דִּבֶּר</Hb> &ldquo;speak&rdquo; is not intense speaking, and <Hb>בִּקֵּשׁ</Hb>{' '}
+      &ldquo;seek&rdquo; is not frantic seeking. Modern grammars therefore treat the Piel&rsquo;s
+      core as <strong>factitive</strong>: it takes a <em>state</em> and turns it into an{' '}
+      <em>act done to someone</em>. Qal <Hb>קָדַשׁ</Hb> &ldquo;to <em>be</em> holy&rdquo;
+      becomes Piel <Hb>קִדֵּשׁ</Hb> &ldquo;to <em>make</em> holy, consecrate&rdquo;; Qal{' '}
+      <Hb>גָּדַל</Hb> &ldquo;to <em>be</em> great&rdquo; becomes Piel <Hb>גִּדַּל</Hb>{' '}
+      &ldquo;to make great — to raise a child, to magnify.&rdquo;
+    </P>
+    <InfoBox title="In plain English">
+      <p className="mb-1">English does the factitive with suffixes and word-pairs, so you already know the move:</p>
+      <p className="mb-1">· <em>pure → purify</em>, <em>sterile → sterilize</em>, <em>modern → modernize</em> — an adjective (a state) turned into an action done to something. That is Qal → Piel in miniature.</p>
+      <p className="mb-1">· <em>learn → teach</em> — “to teach” is “to cause someone to learn.” Hebrew says it with the same root: Qal <span dir="rtl">לָמַד</span> “learn” → Piel <span dir="rtl">לִמַּד</span> “teach.”</p>
+      <p>· <em>break → smash</em>, <em>hit → batter</em>, <em>bite → gnaw</em> — the genuinely “intensive” pairs. English needs a different word; Hebrew doubles a letter.</p>
+    </InfoBox>
     <MorphTable
       title="The range"
-      headers={['Nuance', 'Qal', 'Piel']}
-      tCols={[0]}
+      headers={['Nuance', 'Qal', 'Piel', 'English parallel']}
+      tCols={[0, 3]}
       hCols={[1, 2]}
       firstColIsData
       rows={[
-        ['factitive — make (someone) X', 'קָדַשׁ  be holy', 'קִדֵּשׁ  consecrate'],
-        ['intensive / iterative', 'שָׁבַר  break', 'שִׁבַּר  shatter'],
-        ['denominative — verb from a noun', 'דָּבָר  word', 'דִּבֶּר  speak'],
-        ['simply the verb’s home stem', '—', 'בִּקֵּשׁ  seek'],
+        ['factitive — make (someone) X', 'קָדַשׁ  be holy', 'קִדֵּשׁ  consecrate', 'pure → purify'],
+        ['intensive / iterative', 'שָׁבַר  break', 'שִׁבַּר  shatter', 'break → smash'],
+        ['denominative — verb from a noun', 'דָּבָר  word', 'דִּבֶּר  speak', 'a text → to text'],
+        ['simply the verb’s home stem', '—', 'בִּקֵּשׁ  seek', 'no Qal exists to compare'],
       ]}
+      note="Practical rule: the dagesh tells you the STEM; the lexicon tells you the SENSE. Never translate a Piel “harder” on principle — check whether this root actually pairs a Qal state with a Piel act."
     />
     <P>
       High-frequency Piels to bank now: <Hb>דִּבֶּר</Hb> speak, <Hb>צִוָּה</Hb> command,{' '}

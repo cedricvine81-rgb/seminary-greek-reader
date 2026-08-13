@@ -18,6 +18,11 @@ export const HB_CONSTRUCT = (
       <Term t="absolute"><strong>absolute</strong></Term> state.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1">English owns two ways to say possession: <em>the king’s horse</em> and <em>the horse of the king</em>. Hebrew has only the second — minus the word “of.” The two nouns simply stand together, and the first one compresses (loses its stress, often shortens its vowels) because it is hurrying on to the noun that completes it: סוּס הַמֶּלֶךְ “the horse of-the-king.”</p>
+      <p>Chains work like English possessive chains — “my brother’s wife’s mother” — except read forwards: דְּבַר עֶבֶד הַמֶּלֶךְ “the word of the servant of the king.” Every link but the last is in construct.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>Construct forms</SectionHeading>
     <MorphTable
       title="Absolute → construct"

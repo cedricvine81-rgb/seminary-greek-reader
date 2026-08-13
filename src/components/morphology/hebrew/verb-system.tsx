@@ -34,14 +34,14 @@ export const HB_VERB_SYSTEM = (
       striped
       rows={[
         ['Qal', 'קָטַל', 'simple active', 'שָׁמַר  he kept'],
-        ['Niphal', 'נִקְטַל', 'passive / reflexive of Qal', 'נִשְׁמַר  he was kept'],
+        ['Niphal', 'נִ»קְטַל', 'passive / reflexive of Qal', 'נִ»שְׁמַר  he was kept'],
         ['Piel', 'קִטֵּל', 'intensive / factitive', 'דִּבֶּר  he spoke'],
         ['Pual', 'קֻטַּל', 'passive of Piel', 'דֻּבַּר  it was spoken'],
-        ['Hiphil', 'הִקְטִיל', 'causative', 'הִמְלִיךְ  he made (someone) king'],
-        ['Hophal', 'הָקְטַל', 'passive of Hiphil', 'הָמְלַךְ  he was made king'],
-        ['Hithpael', 'הִתְקַטֵּל', 'reflexive / iterative', 'הִתְפַּלֵּל  he prayed'],
+        ['Hiphil', 'הִ»קְטִיל', 'causative', 'הִ»מְלִיךְ  he made (someone) king'],
+        ['Hophal', 'הָ»קְטַל', 'passive of Hiphil', 'הָ»מְלַךְ  he was made king'],
+        ['Hithpael', 'הִתְ»קַטֵּל', 'reflexive / iterative', 'הִתְ»פַּלֵּל  he prayed'],
       ]}
-      note="Qal (“light”) is the unmarked stem — about seventy percent of all verb forms in the Bible."
+      note="Red = the stem's identifying prefix, the first thing to look for — reading right to left, it is the first thing you meet. Qal has none (“light,” the unmarked stem — about seventy percent of all verb forms); Piel and Pual carry their signature INSIDE the word instead: the doubling dot in the middle letter and the i–e / u–a vowels."
     />
 
     <SectionHeading n={2}>The conjugations</SectionHeading>

@@ -19,6 +19,11 @@ export const HB_HIPHIL_HOPHAL = (
       theme vowel almost everywhere.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1"><strong>Causative = making it happen rather than doing it.</strong> English keeps a few fossil pairs that work exactly like Qal → Hiphil: the tree <em>falls</em> / the logger <em>fells</em> it; you <em>sit</em> / you <em>set</em> the cup down; you <em>lie</em> down / you <em>lay</em> the book down; the sun <em>rises</em> / you <em>raise</em> the flag. Hebrew does that to nearly ANY verb: בָּא “he came” → הֵבִיא “he brought” (caused to come); מָלַךְ “he reigned” → הִמְלִיךְ “he made (someone) king.”</p>
+      <p>Where English has no pair, it says “make / have / let someone do it” — which is the wooden gloss the table uses. Real translations pick a natural verb: “bring,” “raise,” “crown.”</p>
+    </InfoBox>
+
     <SectionHeading n={1}>Hiphil forms</SectionHeading>
     <MorphTable
       title="Hiphil of קטל"
@@ -27,16 +32,16 @@ export const HB_HIPHIL_HOPHAL = (
       tCols={[0, 2]}
       firstColIsData
       rows={[
-        ['perfect 3ms', 'הִקְטִיל', 'he caused to kill'],
-        ['perfect 3fs', 'הִקְטִילָה', 'she caused to kill'],
-        ['perfect 2ms', 'הִקְטַלְתָּ', 'you caused to kill'],
-        ['perfect 3cp', 'הִקְטִילוּ', 'they caused to kill'],
-        ['imperfect 3ms', 'יַקְטִיל', 'he will cause to kill'],
-        ['imperfect 1cs', 'אַקְטִיל', 'I will cause to kill'],
-        ['jussive 3ms', 'יַקְטֵל', 'let him cause to kill'],
-        ['imperative 2ms', 'הַקְטֵל', 'cause to kill!'],
-        ['infinitive construct', 'הַקְטִיל', 'to cause to kill'],
-        ['participle', 'מַקְטִיל', 'causing to kill'],
+        ['perfect 3ms', 'הִ»קְטִיל', 'he caused to kill'],
+        ['perfect 3fs', 'הִ»קְטִילָ|ה', 'she caused to kill'],
+        ['perfect 2ms', 'הִ»קְטַלְ|תָּ', 'you caused to kill'],
+        ['perfect 3cp', 'הִ»קְטִיל|וּ', 'they caused to kill'],
+        ['imperfect 3ms', 'יַ»קְטִיל', 'he will cause to kill'],
+        ['imperfect 1cs', 'אַ»קְטִיל', 'I will cause to kill'],
+        ['jussive 3ms', 'יַ»קְטֵל', 'let him cause to kill'],
+        ['imperative 2ms', 'הַ»קְטֵל', 'cause to kill!'],
+        ['infinitive construct', 'הַ»קְטִיל', 'to cause to kill'],
+        ['participle', 'מַ»קְטִיל', 'causing to kill'],
       ]}
       note="Note the vowel shifts: perfect הִ but imperfect/participle patach (יַ, מַ); consonant-endings in the perfect drop the yod (הִקְטַלְתָּ); the jussive shortens hireq-yod to tsere — and wayyiqtol follows the jussive: וַיַּקְטֵל."
     />
@@ -49,7 +54,7 @@ export const HB_HIPHIL_HOPHAL = (
       tCols={[0, 2]}
       firstColIsData
       rows={[
-        ['perfect 3ms', 'הָקְטַל', 'he was caused to kill'],
+        ['perfect 3ms', 'הָ»קְטַל', 'he was caused to kill'],
         ['imperfect 3ms', 'יָקְטַל', 'he will be caused to kill'],
         ['participle', 'מָקְטָל', 'being caused to kill'],
       ]}

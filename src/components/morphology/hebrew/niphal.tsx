@@ -19,6 +19,11 @@ export const HB_NIPHAL = (
       the first root letter everywhere else.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1"><strong>Active vs passive is an English idea too.</strong> “The boy broke the window” is active — the subject does the deed. “The window <em>was broken</em>” is passive — the subject receives it, and the doer can go unnamed. English builds its passive with a helping verb (“was broken”); Hebrew builds it by moving the same root into a different stem: שָׁמַר “he kept” → נִשְׁמַר “he was kept.” One added letter does the work of the whole English phrase.</p>
+      <p><strong>Reflexive is the other face:</strong> sometimes the Niphal is “he kept <em>himself</em>” — subject and object are the same person. Context decides which face you are looking at.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>Perfect and imperfect</SectionHeading>
     <MorphTable
       title="Niphal perfect of קטל"
@@ -26,13 +31,13 @@ export const HB_NIPHAL = (
       hCols={[1]}
       tCols={[2]}
       rows={[
-        ['3ms', 'נִקְטַל', 'he was killed'],
-        ['3fs', 'נִקְטְלָה', 'she was killed'],
-        ['2ms', 'נִקְטַלְתָּ', 'you were killed'],
-        ['1cs', 'נִקְטַלְתִּי', 'I was killed'],
-        ['3cp', 'נִקְטְלוּ', 'they were killed'],
-        ['2mp', 'נִקְטַלְתֶּם', 'you were killed'],
-        ['1cp', 'נִקְטַלְנוּ', 'we were killed'],
+        ['3ms', 'נִ»קְטַל', 'he was killed'],
+        ['3fs', 'נִ»קְטְלָ|ה', 'she was killed'],
+        ['2ms', 'נִ»קְטַלְ|תָּ', 'you were killed'],
+        ['1cs', 'נִ»קְטַלְ|תִּי', 'I was killed'],
+        ['3cp', 'נִ»קְטְל|וּ', 'they were killed'],
+        ['2mp', 'נִ»קְטַלְ|תֶּם', 'you were killed'],
+        ['1cp', 'נִ»קְטַלְ|נוּ', 'we were killed'],
       ]}
       note="נִ + the familiar perfect endings. (The 2fs and 2fp rows follow the Qal pattern exactly.)"
     />

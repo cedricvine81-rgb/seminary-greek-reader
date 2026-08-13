@@ -17,6 +17,11 @@ export const HB_ADJECTIVES = (
       the noun chapter has already taught you the forms.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1"><strong>Agreement is the new idea here.</strong> An English adjective never changes: <em>the tall man, the tall woman, the tall men</em> — “tall” sits still. A Hebrew adjective changes its ending to MATCH its noun in gender and number — the same red endings the nouns chapter taught: אִישׁ טוֹב “a good man,” אִשָּׁה טוֹבָה “a good woman,” אֲנָשִׁים טוֹבִים “good men.”</p>
+      <p>Spanish speakers know this move already (<em>alto / alta / altos / altas</em>). The payoff for reading: the matching endings tell you which noun an adjective belongs to, even from a distance.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>Forms</SectionHeading>
     <P>
       Adjectives take the same endings as nouns and agree with their noun in gender and
@@ -27,8 +32,8 @@ export const HB_ADJECTIVES = (
       headers={['', 'ms', 'fs', 'mp', 'fp']}
       hCols={[1, 2, 3, 4]}
       rows={[
-        ['good', 'טוֹב', 'טוֹבָה', 'טוֹבִים', 'טוֹבוֹת'],
-        ['great', 'גָּדוֹל', 'גְּדוֹלָה', 'גְּדוֹלִים', 'גְּדוֹלוֹת'],
+        ['good', 'טוֹב', 'טוֹבָ|ה', 'טוֹבִ|ים', 'טוֹב|וֹת'],
+        ['great', 'גָּדוֹל', 'גְּדוֹלָ|ה', 'גְּדוֹלִ|ים', 'גְּדוֹל|וֹת'],
       ]}
       note="The usual vowel reduction applies when the ending draws the stress: גָּדוֹל → גְּדוֹלָה."
     />

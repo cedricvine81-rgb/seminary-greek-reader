@@ -17,16 +17,21 @@ export const HB_NOUNS = (
       paired things like eyes, hands, and ears) <strong>dual</strong>. The endings:
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1"><strong>Grammatical gender is a filing system, not biology.</strong> English nouns have no gender — “table” is just “it.” Hebrew (like Spanish or French) files every noun as masculine or feminine, and the label often has nothing to do with sex: אֶרֶץ “land” is feminine, לַיְלָה “night” is masculine despite its feminine-looking ending. The label matters because OTHER words must match it — adjectives and verbs change their form to agree with the noun's gender.</p>
+      <p><strong>Number:</strong> English marks plural with -s (dog → dogs); Hebrew marks it with the red endings in the table — and keeps a special <em>dual</em> ending for natural pairs (hands, eyes, ears), something English lost long ago.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>The endings</SectionHeading>
     <MorphTable
       title="Noun endings"
       headers={['', 'Singular', 'Plural', 'Dual']}
       hCols={[1, 2, 3]}
       rows={[
-        ['masculine', 'סוּס  (—)', 'סוּסִים  (־ִים)', 'יוֹמַיִם  (־ַיִם)'],
-        ['feminine', 'סוּסָה  (־ָה) · בְּרִית  (־ת)', 'סוּסוֹת  (־וֹת)', 'יָדַיִם  (־ַיִם)'],
+        ['masculine', 'סוּס  (—)', 'סוּסִ|ים  (־ִים)', 'יוֹמַ|יִם  (־ַיִם)'],
+        ['feminine', 'סוּסָ|ה  (־ָה) · בְּרִי|ת  (־ת)', 'סוּס|וֹת  (־וֹת)', 'יָדַ|יִם  (־ַיִם)'],
       ]}
-      note="The feminine singular also appears as ־ֶת (דַּעַת knowledge) and ־ִית / ־וּת. The dual ־ַיִם serves both genders."
+      note="Red = the ending that marks gender and number — the part to train your eye on. The feminine singular also appears as ־ֶת (דַּעַת knowledge) and ־ִית / ־וּת. The dual ־ַיִם serves both genders."
     />
     <P>
       The dual survives for things that come in pairs and a few time words:{' '}

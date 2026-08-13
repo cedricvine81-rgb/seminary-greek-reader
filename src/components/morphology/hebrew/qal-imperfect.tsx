@@ -17,6 +17,11 @@ export const HB_QAL_IMPERFECT = (
       plural forms. This prefix set, too, is universal across the stems.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1"><strong>Incomplete = still open.</strong> English has no one tense for this, so the imperfect scatters across several: “he <em>will</em> keep” (not yet done), “he <em>keeps / used to</em> keep” (repeats, never a finished lump), “he <em>may</em> keep” (possible). What unites them: the action is not being viewed as over.</p>
+      <p><strong>The pronoun moved to the FRONT.</strong> The perfect welded its pronouns on as endings; the imperfect welds them on as prefixes — red in the table. Only four letters do it: <span dir="rtl">י ת א נ</span> (yod “he/they,” taw “she/you,” alef “I,” nun “we”). Learn those four and you can spot an imperfect across the room.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>The paradigm</SectionHeading>
     <MorphTable
       title="Qal imperfect of קטל"
@@ -26,16 +31,16 @@ export const HB_QAL_IMPERFECT = (
       highlight="text-red-600 font-medium"
       highlightCols={[2]}
       rows={[
-        ['3ms', 'יִקְטֹל', 'יִ־', 'he will kill'],
-        ['3fs', 'תִּקְטֹל', 'תִּ־', 'she will kill'],
-        ['2ms', 'תִּקְטֹל', 'תִּ־', 'you will kill'],
-        ['2fs', 'תִּקְטְלִי', 'תִּ־ … ־ִי', 'you will kill'],
-        ['1cs', 'אֶקְטֹל', 'אֶ־', 'I will kill'],
-        ['3mp', 'יִקְטְלוּ', 'יִ־ … ־וּ', 'they will kill'],
-        ['3fp', 'תִּקְטֹלְנָה', 'תִּ־ … ־נָה', 'they will kill'],
-        ['2mp', 'תִּקְטְלוּ', 'תִּ־ … ־וּ', 'you will kill'],
-        ['2fp', 'תִּקְטֹלְנָה', 'תִּ־ … ־נָה', 'you will kill'],
-        ['1cp', 'נִקְטֹל', 'נִ־', 'we will kill'],
+        ['3ms', 'יִ»קְטֹל', 'יִ־', 'he will kill'],
+        ['3fs', 'תִּ»קְטֹל', 'תִּ־', 'she will kill'],
+        ['2ms', 'תִּ»קְטֹל', 'תִּ־', 'you will kill'],
+        ['2fs', 'תִּ»קְטְלִ|י', 'תִּ־ … ־ִי', 'you will kill'],
+        ['1cs', 'אֶ»קְטֹל', 'אֶ־', 'I will kill'],
+        ['3mp', 'יִ»קְטְל|וּ', 'יִ־ … ־וּ', 'they will kill'],
+        ['3fp', 'תִּ»קְטֹלְ|נָה', 'תִּ־ … ־נָה', 'they will kill'],
+        ['2mp', 'תִּ»קְטְל|וּ', 'תִּ־ … ־וּ', 'you will kill'],
+        ['2fp', 'תִּ»קְטֹלְ|נָה', 'תִּ־ … ־נָה', 'you will kill'],
+        ['1cp', 'נִ»קְטֹל', 'נִ־', 'we will kill'],
       ]}
       note="Ambiguities to accept now: 3fs = 2ms (תִּקְטֹל), and 3fp = 2fp (תִּקְטֹלְנָה). Context decides."
     />

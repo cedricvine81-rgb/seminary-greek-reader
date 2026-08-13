@@ -19,6 +19,11 @@ export const HB_VOLITIVES = (
       imperfect, bent slightly.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1">Volitives are the grammar of wanting. English covers the three persons with three different tricks: <em>“Let me / let’s go”</em> (myself), <em>“Go!”</em> (you), <em>“May he go / long live the king”</em> (someone else). Hebrew has a dedicated form for each — cohortative for “let me/us,” imperative for “you,” jussive for “may he.”</p>
+      <p>Same wanting, three directions. The chapter is just those three forms and how to spot them.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>The imperative</SectionHeading>
     <P>
       Strip the prefix off the second-person imperfect and a command remains. Second person

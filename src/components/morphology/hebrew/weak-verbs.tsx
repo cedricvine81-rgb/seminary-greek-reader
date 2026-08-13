@@ -19,6 +19,11 @@ export const HB_WEAK_VERBS = (
       <em>fingerprint</em>, and let this table be the reference you return to.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1">English has regular verbs (walk, walked) and irregular ones (sing/sang, go/went, be/was) that you simply learned by meeting them. Hebrew’s “weak” verbs are its irregulars — with one mercy: they are irregular by RULE. Certain letters (gutturals, נ, ו, י, final ה) misbehave in predictable ways wherever they sit in a root.</p>
+      <p>So instead of memorising thousands of odd forms, you learn a handful of letter-habits — “נ assimilates,” “gutturals refuse doubling” — and whole families of verbs fall into place at once.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>The classes at a glance (Qal)</SectionHeading>
     <MorphTable
       title="Weak classes — Qal reference forms"

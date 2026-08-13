@@ -16,6 +16,11 @@ export const HB_SYNTAX = (
       the verb goes.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1">English grammar lives in word order: <em>“the dog bit the man”</em> and <em>“the man bit the dog”</em> use identical words and mean opposite things, because English marks who-did-what by position (Subject–Verb–Object). Hebrew marks who-did-what on the words themselves — verb endings, the object marker אֵת — so its order is freer, and the NEUTRAL order is different: Verb first (“Bit the-dog the-man”).</p>
+      <p>That freedom is meaningful: when Hebrew departs from verb-first and puts something else at the head of the sentence, it is pointing at it. Reading order well is reading emphasis.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>Word order</SectionHeading>
     <P>
       Narrative default: <strong>Verb — Subject — Object</strong> (<Hb>וַיִּקְרָא אֱלֹהִים

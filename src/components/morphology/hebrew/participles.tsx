@@ -17,6 +17,11 @@ export const HB_PARTICIPLES = (
       grows into the present tense.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1">English turns verbs into describing-words with “-ing”: <em>the ruling king, running water</em>. It also turns them into people-words: <em>a singer</em> is “one who sings,” <em>a judge</em> “one who judges.” The Hebrew participle does both jobs with one form: שֹׁפֵט is “judging” — and therefore also “a judge.” Many job-titles in the Bible are just participles.</p>
+      <p>Because it describes like an adjective, it AGREES like one — the same red gender/number endings — but it never marks person: “who is doing it” comes from the noun it leans on, not from the form itself.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>Forms</SectionHeading>
     <MorphTable
       title="Qal active participle (“killing”)"

@@ -17,6 +17,11 @@ export const HB_PREPOSITIONS = (
       are called <em>inseparable</em>.
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1">A preposition is a small word that positions one thing relative to another: <em>in</em> the house, <em>to</em> the city, <em>like</em> a lion, <em>from</em> Egypt. English writes them as separate words; Hebrew glues its three commonest to the front of the next word, exactly as it glued “the”: בְּבַיִת “in-a-house,” one word.</p>
+      <p>English actually does this in a few fossils — <em>aboard</em> (“on board”), <em>ashore</em>, <em>tonight</em> — it just stopped doing it productively. Hebrew never stopped.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>The inseparable prepositions: בְּ, כְּ, לְ</SectionHeading>
     <P>
       Three prepositions are prefixes, never separate words: <Hb>בְּ</Hb> &ldquo;in, by,

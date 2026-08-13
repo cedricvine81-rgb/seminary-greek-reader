@@ -63,8 +63,43 @@ interface MorphTableProps {
  */
 const TENSE_IDENTIFIERS = new Set(['σ', 'σα', 'θη', 'θε', 'θ', 'θησ', 'κα', 'κ'])
 
+/**
+ * Hebrew prefix marker: "נִ»קְטַל" renders נִ red — the pattern identifier at the FRONT of
+ * the word, where Hebrew puts it (Niphal's נ, Hiphil's ה, the imperfect's יתאנ, the
+ * participle's מ). The Greek convention marks endings, so its markers sit at the END of a
+ * token; Hebrew needs both ends. Splits must fall on base letters (never before a combining
+ * vowel point), or Safari breaks the shaping — so a prefix segment carries its vowel with it.
+ */
+function renderHebrewAffixes(tok: string, key: number): React.ReactNode {
+  const parts = tok.split('»')
+  const pfx = parts.length > 1 ? parts[0] : null
+  let rest = parts.length > 1 ? parts.slice(1).join('') : tok
+  let end: string | null = null
+  if (rest.includes('|')) {
+    const bits = rest.split('|')
+    rest = bits[0]
+    end = bits.slice(1).join('')
+  }
+  return (
+    <span key={key}>
+      {pfx && <span className="text-red-600">{pfx}</span>}
+      {rest}
+      {end && <span className="text-red-600">{end}</span>}
+    </span>
+  )
+}
+
+const HEBREW_RE = /[\u0590-\u05FF]/
+
 function renderCell(cell: string): React.ReactNode {
-  if (!cell.includes('|') && !/(^|\s)[‒–-]\S/.test(cell)) return cell
+  if (!cell.includes('|') && !cell.includes('»') && !/(^|\s)[‒–-]\S/.test(cell)) return cell
+  // Hebrew tokens use the affix renderer (both ends, one colour); Greek keeps its
+  // blue-identifier / red-ending scheme below.
+  if (HEBREW_RE.test(cell)) {
+    const parts = cell.split(/(\s+)/)
+    return <>{parts.map((tok, i) => (/^\s*$/.test(tok) ? tok
+      : (tok.includes('»') || tok.includes('|')) ? renderHebrewAffixes(tok, i) : tok))}</>
+  }
   const parts = cell.split(/(\s+)/)
   return (
     <>

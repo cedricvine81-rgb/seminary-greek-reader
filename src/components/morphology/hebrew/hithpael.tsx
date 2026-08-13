@@ -16,6 +16,11 @@ export const HB_HITHPAEL = (
       &ldquo;pray.&rdquo;
     </P>
 
+    <InfoBox title="In plain English">
+      <p className="mb-1"><strong>Reflexive = the action folds back on its doer.</strong> English says it with “-self”: he hid <em>himself</em>, she prepared <em>herself</em>, they washed <em>themselves</em>. Hebrew says it with the הִתְ prefix on the stem: קִדֵּשׁ “he consecrated (someone)” → הִתְקַדֵּשׁ “he consecrated <em>himself</em>.”</p>
+      <p>It can also be <strong>each other</strong> (“they looked at one another”) or acting-a-part (הִתְנַבֵּא “behave as a prophet”). The common thread: the subject is on both ends of the verb.</p>
+    </InfoBox>
+
     <SectionHeading n={1}>Forms</SectionHeading>
     <MorphTable
       title="Hithpael of קטל"
@@ -24,14 +29,14 @@ export const HB_HITHPAEL = (
       tCols={[0, 2]}
       firstColIsData
       rows={[
-        ['perfect 3ms', 'הִתְקַטֵּל', 'he killed himself'],
-        ['perfect 2ms', 'הִתְקַטַּלְתָּ', 'you killed yourself'],
-        ['perfect 3cp', 'הִתְקַטְּלוּ', 'they killed themselves'],
-        ['imperfect 3ms', 'יִתְקַטֵּל', 'he will kill himself'],
-        ['imperfect 1cs', 'אֶתְקַטֵּל', 'I will kill myself'],
-        ['imperative 2ms', 'הִתְקַטֵּל', 'kill yourself!'],
-        ['infinitive construct', 'הִתְקַטֵּל', 'to kill oneself'],
-        ['participle', 'מִתְקַטֵּל', 'killing himself'],
+        ['perfect 3ms', 'הִתְ»קַטֵּל', 'he killed himself'],
+        ['perfect 2ms', 'הִתְ»קַטַּלְ|תָּ', 'you killed yourself'],
+        ['perfect 3cp', 'הִתְ»קַטְּל|וּ', 'they killed themselves'],
+        ['imperfect 3ms', 'יִתְ»קַטֵּל', 'he will kill himself'],
+        ['imperfect 1cs', 'אֶתְ»קַטֵּל', 'I will kill myself'],
+        ['imperative 2ms', 'הִתְ»קַטֵּל', 'kill yourself!'],
+        ['infinitive construct', 'הִתְ»קַטֵּל', 'to kill oneself'],
+        ['participle', 'מִתְ»קַטֵּל', 'killing himself'],
       ]}
       note="In the imperfect and participle the ה gives way to the prefix letter (יִתְ־, מִתְ־); the ת of the stem survives everywhere."
     />
