@@ -34,17 +34,25 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
   return (
     <header className="app-header sticky top-0 z-40 bg-topbar/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-        {/* Brand */}
-        <Link href={brandHref} className="flex items-center gap-2.5 group">
-          <div className="w-10 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
-            <span className={`text-parchment-100 ${brand.monogramClass} text-base font-bold tracking-tight`}>
-              {brand.monogram}
+        {/* Brand + track toggle.
+            The toggle sits beside the wordmark so switching visibly rewrites it in place —
+            "Seminary Greek" becomes "Seminary Hebrew" right where you clicked. It has to be
+            a sibling of the Link, not a child: a button inside an anchor is invalid HTML and
+            the click would navigate as well as toggle. */}
+        <div className="flex items-center gap-2 shrink-0">
+          <Link href={brandHref} className="flex items-center gap-2.5 group">
+            <div className="w-10 h-8 bg-brand-600 rounded-lg flex items-center justify-center shrink-0">
+              <span className={`text-parchment-100 ${brand.monogramClass} text-base font-bold tracking-tight`}>
+                {brand.monogram}
+              </span>
+            </div>
+            <span className="font-semibold text-gray-900 group-hover:text-brand-700 transition-colors hidden sm:block whitespace-nowrap">
+              {brand.name}
             </span>
-          </div>
-          <span className="font-semibold text-gray-900 group-hover:text-brand-700 transition-colors hidden sm:block">
-            {brand.name}
-          </span>
-        </Link>
+          </Link>
+          {/* Monograms only: the wordmark next to it already says which track you are on. */}
+          <TrackToggle compact />
+        </div>
 
         {/* Center nav — icons only on mobile, icons + text on md+ */}
         <nav className="flex items-center gap-0.5">
@@ -80,7 +88,6 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
         <div className="flex items-center gap-1">
           <PageGuideButton />
           <MasterSearchButton />
-          <TrackToggle />
           <LanguageMenu />
           <AccountMenu isAuthenticated={isAuthenticated} userRole={userRole} userName={userName} />
         </div>
