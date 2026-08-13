@@ -1,6 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { TRACK_COOKIE, isTrack } from '@/lib/track'
 
+// ── Hebrew front door ─────────────────────────────────────────────────────────
+// seminaryhebrew.app exists so nobody else takes the name, and so the Hebrew course can be
+// advertised at its own address. It is REDIRECTED here, never served.
+//
+// Redirected rather than served on purpose: keeping one origin means Paddle still sees a
+// single approved domain, one product and one webhook, and checkout never runs anywhere it
+// has not been approved. Because this fires before anything renders, no page — and no
+// Paddle.js — is ever served from the Hebrew host.
+//
+// 307, deliberately NOT 308/301. Browsers cache permanent redirects hard and for a long
+// time, so a permanent one here would quietly make a reversible decision irreversible: if
+// the Hebrew domain is ever served directly, every visitor who saw the 308 would keep being
+// bounced away and no cache could be cleared. When that day comes, replace this block with
+// one that seeds the track cookie from the hostname instead.
+const HEBREW_HOSTS = new Set(['seminaryhebrew.app', 'www.seminaryhebrew.app'])
+const CANONICAL_ORIGIN = 'https://seminarygreek.app'
+
 // Routes that are always public (no auth required)
 const PUBLIC_API_PREFIXES = [
   '/api/auth',
@@ -51,6 +68,15 @@ function decodeJwtPayload(token: string): { role?: string } | null {
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
+
+  // Arriving at the Hebrew domain: bounce to the canonical one, keeping the path and any
+  // query, and asking for the Hebrew track. The handler below turns that into the cookie.
+  const host = (req.headers.get('host') ?? req.nextUrl.host).toLowerCase().split(':')[0]
+  if (HEBREW_HOSTS.has(host)) {
+    const url = new URL(pathname + req.nextUrl.search, CANONICAL_ORIGIN)
+    url.searchParams.set('track', 'hebrew')
+    return NextResponse.redirect(url, 307)
+  }
 
   // ── Language track entry point ──────────────────────────────────────────────
   // seminaryhebrew.app redirects here as /?track=hebrew. Turn the parameter into the
