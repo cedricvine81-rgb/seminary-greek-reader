@@ -20,11 +20,22 @@ import { K } from '@/lib/i18n/morph-fields'
 import { openTranslationWorkbench, type WorkbenchSentence } from '@/lib/translation-workbench-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { encodeConstruct, type ConstructQuery } from '@/lib/construct-query'
+import { transliterate } from '@/lib/hebrew-xlit'
 
 export type MorphLevel = 'beginning' | 'intermediate'
 
 /** Current Beginning/Intermediate level, provided by MorphologyView. */
 export const LevelContext = createContext<MorphLevel>('beginning')
+
+/* ─── Transliteration toggle (Hebrew grammar) ──────────────────────────────
+   Beginners cannot yet read pointed Hebrew at speed, and every standard
+   first-year grammar prints a transliteration beside its examples for the
+   opening chapters. Ours is switchable: on, each Hebrew example carries its
+   pronunciation in grey; off, the page is Hebrew only — which is where a
+   student needs to arrive. Provided by HebrewGrammarView, remembered per
+   device. */
+export const XlitContext = createContext(false)
+export const XLIT_STORAGE_KEY = 'hebrewGrammar.xlit'
 
 /* ─── Paradigm tables ───────────────────────── */
 
@@ -131,6 +142,19 @@ function renderCell(cell: string): React.ReactNode {
   )
 }
 
+/** Grey transliteration under a Hebrew table cell, when the toggle is on. Strips the
+ *  affix markers (»,|) so the pronunciation reads as one word. */
+function XlitLine({ text }: { text: string }) {
+  const xlit = useContext(XlitContext)
+  if (!xlit) return null
+  const clean = text.replace(/[»|]/g, '')
+  if (!/[א-ת]/.test(clean)) return null
+  // Ending/prefix-only cells ("־ָה", "יִ־") are fragments, not words: transliterating them
+  // yields noise like "-h". Needs at least two letters and no leading maqqef.
+  if (/^[־-]/.test(clean.trim()) || (clean.match(/[א-ת]/g) ?? []).length < 2) return null
+  return <span dir="ltr" className="mt-0.5 block font-sans text-[11px] italic leading-tight text-gray-500">{transliterate(clean)}</span>
+}
+
 export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false }: MorphTableProps) {
   const divSet = new Set(dividerRows)
   const tm = useTm()
@@ -170,6 +194,7 @@ export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows
                   {row.map((cell, ci) => (
                     <td key={ci} dir={!isDivider && hCols?.includes(ci) ? 'rtl' : undefined} className={clsx('px-3 py-2', !isDivider && hCols?.includes(ci) && 'font-hebrew text-[22px] leading-relaxed', isDivider ? 'text-xs font-semibold text-brand-700 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-[15px] font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-[15px]', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-[15px]', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
                       {cell ? renderCell(cell) : ''}
+                      {!isDivider && hCols?.includes(ci) && cell && <XlitLine text={cell} />}
                     </td>
                   ))}
                 </tr>
@@ -312,14 +337,32 @@ Gk.i18nRole = 'greek' as const
  *  translatable block containing Hebrew falls back to its English children — the standard
  *  never-mislead rule — until the serializer is taught Hebrew. */
 export function Hb({ children }: { children: React.ReactNode }) {
-  return <span lang="he" dir="rtl" className="font-hebrew text-[1.35em] normal-case font-medium text-gray-800">{children}</span>
+  const xlit = useContext(XlitContext)
+  const heb = <span lang="he" dir="rtl" className="font-hebrew text-[1.35em] normal-case font-medium text-gray-800">{children}</span>
+  if (!xlit) return heb
+  const t = transliterateNode(children)
+  return t
+    ? <span className="whitespace-nowrap">{heb}<span className="ms-1 text-[0.82em] italic text-gray-500">{t}</span></span>
+    : heb
+}
+
+/** Pull the plain text out of a node so it can be transliterated (children are
+ *  usually a bare string; a fragment of strings also works). */
+function transliterateNode(node: React.ReactNode): string {
+  const text = typeof node === 'string' ? node
+    : Array.isArray(node) ? node.filter(n => typeof n === 'string').join('')
+    : ''
+  return /[א-ת]/.test(text) ? transliterate(text) : ''
 }
 
 /** An example line: Hebrew → English. */
 export function HbEx({ he, en }: { he: React.ReactNode; en: React.ReactNode }) {
+  const xlit = useContext(XlitContext)
+  const t = xlit ? transliterateNode(he) : ''
   return (
-    <p className="text-[15px] leading-relaxed">
+    <p className="text-[15px] leading-relaxed mb-2">
       <span lang="he" dir="rtl" className="font-hebrew text-[22px] text-gray-800">{he}</span>
+      {t && <span className="ms-2 text-[13px] italic text-gray-500">{t}</span>}
       <span className="mx-1.5 text-gray-400">→</span>
       <span className="text-gray-600">{en}</span>
     </p>

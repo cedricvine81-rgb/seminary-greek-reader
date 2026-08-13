@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { Menu } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { XlitContext, XLIT_STORAGE_KEY } from '../shared'
 import { HB_ALPHABET } from './alphabet'
 import { HB_VOWELS } from './vowels'
 import { HB_ARTICLE } from './article'
@@ -90,9 +91,22 @@ export function HebrewGrammarView() {
     return () => document.removeEventListener('mousedown', onDoc)
   }, [menuOpen])
 
+
+  // Transliteration toggle: beginners read the pronunciation beside the Hebrew until they
+  // no longer need it. Remembered per device (localStorage, like the other reading prefs).
+  const [xlit, setXlit] = useState(false)
+  useEffect(() => { try { setXlit(localStorage.getItem(XLIT_STORAGE_KEY) === '1') } catch {} }, [])
+  function toggleXlit() {
+    setXlit(v => {
+      const nv = !v
+      try { localStorage.setItem(XLIT_STORAGE_KEY, nv ? '1' : '0') } catch {}
+      return nv
+    })
+  }
   const active = HEBREW_TABS.find(x => x.id === tab) ?? HEBREW_TABS[0]
 
   return (
+    <XlitContext.Provider value={xlit}>
     <div className="flex flex-col min-h-0">
       {/* Mobile: chapters collapse into a hamburger, as in the Greek view. */}
       <div ref={menuRef} className="lg:hidden relative">
@@ -102,6 +116,16 @@ export function HebrewGrammarView() {
         >
           <span className="text-sm font-semibold text-gray-900 truncate">{t(active.labelKey)}</span>
           <Menu size={18} className="text-gray-500 shrink-0" />
+        </button>
+        <button
+          onClick={toggleXlit}
+          aria-pressed={xlit}
+          className={clsx(
+            'absolute end-9 top-1.5 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors',
+            xlit ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-200 text-gray-500',
+          )}
+        >
+          {t('morph.hb.xlit')}
         </button>
         {menuOpen && (
           <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-[70svh] overflow-y-auto bg-popover border border-gray-200 rounded-xl p-3 shadow-lg">
@@ -126,7 +150,7 @@ export function HebrewGrammarView() {
 
       {/* Desktop: inline chapter tab bar. */}
       <div className="hidden lg:block">
-        <div className="flex flex-wrap gap-1.5 py-2 border-b border-gray-100 bg-surface">
+        <div className="flex flex-wrap items-center gap-1.5 py-2 border-b border-gray-100 bg-surface">
           {HEBREW_TABS.map(x => (
             <button
               key={x.id}
@@ -139,6 +163,17 @@ export function HebrewGrammarView() {
               {t(x.labelKey)}
             </button>
           ))}
+          <button
+            onClick={toggleXlit}
+            aria-pressed={xlit}
+            title={t('morph.hb.xlitHint')}
+            className={clsx(
+              'ms-auto shrink-0 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors',
+              xlit ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-200 text-gray-500 hover:text-gray-800',
+            )}
+          >
+            {t('morph.hb.xlit')}
+          </button>
         </div>
       </div>
 
@@ -149,5 +184,6 @@ export function HebrewGrammarView() {
         </div>
       </div>
     </div>
+    </XlitContext.Provider>
   )
 }
