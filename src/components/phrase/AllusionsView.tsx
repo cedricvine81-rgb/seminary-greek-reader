@@ -1,9 +1,11 @@
 'use client'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { Search, ChevronDown, ChevronRight, Sparkles, X } from 'lucide-react'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { MT_OSIS } from '@/lib/mt-books'
 import { CITATION_STOP, detectCitation } from '@/lib/citation-formula'
@@ -165,13 +167,26 @@ const SOURCE_ATTR = 'Method: the allusion devices and criteria of Dale C. Alliso
   + 'they SUGGEST candidates — they do not establish allusions. Septuagint text: Rahlfs; apparatus: Craig A. Evans, '
   + 'Ancient Texts for New Testament Studies, with additions.'
 
-export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts }: {
+export function AllusionsView({ controlledPassage, isAuthenticated = false, onAttribution, onOpenInTexts }: {
   controlledPassage?: string
+  isAuthenticated?: boolean
   onAttribution?: (a: string) => void
   onOpenInTexts?: (t: OpenInTextsTarget) => void
 }) {
   const t = useT()
   const parsed = useMemo(() => parseRef(controlledPassage ?? ''), [controlledPassage])
+  // Per-verse notes on the anchor passage, like every reading pane (signed-in only).
+  const [notedKeys, setNotedKeys] = useState<Set<number>>(new Set())
+  const loadNoted = useCallback(async () => {
+    if (!isAuthenticated || !parsed) { setNotedKeys(new Set()); return }
+    try {
+      const r = await fetch(`/api/notes?book=${encodeURIComponent(parsed.osis)}&chapter=${parsed.chapter}&verseStart=1&verseEnd=500`)
+      const d = await r.json()
+      setNotedKeys(new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)))
+    } catch { /* leave as-is */ }
+  }, [isAuthenticated, parsed])
+  useEffect(() => { void loadNoted() }, [loadNoted])
+  useEffect(() => onNotesChanged(() => void loadNoted()), [loadNoted])
   // NT anchors hunt echoes in the LXX; OT anchors hunt the Hebrew Bible's reuse of itself
   // (inner-biblical allusion) — same Allison machinery, MT index, Hebrew Strong's.
   const searchCorpus = parsed && MT_OSIS.has(parsed.osis) ? 'MT' : 'LXX'
@@ -605,6 +620,10 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
               {shownVerses.map(v => (
                 <div key={v.verse}>
                   <p className="font-reading leading-relaxed" style={{ fontSize: '1.35rem' }}>
+                    {isAuthenticated && (
+                      <span className="mr-0.5 align-middle print:hidden"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={v.verse}
+                        noted={notedKeys.has(v.verse)} onChanged={loadNoted} /></span>
+                    )}
                     <sup className="text-[11px] text-gray-400 mr-1">{v.verse}</sup>
                     {v.words.map((w, i) => {
                       const key = `${v.verse}:${i}`
