@@ -1001,7 +1001,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
               value={addInput}
               onChange={v => { setAddInput(v); if (addError) setAddError(false) }}
               onCommit={v => addRef(v)}
-              placeholder={t('syn.refPlaceholder')}
+              placeholder={anchorHebrew ? t('syn.refPlaceholderOT') : t('syn.refPlaceholder')}
               error={addError}
               inputClassName="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
