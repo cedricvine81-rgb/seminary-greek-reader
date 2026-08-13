@@ -1005,8 +1005,16 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           top-0 slid this block underneath the z-40 sticky header, which covered the search input
           as soon as the page scrolled. One wrapping row keeps the block compact: return link +
           query + scope + book + search types together, with the result-type tabs beneath. */}
-      <div className={`sticky ${embedded ? 'top-0' : 'top-14'} z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2 pb-1.5 bg-gray-50/95 backdrop-blur border-b border-gray-100`}>
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+      <div className={`sticky ${embedded ? 'top-0' : 'top-14'} z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2 pb-1.5 bg-gray-50/95 backdrop-blur border-b border-gray-100 ${embedded ? 'relative' : ''}`}>
+        {/* Close: anchored to the panel's top-right, OUTSIDE the wrapping row. Inside it, the
+            button travelled with the reflow and sat somewhere different at every pane width. */}
+        {embedded && (
+          <button type="button" onClick={() => onRequestClose?.()} title={t('search.closeEsc')} aria-label={t('search.closeSearch')}
+            className="absolute right-2 top-1.5 z-20 rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800">
+            <X size={18} />
+          </button>
+        )}
+        <div className={`flex flex-wrap items-center gap-x-2 gap-y-1.5 ${embedded ? 'pr-9' : ''}`}>
         {/* When the search was launched from another page (right-click / ⌘K), offer a way back
             to exactly where they were. Navigate to the origin URL directly (not router.back())
             so it's reliable after a refresh / intermediate navigation, where history-relative
@@ -1102,10 +1110,6 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               className="flex-none inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
               <Blocks size={13} /> {t('search.construct')}
             </a>
-            <button type="button" onClick={() => onRequestClose?.()} title={t('search.closeEsc')} aria-label={t('search.closeSearch')}
-              className="flex-none p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors">
-              <X size={18} />
-            </button>
           </>
         )}
             <label className="flex items-center gap-1.5 text-xs text-gray-500">
