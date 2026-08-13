@@ -57,3 +57,4 @@ public/data/theology/*.candidates.json
 .kad-cache/
 .sp-pages/
 .sp-flags/
+.sp-reviews/
