@@ -86,6 +86,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     : themeCookie === 'dim' || themeCookie === 'dark' ? themeCookie
     : 'sepia'
 
+  // App-wide text size, same cookie-before-paint reasoning as the theme. 'md' (or no
+  // cookie) stamps nothing, leaving the browser's own default font size in charge.
+  const scaleCookie = cookies().get('text-scale')?.value
+  const dataTextScale =
+    scaleCookie === 'sm' || scaleCookie === 'lg' || scaleCookie === 'xl' ? scaleCookie : undefined
+
   // Interface language, from its own cookie for the same reason as the theme: rendered
   // server-side so the first paint is already in the student's language. Drives <html lang>,
   // which is what selects the CJK font stack and the screen-reader voice.
@@ -94,7 +100,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const track = getServerTrack()
 
   return (
-    <html lang={HTML_LANG[locale]} data-theme={dataTheme}>
+    <html lang={HTML_LANG[locale]} data-theme={dataTheme} data-text-scale={dataTextScale}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

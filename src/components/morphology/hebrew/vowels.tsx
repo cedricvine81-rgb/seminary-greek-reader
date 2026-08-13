@@ -31,15 +31,21 @@ export const HB_VOWELS = (
         ['בֶ', 'seghol', 'e as in “met” — short', 'e'],
         ['בֵ', 'tsere', 'e as in “they” — long', 'e'],
         ['בִ', 'hireq', 'i as in “sit” — short', 'i'],
-        ['בִי', 'hireq-yod', 'i as in “machine” — long', 'i'],
+        ['בִי', 'hireq-yod', 'i as in “machine” — long, written with י', 'i'],
         ['בֹ', 'holem', 'o as in “role” — long', 'o'],
-        ['בוֹ', 'holem-waw', 'o as in “role” — long', 'o'],
+        ['בוֹ', 'holem-waw', 'o as in “role” — long, written with ו', 'o'],
         ['בָ', 'qamets-hatuf', 'o as in “cost” — short (see §6)', 'o'],
-        ['בֻ', 'qibbuts', 'u as in “rule” — short', 'u'],
-        ['בוּ', 'shureq', 'u as in “rule” — long', 'u'],
+        ['בֻ', 'qibbuts', 'u as in “put” — short', 'u'],
+        ['בוּ', 'shureq', 'u as in “rule” — long, written with ו', 'u'],
       ]}
-      note="Length matters for syllables and accent, not for how you say the vowel — the a of patach and the a of qamets sound alike to an English ear; the difference is how long the syllable counts as. Qamets and qamets-hatuf share one sign; §6 tells you which is which."
+      note="Where two rows sound alike, the difference is spelling, not pronunciation: adding a vowel letter (ו or י) writes the long vowel “fully”. Holem and holem-waw are one sound spelled two ways, as are hireq and hireq-yod. Qamets and qamets-hatuf are the reverse case — one sign, two sounds; §6 tells you which is which."
     />
+
+    <InfoBox title="Why some vowels look duplicated">
+      <p className="mb-1">Hebrew has five vowel qualities — a, e, i, o, u — and each comes short or long, which is why the table has eleven rows for five sounds.</p>
+      <p className="mb-1"><strong>Length is about timing, not quality.</strong> To an English ear the a of patach and the a of qamets are the same sound; what differs is how the syllable counts when the grammar divides words and places the accent. That is why length matters so much later (and so little when reading aloud).</p>
+      <p>Three pairs sound identical because they are the same vowel written two ways — with or without a vowel letter: holem / holem-waw, hireq / hireq-yod, and (nearly) qibbuts / shureq. The spelled-out form is the long one.</p>
+    </InfoBox>
 
     <SectionHeading n={2}>Vowel letters (matres lectionis)</SectionHeading>
     <P>

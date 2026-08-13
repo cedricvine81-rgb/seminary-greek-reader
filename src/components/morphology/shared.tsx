@@ -117,11 +117,11 @@ export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows
         </p>
       )}
       <div className="w-fit max-w-full overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
-        <table className="text-sm border-collapse">
+        <table className="text-[15px] border-collapse">
           <thead>
             <tr className="bg-brand-100 border-b border-brand-200">
               {headers.map((h, i) => (
-                <th key={i} className={clsx('px-3 py-2 font-semibold text-brand-900 text-sm whitespace-nowrap', i === 0 ? 'text-left' : 'text-center')}>
+                <th key={i} className={clsx('px-3 py-2 font-semibold text-brand-900 text-[15px] whitespace-nowrap', i === 0 ? 'text-left' : 'text-center')}>
                   {h}
                 </th>
               ))}
@@ -133,7 +133,7 @@ export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows
               return (
                 <tr key={ri} className={clsx(isDivider ? 'bg-brand-50/60 border-t border-gray-200' : striped && ri % 2 === 1 ? 'bg-gray-50/80' : 'bg-surface', !isDivider && ri > 0 && 'border-t border-gray-100')}>
                   {row.map((cell, ci) => (
-                    <td key={ci} dir={!isDivider && hCols?.includes(ci) ? 'rtl' : undefined} className={clsx('px-3 py-2', !isDivider && hCols?.includes(ci) && 'font-hebrew text-[15px] leading-relaxed', isDivider ? 'text-xs font-semibold text-brand-700 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-sm font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
+                    <td key={ci} dir={!isDivider && hCols?.includes(ci) ? 'rtl' : undefined} className={clsx('px-3 py-2', !isDivider && hCols?.includes(ci) && 'font-hebrew text-[22px] leading-relaxed', isDivider ? 'text-xs font-semibold text-brand-700 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-[15px] font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-[15px]', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-[15px]', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
                       {cell ? renderCell(cell) : ''}
                     </td>
                   ))}
@@ -150,7 +150,7 @@ export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows
 
 export function InfoBox({ title, children }: { title?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="mb-5 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+    <div className="mb-5 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-[15px] leading-relaxed text-gray-700">
       {title && <p className="font-semibold text-gray-800 mb-1.5">{title}</p>}
       {children}
     </div>
@@ -188,7 +188,7 @@ export function ColsTable({ id, tCols, title, headers, rows, note }: {
         <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide mb-1.5">{title}</p>
       )}
       <div className="w-fit max-w-full overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
-        <table className="text-sm border-collapse">
+        <table className="text-[15px] border-collapse">
           <thead>
             <tr className="bg-brand-100 border-b border-brand-200">
               {headers.map((h, i) => (
@@ -360,7 +360,7 @@ export function Tr({ id, comps, children }: {
  *  `id` makes the paragraph translatable; without one it stays English in every language. */
 export function P({ id, children }: { id?: string; children: React.ReactNode }) {
   return (
-    <p className="text-sm leading-relaxed text-gray-700 max-w-3xl mb-3">
+    <p className="text-base leading-relaxed text-gray-700 max-w-3xl mb-3">
       {id ? <Tr id={id}>{children}</Tr> : children}
     </p>
   )
@@ -369,7 +369,7 @@ export function P({ id, children }: { id?: string; children: React.ReactNode }) 
 /** Numbered section heading inside a chapter. */
 export function SectionHeading({ n, id, children }: { n?: number; id?: string; children: React.ReactNode }) {
   return (
-    <h3 className="mt-8 mb-3 flex items-center gap-2 text-base font-semibold text-gray-900">
+    <h3 className="mt-8 mb-3 flex items-center gap-2 text-lg font-semibold text-gray-900">
       {n != null && (
         <span className="w-5 h-5 rounded-full bg-brand-600 text-white text-[11px] font-bold flex items-center justify-center shrink-0">
           {n}

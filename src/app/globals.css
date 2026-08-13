@@ -258,6 +258,16 @@ body.exam-lockdown nav.fixed.bottom-0 {
     scroll-behavior: smooth;
   }
 
+  /* App-wide text size (Settings → Display). Scaling the ROOT font size scales every
+     rem-based size together — type, spacing and controls stay in proportion, which is
+     what makes it read as a size change rather than a broken layout. Panes measured in
+     vh/px (the reader's fixed-height columns, modal widths) are unaffected by design.
+     'md' sets no attribute, so the browser's own default size still governs there —
+     a reader who has set a larger default in their browser keeps it. */
+  html[data-text-scale='sm'] { font-size: 94%; }
+  html[data-text-scale='lg'] { font-size: 112%; }
+  html[data-text-scale='xl'] { font-size: 125%; }
+
   body {
     @apply bg-gray-50 text-ink-900 antialiased;
   }
