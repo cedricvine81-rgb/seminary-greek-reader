@@ -87,7 +87,27 @@ export function phraseTreeVerses(doc: PhraseTreeDoc): Record<string, PhraseTreeT
   const out: Record<string, PhraseTreeToken[]> = {}
   for (const [k, ws] of Object.entries(byVerse)) {
     ws.sort((a, b) => a.i - b.i)
-    out[k] = ws.map(x => x.tok)
+    // The HEBREW trees are morpheme-level: בְּרֵאשִׁית is two <w> leaves sharing one word
+    // index. Merge those into a single token — the surfaces joined solid, the parses
+    // joined visibly — so columns read as words and the compare alignment matches word to
+    // word. Greek indexes are unique; this is a no-op for the NT.
+    const merged: { i: number; tok: PhraseTreeToken }[] = []
+    for (const x of ws) {
+      const last = merged[merged.length - 1]
+      if (last && last.i === x.i) {
+        last.tok = {
+          ...last.tok,
+          surface: last.tok.surface + x.tok.surface,
+          parsing: [last.tok.parsing, x.tok.parsing].filter(Boolean).join('  +  '),
+          lemma: [last.tok.lemma, x.tok.lemma].filter(Boolean).join(' + '),
+          gloss: [last.tok.gloss, x.tok.gloss].filter(Boolean).join(' ') || undefined,
+          strongs: last.tok.strongs ?? x.tok.strongs,
+          // the content morpheme's syntax wins (the last usually carries the noun/verb)
+          syn: x.tok.syn?.role || x.tok.syn?.headId ? x.tok.syn : last.tok.syn,
+        }
+      } else merged.push({ i: x.i, tok: { ...x.tok } })
+    }
+    out[k] = merged.map(x => x.tok)
   }
   return out
 }

@@ -7,6 +7,7 @@ import { computeColumnIndicators, computeSequenceShift, type Indicator } from '@
 import { RedactionKey } from './RedactionKey'
 import { PERICOPE_ANNOTATIONS, SOURCE_MODELS, noteFor, type SourceModel } from '@/lib/redaction-annotations'
 import { phraseTreeVerses, type PhraseTreeDoc } from '@/lib/phrase-tree-tokens'
+import { MT_OSIS } from '@/lib/mt-books'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
@@ -247,13 +248,21 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   useEffect(() => onNotesChanged(refreshNotes), [refreshNotes])
 
   useEffect(() => {
-    fetch('/api/reader?corpus=GNT').then(r => r.json()).then(d => setBooks(d.books ?? [])).catch(() => {})
+    // GNT + MT: the OT parallels (Samuel–Kings ‖ Chronicles, the Psalms doublets, Isa 36–39)
+    // need Hebrew books to parse; NT first so ambiguous prefixes resolve as before.
+    fetch('/data/books.json').then(r => r.json()).then(d => setBooks([...(d.gnt ?? []), ...(d.mt ?? [])])).catch(() => {})
     fetch('/data/gospel-parallels.json').then(r => r.json()).then((d: { attribution?: string; pericopes?: Record<string, string>[] }) => {
       setPericopes(d.pericopes ?? [])
       setParallelsAttribution(d.attribution ?? '')
     }).catch(() => {})
-    fetch('/data/nt-parallels.json').then(r => r.json()).then((d: { attribution?: string; parallels?: { title: string; refs: string[] }[] }) => {
-      setNtParallels(d.parallels ?? [])
+    // The OT parallels ride the same { title, refs[] } machinery as the non-Gospel NT
+    // parallels — anchors can never collide (different books), so one list serves both.
+    Promise.all([
+      fetch('/data/nt-parallels.json').then(r => r.json()),
+      fetch('/data/ot-parallels.json').then(r => r.json()),
+    ]).then(([d, ot]: { attribution?: string; parallels?: { title: string; refs: string[] }[] }[]) => {
+      setNtParallels([...(d.parallels ?? []), ...(ot.parallels ?? [])])
+      if (ot.attribution) setNtParallelsAttribution(a => a ? `${a} ${ot.attribution}` : ot.attribution!)
       setNtParallelsAttribution(d.attribution ?? '')
     }).catch(() => {})
   }, [])
@@ -411,6 +420,11 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   }
 
   const isGreek = version === 'gnt' || version === 'na1904'
+  // OT anchors: the 'na1904' code reads the phrase trees, which for the OT are the Macula
+  // HEBREW (WLC) — so the "original" column is Hebrew, and the NT-only Tischendorf/BSB
+  // files are withheld. Parallels pair OT with OT, so one flag serves every column.
+  const anchorParsed = books.length ? parseRef(anchor, books) : null
+  const anchorHebrew = !!anchorParsed && MT_OSIS.has(anchorParsed.book.osisId)
 
   // Keep the source pointer valid if the user removes columns while comparing.
   useEffect(() => { if (sourceIdx >= columns.length) setSourceIdx(0) }, [columns.length, sourceIdx])
@@ -765,7 +779,11 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                     onChange={e => setVersion(e.target.value)}
                     className="mb-2 w-full shrink-0 rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
-                    {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+                    {VERSIONS
+                      .filter(v => !(anchorHebrew && (v.code === 'gnt' || v.code === 'bsb')))
+                      .map(v => <option key={v.code} value={v.code}>{
+                        v.code === 'na1904' && anchorHebrew ? 'Hebrew — Leningrad (WLC)' : v.label
+                      }</option>)}
                   </select>
                 )}
                 {/* Compare mode: the redaction profile — how much of the source this
@@ -832,8 +850,9 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                     })())}
                 {col && col.verses.length > 0 ? (
                   <div
-                    className={`flex-1 min-h-0 overflow-y-auto space-y-1 leading-relaxed ${isGreek ? 'font-greek text-gray-900' : 'font-reading text-gray-700'}`}
-                    style={{ fontSize: isGreek ? 'var(--syn-fs, 1.45rem)' : 'calc(var(--syn-fs, 1.45rem) * 0.82)' }}
+                    dir={isGreek && anchorHebrew ? 'rtl' : undefined}
+                    className={`flex-1 min-h-0 overflow-y-auto space-y-1 leading-relaxed ${isGreek ? (anchorHebrew ? 'font-hebrew text-gray-900' : 'font-greek text-gray-900') : 'font-reading text-gray-700'}`}
+                    style={{ fontSize: isGreek ? (anchorHebrew ? 'calc(var(--syn-fs, 1.45rem) * 0.92)' : 'var(--syn-fs, 1.45rem)') : 'calc(var(--syn-fs, 1.45rem) * 0.82)' }}
                   >
                     {col.verses.map((v, vi) => (
                       <p key={v.ref}>
