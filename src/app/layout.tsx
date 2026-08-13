@@ -19,6 +19,7 @@ import { getServerLocale } from '@/lib/i18n/server'
 import { HTML_LANG } from '@/lib/i18n/locale'
 import { LocaleProvider } from '@/lib/i18n/LocaleProvider'
 import { getServerTrack } from '@/lib/track-server'
+import { TrackParamCleanup } from '@/components/layout/TrackParamCleanup'
 import { brandFor } from '@/lib/track'
 import { TrackProvider } from '@/lib/track-client'
 
@@ -127,6 +128,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         one attribute here plus a marker per English-prose column is the whole mechanism.
       */}
       <body className={inter.className} translate="no">
+        <TrackParamCleanup />
         <ChunkErrorReload />
         <LocaleProvider locale={locale}>
         <TrackProvider track={track}>

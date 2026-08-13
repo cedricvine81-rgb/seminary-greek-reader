@@ -87,9 +87,16 @@ export function middleware(req: NextRequest) {
   // same cookie from req.nextUrl.hostname here instead; nothing downstream changes.
   const trackParam = req.nextUrl.searchParams.get('track')
   if (isTrack(trackParam)) {
-    const url = req.nextUrl.clone()
-    url.searchParams.delete('track')
-    const res = NextResponse.redirect(url)
+    // Set the cookie and RENDER — no redirect. Bouncing to strip the parameter cost a third
+    // round trip on top of the cross-origin hop from the Hebrew domain, which is why arriving
+    // at seminaryhebrew.app/<page> felt slow next to the same page on seminarygreek.app:
+    //     hebrew host → 307 → ?track=hebrew → 307 → page      (three trips, two hosts)
+    //     canonical host                    → page            (one)
+    // Mutating req.cookies first means the server components on THIS request already read the
+    // new track, so the first paint is correct; the parameter is then removed from the address
+    // bar client-side (TrackParamCleanup) rather than by another trip to the server.
+    req.cookies.set(TRACK_COOKIE, trackParam)
+    const res = NextResponse.next({ request: { headers: req.headers } })
     res.cookies.set(TRACK_COOKIE, trackParam, {
       path: '/', maxAge: 31536000, sameSite: 'lax',
     })
