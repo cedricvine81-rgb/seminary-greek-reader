@@ -1,0 +1,33 @@
+{
+  "attribution": "Samaritan Pentateuch, notable readings: transcribed for this app directly from A. von Gall, Der hebräische Pentateuch der Samaritaner (Giessen, 1918; public domain), page numbers cited per entry. A curated selection, not the full text. Unpointed, as printed.",
+  "entries": {
+    "Gen": {
+      "2:2": {
+        "sp": "ויכל אלהים ביום הששי מלאכתו אשר עשה וישבת ביום השביעי מכל מלאכתו אשר עשה",
+        "note": "The SP reads \"on the SIXTH day God finished\" where the MT has \"on the seventh\" — dissolving the old puzzle of God appearing to work on the day he rests. The LXX agrees with the SP here, which is what makes the reading text-critically interesting rather than merely convenient.",
+        "source": "von Gall (1918), p. 2"
+      },
+      "5:3": {
+        "note": "Throughout the genealogies of Genesis 5 and 11 the SP's lifespans and begetting-ages differ systematically from both the MT and the LXX — three independent chronologies of the same list. The SP arranges the numbers so that the flood falls neatly at year 1307 from creation. Compare any verse of the chapter across the versions and the pattern appears.",
+        "source": "von Gall (1918), pp. 7–9"
+      }
+    },
+    "Exod": {
+      "12:40": {
+        "note": "The SP (with the LXX) reads that Israel's 430 years were \"in the land of Canaan AND in the land of Egypt\" — counting from Abraham, not from Jacob's descent. The MT's bare \"in Egypt\" creates the chronological tension Paul inherits in Gal 3:17.",
+        "source": "von Gall (1918), ad loc."
+      },
+      "20:17": {
+        "note": "After the tenth commandment the SP inserts a long additional commandment — assembled from Deut 27:2–7 and 11:29–30 — ordering an altar on Mount Gerizim. This is the Samaritans' warrant for their sanctuary, and the sharpest example of the SP's sectarian layer: not a scribal slip but a theological edit.",
+        "source": "von Gall (1918), ad loc."
+      }
+    },
+    "Deut": {
+      "27:4": {
+        "sp": "והיה בעברכם את הירדן תקימו את האבנים האלה אשר אנכי מצוה אתכם היום בהר גריזים ושדת אתם בשיד",
+        "note": "The famous reading: build the altar on Mount GERIZIM, where the MT reads Ebal. Most Samaritan manuscripts write it as one word, בהרגריזים. Long dismissed as sectarian, the reading has been reopened by a Dead Sea fragment of Deuteronomy that appears to support Gerizim — a live text-critical debate, not a settled one.",
+        "source": "von Gall (1918), p. 416"
+      }
+    }
+  }
+}

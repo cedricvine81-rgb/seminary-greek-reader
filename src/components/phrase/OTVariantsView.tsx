@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from 'react'
 import { matchProseCitation, type ProseChapter } from '@/lib/prose-texts'
 
 interface VRow { verse: number; mt?: string; lxx?: string; tg?: string; en?: string }
+interface SpNote { sp?: string; note: string; source: string }
 
 // osisId → targum citation prefix (resolved through the prose registry, so the work's
 // own parser finds the right embedded text).
@@ -48,9 +49,21 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
   const [rows, setRows] = useState<VRow[]>([])
   const [loading, setLoading] = useState(true)
   const [tgAttrib, setTgAttrib] = useState('')
+  // Curated Samaritan Pentateuch readings — OUR OWN transcriptions from the public-domain
+  // von Gall edition (see docs/sp-permission-request.md for why the full text is blocked).
+  const [spNotes, setSpNotes] = useState<Record<string, SpNote>>({})
+  const [spAttrib, setSpAttrib] = useState('')
   const reqRef = useRef(0)
 
-  useEffect(() => { onAttribution?.([ATTRIBUTION, tgAttrib].filter(Boolean).join(' ')) }, [onAttribution, tgAttrib])
+  useEffect(() => { onAttribution?.([ATTRIBUTION, tgAttrib, spAttrib].filter(Boolean).join(' ')) }, [onAttribution, tgAttrib, spAttrib])
+
+  useEffect(() => {
+    fetch('/data/sp-notable.json').then(r => r.json())
+      .then((d: { attribution?: string; entries?: Record<string, Record<string, SpNote>> }) => {
+        setSpNotes(d.entries?.[osis] ?? {})
+        if (d.attribution) setSpAttrib(d.attribution)
+      }).catch(() => {})
+  }, [osis])
 
   useEffect(() => {
     const id = ++reqRef.current
@@ -138,6 +151,18 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
                 {hasTg && <p className="font-reading text-sm leading-relaxed text-gray-700">{r.tg ?? <span className="text-xs text-gray-300 italic">—</span>}</p>}
                 <p className="font-reading text-sm leading-relaxed text-gray-700">{r.en ?? <span className="text-xs text-gray-300 italic">—</span>}</p>
               </div>
+              {(() => {
+                const sn = spNotes[`${chapter}:${r.verse}`]
+                if (!sn) return null
+                return (
+                  <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2">
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-700">Samaritan Pentateuch — notable reading</p>
+                    {sn.sp && <p dir="rtl" lang="he" className="font-hebrew text-lg leading-relaxed text-gray-900 mt-1">{sn.sp}</p>}
+                    <p className="text-xs leading-relaxed text-amber-900 mt-1">{sn.note}</p>
+                    <p className="text-[10px] text-amber-600 mt-0.5">{sn.source} — our transcription (unpointed, as printed)</p>
+                  </div>
+                )
+              })()}
             </div>
           ))}
         </div>
