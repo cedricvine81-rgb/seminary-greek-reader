@@ -286,7 +286,11 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
   // The verses of the committed passage — and, inside those, the current search scope
   // (all of them, or one verse to narrow the hunt).
   const passageVerses = useMemo(() => {
-    if (!parsed) return verses
+    // No parse → no passage. Returning the stale `verses` here crashed the render:
+    // when the shared passage box gets a reference this view cannot parse, the old
+    // chapter's verses linger in state while every `parsed!.…` in the verse header
+    // dereferences null.
+    if (!parsed) return []
     if (parsed.vStart === 0) return verses
     return verses.filter(v => v.verse >= parsed.vStart && v.verse <= parsed.vEnd)
   }, [verses, parsed])
@@ -578,7 +582,9 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
   })()
 
   if (loadState === 'idle') return <p className="text-gray-400 text-sm mt-6 text-center">{t('all.enterPassage')}</p>
-  if (loadState === 'missing') return <p className="text-gray-500 text-sm mt-6 text-center">Allusion search works from a <b>{t('var.newTestament')}</b> or Hebrew Bible passage. Try e.g. <span className="font-medium">Mark 1:1-8</span> or <span className="font-medium">Jonah 4:1-2</span>.</p>
+  // An unparseable reference must not fall through to the main render: loadState still says
+  // 'ok' from the previous passage, and everything below dereferences `parsed!`.
+  if (!parsed || loadState === 'missing') return <p className="text-gray-500 text-sm mt-6 text-center">Allusion search works from a <b>{t('var.newTestament')}</b> or Hebrew Bible passage. Try e.g. <span className="font-medium">Mark 1:1-8</span> or <span className="font-medium">Jonah 4:1-2</span>.</p>
   if (loadState === 'loading') return <p className="text-gray-400 text-sm mt-6 text-center">{t('reader.loading')}</p>
 
   return (

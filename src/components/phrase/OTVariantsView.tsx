@@ -18,6 +18,7 @@
 ───────────────────────────────────────────── */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { matchProseCitation, type ProseChapter } from '@/lib/prose-texts'
 import { HebrewVerse, HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { GreekVerse } from '@/components/reader/GreekVerse'
@@ -60,6 +61,7 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
   isAuthenticated?: boolean
   onAttribution?: (a: string) => void
 }) {
+  const t = useT()
   const [rows, setRows] = useState<VRow[]>([])
   const [loading, setLoading] = useState(true)
   const [tgAttrib, setTgAttrib] = useState('')
@@ -161,33 +163,28 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
     <div ref={scrollRef} className="flex-1 overflow-y-auto px-1 pb-4">
       <div className="mb-3 mt-1">
         <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
-          Ancient versions — {name} {chapter}:{verseStart}{verseEnd !== verseStart ? `–${verseEnd}` : ''}
+          {t('var.ot.header')} — {name} {chapter}:{verseStart}{verseEnd !== verseStart ? `–${verseEnd}` : ''}
         </p>
-        <p className="text-xs text-gray-500 mt-0.5 max-w-3xl">
-          Old Testament textual comparison is versional: the Masoretic text beside the ancient
-          translations. Where they differ, one of them is witnessing a different Hebrew text —
-          the beginning of OT textual criticism.
-        </p>
+        <p className="text-xs text-gray-500 mt-0.5 max-w-3xl">{t('var.ot.intro')}</p>
         {VERSIFICATION_DIVERGES.has(osis) && (
           <p className="mt-1.5 inline-block rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs text-amber-800">
-            LXX versification diverges in {name}: rows pair by verse number, which here is not
-            always the same content. Read the columns as texts, not as an alignment.
+            {t('var.ot.versification', { name })}
           </p>
         )}
       </div>
 
       {loading ? (
-        <p className="text-sm text-gray-400 mt-6 text-center">Loading versions…</p>
+        <p className="text-sm text-gray-400 mt-6 text-center">{t('var.ot.loading')}</p>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-gray-400 mt-6 text-center">No text found for this passage.</p>
+        <p className="text-sm text-gray-400 mt-6 text-center">{t('var.ot.noText')}</p>
       ) : (
         <div className="space-y-3">
           {/* Column headers (desktop) */}
           <div className={`hidden lg:grid ${cols} gap-3 text-[11px] font-semibold uppercase tracking-wide text-gray-500 px-3`}>
-            <span>Masoretic (WLC)</span>
-            <span>Septuagint</span>
-            {hasTg && <span>Targum (English)</span>}
-            <span>English (WEB)</span>
+            <span>{t('var.ot.colMT')}</span>
+            <span>{t('var.ot.colLXX')}</span>
+            {hasTg && <span>{t('var.ot.colTargum')}</span>}
+            <span>{t('var.ot.colWEB')}</span>
           </div>
           {rows.map(r => (
             <div key={r.verse} className="rounded-xl border border-gray-200 p-3">
@@ -231,7 +228,7 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
                               onRemove: () => { if (existing) void highlights.remove(existing.id, osis, chapter) },
                             } : undefined })
                         }} />
-                    : <span className="font-sans text-xs text-gray-300 italic">not in the LXX at this number</span>}
+                    : <span className="font-sans text-xs text-gray-300 italic">{t('var.ot.noLXX')}</span>}
                 </div>
                 {hasTg && <p className="font-reading text-sm leading-relaxed text-gray-700" onContextMenu={r.tg ? onEnglishContextMenu(r.verse) : undefined}>{r.tg ?? <span className="text-xs text-gray-300 italic">—</span>}</p>}
                 <p className="font-reading text-sm leading-relaxed text-gray-700" onContextMenu={r.en ? onEnglishContextMenu(r.verse) : undefined}>{r.en ?? <span className="text-xs text-gray-300 italic">—</span>}</p>
@@ -241,10 +238,10 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
                 if (!sn) return null
                 return (
                   <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2">
-                    <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-700">Samaritan Pentateuch — notable reading</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-700">{t('var.ot.spNotable')}</p>
                     {sn.sp && <p dir="rtl" lang="he" className="font-hebrew text-lg leading-relaxed text-gray-900 mt-1">{sn.sp}</p>}
                     <p className="text-xs leading-relaxed text-amber-900 mt-1">{sn.note}</p>
-                    <p className="text-[10px] text-amber-600 mt-0.5">{sn.source} — our transcription (unpointed, as printed)</p>
+                    <p className="text-[10px] text-amber-600 mt-0.5">{sn.source} — {t('var.ot.spTranscription')}</p>
                   </div>
                 )
               })()}

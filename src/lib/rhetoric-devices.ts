@@ -134,9 +134,15 @@ export const DEVICES: Device[] = [
     ],
   },
   {
-    id: 'merism', name: 'Merism', group: 'substitution',
+    id: 'merism', name: 'Merism', greek: 'μερισμός', group: 'poetics',
     definition: 'Naming two opposite extremes to take in everything between — “heaven and earth” for the whole created order.',
     occurrences: [
+      { ref: 'Genesis 1:1', note: '“the heavens and the earth” = the whole created order' },
+      { ref: 'Genesis 2:9', note: '“the knowledge of good and evil” = knowledge entire' },
+      { ref: 'Deuteronomy 6:7', note: '“when you lie down and when you rise” = always' },
+      { ref: 'Psalms 121:8', note: '“your going out and your coming in”' },
+      { ref: 'Psalms 139:2', note: '“when I sit down and when I rise up”' },
+      { ref: 'Ecclesiastes 3:2', note: 'the paired opposites of vv. 2–8 total up to all of life' },
       { ref: 'Matt 5:18', note: '“till heaven and earth pass away” = for all time' },
       { ref: 'Matt 11:25', note: '“Lord of heaven and earth” = of everything' },
       { ref: 'Matt 28:18', note: '“all authority in heaven and on earth”' },
@@ -374,18 +380,6 @@ export const DEVICES: Device[] = [
       { ref: 'Psalms 136:1', note: '“for his steadfast love endures forever” after every line' },
       { ref: 'Isaiah 9:12', note: '“for all this his anger has not turned away” — 9:12, 17, 21; 10:4' },
       { ref: 'Amos 4:6', note: '“yet you did not return to me” — five times, vv. 6–11' },
-    ],
-  },
-  {
-    id: 'merism', name: 'Merism', greek: 'μερισμός', group: 'poetics',
-    definition: 'Naming the two extremes, or the parts, to mean the whole: “heaven and earth” = everything; “your going out and your coming in” = all you do.',
-    occurrences: [
-      { ref: 'Genesis 1:1', note: '“the heavens and the earth” = the whole created order' },
-      { ref: 'Genesis 2:9', note: '“the knowledge of good and evil” = knowledge entire' },
-      { ref: 'Deuteronomy 6:7', note: '“when you lie down and when you rise” = always' },
-      { ref: 'Psalms 121:8', note: '“your going out and your coming in”' },
-      { ref: 'Psalms 139:2', note: '“when I sit down and when I rise up”' },
-      { ref: 'Ecclesiastes 3:2', note: 'the paired opposites of vv. 2–8 total up to all of life' },
     ],
   },
   {

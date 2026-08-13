@@ -157,7 +157,9 @@ ALIAS = {
 # Figures Bullinger names that the NT catalogue has no entry for, but that earn their keep
 # in the Hebrew Bible. (id, name, greek, group, definition) — same shape as FIG's values.
 EXTRA_FIG = {
-    "merismos": ("merismos", "Merism", "μερισμός", "substitution",
+    # id 'merism' matches the curated poetics entry in rhetoric-devices.ts so they MERGE —
+    # a distinct id would put two "Merism" devices side by side in the browser.
+    "merismos": ("merism", "Merism", "μερισμός", "poetics",
                  "Naming the parts, or the two extremes, to mean the whole — “heaven and earth,” "
                  "“your going out and your coming in.”"),
     "alliteration": ("alliteration", "Alliteration", "ὁμοιοπρόφορον", "repetition",

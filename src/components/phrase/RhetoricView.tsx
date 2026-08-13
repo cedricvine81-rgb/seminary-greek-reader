@@ -561,7 +561,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   return (
     <div className="h-full flex flex-col min-h-0" style={{ '--rh-fs': '1.45rem' } as CSSProperties}>
       {status === 'idle' && <p className="text-gray-400 text-sm mt-6 text-center">{ui('rhetoric.idle')}</p>}
-      {status === 'nonNT' && <p className="text-gray-500 text-sm mt-6 text-center">Rhetorical figures are catalogued for the <b>whole Bible</b>. Try <span className="font-medium">Romans 8:31-39</span> or <span className="font-medium">Psalm 1:1-6</span>.</p>}
+      {status === 'nonNT' && <p className="text-gray-500 text-sm mt-6 text-center">{ui('rhetoric.wholeBible', { nt: 'Romans 8:31-39', ot: 'Psalm 1:1-6' })}</p>}
       {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">{ui('rhetoric.loading')}</p>}
       {status === 'missing' && <p className="text-gray-500 text-sm mt-6 text-center">{ui('rhetoric.loadFailed', { ref: `${parsed?.name} ${parsed?.chapter}` })}</p>}
 
@@ -792,7 +792,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                       </p>
                       {!note ? (
                         <p className="text-xs text-gray-400 italic">
-                          {ot ? 'No commentary note for this verse.' : ui('rhetoric.noGnomon')}
+                          {ot ? ui('rhetoric.noNote') : ui('rhetoric.noGnomon')}
                         </p>
                       ) : ot ? (
                         // K&D arrives as HTML (with Hebrew as numeric entities), like the Commentary tab.
