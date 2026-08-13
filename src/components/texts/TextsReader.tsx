@@ -23,6 +23,7 @@ import { TextSizeSlider } from '@/components/reader/TextSizeControls'
 import { usePref } from '@/lib/use-pref'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { openMasterSearch } from '@/lib/master-search-bus'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
@@ -1135,6 +1136,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     !!r.greek && fold(r.greek).includes(qNorm) ||
     !!r.english && fold(r.english).includes(qNorm) ||
     !!r.tokens?.some(t => fold(t.surface).includes(qNorm))
+  // The in-text box filters the LOADED chapters only — it is a find-on-page, not a search of
+  // the whole work. In a twenty-book work opened at Book 1, a name from Book 14 filters every
+  // loaded section away and the pane went silently blank, which reads as a bug. When that
+  // happens, say so and hand the query to the Master Search scoped to this collection.
+  const anySearchMatch = !q || series.sections.some(section =>
+    section.rows.filter(matchesSearch)
+      .filter(r => !(greekProse && proseModeEff === 'english') || !!r.english).length > 0)
 
   // The one "Texts" dropdown (was a full row of category chips). Rendered inline at the start of
   // the controls row below so it shares a line with the work title, freeing the row it used to
@@ -1512,6 +1520,24 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               <div ref={topSentinel} />
               {!series.backDone && <p className="text-xs text-gray-300 italic text-center">{t('texts.loadingPrev')}</p>}
 
+              {q && !anySearchMatch && (
+                <div className="my-10 text-center space-y-2">
+                  <p className="text-sm text-gray-500">
+                    {t('texts.searchNoLoaded', { q })}
+                  </p>
+                  <button
+                    type="button"
+                    // Per-collection scopes exist only in the auto-detecting bg: form (the
+                    // bggrc: variant is offered for :all alone); bg: picks the facet from the
+                    // query's script, so a Greek query still searches the Greek side.
+                    onClick={() => openMasterSearch({ query: q, scope: bgCollection ? `bg:${bgCollection.id}` : searchLang === 'grc' ? 'bggrc:all' : 'bg:all' })}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-brand-300 bg-brand-50 px-3 py-1.5 text-sm text-brand-800 hover:bg-brand-100"
+                  >
+                    <Search size={14} />
+                    {t('texts.searchAllOf', { collection: bgCollection?.label ?? t('texts.allWorks') })}
+                  </button>
+                </div>
+              )}
               {series.sections.map(section => {
                 // In a greek-prose work's English-only mode, drop the Greek-only §§ (Josephus
                 // English lives once per Whiston section) so the translation reads continuously.
