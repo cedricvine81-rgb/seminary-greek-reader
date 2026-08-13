@@ -773,7 +773,14 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     if (rightProse?.work.script === 'hebrew' && !jastrow) loadJastrow().then(setJastrow).catch(() => {})
   }, [rightVersion, hebrewLex, rightProse, jastrow])
 
-  const isGreek = version === 'gnt' || version === 'na1904'
+  // The 'na1904' slot reads the Macula phrase tree, which for an OT anchor is the HEBREW
+  // tree — so the same code means Greek in the NT and Hebrew in the OT. Without this the
+  // left column set pointed Hebrew in the Greek serif face, which is why Reception's Hebrew
+  // looked unlike every other page's.
+  const anchorIsHebrew = !!parsed && MT_OSIS.has(parsed.book.osisId)
+  const isOriginal = version === 'gnt' || version === 'na1904'
+  const isLeftHebrew = isOriginal && anchorIsHebrew
+  const isGreek = isOriginal && !anchorIsHebrew
   const isRightGreek = rightVersion === 'gnt' || rightVersion === 'na1904'
   const isRightHebrew = rightVersion === 'mt'
   const rightBookName = rightRef?.citation.ref
@@ -910,9 +917,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                 <p className="text-xs text-gray-300 italic">{t('reader.loading')}</p>
               ) : (
                 <div
-                  className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`}
-                  style={{ fontSize: isGreek ? GREEK_FS : TRANS_FS }}
-                  {...(isGreek ? greekText : translatable)}
+                  dir={isLeftHebrew ? 'rtl' : undefined}
+                  className={`space-y-1 leading-relaxed text-gray-900 ${isLeftHebrew ? 'font-hebrew' : isGreek ? 'font-greek' : 'font-reading'}`}
+                  style={{ fontSize: isOriginal ? GREEK_FS : TRANS_FS }}
+                  {...(isOriginal ? greekText : translatable)}
                 >
                   {leftVerses.map(v => {
                     const layer = v.tokens && v.tokens.length > 0 ? 'grc' : 'en'

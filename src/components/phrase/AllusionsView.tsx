@@ -191,11 +191,16 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
   // NT anchors hunt echoes in the LXX; OT anchors hunt the Hebrew Bible's reuse of itself
   // (inner-biblical allusion) — same Allison machinery, MT index, Hebrew Strong's.
   const searchCorpus = parsed && MT_OSIS.has(parsed.osis) ? 'MT' : 'LXX'
+  // An OT anchor is pointed Hebrew, and must be set in the Hebrew face, right to left —
+  // the shared 'font-reading' put it in the Greek/Latin serif like every other pane's prose.
+  const isHebrewCorpus = searchCorpus === 'MT'
 
   // Passage words (na1904 phrase tree), per verse of the open chapter.
   const [verses, setVerses] = useState<{ verse: number; words: WordTok[] }[]>([])
   const [loadState, setLoadState] = useState<'idle' | 'loading' | 'ok' | 'missing'>('idle')
   const [showEnglish, setShowEnglish] = useState(true)
+  // OT chapters' English, keyed "osis.chapter" (the BSB file is NT-only — see the effect below).
+  const [otEnglish, setOtEnglish] = useState<Record<string, Record<number, string>>>({})
   const [, setBsbTick] = useState(0)
 
   // Selection: word keys `${verse}:${idx}`.
@@ -249,11 +254,32 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
 
   // BSB English (one static file, shared with the other tabs' pattern).
   useEffect(() => {
-    if (bsbCache || !showEnglish) return
+    if (!showEnglish) return
+    // The BSB alignment file covers the Greek NT only; an OT passage needs a translation
+    // fetched per chapter, or the English column is silently blank (which is how this
+    // checkbox looked broken on every Hebrew passage).
+    if (isHebrewCorpus) {
+      if (!parsed) return
+      const key = `${parsed.osis}.${parsed.chapter}`
+      if (otEnglish[key]) return
+      fetch(`/api/translation?book=${parsed.osis}&chapter=${parsed.chapter}&lang=en`)
+        .then(r => r.json())
+        .then((d: { verses?: Record<string, string> }) => {
+          const map: Record<number, string> = {}
+          for (const [k, text] of Object.entries(d.verses ?? {})) {
+            const vn = parseInt(k.split('.').pop() ?? '', 10)
+            if (Number.isFinite(vn)) map[vn] = text
+          }
+          setOtEnglish(prev => ({ ...prev, [key]: map }))
+        })
+        .catch(() => {})
+      return
+    }
+    if (bsbCache) return
     bsbInflight ??= fetch('/data/bsb-alignment.json?v=3').then(r => r.json())
       .then(d => { bsbCache = d }).catch(() => { bsbCache = {} })
     bsbInflight.then(() => setBsbTick(t => t + 1))
-  }, [showEnglish])
+  }, [showEnglish, isHebrewCorpus, parsed, otEnglish])
 
   // Load the passage words from the phrase tree; reset the working state on passage change.
   useEffect(() => {
@@ -277,8 +303,29 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
         } else (n.c ?? []).forEach(walk)
       }
       for (const s of d.sentences ?? []) walk(s.tree)
+      // Hebrew MORPHEMES share their word's index (בְּ + רֵאשִׁית are two leaves, one word),
+      // so tokens must be merged by index or the passage reads as a string of fragments —
+      // which is exactly how the Hebrew looked here. Same rule as phrase-tree-tokens.ts.
+      const merge = (parts: { i: number; tok: WordTok }[]): WordTok => {
+        if (parts.length === 1) return parts[0].tok
+        const content = parts.find(x => /^\d/.test(x.tok.strongs ?? '')) ?? parts[parts.length - 1]
+        return {
+          surface: parts.map(x => x.tok.surface).join(''),
+          strongs: content.tok.strongs,
+          lemma: content.tok.lemma,
+          gloss: content.tok.gloss,
+          parsing: parts.map(x => x.tok.parsing).filter(Boolean).join('  +  '),
+        }
+      }
       const out = Object.entries(byVerse)
-        .map(([v, ws]) => ({ verse: parseInt(v, 10), words: ws.sort((a, b) => a.i - b.i).map(x => x.tok) }))
+        .map(([v, ws]) => {
+          const byIndex = new Map<number, { i: number; tok: WordTok }[]>()
+          for (const w of ws.sort((a, b) => a.i - b.i)) {
+            const arr = byIndex.get(w.i)
+            if (arr) arr.push(w); else byIndex.set(w.i, [w])
+          }
+          return { verse: parseInt(v, 10), words: Array.from(byIndex.values()).map(merge) }
+        })
         .sort((a, b) => a.verse - b.verse)
       setVerses(out)
       setLoadState(out.length ? 'ok' : 'missing')
@@ -628,7 +675,9 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
             <div className="space-y-2.5">
               {shownVerses.map(v => (
                 <div key={v.verse}>
-                  <p className="font-reading leading-relaxed" style={{ fontSize: '1.35rem' }}>
+                  <p dir={isHebrewCorpus ? 'rtl' : undefined}
+                    className={`${isHebrewCorpus ? 'font-hebrew' : 'font-reading'} leading-relaxed`}
+                    style={{ fontSize: isHebrewCorpus ? '1.7rem' : '1.35rem' }}>
                     {isAuthenticated && (
                       <span className="mr-0.5 align-middle print:hidden"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={v.verse}
                         noted={notedKeys.has(v.verse)} onChanged={loadNoted} /></span>
@@ -657,11 +706,12 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
                       )
                     })}
                   </p>
-                  {showEnglish && bsbCache && (
-                    <p className="mt-0.5 ml-4 text-sm text-gray-500">
-                      {bsbCache[`${parsed!.osis}.${parsed!.chapter}.${v.verse}`]?.text ?? ''}
-                    </p>
-                  )}
+                  {showEnglish && (() => {
+                    const en = isHebrewCorpus
+                      ? otEnglish[`${parsed!.osis}.${parsed!.chapter}`]?.[v.verse]
+                      : bsbCache?.[`${parsed!.osis}.${parsed!.chapter}.${v.verse}`]?.text
+                    return en ? <p dir="ltr" className="mt-0.5 ml-4 text-sm text-gray-500">{en}</p> : null
+                  })()}
                 </div>
               ))}
             </div>
