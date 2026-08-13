@@ -693,6 +693,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
           <p className="text-sm font-semibold text-brand-800">{t('inst.b.ex.heading')}</p>
           <p className="text-xs text-brand-700">{t('inst.b.ex.desc')}</p>
+          {/* The homework packs are the GREEK lesson decks' Exercises A/B — there are no
+              Hebrew packs (yet), so on a Hebrew course the picker would only offer Greek
+              content. Hidden there; Hebrew exercises use a passage reference. */}
+          {!isHebrewLevel(courseLevel) && (
           <div>
             <Select
               label={t('inst.b.ex.homeworkSet')}
@@ -703,6 +707,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             />
             <p className="mt-1 text-xs text-brand-600">{t('inst.b.ex.homeworkHelp')}</p>
           </div>
+          )}
           {form.homeworkSet ? (
             <Input
               label={t('inst.b.ex.deadline')}
@@ -1313,6 +1318,9 @@ function MorphSeriesBuilder({
                   className="input w-20 text-sm"
                 />
               </div>
+              {/* The vocab cap is keyed to BGVB lessons — Greek only. A Hebrew series
+                  shows no cap until a Hebrew lesson map exists (Glanz buckets, planned). */}
+              {!hebrew && (
               <div className="flex-1 min-w-48">
                 <label className="block text-xs font-medium text-gray-600 mb-1">
                   {t('inst.b.m.vocabFilter')}
@@ -1337,6 +1345,7 @@ function MorphSeriesBuilder({
                   <p className="text-xs text-gray-500 mt-1">{t('inst.b.m.vocabAutoHelp')}</p>
                 )}
               </div>
+              )}
             </div>
           </div>
         ))}

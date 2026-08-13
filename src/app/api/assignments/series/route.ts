@@ -1,10 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { generateVocabQuestionsForLesson, generateMorphQuestionsFromConfig, type MorphGenConfig } from '@/lib/quiz-generation'
+import {
+  generateVocabQuestionsForLesson, generateMorphQuestionsFromConfig, type MorphGenConfig,
+  generateHebrewVocabPoolFromSelection, generateHebrewMorphologyQuestions,
+} from '@/lib/quiz-generation'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { MorphologySubtype } from '@/lib/quiz-fields'
+import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
+import { isHebrewLevel } from '@/lib/constants'
 import { VOCAB_LESSONS, lessonSubsectionKey } from '@/lib/vocab-lesson-map'
+
+// A Hebrew quiz in a bulk rebuild must regenerate as Hebrew. The BGVB lesson machinery
+// (title §-keys, week→lesson, vocabThruLesson caps) is Greek-only, so Hebrew rows rebuild
+// from their STORED vocabSelection / morphConfig instead — the same recipes the
+// per-assignment regeneration route uses. A Hebrew row with no stored recipe is skipped,
+// never rebuilt as Greek.
+type VocabSel = { subsections?: string[]; pos?: string[]; reviewPct?: number } | null
 
 /**
  * Bulk edits across a whole assignment series, so a 28-quiz schedule doesn't have to be
@@ -82,18 +94,27 @@ export async function PATCH(req: NextRequest) {
       }, { status: 409 })
     }
     for (const r of rows) {
-      // The builder writes the section into the title ("… (§2-E)"); fall back to the week.
-      const m = r.title.match(/§(\d)-([A-H])/)
-      const lesson = m
-        ? VOCAB_LESSONS.find(l => lessonSubsectionKey(l.lesson) === `${m[1]}-${m[2]}`)?.lesson
-        : r.weekNumber
-      if (!lesson) continue
       const count = r._count.questions || 20
       const fill = r.vocabFillPct ?? (r.provideDefinition ? 100 : 0)
       const resolve = glossResolver(r.course?.language ?? 'en')
-      const qs = generateVocabQuestionsForLesson(
-        lesson, 'GREEK_TO_ENGLISH', count, fill, pct,
-        w => resolve(w.word, w.gloss))
+      let qs: ReturnType<typeof generateVocabQuestionsForLesson>
+      if (isHebrewLevel(String(r.level))) {
+        const sel = (r.vocabSelection ?? null) as VocabSel
+        if (!sel) continue
+        qs = generateHebrewVocabPoolFromSelection(
+          sel.subsections ?? [], sel.pos ?? [], 'HEBREW_TO_ENGLISH', fill, pct,
+          w => resolve(w.word, w.gloss))
+      } else {
+        // The builder writes the section into the title ("… (§2-E)"); fall back to the week.
+        const m = r.title.match(/§(\d)-([A-H])/)
+        const lesson = m
+          ? VOCAB_LESSONS.find(l => lessonSubsectionKey(l.lesson) === `${m[1]}-${m[2]}`)?.lesson
+          : r.weekNumber
+        if (!lesson) continue
+        qs = generateVocabQuestionsForLesson(
+          lesson, 'GREEK_TO_ENGLISH', count, fill, pct,
+          w => resolve(w.word, w.gloss))
+      }
       await prisma.$transaction([
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
@@ -121,16 +142,25 @@ export async function PATCH(req: NextRequest) {
       }, { status: 409 })
     }
     for (const r of rows) {
-      const m = r.title.match(/§(\d)-([A-H])/)
-      const lesson = m
-        ? VOCAB_LESSONS.find(l => lessonSubsectionKey(l.lesson) === `${m[1]}-${m[2]}`)?.lesson
-        : r.weekNumber
-      if (!lesson) continue
       const count = r._count.questions || 20
       const resolve = glossResolver(r.course?.language ?? 'en')
-      const qs = generateVocabQuestionsForLesson(
-        lesson, 'GREEK_TO_ENGLISH', count, fill, r.vocabReviewPct ?? 0,
-        w => resolve(w.word, w.gloss))
+      let qs: ReturnType<typeof generateVocabQuestionsForLesson>
+      if (isHebrewLevel(String(r.level))) {
+        const sel = (r.vocabSelection ?? null) as VocabSel
+        if (!sel) continue
+        qs = generateHebrewVocabPoolFromSelection(
+          sel.subsections ?? [], sel.pos ?? [], 'HEBREW_TO_ENGLISH', fill, r.vocabReviewPct ?? 0,
+          w => resolve(w.word, w.gloss))
+      } else {
+        const m = r.title.match(/§(\d)-([A-H])/)
+        const lesson = m
+          ? VOCAB_LESSONS.find(l => lessonSubsectionKey(l.lesson) === `${m[1]}-${m[2]}`)?.lesson
+          : r.weekNumber
+        if (!lesson) continue
+        qs = generateVocabQuestionsForLesson(
+          lesson, 'GREEK_TO_ENGLISH', count, fill, r.vocabReviewPct ?? 0,
+          w => resolve(w.word, w.gloss))
+      }
       await prisma.$transaction([
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
@@ -164,10 +194,18 @@ export async function PATCH(req: NextRequest) {
       }, { status: 409 })
     }
     for (const r of rows) {
-      const cap = mode === 'auto' ? Math.min(r.weekNumber, 16) : null
-      const qs = await generateMorphQuestionsFromConfig(
-        (r.morphSubtype ?? 'MIXED') as MorphologySubtype,
-        r._count.questions || 20, cap, r.morphConfig as MorphGenConfig)
+      const hebrewRow = isHebrewLevel(String(r.level))
+      // The cap is a BGVB lesson number — meaningless for Hebrew, so a Hebrew quiz
+      // rebuilds uncapped from its stored recipe and stores no cap.
+      const cap = hebrewRow ? null : mode === 'auto' ? Math.min(r.weekNumber, 16) : null
+      const cfg = (r.morphConfig ?? null) as { fields?: string[]; parseFilter?: HebrewMorphParseFilter } | null
+      const qs = hebrewRow
+        ? generateHebrewMorphologyQuestions(
+            (r.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
+            r._count.questions || 20, cfg?.fields, cfg?.parseFilter)
+        : await generateMorphQuestionsFromConfig(
+            (r.morphSubtype ?? 'MIXED') as MorphologySubtype,
+            r._count.questions || 20, cap, r.morphConfig as MorphGenConfig)
       await prisma.$transaction([
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),

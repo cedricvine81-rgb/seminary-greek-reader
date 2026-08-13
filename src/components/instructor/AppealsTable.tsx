@@ -1,4 +1,5 @@
 'use client'
+import { scriptProps } from '@/lib/script-detect'
 import { useState } from 'react'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -130,7 +131,7 @@ export function AppealsTable() {
                     <p className="text-gray-800">{a.assignment.title}</p>
                     <p className="text-xs text-gray-400">{a.assignment.course.name}</p>
                   </td>
-                  <td className="py-2 pr-3 font-greek text-lg text-gray-800">{a.question.prompt}</td>
+                  <td dir={scriptProps(a.question.prompt).dir} className={`py-2 pr-3 ${scriptProps(a.question.prompt).className} text-lg text-gray-800`}>{a.question.prompt}</td>
                   <td className="py-2 pr-3 text-red-700 font-medium">{a.studentAnswer}</td>
                   <td className="py-2 pr-3 text-emerald-700">{a.question.correctAnswer}</td>
                   <td className="py-2 pr-3 text-xs text-gray-500 whitespace-nowrap">{formatDateTime(a.createdAt, locale)}</td>

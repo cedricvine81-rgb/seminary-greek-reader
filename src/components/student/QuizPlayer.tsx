@@ -450,12 +450,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                           <div className="flex-1 min-w-0">
                             <span {...scriptProps(b.prompt)} className={`${scriptProps(b.prompt).className} text-base`}>{b.prompt}</span>
                             {b.yourAnswer ? (
-                              <p className="mt-0.5">{t('quiz.yourAnswer')}<span className={`${hasGreek(b.yourAnswer) ? 'font-greek' : ''} ${b.isCorrect ? 'text-green-700 font-medium' : 'text-red-600 line-through'}`}>{b.yourAnswer}</span></p>
+                              <p className="mt-0.5">{t('quiz.yourAnswer')}<span dir={scriptProps(b.yourAnswer).dir} className={`${scriptProps(b.yourAnswer).className} ${b.isCorrect ? 'text-green-700 font-medium' : 'text-red-600 line-through'}`}>{b.yourAnswer}</span></p>
                             ) : (
                               <p className="mt-0.5 text-gray-400 italic">{t('quiz.noAnswer')}</p>
                             )}
                             {!b.isCorrect && (
-                              <p>{t('quiz.correctIs')}<span className={`${hasGreek(b.correctAnswer) ? 'font-greek' : ''} text-green-700 font-medium`}>{formatCorrectAnswer(b.correctAnswer)}</span></p>
+                              <p>{t('quiz.correctIs')}<span dir={scriptProps(b.correctAnswer).dir} className={`${scriptProps(b.correctAnswer).className} text-green-700 font-medium`}>{formatCorrectAnswer(b.correctAnswer)}</span></p>
                             )}
                             {appealsEnabled && !b.isCorrect && !!b.responseId && (
                               <div className="mt-2">
@@ -721,12 +721,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             </div>
             {answers[q.id] && (
               <p className="text-sm text-gray-600">
-                Your answer: <span className={`${hasGreek(answers[q.id]) ? 'font-greek' : ''} ${clientCorrect[q.id] ? 'text-green-700 font-medium' : 'text-red-600 font-medium'}`}>{answers[q.id]}</span>
+                Your answer: <span dir={scriptProps(answers[q.id]).dir} className={`${scriptProps(answers[q.id]).className} ${clientCorrect[q.id] ? 'text-green-700 font-medium' : 'text-red-600 font-medium'}`}>{answers[q.id]}</span>
               </p>
             )}
             {!clientCorrect[q.id] && (
               <p className="text-sm text-gray-600">
-                Correct answer: <span className={`${hasGreek(q.correctAnswer) ? 'font-greek' : ''} text-green-700 font-medium`}>{formatCorrectAnswer(q.correctAnswer ?? '')}</span>
+                Correct answer: <span dir={scriptProps(q.correctAnswer).dir} className={`${scriptProps(q.correctAnswer).className} text-green-700 font-medium`}>{formatCorrectAnswer(q.correctAnswer ?? '')}</span>
               </p>
             )}
             {/* Mid-quiz appeal control — vocab quizzes only, when appeals are enabled and budget remains. */}

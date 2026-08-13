@@ -1,4 +1,5 @@
 'use client'
+import { scriptProps } from '@/lib/script-detect'
 import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import { Card, CardTitle } from '@/components/ui/Card'
@@ -65,7 +66,7 @@ export function QuizPreview({ questions, provideDefinition }: { questions: Quest
             <li key={q.id} className="border border-gray-100 rounded-xl p-4 space-y-2">
               <div className="flex items-start justify-between gap-4">
                 <p className="text-sm text-gray-500 shrink-0">{q.position}.</p>
-                <p className="flex-1 font-greek text-xl text-ink-900">{q.prompt}</p>
+                <p dir={scriptProps(q.prompt).dir} className={`flex-1 ${scriptProps(q.prompt).className} text-xl text-ink-900`}>{q.prompt}</p>
                 <button
                   type="button"
                   onClick={() => toggle(q.id)}

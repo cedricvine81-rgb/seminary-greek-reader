@@ -111,7 +111,7 @@ function Round2WordPopover({
           <span dir={hasHebrew(word.surface) ? 'rtl' : undefined} className={`${hasHebrew(word.surface) ? 'font-hebrew' : 'font-greek'} text-2xl text-brand-800`}>{word.surface}</span>
           {lexeme && (
             <span className="text-xs text-gray-500 truncate">
-              <span className="font-greek text-sm text-gray-700">{lexeme}</span>
+              <span dir={hasHebrew(lexeme) ? 'rtl' : undefined} className={`${hasHebrew(lexeme) ? 'font-hebrew' : 'font-greek'} text-sm text-gray-700`}>{lexeme}</span>
               {parse?.partOfSpeech && <span className="ml-1">· {parse.partOfSpeech}</span>}
             </span>
           )}
@@ -2344,7 +2344,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                       <ul className="space-y-0.5">
                         {rare.map(w => (
                           <li key={w.id} className="text-sm leading-snug">
-                            <span className="font-greek text-gray-800">{w.lexeme!.lexeme}</span>
+                            <span dir={hasHebrew(w.lexeme!.lexeme) ? 'rtl' : undefined} className={`${hasHebrew(w.lexeme!.lexeme) ? 'font-hebrew' : 'font-greek'} text-gray-800`}>{w.lexeme!.lexeme}</span>
                             <span className="text-gray-500"> — {w.lexeme!.gloss}</span>
                           </li>
                         ))}

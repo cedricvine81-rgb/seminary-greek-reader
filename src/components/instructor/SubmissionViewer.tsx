@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/Button'
 import { ArrowLeft, Save, RotateCcw } from 'lucide-react'
 import { GRADE_COMPONENTS, DEFAULT_WEIGHTS, normalizeWeights, passageGrade, examTotal, type GradeWeights, type PassageSubScores } from '@/lib/exam-grading'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { MT_OSIS } from '@/lib/mt-books'
+import { scriptProps } from '@/lib/script-detect'
 import { formatDateTime } from '@/lib/i18n/format'
 
 type T = (key: string, vars?: Record<string, string | number>) => string
@@ -91,11 +93,13 @@ interface Verse {
   words: VerseWord[]
 }
 
-type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number }
+type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number; corpus?: string }
 /** Parse a reference like "John 15:1-4" against a book list (client mirror of the server parser). */
 function parseRef(ref: string, books: RefBook[]): { osisId: string; chapter: number; verseStart: number; verseEnd: number } | null {
   const q = ref.trim().replace(/[–—]/g, '-')
-  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?(?:\s*-\s*(\d+))?$/)
+  // Letter class includes accented characters — "Génesis 1:1" is a valid reference on a
+  // Spanish-locale course, and ASCII \w silently rejects it.
+  const m = q.match(/^((?:\d\s*)?[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?(?:\s*-\s*(\d+))?$/)
   if (!m) return null
   const bookPart = m[1].trim().toLowerCase().replace(/\s+/g, '')
   const chapter = parseInt(m[2]); const vs = m[3] ? parseInt(m[3]) : 1; const ve = m[4] ? parseInt(m[4]) : vs
@@ -208,8 +212,13 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       if (assignment?.type === 'TRANSLATION_EXAM' && assignment.reference) {
         setIsExam(true)
         setWeights(normalizeWeights(assignment.gradeWeights))
-        const bRes = await fetch('/api/reader?corpus=GNT')
-        const books: RefBook[] = bRes.ok ? (await bRes.json()).books ?? [] : []
+        // GNT + MT merged: a Hebrew course's exam references OT books, and a book list
+        // that only knows the NT silently drops every passage of such an exam.
+        const [gRes, mRes] = await Promise.all([fetch('/api/reader?corpus=GNT'), fetch('/api/reader?corpus=MT')])
+        const books: RefBook[] = [
+          ...(gRes.ok ? ((await gRes.json()).books ?? []) : []),
+          ...(mRes.ok ? ((await mRes.json()).books ?? []).map((b: RefBook) => ({ ...b, corpus: 'MT' })) : []),
+        ]
         const refs = (assignment.reference as string).split('\n').map(l => l.trim()).filter(Boolean)
         const all: Verse[] = []
         const groups: { key: string; label: string; verses: Verse[] }[] = []
@@ -217,7 +226,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
           const p = parseRef(line, books)
           if (!p) continue
           const gv: Verse[] = []
-          const vRes = await fetch(`/api/reader?book=${p.osisId}&chapter=${p.chapter}`)
+          const vRes = await fetch(`/api/reader?book=${p.osisId}&chapter=${p.chapter}${MT_OSIS.has(p.osisId) ? '&corpus=MT' : ''}`)
           if (vRes.ok) {
             const vData = await vRes.json()
             for (const v of (vData.verses ?? []) as Verse[]) {
@@ -229,7 +238,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         setVerses(all)
         setExamGroups(groups)
       } else if (s.bookOsisId) {
-        const vRes = await fetch(`/api/reader?book=${s.bookOsisId}&chapter=${s.chapter}`)
+        const vRes = await fetch(`/api/reader?book=${s.bookOsisId}&chapter=${s.chapter}${MT_OSIS.has(s.bookOsisId) ? '&corpus=MT' : ''}`)
         if (vRes.ok) {
           const vData = await vRes.json()
           const allVerses: Verse[] = vData.verses ?? []
@@ -343,9 +352,9 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         {/* Full Greek verse at the top */}
         <div className="mb-4 pb-3 border-b border-gray-100">
           <p className="text-xs text-gray-400 mb-1">{verseLabel}</p>
-          <p className="font-greek text-lg leading-relaxed text-gray-900">
-            {verse.words.map(w => w.surface).join(' ')}
-          </p>
+          {(() => { const text = verse.words.map(w => w.surface).join(' '); const sp = scriptProps(text); return (
+            <p dir={sp.dir} className={`${sp.className} text-lg leading-relaxed text-gray-900`}>{text}</p>
+          ) })()}
         </div>
 
         {/* Whole-verse translation (Round 1) and Round 2 Notes */}
@@ -396,7 +405,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                   <tr key={`${word.id}-${f}`} className={i === 0 ? 'border-t border-gray-100' : ''}>
                     {i === 0 && (
                       <td rowSpan={fields.length} className="py-2.5 pr-4 align-top">
-                        <p className="font-greek text-base text-gray-900">{word.surface}</p>
+                        <p dir={scriptProps(word.surface).dir} className={`${scriptProps(word.surface).className} text-base text-gray-900`}>{word.surface}</p>
                       </td>
                     )}
                     <td className="py-1 pr-4 align-top text-gray-700">
@@ -653,7 +662,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                   return (
                     <tr key={key} className="hover:bg-amber-50/50">
                       <td className="px-3 py-2.5">
-                        <p className="font-greek text-base text-gray-900">{word?.surface ?? key}</p>
+                        <p dir={scriptProps(word?.surface).dir} className={`${scriptProps(word?.surface).className} text-base text-gray-900`}>{word?.surface ?? key}</p>
                         <p className="text-gray-400 text-[10px]">{session.bookName} {session.chapter}:{verseNumStr}</p>
                       </td>
                       <td className="px-3 py-2.5 text-gray-600"><AnnotationBlock ann={orig} /></td>
