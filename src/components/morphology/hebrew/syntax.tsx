@@ -5,7 +5,7 @@
    questions, numbers, and the two verse-accents worth knowing.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_SYNTAX = (
   <>
@@ -127,6 +127,8 @@ export const HB_SYNTAX = (
       <p className="mb-1">Open the Reader at Genesis 1 or Jonah 1 and read with the parsing pane: the wayyiqtol chains, verbless clauses and construct chains of these chapters cover most of what narrative will throw at you.</p>
       <p>The Vocab Builder’s frequency sections and the morphology quizzes drill exactly the labels used here — the tools are one course.</p>
     </InfoBox>
+
+    <HbExamples id="syntax" />
 
     <Practice
       level="both"

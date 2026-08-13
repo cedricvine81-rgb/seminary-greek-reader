@@ -5,7 +5,7 @@
    and comparison with מן.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_ADJECTIVES = (
   <>
@@ -109,6 +109,8 @@ export const HB_ADJECTIVES = (
       <p className="mb-1">Demonstratives sit in the same slots: attributive <Hb>הָאִישׁ הַזֶּה</Hb> “this man”, predicate <Hb>זֶה הָאִישׁ</Hb> “this is the man.”</p>
       <p>When both readings are grammatical (<Hb>הָאִישׁ טוֹב</Hb>), context decides — start by trying the predicate.</p>
     </InfoBox>
+
+    <HbExamples id="adjectives" />
 
     <Practice
       level="both"

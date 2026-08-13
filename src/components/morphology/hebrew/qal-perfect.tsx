@@ -5,7 +5,7 @@
    and basic word order.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_QAL_PERFECT = (
   <>
@@ -91,6 +91,8 @@ export const HB_QAL_PERFECT = (
       <p className="mb-1">2ms <Hb>קָטַלְתָּ</Hb> and 2fs <Hb>קָטַלְתְּ</Hb> differ only in the final vowel — qamets = masculine.</p>
       <p>The perfect + וְ (weqatal) is NOT simple “and” + past — it flips to future/command force. That surprise is the Waw-Consecutive chapter.</p>
     </InfoBox>
+
+    <HbExamples id="qal-perfect" />
 
     <Practice
       level="both"

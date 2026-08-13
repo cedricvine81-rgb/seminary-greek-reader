@@ -5,7 +5,7 @@
    middle / reflexive range, and the Niphal-only verbs.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_NIPHAL = (
   <>
@@ -98,6 +98,8 @@ export const HB_NIPHAL = (
       <p className="mb-1">Niphal perfect 1cp <Hb>נִקְטַלְנוּ</Hb> vs Qal imperfect 1cp <Hb>נִקְטֹל</Hb> — both start with נ. The endings (and the theme vowel) separate them.</p>
       <p>Before a guttural the assimilated dagesh cannot stand and the vowel lengthens: <Hb>יֵעָשֶׂה</Hb> “it will be done.”</p>
     </InfoBox>
+
+    <HbExamples id="niphal" />
 
     <Practice
       level="both"

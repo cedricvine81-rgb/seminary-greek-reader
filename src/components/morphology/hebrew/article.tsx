@@ -5,7 +5,7 @@
    the gutturals force on both.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_ARTICLE = (
   <>
@@ -85,6 +85,8 @@ export const HB_ARTICLE = (
       <p className="mb-1">The article’s ה never elides after itself — but it does after the inseparable prepositions (next chapter): <Hb>בַּבַּיִת</Hb> = <Hb>בְּ</Hb> + <Hb>הַבַּיִת</Hb>.</p>
       <p>Names are definite without the article; so are nouns with a pronominal suffix. <Hb>הַ</Hb> on a proper name almost always signals something else (a he-interrogative, or a gentilic).</p>
     </InfoBox>
+
+    <HbExamples id="article" />
 
     <Practice
       level="both"

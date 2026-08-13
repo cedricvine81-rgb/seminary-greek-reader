@@ -5,7 +5,7 @@
    clauses) and the absolute (emphasis).
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_INFINITIVES = (
   <>
@@ -76,6 +76,8 @@ export const HB_INFINITIVES = (
       <p className="mb-1">A suffix on an infinitive can be its subject (<Hb>בְּשָׁמְעוֹ</Hb> “when HE heard”) or its object (<Hb>לְשָׁמְרוֹ</Hb> “to keep IT”) — sense decides.</p>
       <p><Hb>לֵאמֹר</Hb> (“saying”) introduces direct speech — an infinitive construct of אמר so common it functions as a quotation mark.</p>
     </InfoBox>
+
+    <HbExamples id="infinitives" />
 
     <Practice
       level="both"

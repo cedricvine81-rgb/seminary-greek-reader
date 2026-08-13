@@ -5,7 +5,7 @@
    denominative range, and the high-frequency Piel vocabulary.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_PIEL_PUAL = (
   <>
@@ -108,6 +108,8 @@ export const HB_PIEL_PUAL = (
       <p className="mb-1">Piel perfect <Hb>דִּבֶּר</Hb> vs the noun <Hb>דָּבָר</Hb>: hireq + dagesh vs qamets. Related root, different worlds.</p>
       <p>When the middle letter is a guttural or ר, look for compensatory tsere/qamets instead of a dagesh: בֵּרַךְ, מֵאֵן.</p>
     </InfoBox>
+
+    <HbExamples id="piel-pual" />
 
     <Practice
       level="both"

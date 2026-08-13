@@ -5,7 +5,7 @@
    and what may (and may not) interrupt a construct chain.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_CONSTRUCT = (
   <>
@@ -85,6 +85,8 @@ export const HB_CONSTRUCT = (
       <p className="mb-1"><Hb>בֶּן־</Hb> “son of” builds ages and classes: <Hb>בֶּן־שָׁנָה</Hb> “a year old.”</p>
       <p>Translate chains back to front when English needs it, but <em>parse</em> them front to back.</p>
     </InfoBox>
+
+    <HbExamples id="construct" />
 
     <Practice
       level="both"

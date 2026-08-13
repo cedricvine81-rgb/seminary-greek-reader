@@ -5,7 +5,7 @@
    two negatives and the politeness particle נא.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_VOLITIVES = (
   <>
@@ -99,6 +99,8 @@ export const HB_VOLITIVES = (
       <p className="mb-1">Cohortative ־ָה looks like the 3fs perfect ending; the prefix (א / נ) tells you it is a first-person imperfect form.</p>
       <p>In wayyiqtol the jussive shape reappears with past meaning (וַיְהִי) — shortness there signals the sequential form, not a wish.</p>
     </InfoBox>
+
+    <HbExamples id="volitives" />
 
     <Practice
       level="both"

@@ -5,7 +5,7 @@
    and the everyday Hiphil vocabulary.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_HIPHIL_HOPHAL = (
   <>
@@ -90,6 +90,8 @@ export const HB_HIPHIL_HOPHAL = (
       <p className="mb-1">In the imperfect there is no ה at all (it has elided into the prefix): patach under the prefix + hireq-yod = Hiphil.</p>
       <p>Participle מַ + hireq-yod (מַקְטִיל) vs Piel’s מְ + dagesh (מְקַטֵּל).</p>
     </InfoBox>
+
+    <HbExamples id="hiphil-hophal" />
 
     <Practice
       level="both"

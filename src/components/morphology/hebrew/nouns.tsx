@@ -5,7 +5,7 @@
    and the irregular plurals every first-year list carries.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_NOUNS = (
   <>
@@ -116,6 +116,8 @@ export const HB_NOUNS = (
       are the place-word, the motion verb beside it, and the accent staying off the ending.
     </P>
     <HbEx he="וַיֵּלֶךְ אַבְרָם מִצְרַיְמָה" en={<>“and Abram went down toward Egypt” (cf. Gen 12:10) — the ־ָה carries the “to.”</>} />
+
+    <HbExamples id="nouns" />
 
     <Practice
       level="both"

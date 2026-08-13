@@ -5,7 +5,7 @@
    the relative אשׁר, and the interrogatives.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_PRONOUNS = (
   <>
@@ -90,6 +90,8 @@ export const HB_PRONOUNS = (
       <p className="mb-1"><Hb>הוּא</Hb> after a definite noun with its own article is “that” (<Hb>הַיּוֹם הַהוּא</Hb> “that day”); between two nouns it can be the copula: <Hb>יְהוָה הוּא הָאֱלֹהִים</Hb> “the LORD, he is God” (1 Kgs 18:39).</p>
       <p><Hb>זֶה</Hb> without the article before a noun is predicate: <Hb>זֶה הַיּוֹם</Hb> “this is the day” (Ps 118:24).</p>
     </InfoBox>
+
+    <HbExamples id="pronouns" />
 
     <Practice
       level="both"

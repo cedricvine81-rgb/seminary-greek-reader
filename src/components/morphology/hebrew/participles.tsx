@@ -5,7 +5,7 @@
    attributive, substantive — plus the construct participle.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_PARTICIPLES = (
   <>
@@ -79,6 +79,8 @@ export const HB_PARTICIPLES = (
       <p className="mb-1">In parsing, participles take gender / number / state — never person. Ticking “person” on a quiz excludes every participle.</p>
       <p>The far demonstrative and the article turn a participle into a relative clause on the cheap: <Hb>הָעֹשֶׂה</Hb> “the one who does / who did.”</p>
     </InfoBox>
+
+    <HbExamples id="participles" />
 
     <Practice
       level="both"

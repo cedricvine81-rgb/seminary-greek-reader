@@ -5,7 +5,7 @@
    metathesis / assimilation quirks of the הת prefix.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_HITHPAEL = (
   <>
@@ -79,6 +79,8 @@ export const HB_HITHPAEL = (
       <p className="mb-1">Parse by fingerprints in order: הת (or ית/מת) prefix → dagesh in the middle radical → Hithpael. Metathesis does not change the parse, only the spelling.</p>
       <p>Like Niphal, some Hithpaels translate simply active: הִתְפַּלֵּל “pray,” הִתְהַלֵּךְ “walk about.”</p>
     </InfoBox>
+
+    <HbExamples id="hithpael" />
 
     <Practice
       level="both"

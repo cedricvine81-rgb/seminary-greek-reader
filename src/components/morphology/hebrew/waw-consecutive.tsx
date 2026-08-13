@@ -5,7 +5,7 @@
    weqatal. The single most important chapter for actually reading.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_WAW = (
   <>
@@ -79,6 +79,8 @@ export const HB_WAW = (
       <p className="mb-1"><Hb>וַיְהִי</Hb> also serves as a discourse marker — “and it came to pass” — often followed by a time phrase before the story resumes.</p>
       <p>In the 1cs, וָ before א: <Hb>וָאֹמַר</Hb> “and I said.”</p>
     </InfoBox>
+
+    <HbExamples id="waw-consecutive" />
 
     <Practice
       level="both"

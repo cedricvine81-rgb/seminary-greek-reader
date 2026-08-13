@@ -6,7 +6,7 @@
    word in a Hebrew lexicon once prefixes and suffixes are stripped.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_NUMBERS = (
   <>
@@ -98,6 +98,8 @@ export const HB_NUMBERS = (
       <p className="mb-1">3. What remains should be three letters. If only two remain, a weak letter has vanished — try <Hb>נ</Hb> or <Hb>י</Hb> at the front, <Hb>ה</Hb> at the back, or a middle <Hb>ו/י</Hb> (the weak-verbs chapter is the map).</p>
       <p>4. In the app you can cheat honestly: click any word and the parsing pane names the root for you — then look it up knowing what you are looking for.</p>
     </InfoBox>
+
+    <HbExamples id="numbers" />
 
     <Practice
       level="both"

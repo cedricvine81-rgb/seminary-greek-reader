@@ -6,7 +6,7 @@
    which is not a preposition but is met here because it looks like one.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_PREPOSITIONS = (
   <>
@@ -99,6 +99,8 @@ export const HB_PREPOSITIONS = (
       <p className="mb-1"><Hb>לְ</Hb> + infinitive construct (<Hb>לִקְטֹל</Hb>) is the ordinary way to say “to do” — you will meet it constantly from the Infinitives chapter on.</p>
       <p>מִן also builds the comparative: <Hb>טוֹב מִזָּהָב</Hb>, “better than gold.”</p>
     </InfoBox>
+
+    <HbExamples id="prepositions" />
 
     <Practice
       level="both"

@@ -6,7 +6,7 @@
    pane shows and the morphology quizzes ask for.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term, HbExamples } from '../shared'
 
 export const HB_VERB_SYSTEM = (
   <>
@@ -82,6 +82,8 @@ export const HB_VERB_SYSTEM = (
       <p className="mb-1">Learn each stem by its <em>fingerprint</em>: Niphal’s נ, Piel’s doubled middle letter, Hiphil’s ה + hireq-yod, Hithpael’s הִתְ.</p>
       <p>The pronoun chapter’s person-gender-number labels (3ms, 2fs…) now become verb endings — same grid, new use.</p>
     </InfoBox>
+
+    <HbExamples id="verb-system" />
 
     <Practice
       level="both"

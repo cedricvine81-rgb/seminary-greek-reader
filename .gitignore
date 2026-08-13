@@ -59,3 +59,4 @@ public/data/theology/*.candidates.json
 .sp-flags/
 .sp-reviews/
 .bullinger-cache/
+.web-cache/

@@ -5,7 +5,7 @@
    of meanings (future, habitual, modal, prohibition).
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_QAL_IMPERFECT = (
   <>
@@ -89,6 +89,8 @@ export const HB_QAL_IMPERFECT = (
       <p className="mb-1">A begadkephat letter directly after the prefix keeps its dagesh lene only when the prefix vowel is silent-shewa’d away — compare <Hb>יִכְתֹּב</Hb>: the כ is soft (after the vowel of יִ), the ת hard (after silent shewa).</p>
       <p>לֹא + imperfect is the categorical “never” of the commandments; the immediate “don’t!” uses אַל + jussive — Volitives chapter.</p>
     </InfoBox>
+
+    <HbExamples id="qal-imperfect" />
 
     <Practice
       level="both"

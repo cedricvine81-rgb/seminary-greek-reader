@@ -6,7 +6,7 @@
    morphology after the article.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
 
 export const HB_SUFFIXES = (
   <>
@@ -138,6 +138,8 @@ export const HB_SUFFIXES = (
       <p className="mb-1">The 3ms singular suffix ‏<Hb>וֹ</Hb> and the 3ms plural-style ‏<Hb>ָיו</Hb> both mean “his” — the yod tells you whether he owns one or many.</p>
       <p>Nouns often shift vowels before suffixes (<Hb>דָּבָר</Hb> → <Hb>דְּבָרוֹ</Hb> “his word”; segholates restore the old vowel: <Hb>מַלְכִּי</Hb> “my king”).</p>
     </InfoBox>
+
+    <HbExamples id="suffixes" />
 
     <Practice
       level="both"
