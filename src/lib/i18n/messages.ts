@@ -1137,6 +1137,9 @@ const en: Catalogue = {
   'reader.searchVerse': 'Verse',
   'reader.searchGreekPlaceholder': 'Search Greek word…',
   'reader.searchRefPlaceholder': 'e.g. John 3:16',
+  // Shown instead when the Reader is on the Hebrew Bible or the LXX, neither of which
+  // contains John.
+  'reader.searchRefPlaceholderOT': 'e.g. Gen 1:1',
   'reader.greekKeyboard': 'Greek keyboard — or just type Beta Code (l→λ, q→θ, h→η …)',
   'reader.backspace': 'Backspace',
   'reader.greekNT': 'Greek NT',
@@ -3339,6 +3342,7 @@ const es: Catalogue = {
   'reader.searchVerse': 'Versículo',
   'reader.searchGreekPlaceholder': 'Busca una palabra griega…',
   'reader.searchRefPlaceholder': 'p. ej. Juan 3:16',
+  'reader.searchRefPlaceholderOT': 'p. ej. Gén 1:1',
   'reader.greekKeyboard': 'Teclado griego — o escribe en Beta Code (l→λ, q→θ, h→η …)',
   'reader.backspace': 'Retroceso',
   'reader.greekNT': 'NT griego',

@@ -197,6 +197,9 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
               ? t('reader.searchTransPlaceholder', { lang: viewLangLabel ?? t('reader.translationWord') })
               : hebrewMode ? t('reader.searchHebrewPlaceholder')
               : effectiveType === 'word' ? t('reader.searchGreekPlaceholder')
+              // The example reference follows the corpus on screen. "John 3:16" is no help
+              // in the Hebrew Bible — and is not even in the LXX.
+              : viewCorpus === 'MT' || viewCorpus === 'LXX' ? t('reader.searchRefPlaceholderOT')
               : t('reader.searchRefPlaceholder')}
           dir={HEBREW_RE.test(query) ? 'rtl' : undefined}
           className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekTyping ? 'greek-text' : hebrewMode ? 'font-hebrew' : ''} ${greekTyping ? 'pr-10' : 'pr-3'}`}
