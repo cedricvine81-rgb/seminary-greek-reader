@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useLayoutEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { hasHebrew } from '@/lib/script-detect'
+import { formatHebrewParse } from '@/lib/hebrew-morph'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
@@ -88,7 +90,9 @@ function Round2WordPopover({
   const t = useT()
   const key = wordKey(verseNum, word.id)
   const parse = word.parses?.[0]
-  const parsingLabel = parse ? buildParsingLabel(parse) : ''
+  // Greek words carry structured parses; Hebrew (MT) words carry an OSHB morph code.
+  const parsingLabel = parse ? buildParsingLabel(parse)
+    : word.morph ? formatHebrewParse(word.morph, word.lang ?? 'H') : ''
   const lexeme = word.lexeme?.lexeme ?? ''
   const gloss = word.lexeme?.gloss ?? ''
   const extendedGloss = word.lexeme?.extendedGloss ?? ''
@@ -104,7 +108,7 @@ function Round2WordPopover({
       {/* Header */}
       <div className="flex items-baseline justify-between gap-3 bg-brand-50 px-3 py-2 border-b border-brand-200">
         <div className="flex items-baseline gap-2 min-w-0">
-          <span className="font-greek text-2xl text-brand-800">{word.surface}</span>
+          <span dir={hasHebrew(word.surface) ? 'rtl' : undefined} className={`${hasHebrew(word.surface) ? 'font-hebrew' : 'font-greek'} text-2xl text-brand-800`}>{word.surface}</span>
           {lexeme && (
             <span className="text-xs text-gray-500 truncate">
               <span className="font-greek text-sm text-gray-700">{lexeme}</span>
@@ -202,7 +206,7 @@ function AnnotationPanel({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-baseline gap-3">
-        <span className="text-3xl font-greek text-brand-700">{word.surface}</span>
+        <span dir={hasHebrew(word.surface) ? 'rtl' : undefined} className={`text-3xl ${hasHebrew(word.surface) ? 'font-hebrew' : 'font-greek'} text-brand-700`}>{word.surface}</span>
       </div>
 
       {(['parsing', 'syntax', 'translation'] as const).map(field => (
@@ -249,7 +253,7 @@ function ReviewAnnotationPanel({
     <div className="flex flex-col gap-5">
       {/* Word header */}
       <div className="flex items-baseline gap-3">
-        <span className="text-3xl font-greek text-brand-700">{word.surface}</span>
+        <span dir={hasHebrew(word.surface) ? 'rtl' : undefined} className={`text-3xl ${hasHebrew(word.surface) ? 'font-hebrew' : 'font-greek'} text-brand-700`}>{word.surface}</span>
       </div>
 
       {/* ── Round 1 — your answers (read-only) ── */}
@@ -321,7 +325,7 @@ function ReviewPassagePanel({
         {verses.map(v => (
           <div key={v.id}>
             <p className="text-xs text-gray-400 font-medium mb-1">{v.reference}</p>
-            <div className="flex flex-wrap gap-1 leading-loose">
+            <div dir={hasHebrew(v.words[0]?.surface ?? '') ? 'rtl' : undefined} className="flex flex-wrap gap-1 leading-loose">
               {v.words.map(w => {
                 const key = wordKey(v.verse, w.id)
                 const isActive = selectedWordKey === key
@@ -335,13 +339,13 @@ function ReviewPassagePanel({
                       // during a lockdown exam by WordSearchProvider (isExamLocked).
                       openWordSearch({
                         x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lexeme?.lexeme,
-                        reference: v.reference, kind: 'greek', greekCorpus: 'GNT',
+                        reference: v.reference, ...(hasHebrew(w.surface) ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }),
                       })
                     }}
                     onMouseEnter={() => setHoveredKey(key)}
                     onMouseLeave={() => setHoveredKey(null)}
                     className={[
-                      'px-1.5 py-0.5 rounded text-xl font-greek transition-colors',
+                      `px-1.5 py-0.5 rounded ${hasHebrew(w.surface) ? 'text-2xl font-hebrew' : 'text-xl font-greek'} transition-colors`,
                       isActive ? 'bg-brand-100 text-brand-800'
                         : hoveredKey === key ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-800 hover:bg-gray-100',
@@ -641,12 +645,16 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   const [isIPadDevice] = useState(() => isIPad())
 
   // ── Load books list ──
+  // GNT + MT merged (from the static books.json, which stamps each book's corpus), so the
+  // passage box takes "Gen 1:1-5" as readily as "John 1:1-5". GNT first: the default
+  // selection stays Matthew, and ambiguous abbreviations keep resolving to the NT.
   useEffect(() => {
-    fetch('/api/reader?corpus=GNT')
+    fetch('/data/books.json')
       .then(r => r.json())
       .then(d => {
-        setBooks(d.books ?? [])
-        if (d.books?.length && !propAssignmentId) setSelectedBook(d.books[0])
+        const merged: BiblicalBook[] = [...(d.gnt ?? []), ...(d.mt ?? [])]
+        setBooks(merged)
+        if (merged.length && !propAssignmentId) setSelectedBook(merged[0])
       })
       .catch(() => {})
   }, [propAssignmentId])
@@ -828,7 +836,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           // Load passage
           if (book) {
             setIsLoading(true)
-            fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${propAssignmentId ? '' : '&corpus=NA1904'}`)
+            fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${corpusQS(book)}`)
               .then(pr => pr.json())
               .then(pd => {
                 const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
@@ -885,7 +893,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                       if (sess.submittedAt) setSubmitted(true)
                       if (book) {
                         setIsLoading(true)
-                        fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${propAssignmentId ? '' : '&corpus=NA1904'}`)
+                        fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${corpusQS(book)}`)
                           .then(pr => pr.json())
                           .then(pd => {
                             const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
@@ -946,7 +954,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               }
               // Load the passage
               setIsLoading(true)
-              fetch(`/api/reader?book=${parsed.book.osisId}&chapter=${parsed.chapter}${propAssignmentId ? '' : '&corpus=NA1904'}`)
+              fetch(`/api/reader?book=${parsed.book.osisId}&chapter=${parsed.chapter}${corpusQS(parsed.book)}`)
                 .then(pr => pr.json())
                 .then(pd => {
                   const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
@@ -1105,6 +1113,14 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // `resetSession` clears the current session — used when the book/chapter changes
   // (a genuinely different passage). Verse-range tweaks pass false so annotations
   // on the already-loaded passage survive.
+  // Which text a book loads from. OT books (corpus 'MT') read the Hebrew Bible — on either
+  // track: the Exegesis workspace parses the original, and for the OT that is Hebrew (the
+  // LXX stays a Reader corpus). NT books keep the NA1904 default outside assignments, and
+  // assignment fetches keep their historical no-param form so existing Greek assignments
+  // load byte-identically.
+  const corpusQS = (b: BiblicalBook | null | undefined) =>
+    b?.corpus === 'MT' ? '&corpus=MT' : propAssignmentId ? '' : '&corpus=NA1904'
+
   async function loadPassage(
     book: BiblicalBook | null = selectedBook,
     chap: number = chapter,
@@ -1128,7 +1144,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       setSaveStatus('idle')
     }
     try {
-      const r = await fetch(`/api/reader?book=${book.osisId}&chapter=${chap}${propAssignmentId ? '' : '&corpus=NA1904'}`)
+      const r = await fetch(`/api/reader?book=${book.osisId}&chapter=${chap}${corpusQS(book)}`)
       const d = await r.json()
       if (!d.verses) return
       const filtered: LoadedVerse[] = d.verses.filter(
@@ -1564,7 +1580,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     if (book) {
       setIsLoading(true)
       try {
-        const pr = await fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${propAssignmentId ? '' : '&corpus=NA1904'}`)
+        const pr = await fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${corpusQS(book)}`)
         const pd = await pr.json()
         const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
           (v: LoadedVerse) => v.verse >= sess.verseStart && v.verse <= sess.verseEnd
@@ -2239,7 +2255,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 {/* Native-menu guard on the word row only (the whole-verse translation box
                     below needs the OS menu for paste, so it stays outside this div). Words open
                     the reduced-Greek search menu on right-click. */}
-                <div className="flex flex-wrap items-end gap-x-3 gap-y-1 print:gap-1.5 print:leading-loose" onContextMenu={e => e.preventDefault()}>
+                <div dir={hasHebrew(v.words[0]?.surface ?? '') ? 'rtl' : undefined} className="flex flex-wrap items-end gap-x-3 gap-y-1 print:gap-1.5 print:leading-loose" onContextMenu={e => e.preventDefault()}>
                   {v.words.map(w => {
                     const key = wordKey(v.verse, w.id)
                     const hasAnn = annotations[key] &&
@@ -2258,11 +2274,11 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                           // (WordSearchProvider checks isExamLocked).
                           openWordSearch({
                             x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lexeme?.lexeme,
-                            reference: v.reference, kind: 'greek', greekCorpus: 'GNT',
+                            reference: v.reference, ...(hasHebrew(w.surface) ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }),
                           })
                         }}
                         className={[
-                          'flex flex-col items-center px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:px-0',
+                          `flex flex-col items-center px-1.5 py-0.5 rounded ${hasHebrew(w.surface) ? 'font-hebrew' : 'font-greek'} transition print:cursor-default print:px-0`,
                           isSelected
                             ? 'bg-brand-100 text-brand-800 ring-2 ring-brand-400 print:bg-transparent print:ring-0'
                             : hasCorr
@@ -2409,7 +2425,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                           return fields.map((f, i) => (
                             <tr key={`${w.id}-${f}`} className={`align-top ${i === 0 ? 'border-t border-gray-200' : ''}`}>
                               {i === 0 && (
-                                <td rowSpan={fields.length} className="py-1.5 pr-3 align-top font-greek text-sm">{w.surface}</td>
+                                <td rowSpan={fields.length} className={`py-1.5 pr-3 align-top ${hasHebrew(w.surface) ? 'font-hebrew' : 'font-greek'} text-sm`}>{w.surface}</td>
                               )}
                               <td className="py-0.5 pr-3 text-gray-800">
                                 {ann[f] && <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{t(`grade.componentShort.${f}`)}</span>{ann[f]}</>}
