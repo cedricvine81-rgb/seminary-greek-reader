@@ -1,0 +1,98 @@
+/* ─────────────────────────────────────────────
+   Hebrew chapter: Qal Imperfect
+
+   The prefixed conjugation: paradigm, the a-class, and the range
+   of meanings (future, habitual, modal, prohibition).
+───────────────────────────────────────────── */
+
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+
+export const HB_QAL_IMPERFECT = (
+  <>
+    <P>
+      The <strong>imperfect</strong> (or <em>yiqtol</em>) views action as incomplete — English
+      future, habitual, or modal. Where the perfect used endings, the imperfect leads with{' '}
+      <strong>prefixes</strong> (<Hb>י ת א נ</Hb>), adding endings only for feminine and
+      plural forms. This prefix set, too, is universal across the stems.
+    </P>
+
+    <SectionHeading n={1}>The paradigm</SectionHeading>
+    <MorphTable
+      title="Qal imperfect of קטל"
+      headers={['', 'Form', 'Prefix / ending', 'Meaning']}
+      hCols={[1, 2]}
+      tCols={[3]}
+      highlight="text-red-600 font-medium"
+      highlightCols={[2]}
+      rows={[
+        ['3ms', 'יִקְטֹל', 'יִ־', 'he will kill'],
+        ['3fs', 'תִּקְטֹל', 'תִּ־', 'she will kill'],
+        ['2ms', 'תִּקְטֹל', 'תִּ־', 'you will kill'],
+        ['2fs', 'תִּקְטְלִי', 'תִּ־ … ־ִי', 'you will kill'],
+        ['1cs', 'אֶקְטֹל', 'אֶ־', 'I will kill'],
+        ['3mp', 'יִקְטְלוּ', 'יִ־ … ־וּ', 'they will kill'],
+        ['3fp', 'תִּקְטֹלְנָה', 'תִּ־ … ־נָה', 'they will kill'],
+        ['2mp', 'תִּקְטְלוּ', 'תִּ־ … ־וּ', 'you will kill'],
+        ['2fp', 'תִּקְטֹלְנָה', 'תִּ־ … ־נָה', 'you will kill'],
+        ['1cp', 'נִקְטֹל', 'נִ־', 'we will kill'],
+      ]}
+      note="Ambiguities to accept now: 3fs = 2ms (תִּקְטֹל), and 3fp = 2fp (תִּקְטֹלְנָה). Context decides."
+    />
+    <P>
+      The theme vowel of the strong Qal imperfect is holem (<Hb>יִקְטֹל</Hb>). Before the
+      vowel-endings <Hb>־ִי</Hb> and <Hb>־וּ</Hb> it reduces to shewa: <Hb>יִקְטְלוּ</Hb>.
+    </P>
+
+    <SectionHeading n={2}>The a-class imperfect</SectionHeading>
+    <P>
+      Verbs whose second or third root letter is a guttural pull the theme vowel to patach —
+      the guttural&rsquo;s standing preference:
+    </P>
+    <MorphTable
+      title="a-class imperfects"
+      headers={['Perfect', 'Imperfect', '']}
+      hCols={[0, 1]}
+      tCols={[2]}
+      firstColIsData
+      rows={[
+        ['שָׁמַע', 'יִשְׁמַע', 'he will hear'],
+        ['בָּחַר', 'יִבְחַר', 'he will choose'],
+        ['שָׁלַח', 'יִשְׁלַח', 'he will send'],
+        ['לָמַד', 'יִלְמַד', 'he will learn  (a-class without a guttural — some verbs just are)'],
+      ]}
+    />
+
+    <SectionHeading n={3}>What the imperfect means</SectionHeading>
+    <MorphTable
+      title="The imperfect’s range"
+      headers={['Force', 'Example', '']}
+      tCols={[0, 2]}
+      hCols={[1]}
+      firstColIsData
+      rows={[
+        ['future', 'יִמְלֹךְ', 'he will reign'],
+        ['habitual', 'כֵּן יַעֲשֶׂה אִיּוֹב', 'thus Job would do (regularly) — Job 1:5'],
+        ['modal', 'יִשְׁמֹר', 'he may / should / can keep'],
+        ['permanent prohibition: לֹא +', 'לֹא תִּרְצָח', 'you shall not murder — Exod 20:13'],
+      ]}
+    />
+    <HbEx he="יְהוָה יִמְלֹךְ לְעֹלָם וָעֶד" en={<>“The LORD will reign for ever and ever” (Exod 15:18).</>} />
+
+    <InfoBox title="Watch for">
+      <p className="mb-1">The prefixes spell <Hb>איתן</Hb> (etan) — alef, yod, taw, nun — a traditional mnemonic for the set.</p>
+      <p className="mb-1">A begadkephat letter directly after the prefix keeps its dagesh lene only when the prefix vowel is silent-shewa’d away — compare <Hb>יִכְתֹּב</Hb>: the כ is soft (after the vowel of יִ), the ת hard (after silent shewa).</p>
+      <p>לֹא + imperfect is the categorical “never” of the commandments; the immediate “don’t!” uses אַל + jussive — Volitives chapter.</p>
+    </InfoBox>
+
+    <Practice
+      level="both"
+      title="Parse these"
+      items={[
+        { q: <Hb>תִּכְתֹּב</Hb>, a: <>Qal imperfect 3fs OR 2ms of <Hb>כתב</Hb> — “she / you will write.” Both parses are correct in isolation.</> },
+        { q: <Hb>יִשְׁמְעוּ</Hb>, a: <>Qal imperfect 3mp of <Hb>שׁמע</Hb> — “they will hear” (theme vowel reduced before ־וּ).</> },
+        { q: <Hb>אֶזְכֹּר</Hb>, a: <>Qal imperfect 1cs of <Hb>זכר</Hb> — “I will remember.”</> },
+        { q: <Hb>נִשְׁמֹר</Hb>, a: <>Qal imperfect 1cp of <Hb>שׁמר</Hb> — “we will keep.” (Don’t mistake the נ for Niphal: in the imperfect, Niphal shows a dagesh in the FIRST root letter — יִקָּטֵל.)</> },
+      ]}
+    />
+  </>
+)

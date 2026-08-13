@@ -1,0 +1,106 @@
+/* ─────────────────────────────────────────────
+   Hebrew chapter: Niphal
+
+   First derived stem: forms across all conjugations, the passive /
+   middle / reflexive range, and the Niphal-only verbs.
+───────────────────────────────────────────── */
+
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+
+export const HB_NIPHAL = (
+  <>
+    <P>
+      The Niphal is Qal&rsquo;s counterpart: usually <strong>passive</strong>{' '}
+      (<Hb>נִכְתַּב</Hb> &ldquo;it was written&rdquo;), often <strong>middle or
+      reflexive</strong> (<Hb>נִסְתַּר</Hb> &ldquo;he hid himself&rdquo;). Its fingerprint is
+      a <Hb>נ</Hb> — visible in the perfect and participle, assimilated into a dagesh forte in
+      the first root letter everywhere else.
+    </P>
+
+    <SectionHeading n={1}>Perfect and imperfect</SectionHeading>
+    <MorphTable
+      title="Niphal perfect of קטל"
+      headers={['', 'Form', 'Meaning']}
+      hCols={[1]}
+      tCols={[2]}
+      rows={[
+        ['3ms', 'נִקְטַל', 'he was killed'],
+        ['3fs', 'נִקְטְלָה', 'she was killed'],
+        ['2ms', 'נִקְטַלְתָּ', 'you were killed'],
+        ['1cs', 'נִקְטַלְתִּי', 'I was killed'],
+        ['3cp', 'נִקְטְלוּ', 'they were killed'],
+        ['2mp', 'נִקְטַלְתֶּם', 'you were killed'],
+        ['1cp', 'נִקְטַלְנוּ', 'we were killed'],
+      ]}
+      note="נִ + the familiar perfect endings. (The 2fs and 2fp rows follow the Qal pattern exactly.)"
+    />
+    <MorphTable
+      title="Niphal imperfect of קטל"
+      headers={['', 'Form', 'Meaning']}
+      hCols={[1]}
+      tCols={[2]}
+      rows={[
+        ['3ms', 'יִקָּטֵל', 'he will be killed'],
+        ['3fs / 2ms', 'תִּקָּטֵל', 'she / you will be killed'],
+        ['2fs', 'תִּקָּטְלִי', 'you will be killed'],
+        ['1cs', 'אֶקָּטֵל', 'I will be killed'],
+        ['3mp', 'יִקָּטְלוּ', 'they will be killed'],
+        ['1cp', 'נִקָּטֵל', 'we will be killed'],
+      ]}
+      note="The נ has assimilated: *yin-qatel → yiqqatel. That dagesh in the FIRST root letter is how you tell Niphal imperfect from Qal."
+    />
+
+    <SectionHeading n={2}>The other forms</SectionHeading>
+    <MorphTable
+      title="Niphal at a glance"
+      headers={['Conjugation', 'Form']}
+      hCols={[1]}
+      tCols={[0]}
+      firstColIsData
+      rows={[
+        ['participle', 'נִקְטָל'],
+        ['imperative', 'הִקָּטֵל'],
+        ['infinitive construct', 'הִקָּטֵל'],
+        ['infinitive absolute', 'נִקְטוֹל · הִקָּטֹל'],
+      ]}
+      note="Imperative and infinitive lead with הִ + dagesh — the assimilated נ again, behind a helping ה."
+    />
+
+    <SectionHeading n={3}>What Niphal means</SectionHeading>
+    <MorphTable
+      title="The range"
+      headers={['Nuance', 'Example', '']}
+      tCols={[0, 2]}
+      hCols={[1]}
+      firstColIsData
+      rows={[
+        ['passive', 'נִכְתַּב בַּסֵּפֶר', 'it was written in the book'],
+        ['middle / reflexive', 'נִסְתַּר', 'he hid himself'],
+        ['reciprocal', 'נִלְחֲמוּ', 'they fought (one another)'],
+        ['tolerative', 'נִמְצָא', 'he let himself be found / he was found'],
+      ]}
+    />
+    <P>
+      Some verbs live only in the Niphal, with active meaning — Hebrew&rsquo;s deponents, if
+      you know Greek: <Hb>נִשְׁבַּע</Hb> swear, <Hb>נִלְחַם</Hb> fight. Parse them Niphal;
+      translate them active.
+    </P>
+    <HbEx he="וְנִבְרְכוּ בְךָ כֹּל מִשְׁפְּחֹת הָאֲדָמָה" en={<>“and in you all the families of the earth shall be blessed” (Gen 12:3) — Niphal weqatal of ברך.</>} />
+
+    <InfoBox title="Watch for">
+      <p className="mb-1">Niphal perfect 1cp <Hb>נִקְטַלְנוּ</Hb> vs Qal imperfect 1cp <Hb>נִקְטֹל</Hb> — both start with נ. The endings (and the theme vowel) separate them.</p>
+      <p>Before a guttural the assimilated dagesh cannot stand and the vowel lengthens: <Hb>יֵעָשֶׂה</Hb> “it will be done.”</p>
+    </InfoBox>
+
+    <Practice
+      level="both"
+      title="Parse these"
+      items={[
+        { q: <Hb>נִשְׁמַר</Hb>, a: <>Niphal perfect 3ms of <Hb>שׁמר</Hb> — “he was kept.”</> },
+        { q: <Hb>יִכָּתֵב</Hb>, a: <>Niphal imperfect 3ms of <Hb>כתב</Hb> — “it will be written” (dagesh in the כ = assimilated נ).</> },
+        { q: <Hb>נִלְחַם</Hb>, a: <>Niphal perfect 3ms of <Hb>לחם</Hb> — “he fought” (Niphal-only verb, active in sense).</> },
+        { q: <Hb>נִשְׁבַּעְתִּי</Hb>, a: <>Niphal perfect 1cs of <Hb>שׁבע</Hb> — “I have sworn.”</> },
+      ]}
+    />
+  </>
+)

@@ -33,6 +33,11 @@ interface MorphTableProps {
   id?: string
   /** Column indexes whose cells are prose, not Greek or paradigm slots. */
   tCols?: number[]
+  /** Column indexes rendered as HEBREW: the Hebrew webfont, right-to-left, sized so the
+   *  pointing stays legible. The red-ending `stem|ending` marker works in these cells too,
+   *  provided the split falls on a whole-letter boundary (a letter plus its own points) —
+   *  mid-letter splits detach combining marks. */
+  hCols?: number[]
   title?: React.ReactNode
   headers: string[]
   rows: (string | null | undefined)[][]
@@ -91,7 +96,7 @@ function renderCell(cell: string): React.ReactNode {
   )
 }
 
-export function MorphTable({ id, tCols, title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false }: MorphTableProps) {
+export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false }: MorphTableProps) {
   const divSet = new Set(dividerRows)
   const tm = useTm()
   if (id) {
@@ -128,7 +133,7 @@ export function MorphTable({ id, tCols, title, headers, rows, dividerRows = [], 
               return (
                 <tr key={ri} className={clsx(isDivider ? 'bg-brand-50/60 border-t border-gray-200' : striped && ri % 2 === 1 ? 'bg-gray-50/80' : 'bg-surface', !isDivider && ri > 0 && 'border-t border-gray-100')}>
                   {row.map((cell, ci) => (
-                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-brand-700 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-sm font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
+                    <td key={ci} dir={!isDivider && hCols?.includes(ci) ? 'rtl' : undefined} className={clsx('px-3 py-2', !isDivider && hCols?.includes(ci) && 'font-hebrew text-[15px] leading-relaxed', isDivider ? 'text-xs font-semibold text-brand-700 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-sm font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
                       {cell ? renderCell(cell) : ''}
                     </td>
                   ))}
@@ -266,6 +271,25 @@ export function Gk({ children }: { children: React.ReactNode }) {
 // Declares what this component IS to the translation serializer. A string literal, so the
 // production minifier preserves it where it renames the function itself.
 Gk.i18nRole = 'greek' as const
+
+/** Hebrew run in prose — the Hebrew webfont, right-to-left, sized for legible pointing.
+ *  No i18nRole on purpose: the translation serializer does not know this component, so a
+ *  translatable block containing Hebrew falls back to its English children — the standard
+ *  never-mislead rule — until the serializer is taught Hebrew. */
+export function Hb({ children }: { children: React.ReactNode }) {
+  return <span lang="he" dir="rtl" className="font-hebrew text-[1.12em] normal-case font-medium text-gray-800">{children}</span>
+}
+
+/** An example line: Hebrew → English. */
+export function HbEx({ he, en }: { he: React.ReactNode; en: React.ReactNode }) {
+  return (
+    <p className="text-sm leading-relaxed">
+      <span lang="he" dir="rtl" className="font-hebrew text-[15px] text-gray-800">{he}</span>
+      <span className="mx-1.5 text-gray-400">→</span>
+      <span className="text-gray-600">{en}</span>
+    </p>
+  )
+}
 
 /** An example line in an aside: Greek → English. */
 export function Ex({ grc, en }: { grc: React.ReactNode; en: React.ReactNode }) {
