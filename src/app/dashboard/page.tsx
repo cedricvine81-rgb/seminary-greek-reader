@@ -1,7 +1,11 @@
 import Link from 'next/link'
 import { BookOpen, GraduationCap, FlipHorizontal, BarChart2 } from 'lucide-react'
+import { getServerBrand, getServerTrack } from '@/lib/track-server'
 
 export default function DashboardPage() {
+  // Marketing page — wears whichever brand the visitor arrived under.
+  const brand = getServerBrand()
+  const hebrew = getServerTrack() === 'hebrew'
   const features = [
     {
       icon: <BookOpen size={24} className="text-brand-600" />,
@@ -31,14 +35,15 @@ export default function DashboardPage() {
       <section className="bg-brand-900 text-white py-20 px-6">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <div className="inline-flex items-center gap-2 bg-brand-800 text-brand-200 text-sm px-4 py-1.5 rounded-full">
-            <span className="greek-text text-base">Ἐν ἀρχῇ ἦν ὁ λόγος</span>
+            {hebrew
+              ? <span className="font-hebrew text-base" dir="rtl">בְּרֵאשִׁית בָּרָא אֱלֹהִים</span>
+              : <span className="greek-text text-base">Ἐν ἀρχῇ ἦν ὁ λόγος</span>}
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight">
-            Seminary Greek
+            {brand.name}
           </h1>
           <p className="text-lg text-brand-200 max-w-xl mx-auto">
-            Read the Septuagint and Greek New Testament, master vocabulary, practice morphology,
-            and complete instructor-created assignments — all in one place.
+            {brand.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/" className="btn bg-surface text-brand-800 hover:bg-brand-50 px-6 py-3 font-semibold text-base">

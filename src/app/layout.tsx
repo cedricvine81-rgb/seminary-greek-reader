@@ -18,15 +18,24 @@ import { cookies } from 'next/headers'
 import { getServerLocale } from '@/lib/i18n/server'
 import { HTML_LANG } from '@/lib/i18n/locale'
 import { LocaleProvider } from '@/lib/i18n/LocaleProvider'
+import { getServerTrack } from '@/lib/track-server'
+import { brandFor } from '@/lib/track'
+import { TrackProvider } from '@/lib/track-client'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: { default: 'Seminary Greek', template: '%s | Seminary Greek' },
-  description: 'Read the Septuagint and Greek New Testament, study vocabulary, practice morphology, and complete instructor-created assignments.',
-  // Declare the app icon so browsers request /icon.svg (and get a 200) instead of
-  // blindly probing /favicon.ico — which keeps 404 noise out of the server logs.
-  icons: { icon: '/icon.svg', shortcut: '/icon.svg', apple: '/icon.svg' },
+// Title and description follow the language track, so a Hebrew student's browser tab and
+// bookmarks say "Seminary Hebrew". generateMetadata (not a static export) because it has to
+// read the cookie. The icon is deliberately shared: it identifies the app, not the track.
+export async function generateMetadata(): Promise<Metadata> {
+  const brand = brandFor(getServerTrack())
+  return {
+    title: { default: brand.name, template: `%s | ${brand.name}` },
+    description: brand.description,
+    // Declare the app icon so browsers request /icon.svg (and get a 200) instead of
+    // blindly probing /favicon.ico — which keeps 404 noise out of the server logs.
+    icons: { icon: '/icon.svg', shortcut: '/icon.svg', apple: '/icon.svg' },
+  }
 }
 
 // Explicit mobile viewport: correct scaling, allow pinch-zoom (accessibility),
@@ -81,6 +90,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // server-side so the first paint is already in the student's language. Drives <html lang>,
   // which is what selects the CJK font stack and the screen-reader voice.
   const locale = getServerLocale()
+  // Which brand this render wears. A view preference only — see src/lib/track.ts.
+  const track = getServerTrack()
 
   return (
     <html lang={HTML_LANG[locale]} data-theme={dataTheme}>
@@ -112,6 +123,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={inter.className} translate="no">
         <ChunkErrorReload />
         <LocaleProvider locale={locale}>
+        <TrackProvider track={track}>
         <div className="min-h-screen flex flex-col">
           <PreviewBannerInner show={isInstructorPreview} />
           <AppHeader {...headerProps} />
@@ -129,6 +141,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <WordSearchProvider />
         <ProsePanelProvider />
         <ScrollRestorer />
+        </TrackProvider>
         </LocaleProvider>
       </body>
     </html>

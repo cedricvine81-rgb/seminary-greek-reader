@@ -8,6 +8,8 @@ import { ToolsNavMenu } from '@/components/layout/ToolsNavMenu'
 import { TextsNavMenu } from './TextsNavMenu'
 import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
 import { getServerT } from '@/lib/i18n/server'
+import { getServerBrand } from '@/lib/track-server'
+import { TrackToggle } from './TrackToggle'
 
 interface AppHeaderProps {
   isAuthenticated?: boolean
@@ -19,6 +21,9 @@ interface AppHeaderProps {
 // the reader toggles html[data-immersive] as the user scrolls. See GreekReader.
 export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHeaderProps) {
   const t = getServerT()
+  // Which brand this render wears — Seminary Greek or Seminary Hebrew. Read from the track
+  // cookie on the server so the name is right on the first paint. See src/lib/track.ts.
+  const brand = getServerBrand()
   // Brand/logo sends signed-in users to their dashboard, not the Reader at "/".
   const brandHref = isAuthenticated
     ? userRole === 'INSTRUCTOR' ? '/instructor'
@@ -32,10 +37,12 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
         {/* Brand */}
         <Link href={brandHref} className="flex items-center gap-2.5 group">
           <div className="w-10 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
-            <span className="text-parchment-100 font-serif text-base font-bold tracking-tight">ΣΓ</span>
+            <span className={`text-parchment-100 ${brand.monogramClass} text-base font-bold tracking-tight`}>
+              {brand.monogram}
+            </span>
           </div>
           <span className="font-semibold text-gray-900 group-hover:text-brand-700 transition-colors hidden sm:block">
-            Seminary Greek
+            {brand.name}
           </span>
         </Link>
 
@@ -73,6 +80,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
         <div className="flex items-center gap-1">
           <PageGuideButton />
           <MasterSearchButton />
+          <TrackToggle />
           <LanguageMenu />
           <AccountMenu isAuthenticated={isAuthenticated} userRole={userRole} userName={userName} />
         </div>

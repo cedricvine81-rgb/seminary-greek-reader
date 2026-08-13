@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { TRACK_COOKIE, isTrack } from '@/lib/track'
 
 // Routes that are always public (no auth required)
 const PUBLIC_API_PREFIXES = [
@@ -51,6 +52,24 @@ function decodeJwtPayload(token: string): { role?: string } | null {
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
+  // ── Language track entry point ──────────────────────────────────────────────
+  // seminaryhebrew.app redirects here as /?track=hebrew. Turn the parameter into the
+  // cookie the rest of the app reads, then strip it so the address bar stays clean and
+  // the parameter cannot be re-applied by a back-navigation or a shared link.
+  //
+  // When the Hebrew domain is eventually served directly rather than redirected, seed the
+  // same cookie from req.nextUrl.hostname here instead; nothing downstream changes.
+  const trackParam = req.nextUrl.searchParams.get('track')
+  if (isTrack(trackParam)) {
+    const url = req.nextUrl.clone()
+    url.searchParams.delete('track')
+    const res = NextResponse.redirect(url)
+    res.cookies.set(TRACK_COOKIE, trackParam, {
+      path: '/', maxAge: 31536000, sameSite: 'lax',
+    })
+    return res
+  }
+
   // Always allow public routes
   if (PUBLIC_API_PREFIXES.some(p => pathname.startsWith(p))) {
     return NextResponse.next()
@@ -94,5 +113,10 @@ export const config = {
     '/api/:path*',
     '/admin/:path*',
     '/instructor/:path*',
+    // Page routes too, so ?track= is caught wherever someone lands — not just on the
+    // three protected prefixes above. The role checks skip anything that is not an
+    // /api, /admin or /instructor path, so this only adds the track handling.
+    // Excludes Next's internals and any path with a file extension (static assets).
+    '/((?!_next/static|_next/image|favicon.ico|icon.svg|.*\\..*).*)',
   ],
 }
