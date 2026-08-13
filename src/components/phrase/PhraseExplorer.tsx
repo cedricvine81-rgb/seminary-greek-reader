@@ -30,7 +30,7 @@ const HlCtx = createContext<{ hl: Highlighter | null; isAuth: boolean }>({ hl: n
 interface Sentence { ref: string; chapter: number; startVerse: number; endVerse: number; tree: TreeNode }
 interface BookData { book: string; attribution: string; sentences: Sentence[] }
 
-type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number }
+type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number; corpus?: string }
 
 /** Parse a reference like "John 1:1-5" against the book list (mirrors the Reader/Exegesis parser). */
 function parseRef(ref: string, books: RefBook[]): { osisId: string; chapter: number; verseStart: number; verseEnd: number } | null {
@@ -53,10 +53,13 @@ function parseRef(ref: string, books: RefBook[]): { osisId: string; chapter: num
 const CLASS_LABEL: Record<string, string> = {
   cl: 'Clause', pp: 'Prepositional phrase', np: 'Noun phrase', vp: 'Verb phrase',
   adjp: 'Adjective phrase', advp: 'Adverbial phrase',
+  // Macula Hebrew adds these:
+  nump: 'Numeral phrase', cjp: 'Conjunction', ijp: 'Interjection', relp: 'Relative',
 }
 const ROLE_LABEL: Record<string, string> = {
   s: 'Subject', v: 'Verb', vc: 'Verb (copula)', o: 'Object', o2: 'Second object',
   io: 'Indirect object', p: 'Complement', adv: 'Adverbial', apposition: 'Apposition',
+  pp: 'Prepositional', aj: 'Adjunct',
 }
 const label = (m: Record<string, string>, k?: string) => (k ? (m[k] ?? k) : '')
 
@@ -75,7 +78,8 @@ function GroupNode({ node, depth }: { node: Extract<TreeNode, { t: 'g' }>; depth
       <summary className={`cursor-pointer select-none text-xs font-semibold uppercase tracking-wide ${isClause ? 'text-brand-700' : 'text-gray-500'}`}>
         {cls || 'Group'}{role && <span className="ml-1 font-normal normal-case text-gray-400">· {role}</span>}
       </summary>
-      <div className={`ml-3 mt-1 border-l-2 pl-3 ${isClause ? 'border-brand-200' : 'border-gray-200'}`}>
+      {/* Logical-property spacing (ms/ps/border-s), so the indent mirrors under dir="rtl". */}
+      <div className={`ms-3 mt-1 border-s-2 ps-3 ${isClause ? 'border-brand-200' : 'border-gray-200'}`}>
         {node.c.map((c, i) => <NodeView key={i} node={c} depth={depth + 1} />)}
       </div>
     </details>
@@ -91,11 +95,11 @@ function WordNode({ node }: { node: WordNodeT }) {
       type="button"
       onMouseEnter={() => onWord(node)}
       onClick={() => onWord(node)}
-      onContextMenu={e => { e.preventDefault(); const [b, ch, v] = node.id.split('.'); openWordSearch({ x: e.clientX, y: e.clientY, surface: node.w, lemma: node.lemma ?? null, reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, kind: 'greek', greekCorpus: 'GNT' }) }}
+      onContextMenu={e => { e.preventDefault(); const [b, ch, v] = node.id.split('.'); openWordSearch({ x: e.clientX, y: e.clientY, surface: node.w, lemma: node.lemma ?? null, reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, ...(hasHebrew(node.w) ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }) }) }}
       title={[node.lemma && `lemma: ${node.lemma}`, node.morph && `morph: ${node.morph}`, node.role && `role: ${node.role}`].filter(Boolean).join('\n')}
-      className={`inline-flex flex-col items-start mr-3 mb-1 align-top rounded px-1 -mx-1 transition-colors ${active ? 'bg-brand-100' : 'hover:bg-gray-100'}`}
+      className={`inline-flex flex-col items-start me-3 mb-1 align-top rounded px-1 -mx-1 transition-colors ${active ? 'bg-brand-100' : 'hover:bg-gray-100'}`}
     >
-      <span className="font-greek text-gray-900 leading-tight" style={{ fontSize: 'var(--phrase-fs, 1.45rem)' }}>{node.w}</span>
+      <span className={`${hasHebrew(node.w) ? 'font-hebrew' : 'font-greek'} text-gray-900 leading-tight`} style={{ fontSize: 'var(--phrase-fs, 1.45rem)' }}>{node.w}</span>
       {node.gloss && <span className="text-gray-400 leading-tight" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.6)' }}>{node.gloss}</span>}
     </button>
   )
@@ -111,6 +115,7 @@ function NodeView({ node, depth }: { node: TreeNode; depth: number }) {
 // read. This was a hand-maintained copy of the Reader's list and had already drifted from it.
 export { READING_LANGS as LANGS } from '@/lib/reading-language'
 import { READING_LANGS as LANGS, defaultReadingLang } from '@/lib/reading-language'
+import { hasHebrew } from '@/lib/script-detect'
 const langLabel = (code: string, t: (k: string) => string) => {
   const l = LANGS.find(x => x.code === code)
   return l ? t(l.labelKey) : code
@@ -121,7 +126,11 @@ const GREEK_EDITIONS = [
   { code: 'na1904', label: 'Greek — Nestle 1904' },
   { code: 'gnt', label: 'Greek — Tischendorf' },
 ]
-const greekLabel = (code: string) => GREEK_EDITIONS.find(g => g.code === code)?.label ?? code
+// For an OT passage the middle column IS the tree's text — the Westminster Leningrad
+// Codex — and there is no second edition to offer.
+const HEBREW_EDITIONS = [{ code: 'na1904', label: 'Hebrew — Leningrad (WLC)' }]
+const greekLabel = (code: string, hebrew = false) =>
+  (hebrew ? HEBREW_EDITIONS : GREEK_EDITIONS).find(g => g.code === code)?.label ?? code
 
 // Adjustable Greek text size (default larger than before). Children scale off the
 // --phrase-fs CSS variable set on the container.
@@ -145,6 +154,14 @@ export function PhrasingSourcesPanel() {
             <a href="https://github.com/Clear-Bible/macula-greek" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">Clear-Bible/macula-greek</a>
           </p>
           <p className="mt-1">Greek editions: Nestle 1904 and Tischendorf (8th ed.) — both public domain.</p>
+        </div>
+        <div>
+          <p className="font-semibold text-gray-700">Hebrew text &amp; syntax</p>
+          <p className="mt-0.5">
+            Syntax trees: MACULA Hebrew Linguistic Datasets over the Westminster Leningrad Codex (public domain),
+            licensed <span className="font-medium">CC BY 4.0</span>.{' '}
+            <a href="https://github.com/Clear-Bible/macula-hebrew" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">Clear-Bible/macula-hebrew</a>
+          </p>
         </div>
         <div>
           <p className="font-semibold text-gray-700">{t('phr.translations')}</p>
@@ -286,7 +303,10 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   // reader's language, falling back to English where there is no edition in it.
   const [greekEd, setGreekEd] = useState('na1904')
   const [transLang, setTransLang] = useState(() => defaultReadingLang(locale) === 'en' ? 'bsb' : defaultReadingLang(locale))
-  const [cur, setCur] = useState<{ osis: string; chapter: number } | null>(null)
+  const [cur, setCur] = useState<{ osis: string; chapter: number; hebrew?: boolean } | null>(null)
+  // Hebrew books have exactly one text (the WLC in the tree), so the Greek-edition choice
+  // is pinned to the from-the-tree code while an OT passage is shown.
+  const effEd = cur?.hebrew ? 'na1904' : greekEd
   // Text highlights for the running Greek column (signed-in users).
   const highlights = useHighlights(isAuthenticated)
   useEffect(() => {
@@ -326,7 +346,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   useEffect(() => {
     if (!cur) return
     const { osis, chapter } = cur
-    for (const code of Array.from(new Set([greekEd, transLang]))) {
+    for (const code of Array.from(new Set([effEd, transLang]))) {
       if (code === 'na1904') continue
       const ck = code === 'bsb' ? 'bsb' : `${code}.${osis}.${chapter}`
       if (loaded.current.has(ck)) continue
@@ -369,7 +389,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
           .catch(() => {})
       }
     }
-  }, [cur, greekEd, transLang])
+  }, [cur, effEd, transLang])
 
   /** Text for a column (Greek edition or translation) over a sentence's verse range. */
   const colText = (code: string, s: Sentence): string => {
@@ -387,7 +407,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   /** Clickable Greek words for the middle column (Nestle 1904 from the tree; Tischendorf
    *  from the loaded gnt word data). Empty until gnt words load → caller falls back to text. */
   const greekWordsFor = (s: Sentence): WordNodeT[] => {
-    if (greekEd === 'na1904') return treeWords(s.tree)
+    if (effEd === 'na1904') return treeWords(s.tree)
     const out: WordNodeT[] = []
     for (let v = s.startVerse; v <= s.endVerse; v++) {
       const ws = gntWords.current[`${cur?.osis}.${s.chapter}.${v}`]
@@ -398,10 +418,12 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
 
   // Load the GNT book list (for reference parsing), then the default passage.
   useEffect(() => {
-    fetch('/api/reader?corpus=GNT')
+    // GNT + MT merged: Hebrew phrase trees ship for every OT book, from the same Macula
+    // family as the Greek (books.json stamps each book's corpus).
+    fetch('/data/books.json')
       .then(r => r.json())
       .then((d) => {
-        const bs: RefBook[] = d.books ?? []
+        const bs: RefBook[] = [...(d.gnt ?? []), ...(d.mt ?? [])]
         setBooks(bs)
         // In coordinated mode the shared passage effect below drives loading.
         if (bs.length && controlledPassage === undefined) loadPassage('John 1:1-5', bs)
@@ -439,7 +461,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
       )
       setShown(matches)
       setSelected(null)
-      setCur({ osis: p.osisId, chapter: p.chapter })
+      setCur({ osis: p.osisId, chapter: p.chapter, hebrew: bookList.find(b => b.osisId === p.osisId)?.corpus === 'MT' })
       if (matches.length === 0) setMessage('No sentences found for that reference.')
     } catch {
       setMessage('No syntax data for that book yet.')
@@ -481,16 +503,16 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
       {!message && shown.length > 0 && (
         <div className="hidden lg:flex justify-end">
           <div className="grid grid-cols-2 gap-4 w-[31rem]">
-            <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
-            <OptionSelect value={transLang} onChange={setTransLang} options={LANGS.map(l => ({ code: l.code, label: t(l.labelKey) }))} />
+            <OptionSelect value={effEd} onChange={setGreekEd} options={cur?.hebrew ? HEBREW_EDITIONS : GREEK_EDITIONS} />
+            <OptionSelect value={transLang} onChange={setTransLang} options={LANGS.filter(l => !cur?.hebrew || l.code !== 'bsb').map(l => ({ code: l.code, label: t(l.labelKey) }))} />
           </div>
         </div>
       )}
       {/* On mobile the dropdowns stack above the cards. */}
       {!message && shown.length > 0 && (
         <div className="grid grid-cols-2 gap-2 lg:hidden">
-          <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
-          <OptionSelect value={transLang} onChange={setTransLang} options={LANGS.map(l => ({ code: l.code, label: t(l.labelKey) }))} />
+          <OptionSelect value={effEd} onChange={setGreekEd} options={cur?.hebrew ? HEBREW_EDITIONS : GREEK_EDITIONS} />
+          <OptionSelect value={transLang} onChange={setTransLang} options={LANGS.filter(l => !cur?.hebrew || l.code !== 'bsb').map(l => ({ code: l.code, label: t(l.labelKey) }))} />
         </div>
       )}
 
@@ -498,7 +520,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
         <p className="text-sm text-gray-400 italic">{message}</p>
       ) : (
         shown.map((s, i) => {
-          const mid = colText(greekEd, s)
+          const mid = colText(effEd, s)
           const right = colText(transLang, s)
           return (
             <div key={i} className="rounded-xl border border-gray-200 p-4">
@@ -509,7 +531,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                 )}
               </p>
               <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_31rem] lg:items-start">
-                <div className="min-w-0">
+                <div className="min-w-0" dir={cur?.hebrew ? 'rtl' : undefined}>
                   <NodeView node={s.tree} depth={0} />
                 </div>
                 {/* Greek + translation columns and the parsing box grouped together, so the
@@ -517,8 +539,8 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                 <div className="space-y-3">
                   <div className="grid gap-4 lg:grid-cols-2">
                     <div className="text-gray-800 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
-                      <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{greekLabel(greekEd)}</span>
-                      <span className="font-greek leading-relaxed" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.92)' }}>
+                      <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{greekLabel(effEd, cur?.hebrew)}</span>
+                      <span dir={cur?.hebrew ? 'rtl' : undefined} className={`${cur?.hebrew ? 'font-hebrew block text-right' : 'font-greek'} leading-relaxed`} style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.92)' }}>
                         {(() => {
                           const gw = greekWordsFor(s)
                           if (gw.length) {
@@ -531,8 +553,13 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                               const start = posByVerse[vk] ?? 0
                               const end = start + w.w.length
                               posByVerse[vk] = end + 1
+                              // Hebrew morphemes of ONE word share an id (בְּ + רֵאשִׁית are
+                              // both Gen.1.1.1) — join them solid so the column reads
+                              // בְּרֵאשִׁית, not "בְּ רֵאשִׁית". Greek ids are unique, so
+                              // nothing changes there.
+                              const joined = wi > 0 && gw[wi - 1].id === w.id
                               return (
-                                <span key={w.id}>{wi > 0 ? ' ' : ''}
+                                <span key={`${w.id}.${wi}`}>{wi > 0 && !joined ? ' ' : ''}
                                   <GreekColWord node={w} book={b} chapter={Number(ch)} verse={Number(v)} start={start} end={end} />
                                 </span>
                               )
