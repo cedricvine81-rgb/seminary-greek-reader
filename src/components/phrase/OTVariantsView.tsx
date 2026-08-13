@@ -33,6 +33,7 @@ import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 import { wordAtPoint, EDGE_PUNCT } from '@/lib/word-at-point'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { FONT_SIZE_MAP, FONT_SIZES, type PhraseFontSize } from './PhraseExplorer'
 
 interface VRow { verse: number; mtV?: BiblicalVerse; lxxV?: BiblicalVerse; tg?: string; en?: string }
 interface SpNote { sp?: string; note: string; source: string }
@@ -52,13 +53,14 @@ const ATTRIBUTION =
   'Targums: Etheridge (Pseudo-Jonathan) / Pauli (Isaiah), public domain. English: World English Bible. ' +
   'A manuscript apparatus for the OT (BHS/BHQ) is under copyright and is not reproduced here.'
 
-export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAuthenticated = false, onAttribution }: {
+export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAuthenticated = false, fontSize = 'lg', onAttribution }: {
   osis: string
   name: string
   chapter: number
   verseStart: number
   verseEnd: number
   isAuthenticated?: boolean
+  fontSize?: PhraseFontSize
   onAttribution?: (a: string) => void
 }) {
   const t = useT()
@@ -155,6 +157,10 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
     })
   }, [osis, chapter, verseStart, verseEnd])
 
+  // The size control drives BOTH original-language columns; Hebrew takes one step more than
+  // the Greek beside it, since its vowel points carry meaning and vanish first when small.
+  const greekFs = FONT_SIZE_MAP[fontSize]
+  const hebrewFs = FONT_SIZE_MAP[FONT_SIZES[Math.min(FONT_SIZES.indexOf(fontSize) + 1, FONT_SIZES.length - 1)]]
   const hasTg = !!TARGUM[osis]
   const cols = hasTg ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
 
@@ -196,7 +202,7 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
                 <p className="text-[11px] font-semibold text-brand-600">{name} {chapter}:{r.verse}</p>
               </div>
               <div className={`grid grid-cols-1 ${cols} gap-3`}>
-                <div className="text-lg leading-relaxed text-gray-900" style={{ '--greek-fs': '1.125rem' } as React.CSSProperties}>
+                <div className="leading-relaxed text-gray-900" style={{ '--greek-fs': hebrewFs, fontSize: hebrewFs } as React.CSSProperties}>
                   {r.mtV
                     ? <HebrewVerse verse={r.mtV} activeWordId={null} highlighted={false} lexicon={hebrewLex}
                         textHighlights={highlights.forVerse(osis, chapter, r.verse, HEBREW_LAYER)}
@@ -213,7 +219,7 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
                         }} />
                     : <span className="font-sans text-xs text-gray-300 italic">—</span>}
                 </div>
-                <div className="text-base leading-relaxed text-gray-800" style={{ '--greek-fs': '1.05rem' } as React.CSSProperties}>
+                <div className="leading-relaxed text-gray-800" style={{ '--greek-fs': greekFs, fontSize: greekFs } as React.CSSProperties}>
                   {r.lxxV
                     ? <GreekVerse verse={r.lxxV} activeWordId={null} highlighted={false}
                         textHighlights={highlights.forVerse(osis, chapter, r.verse, 'grc')}

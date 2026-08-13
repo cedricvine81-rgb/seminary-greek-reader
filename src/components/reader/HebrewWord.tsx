@@ -4,7 +4,7 @@ import { clsx } from 'clsx'
 import type { VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel, HebrewSegment } from '@/types/lexicon'
 import { formatHebrewParse, hebrewMorphRole, hebrewPartOfSpeech } from '@/lib/hebrew-morph'
-import { lookupHebrewStrongs, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { lookupHebrewStrongs, usableGloss, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // Build the parsing-pane payload for a Hebrew word: dictionary lemma + transliteration + gloss
@@ -18,14 +18,14 @@ export function buildHebrewInfo(word: VerseWord, reference: string, lex: HebrewL
     word.morphemes && word.morphemes.length > 1
       ? word.morphemes.map(m => {
           const mEntry = /^\d/.test(m.strongs) ? lookupHebrewStrongs(lex, m.strongs) : null
-          return { text: m.text, label: hebrewMorphRole(m.morph, lang), gloss: mEntry?.gloss }
+          return { text: m.text, label: hebrewMorphRole(m.morph, lang), gloss: usableGloss(mEntry) || undefined }
         })
       : undefined
 
   return {
     surface: word.surface,
     lexeme: entry?.lemma ?? word.surface,
-    gloss: entry?.gloss ?? '',
+    gloss: usableGloss(entry),
     partOfSpeech: hebrewPartOfSpeech(word.morph ?? ''),
     parsing: word.morph ? formatHebrewParse(word.morph, lang) : hebrewPartOfSpeech(word.morph ?? ''),
     strongs: word.strongs ? `H${word.strongs}` : undefined,

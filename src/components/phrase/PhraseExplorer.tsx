@@ -135,10 +135,12 @@ const greekLabel = (code: string, hebrew = false) =>
 
 // Adjustable Greek text size (default larger than before). Children scale off the
 // --phrase-fs CSS variable set on the container.
-export type PhraseFontSize = 'sm' | 'md' | 'lg' | 'xl'
-export const FONT_SIZES: PhraseFontSize[] = ['sm', 'md', 'lg', 'xl']
+export type PhraseFontSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
+export const FONT_SIZES: PhraseFontSize[] = ['sm', 'md', 'lg', 'xl', '2xl', '3xl']
 // Exported so other reading surfaces (e.g. the Search results) share the same size steps.
-export const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+export const FONT_SIZE_MAP: Record<PhraseFontSize, string> = {
+  sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem', '2xl': '2.1rem', '3xl': '2.6rem',
+}
 
 /** Static "Sources & copyright" content for the Phrasing tab's settings menu. */
 export function PhrasingSourcesPanel() {

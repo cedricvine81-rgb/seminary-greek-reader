@@ -395,7 +395,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
           // form OT textual criticism actually takes at this level (no PD structured
           // apparatus exists; BHS/BHQ are copyrighted).
           const ot = parseMTRef(controlledPassage ?? '')
-          if (ot) return <OTVariantsView osis={ot.osis} name={ot.name} chapter={ot.chapter} verseStart={ot.verseStart} verseEnd={ot.verseEnd} isAuthenticated={isAuthenticated} onAttribution={onAttribution} />
+          if (ot) return <OTVariantsView osis={ot.osis} name={ot.name} chapter={ot.chapter} verseStart={ot.verseStart} verseEnd={ot.verseEnd} isAuthenticated={isAuthenticated} fontSize={fontSize} onAttribution={onAttribution} />
           return <p className="text-gray-500 text-sm mt-6 text-center">Textual-variant data covers the <b>{t('var.newTestament')}</b> (manuscripts) and the Hebrew Bible (ancient versions). Try e.g. <span className="font-medium">John 1:1-5</span> or <span className="font-medium">Gen 1:1-5</span>.</p>
         })()}
         {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">{t('var.loadingWitnesses')}</p>}

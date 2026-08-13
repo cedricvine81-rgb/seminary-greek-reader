@@ -26,7 +26,7 @@ import type { PhraseFontSize } from './PhraseExplorer'
 // Text-size control — same scale as the Phrasing tab (shares its type/values so the
 // shared exegesis tools menu can drive both with one slider implementation).
 type SynFontSize = PhraseFontSize
-const FONT_SIZE_MAP: Record<SynFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+const FONT_SIZE_MAP: Record<string, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem', '2xl': '2.1rem', '3xl': '2.6rem' }
 
 type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number }
 

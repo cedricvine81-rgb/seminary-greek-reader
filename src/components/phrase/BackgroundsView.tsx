@@ -40,7 +40,7 @@ export interface OpenInTextsTarget {
 }
 
 type BgFontSize = PhraseFontSize
-const FONT_SIZE_MAP: Record<BgFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+const FONT_SIZE_MAP: Record<string, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem', '2xl': '2.1rem', '3xl': '2.6rem' }
 // Shared text sizes so every pane (left source column and the right referenced-text column —
 // Bible/LXX, Josephus, prose) renders at the SAME scale and the two columns line up. Greek and
 // translations both render at the full --bg-fs so a translation reads at the same size as the

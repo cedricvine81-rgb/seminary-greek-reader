@@ -147,7 +147,7 @@ function translationsFor(w: CatalogWork | null, t: (k: string) => string): { id:
 // Spanish and the published English come from the same hand.
 const PROSE_ENGLISH_LABELS: Record<string, string> = { antiquities: 'Whiston (1737)' }
 
-const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+const FONT_SIZE_MAP: Record<string, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem', '2xl': '2.1rem', '3xl': '2.6rem' }
 const LOOKAHEAD = 1600   // px ahead of the sentinel to start loading the next/previous chapter
 
 // Fixed pixel heights for the Book/Chapter/Verse locator rows and column headers. The

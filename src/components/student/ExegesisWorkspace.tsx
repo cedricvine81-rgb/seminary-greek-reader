@@ -4,6 +4,7 @@ import { useState, useEffect, useLayoutEffect, useCallback, useRef, forwardRef, 
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { hasHebrew } from '@/lib/script-detect'
 import { formatHebrewParse } from '@/lib/hebrew-morph'
+import { loadHebrewLexicon, lookupHebrewStrongs, usableGloss, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
@@ -1118,6 +1119,19 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // LXX stays a Reader corpus). NT books keep the NA1904 default outside assignments, and
   // assignment fetches keep their historical no-param form so existing Greek assignments
   // load byte-identically.
+  // Hebrew glossary support. The Greek corpus ships a lexeme (gloss + frequency) on every
+  // word; MT words carry only Strong's + morphology, so the "words less frequent than N×"
+  // control did nothing at all on a Hebrew passage. These two fill the gap: glosses from the
+  // Hebrew lexicon, counts from hebrew-freq.json (built over the whole MT).
+  const [hebLex, setHebLex] = useState<HebrewLexicon | null>(null)
+  const [hebFreq, setHebFreq] = useState<Record<string, number> | null>(null)
+  const passageIsHebrew = !!selectedBook && selectedBook.corpus === 'MT'
+  useEffect(() => {
+    if (!passageIsHebrew) return
+    if (!hebLex) loadHebrewLexicon().then(setHebLex).catch(() => {})
+    if (!hebFreq) fetch('/data/hebrew-freq.json').then(r => r.json()).then(setHebFreq).catch(() => {})
+  }, [passageIsHebrew, hebLex, hebFreq])
+
   const corpusQS = (b: BiblicalBook | null | undefined) =>
     b?.corpus === 'MT' ? '&corpus=MT' : propAssignmentId ? '' : '&corpus=NA1904'
 
@@ -2327,14 +2341,35 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 {(assignment?.glossFrequency ?? glossPref) != null && (() => {
                   const threshold = (assignment?.glossFrequency ?? glossPref)!
                   const seen = new Set<string>()
-                  const rare = v.words.filter(w => {
-                    const lex = w.lexeme
-                    if (!lex || !lex.gloss || !lex.lexeme) return false
-                    if ((lex.frequency ?? 0) >= threshold) return false
-                    if (seen.has(lex.lexeme)) return false
-                    seen.add(lex.lexeme)
-                    return true
-                  })
+                  // Each entry: the dictionary form + its gloss. Greek reads them off the
+                  // word's lexeme; Hebrew resolves Strong's through the lexicon and the
+                  // corpus frequency table.
+                  type GlossRow = { key: string; lemma: string; gloss: string }
+                  const rare: GlossRow[] = []
+                  for (const w of v.words) {
+                    if (passageIsHebrew) {
+                      const bare = (w as { strongs?: string }).strongs?.replace(/^H/, '')
+                      if (!bare) continue
+                      const entry = lookupHebrewStrongs(hebLex, bare)
+                      const gloss = usableGloss(entry)
+                      if (!gloss) continue
+                      // A lemma absent from the count table occurs only a handful of times,
+                      // so it belongs in any glossary the reader has asked for.
+                      const freq = hebFreq?.[bare] ?? 0
+                      if (freq >= threshold) continue
+                      const lemma = entry?.lemma || w.surface
+                      if (seen.has(lemma)) continue
+                      seen.add(lemma)
+                      rare.push({ key: w.id, lemma, gloss })
+                    } else {
+                      const lex = w.lexeme
+                      if (!lex || !lex.gloss || !lex.lexeme) continue
+                      if ((lex.frequency ?? 0) >= threshold) continue
+                      if (seen.has(lex.lexeme)) continue
+                      seen.add(lex.lexeme)
+                      rare.push({ key: w.id, lemma: lex.lexeme, gloss: lex.gloss })
+                    }
+                  }
                   if (rare.length === 0) return null
                   return (
                     <div className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 print:bg-transparent print:border-gray-300 print:break-inside-avoid">
@@ -2342,10 +2377,10 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                         Glossary · words less frequent than {threshold}×
                       </p>
                       <ul className="space-y-0.5">
-                        {rare.map(w => (
-                          <li key={w.id} className="text-sm leading-snug">
-                            <span dir={hasHebrew(w.lexeme!.lexeme) ? 'rtl' : undefined} className={`${hasHebrew(w.lexeme!.lexeme) ? 'font-hebrew' : 'font-greek'} text-gray-800`}>{w.lexeme!.lexeme}</span>
-                            <span className="text-gray-500"> — {w.lexeme!.gloss}</span>
+                        {rare.map(r => (
+                          <li key={r.key} className="text-sm leading-snug">
+                            <span dir={hasHebrew(r.lemma) ? 'rtl' : undefined} className={`${hasHebrew(r.lemma) ? 'font-hebrew text-base' : 'font-greek'} text-gray-800`}>{r.lemma}</span>
+                            <span className="text-gray-500"> — {r.gloss}</span>
                           </li>
                         ))}
                       </ul>
