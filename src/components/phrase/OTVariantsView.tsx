@@ -19,8 +19,14 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { matchProseCitation, type ProseChapter } from '@/lib/prose-texts'
+import { HebrewVerse } from '@/components/reader/HebrewVerse'
+import { GreekVerse } from '@/components/reader/GreekVerse'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
+import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import type { BiblicalVerse } from '@/types/biblical-text'
+import type { LexicalInfoPanel } from '@/types/lexicon'
 
-interface VRow { verse: number; mt?: string; lxx?: string; tg?: string; en?: string }
+interface VRow { verse: number; mtV?: BiblicalVerse; lxxV?: BiblicalVerse; tg?: string; en?: string }
 interface SpNote { sp?: string; note: string; source: string }
 
 // osisId → targum citation prefix (resolved through the prose registry, so the work's
@@ -53,6 +59,13 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
   // von Gall edition (see docs/sp-permission-request.md for why the full text is blocked).
   const [spNotes, setSpNotes] = useState<Record<string, SpNote>>({})
   const [spAttrib, setSpAttrib] = useState('')
+  // Parsing pane, exactly as the Reader and Commentary have it: hover previews, click pins.
+  // The MT column parses against the Hebrew lexicon; the LXX column against the Greek data
+  // its corpus already carries.
+  const [hebrewLex, setHebrewLex] = useState<HebrewLexicon | null>(null)
+  const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
+  const [hoverInfo, setHoverInfo] = useState<LexicalInfoPanel | null>(null)
+  useEffect(() => { loadHebrewLexicon().then(setHebrewLex).catch(() => {}) }, [])
   const reqRef = useRef(0)
 
   useEffect(() => { onAttribution?.([ATTRIBUTION, tgAttrib, spAttrib].filter(Boolean).join(' ')) }, [onAttribution, tgAttrib, spAttrib])
@@ -68,9 +81,6 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
   useEffect(() => {
     const id = ++reqRef.current
     setLoading(true)
-    const textOf = (words: { surface: string }[] | undefined, plain?: string) =>
-      plain ?? (words ? words.map(w => w.surface).join(' ') : undefined)
-
     const targum = TARGUM[osis] ? matchProseCitation(`${TARGUM[osis]} ${chapter}:1`) : null
 
     Promise.all([
@@ -81,8 +91,8 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
         : Promise.resolve({}),
       fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=en`).then(r => r.json()).catch(() => ({})),
     ]).then(([mt, lxx, tg, en]: [
-      { verses?: { verse: number; text?: string; words?: { surface: string }[] }[] },
-      { verses?: { verse: number; text?: string; words?: { surface: string }[] }[] },
+      { verses?: BiblicalVerse[] },
+      { verses?: BiblicalVerse[] },
       { attribution?: string; chapters?: ProseChapter[] },
       { verses?: Record<string, string> },
     ]) => {
@@ -93,8 +103,8 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
         if (!r) { r = { verse: v }; byVerse.set(v, r) }
         return r
       }
-      for (const v of mt.verses ?? []) if (v.verse >= verseStart && v.verse <= verseEnd) row(v.verse).mt = textOf(v.words, v.text)
-      for (const v of lxx.verses ?? []) if (v.verse >= verseStart && v.verse <= verseEnd) row(v.verse).lxx = textOf(v.words, v.text)
+      for (const v of mt.verses ?? []) if (v.verse >= verseStart && v.verse <= verseEnd) row(v.verse).mtV = v
+      for (const v of lxx.verses ?? []) if (v.verse >= verseStart && v.verse <= verseEnd) row(v.verse).lxxV = v
       const tgCh = (tg.chapters ?? []).find(c => c.number === chapter)
       if (tg.attribution) setTgAttrib(tg.attribution)
       for (const vv of tgCh?.verses ?? []) if (vv.number >= verseStart && vv.number <= verseEnd) row(vv.number).tg = vv.text
@@ -111,7 +121,8 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
   const cols = hasTg ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
 
   return (
-    <div className="h-full overflow-y-auto px-1 pb-6">
+    <div className="h-full flex flex-col min-h-0">
+    <div className="flex-1 overflow-y-auto px-1 pb-4">
       <div className="mb-3 mt-1">
         <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
           Ancient versions — {name} {chapter}:{verseStart}{verseEnd !== verseStart ? `–${verseEnd}` : ''}
@@ -146,8 +157,20 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
             <div key={r.verse} className="rounded-xl border border-gray-200 p-3">
               <p className="text-[11px] font-semibold text-brand-600 mb-1.5">{name} {chapter}:{r.verse}</p>
               <div className={`grid grid-cols-1 ${cols} gap-3`}>
-                <p dir="rtl" lang="he" className="font-hebrew text-lg leading-relaxed text-gray-900">{r.mt ?? <span className="font-sans text-xs text-gray-300 italic">—</span>}</p>
-                <p className="font-greek text-base leading-relaxed text-gray-800">{r.lxx ?? <span className="font-sans text-xs text-gray-300 italic">not in the LXX at this number</span>}</p>
+                <div className="text-lg leading-relaxed text-gray-900" style={{ '--greek-fs': '1.125rem' } as React.CSSProperties}>
+                  {r.mtV
+                    ? <HebrewVerse verse={r.mtV} activeWordId={null} highlighted={false} lexicon={hebrewLex}
+                        onWordHover={(_id, hi) => setHoverInfo(hi)}
+                        onWordClick={i => { setInfo(i); setHoverInfo(null) }} />
+                    : <span className="font-sans text-xs text-gray-300 italic">—</span>}
+                </div>
+                <div className="text-base leading-relaxed text-gray-800" style={{ '--greek-fs': '1.05rem' } as React.CSSProperties}>
+                  {r.lxxV
+                    ? <GreekVerse verse={r.lxxV} activeWordId={null} highlighted={false} textHighlights={[]}
+                        onWordHover={(_id, hi) => setHoverInfo(hi)}
+                        onWordClick={i => { setInfo(i); setHoverInfo(null) }} />
+                    : <span className="font-sans text-xs text-gray-300 italic">not in the LXX at this number</span>}
+                </div>
                 {hasTg && <p className="font-reading text-sm leading-relaxed text-gray-700">{r.tg ?? <span className="text-xs text-gray-300 italic">—</span>}</p>}
                 <p className="font-reading text-sm leading-relaxed text-gray-700">{r.en ?? <span className="text-xs text-gray-300 italic">—</span>}</p>
               </div>
@@ -167,6 +190,10 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
           ))}
         </div>
       )}
+    </div>
+    <div className="shrink-0 mt-2 px-1">
+      <ResizableParsingPane storageKey="ot-variants" info={hoverInfo ?? info} bgClass="bg-gray-50" />
+    </div>
     </div>
   )
 }

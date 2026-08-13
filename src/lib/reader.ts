@@ -278,6 +278,7 @@ export async function getChapter(bookOsisId: string, chapter: number, preferCorp
   type RawVerse = { id: string; bookId: string; chapter: number; verse: number; reference: string; text: string; words: RawWord[] }
   const candidates = primary === nativeCorpus ? [primary] : [primary, nativeCorpus]
   let raw: { book: string; chapter: number; verses: RawVerse[] } | null = null
+  let loadedCorpus = ''
   for (const corpus of candidates) {
     const text = await readCorpusFile(corpus, bookOsisId, chapter)
     if (!text) continue
@@ -286,6 +287,7 @@ export async function getChapter(bookOsisId: string, chapter: number, preferCorp
       // NA1904 ships a compact format ({ b, c, v: { verse: [[surface,lemma,strongs]…] } })
       // to keep the function bundle small — expand it to the standard shape here.
       raw = parsed.verses ? parsed : expandCompactChapter(parsed, book.name)
+      loadedCorpus = corpus
       break
     } catch { /* try next corpus */ }
   }
@@ -298,7 +300,14 @@ export async function getChapter(bookOsisId: string, chapter: number, preferCorp
     verse: v.verse,
     reference: v.reference,
     text: v.text,
-    words: v.words.map(w => wordToVerseWord(w, v.id)),
+    // The MT's words are Hebrew-shaped — an OSHB morph STRING, Hebrew Strong's, language
+    // flag and morphemes — and must pass through untouched. wordToVerseWord is the Greek
+    // shaper: it discards those fields and, worse, mints a lexeme by looking the Hebrew
+    // Strong's number up in the GREEK lexicon (G776 "fasting" for הָאָרֶץ), which is how
+    // every API consumer of Hebrew chapters got garbage glosses and no parses.
+    words: loadedCorpus === 'mt'
+      ? v.words.map(w => ({ ...(w as unknown as VerseWord), verseId: v.id }))
+      : v.words.map(w => wordToVerseWord(w, v.id)),
   }))
 
   const result = { book, chapter, verses }
