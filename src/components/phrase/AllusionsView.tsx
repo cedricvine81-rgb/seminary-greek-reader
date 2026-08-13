@@ -10,6 +10,7 @@ import { openWordSearch } from '@/lib/word-search-bus'
 import { MT_OSIS } from '@/lib/mt-books'
 import { CITATION_STOP, detectCitation } from '@/lib/citation-formula'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 
 // ── Allusions tab ───────────────────────────────────────────────────────────────────────
 // Find and argue Old Testament allusions behind a New Testament passage, after Dale C.
@@ -232,6 +233,8 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
 
   // Shared parsing pane, fed by hovering any Greek word (passage or LXX result).
   const [parseInfo, setParseInfo] = useState<LexicalInfoPanel | null>(null)
+  const hebLexRef = useRef<HebrewLexicon | null>(null)
+  useEffect(() => { if (searchCorpus === 'MT' && !hebLexRef.current) loadHebrewLexicon().then(l => { hebLexRef.current = l }).catch(() => {}) }, [searchCorpus])
 
   useEffect(() => { onAttribution?.(SOURCE_ATTR) }, [onAttribution])
 
@@ -641,7 +644,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
                           <button
                             type="button"
                             onClick={() => toggleWord(v.verse, i, w)}
-                            onMouseEnter={() => setParseInfo({ surface: w.surface, lexeme: w.lemma, gloss: w.gloss ?? '', partOfSpeech: '', parsing: w.parsing ?? '', strongs: w.strongs, reference: `${parsed!.name} ${parsed!.chapter}:${v.verse}` })}
+                            onMouseEnter={() => setParseInfo(hebrewizeInfo({ surface: w.surface, lexeme: w.lemma, gloss: w.gloss ?? '', partOfSpeech: '', parsing: w.parsing ?? '', strongs: w.strongs, reference: `${parsed!.name} ${parsed!.chapter}:${v.verse}` }, hebLexRef.current))}
                             onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lemma || null, reference: `${parsed!.name} ${parsed!.chapter}:${v.verse}`, ...(searchCorpus === 'MT' ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }), book: parsed!.osis }) }}
                             title={w.gloss ? `${w.gloss}${n != null ? ` — in ${n} LXX verses` : ''}` : undefined}
                             className={`rounded px-0.5 transition-colors ${

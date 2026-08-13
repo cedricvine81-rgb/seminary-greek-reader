@@ -20,7 +20,7 @@ export const HB_HIPHIL_HOPHAL = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1"><strong>Causative = making it happen rather than doing it.</strong> English keeps a few fossil pairs that work exactly like Qal → Hiphil: the tree <em>falls</em> / the logger <em>fells</em> it; you <em>sit</em> / you <em>set</em> the cup down; you <em>lie</em> down / you <em>lay</em> the book down; the sun <em>rises</em> / you <em>raise</em> the flag. Hebrew does that to nearly ANY verb: בָּא “he came” → הֵבִיא “he brought” (caused to come); מָלַךְ “he reigned” → הִמְלִיךְ “he made (someone) king.”</p>
+      <p className="mb-1"><strong>Causative = making it happen rather than doing it.</strong> English keeps a few fossil pairs that work exactly like Qal → Hiphil: the tree <em>falls</em> / the logger <em>fells</em> it; you <em>sit</em> / you <em>set</em> the cup down; you <em>lie</em> down / you <em>lay</em> the book down; the sun <em>rises</em> / you <em>raise</em> the flag. Hebrew does that to nearly ANY verb: <Hb>בָּא</Hb> “he came” → <Hb>הֵבִיא</Hb> “he brought” (caused to come); <Hb>מָלַךְ</Hb> “he reigned” → <Hb>הִמְלִיךְ</Hb> “he made (someone) king.”</p>
       <p>Where English has no pair, it says “make / have / let someone do it” — which is the wooden gloss the table uses. Real translations pick a natural verb: “bring,” “raise,” “crown.”</p>
     </InfoBox>
 

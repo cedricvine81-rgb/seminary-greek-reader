@@ -19,7 +19,7 @@ export const HB_ARTICLE = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1">English has two little words for definiteness: <em>a</em> (any one) and <em>the</em> (that particular one). Hebrew has only “the” — and it is not a separate word but a syllable glued to the front: בַּיִת “a house,” הַבַּיִת “the house.” Think of it as writing “thehouse.”</p>
+      <p className="mb-1">English has two little words for definiteness: <em>a</em> (any one) and <em>the</em> (that particular one). Hebrew has only “the” — and it is not a separate word but a syllable glued to the front: <Hb>בַּיִת</Hb> “a house,” <Hb>הַבַּיִת</Hb> “the house.” Think of it as writing “thehouse.”</p>
       <p>There is no word for “a” at all: a bare noun is indefinite by default. So every unglued noun you meet already means “a …”.</p>
     </InfoBox>
 

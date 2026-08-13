@@ -17,8 +17,8 @@ export const HB_HITHPAEL = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1"><strong>Reflexive = the action folds back on its doer.</strong> English says it with “-self”: he hid <em>himself</em>, she prepared <em>herself</em>, they washed <em>themselves</em>. Hebrew says it with the הִתְ prefix on the stem: קִדֵּשׁ “he consecrated (someone)” → הִתְקַדֵּשׁ “he consecrated <em>himself</em>.”</p>
-      <p>It can also be <strong>each other</strong> (“they looked at one another”) or acting-a-part (הִתְנַבֵּא “behave as a prophet”). The common thread: the subject is on both ends of the verb.</p>
+      <p className="mb-1"><strong>Reflexive = the action folds back on its doer.</strong> English says it with “-self”: he hid <em>himself</em>, she prepared <em>herself</em>, they washed <em>themselves</em>. Hebrew says it with the <Hb>הִתְ</Hb> prefix on the stem: <Hb>קִדֵּשׁ</Hb> “he consecrated (someone)” → <Hb>הִתְקַדֵּשׁ</Hb> “he consecrated <em>himself</em>.”</p>
+      <p>It can also be <strong>each other</strong> (“they looked at one another”) or acting-a-part (<Hb>הִתְנַבֵּא</Hb> “behave as a prophet”). The common thread: the subject is on both ends of the verb.</p>
     </InfoBox>
 
     <SectionHeading n={1}>Forms</SectionHeading>

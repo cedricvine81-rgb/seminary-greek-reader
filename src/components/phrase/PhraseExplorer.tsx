@@ -11,6 +11,7 @@ import { highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { formatParsing } from '@/lib/morph-formatting'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
 type WordNodeT = { t: 'w'; id: string; w: string; gloss?: string; lemma?: string; morph?: string; role?: string; cls?: string; strongs?: string; parsing?: string }
@@ -265,7 +266,11 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   const [message, setMessage] = useState('')
   // The Greek word whose lexical detail is shown in the panel below.
   const [selected, setSelected] = useState<WordNodeT | null>(null)
-  const selectedInfo: LexicalInfoPanel | null = selected ? {
+  // Hebrew lexicon for OT passages: without it (and the hebrewize step) the pane treated a
+  // Hebrew Strong's number as Greek — Thayer's-on-the-wrong-word territory.
+  const hebLexRef = useRef<HebrewLexicon | null>(null)
+  useEffect(() => { loadHebrewLexicon().then(l => { hebLexRef.current = l }).catch(() => {}) }, [])
+  const selectedInfo: LexicalInfoPanel | null = selected ? hebrewizeInfo({
     surface: selected.w,
     lexeme: selected.lemma ?? '',
     gloss: selected.gloss ?? '',
@@ -273,14 +278,14 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
     parsing: selected.parsing ?? '',
     strongs: selected.strongs,
     reference: refFromId(selected.id),
-  } : null
+  }, hebLexRef.current) : null
   // True when the selected word belongs to this sentence (so its card shows the panel).
   const selInSentence = (s: Sentence): boolean => {
     if (!selected) return false
     const [, ch, v] = selected.id.split('.')
     return Number(ch) === s.chapter && Number(v) >= s.startVerse && Number(v) <= s.endVerse
   }
-  const infoFor = (w: WordNodeT): LexicalInfoPanel => ({
+  const infoFor = (w: WordNodeT): LexicalInfoPanel => hebrewizeInfo({
     surface: w.w,
     lexeme: w.lemma ?? '',
     gloss: w.gloss ?? '',
@@ -288,7 +293,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
     parsing: w.parsing ?? '',
     strongs: w.strongs,
     reference: refFromId(w.id),
-  })
+  }, hebLexRef.current)
   // The parsing box always shows something so users know it's there: the clicked
   // word if one is selected in this sentence, otherwise the verse's first word.
   const panelInfo = (s: Sentence): LexicalInfoPanel | null => {

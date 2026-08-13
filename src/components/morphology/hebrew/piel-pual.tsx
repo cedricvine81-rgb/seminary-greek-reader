@@ -78,7 +78,7 @@ export const HB_PIEL_PUAL = (
     <InfoBox title="In plain English">
       <p className="mb-1">English does the factitive with suffixes and word-pairs, so you already know the move:</p>
       <p className="mb-1">· <em>pure → purify</em>, <em>sterile → sterilize</em>, <em>modern → modernize</em> — an adjective (a state) turned into an action done to something. That is Qal → Piel in miniature.</p>
-      <p className="mb-1">· <em>learn → teach</em> — “to teach” is “to cause someone to learn.” Hebrew says it with the same root: Qal <span dir="rtl">לָמַד</span> “learn” → Piel <span dir="rtl">לִמַּד</span> “teach.”</p>
+      <p className="mb-1">· <em>learn → teach</em> — “to teach” is “to cause someone to learn.” Hebrew says it with the same root: Qal <Hb>לָמַד</Hb> “learn” → Piel <Hb>לִמַּד</Hb> “teach.”</p>
       <p>· <em>break → smash</em>, <em>hit → batter</em>, <em>bite → gnaw</em> — the genuinely “intensive” pairs. English needs a different word; Hebrew doubles a letter.</p>
     </InfoBox>
     <MorphTable

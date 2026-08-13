@@ -33,3 +33,29 @@ export function lookupHebrewStrongs(lex: HebrewLexicon | null, strongs: string |
   const key = strongs.replace(/^H/, '').replace(/[a-z]$/i, '')
   return lex[key] ?? lex[strongs] ?? null
 }
+
+// ── Retrofit for token-based panes ────────────────────────────────────────────────────
+// The Reader's Hebrew words flow through buildHebrewInfo (HebrewWord.tsx), which stamps
+// `script: 'hebrew'` so the ParsingPanel uses the Hebrew lexicon. The token-based views
+// (Synopsis, Phrasing, Allusions, Rhetoric) built bare payloads with a NAKED Strong's
+// number — and the panel, seeing no script, prefixed it with G and looked it up in the
+// GREEK lexicon: הֵמָּה (H1992 "they") came back as Thayer's on G1992, "an epistle."
+// Route every such payload through this before it reaches the pane.
+import { hasHebrew } from '@/lib/script-detect'
+import type { LexicalInfoPanel } from '@/types/lexicon'
+
+export function hebrewizeInfo(info: LexicalInfoPanel, lex: HebrewLexicon | null): LexicalInfoPanel {
+  if (info.script || !hasHebrew(info.surface)) return info   // Greek/LXX panes stay Greek
+  const bare = info.strongs?.replace(/^H/, '')
+  const entry = lookupHebrewStrongs(lex, bare)
+  return {
+    ...info,
+    script: 'hebrew',
+    lexeme: entry?.lemma || info.lexeme || info.surface,
+    gloss: entry?.gloss || info.gloss,
+    strongs: bare ? `H${bare}` : info.strongs,
+    transliteration: entry?.xlit || undefined,
+    definition: entry?.def || undefined,
+    bdbDefinition: entry?.bdb || undefined,
+  }
+}

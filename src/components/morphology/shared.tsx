@@ -312,14 +312,14 @@ Gk.i18nRole = 'greek' as const
  *  translatable block containing Hebrew falls back to its English children — the standard
  *  never-mislead rule — until the serializer is taught Hebrew. */
 export function Hb({ children }: { children: React.ReactNode }) {
-  return <span lang="he" dir="rtl" className="font-hebrew text-[1.12em] normal-case font-medium text-gray-800">{children}</span>
+  return <span lang="he" dir="rtl" className="font-hebrew text-[1.35em] normal-case font-medium text-gray-800">{children}</span>
 }
 
 /** An example line: Hebrew → English. */
 export function HbEx({ he, en }: { he: React.ReactNode; en: React.ReactNode }) {
   return (
-    <p className="text-sm leading-relaxed">
-      <span lang="he" dir="rtl" className="font-hebrew text-[15px] text-gray-800">{he}</span>
+    <p className="text-[15px] leading-relaxed">
+      <span lang="he" dir="rtl" className="font-hebrew text-[22px] text-gray-800">{he}</span>
       <span className="mx-1.5 text-gray-400">→</span>
       <span className="text-gray-600">{en}</span>
     </p>

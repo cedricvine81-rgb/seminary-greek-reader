@@ -19,7 +19,7 @@ export const HB_QAL_IMPERFECT = (
 
     <InfoBox title="In plain English">
       <p className="mb-1"><strong>Incomplete = still open.</strong> English has no one tense for this, so the imperfect scatters across several: “he <em>will</em> keep” (not yet done), “he <em>keeps / used to</em> keep” (repeats, never a finished lump), “he <em>may</em> keep” (possible). What unites them: the action is not being viewed as over.</p>
-      <p><strong>The pronoun moved to the FRONT.</strong> The perfect welded its pronouns on as endings; the imperfect welds them on as prefixes — red in the table. Only four letters do it: <span dir="rtl">י ת א נ</span> (yod “he/they,” taw “she/you,” alef “I,” nun “we”). Learn those four and you can spot an imperfect across the room.</p>
+      <p><strong>The pronoun moved to the FRONT.</strong> The perfect welded its pronouns on as endings; the imperfect welds them on as prefixes — red in the table. Only four letters do it: <Hb>י ת א נ</Hb> (yod “he/they,” taw “she/you,” alef “I,” nun “we”). Learn those four and you can spot an imperfect across the room.</p>
     </InfoBox>
 
     <SectionHeading n={1}>The paradigm</SectionHeading>

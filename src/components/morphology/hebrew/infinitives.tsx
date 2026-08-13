@@ -19,7 +19,7 @@ export const HB_INFINITIVES = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1">An infinitive is the verb as an idea, with nobody doing it yet: English <em>“to run”</em> — and English has a second, nouny version, the “-ing” gerund: <em>“running is hard.”</em> Hebrew likewise has two: the <strong>infinitive construct</strong> does roughly the work of “to run / running,” and the <strong>infinitive absolute</strong> is an emphatic doubling English can only imitate: מוֹת תָּמוּת, “dying you shall die” = “you shall surely die.”</p>
+      <p className="mb-1">An infinitive is the verb as an idea, with nobody doing it yet: English <em>“to run”</em> — and English has a second, nouny version, the “-ing” gerund: <em>“running is hard.”</em> Hebrew likewise has two: the <strong>infinitive construct</strong> does roughly the work of “to run / running,” and the <strong>infinitive absolute</strong> is an emphatic doubling English can only imitate: <Hb>מוֹת תָּמוּת</Hb>, “dying you shall die” = “you shall surely die.”</p>
       <p>If you have ever said “I really, truly mean it,” you have felt what the infinitive absolute does.</p>
     </InfoBox>
 

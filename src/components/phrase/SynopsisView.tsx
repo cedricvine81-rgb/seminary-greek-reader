@@ -20,6 +20,7 @@ import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/hi
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { TransWords } from '@/components/highlights/TransWords'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
 
 // Text-size control — same scale as the Phrasing tab (shares its type/values so the
@@ -403,12 +404,14 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     return { label, book: p.book.osisId, bookName: p.book.name, chapter: p.chapter, verses }
   }
 
-  /** Build the ParsingPanel's info object for a clicked word, given its owning column + verse. */
+  /** Build the ParsingPanel's info object for a clicked word, given its owning column + verse.
+   *  Hebrew tokens are routed through hebrewizeInfo, or the pane would look their naked
+   *  Strong's number up in the GREEK lexicon (H1992 "they" rendered Thayer's for "epistle"). */
   function toLexicalInfo(tok: WordToken, bookName: string, verseRef: string): LexicalInfoPanel {
-    return {
+    return hebrewizeInfo({
       surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '',
       parsing: tok.parsing, strongs: tok.strongs, reference: `${bookName} ${verseRef}`,
-    }
+    }, hebLexRef.current)
   }
 
   const addRef = (raw: string = addInput) => {
@@ -425,6 +428,10 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   // files are withheld. Parallels pair OT with OT, so one flag serves every column.
   const anchorParsed = books.length ? parseRef(anchor, books) : null
   const anchorHebrew = !!anchorParsed && MT_OSIS.has(anchorParsed.book.osisId)
+  // Hebrew lexicon for the parsing pane (lemma/xlit/BDB); a ref so toLexicalInfo — called in
+  // render paths — reads it without re-creating callbacks.
+  const hebLexRef = useRef<HebrewLexicon | null>(null)
+  useEffect(() => { if (anchorHebrew && !hebLexRef.current) loadHebrewLexicon().then(l => { hebLexRef.current = l }).catch(() => {}) }, [anchorHebrew])
 
   // Keep the source pointer valid if the user removes columns while comparing.
   useEffect(() => { if (sourceIdx >= columns.length) setSourceIdx(0) }, [columns.length, sourceIdx])

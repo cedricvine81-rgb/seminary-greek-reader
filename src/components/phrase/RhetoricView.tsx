@@ -16,7 +16,7 @@ import { highlightMarkClass } from '@/lib/highlight-colors'
 import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { MT_OSIS, MT_BOOK_LIST } from '@/lib/mt-books'
 import { formatHebrewParse } from '@/lib/hebrew-morph'
-import { loadHebrewLexicon, lookupHebrewStrongs, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { loadHebrewLexicon, hebrewizeInfo, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -90,12 +90,6 @@ function loadKeil(osis: string): Promise<Record<string, string>> {
   return kdInflight[osis]
 }
 
-// A Hebrew token carries Strong's and morphology but no lemma or gloss; the lexicon supplies
-// those for the parsing pane. A no-op for Greek (and before the lexicon has loaded).
-function withHebrewLex(info: LexicalInfoPanel, strongs: string | undefined, lex: HebrewLexicon | null): LexicalInfoPanel {
-  const e = lookupHebrewStrongs(lex, strongs)
-  return e ? { ...info, lexeme: e.lemma || info.lexeme, gloss: e.gloss || info.gloss } : info
-}
 
 // Keil & Delitzsch comments on blocks of verses, keyed by the verse each block opens with
 // ("1:1" covers Ps 1:1-3, "1:4" covers 1:4-6). So a lookup falls back to the nearest
@@ -548,12 +542,12 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
     if (showPreview) {
       const pp = parseRef(previewRef!)
       const t = pp ? wordCache.current[version]?.[`${pp.osis}.${pp.chapter}.${pp.vStart}`]?.[0] : undefined
-      return t ? toLexicalInfo(t, `${pp!.name} ${pp!.chapter}:${pp!.vStart}`) : null
+      return t ? hebrewizeInfo(toLexicalInfo(t, `${pp!.name} ${pp!.chapter}:${pp!.vStart}`), hebLex) : null
     }
     if (!parsed) return null
     const fv = shownVerses.find(v => v.tokens && v.tokens.length > 0)
     const ft = fv?.tokens?.[0]
-    return ft ? toLexicalInfo(ft, `${parsed.name} ${parsed.chapter}:${fv!.verse}`) : null
+    return ft ? hebrewizeInfo(toLexicalInfo(ft, `${parsed.name} ${parsed.chapter}:${fv!.verse}`), hebLex) : null
   })()
 
   const sel = selected && deviceById(selected.id)
@@ -600,7 +594,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                       ? <span {...verseAnchorProps(parsed!.osis, parsed!.chapter, v.verse, origLayer)}>
                           {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
                             const key = `${v.verse}.${ti}`
-                            const select = () => { setSelectedInfo(withHebrewLex(toLexicalInfo(tok, refStr), tok.strongs, hebLex)); setSelectedKey(key) }
+                            const select = () => { setSelectedInfo(hebrewizeInfo(toLexicalInfo(tok, refStr), hebLex)); setSelectedKey(key) }
                             const hl = highlightAt(start, end, verseHls)
                             return (
                               <span
@@ -853,7 +847,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                         ? <span {...verseAnchorProps(p!.osis, p!.chapter, p!.vStart, 'grc')}>
                             {withTokenOffsets(ptoks).map(({ token: tok, start, end }, ti) => {
                               const key = `prev.${ti}`
-                              const select = () => { setSelectedInfo(toLexicalInfo(tok, pref)); setSelectedKey(key) }
+                              const select = () => { setSelectedInfo(hebrewizeInfo(toLexicalInfo(tok, pref), hebLex)); setSelectedKey(key) }
                               const hl = highlightAt(start, end, pvHls)
                               return (
                                 <span key={ti} onMouseEnter={select} onClick={select}

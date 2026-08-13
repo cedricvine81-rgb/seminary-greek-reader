@@ -19,8 +19,8 @@ export const HB_WAW = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1">Listen to anyone tell a story: <em>“And then he got up, and then he went out, and then he saw…”</em> — a chain of “and then”s. Biblical narrative runs on exactly that chain: וַ (“and”) + a verb, verse after verse. It is the single most common verbal form in the Bible.</p>
-      <p>The surprise this chapter explains: inside that chain, the verb form that normally means future (“he will get up”) is the one that tells the PAST. The וַ “flips” it — which is why the old name is “waw-conversive.” Spot the chain (וַ + doubling), and you are reading narrative.</p>
+      <p className="mb-1">Listen to anyone tell a story: <em>“And then he got up, and then he went out, and then he saw…”</em> — a chain of “and then”s. Biblical narrative runs on exactly that chain: <Hb>וַ</Hb> (“and”) + a verb, verse after verse. It is the single most common verbal form in the Bible.</p>
+      <p>The surprise this chapter explains: inside that chain, the verb form that normally means future (“he will get up”) is the one that tells the PAST. The <Hb>וַ</Hb> “flips” it — which is why the old name is “waw-conversive.” Spot the chain (<Hb>וַ</Hb> + doubling), and you are reading narrative.</p>
     </InfoBox>
 
     <SectionHeading n={1}>The form</SectionHeading>

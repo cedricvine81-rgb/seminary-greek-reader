@@ -20,8 +20,8 @@ export const HB_SUFFIXES = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1">English says <em>my horse, your horse, his horse</em> — a little word in front. Hebrew glues the owner on as an ENDING instead: סוּסִי “horse-my,” סוּסְךָ “horse-your,” סוּסוֹ “horse-his.” One word where English needs two.</p>
-      <p>The suffixes are the same little set everywhere — on nouns (“my horse”), on prepositions (“to-me,” לִי), and later on verbs (“he kept-me”). Learn the set once and you will meet it on every page of the Bible.</p>
+      <p className="mb-1">English says <em>my horse, your horse, his horse</em> — a little word in front. Hebrew glues the owner on as an ENDING instead: <Hb>סוּסִי</Hb> “horse-my,” <Hb>סוּסְךָ</Hb> “horse-your,” <Hb>סוּסוֹ</Hb> “horse-his.” One word where English needs two.</p>
+      <p>The suffixes are the same little set everywhere — on nouns (“my horse”), on prepositions (“to-me,” <Hb>לִי</Hb>), and later on verbs (“he kept-me”). Learn the set once and you will meet it on every page of the Bible.</p>
     </InfoBox>
 
     <SectionHeading n={1}>On a singular noun</SectionHeading>

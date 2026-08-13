@@ -20,7 +20,7 @@ export const HB_NIPHAL = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1"><strong>Active vs passive is an English idea too.</strong> “The boy broke the window” is active — the subject does the deed. “The window <em>was broken</em>” is passive — the subject receives it, and the doer can go unnamed. English builds its passive with a helping verb (“was broken”); Hebrew builds it by moving the same root into a different stem: שָׁמַר “he kept” → נִשְׁמַר “he was kept.” One added letter does the work of the whole English phrase.</p>
+      <p className="mb-1"><strong>Active vs passive is an English idea too.</strong> “The boy broke the window” is active — the subject does the deed. “The window <em>was broken</em>” is passive — the subject receives it, and the doer can go unnamed. English builds its passive with a helping verb (“was broken”); Hebrew builds it by moving the same root into a different stem: <Hb>שָׁמַר</Hb> “he kept” → <Hb>נִשְׁמַר</Hb> “he was kept.” One added letter does the work of the whole English phrase.</p>
       <p><strong>Reflexive is the other face:</strong> sometimes the Niphal is “he kept <em>himself</em>” — subject and object are the same person. Context decides which face you are looking at.</p>
     </InfoBox>
 

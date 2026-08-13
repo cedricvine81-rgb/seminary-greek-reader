@@ -18,7 +18,7 @@ export const HB_NOUNS = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1"><strong>Grammatical gender is a filing system, not biology.</strong> English nouns have no gender — “table” is just “it.” Hebrew (like Spanish or French) files every noun as masculine or feminine, and the label often has nothing to do with sex: אֶרֶץ “land” is feminine, לַיְלָה “night” is masculine despite its feminine-looking ending. The label matters because OTHER words must match it — adjectives and verbs change their form to agree with the noun's gender.</p>
+      <p className="mb-1"><strong>Grammatical gender is a filing system, not biology.</strong> English nouns have no gender — “table” is just “it.” Hebrew (like Spanish or French) files every noun as masculine or feminine, and the label often has nothing to do with sex: <Hb>אֶרֶץ</Hb> “land” is feminine, <Hb>לַיְלָה</Hb> “night” is masculine despite its feminine-looking ending. The label matters because OTHER words must match it — adjectives and verbs change their form to agree with the noun's gender.</p>
       <p><strong>Number:</strong> English marks plural with -s (dog → dogs); Hebrew marks it with the red endings in the table — and keeps a special <em>dual</em> ending for natural pairs (hands, eyes, ears), something English lost long ago.</p>
     </InfoBox>
 

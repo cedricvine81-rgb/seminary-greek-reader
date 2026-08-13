@@ -18,7 +18,7 @@ export const HB_PREPOSITIONS = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1">A preposition is a small word that positions one thing relative to another: <em>in</em> the house, <em>to</em> the city, <em>like</em> a lion, <em>from</em> Egypt. English writes them as separate words; Hebrew glues its three commonest to the front of the next word, exactly as it glued “the”: בְּבַיִת “in-a-house,” one word.</p>
+      <p className="mb-1">A preposition is a small word that positions one thing relative to another: <em>in</em> the house, <em>to</em> the city, <em>like</em> a lion, <em>from</em> Egypt. English writes them as separate words; Hebrew glues its three commonest to the front of the next word, exactly as it glued “the”: <Hb>בְּבַיִת</Hb> “in-a-house,” one word.</p>
       <p>English actually does this in a few fossils — <em>aboard</em> (“on board”), <em>ashore</em>, <em>tonight</em> — it just stopped doing it productively. Hebrew never stopped.</p>
     </InfoBox>
 

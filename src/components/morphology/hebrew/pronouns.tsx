@@ -18,8 +18,8 @@ export const HB_PRONOUNS = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1">A pronoun stands in for a name: <em>I, you, he, she, we, they</em>. Grammars sort them by <strong>person</strong> — first person is the speaker (I/we), second is the one spoken TO (you), third is the one spoken ABOUT (he/she/they) — and Hebrew adds gender to “you” and “they”: אַתָּה is “you” to a man, אַתְּ “you” to a woman.</p>
-      <p>One habit to build now: Hebrew usually buries its pronouns inside verb endings, so when a sentence spells out a separate pronoun — אֲנִי, הוּא — it is leaning on it: “<em>I myself</em> …”, “<em>he</em> is the one who …”.</p>
+      <p className="mb-1">A pronoun stands in for a name: <em>I, you, he, she, we, they</em>. Grammars sort them by <strong>person</strong> — first person is the speaker (I/we), second is the one spoken TO (you), third is the one spoken ABOUT (he/she/they) — and Hebrew adds gender to “you” and “they”: <Hb>אַתָּה</Hb> is “you” to a man, <Hb>אַתְּ</Hb> “you” to a woman.</p>
+      <p>One habit to build now: Hebrew usually buries its pronouns inside verb endings, so when a sentence spells out a separate pronoun — <Hb>אֲנִי</Hb>, <Hb>הוּא</Hb> — it is leaning on it: “<em>I myself</em> …”, “<em>he</em> is the one who …”.</p>
     </InfoBox>
 
     <SectionHeading n={1}>Independent personal pronouns</SectionHeading>

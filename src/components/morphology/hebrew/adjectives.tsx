@@ -18,7 +18,7 @@ export const HB_ADJECTIVES = (
     </P>
 
     <InfoBox title="In plain English">
-      <p className="mb-1"><strong>Agreement is the new idea here.</strong> An English adjective never changes: <em>the tall man, the tall woman, the tall men</em> — “tall” sits still. A Hebrew adjective changes its ending to MATCH its noun in gender and number — the same red endings the nouns chapter taught: אִישׁ טוֹב “a good man,” אִשָּׁה טוֹבָה “a good woman,” אֲנָשִׁים טוֹבִים “good men.”</p>
+      <p className="mb-1"><strong>Agreement is the new idea here.</strong> An English adjective never changes: <em>the tall man, the tall woman, the tall men</em> — “tall” sits still. A Hebrew adjective changes its ending to MATCH its noun in gender and number — the same red endings the nouns chapter taught: <Hb>אִישׁ טוֹב</Hb> “a good man,” <Hb>אִשָּׁה טוֹבָה</Hb> “a good woman,” <Hb>אֲנָשִׁים טוֹבִים</Hb> “good men.”</p>
       <p>Spanish speakers know this move already (<em>alto / alta / altos / altas</em>). The payoff for reading: the matching endings tell you which noun an adjective belongs to, even from a distance.</p>
     </InfoBox>
 
