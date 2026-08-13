@@ -8,11 +8,12 @@
 // fetched into /data/rhetoric/bengel.json and shown alongside. Single-chapter books use the
 // form "Book 1:v".
 
-export type DeviceGroup = 'comparison' | 'substitution' | 'omission' | 'repetition' | 'arrangement' | 'emphasis'
+export type DeviceGroup = 'comparison' | 'substitution' | 'omission' | 'repetition' | 'arrangement' | 'emphasis' | 'poetics'
 
 export const GROUP_LABEL: Record<DeviceGroup, string> = {
   comparison: 'Comparison', substitution: 'Substitution', omission: 'Omission',
   repetition: 'Repetition', arrangement: 'Arrangement', emphasis: 'Emphasis & tone',
+  poetics: 'Poetics & structure',
 }
 export const GROUP_COLOR: Record<DeviceGroup, string> = {
   comparison: 'bg-sky-50 border-sky-200 text-sky-800',
@@ -21,6 +22,7 @@ export const GROUP_COLOR: Record<DeviceGroup, string> = {
   repetition: 'bg-emerald-50 border-emerald-200 text-emerald-800',
   arrangement: 'bg-fuchsia-50 border-fuchsia-200 text-fuchsia-800',
   emphasis: 'bg-rose-50 border-rose-200 text-rose-800',
+  poetics: 'bg-teal-50 border-teal-200 text-teal-800',
 }
 // Plain-language gloss of each category, for the colour key / browser / explanation pane.
 export const GROUP_DESC: Record<DeviceGroup, string> = {
@@ -28,11 +30,12 @@ export const GROUP_DESC: Record<DeviceGroup, string> = {
   substitution: 'Naming a thing by something linked to it — metonymy, synecdoche.',
   omission: 'Leaving words out for effect — ellipsis, asyndeton.',
   repetition: 'Repeating words or sounds — anaphora, epizeuxis.',
-  arrangement: 'The order and structure of the words — chiasmus, parallelism.',
+  arrangement: 'The order and structure of the words — hyperbaton, climax.',
   emphasis: 'Heightening feeling or force — hyperbole, irony, rhetorical question.',
+  poetics: 'How a poem is built — parallelism, chiasmus, inclusio, acrostic, refrain.',
 }
-// The six categories in teaching order (comparison → emphasis), for the figures browser.
-export const GROUP_ORDER: DeviceGroup[] = ['comparison', 'substitution', 'omission', 'repetition', 'arrangement', 'emphasis']
+// The categories in teaching order (comparison → poetics), for the figures browser.
+export const GROUP_ORDER: DeviceGroup[] = ['comparison', 'substitution', 'omission', 'repetition', 'arrangement', 'emphasis', 'poetics']
 
 // source: undefined = drawn from a printed source (Bullinger / standard handbooks); 'editorial'
 // = identified editorially (AI-assisted, reviewed), shown with an "Editorial" badge + caveat.
@@ -246,7 +249,7 @@ export const DEVICES: Device[] = [
   },
   // ── Arrangement ─────────────────────────────────────────────────────────────────────
   {
-    id: 'chiasmus', name: 'Chiasmus', greek: 'χιασμός', group: 'arrangement',
+    id: 'chiasmus', name: 'Chiasmus', greek: 'χιασμός', group: 'poetics',
     definition: 'An inverted, mirror-image arrangement (A–B–B′–A′). The crossing often puts emphasis at the centre or ties the outer terms together.',
     occurrences: [
       { ref: 'Matt 6:24', note: 'hate–love … hold to–despise (the two masters)' },
@@ -257,6 +260,9 @@ export const DEVICES: Device[] = [
       { ref: 'Romans 10:9', note: 'mouth–heart … heart–mouth (vv. 9–10)' },
       { ref: 'Colossians 3:11', note: 'the crossed pairs “Greek/Jew … slave/free”' },
       { ref: 'Philemon 1:5', note: 'love–faith … Lord Jesus–saints (a chiastic pair)' },
+      { ref: 'Genesis 9:6', note: '“sheds blood of man / by man his blood be shed” — the crossing enacts the justice' },
+      { ref: 'Isaiah 6:10', note: 'heart–ears–eyes … eyes–ears–heart (vv. 9–10)' },
+      { ref: 'Amos 5:4', note: '“seek me and live” framing the inverted centre of the oracle' },
     ],
   },
   {
@@ -277,7 +283,7 @@ export const DEVICES: Device[] = [
     ],
   },
   {
-    id: 'parallelism', name: 'Parallelism', group: 'arrangement',
+    id: 'parallelism', name: 'Parallelism', group: 'poetics',
     definition: 'Successive lines echo one another in structure — saying the same thing twice (synonymous) or balancing matched clauses.',
     occurrences: [
       { ref: 'Matt 7:7', note: '“ask … seek … knock” — three matched lines' },
@@ -288,7 +294,7 @@ export const DEVICES: Device[] = [
     ],
   },
   {
-    id: 'inclusio', name: 'Inclusio', group: 'arrangement',
+    id: 'inclusio', name: 'Inclusio', group: 'poetics',
     definition: 'A section is “book-ended” by repeating a word or idea at its start and finish, framing everything between.',
     occurrences: [
       { ref: 'Matt 1:23', note: '“God with us” — echoed by “I am with you always” (28:20)' },
@@ -297,6 +303,89 @@ export const DEVICES: Device[] = [
       { ref: 'John 1:1', note: '“the Word was God” … “the only God” (v. 18) frame the prologue' },
       { ref: 'Romans 1:5', note: '“the obedience of faith” — echoed at 16:26' },
       { ref: 'Revelation 1:8', note: '“Alpha and Omega” — framing with 22:13' },
+      { ref: 'Psalms 8:1', note: '“how majestic is your name in all the earth” — opens and closes the psalm (v. 9)' },
+      { ref: 'Psalms 103:1', note: '“Bless the LORD, O my soul” — vv. 1 and 22 frame the whole' },
+      { ref: 'Ecclesiastes 1:2', note: '“vanity of vanities” — the frame of the book (12:8)' },
+    ],
+  },
+  // ── Poetics: how Hebrew verse is built ──────────────────────────────────────────────
+  // Bullinger's per-book data (public/data/rhetoric/devices/) supplies the breadth; these
+  // curated entries supply the teaching frame. Lowth's three kinds of parallelism (De sacra
+  // poesi Hebraeorum, 1753) are the standard classification and are named as such. Examples
+  // are the ones an OT instructor reaches for first.
+  {
+    id: 'parallelism-synonymous', name: 'Parallelism — synonymous', group: 'poetics',
+    definition: 'Lowth’s first kind: the second line says the same thing as the first in different words. The repetition is the point — it holds the thought still long enough to be felt.',
+    occurrences: [
+      { ref: 'Genesis 4:23', note: 'Lamech’s song: “a man for wounding me / a young man for striking me”' },
+      { ref: 'Psalms 19:1', note: '“the heavens declare … the firmament proclaims”' },
+      { ref: 'Psalms 24:1', note: '“the earth is the LORD’s … the world and those who dwell in it”' },
+      { ref: 'Psalms 51:2', note: '“wash me … cleanse me”' },
+      { ref: 'Isaiah 1:3', note: '“the ox knows its owner / the donkey its master’s crib”' },
+      { ref: 'Isaiah 53:5', note: '“pierced for our transgressions / crushed for our iniquities”' },
+      { ref: 'Amos 5:24', note: '“justice like waters / righteousness like an ever-flowing stream”' },
+    ],
+  },
+  {
+    id: 'parallelism-antithetic', name: 'Parallelism — antithetic', group: 'poetics',
+    definition: 'Lowth’s second kind: the second line states the opposite of the first. The governing form of Proverbs, where the contrast does the teaching.',
+    occurrences: [
+      { ref: 'Psalms 1:6', note: '“the LORD knows the way of the righteous / the way of the wicked perishes”' },
+      { ref: 'Psalms 20:8', note: '“they collapse and fall / we rise and stand upright”' },
+      { ref: 'Proverbs 10:1', note: '“a wise son gladdens a father / a foolish son grieves his mother”' },
+      { ref: 'Proverbs 13:9', note: '“the light of the righteous rejoices / the lamp of the wicked goes out”' },
+      { ref: 'Proverbs 14:30', note: '“a tranquil heart is life to the flesh / envy rots the bones”' },
+      { ref: 'Proverbs 15:1', note: '“a soft answer turns away wrath / a harsh word stirs up anger”' },
+    ],
+  },
+  {
+    id: 'parallelism-synthetic', name: 'Parallelism — synthetic', group: 'poetics',
+    definition: 'Lowth’s third kind: the second line carries the first further rather than repeating or opposing it — completing, specifying, or drawing the consequence.',
+    occurrences: [
+      { ref: 'Psalms 1:1', note: 'walk → stand → sit: the steps deepen through the verse' },
+      { ref: 'Psalms 2:6', note: '“I have set my king / on Zion, my holy hill” — the second line completes the first' },
+      { ref: 'Psalms 23:1', note: '“the LORD is my shepherd / I shall not want” — consequence, not restatement' },
+      { ref: 'Psalms 95:3', note: '“a great God / and a great King above all gods”' },
+      { ref: 'Isaiah 55:10', note: 'the rain figure built out across vv. 10–11' },
+    ],
+  },
+  {
+    id: 'acrostic', name: 'Acrostic', greek: 'ἀκροστιχίς', group: 'poetics',
+    definition: 'Successive lines or stanzas open with the letters of the alphabet in order. A form that cannot survive translation, so an English reader needs to be told it is there — it signals completeness, “from A to Z,” and shapes the whole poem.',
+    occurrences: [
+      { ref: 'Psalms 25:1', note: 'alphabetic, with an added final verse (v. 22) outside the pattern' },
+      { ref: 'Psalms 34:1', note: 'alphabetic; like Ps 25 it adds a closing verse' },
+      { ref: 'Psalms 111:1', note: 'each half-line begins a new letter' },
+      { ref: 'Psalms 112:1', note: 'the companion acrostic to Ps 111' },
+      { ref: 'Psalms 119:1', note: 'eight verses per letter, twenty-two letters — the longest acrostic in the Bible' },
+      { ref: 'Proverbs 31:10', note: 'the poem on the capable wife (vv. 10–31) is alphabetic' },
+      { ref: 'Lamentations 1:1', note: 'chs. 1, 2 and 4 are alphabetic; ch. 3 gives three verses to each letter' },
+      { ref: 'Lamentations 3:1', note: 'the triple acrostic at the book’s centre' },
+      { ref: 'Nahum 1:3', note: 'a partial acrostic runs through the opening theophany' },
+    ],
+  },
+  {
+    id: 'refrain', name: 'Refrain', group: 'poetics',
+    definition: 'A line repeated at fixed intervals, dividing a poem into stanzas and driving its argument by return rather than by progress.',
+    occurrences: [
+      { ref: 'Psalms 42:5', note: '“Why are you cast down, O my soul?” — again at v. 11 and 43:5' },
+      { ref: 'Psalms 80:3', note: '“Restore us, O God” — vv. 3, 7, 19, each time with a fuller title' },
+      { ref: 'Psalms 107:8', note: '“Let them thank the LORD for his steadfast love” — vv. 8, 15, 21, 31' },
+      { ref: 'Psalms 136:1', note: '“for his steadfast love endures forever” after every line' },
+      { ref: 'Isaiah 9:12', note: '“for all this his anger has not turned away” — 9:12, 17, 21; 10:4' },
+      { ref: 'Amos 4:6', note: '“yet you did not return to me” — five times, vv. 6–11' },
+    ],
+  },
+  {
+    id: 'merism', name: 'Merism', greek: 'μερισμός', group: 'poetics',
+    definition: 'Naming the two extremes, or the parts, to mean the whole: “heaven and earth” = everything; “your going out and your coming in” = all you do.',
+    occurrences: [
+      { ref: 'Genesis 1:1', note: '“the heavens and the earth” = the whole created order' },
+      { ref: 'Genesis 2:9', note: '“the knowledge of good and evil” = knowledge entire' },
+      { ref: 'Deuteronomy 6:7', note: '“when you lie down and when you rise” = always' },
+      { ref: 'Psalms 121:8', note: '“your going out and your coming in”' },
+      { ref: 'Psalms 139:2', note: '“when I sit down and when I rise up”' },
+      { ref: 'Ecclesiastes 3:2', note: 'the paired opposites of vv. 2–8 total up to all of life' },
     ],
   },
   {

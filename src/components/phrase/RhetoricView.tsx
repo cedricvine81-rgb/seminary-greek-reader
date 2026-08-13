@@ -13,6 +13,10 @@ import { useHighlightSelection } from '@/components/highlights/useHighlightSelec
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
+import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
+import { MT_OSIS, MT_BOOK_LIST } from '@/lib/mt-books'
+import { formatHebrewParse } from '@/lib/hebrew-morph'
+import { loadHebrewLexicon, lookupHebrewStrongs, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // ── Rhetoric tab ────────────────────────────────────────────────────────────────────────
@@ -37,11 +41,17 @@ const NT_BOOKS: NT[] = [
   { osis: '3John', name: '3 John', abbr: ['3jn', '3jhn'] }, { osis: 'Jude', name: 'Jude', abbr: ['jud', 'jude'] },
   { osis: 'Rev', name: 'Revelation', abbr: ['re', 'rev', 'rv'] },
 ]
+// The Hebrew Bible, in the same shape — an OT anchor gets Bullinger's OT figure data, the
+// WLC in the passage column and Keil & Delitzsch where the NT gets Bengel.
+const OT_BOOKS: NT[] = MT_BOOK_LIST.map(b => ({ osis: b.osis, name: b.name, abbr: b.abbr }))
 const norm = (s: string) => s.toLowerCase().replace(/\s+/g, '')
 function matchBook(bp: string): NT | undefined {
   const b = norm(bp)
-  return NT_BOOKS.find(x => norm(x.name) === b || x.osis.toLowerCase() === b || x.abbr.includes(b)
-    || norm(x.name).startsWith(b) || x.osis.toLowerCase().startsWith(b))
+  // NT first: its exact/abbreviation matches must win before any OT prefix match does
+  // ("Jn" is John, not Jonah; "Php" is Philippians, not Psalms).
+  const find = (list: NT[]) => list.find(x => norm(x.name) === b || x.osis.toLowerCase() === b || x.abbr.includes(b))
+  const prefix = (list: NT[]) => list.find(x => norm(x.name).startsWith(b) || x.osis.toLowerCase().startsWith(b))
+  return find(NT_BOOKS) ?? find(OT_BOOKS) ?? prefix(NT_BOOKS) ?? prefix(OT_BOOKS)
 }
 function parseRef(ref: string): { osis: string; name: string; chapter: number; vStart: number; vEnd: number } | null {
   const q = ref.trim().replace(/[–—]/g, '-')
@@ -62,6 +72,41 @@ function loadBengel(): Promise<Record<string, string>> {
   if (!bengelInflight) bengelInflight = fetch('/data/rhetoric/bengel.json').then(r => r.json())
     .then(d => (bengelCache = d)).catch(() => ({}))
   return bengelInflight
+}
+
+// Bengel's Gnomon is the New Testament only. The Old Testament's counterpart in this app is
+// Keil & Delitzsch, already imported for the Commentary tab and keyed "ch:v" per book — so
+// an OT figure gets a commentary note on its verse exactly as a NT one does.
+const kdCache: Record<string, Record<string, string>> = {}
+const kdInflight: Record<string, Promise<Record<string, string>>> = {}
+function loadKeil(osis: string): Promise<Record<string, string>> {
+  if (kdCache[osis]) return Promise.resolve(kdCache[osis])
+  if (!kdInflight[osis]) kdInflight[osis] = fetch(`/data/commentary/keil-delitzsch/${osis}.json`)
+    .then(r => (r.ok ? r.json() : {}))
+    .then((d: Record<string, string>) => (kdCache[osis] = d))
+    .catch(() => (kdCache[osis] = {}))
+  return kdInflight[osis]
+}
+
+// A Hebrew token carries Strong's and morphology but no lemma or gloss; the lexicon supplies
+// those for the parsing pane. A no-op for Greek (and before the lexicon has loaded).
+function withHebrewLex(info: LexicalInfoPanel, strongs: string | undefined, lex: HebrewLexicon | null): LexicalInfoPanel {
+  const e = lookupHebrewStrongs(lex, strongs)
+  return e ? { ...info, lexeme: e.lemma || info.lexeme, gloss: e.gloss || info.gloss } : info
+}
+
+// Keil & Delitzsch comments on blocks of verses, keyed by the verse each block opens with
+// ("1:1" covers Ps 1:1-3, "1:4" covers 1:4-6). So a lookup falls back to the nearest
+// preceding key in the same chapter rather than reporting no note.
+function keilFor(kd: Record<string, string>, chapter: number, verse: number): string | undefined {
+  const exact = kd[`${chapter}:${verse}`]
+  if (exact) return exact
+  let best = 0
+  for (const k of Object.keys(kd)) {
+    const [c, v] = k.split(':').map(Number)
+    if (c === chapter && v <= verse && v > best) best = v
+  }
+  return best ? kd[`${chapter}:${best}`] : undefined
 }
 
 // Per-book Bullinger datasets (public/data/rhetoric/devices/<Osis>.json), fetched once each.
@@ -137,8 +182,11 @@ function loadFullCatalogue(): Promise<Device[]> {
   return fullInflight
 }
 
-const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech Used in the Bible (1898). '
-  + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857), via Biblehub. Both public domain. '
+const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech Used in the Bible (1898), '
+  + 'whose Old Testament data is taken from the public-domain first edition. '
+  + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857) for the NT, and '
+  + 'Keil & Delitzsch, Biblical Commentary on the Old Testament, for the OT — both via Biblehub, both public domain. '
+  + 'Parallelism follows Robert Lowth, De sacra poesi Hebraeorum (1753). '
   + 'Entries marked “Editorial” are identified editorially (AI-assisted, reviewed), not drawn from a printed source.'
 
 type Hit = { device: Device; note?: string; ref: string; source?: 'editorial' }   // ref = exact occurrence ref (Bengel key)
@@ -158,6 +206,7 @@ function tidyBengel(s: string): string {
 const VERSIONS = [
   { code: 'na1904', label: 'Greek — Nestle 1904' },
   { code: 'gnt', label: 'Greek — Tischendorf' },
+  { code: 'mt', label: 'Hebrew — Leningrad (WLC)' },
   { code: 'bsb', label: 'English (BSB)' },
   { code: 'en', label: 'English (WEB)' },
   { code: 'es', label: 'Spanish' },
@@ -168,7 +217,14 @@ const VERSIONS = [
   { code: 'zh', label: 'Mandarin' },
 ]
 // Translations only (for the parallel line under the Greek in the example preview).
-const TRANS_VERSIONS = VERSIONS.filter(v => v.code !== 'na1904' && v.code !== 'gnt')
+const TRANS_VERSIONS = VERSIONS.filter(v => v.code !== 'na1904' && v.code !== 'gnt' && v.code !== 'mt')
+// Original-language editions, per testament: the selector offers the Hebrew for an OT
+// anchor and the Greek editions for a NT one, never both. BSB's alignment file is the
+// Greek NT only, so it drops out on the Hebrew side too.
+const OT_ONLY = new Set(['mt'])
+const NT_ONLY = new Set(['na1904', 'gnt', 'bsb'])
+const VERSIONS_FOR = (hebrew: boolean) =>
+  VERSIONS.filter(v => !(hebrew ? NT_ONLY : OT_ONLY).has(v.code))
 const cacheKey = (v: string, osis: string, chapter: number) =>
   v === 'na1904' ? `na1904.${osis}` : v === 'bsb' ? 'bsb' : `${v}.${osis}.${chapter}`
 
@@ -217,8 +273,10 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   }
 
   const parsed = useMemo(() => parseRef(controlledPassage ?? ''), [controlledPassage])
-  const [version, setVersion] = useState('na1904')
+  const hebrewAnchor = !!parsed && MT_OSIS.has(parsed.osis)
+  const [version, setVersion] = useState(() => (MT_OSIS.has(parseRef(controlledPassage ?? '')?.osis ?? '') ? 'mt' : 'na1904'))
   const [bengel, setBengel] = useState<Record<string, string>>(bengelCache ?? {})
+  const [keil, setKeil] = useState<Record<string, string>>({})
   const [bookDevices, setBookDevices] = useState<Device[]>(() => bookCache[parseRef(controlledPassage ?? '')?.osis ?? ''] ?? [])
   const [selected, setSelected] = useState<{ id: string; ref: string } | null>(null)
   // Figures browser: 'passage' = figures in the open passage; 'browse' = the whole catalogue.
@@ -250,6 +308,16 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
 
   useEffect(() => { onAttribution?.(SOURCE_ATTR) }, [onAttribution])
   useEffect(() => { loadBengel().then(setBengel) }, [])
+  // Follow the anchor across testaments: an OT reference must not be left showing a Greek
+  // edition it has no text for (and vice versa).
+  useEffect(() => {
+    setVersion(v => (hebrewAnchor ? (NT_ONLY.has(v) ? 'mt' : v) : (OT_ONLY.has(v) ? 'na1904' : v)))
+  }, [hebrewAnchor])
+  useEffect(() => { if (hebrewAnchor && parsed) loadKeil(parsed.osis).then(setKeil) }, [hebrewAnchor, parsed?.osis]) // eslint-disable-line react-hooks/exhaustive-deps
+  // The Hebrew lexicon gives the parsing pane a lemma and gloss for a clicked Hebrew word,
+  // as it does in the Reader; without it the pane would show only Strong's and the parsing.
+  const [hebLex, setHebLex] = useState<HebrewLexicon | null>(null)
+  useEffect(() => { if (hebrewAnchor && !hebLex) loadHebrewLexicon().then(setHebLex).catch(() => {}) }, [hebrewAnchor, hebLex])
 
   const osis = parsed?.osis
   useEffect(() => {
@@ -369,6 +437,24 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
         }
         done()
       }).catch(done)
+    } else if (v === 'mt') {
+      // The Hebrew Bible from our own WLC corpus, with OSHB morphology for the parsing pane.
+      type MtWord = { surface: string; strongs?: string; morph?: string }
+      fetch(`/data/mt/${osis}_${chapter}.json`).then(r => r.json()).then((d: { verses?: { verse: number; words?: MtWord[] }[] }) => {
+        const tmap = (textCache.current.mt ??= {}); const wmap = (wordCache.current.mt ??= {})
+        for (const vv of d.verses ?? []) {
+          const vid = `${osis}.${chapter}.${vv.verse}`
+          const ws = vv.words ?? []
+          tmap[vid] = ws.map(w => w.surface).join(' ')
+          wmap[vid] = ws.map(w => ({
+            surface: w.surface,
+            parsing: w.morph ? formatHebrewParse(w.morph) : '',
+            lemma: '',
+            strongs: w.strongs ? `H${w.strongs}` : undefined,
+          }))
+        }
+        done()
+      }).catch(done)
     } else if (v === 'bsb') {
       fetch('/data/bsb-alignment.json?v=3').then(r => r.json()).then((d: Record<string, { text: string }>) => {
         const tmap = (textCache.current.bsb ??= {})
@@ -397,6 +483,11 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   }, [parsed, version, settled.current.size, textCache.current[version]])
 
   const isGreek = version === 'gnt' || version === 'na1904'
+  const isHebrew = version === 'mt'
+  // Both Greek and Hebrew columns render word-by-word from tokens (clickable, parsable);
+  // translations render as running text.
+  const isOriginal = isGreek || isHebrew
+  const origLayer = isGreek ? 'grc' : HEBREW_LAYER
   const status: 'idle' | 'nonNT' | 'loading' | 'ok' | 'missing' =
     !controlledPassage?.trim() ? 'idle'
       : !parsed ? 'nonNT'
@@ -439,7 +530,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   // in focus (the preview verse while previewing, else the passage). Computed each render so
   // it fills in as soon as the chapter's word-tokens load.
   const defaultParsingInfo: LexicalInfoPanel | null = (() => {
-    if (!isGreek) return null
+    if (!isOriginal) return null
     if (showPreview) {
       const pp = parseRef(previewRef!)
       const t = pp ? wordCache.current[version]?.[`${pp.osis}.${pp.chapter}.${pp.vStart}`]?.[0] : undefined
@@ -456,7 +547,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   return (
     <div className="h-full flex flex-col min-h-0" style={{ '--rh-fs': '1.45rem' } as CSSProperties}>
       {status === 'idle' && <p className="text-gray-400 text-sm mt-6 text-center">{ui('rhetoric.idle')}</p>}
-      {status === 'nonNT' && <p className="text-gray-500 text-sm mt-6 text-center">{ui('rhetoric.nonNTPre')} <b>{ui('rhetoric.newTestament')}</b>. {ui('rhetoric.nonNTPost')} <span className="font-medium">Romans 8:31-39</span>.</p>}
+      {status === 'nonNT' && <p className="text-gray-500 text-sm mt-6 text-center">Rhetorical figures are catalogued for the <b>whole Bible</b>. Try <span className="font-medium">Romans 8:31-39</span> or <span className="font-medium">Psalm 1:1-6</span>.</p>}
       {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">{ui('rhetoric.loading')}</p>}
       {status === 'missing' && <p className="text-gray-500 text-sm mt-6 text-center">{ui('rhetoric.loadFailed', { ref: `${parsed?.name} ${parsed?.chapter}` })}</p>}
 
@@ -472,23 +563,24 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                 onChange={e => setVersion(e.target.value)}
                 className="shrink-0 rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
-                {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+                {VERSIONS_FOR(hebrewAnchor).map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
               </select>
             </div>
-            <div className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={READING_FS}>
+            <div dir={isHebrew ? 'rtl' : undefined}
+              className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : isHebrew ? 'font-hebrew' : 'font-reading'}`} style={READING_FS}>
               {shownVerses.map(v => {
                 const has = byVerse[v.verse]?.length
-                const layer = isGreek ? 'grc' : version
+                const layer = isOriginal ? origLayer : version
                 const verseHls = highlights.forVerse(parsed!.osis, parsed!.chapter, v.verse, layer)
                 const refStr = `${parsed!.name} ${parsed!.chapter}:${v.verse}`
                 return (
                   <p key={v.verse} className={has ? 'rounded px-1 -mx-1 bg-amber-50/40' : ''}>
                     <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.verse}</sup>
-                    {isGreek && v.tokens && v.tokens.length > 0
-                      ? <span {...verseAnchorProps(parsed!.osis, parsed!.chapter, v.verse, 'grc')}>
+                    {isOriginal && v.tokens && v.tokens.length > 0
+                      ? <span {...verseAnchorProps(parsed!.osis, parsed!.chapter, v.verse, origLayer)}>
                           {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
                             const key = `${v.verse}.${ti}`
-                            const select = () => { setSelectedInfo(toLexicalInfo(tok, refStr)); setSelectedKey(key) }
+                            const select = () => { setSelectedInfo(withHebrewLex(toLexicalInfo(tok, refStr), tok.strongs, hebLex)); setSelectedKey(key) }
                             const hl = highlightAt(start, end, verseHls)
                             return (
                               <span
@@ -498,10 +590,11 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                                 onContextMenu={e => {
                                   e.preventDefault()
                                   openWordSearch({
-                                    x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null, reference: refStr, kind: 'greek', greekCorpus: 'GNT',
+                                    x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null, reference: refStr,
+                                    ...(isHebrew ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }),
                                     highlight: isAuthenticated ? {
                                       activeColor: hl?.color ?? null,
-                                      onPick: c => hl ? void highlights.recolor(hl.id, parsed!.osis, parsed!.chapter, c) : void highlights.create(parsed!.osis, parsed!.chapter, v.verse, start, end, c, 'grc'),
+                                      onPick: c => hl ? void highlights.recolor(hl.id, parsed!.osis, parsed!.chapter, c) : void highlights.create(parsed!.osis, parsed!.chapter, v.verse, start, end, c, origLayer),
                                       onRemove: () => { if (hl) void highlights.remove(hl.id, parsed!.osis, parsed!.chapter) },
                                     } : undefined,
                                   })
@@ -667,15 +760,30 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                   )
                 })()}
 
-                {/* Bengel's Gnomon on this verse */}
-                <div>
-                  <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-500 mb-1">{ui('rhetoric.gnomon')} · {selected!.ref}</p>
-                  {bengel[selected!.ref] ? (
-                    <p className="font-reading text-gray-700 leading-relaxed whitespace-pre-line" style={READING_FS}>{tidyBengel(bengel[selected!.ref])}</p>
-                  ) : (
-                    <p className="text-xs text-gray-400 italic">{ui('rhetoric.noGnomon')}</p>
-                  )}
-                </div>
+                {/* The commentary note on this verse: Bengel for the NT, Keil & Delitzsch for the OT */}
+                {(() => {
+                  const sr = parseRef(selected!.ref)
+                  const ot = !!sr && MT_OSIS.has(sr.osis)
+                  const note = ot ? (sr && keilFor(keil, sr.chapter, sr.vStart)) : bengel[selected!.ref]
+                  return (
+                    <div>
+                      <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-500 mb-1">
+                        {ot ? 'Keil & Delitzsch' : ui('rhetoric.gnomon')} · {selected!.ref}
+                      </p>
+                      {!note ? (
+                        <p className="text-xs text-gray-400 italic">
+                          {ot ? 'No commentary note for this verse.' : ui('rhetoric.noGnomon')}
+                        </p>
+                      ) : ot ? (
+                        // K&D arrives as HTML (with Hebrew as numeric entities), like the Commentary tab.
+                        <div className="font-reading text-gray-700 leading-relaxed [&_p]:mb-2" style={READING_FS}
+                          dangerouslySetInnerHTML={{ __html: note }} />
+                      ) : (
+                        <p className="font-reading text-gray-700 leading-relaxed whitespace-pre-line" style={READING_FS}>{tidyBengel(note)}</p>
+                      )}
+                    </div>
+                  )
+                })()}
 
                 {/* other occurrences of this figure */}
                 {sel.occurrences.length > 1 && (
@@ -805,7 +913,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
       {/* Greek parsing pane at the bottom — the shared component (Strong's → Thayer's /
           Mounce / Abbott-Smith / LSJ), fed by hovering/clicking a Greek word above. Shown
           for a Greek edition in passage mode, and while previewing a Greek example. */}
-      {status === 'ok' && isGreek && (mode === 'passage' || showPreview) && (
+      {status === 'ok' && isOriginal && (mode === 'passage' || showPreview) && (
         <ResizableParsingPane storageKey="rhetoric" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
       )}
 

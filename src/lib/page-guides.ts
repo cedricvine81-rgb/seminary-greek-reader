@@ -488,6 +488,23 @@ export const PAGE_GUIDES: PageGuide[] = [
 
   {
     id: 'exegesis:rhetoric',
+    hebrew: {
+      lede: 'The figures at work in a Hebrew passage — including the ones that only Hebrew has.',
+      sections: [
+        {
+          heading: 'Reading the three columns',
+          body: 'The pointed Hebrew sits on the left with click-to-parse, the figures found in each verse in the middle, and an explanation on the right with Keil & Delitzsch on that verse underneath. The figures come from Bullinger, who catalogued the whole Bible, not the New Testament only.',
+        },
+        {
+          heading: 'Hebrew poetics',
+          body: 'The teal “Poetics & structure” group is where Hebrew verse is actually built: parallelism in Lowth’s three kinds (synonymous, antithetic, synthetic), chiasmus, inclusio, refrain, merism, and acrostic. Several of these — the acrostics above all — leave no trace in an English translation, so a reader who has only the English cannot see them at all.',
+        },
+        {
+          heading: 'What it is for',
+          body: 'Naming a figure is not the end of the work, but it is often the start: recognising that a construction is deliberate rather than incidental changes what you think the writer is doing with it.',
+        },
+      ],
+    },
     title: 'Exegesis · Rhetoric',
     lede: 'The figures of speech at work in a passage, with Bengel’s commentary alongside.',
     sections: [
