@@ -19,6 +19,7 @@ import { usePref } from '@/lib/use-pref'
 import { useCommentaryFontScale, useCommentaryLineSpacing, useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
 import { SBL_ABBREVIATIONS } from '@/lib/sbl-abbreviations'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { useTrackValue } from '@/lib/track-client'
 
 type Section = { c: number; v: number; ec: number; ev: number; t: string }
 type Pericopes = Record<string, Section[]>
@@ -74,8 +75,13 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
   // The single passage that coordinates every tab. `input` is the live box text;
   // `passage` is committed on Enter/blur and pushed to the tabs. Both seed from `?ref=`
   // so a "Return to page" from the Search page lands back on the same passage.
-  const [input, setInput] = useState(initialRef || 'John 1:1-5')
-  const [passage, setPassage] = useState(initialRef || 'John 1:1-5')
+  // The default passage follows the language track: Seminary Hebrew opens on the Hebrew
+  // Bible's first verses, Seminary Greek on John's. A view default only — typing any
+  // reference, Greek or Hebrew, works on either track.
+  const track = useTrackValue()
+  const defaultRef = track === 'hebrew' ? 'Gen 1:1-5' : 'John 1:1-5'
+  const [input, setInput] = useState(initialRef || defaultRef)
+  const [passage, setPassage] = useState(initialRef || defaultRef)
   // Grey ghost-text completion of the current pericope.
   const [ghost, setGhost] = useState('')
   const suggestionRef = useRef('')        // full accepted string when ghost is shown

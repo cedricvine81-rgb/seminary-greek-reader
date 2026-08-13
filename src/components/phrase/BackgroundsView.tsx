@@ -15,6 +15,7 @@ import type { VerseWord } from '@/types/biblical-text'
 import type { PhraseFontSize } from './PhraseExplorer'
 import { findLxxWork } from '@/lib/texts-catalog'
 import { matchProseCitation, type ProseWork, type ProseChapter, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { MT_OSIS } from '@/lib/mt-books'
 import { BACKGROUND_SUMMARIES, type SummaryWork } from '@/lib/backgrounds-summaries'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
@@ -546,7 +547,12 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     fetch('/data/backgrounds-crossrefs.json').then(r => r.json()).then(setCrossRefData).catch(() => {})
   }, [])
 
-  const parsed = parseRef(anchor, gntBooks)
+  // Anchors resolve against GNT + LXX names — the LXX list carries every OT book, so
+  // "Gen 1:1-5" parses; OT-anchored apparatus entries (reversed NT citations, targum rows)
+  // ship in backgrounds-crossrefs.json since add-ot-backgrounds-crossrefs.py. The left
+  // column's default 'na1904' version reads from the phrase trees, which now cover the OT
+  // (Macula Hebrew) — so an OT anchor shows the pointed WLC with parsing and glosses.
+  const parsed = parseRef(anchor, gntBooks.length || lxxBooks.length ? [...gntBooks, ...lxxBooks] : gntBooks)
 
   // Keep the note icons in sync when a note is made/removed on another tab.
   useEffect(() => {
@@ -592,8 +598,25 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
         const wpatch: Record<string, WordToken[]> = {}
         for (const [vKey, ws] of Object.entries(byVerse)) {
           ws.sort((a, b) => a.i - b.i)
-          patch[vKey] = ws.map(x => x.tok.surface).join(' ')
-          wpatch[vKey] = ws.map(x => x.tok)
+          // Hebrew trees are morpheme-level and morphemes of ONE word share an index. Merge
+          // them into a single token — בְּרֵאשִׁית, not "בְּ רֵאשִׁית" — with the parses
+          // joined, so clicking the word shows both morphemes' parsing. Greek indexes are
+          // unique, so nothing changes there.
+          const groups: { i: number; toks: WordToken[] }[] = []
+          for (const x of ws) {
+            const g = groups[groups.length - 1]
+            if (g && g.i === x.i) g.toks.push(x.tok)
+            else groups.push({ i: x.i, toks: [x.tok] })
+          }
+          const merged = groups.map(g => g.toks.length === 1 ? g.toks[0] : {
+            surface: g.toks.map(t => t.surface).join(''),
+            parsing: g.toks.map(t => t.parsing).filter(Boolean).join('  +  '),
+            lemma: g.toks.map(t => t.lemma).filter(Boolean).join(' + '),
+            gloss: g.toks.map(t => t.gloss).filter(Boolean).join(' '),
+            strongs: g.toks.map(t => t.strongs).filter(Boolean).join(', '),
+          })
+          patch[vKey] = merged.map(t => t.surface).join(' ')
+          wpatch[vKey] = merged
         }
         Object.assign((wordCache.current.na1904 ??= {}), wpatch)
         done((cache.current.na1904 ??= {}), patch)
@@ -873,7 +896,13 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                 onChange={e => setVersion(e.target.value)}
                 className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
-                {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+                {/* For an OT anchor the 'na1904' code reads the Macula HEBREW tree — label it
+                    honestly — and the Tischendorf chapter files are NT-only, so hide them. */}
+                {VERSIONS
+                  .filter(v => !(MT_OSIS.has(parsed.book.osisId) && (v.code === 'gnt' || v.code === 'bsb')))
+                  .map(v => <option key={v.code} value={v.code}>{
+                    v.code === 'na1904' && MT_OSIS.has(parsed.book.osisId) ? 'Hebrew — Leningrad (WLC)' : v.label
+                  }</option>)}
               </select>
             </div>
             <div className="flex-1 min-h-0 overflow-y-auto p-3">
