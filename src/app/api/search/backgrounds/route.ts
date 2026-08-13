@@ -14,8 +14,11 @@ export async function GET(req: NextRequest) {
   const lang: BgLang = langParam === 'en' || langParam === 'grc' ? langParam : detectLang(q)
   // Optional collection scope (a TEXT_CATEGORIES id, e.g. 'josephus', 'pseudepigrapha').
   const category = searchParams.get('category') || null
+  // Optional single-work scope (a TEXT_CATEGORIES work id, e.g. 'antiquities') — used by the
+  // Texts reader's own search box, which searches the whole of the work being read.
+  const work = searchParams.get('work') || null
   try {
-    const result = await searchBackgrounds(q, lang, 300, category)
+    const result = await searchBackgrounds(q, lang, 300, category, work)
     return NextResponse.json(result)
   } catch (err) {
     logError('api/search/backgrounds', err)

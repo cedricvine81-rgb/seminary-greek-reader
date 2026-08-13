@@ -24,6 +24,7 @@ import { usePref } from '@/lib/use-pref'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
+import type { BgHit } from '@/lib/backgrounds-search-types'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
@@ -342,6 +343,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const catRowRef = useRef<HTMLDivElement>(null)
   const searchWrapRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
+  // Whole-work search (Enter). Typing still live-highlights the loaded text; pressing Enter
+  // queries the prebuilt background index for THIS work, so a term anywhere in a twenty-book
+  // work is findable from the reader rather than only in the chapters already scrolled past.
+  const [workHits, setWorkHits] = useState<BgHit[] | null>(null)
+  const [workSearching, setWorkSearching] = useState(false)
+  const [workSearchTerm, setWorkSearchTerm] = useState('')
   const locateMenuRef = useRef<HTMLDivElement>(null)
   const translationMenuRef = useRef<HTMLDivElement>(null)
   // Whether the "Summary" popover is open, and its anchor. (A "Contents" popover was removed;
@@ -520,6 +527,41 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     setSuggestions([])
     setSuggestOpen(false)
     searchInputRef.current?.focus()
+  }
+
+  /** Enter: search the WHOLE open work through the prebuilt index. */
+  async function runWorkSearch() {
+    const q0 = search.trim()
+    if (!work || q0.length < 2) return
+    setSuggestOpen(false)
+    setWorkSearching(true)
+    setWorkSearchTerm(q0)
+    try {
+      const r = await fetch(`/api/search/backgrounds?q=${encodeURIComponent(q0)}&work=${encodeURIComponent(work.id)}&lang=${searchLang}`)
+      const d = await r.json()
+      // One work = at most one group; take its hits (empty array, not null, so the panel
+      // can say "nothing in this work" rather than staying invisible).
+      setWorkHits((d.groups?.[0]?.hits ?? []) as BgHit[])
+    } catch {
+      setWorkHits([])
+    } finally {
+      setWorkSearching(false)
+    }
+  }
+
+  /** Click a whole-work hit: jump the reader to it and highlight the term in place. */
+  function goToWorkHit(hit: BgHit) {
+    if (!work) return
+    const tg = hit.target
+    lastOpenRequestAt.current = Date.now()
+    setWorkHits(null)
+    setTermHighlight(workSearchTerm)
+    setSearch('')                       // stop the find-on-page filter hiding the target
+    setLocateBook(tg.book ?? 1)
+    setLocateChapter(tg.chapter)
+    void openAt(work, tg.book, tg.chapter, tg.verse)
+    if (work.source === 'josephus') loadLocateSections(work, tg.book ?? 1)
+    else loadLocateVerses(work, tg.book, tg.chapter)
   }
 
   const refreshNotesFor = useCallback(async (noteBook: string, ch: number) => {
@@ -1355,8 +1397,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 onChange={onSearchChange}
                 onFocus={() => { if (suggestions.length) setSuggestOpen(true) }}
                 onKeyDown={e => {
-                  if (e.key === 'Enter' && suggestOpen && suggestions[0]) { e.preventDefault(); pickSuggestion(suggestions[0]) }
-                  else if (e.key === 'Escape') setSuggestOpen(false)
+                  // Enter = search the whole work. (A suggestion is accepted with Tab or a
+                  // click; Enter used to swallow the keypress to complete a word, which made
+                  // the obvious "type and press Enter" do nothing at all.)
+                  if (e.key === 'Enter') { e.preventDefault(); void runWorkSearch() }
+                  else if (e.key === 'Tab' && suggestOpen && suggestions[0]) { e.preventDefault(); pickSuggestion(suggestions[0]) }
+                  else if (e.key === 'Escape') { setSuggestOpen(false); setWorkHits(null) }
                 }}
                 placeholder={greekTyping ? t('texts.searchGreek') : t('texts.searchThisText')}
                 className={`w-40 sm:w-52 rounded-md border border-gray-300 pl-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekSearchable && englishSearchable ? 'pr-8' : 'pr-2'} ${greekTyping ? 'greek-text' : ''}`}
@@ -1373,8 +1419,48 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 </button>
               )}
 
+              {/* Whole-work results (Enter). Replaces the suggestion list while open. */}
+              {(workSearching || workHits) && (
+                <div className="absolute left-0 top-full mt-1 z-50 w-[min(92vw,30rem)] max-h-96 overflow-y-auto rounded-lg border border-gray-200 bg-popover shadow-xl">
+                  <div className="sticky top-0 flex items-center justify-between gap-2 border-b border-gray-100 bg-popover px-3 py-1.5">
+                    <p className="text-[11px] text-gray-500">
+                      {workSearching
+                        ? t('texts.workSearching')
+                        : t('texts.workHits', { n: workHits?.length ?? 0, work: work?.name ?? '' })}
+                    </p>
+                    <button type="button" onClick={() => setWorkHits(null)} className="text-gray-400 hover:text-gray-600">
+                      <X size={13} />
+                    </button>
+                  </div>
+                  {!workSearching && workHits?.length === 0 && (
+                    <div className="px-3 py-3 space-y-2">
+                      <p className="text-xs text-gray-500">{t('texts.workNoHits', { q: workSearchTerm })}</p>
+                      <button
+                        type="button"
+                        onClick={() => { setWorkHits(null); openMasterSearch({ query: workSearchTerm, scope: bgCollection ? `bg:${bgCollection.id}` : searchLang === 'grc' ? 'bggrc:all' : 'bg:all' }) }}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-brand-300 bg-brand-50 px-2.5 py-1 text-xs text-brand-800 hover:bg-brand-100"
+                      >
+                        <Search size={12} />
+                        {t('texts.searchAllOf', { collection: bgCollection?.label ?? t('texts.allWorks') })}
+                      </button>
+                    </div>
+                  )}
+                  {workHits?.map((h, i) => (
+                    <button
+                      key={`${h.ref}-${i}`}
+                      type="button"
+                      onClick={() => goToWorkHit(h)}
+                      className="block w-full border-b border-gray-50 px-3 py-2 text-left last:border-0 hover:bg-brand-50"
+                    >
+                      <p className="text-[11px] font-medium text-brand-700">{h.ref}</p>
+                      <p className="mt-0.5 line-clamp-2 text-xs leading-snug text-gray-600">{h.text}</p>
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Predictive words from the loaded text */}
-              {suggestOpen && suggestions.length > 0 && (
+              {!workHits && !workSearching && suggestOpen && suggestions.length > 0 && (
                 <div className="absolute left-0 right-0 top-full mt-1 z-40 max-h-56 overflow-y-auto rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
                   {suggestions.map(w => (
                     <button
@@ -1527,14 +1613,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                   </p>
                   <button
                     type="button"
-                    // Per-collection scopes exist only in the auto-detecting bg: form (the
-                    // bggrc: variant is offered for :all alone); bg: picks the facet from the
-                    // query's script, so a Greek query still searches the Greek side.
-                    onClick={() => openMasterSearch({ query: q, scope: bgCollection ? `bg:${bgCollection.id}` : searchLang === 'grc' ? 'bggrc:all' : 'bg:all' })}
+                    onClick={() => void runWorkSearch()}
                     className="inline-flex items-center gap-1.5 rounded-lg border border-brand-300 bg-brand-50 px-3 py-1.5 text-sm text-brand-800 hover:bg-brand-100"
                   >
                     <Search size={14} />
-                    {t('texts.searchAllOf', { collection: bgCollection?.label ?? t('texts.allWorks') })}
+                    {t('texts.searchThisWork', { work: work?.name ?? '' })}
                   </button>
                 </div>
               )}

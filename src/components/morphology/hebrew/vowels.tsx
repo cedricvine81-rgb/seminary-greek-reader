@@ -26,19 +26,19 @@ export const HB_VOWELS = (
       firstColIsData
       striped
       rows={[
-        ['בַ', 'patach', 'a as in “father” (short)', 'a'],
-        ['בָ', 'qamets', 'a as in “father” (long)', 'a'],
-        ['בֶ', 'seghol', 'e as in “met”', 'e'],
-        ['בֵ', 'tsere', 'e as in “they”', 'e'],
-        ['בִ', 'hireq', 'i as in “sit”', 'i'],
-        ['בִי', 'hireq-yod', 'i as in “machine”', 'i'],
-        ['בֹ', 'holem', 'o as in “role”', 'o'],
-        ['בוֹ', 'holem-waw', 'o as in “role”', 'o'],
-        ['בָ', 'qamets-hatuf', 'o as in “cost” (see §6)', 'o'],
-        ['בֻ', 'qibbuts', 'u as in “rule”', 'u'],
-        ['בוּ', 'shureq', 'u as in “rule”', 'u'],
+        ['בַ', 'patach', 'a as in “bat” — short', 'a'],
+        ['בָ', 'qamets', 'a as in “father” — long', 'a'],
+        ['בֶ', 'seghol', 'e as in “met” — short', 'e'],
+        ['בֵ', 'tsere', 'e as in “they” — long', 'e'],
+        ['בִ', 'hireq', 'i as in “sit” — short', 'i'],
+        ['בִי', 'hireq-yod', 'i as in “machine” — long', 'i'],
+        ['בֹ', 'holem', 'o as in “role” — long', 'o'],
+        ['בוֹ', 'holem-waw', 'o as in “role” — long', 'o'],
+        ['בָ', 'qamets-hatuf', 'o as in “cost” — short (see §6)', 'o'],
+        ['בֻ', 'qibbuts', 'u as in “rule” — short', 'u'],
+        ['בוּ', 'shureq', 'u as in “rule” — long', 'u'],
       ]}
-      note="Qamets and qamets-hatuf share one sign; §6 tells you which is which."
+      note="Length matters for syllables and accent, not for how you say the vowel — the a of patach and the a of qamets sound alike to an English ear; the difference is how long the syllable counts as. Qamets and qamets-hatuf share one sign; §6 tells you which is which."
     />
 
     <SectionHeading n={2}>Vowel letters (matres lectionis)</SectionHeading>

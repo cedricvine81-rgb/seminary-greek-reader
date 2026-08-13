@@ -81,7 +81,7 @@ function labelFor(e: Entry, name: string, chapters: number): string {
  * Search the background corpus. Results are grouped by work, ordered by the catalog, each
  * carrying an OpenInTextsTarget so the caller can open the hit in the Texts reader.
  */
-export async function searchBackgrounds(query: string, lang: BgLang, limit = 300, category?: string | null): Promise<BgResult> {
+export async function searchBackgrounds(query: string, lang: BgLang, limit = 300, category?: string | null, work?: string | null): Promise<BgResult> {
   const data = await load(lang)
   // Phrase/boolean: "quoted" = exact phrase, bare words = AND (see search-query.ts).
   const terms = parseSearchTerms(query)
@@ -105,6 +105,8 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
     if (!textMatchesTerms(data.normalized[i], terms)) continue
     // Collection scope: skip hits whose work isn't in the requested category.
     if (category && _categoryOf.get(data.entries[i].g) !== category) continue
+    // Work scope: the Texts reader searches the work the reader has open, nothing else.
+    if (work && data.entries[i].g !== work) continue
     if (total >= limit) { truncated = true; break }
     const e = data.entries[i]
     const meta = _meta.get(e.g) ?? { name: e.g, chapters: 1, order: 999 }
