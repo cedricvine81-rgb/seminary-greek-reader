@@ -5,13 +5,14 @@
    of meanings (future, habitual, modal, prohibition).
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_QAL_IMPERFECT = (
   <>
     <P>
-      The <strong>imperfect</strong> (or <em>yiqtol</em>) views action as incomplete — English
-      future, habitual, or modal. Where the perfect used endings, the imperfect leads with{' '}
+      The <Term t="imperfect"><strong>imperfect</strong></Term> (or <em>yiqtol</em>) views
+      action as incomplete — English future (&ldquo;he will keep&rdquo;), habitual
+      (&ldquo;he used to keep&rdquo;), or modal (&ldquo;he may keep&rdquo;). Where the perfect used endings, the imperfect leads with{' '}
       <strong>prefixes</strong> (<Hb>י ת א נ</Hb>), adding endings only for feminine and
       plural forms. This prefix set, too, is universal across the stems.
     </P>

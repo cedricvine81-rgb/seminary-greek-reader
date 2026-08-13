@@ -5,13 +5,16 @@
    and the irregular plurals every first-year list carries.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term } from '../shared'
 
 export const HB_NOUNS = (
   <>
     <P>
-      Every Hebrew noun is masculine or feminine — there is no neuter. Number is singular,
-      plural, or (for a small set of paired things) <strong>dual</strong>. The endings:
+      Every Hebrew <Term t="noun">noun</Term> has a <Term t="gender">gender</Term> — masculine
+      or feminine, with no neuter — even for things: &ldquo;land&rdquo; is feminine,
+      &ldquo;word&rdquo; is masculine, and nothing about the meaning tells you which.{' '}
+      <Term t="number">Number</Term> is singular, plural, or (for a small set of naturally
+      paired things like eyes, hands, and ears) <strong>dual</strong>. The endings:
     </P>
 
     <SectionHeading n={1}>The endings</SectionHeading>

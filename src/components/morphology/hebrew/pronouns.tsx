@@ -5,10 +5,18 @@
    the relative אשׁר, and the interrogatives.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_PRONOUNS = (
   <>
+    <P>
+      A <Term t="pronoun">pronoun</Term> stands in for a noun: &ldquo;he,&rdquo;
+      &ldquo;she,&rdquo; &ldquo;this,&rdquo; &ldquo;who.&rdquo; Hebrew&rsquo;s personal
+      pronouns come in two forms: <em>independent</em> words (this section) used mostly as
+      subjects — and <Term t="suffix">suffixes</Term> glued to the end of other words for
+      &ldquo;my / your / his&rdquo; and for objects, which get their own chapter.
+    </P>
+
     <SectionHeading n={1}>Independent personal pronouns</SectionHeading>
     <P>
       These are <strong>subject</strong> pronouns. Since the verb already encodes its subject,

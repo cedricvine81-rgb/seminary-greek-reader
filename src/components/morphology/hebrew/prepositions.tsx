@@ -6,10 +6,17 @@
    which is not a preposition but is met here because it looks like one.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_PREPOSITIONS = (
   <>
+    <P>
+      A <Term t="preposition">preposition</Term> is a little relationship word — &ldquo;in,
+      to, like, from, with.&rdquo; Hebrew&rsquo;s three commonest are not even separate
+      words: they are single letters glued to the front of the next word, which is why they
+      are called <em>inseparable</em>.
+    </P>
+
     <SectionHeading n={1}>The inseparable prepositions: בְּ, כְּ, לְ</SectionHeading>
     <P>
       Three prepositions are prefixes, never separate words: <Hb>בְּ</Hb> &ldquo;in, by,

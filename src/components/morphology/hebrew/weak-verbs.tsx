@@ -5,12 +5,13 @@
    forms first-year students actually meet in the text.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term } from '../shared'
 
 export const HB_WEAK_VERBS = (
   <>
     <P>
-      A verb is <strong>weak</strong> when one of its root letters is a guttural, a{' '}
+      A verb is <strong>weak</strong> when one of its <Term t="root">root</Term> letters is
+      a <Term t="guttural">guttural</Term>, a{' '}
       <Hb>נ</Hb> or <Hb>י</Hb> that likes to vanish, a middle <Hb>ו/י</Hb> that never really
       existed, or a final <Hb>ה</Hb> that drops. The classes are named by position — Roman
       numerals here, or traditionally by the letters of <Hb>פעל</Hb> (so I-נ ={' '}

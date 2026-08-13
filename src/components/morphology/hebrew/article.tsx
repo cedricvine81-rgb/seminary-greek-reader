@@ -5,14 +5,17 @@
    the gutturals force on both.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_ARTICLE = (
   <>
     <P>
       Hebrew has no word for &ldquo;a&rdquo;: <Hb>מֶלֶךְ</Hb> is &ldquo;a king&rdquo; on its
-      own. The definite article is not a separate word but a prefix — <Hb>הַ</Hb> plus a{' '}
-      <strong>doubling</strong> of the next letter: <Hb>הַמֶּלֶךְ</Hb>, &ldquo;the king.&rdquo;
+      own. The <Term t="definite">definite</Term> <Term t="article">article</Term> —
+      Hebrew&rsquo;s word for &ldquo;the&rdquo; — is not a separate word but a prefix:{' '}
+      <Hb>הַ</Hb> glued to the front, plus a <strong>doubling</strong> of the next letter
+      (written as a <Term t="dagesh">dot</Term> inside it): <Hb>הַמֶּלֶךְ</Hb>, &ldquo;the
+      king.&rdquo;
     </P>
 
     <SectionHeading n={1}>The article: הַ + dagesh forte</SectionHeading>

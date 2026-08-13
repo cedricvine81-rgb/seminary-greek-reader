@@ -5,13 +5,14 @@
    weqatal. The single most important chapter for actually reading.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_WAW = (
   <>
     <P>
-      Open any page of Hebrew narrative and most clauses begin the same way: <Hb>וַיּ…</Hb>{' '}
-      &ldquo;and he…&rdquo;. This is the <strong>wayyiqtol</strong> (sequential imperfect):
+      Open any page of Hebrew narrative and most <Term t="clause">clauses</Term> begin the
+      same way: <Hb>וַיּ…</Hb> &ldquo;and he…&rdquo;. This is the{' '}
+      <Term t="waw-consecutive"><strong>wayyiqtol</strong></Term> (sequential imperfect):
       a special waw — <Hb>וַ</Hb> plus doubling — welded onto the imperfect, and the whole
       thing means simple <em>past</em>. It is how Hebrew tells a story: and he arose, and he
       went, and he said…

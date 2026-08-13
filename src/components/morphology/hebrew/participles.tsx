@@ -5,13 +5,15 @@
    attributive, substantive — plus the construct participle.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_PARTICIPLES = (
   <>
     <P>
-      The participle is a verb wearing a noun&rsquo;s clothes: it has gender, number and
-      state — never person. It paints action as <em>ongoing</em>, and in later Hebrew it
+      The <Term t="participle">participle</Term> is a verb wearing a noun&rsquo;s clothes —
+      like English &ldquo;-ing&rdquo; words used to describe (&ldquo;the <em>ruling</em>{' '}
+      king&rdquo;). It has <Term t="gender">gender</Term>, <Term t="number">number</Term> and{' '}
+      state — never <Term t="person">person</Term>. It paints action as <em>ongoing</em>, and in later Hebrew it
       grows into the present tense.
     </P>
 

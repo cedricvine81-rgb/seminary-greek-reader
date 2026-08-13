@@ -5,12 +5,14 @@
    denominative range, and the high-frequency Piel vocabulary.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_PIEL_PUAL = (
   <>
     <P>
-      The Piel&rsquo;s fingerprint is a <strong>dagesh forte in the middle root letter</strong>.
+      The <Term t="piel">Piel</Term>&rsquo;s fingerprint is a{' '}
+      <Term t="dagesh"><strong>dagesh forte</strong></Term> — a doubling dot —{' '}
+      <strong>in the middle root letter</strong>.
       Its meaning is not always &ldquo;intensive&rdquo;: more often it makes a state into an
       action (<em>factitive</em>: <Hb>קִדֵּשׁ</Hb> &ldquo;make holy&rdquo;) or simply is the
       stem a verb happens to live in (<Hb>דִּבֶּר</Hb> &ldquo;speak&rdquo;). The Pual is its

@@ -5,13 +5,16 @@
    and the everyday Hiphil vocabulary.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_HIPHIL_HOPHAL = (
   <>
     <P>
-      The Hiphil is the <strong>causative</strong>: Qal <Hb>מָלַךְ</Hb> &ldquo;he
-      reigned&rdquo; → Hiphil <Hb>הִמְלִיךְ</Hb> &ldquo;he made (someone) king.&rdquo; Its
+      The <Term t="hiphil">Hiphil</Term> is the{' '}
+      <Term t="causative"><strong>causative</strong></Term> — it makes someone else do the
+      action, as English &ldquo;feed&rdquo; is to &ldquo;eat&rdquo;: Qal <Hb>מָלַךְ</Hb>{' '}
+      &ldquo;he reigned&rdquo; → Hiphil <Hb>הִמְלִיךְ</Hb> &ldquo;he made (someone)
+      king.&rdquo; Its
       fingerprints: a <Hb>הִ</Hb> prefix in the perfect, and the long <strong>hireq-yod</strong>{' '}
       theme vowel almost everywhere.
     </P>

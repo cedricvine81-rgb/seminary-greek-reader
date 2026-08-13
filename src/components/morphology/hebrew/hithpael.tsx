@@ -5,14 +5,14 @@
    metathesis / assimilation quirks of the הת prefix.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_HITHPAEL = (
   <>
     <P>
-      The Hithpael doubles the middle radical like the Piel and adds the prefix{' '}
-      <Hb>הִתְ</Hb>: action done to or among <em>oneself</em> — reflexive, reciprocal, or
-      repeated. Its most famous member needs no introduction: <Hb>הִתְפַּלֵּל</Hb>,
+      The Hithpael doubles the middle root letter like the <Term t="piel">Piel</Term> and
+      adds the prefix <Hb>הִתְ</Hb>: action done to or among <em>oneself</em> —{' '}
+      <Term t="reflexive">reflexive</Term>, reciprocal, or repeated. Its most famous member needs no introduction: <Hb>הִתְפַּלֵּל</Hb>,
       &ldquo;pray.&rdquo;
     </P>
 

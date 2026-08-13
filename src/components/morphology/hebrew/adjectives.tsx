@@ -5,10 +5,18 @@
    and comparison with מן.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_ADJECTIVES = (
   <>
+    <P>
+      An <Term t="adjective">adjective</Term> describes a noun — &ldquo;the <em>good</em>{' '}
+      word,&rdquo; &ldquo;a <em>great</em> king.&rdquo; In Hebrew an adjective changes its
+      ending to match the noun it describes in <Term t="gender">gender</Term> and{' '}
+      <Term t="number">number</Term>, using the same endings the nouns themselves use — so
+      the noun chapter has already taught you the forms.
+    </P>
+
     <SectionHeading n={1}>Forms</SectionHeading>
     <P>
       Adjectives take the same endings as nouns and agree with their noun in gender and

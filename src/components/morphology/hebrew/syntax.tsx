@@ -5,10 +5,17 @@
    questions, numbers, and the two verse-accents worth knowing.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_SYNTAX = (
   <>
+    <P>
+      Syntax is how words are arranged into <Term t="clause">clauses</Term> and sentences —
+      everything the previous chapters&rsquo; forms are <em>for</em>. Hebrew&rsquo;s habits
+      here differ from English in ways that change how a verse reads, starting with where
+      the verb goes.
+    </P>
+
     <SectionHeading n={1}>Word order</SectionHeading>
     <P>
       Narrative default: <strong>Verb — Subject — Object</strong> (<Hb>וַיִּקְרָא אֱלֹהִים

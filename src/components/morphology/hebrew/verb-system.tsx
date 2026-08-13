@@ -6,14 +6,16 @@
    pane shows and the morphology quizzes ask for.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term } from '../shared'
 
 export const HB_VERB_SYSTEM = (
   <>
     <P>
-      Almost every Hebrew verb is built on a <strong>root</strong> (<Hb>שֹׁרֶשׁ</Hb>) of three
-      consonants. The root carries the core idea; everything else — who acts, when, in what
-      voice — is said by the <em>pattern</em> poured around those three letters. Grammars
+      Almost every Hebrew verb is built on a <Term t="root"><strong>root</strong></Term>{' '}
+      (<Hb>שֹׁרֶשׁ</Hb>) of three consonants. The root carries the core idea; everything
+      else — who acts, when, in what <Term t="voice">voice</Term> — is said by the{' '}
+      <em>pattern</em> poured around those three letters, the way English s-ng underlies
+      sing, sang, sung, and song. Grammars
       display the patterns on the root <Hb>קטל</Hb> &ldquo;kill&rdquo;, chosen because its
       letters never misbehave.
     </P>

@@ -130,4 +130,112 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     title: 'Transliteration',
     def: 'Writing a word letter-for-letter in another alphabet: λόγος → logos. Not translation (which gives the meaning, "word") — just the sounds.',
   },
+
+  // ── Hebrew-specific terms ────────────────────────────────────────────────────────────
+  // Same audience as above: every definition works from an everyday English example before
+  // any Hebrew, so the Hebrew grammar chapters serve readers with no grammar background.
+  root: {
+    title: 'Root',
+    def: 'The three consonants that carry a Hebrew word\'s core meaning, the way "sing / sang / sung / song" all share s-ng in English. From the root מ־ל־ך ("rule") Hebrew builds "king," "queen," "kingdom," and "he reigned." Dictionaries file words by root.',
+  },
+  'construct state': {
+    title: 'Construct state',
+    def: 'Hebrew has no word for "of." Instead it compresses the first of two nouns and leans it on the second — like English "doghouse" from "dog" + "house." A noun in that compressed, leaning form is "in construct"; its ordinary dictionary form is the "absolute" state.',
+  },
+  absolute: {
+    title: 'Absolute state',
+    def: 'A noun\'s ordinary, stand-alone dictionary form — as opposed to the compressed "construct" form it takes when leaning on a following noun to mean "X of Y."',
+  },
+  definite: {
+    title: 'Definite',
+    def: 'Pointing at a particular one: "THE king" (definite) versus "A king" (indefinite). Hebrew makes a word definite with the article הַ־, with a "my/your/his" ending, or by its being a name.',
+  },
+  binyan: {
+    title: 'Binyan (stem)',
+    def: 'One of seven patterns a Hebrew root can be poured into, each shifting the meaning in a predictable way — roughly like English "eat / feed" (cause to eat) or "see / show" (cause to see). The plural is binyanim; grammars also say "stem."',
+  },
+  qal: {
+    title: 'Qal',
+    def: 'The simplest and most common verb pattern (binyan): the root\'s plain meaning, nothing added — "he wrote," "he ate." The name means "light, simple."',
+  },
+  niphal: {
+    title: 'Niphal',
+    def: 'The verb pattern that usually turns the action around onto the subject: "was written," "was heard" — like English passives.',
+  },
+  piel: {
+    title: 'Piel',
+    def: 'A verb pattern that often intensifies or extends the plain meaning: qal "break" becomes piel "smash to pieces." Recognisable by a dot (dagesh) in the middle root letter.',
+  },
+  hiphil: {
+    title: 'Hiphil',
+    def: 'The "cause to" pattern: qal "he ate" → hiphil "he fed" (caused to eat); "he saw" → "he showed." English needs a different verb; Hebrew just changes the pattern.',
+  },
+  perfect: {
+    title: 'Perfect (qatal)',
+    def: 'The Hebrew verb form for an action viewed as a complete whole — usually past in English: "he wrote." Formed with endings on the back of the root. Also called qatal.',
+  },
+  imperfect: {
+    title: 'Imperfect (yiqtol)',
+    def: 'The Hebrew verb form for an action viewed as ongoing or not yet done — usually future or repeated: "he will write," "he used to write." Formed with letters on the FRONT of the root. Also called yiqtol.',
+  },
+  'waw-consecutive': {
+    title: 'Waw-consecutive',
+    def: 'Biblical stories chain events with "and… and… and…" — a special use of וְ ("and") that flips how the verb form is translated. It is the trademark of Hebrew narrative: "and he arose, and he went, and he said."',
+  },
+  pointing: {
+    title: 'Pointing (vowel points)',
+    def: 'The dots and dashes above and below Hebrew letters that mark the vowels. Ancient Hebrew wrote only consonants; medieval scribes (the Masoretes) added the points so the traditional pronunciation would not be lost.',
+  },
+  sheva: {
+    title: 'Sheva',
+    def: 'The two vertical dots (ְ) under a letter: either a very short "uh" (like the first vowel of "about") or silence — the absence of a vowel. Which one it is follows rules the vowels chapter teaches.',
+  },
+  dagesh: {
+    title: 'Dagesh',
+    def: 'A dot inside a Hebrew letter. In בגדכפת letters it hardens the sound (b vs v, k vs kh); elsewhere it doubles the letter, as if it were written twice.',
+  },
+  guttural: {
+    title: 'Guttural',
+    def: 'The throat letters — א ה ח ע (and often ר). They refuse doubling and dislike certain vowels, which bends the regular patterns around them; most "irregular" forms trace back to a guttural.',
+  },
+  suffix: {
+    title: 'Pronominal suffix',
+    def: 'A "my / your / his / our" glued onto the end of a word instead of standing alone: סוּס "horse," סוּסִי "my horse," סוּסוֹ "his horse." Verbs take them too, as objects: "he kept HIM."',
+  },
+  participle: {
+    title: 'Participle',
+    def: 'A verb wearing an adjective\'s clothes: English "-ing" words used to describe — "the RULING king," "those SITTING at the gate." Hebrew uses it for ongoing action and for "the one who does X."',
+  },
+  infinitive: {
+    title: 'Infinitive',
+    def: 'The "to do" form of a verb — naming the action without saying who or when: "to keep," "to write." Hebrew has two: one that combines with prepositions ("in order to keep"), one that adds emphasis ("dying you shall die" = "you shall surely die").',
+  },
+  volitive: {
+    title: 'Volitive',
+    def: 'The will-and-wish forms: commands ("Go!"), wishes for oneself ("let me go"), and wishes for a third party ("let him go"). Hebrew has a distinct form for each person.',
+  },
+  paradigm: {
+    title: 'Paradigm',
+    def: 'A model word written out in all its forms, used as the pattern for every word like it — the way "amo, amas, amat" once stood for all of Latin. Learn the paradigm and you can read a thousand verbs.',
+  },
+  conjugation: {
+    title: 'Conjugation',
+    def: 'Running a verb through its forms for each subject: I keep, you keep, he keeps… English barely changes the verb; Hebrew changes it for every person, gender, and number.',
+  },
+  passive: {
+    title: 'Passive',
+    def: 'The subject receives the action instead of doing it: "the letter WAS WRITTEN" rather than "he wrote the letter."',
+  },
+  reflexive: {
+    title: 'Reflexive',
+    def: 'The subject acts on itself: "he hid HIMSELF," "she washed HERSELF."',
+  },
+  causative: {
+    title: 'Causative',
+    def: 'Making someone else do the action: "feed" is the causative of "eat," "show" of "see," "seat" of "sit." Hebrew has a whole verb pattern (the hiphil) for this.',
+  },
+  person: {
+    title: 'Person',
+    def: 'Who a verb form points at: I/we (first person), you (second), he/she/they (third). Hebrew verb endings carry person, gender, and number all at once, so a single word can say "you (feminine, plural) will keep."',
+  },
 }

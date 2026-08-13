@@ -5,14 +5,16 @@
    middle / reflexive range, and the Niphal-only verbs.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_NIPHAL = (
   <>
     <P>
-      The Niphal is Qal&rsquo;s counterpart: usually <strong>passive</strong>{' '}
-      (<Hb>נִכְתַּב</Hb> &ldquo;it was written&rdquo;), often <strong>middle or
-      reflexive</strong> (<Hb>נִסְתַּר</Hb> &ldquo;he hid himself&rdquo;). Its fingerprint is
+      The <Term t="niphal">Niphal</Term> is <Term t="qal">Qal</Term>&rsquo;s counterpart:
+      usually <Term t="passive"><strong>passive</strong></Term>{' '}
+      (<Hb>נִכְתַּב</Hb> &ldquo;it was written&rdquo;), often <strong>middle or{' '}
+      <Term t="reflexive">reflexive</Term></strong> (<Hb>נִסְתַּר</Hb> &ldquo;he hid
+      himself&rdquo;). Its fingerprint is
       a <Hb>נ</Hb> — visible in the perfect and participle, assimilated into a dagesh forte in
       the first root letter everywhere else.
     </P>

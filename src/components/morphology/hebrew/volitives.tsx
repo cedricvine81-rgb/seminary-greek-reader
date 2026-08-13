@@ -5,12 +5,14 @@
    two negatives and the politeness particle נא.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_VOLITIVES = (
   <>
     <P>
-      Hebrew distributes &ldquo;let / may / must&rdquo; across the persons: the{' '}
+      <Term t="volitive">Volitives</Term> are the wanting-and-willing forms — commands and
+      wishes. Hebrew distributes &ldquo;let / may / must&rdquo; across the{' '}
+      <Term t="person">persons</Term>: the{' '}
       <strong>cohortative</strong> for &ldquo;let <em>me/us</em>,&rdquo; the{' '}
       <strong>imperative</strong> for direct commands to <em>you</em>, and the{' '}
       <strong>jussive</strong> for &ldquo;let <em>him/them</em>.&rdquo; All three are the

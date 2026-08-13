@@ -7,13 +7,13 @@
    rule that follows from them.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_VOWELS = (
   <>
     <P>
-      The biblical text was written in consonants; the vowel <em>points</em> were added by the
-      Masoretes (ca. AD 600–900) to preserve the traditional pronunciation. Almost every sign
+      The biblical text was written in consonants; the vowel <Term t="pointing">points</Term>{' '}
+      were added by the Masoretes (ca. AD 600–900) to preserve the traditional pronunciation. Almost every sign
       sits <strong>under</strong> the consonant it follows: <Hb>דָּ</Hb> is read <em>da</em> —
       consonant first, then the vowel beneath it.
     </P>

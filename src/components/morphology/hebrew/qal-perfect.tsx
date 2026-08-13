@@ -5,14 +5,16 @@
    and basic word order.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_QAL_PERFECT = (
   <>
     <P>
-      The <strong>perfect</strong> (or <em>qatal</em>) views an action as complete — usually
-      English past tense. It conjugates with <strong>endings only</strong>, added to the base{' '}
-      <Hb>קָטַל</Hb>. Learn this ending set cold: every stem in the language reuses it.
+      The <Term t="perfect"><strong>perfect</strong></Term> (or <em>qatal</em>) views an
+      action as complete — usually English past tense: &ldquo;he kept.&rdquo; It{' '}
+      <Term t="conjugation">conjugates</Term> with <strong>endings only</strong> — one ending
+      per &ldquo;I / you / she / we / they&rdquo; — added to the base <Hb>קָטַל</Hb>. Learn
+      this ending set cold: every <Term t="binyan">stem</Term> in the language reuses it.
     </P>
 
     <SectionHeading n={1}>The paradigm</SectionHeading>

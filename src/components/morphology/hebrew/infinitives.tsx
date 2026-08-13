@@ -5,12 +5,13 @@
    clauses) and the absolute (emphasis).
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_INFINITIVES = (
   <>
     <P>
-      Hebrew has two infinitives with divided labor. The <strong>infinitive construct</strong>{' '}
+      Hebrew has two <Term t="infinitive">infinitives</Term> — &ldquo;to do&rdquo; forms
+      that name an action without saying who does it — with divided labor. The <strong>infinitive construct</strong>{' '}
       (<Hb>קְטֹל</Hb>) is the &ldquo;to do&rdquo; form — it takes prepositions and suffixes
       and builds clauses. The <strong>infinitive absolute</strong> (<Hb>קָטוֹל</Hb>) mostly
       stands beside a finite verb to add emphasis. Neither inflects for person: no subject

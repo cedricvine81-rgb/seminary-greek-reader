@@ -6,16 +6,17 @@
    morphology after the article.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_SUFFIXES = (
   <>
     <P>
       Hebrew has no possessive words like &ldquo;my&rdquo; or &ldquo;his.&rdquo; The pronoun
-      attaches to the end of the noun: <Hb>סוּסִי</Hb> &ldquo;my horse.&rdquo; The same
+      attaches to the end of the noun as a <Term t="suffix">suffix</Term>: <Hb>סוּסִי</Hb>{' '}
+      &ldquo;my horse.&rdquo; The same
       suffixes ride on prepositions (<Hb>לִי</Hb> &ldquo;to me&rdquo;) and on the object
-      marker (<Hb>אֹתִי</Hb> &ldquo;me&rdquo;). A suffixed noun is automatically definite —
-      no article needed or allowed.
+      marker (<Hb>אֹתִי</Hb> &ldquo;me&rdquo;). A suffixed noun is automatically{' '}
+      <Term t="definite">definite</Term> — no article needed or allowed.
     </P>
 
     <SectionHeading n={1}>On a singular noun</SectionHeading>

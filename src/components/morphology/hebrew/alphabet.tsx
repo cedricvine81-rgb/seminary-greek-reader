@@ -6,14 +6,16 @@
    chapter — the alphabet itself is consonants only.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term } from '../shared'
 
 export const HB_ALPHABET = (
   <>
     <P>
       Hebrew is written <strong>right to left</strong>, in consonants. The vowel signs you see
-      under and above the letters were added by the Masoretes centuries after the text was
-      written; they are the next chapter. You already know more Hebrew than you think:{' '}
+      under and above the letters — the <Term t="pointing">pointing</Term> — were added by the
+      Masoretes centuries after the text was written; they are the next chapter. (Throughout
+      this grammar, any <span className="underline decoration-dotted decoration-brand-400 underline-offset-2">dotted-underlined</span>{' '}
+      term can be tapped for a plain-English definition — no grammar background is assumed.) You already know more Hebrew than you think:{' '}
       <Hb>אָמֵן</Hb> (amen), <Hb>שָׁלוֹם</Hb> (shalom), <Hb>הַלְלוּ־יָהּ</Hb> (hallelu-Yah,
       &ldquo;praise the LORD&rdquo;) all carry straight into English.
     </P>

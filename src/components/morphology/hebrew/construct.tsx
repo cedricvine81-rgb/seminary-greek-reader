@@ -5,15 +5,17 @@
    and what may (and may not) interrupt a construct chain.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_CONSTRUCT = (
   <>
     <P>
       Hebrew has no word for &ldquo;of.&rdquo; To say &ldquo;the word of the king&rdquo; it
       simply sets two nouns side by side — <Hb>דְּבַר הַמֶּלֶךְ</Hb> — with the first noun in
-      a compressed form called the <strong>construct state</strong>, leaning its accent on the
-      noun that follows. The ordinary dictionary form is the <strong>absolute</strong> state.
+      a compressed form called the <Term t="construct state"><strong>construct state</strong></Term>,
+      leaning its accent on the noun that follows (compare how English compresses
+      &ldquo;dog&rdquo; in &ldquo;doghouse&rdquo;). The ordinary dictionary form is the{' '}
+      <Term t="absolute"><strong>absolute</strong></Term> state.
     </P>
 
     <SectionHeading n={1}>Construct forms</SectionHeading>
@@ -39,8 +41,9 @@ export const HB_CONSTRUCT = (
 
     <SectionHeading n={2}>The definiteness rule</SectionHeading>
     <P>
-      A construct noun <strong>never takes the article</strong>. The whole chain is definite
-      if its <em>last</em> noun is definite — by article, by suffix, or by being a name:
+      A construct noun <strong>never takes the article</strong>. The whole chain is{' '}
+      <Term t="definite">definite</Term> if its <em>last</em> noun is definite — by article,
+      by suffix, or by being a name:
     </P>
     <MorphTable
       title="Definiteness travels up the chain"
