@@ -31,10 +31,13 @@ export function TrackToggle({ compact = false }: { compact?: boolean }) {
             onClick={() => !active && setTrack(id)}
             aria-pressed={active}
             title={BRANDS[id].name}
+            // Active is the brand blue; inactive recedes. NB the theme remaps the grey ramp
+            // to warm sepia tones, so gray-500 here reads as a fairly assertive brown —
+            // gray-400 is what actually looks switched off against the parchment.
             className={`px-2 py-1 text-xs font-medium rounded-md transition-colors ${
               active
                 ? 'bg-brand-600 text-parchment-100 shadow-sm'
-                : 'text-gray-500 hover:text-gray-800'
+                : 'text-gray-400 hover:text-gray-700 hover:bg-parchment-100'
             }`}
           >
             <span className={id === 'hebrew' ? 'font-hebrew' : 'font-serif'}>
