@@ -4,15 +4,19 @@ import { BRANDS, type Track } from '@/lib/track'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
 /**
- * Switches the app between Seminary Greek and Seminary Hebrew.
+ * The app mark, which is also the Greek/Hebrew switch.
  *
- * A view preference: it changes the branding and what the shared tools open on. It does NOT
+ * Rather than a logo with a separate control beside it, the two monograms are joined into
+ * one segmented control — the same shape as the Reader's Verse/Word toggle — so the thing
+ * you click IS the logo, and clicking it visibly rewrites the wordmark next to it.
+ *
+ * A view preference: it changes branding and what the shared tools open on. It does NOT
  * filter the dashboard and has no bearing on any course, quiz or grade — those follow
  * Course.level. See src/lib/track.ts.
  */
 const ORDER: Track[] = ['greek', 'hebrew']
 
-export function TrackToggle({ compact = false }: { compact?: boolean }) {
+export function TrackToggle() {
   const [track, setTrack] = useTrack()
   const t = useT()
 
@@ -20,7 +24,7 @@ export function TrackToggle({ compact = false }: { compact?: boolean }) {
     <div
       role="group"
       aria-label={t('track.switch')}
-      className="inline-flex items-center rounded-lg border border-gray-200 bg-parchment-50 p-0.5"
+      className="flex rounded-lg overflow-hidden shrink-0 border border-brand-600"
     >
       {ORDER.map(id => {
         const active = track === id
@@ -31,21 +35,15 @@ export function TrackToggle({ compact = false }: { compact?: boolean }) {
             onClick={() => !active && setTrack(id)}
             aria-pressed={active}
             title={BRANDS[id].name}
-            // Active is the brand blue; inactive recedes. NB the theme remaps the grey ramp
-            // to warm sepia tones, so gray-500 here reads as a fairly assertive brown —
-            // gray-400 is what actually looks switched off against the parchment.
-            className={`px-2 py-1 text-xs font-medium rounded-md transition-colors ${
+            // Sized to the old logo square so the header keeps its proportions. Active is
+            // the brand blue the mark has always been; inactive sits back on the surface.
+            className={`w-10 h-8 flex items-center justify-center text-base font-bold tracking-tight transition-colors ${
               active
-                ? 'bg-brand-600 text-parchment-100 shadow-sm'
-                : 'text-gray-400 hover:text-gray-700 hover:bg-parchment-100'
-            }`}
+                ? 'bg-brand-600 text-parchment-100'
+                : 'bg-surface text-gray-400 hover:bg-gray-50 hover:text-gray-600'
+            } ${id === 'hebrew' ? 'font-hebrew' : 'font-serif'}`}
           >
-            <span className={id === 'hebrew' ? 'font-hebrew' : 'font-serif'}>
-              {BRANDS[id].monogram}
-            </span>
-            {!compact && (
-              <span className="ml-1.5 hidden lg:inline">{t(`track.${id}`)}</span>
-            )}
+            {BRANDS[id].monogram}
           </button>
         )
       })}
