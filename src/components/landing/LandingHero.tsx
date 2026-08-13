@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { BookOpen, BookMarked, Table2, Scroll, ClipboardList, Bookmark, MessageSquare, FlaskConical } from 'lucide-react'
+import { getServerTrack } from '@/lib/track-server'
 
 // Logged-out landing page, three cards: free study tools (no account), the $10/year
 // student account, and the free (admin-approved) instructor account. All three "Create
@@ -7,10 +8,15 @@ import { BookOpen, BookMarked, Table2, Scroll, ClipboardList, Bookmark, MessageS
 // visitors never see this — src/app/page.tsx sends them straight to the Reader. Price is
 // stated exactly as the Paddle checkout charges it.
 export function LandingHero() {
+  // The headline follows the language track — this is the first thing a visitor arriving
+  // from seminaryhebrew.app reads, and "the Greek Bible" would be the wrong promise.
+  const hebrew = getServerTrack() === 'hebrew'
   return (
     <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       <div className="text-center max-w-2xl mx-auto mb-10">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Study the Greek Bible in the original</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+          {hebrew ? 'Study the Hebrew Bible in the original' : 'Study the Greek Bible in the original'}
+        </h1>
         <p className="text-gray-600 leading-relaxed">
           Start free with the study tools, or create an account for course material and deeper research.
         </p>
