@@ -103,9 +103,12 @@ def segment_main(img: Image.Image) -> Image.Image:
             if blank_run:
                 gaps.append((blank_run, y - blank_run))
             blank_run = 0
-    cut = max(gaps)[1] if gaps else h
-    if cut < text_top + int(h * 0.10):
-        cut = h
+    # The largest gap overall is usually the running-head → body gap (~9% down the page);
+    # the main-text → apparatus gulf is the largest gap BELOW the header zone. Restricting
+    # to 15%–65% picks it reliably (measured on p. 2: header gap 64px @9%, boundary 54px
+    # @47%, inter-register gaps ≤ 52px below that).
+    candidates = [(sz, y) for sz, y in gaps if h * 0.15 < y < h * 0.65]
+    cut = max(candidates)[1] if candidates else h
     return img.crop((0, max(0, text_top - 20), w, min(h, cut + 6)))
 
 
@@ -201,6 +204,14 @@ def main():
     sp = ocr(main_zone)
     mt = mt_words(osis, span)
     matched, flags = align(mt, sp)
+    # OSD misjudges some Hebrew leaves. If almost nothing matched, the page was probably
+    # upside-down after all — retry rotated and keep whichever run aligns better.
+    if matched < len(mt) * 0.35:
+        alt = segment_main(img.rotate(180, expand=True))
+        sp2 = ocr(alt)
+        m2, f2 = align(mt, sp2)
+        if m2 > matched:
+            sp, matched, flags = sp2, m2, f2
     OUT.mkdir(exist_ok=True)
     dest = OUT / f'{osis}_p{page:03d}.json'
     dest.write_text(json.dumps(

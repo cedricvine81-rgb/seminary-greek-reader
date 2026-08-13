@@ -1,0 +1,101 @@
+<!doctype html>
+<!-- SP flag review — the human half of the digitization.
+
+     Serve the REPO ROOT (python3 -m http.server, then open
+     http://localhost:8000/scripts/sp-digitize/review.html), enter the book + pages,
+     and work through the flags with the keyboard. Every decision is a claim about what
+     the von Gall page actually prints, so the page image sits beside the buttons.
+
+     Keys:  1 = SP reads the OCR word   2 = SP = MT (OCR error)   3 = correct by hand
+            4 = junk (apparatus leak / not a word)               ←/→ move
+     Decisions autosave to localStorage; Export downloads .sp-reviews/<osis>.json for
+     apply_reviews.py. -->
+<html><head><meta charset="utf-8"><title>SP review</title><style>
+body{font-family:system-ui;margin:0;display:grid;grid-template-columns:minmax(0,1fr) 560px;height:100vh}
+#img{overflow:auto;background:#222}#img img{width:180%;filter:contrast(1.1)}
+#panel{padding:14px;overflow:auto;border-left:1px solid #ccc}
+.heb{font-size:26px;direction:rtl;font-family:"SBL Hebrew","Ezra SIL","Times New Roman",serif}
+.flag{border:1px solid #ddd;border-radius:8px;padding:10px;margin:8px 0}
+.cur{border-color:#d97706;background:#fffbeb}
+button{margin:2px;padding:6px 10px;border-radius:6px;border:1px solid #bbb;cursor:pointer}
+.done{opacity:.45}.d1{border-left:5px solid #16a34a}.d2{border-left:5px solid #6b7280}
+.d3{border-left:5px solid #2563eb}.d4{border-left:5px solid #dc2626}
+#bar{position:sticky;top:0;background:#fff;padding-bottom:8px;border-bottom:1px solid #eee}
+small{color:#666}
+</style></head><body>
+<div id="img"><img id="page" alt="von Gall page"></div>
+<div id="panel">
+  <div id="bar">
+    <b>SP flag review</b><br>
+    book <input id="osis" value="Gen" size="4"> pages <input id="p1" value="1" size="3">–<input id="p2" value="20" size="3">
+    <button onclick="load()">Load</button> <button onclick="exportAll()">Export decisions</button>
+    <div id="prog"></div>
+  </div>
+  <div id="flags"></div>
+</div>
+<script>
+let pages=[], items=[], cur=0
+const K=(o,p,i)=>`spr:${o}:${p}:${i}`
+async function load(){
+  const osis=document.getElementById('osis').value.trim()
+  const a=+document.getElementById('p1').value, b=+document.getElementById('p2').value
+  pages=[]; items=[]
+  for(let p=a;p<=b;p++){
+    const r=await fetch(`/.sp-flags/${osis}_p${String(p).padStart(3,'0')}.json`)
+    if(!r.ok) continue
+    const d=await r.json(); pages.push(d)
+    d.flags.forEach((f,i)=>items.push({osis,page:d.page,leaf:d.leaf,i,f}))
+  }
+  cur=items.findIndex(it=>!localStorage.getItem(K(it.osis,it.page,it.i)))
+  if(cur<0) cur=0
+  render()
+}
+function decide(code,val){
+  const it=items[cur]
+  localStorage.setItem(K(it.osis,it.page,it.i), JSON.stringify({code,val:val??null}))
+  cur=Math.min(cur+1, items.length-1); render()
+}
+function render(){
+  const el=document.getElementById('flags'); el.innerHTML=''
+  const it=items[cur]
+  if(it) document.getElementById('page').src=`https://archive.org/download/derhebraischepentateuchchecked/page/n${it.leaf}_large.jpg`
+  const doneN=items.filter(x=>localStorage.getItem(K(x.osis,x.page,x.i))).length
+  document.getElementById('prog').textContent=`${doneN}/${items.length} decided · current: p.${it?.page} ${it?.f[it.f.length-1]}`
+  items.forEach((x,idx)=>{
+    const d=document.createElement('div')
+    const dec=localStorage.getItem(K(x.osis,x.page,x.i))
+    const c=dec?JSON.parse(dec).code:0
+    d.className='flag'+(idx===cur?' cur':'')+(dec?` done d${c}`:'')
+    const [kind,...rest]=x.f
+    const ref=x.f[x.f.length-1], mt=kind==='sub'?x.f[1]:kind==='mt'?x.f[1]:'—', sp=kind==='sub'?x.f[2]:kind==='sp'?x.f[1]:'—'
+    d.innerHTML=`<small>p.${x.page} · ${x.osis} ${ref} · ${kind}</small><br>
+      MT: <span class="heb">${mt}</span> &nbsp; OCR: <span class="heb">${sp}</span><br>`
+    if(idx===cur){
+      d.innerHTML+=`<button onclick="decide(1)">1 SP = OCR</button>
+        <button onclick="decide(2)">2 SP = MT (ocr err)</button>
+        <button onclick="decide(3, prompt('SP reads:'))">3 custom</button>
+        <button onclick="decide(4)">4 junk</button>`
+      setTimeout(()=>d.scrollIntoView({block:'center'}),0)
+    }
+    d.onclick=()=>{cur=idx;render()}
+    el.appendChild(d)
+  })
+}
+function exportAll(){
+  const out={}
+  items.forEach(x=>{
+    const dec=localStorage.getItem(K(x.osis,x.page,x.i))
+    if(dec) (out[x.page]??={})[x.i]=JSON.parse(dec)
+  })
+  const osis=document.getElementById('osis').value.trim()
+  const blob=new Blob([JSON.stringify({osis,decisions:out},null,1)],{type:'application/json'})
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`${osis}_reviews.json`; a.click()
+}
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return
+  if(e.key==='1')decide(1); else if(e.key==='2')decide(2)
+  else if(e.key==='3')decide(3,prompt('SP reads:')); else if(e.key==='4')decide(4)
+  else if(e.key==='ArrowLeft'){cur=Math.max(0,cur-1);render()}
+  else if(e.key==='ArrowRight'){cur=Math.min(items.length-1,cur+1);render()}
+})
+</script></body></html>
