@@ -187,7 +187,7 @@ export function encodeConstruct(q: ConstructQuery): URLSearchParams {
 type RawParams = Record<string, string | string[] | undefined>
 const one = (v: string | string[] | undefined): string => (Array.isArray(v) ? v[0] ?? '' : v ?? '')
 
-export function decodeConstruct(params: RawParams): ConstructQuery {
+export function decodeConstruct(params: RawParams, fallbackCorpus: ConstructCorpus = 'GNT'): ConstructQuery {
   const c = one(params.c)
   const terms = c ? c.split('~').map(decodeTerm) : []
   const w = Number(one(params.w))
@@ -196,7 +196,7 @@ export function decodeConstruct(params: RawParams): ConstructQuery {
     // Only a corpus we actually index; anything else falls back rather than reading a missing file.
     corpus: (one(params.in) === CONSTRUCT_ALL
       ? CONSTRUCT_ALL
-      : CONSTRUCT_CORPORA.find(c => c.id === one(params.in))?.id ?? 'GNT') as ConstructCorpus,
+      : CONSTRUCT_CORPORA.find(c => c.id === one(params.in))?.id ?? fallbackCorpus) as ConstructCorpus,
     // Always present the builder with at least two term cards.
     terms: terms.length >= 2 ? terms.slice(0, CONSTRUCT_MAX_TERMS) : [...terms, emptyTerm(), emptyTerm()].slice(0, 2),
     within: Number.isFinite(w) && w >= 1 ? Math.min(w, CONSTRUCT_MAX_WITHIN) : CONSTRUCT_DEFAULT_WITHIN,

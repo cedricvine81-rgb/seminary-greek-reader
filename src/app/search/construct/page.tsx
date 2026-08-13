@@ -3,6 +3,7 @@ import { ConstructSearchPage } from '@/components/search/ConstructSearchPage'
 import { decodeConstruct } from '@/lib/construct-query'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { getServerLocale } from '@/lib/i18n/server'
+import { getServerTrack } from '@/lib/track-server'
 import { loadContent } from '@/lib/i18n/content-load'
 
 export const metadata: Metadata = { title: 'Construct search' }
@@ -20,10 +21,14 @@ export default async function ConstructPage({ searchParams }: {
   // (src/lib/i18n/es/constructPresets.json). Loaded HERE, on the server, so an English reader is
   // handed the empty catalogue and downloads no Spanish.
   const translations = await loadContent(getServerLocale(), 'constructPresets')
+  // Open on the corpus the reader's track is about — the Hebrew Bible on Seminary Hebrew,
+  // the Greek NT on Seminary Greek — so nobody has to re-pick it every visit. A corpus named
+  // in the URL still wins, so shared construct links keep meaning what they said.
+  const trackCorpus = getServerTrack() === 'hebrew' ? 'MT' : 'GNT'
 
   return (
     <div className="py-2 pb-16">
-      <ConstructSearchPage initial={decodeConstruct(searchParams ?? {})} isAuthenticated={isAuthenticated} translations={translations} />
+      <ConstructSearchPage initial={decodeConstruct(searchParams ?? {}, trackCorpus)} isAuthenticated={isAuthenticated} translations={translations} />
     </div>
   )
 }

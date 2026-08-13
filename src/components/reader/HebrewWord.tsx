@@ -10,9 +10,23 @@ import { highlightMarkClass } from '@/lib/highlight-colors'
 // Build the parsing-pane payload for a Hebrew word: dictionary lemma + transliteration + gloss
 // from the Strong's lexicon, the decoded OSHB parse, and (for compounds) the prefix/suffix
 // segment breakdown. Exported so the mobile sheet path can reuse it if needed.
+// A compound word (מְשִׁיחוֹ = מָשִׁיחַ + 3ms suffix) carries NO word-level Strong's and takes
+// its morph from the last morpheme — the suffix. Read naively, the pane then showed
+// "Pronominal suffix, 3rd person masculine singular" with no lemma, gloss or BDB at all.
+// The content morpheme (the first with a numeric Strong's) is what the word is ABOUT.
+function contentMorpheme(word: VerseWord): { strongs: string; morph?: string } | null {
+  for (const m of word.morphemes ?? []) {
+    if (/^\d/.test(m.strongs ?? '')) return { strongs: m.strongs, morph: m.morph }
+  }
+  return null
+}
+
 export function buildHebrewInfo(word: VerseWord, reference: string, lex: HebrewLexicon | null): LexicalInfoPanel {
   const lang = word.lang ?? 'H'
-  const entry = lookupHebrewStrongs(lex, word.strongs)
+  const content = /^\d/.test(word.strongs ?? '') ? null : contentMorpheme(word)
+  const entry = lookupHebrewStrongs(lex, word.strongs || content?.strongs)
+  // Headline parse: the content morpheme's, when the word's own code is only an affix.
+  const headMorph = word.morph && !/^(Sp|R$|C$|Td)/.test(word.morph) ? word.morph : (content?.morph ?? word.morph)
 
   const segments: HebrewSegment[] | undefined =
     word.morphemes && word.morphemes.length > 1
@@ -26,9 +40,9 @@ export function buildHebrewInfo(word: VerseWord, reference: string, lex: HebrewL
     surface: word.surface,
     lexeme: entry?.lemma ?? word.surface,
     gloss: usableGloss(entry),
-    partOfSpeech: hebrewPartOfSpeech(word.morph ?? ''),
-    parsing: word.morph ? formatHebrewParse(word.morph, lang) : hebrewPartOfSpeech(word.morph ?? ''),
-    strongs: word.strongs ? `H${word.strongs}` : undefined,
+    partOfSpeech: hebrewPartOfSpeech(headMorph ?? ''),
+    parsing: headMorph ? formatHebrewParse(headMorph, lang) : hebrewPartOfSpeech(headMorph ?? ''),
+    strongs: (word.strongs || content?.strongs) ? `H${word.strongs || content?.strongs}` : undefined,
     reference,
     script: 'hebrew',
     transliteration: entry?.xlit || undefined,
