@@ -17,6 +17,8 @@ import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { MT_OSIS, MT_BOOK_LIST } from '@/lib/mt-books'
 import { formatHebrewParse } from '@/lib/hebrew-morph'
 import { loadHebrewLexicon, lookupHebrewStrongs, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // ── Rhetoric tab ────────────────────────────────────────────────────────────────────────
@@ -318,6 +320,18 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   // as it does in the Reader; without it the pane would show only Strong's and the parsing.
   const [hebLex, setHebLex] = useState<HebrewLexicon | null>(null)
   useEffect(() => { if (hebrewAnchor && !hebLex) loadHebrewLexicon().then(setHebLex).catch(() => {}) }, [hebrewAnchor, hebLex])
+  // Per-verse notes on the passage column, like every reading pane (signed-in only).
+  const [notedKeys, setNotedKeys] = useState<Set<number>>(new Set())
+  const loadNoted = async () => {
+    if (!isAuthenticated || !parsed) { setNotedKeys(new Set()); return }
+    try {
+      const r = await fetch(`/api/notes?book=${encodeURIComponent(parsed.osis)}&chapter=${parsed.chapter}&verseStart=1&verseEnd=500`)
+      const d = await r.json()
+      setNotedKeys(new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)))
+    } catch { /* leave as-is */ }
+  }
+  useEffect(() => { void loadNoted() }, [isAuthenticated, parsed?.osis, parsed?.chapter]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => onNotesChanged(() => void loadNoted()), [isAuthenticated, parsed?.osis, parsed?.chapter]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const osis = parsed?.osis
   useEffect(() => {
@@ -575,6 +589,12 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                 const refStr = `${parsed!.name} ${parsed!.chapter}:${v.verse}`
                 return (
                   <p key={v.verse} className={has ? 'rounded px-1 -mx-1 bg-amber-50/40' : ''}>
+                    {isAuthenticated && (
+                      <span dir="ltr" className="mr-0.5 align-middle font-sans print:hidden" onClick={e => e.stopPropagation()}>
+                        <VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={v.verse}
+                          noted={notedKeys.has(v.verse)} onChanged={loadNoted} />
+                      </span>
+                    )}
                     <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.verse}</sup>
                     {isOriginal && v.tokens && v.tokens.length > 0
                       ? <span {...verseAnchorProps(parsed!.osis, parsed!.chapter, v.verse, origLayer)}>
