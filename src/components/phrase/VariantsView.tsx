@@ -395,7 +395,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
           // form OT textual criticism actually takes at this level (no PD structured
           // apparatus exists; BHS/BHQ are copyrighted).
           const ot = parseMTRef(controlledPassage ?? '')
-          if (ot) return <OTVariantsView osis={ot.osis} name={ot.name} chapter={ot.chapter} verseStart={ot.verseStart} verseEnd={ot.verseEnd} onAttribution={onAttribution} />
+          if (ot) return <OTVariantsView osis={ot.osis} name={ot.name} chapter={ot.chapter} verseStart={ot.verseStart} verseEnd={ot.verseEnd} isAuthenticated={isAuthenticated} onAttribution={onAttribution} />
           return <p className="text-gray-500 text-sm mt-6 text-center">Textual-variant data covers the <b>{t('var.newTestament')}</b> (manuscripts) and the Hebrew Bible (ancient versions). Try e.g. <span className="font-medium">John 1:1-5</span> or <span className="font-medium">Gen 1:1-5</span>.</p>
         })()}
         {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">{t('var.loadingWitnesses')}</p>}
@@ -489,8 +489,8 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                 <div key={vm.vid} className="mb-3 rounded-lg border border-gray-100 p-2.5">
                   <div className="flex items-center gap-1 text-[0.7rem] font-mono text-gray-500 mb-1.5">
                     <span className="font-semibold text-gray-600">{parsed!.chapter}:{vm.verse}</span>
-                    <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
-                      noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
+                    {isAuthenticated && <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
+                      noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>}
                     <NoteBadge vid={vm.vid} verse={vm.verse} />
                   </div>
                   <NotePanel vid={vm.vid} verse={vm.verse} />
@@ -534,8 +534,8 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                             {ri === 0 && (
                               <span className="inline-flex items-center gap-1">
                                 <span className="font-semibold text-gray-600">{parsed!.chapter}:{vm.verse}</span>
-                                <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
-                                  noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
+                                {isAuthenticated && <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
+                                  noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>}
                                 <NoteBadge vid={vm.vid} verse={vm.verse} />
                               </span>
                             )}

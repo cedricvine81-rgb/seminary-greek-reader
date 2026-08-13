@@ -17,12 +17,19 @@
    letting rows silently mislead.
 ───────────────────────────────────────────── */
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { matchProseCitation, type ProseChapter } from '@/lib/prose-texts'
-import { HebrewVerse } from '@/components/reader/HebrewVerse'
+import { HebrewVerse, HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { GreekVerse } from '@/components/reader/GreekVerse'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { openWordSearch } from '@/lib/word-search-bus'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { wordAtPoint, EDGE_PUNCT } from '@/lib/word-at-point'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -44,12 +51,13 @@ const ATTRIBUTION =
   'Targums: Etheridge (Pseudo-Jonathan) / Pauli (Isaiah), public domain. English: World English Bible. ' +
   'A manuscript apparatus for the OT (BHS/BHQ) is under copyright and is not reproduced here.'
 
-export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAttribution }: {
+export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAuthenticated = false, onAttribution }: {
   osis: string
   name: string
   chapter: number
   verseStart: number
   verseEnd: number
+  isAuthenticated?: boolean
   onAttribution?: (a: string) => void
 }) {
   const [rows, setRows] = useState<VRow[]>([])
@@ -67,6 +75,34 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
   const [hoverInfo, setHoverInfo] = useState<LexicalInfoPanel | null>(null)
   useEffect(() => { loadHebrewLexicon().then(setHebrewLex).catch(() => {}) }, [])
   const reqRef = useRef(0)
+  // Notes / highlights / right-click search — the same wiring every reading pane has
+  // (CommentaryView is the pattern). MT column highlights live on the Hebrew layer,
+  // LXX on 'grc': both shared with the Reader, so marks made here show there too.
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const highlights = useHighlights(isAuthenticated)
+  const highlightSelection = useHighlightSelection(scrollRef)
+  const [notedKeys, setNotedKeys] = useState<Set<number>>(new Set())
+  const loadNoted = useCallback(async () => {
+    if (!isAuthenticated) { setNotedKeys(new Set()); return }
+    try {
+      const r = await fetch(`/api/notes?book=${encodeURIComponent(osis)}&chapter=${chapter}&verseStart=1&verseEnd=500`)
+      const d = await r.json()
+      setNotedKeys(new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)))
+    } catch { /* leave as-is */ }
+  }, [isAuthenticated, osis, chapter])
+  useEffect(() => { void loadNoted() }, [loadNoted])
+  useEffect(() => onNotesChanged(() => void loadNoted()), [loadNoted])
+  // Right-click on the English columns (Targum / WEB): search the word under the cursor,
+  // or the selection when one exists.
+  const onEnglishContextMenu = useCallback((verse: number) => (e: React.MouseEvent<HTMLParagraphElement>) => {
+    const sel = window.getSelection()
+    let word = sel && !sel.isCollapsed ? sel.toString().trim() : ''
+    if (!word) word = wordAtPoint(e.clientX, e.clientY)
+    word = word.replace(EDGE_PUNCT, '').trim()
+    if (!word) return
+    e.preventDefault()
+    openWordSearch({ x: e.clientX, y: e.clientY, surface: word, reference: `${name} ${chapter}:${verse}`, kind: 'translation', transLang: 'en', book: osis })
+  }, [name, chapter, osis])
 
   useEffect(() => { onAttribution?.([ATTRIBUTION, tgAttrib, spAttrib].filter(Boolean).join(' ')) }, [onAttribution, tgAttrib, spAttrib])
 
@@ -122,7 +158,7 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
 
   return (
     <div className="h-full flex flex-col min-h-0">
-    <div className="flex-1 overflow-y-auto px-1 pb-4">
+    <div ref={scrollRef} className="flex-1 overflow-y-auto px-1 pb-4">
       <div className="mb-3 mt-1">
         <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
           Ancient versions — {name} {chapter}:{verseStart}{verseEnd !== verseStart ? `–${verseEnd}` : ''}
@@ -155,24 +191,50 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
           </div>
           {rows.map(r => (
             <div key={r.verse} className="rounded-xl border border-gray-200 p-3">
-              <p className="text-[11px] font-semibold text-brand-600 mb-1.5">{name} {chapter}:{r.verse}</p>
+              <div className="flex items-center gap-1 mb-1.5">
+                {isAuthenticated && (
+                  <span className="print:hidden"><VerseNoteButton book={osis} chapter={chapter} verse={r.verse}
+                    noted={notedKeys.has(r.verse)} onChanged={loadNoted} /></span>
+                )}
+                <p className="text-[11px] font-semibold text-brand-600">{name} {chapter}:{r.verse}</p>
+              </div>
               <div className={`grid grid-cols-1 ${cols} gap-3`}>
                 <div className="text-lg leading-relaxed text-gray-900" style={{ '--greek-fs': '1.125rem' } as React.CSSProperties}>
                   {r.mtV
                     ? <HebrewVerse verse={r.mtV} activeWordId={null} highlighted={false} lexicon={hebrewLex}
+                        textHighlights={highlights.forVerse(osis, chapter, r.verse, HEBREW_LAYER)}
                         onWordHover={(_id, hi) => setHoverInfo(hi)}
-                        onWordClick={i => { setInfo(i); setHoverInfo(null) }} />
+                        onWordClick={i => { setInfo(i); setHoverInfo(null) }}
+                        onWordRightClick={(word, x, y, start, end) => {
+                          const existing = highlights.forVerse(osis, chapter, r.verse, HEBREW_LAYER).find(h => start < h.endOffset && end > h.startOffset)
+                          openWordSearch({ x, y, surface: word.surface, reference: `${name} ${chapter}:${r.verse}`, kind: 'hebrew',
+                            highlight: isAuthenticated ? {
+                              activeColor: existing?.color ?? null,
+                              onPick: c => existing ? void highlights.recolor(existing.id, osis, chapter, c) : void highlights.create(osis, chapter, r.verse, start, end, c, HEBREW_LAYER),
+                              onRemove: () => { if (existing) void highlights.remove(existing.id, osis, chapter) },
+                            } : undefined })
+                        }} />
                     : <span className="font-sans text-xs text-gray-300 italic">—</span>}
                 </div>
                 <div className="text-base leading-relaxed text-gray-800" style={{ '--greek-fs': '1.05rem' } as React.CSSProperties}>
                   {r.lxxV
-                    ? <GreekVerse verse={r.lxxV} activeWordId={null} highlighted={false} textHighlights={[]}
+                    ? <GreekVerse verse={r.lxxV} activeWordId={null} highlighted={false}
+                        textHighlights={highlights.forVerse(osis, chapter, r.verse, 'grc')}
                         onWordHover={(_id, hi) => setHoverInfo(hi)}
-                        onWordClick={i => { setInfo(i); setHoverInfo(null) }} />
+                        onWordClick={i => { setInfo(i); setHoverInfo(null) }}
+                        onWordRightClick={(word, x, y, start, end) => {
+                          const existing = highlights.forVerse(osis, chapter, r.verse, 'grc').find(h => start < h.endOffset && end > h.startOffset)
+                          openWordSearch({ x, y, surface: word.surface, lemma: word.lexeme?.lexeme ?? null, reference: `${name} ${chapter}:${r.verse}`, kind: 'greek', greekCorpus: 'LXX', book: osis,
+                            highlight: isAuthenticated ? {
+                              activeColor: existing?.color ?? null,
+                              onPick: c => existing ? void highlights.recolor(existing.id, osis, chapter, c) : void highlights.create(osis, chapter, r.verse, start, end, c, 'grc'),
+                              onRemove: () => { if (existing) void highlights.remove(existing.id, osis, chapter) },
+                            } : undefined })
+                        }} />
                     : <span className="font-sans text-xs text-gray-300 italic">not in the LXX at this number</span>}
                 </div>
-                {hasTg && <p className="font-reading text-sm leading-relaxed text-gray-700">{r.tg ?? <span className="text-xs text-gray-300 italic">—</span>}</p>}
-                <p className="font-reading text-sm leading-relaxed text-gray-700">{r.en ?? <span className="text-xs text-gray-300 italic">—</span>}</p>
+                {hasTg && <p className="font-reading text-sm leading-relaxed text-gray-700" onContextMenu={r.tg ? onEnglishContextMenu(r.verse) : undefined}>{r.tg ?? <span className="text-xs text-gray-300 italic">—</span>}</p>}
+                <p className="font-reading text-sm leading-relaxed text-gray-700" onContextMenu={r.en ? onEnglishContextMenu(r.verse) : undefined}>{r.en ?? <span className="text-xs text-gray-300 italic">—</span>}</p>
               </div>
               {(() => {
                 const sn = spNotes[`${chapter}:${r.verse}`]
@@ -194,6 +256,23 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, onAt
     <div className="shrink-0 mt-2 px-1">
       <ResizableParsingPane storageKey="ot-variants" info={hoverInfo ?? info} bgClass="bg-gray-50" />
     </div>
+    {isAuthenticated && highlightSelection.popup && (
+      <HighlightPopup
+        state={highlightSelection.popup}
+        onPick={color => {
+          const state = highlightSelection.popup!
+          if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color, s.layer)
+          else void highlights.recolor(state.id, state.book, state.chapter, color)
+          highlightSelection.close()
+        }}
+        onRemove={() => {
+          const state = highlightSelection.popup!
+          if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+          highlightSelection.close()
+        }}
+        onClose={highlightSelection.close}
+      />
+    )}
     </div>
   )
 }

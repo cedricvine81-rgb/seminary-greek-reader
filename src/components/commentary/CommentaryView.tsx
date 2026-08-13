@@ -14,6 +14,7 @@ import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { NoteAnchor } from '@/components/student/NotesView'
 import { useHighlights } from '@/components/highlights/useHighlights'
+import { wordAtPoint, EDGE_PUNCT as CV_EDGE_PUNCT } from '@/lib/word-at-point'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 
@@ -53,27 +54,6 @@ function PageScanModal({ pages, pagesPath, book, sourceName, onClose }: {
 // spans like the Greek/translation panes, so we resolve the word to search from the caret at
 // right-click time: the current selection if the user selected one, else the word under the
 // cursor. Greek words route to the Greek search, everything else to the translation search.
-const CV_EDGE_PUNCT = /^[.,;:!?·"“”‘’'ʼ`()[\]{}<>«»…—–-]+|[.,;:!?·"“”‘’'ʼ`()[\]{}<>«»…—–-]+$/g
-function wordAtPoint(x: number, y: number): string {
-  const doc = document as Document & {
-    caretRangeFromPoint?: (x: number, y: number) => Range | null
-    caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node; offset: number } | null
-  }
-  let node: Node | null = null, offset = 0
-  if (doc.caretRangeFromPoint) {                       // WebKit / Blink (Safari, Chrome)
-    const r = doc.caretRangeFromPoint(x, y)
-    if (r) { node = r.startContainer; offset = r.startOffset }
-  } else if (doc.caretPositionFromPoint) {             // standards / Firefox fallback
-    const p = doc.caretPositionFromPoint(x, y)
-    if (p) { node = p.offsetNode; offset = p.offset }
-  }
-  if (!node || node.nodeType !== Node.TEXT_NODE) return ''
-  const text = node.textContent ?? ''
-  let a = offset, b = offset
-  while (a > 0 && !/\s/.test(text[a - 1])) a--
-  while (b < text.length && !/\s/.test(text[b])) b++
-  return text.slice(a, b)
-}
 
 interface CommentaryMeta { id: string; name: string; author?: string; attribution?: string; books?: string[]; kind?: 'original-view' }
 interface OriginalSource { id: string; name: string; attribution: string; pagesPath: string; books: string[] }
