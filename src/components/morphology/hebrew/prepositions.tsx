@@ -21,7 +21,8 @@ export const HB_PREPOSITIONS = (
     <P>
       Three prepositions are prefixes, never separate words: <Hb>בְּ</Hb> &ldquo;in, by,
       with,&rdquo; <Hb>כְּ</Hb> &ldquo;like, as,&rdquo; <Hb>לְ</Hb> &ldquo;to, for.&rdquo;
-      Their pointing follows the same instincts as the conjunction:
+      Their pointing follows the same instincts as the conjunction <Hb>וְ</Hb> (taught with
+      the article, in the previous chapter):
     </P>
     <MorphTable
       title="Pointing בְּ, כְּ, לְ"

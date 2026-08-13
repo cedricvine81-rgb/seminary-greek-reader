@@ -99,6 +99,35 @@ export const HB_SUFFIXES = (
     />
     <HbEx he="עִמָּנוּ אֵל" en={<>Immanuel (Isa 7:14) — עִם “with” + ־נוּ “us” + אֵל “God”: the name is a suffix lesson.</>} />
 
+    <SectionHeading n={5}>On verbs</SectionHeading>
+    <P>
+      The same pronouns ride on <strong>verbs</strong> — as objects. Hebrew can say
+      &ldquo;he kept him&rdquo; two ways: object marker + suffix (<Hb>שָׁמַר אֹתוֹ</Hb>) or
+      the suffix welded straight onto the verb (<Hb>שְׁמָרוֹ</Hb>). Both are everywhere;
+      the welded form is tighter and loves poetry.
+    </P>
+    <MorphTable
+      title="Object suffixes on the verb"
+      headers={['Hebrew', 'Built from', 'Meaning']}
+      hCols={[0]}
+      tCols={[1, 2]}
+      firstColIsData
+      striped
+      rows={[
+        ['שְׁמָרַנִי', 'שָׁמַר + נִי', 'he kept me'],
+        ['שְׁמָרוֹ', 'שָׁמַר + וֹ', 'he kept him'],
+        ['שְׁמָרָהּ', 'שָׁמַר + ָהּ', 'he kept her'],
+        ['יִשְׁמְרֵנִי', 'יִשְׁמֹר + נִי', 'he will keep me'],
+        ['יִשְׁמְרֵהוּ', 'יִשְׁמֹר + הוּ', 'he will keep him'],
+        ['שָׁמְרוּהוּ', 'שָׁמְרוּ + הוּ', 'they kept him'],
+      ]}
+      note="The verb's vowels compress to make room (שָׁמַר → שְׁמָר־), exactly as nouns compressed before their suffixes. On the imperfect a linking vowel ֵ (sometimes ֶנּ) carries the suffix."
+    />
+    <P>
+      Reading tip: a verb that seems one syllable too long usually ends in an object
+      suffix. Parse the verb first, then peel the pronoun off the end.
+    </P>
+
     <InfoBox title="Watch for">
       <p className="mb-1"><Hb>אֹתוֹ</Hb> “him” (object marker) vs <Hb>אִתּוֹ</Hb> “with him” (the preposition את, hireq + dagesh). Same consonants, different words.</p>
       <p className="mb-1">The 3ms singular suffix ‏<Hb>וֹ</Hb> and the 3ms plural-style ‏<Hb>ָיו</Hb> both mean “his” — the yod tells you whether he owns one or many.</p>

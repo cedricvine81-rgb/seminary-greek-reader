@@ -5,7 +5,7 @@
    and the irregular plurals every first-year list carries.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from '../shared'
 
 export const HB_NOUNS = (
   <>
@@ -101,6 +101,16 @@ export const HB_NOUNS = (
       <p className="mb-1"><Hb>אֱלֹהִים</Hb> is plural in form but takes singular verbs and adjectives when it means the God of Israel: <Hb>בָּרָא אֱלֹהִים</Hb> — “God created,” singular verb.</p>
       <p><Hb>פָּנִים</Hb> “face” and <Hb>מַיִם</Hb> “water” exist only in the plural/dual form; translate as singular.</p>
     </InfoBox>
+
+    <SectionHeading n={6}>The directional ending ־ָה (he-directive)</SectionHeading>
+    <P>
+      An unaccented <Hb>ָה-</Hb> on the end of a place-word means <em>toward</em> it — motion,
+      with no preposition needed: <Hb>הַבַּיְתָה</Hb> &ldquo;to the house,&rdquo;{' '}
+      <Hb>מִצְרַיְמָה</Hb> &ldquo;to Egypt,&rdquo; <Hb>הַשָּׁמַיְמָה</Hb> &ldquo;heavenward,&rdquo;{' '}
+      <Hb>נֶגְבָּה</Hb> &ldquo;southward.&rdquo; It looks like a feminine ending; the giveaways
+      are the place-word, the motion verb beside it, and the accent staying off the ending.
+    </P>
+    <HbEx he="וַיֵּלֶךְ אַבְרָם מִצְרַיְמָה" en={<>“and Abram went down toward Egypt” (cf. Gen 12:10) — the ־ָה carries the “to.”</>} />
 
     <Practice
       level="both"

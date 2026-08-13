@@ -26,6 +26,7 @@ import { HB_CONSTRUCT } from './construct'
 import { HB_ADJECTIVES } from './adjectives'
 import { HB_PRONOUNS } from './pronouns'
 import { HB_SUFFIXES } from './suffixes'
+import { HB_NUMBERS } from './numbers'
 import { HB_VERB_SYSTEM } from './verb-system'
 import { HB_QAL_PERFECT } from './qal-perfect'
 import { HB_QAL_IMPERFECT } from './qal-imperfect'
@@ -52,6 +53,7 @@ const HEBREW_TABS = [
   { id: 'adjectives', labelKey: 'morph.hb.tab.adjectives', content: HB_ADJECTIVES },
   { id: 'pronouns', labelKey: 'morph.hb.tab.pronouns', content: HB_PRONOUNS },
   { id: 'suffixes', labelKey: 'morph.hb.tab.suffixes', content: HB_SUFFIXES },
+  { id: 'numbers', labelKey: 'morph.hb.tab.numbers', content: HB_NUMBERS },
   { id: 'verb-system', labelKey: 'morph.hb.tab.verb-system', content: HB_VERB_SYSTEM },
   { id: 'qal-perfect', labelKey: 'morph.hb.tab.qal-perfect', content: HB_QAL_PERFECT },
   { id: 'qal-imperfect', labelKey: 'morph.hb.tab.qal-imperfect', content: HB_QAL_IMPERFECT },
