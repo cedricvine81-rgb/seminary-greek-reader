@@ -2,6 +2,9 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { X, ZoomIn, ZoomOut, ExternalLink } from 'lucide-react'
 import { GreekVerse } from '@/components/reader/GreekVerse'
+import { HebrewVerse, HEBREW_LAYER } from '@/components/reader/HebrewVerse'
+import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { MT_OSIS } from '@/lib/mt-books'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
@@ -100,6 +103,11 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
   const [activeScan, setActiveScan] = useState<{ source: OriginalSource; pages: number[] } | null>(null)
   // Greek edition shown alongside the commentary. Nestle 1904 = NA1904, Tischendorf 8th = GNT.
   const [gntEdition, setGntEdition] = useState<'nestle1904' | 'tischendorf'>('nestle1904')
+  // OT anchors read the Hebrew Bible: MT corpus, HebrewVerse rows, and the Hebrew lexicon
+  // for the parsing pane. Keil & Delitzsch is the commentary that covers them.
+  const hebrew = !!anchor && MT_OSIS.has(anchor.book)
+  const [hebrewLex, setHebrewLex] = useState<HebrewLexicon | null>(null)
+  useEffect(() => { if (hebrew && !hebrewLex) loadHebrewLexicon().then(setHebrewLex).catch(() => {}) }, [hebrew, hebrewLex])
   // The three-dot text-settings menu (font size / line spacing / copyright) is hoisted
   // up into the shared exegesis tools menu — this still needs the live values to style
   // its own text, kept in sync with that menu via the shared localStorage-backed hooks.
@@ -150,11 +158,22 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // If the selected commentary does not cover the anchor's book (Robertson on Genesis,
+  // K&D on Matthew), switch to the first that does — otherwise an OT visit shows an
+  // empty pane with the fix hidden in a dropdown.
+  useEffect(() => {
+    if (!anchor || commentaries.length === 0) return
+    const cur = commentaries.find(c => c.id === commentaryId)
+    if (cur && (cur.kind === 'original-view' || cur.books?.includes(anchor.book))) return
+    const fit = commentaries.find(c => c.books?.includes(anchor.book))
+    if (fit) setCommentaryId(fit.id)
+  }, [anchor?.book, commentaries]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // Greek text for the passage (Nestle 1904 or Tischendorf, per the dropdown).
   useEffect(() => {
     if (!anchor) { setVerses([]); setActiveVerse(null); return }
     setLoading(true); setInfo(null); setHoverInfo(null)
-    const corpus = gntEdition === 'nestle1904' ? 'NA1904' : 'GNT'
+    const corpus = hebrew ? 'MT' : gntEdition === 'nestle1904' ? 'NA1904' : 'GNT'
     fetch(`/api/reader?corpus=${corpus}&book=${anchor.book}&chapter=${anchor.chapter}`)
       .then(r => r.json())
       .then(d => {
@@ -162,7 +181,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
         setVerses(vs); setActiveVerse(vs[0]?.verse ?? anchor.verseStart)
       }).catch(() => setVerses([])).finally(() => setLoading(false))
     void highlights.loadFor(anchor.book, anchor.chapter)
-  }, [anchor?.book, anchor?.chapter, anchor?.verseStart, anchor?.verseEnd, gntEdition, highlights.loadFor]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [anchor?.book, anchor?.chapter, anchor?.verseStart, anchor?.verseEnd, gntEdition, hebrew, highlights.loadFor]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Registry of "Original View" PDF sources (fetched once, lazily — only used when
   // that option is selected).
@@ -236,13 +255,17 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
       {/* Left: Greek text (scrolls) + parsing box (fixed, bottom-left) */}
       <div className="flex flex-col min-h-0">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Greek</span>
+          <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">{hebrew ? 'Hebrew' : 'Greek'}</span>
+          {hebrew ? (
+            <span className="rounded-lg border border-gray-200 px-2 py-1.5 text-sm text-gray-500">Leningrad (WLC)</span>
+          ) : (
           <select value={gntEdition} onChange={e => setGntEdition(e.target.value as 'nestle1904' | 'tischendorf')}
             title="Choose the Greek edition"
             className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
             <option value="nestle1904">Nestle 1904</option>
             <option value="tischendorf">Tischendorf 8th</option>
           </select>
+          )}
         </div>
         <div ref={scrollRef} className="flex-1 overflow-y-auto pr-1 space-y-1.5"
           style={{ '--greek-fs': `${1.125 * fontScale}rem`, '--greek-lh': lineSpacing } as CSSProperties}>
@@ -260,6 +283,21 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
                   </span>
                 )}
                 <div className="min-w-0 flex-1">
+                  {hebrew ? (
+                    <HebrewVerse verse={v} activeWordId={null} highlighted={false} lexicon={hebrewLex}
+                      textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse, HEBREW_LAYER) : []}
+                      onWordHover={(_id, hi) => setHoverInfo(hi)}
+                      onWordClick={i => { setInfo(i); setHoverInfo(null); if (i) setActiveVerse(v.verse) }}
+                      onWordRightClick={anchor ? (word, x, y, start, end) => {
+                        const existing = highlights.forVerse(anchor.book, anchor.chapter, v.verse, HEBREW_LAYER).find(h => start < h.endOffset && end > h.startOffset)
+                        openWordSearch({ x, y, surface: word.surface, reference: `${anchor.name} ${anchor.chapter}:${v.verse}`, kind: 'hebrew',
+                          highlight: isAuthenticated ? {
+                            activeColor: existing?.color ?? null,
+                            onPick: c => existing ? void highlights.recolor(existing.id, anchor.book, anchor.chapter, c) : void highlights.create(anchor.book, anchor.chapter, v.verse, start, end, c, HEBREW_LAYER),
+                            onRemove: () => { if (existing) void highlights.remove(existing.id, anchor.book, anchor.chapter) },
+                          } : undefined })
+                      } : undefined} />
+                  ) : (
                   <GreekVerse verse={v} activeWordId={null} highlighted={false}
                     textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse, 'grc') : []}
                     onWordHover={(_id, hi) => setHoverInfo(hi)}
@@ -273,6 +311,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
                           onRemove: () => { if (existing) void highlights.remove(existing.id, anchor.book, anchor.chapter) },
                         } : undefined })
                     } : undefined} />
+                  )}
                 </div>
               </div>
             </div>

@@ -1,51 +1,101 @@
 {
-  "commentaries": [
-    {
-      "id": "robertson",
-      "name": "Robertson — Word Pictures in the NT",
-      "author": "A.T. Robertson",
-      "attribution": "A.T. Robertson, Word Pictures in the New Testament (1930–1933), public domain. Source: Christian Classics Ethereal Library (ccel.org).",
-      "books": [
-        "1Cor",
-        "1John",
-        "1Pet",
-        "1Thess",
-        "1Tim",
-        "2Cor",
-        "2John",
-        "2Pet",
-        "2Thess",
-        "2Tim",
-        "3John",
-        "Acts",
-        "Col",
-        "Eph",
-        "Gal",
-        "Heb",
-        "Jas",
-        "John",
-        "Jude",
-        "Luke",
-        "Mark",
-        "Matt",
-        "Phil",
-        "Phlm",
-        "Rev",
-        "Rom",
-        "Titus"
-      ]
-    },
-    {
-      "id": "alford",
-      "name": "Alford — The Greek Testament",
-      "author": "Henry Alford",
-      "attribution": "Henry Alford, The Greek Testament: with a critically revised text, a digest of various readings, marginal references to verbal and idiomatic usage, prolegomena, and a critical and exegetical commentary, Vol. I (5th ed., London: Rivingtons, 1863), public domain.",
-      "books": ["John", "Matt"]
-    },
-    {
-      "id": "original-view",
-      "name": "Original View Commentaries",
-      "kind": "original-view"
-    }
-  ]
+ "commentaries": [
+  {
+   "id": "robertson",
+   "name": "Robertson — Word Pictures in the NT",
+   "author": "A.T. Robertson",
+   "attribution": "A.T. Robertson, Word Pictures in the New Testament (1930–1933), public domain. Source: Christian Classics Ethereal Library (ccel.org).",
+   "books": [
+    "1Cor",
+    "1John",
+    "1Pet",
+    "1Thess",
+    "1Tim",
+    "2Cor",
+    "2John",
+    "2Pet",
+    "2Thess",
+    "2Tim",
+    "3John",
+    "Acts",
+    "Col",
+    "Eph",
+    "Gal",
+    "Heb",
+    "Jas",
+    "John",
+    "Jude",
+    "Luke",
+    "Mark",
+    "Matt",
+    "Phil",
+    "Phlm",
+    "Rev",
+    "Rom",
+    "Titus"
+   ]
+  },
+  {
+   "id": "alford",
+   "name": "Alford — The Greek Testament",
+   "author": "Henry Alford",
+   "attribution": "Henry Alford, The Greek Testament: with a critically revised text, a digest of various readings, marginal references to verbal and idiomatic usage, prolegomena, and a critical and exegetical commentary, Vol. I (5th ed., London: Rivingtons, 1863), public domain.",
+   "books": [
+    "John",
+    "Matt"
+   ]
+  },
+  {
+   "id": "keil-delitzsch",
+   "name": "Keil & Delitzsch — OT Commentary",
+   "author": "C.F. Keil & F. Delitzsch",
+   "attribution": "C.F. Keil & F. Delitzsch, Commentary on the Old Testament (1861–1875; English translation, T&T Clark, Edinburgh), public domain. Source: biblehub.com.",
+   "books": [
+    "Gen",
+    "Exod",
+    "Lev",
+    "Num",
+    "Deut",
+    "Josh",
+    "Judg",
+    "Ruth",
+    "1Sam",
+    "2Sam",
+    "1Kgs",
+    "2Kgs",
+    "1Chr",
+    "2Chr",
+    "Ezra",
+    "Neh",
+    "Esth",
+    "Job",
+    "Ps",
+    "Prov",
+    "Eccl",
+    "Song",
+    "Isa",
+    "Jer",
+    "Lam",
+    "Ezek",
+    "Dan",
+    "Hos",
+    "Joel",
+    "Amos",
+    "Obad",
+    "Jonah",
+    "Mic",
+    "Nah",
+    "Hab",
+    "Zeph",
+    "Hag",
+    "Zech",
+    "Mal"
+   ]
+  },
+  {
+   "id": "original-view",
+   "name": "Original View Commentaries",
+   "kind": "original-view"
+  }
+ ]
 }

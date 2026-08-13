@@ -54,3 +54,4 @@ __pycache__/
 # CNTR transcription source cache (auto-downloaded by build-variants.py)
 scripts/cntr/
 public/data/theology/*.candidates.json
+.kad-cache/
