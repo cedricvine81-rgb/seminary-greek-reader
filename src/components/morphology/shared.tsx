@@ -21,6 +21,7 @@ import { openTranslationWorkbench, type WorkbenchSentence } from '@/lib/translat
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { encodeConstruct, type ConstructQuery } from '@/lib/construct-query'
 import { transliterate } from '@/lib/hebrew-xlit'
+import { formatHebrewParse, hebrewMorphRole } from '@/lib/hebrew-morph'
 
 export type MorphLevel = 'beginning' | 'intermediate'
 
@@ -152,20 +153,46 @@ interface GrammarExample {
   he: string; en: string
   target: { surface: string; morph: string; position: number }
 }
-let _exCache: Record<string, GrammarExample[]> | null = null
-let _exLoading: Promise<Record<string, GrammarExample[]>> | null = null
-function loadExamples(): Promise<Record<string, GrammarExample[]>> {
+interface GrammarVocab { lemma: string; gloss: string; freq: number; pos: string; strongs: string }
+interface GrammarDrill {
+  surface: string; morph: string; strongs: string; kind: 'parse' | 'segment'
+  segments?: { text: string; morph: string }[]
+  ref: string; osis: string; chapter: number; verse: number
+}
+interface GrammarChapterData {
+  examples: GrammarExample[]; vocab: GrammarVocab[]; drills: GrammarDrill[]
+}
+type GrammarData = Record<string, GrammarChapterData>
+let _exCache: GrammarData | null = null
+let _exLoading: Promise<GrammarData> | null = null
+function loadExamples(): Promise<GrammarData> {
   if (_exCache) return Promise.resolve(_exCache)
   if (!_exLoading) _exLoading = fetch('/data/grammar-examples-hebrew.json')
-    .then(r => r.json()).then(d => (_exCache = d)).catch(() => ({}))
+    .then(r => r.json()).then(d => (_exCache = d)).catch(() => ({} as GrammarData))
   return _exLoading
+}
+
+/** Chapter order — what "earlier chapters" means for the cumulative review box. */
+const HB_CHAPTER_SEQUENCE = [
+  'alphabet', 'vowels', 'article', 'prepositions', 'nouns', 'construct', 'adjectives',
+  'pronouns', 'suffixes', 'numbers', 'verb-system', 'qal-perfect', 'qal-imperfect',
+  'waw-consecutive', 'volitives', 'infinitives', 'participles', 'niphal', 'piel-pual',
+  'hiphil-hophal', 'hithpael', 'weak-verbs', 'syntax',
+]
+const HB_CHAPTER_TITLE: Record<string, string> = {
+  article: 'the article', prepositions: 'prepositions', nouns: 'nouns', construct: 'the construct state',
+  adjectives: 'adjectives', pronouns: 'pronouns', suffixes: 'suffixes', numbers: 'numbers',
+  'verb-system': 'the verb system', 'qal-perfect': 'the Qal perfect', 'qal-imperfect': 'the Qal imperfect',
+  'waw-consecutive': 'the waw-consecutive', volitives: 'volitives', infinitives: 'infinitives',
+  participles: 'participles', niphal: 'the Niphal', 'piel-pual': 'the Piel', 'hiphil-hophal': 'the Hiphil',
+  hithpael: 'the Hithpael', syntax: 'syntax',
 }
 
 /** The chapter's real-text examples. `n` caps how many are shown (default all). */
 export function HbExamples({ id, n, title }: { id: string; n?: number; title?: string }) {
   const [all, setAll] = useState<GrammarExample[] | null>(null)
   const xlit = useContext(XlitContext)
-  useEffect(() => { loadExamples().then(d => setAll(d[id] ?? [])) }, [id])
+  useEffect(() => { loadExamples().then(d => setAll(d[id]?.examples ?? [])) }, [id])
   if (!all || all.length === 0) return null
   const items = n ? all.slice(0, n) : all
   return (
@@ -200,6 +227,130 @@ export function HbExamples({ id, n, title }: { id: string; n?: number; title?: s
       <p className="mt-2 text-[11px] italic text-gray-400">
         Highlighted: the form this chapter teaches. English: World English Bible.
       </p>
+    </div>
+  )
+}
+
+/** The chapter's vocabulary: every deck word that appears in its examples, commonest first.
+ *  Standard grammars end each chapter with a list to memorise; this one is not invented —
+ *  it is exactly the words needed to read the examples above without a lexicon. */
+export function HbVocab({ id }: { id: string }) {
+  const [rows, setRows] = useState<GrammarVocab[] | null>(null)
+  const xlit = useContext(XlitContext)
+  useEffect(() => { loadExamples().then(d => setRows(d[id]?.vocab ?? [])) }, [id])
+  if (!rows || rows.length === 0) return null
+  return (
+    <div className="mb-5 rounded-lg border border-gray-200 bg-surface px-4 py-3">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700">
+        Vocabulary for this chapter
+      </p>
+      <ul className="grid grid-cols-1 gap-x-6 gap-y-1.5 sm:grid-cols-2">
+        {rows.map(v => (
+          <li key={v.strongs} className="flex items-baseline gap-2 text-[14px]">
+            <span lang="he" dir="rtl" className="font-hebrew text-[20px] text-gray-900">{v.lemma}</span>
+            {xlit && <span className="text-[11px] italic text-gray-400">{transliterate(v.lemma)}</span>}
+            <span className="min-w-0 flex-1 truncate text-gray-700">{v.gloss}</span>
+            <span className="shrink-0 font-mono text-[11px] text-gray-400">{v.freq.toLocaleString()}×</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-2 text-[11px] italic text-gray-400">
+        Frequency = times the word occurs in the Hebrew Bible. All of these are in the
+        Vocabulary deck, so they can be drilled there.
+      </p>
+    </div>
+  )
+}
+
+/** Parse drills on real forms. `from` overrides the chapter (the cumulative review uses it
+ *  to pull earlier chapters' forms). */
+export function HbDrills({ id, n = 10, title, intro }: {
+  id: string; n?: number; title?: string; intro?: React.ReactNode
+}) {
+  const [rows, setRows] = useState<GrammarDrill[] | null>(null)
+  useEffect(() => { loadExamples().then(d => setRows(d[id]?.drills ?? [])) }, [id])
+  if (!rows || rows.length === 0) return null
+  return <DrillList items={rows.slice(0, n)} title={title ?? 'Practice — parse these'} intro={intro} />
+}
+
+/** Forms from EARLIER chapters, so a chapter keeps the previous ones alive. */
+export function HbReview({ id, n = 5 }: { id: string; n?: number }) {
+  const [items, setItems] = useState<{ drill: GrammarDrill; from: string }[] | null>(null)
+  useEffect(() => {
+    loadExamples().then(d => {
+      const idx = HB_CHAPTER_SEQUENCE.indexOf(id)
+      if (idx <= 0) { setItems([]); return }
+      const earlier = HB_CHAPTER_SEQUENCE.slice(0, idx).filter(c => (d[c]?.drills?.length ?? 0) > 0)
+      // Walk backwards through the earlier chapters, one form from each, so the review
+      // spreads over the course rather than hammering the chapter just gone.
+      const out: { drill: GrammarDrill; from: string }[] = []
+      for (let i = earlier.length - 1; i >= 0 && out.length < n; i--) {
+        const c = earlier[i]
+        const pool = d[c].drills
+        out.push({ drill: pool[out.length % pool.length], from: c })
+      }
+      setItems(out)
+    })
+  }, [id, n])
+  if (!items || items.length === 0) return null
+  return (
+    <DrillList
+      title="Still remember these?"
+      intro={<>Forms from earlier chapters. If one stops you, the chapter that taught it is named in the answer.</>}
+      items={items.map(x => x.drill)}
+      froms={items.map(x => x.from)}
+      tone="amber"
+    />
+  )
+}
+
+/** Shared renderer for a list of drill items. */
+function DrillList({ items, title, intro, froms, tone = 'gray' }: {
+  items: GrammarDrill[]; title: string; intro?: React.ReactNode
+  froms?: string[]; tone?: 'gray' | 'amber'
+}) {
+  const t = useT()
+  const xlit = useContext(XlitContext)
+  const box = tone === 'amber'
+    ? 'border-amber-200 bg-amber-50/50'
+    : 'border-gray-200 bg-gray-50'
+  return (
+    <div className={`my-5 max-w-3xl rounded-xl border px-4 py-3.5 ${box}`}>
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</p>
+      {intro && <div className="mb-3 text-sm text-gray-600">{intro}</div>}
+      <ol className="list-inside list-decimal space-y-3">
+        {items.map((d, i) => (
+          <li key={`${d.surface}-${i}`} className="text-sm text-gray-800">
+            <span lang="he" dir="rtl" className="font-hebrew text-[22px] align-middle">{d.surface}</span>
+            {xlit && <span className="ms-2 text-[12px] italic text-gray-500">{transliterate(d.surface)}</span>}
+            <details className="ml-5 mt-0.5">
+              <summary className="cursor-pointer select-none list-none text-xs font-medium text-brand-600 hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                {t('morph.showAnswer')}
+              </summary>
+              <div className="mt-1 border-l-2 border-brand-200 pl-3 text-sm text-gray-700">
+                {d.kind === 'segment' && d.segments
+                  ? <span>{d.segments.map((sg, j) => (
+                      <span key={j}>
+                        {j > 0 && <span className="text-gray-300"> + </span>}
+                        <span lang="he" dir="rtl" className="font-hebrew text-[18px]">{sg.text}</span>
+                        <span className="text-xs text-gray-500"> {hebrewMorphRole(sg.morph)}</span>
+                      </span>
+                    ))}</span>
+                  : <span>{formatHebrewParse(d.morph)}</span>}
+                {froms?.[i] && (
+                  <span className="ms-1 text-xs text-gray-400">
+                    — {HB_CHAPTER_TITLE[froms[i]] ?? froms[i]}
+                  </span>
+                )}
+                <Link
+                  href={`/reader?book=${d.osis}&chapter=${d.chapter}&verse=${d.verse}&corpus=MT`}
+                  className="ms-2 whitespace-nowrap text-[12px] font-medium text-brand-700 hover:underline"
+                >{d.ref}</Link>
+              </div>
+            </details>
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }

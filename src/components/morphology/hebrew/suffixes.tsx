@@ -6,7 +6,7 @@
    morphology after the article.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_SUFFIXES = (
   <>
@@ -141,6 +141,8 @@ export const HB_SUFFIXES = (
 
     <HbExamples id="suffixes" />
 
+    <HbVocab id="suffixes" />
+
     <Practice
       level="both"
       title="Try it"
@@ -151,5 +153,9 @@ export const HB_SUFFIXES = (
         { q: <>Translate <Hb>שְׁמַע לָנוּ</Hb> vs <Hb>שְׁמָעֵנוּ</Hb>? Which suffix set does לָנוּ use?</>, a: <>Both mean “hear us”; לָנוּ is the preposition לְ + 1cp suffix — the same suffix family the nouns use.</> },
       ]}
     />
+
+    <HbDrills id="suffixes" />
+
+    <HbReview id="suffixes" />
   </>
 )

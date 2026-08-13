@@ -5,7 +5,7 @@
    questions, numbers, and the two verse-accents worth knowing.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_SYNTAX = (
   <>
@@ -130,6 +130,8 @@ export const HB_SYNTAX = (
 
     <HbExamples id="syntax" />
 
+    <HbVocab id="syntax" />
+
     <Practice
       level="both"
       title="Try it"
@@ -140,5 +142,9 @@ export const HB_SYNTAX = (
         { q: <>Parse the clause type of <Hb>יְהוָה רֹעִי</Hb>.</>, a: <>Verbless clause: subject + predicate noun (with 1cs suffix) — “the LORD is my shepherd.”</> },
       ]}
     />
+
+    <HbDrills id="syntax" />
+
+    <HbReview id="syntax" />
   </>
 )

@@ -256,8 +256,90 @@ def find_examples(chapter_id, match, core, wide, want=6):
     return out
 
 
+def deck_entries():
+    """Strong's → deck entry, for the per-chapter vocabulary lists."""
+    data = json.loads(DECK.read_text())
+    words = data if isinstance(data, list) else data.get('words', [])
+    out = {}
+    for w in words:
+        parts = str(w.get('id', '')).split('|')
+        if len(parts) == 2 and parts[1].isdigit():
+            out.setdefault(parts[1], w)
+    return out
+
+
+def chapter_vocabulary(examples, entries):
+    """Every deck word used in this chapter's examples, commonest first — the list a
+    student should know to read the examples without a lexicon."""
+    seen = {}
+    for ex in examples:
+        data = json.loads((MT / f"{ex['osis']}_{ex['chapter']}.json").read_text())
+        vv = next((x for x in data['verses'] if x['verse'] == ex['verse']), None)
+        if not vv:
+            continue
+        for w in vv['words']:
+            for st in {strongs_of(w)} | {re.match(r'(\d+)', str(mm.get('strongs') or '')).group(1)
+                                         for mm in w.get('morphemes', [])
+                                         if re.match(r'(\d+)', str(mm.get('strongs') or ''))}:
+                e = entries.get(st)
+                if e and st not in seen:
+                    seen[st] = {'lemma': e['word'], 'gloss': e['gloss'], 'freq': e['freq'],
+                                'pos': e.get('pos') or '', 'strongs': st}
+    return sorted(seen.values(), key=lambda x: -x['freq'])
+
+
+def build_drills(match, core, want=12):
+    """A pool of real forms for the chapter's practice set: surface + OSHB code + reference,
+    with the parse left to the app (formatHebrewParse decodes the code at render time, so the
+    drill answer and the Reader's parsing pane can never drift apart)."""
+    out, seen = [], set()
+    for osis in BOOK_ORDER:
+        if len(out) >= want:
+            break
+        if not (MT / f'{osis}_1.json').exists():
+            continue
+        for ch, v in load_verses(osis):
+            if len(out) >= want:
+                break
+            words = [w for w in v['words'] if w.get('surface')]
+            if any(w.get('lang') == 'A' for w in words):
+                continue
+            for w in words:
+                code = w.get('morph') or ''
+                segs = [{'text': mm.get('text', ''), 'morph': mm.get('morph', '')}
+                        for mm in w.get('morphemes', [])]
+                # Two kinds of drill. If the WORD's own code is the target, the exercise is a
+                # full parse. If only a MORPHEME matches (the article, an inseparable
+                # preposition, a pronominal suffix — none of which ever surface as a word's own
+                # code), the exercise is to break the word into its pieces instead: those
+                # chapters would otherwise have no drills at all.
+                whole = bool(code) and match(code)
+                affix = not whole and any(sg['morph'] and match(sg['morph']) for sg in segs)
+                if not whole and not affix:
+                    continue
+                st = strongs_of(w)
+                if st not in core:
+                    continue
+                key = w['surface']
+                if key in seen:
+                    continue
+                # keep the set varied — but a target with only two possible codes (the
+                # infinitives' absolute/construct) would starve at a cap of two.
+                if whole and sum(1 for d in out if d['morph'] == code) >= 4:
+                    continue
+                seen.add(key)
+                out.append({'surface': w['surface'], 'morph': code, 'strongs': st,
+                            'kind': 'parse' if whole else 'segment',
+                            **({'segments': segs} if affix else {}),
+                            'ref': f'{BOOK_NAME.get(osis, osis)} {ch}:{v["verse"]}',
+                            'osis': osis, 'chapter': ch, 'verse': v['verse']})
+                break
+    return out
+
+
 def main():
     core, wide = deck_strongs()
+    entries = deck_entries()
     print(f'beginning vocabulary: {len(core)} words (core), {len(wide)} (with section 3)')
     only = sys.argv[1] if len(sys.argv) > 1 else None
     result = {}
@@ -267,9 +349,11 @@ def main():
         if match is None or (only and cid != only):
             continue
         ex = find_examples(cid, match, core, wide)
-        result[cid] = ex
+        vocab = chapter_vocabulary(ex, entries)
+        drills = build_drills(match, core)
+        result[cid] = {'examples': ex, 'vocab': vocab, 'drills': drills}
         core_n = sum(1 for e in ex if e['tier'] == 0)
-        print(f'  {cid:18s} {len(ex)} examples ({core_n} inside the core vocabulary)')
+        print(f'  {cid:18s} {len(ex)} examples ({core_n} core) · {len(vocab)} vocab · {len(drills)} drills')
     OUT.write_text(json.dumps(result, ensure_ascii=False, indent=1))
     print(f'→ {OUT.relative_to(REPO)}')
 

@@ -5,7 +5,7 @@
    and comparison with מן.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_ADJECTIVES = (
   <>
@@ -112,6 +112,8 @@ export const HB_ADJECTIVES = (
 
     <HbExamples id="adjectives" />
 
+    <HbVocab id="adjectives" />
+
     <Practice
       level="both"
       title="Try it"
@@ -122,5 +124,9 @@ export const HB_ADJECTIVES = (
         { q: <>Translate <Hb>חָכָם מִכָּל־אָדָם</Hb>.</>, a: <>“wiser than any man” — מן of comparison.</> },
       ]}
     />
+
+    <HbDrills id="adjectives" />
+
+    <HbReview id="adjectives" />
   </>
 )

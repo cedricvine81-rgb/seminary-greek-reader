@@ -6,7 +6,7 @@
    which is not a preposition but is met here because it looks like one.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_PREPOSITIONS = (
   <>
@@ -102,6 +102,8 @@ export const HB_PREPOSITIONS = (
 
     <HbExamples id="prepositions" />
 
+    <HbVocab id="prepositions" />
+
     <Practice
       level="both"
       title="Try it"
@@ -112,5 +114,9 @@ export const HB_PREPOSITIONS = (
         { q: <>Why does Gen 1:1 read <Hb>אֵת הַשָּׁמַיִם</Hb> but no את before <Hb>אֱלֹהִים</Hb>?</>, a: <>Because אלהים is the <em>subject</em>. את marks only the definite direct object.</> },
       ]}
     />
+
+    <HbDrills id="prepositions" />
+
+    <HbReview id="prepositions" />
   </>
 )

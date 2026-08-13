@@ -5,7 +5,7 @@
    and basic word order.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_QAL_PERFECT = (
   <>
@@ -94,6 +94,8 @@ export const HB_QAL_PERFECT = (
 
     <HbExamples id="qal-perfect" />
 
+    <HbVocab id="qal-perfect" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -104,5 +106,9 @@ export const HB_QAL_PERFECT = (
         { q: <Hb>מָלְאָה הָאָרֶץ</Hb>, a: <>Qal perfect 3fs of <Hb>מלא</Hb> + subject — “the earth was full” (stative).</> },
       ]}
     />
+
+    <HbDrills id="qal-perfect" />
+
+    <HbReview id="qal-perfect" />
   </>
 )

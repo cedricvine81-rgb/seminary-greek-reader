@@ -5,7 +5,7 @@
    and the irregular plurals every first-year list carries.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_NOUNS = (
   <>
@@ -119,6 +119,8 @@ export const HB_NOUNS = (
 
     <HbExamples id="nouns" />
 
+    <HbVocab id="nouns" />
+
     <Practice
       level="both"
       title="Try it"
@@ -129,5 +131,9 @@ export const HB_NOUNS = (
         { q: <>Why <Hb>מְלָכִים</Hb> and not <Hb>מֶלֶכִים</Hb>?</>, a: <>Segholates rebuild their plural on the pattern <em>CeCaCim</em>: מְלָכִים, סְפָרִים.</> },
       ]}
     />
+
+    <HbDrills id="nouns" />
+
+    <HbReview id="nouns" />
   </>
 )

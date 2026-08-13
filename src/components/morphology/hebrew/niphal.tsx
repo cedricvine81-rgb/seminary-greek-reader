@@ -5,7 +5,7 @@
    middle / reflexive range, and the Niphal-only verbs.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_NIPHAL = (
   <>
@@ -101,6 +101,8 @@ export const HB_NIPHAL = (
 
     <HbExamples id="niphal" />
 
+    <HbVocab id="niphal" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -111,5 +113,9 @@ export const HB_NIPHAL = (
         { q: <Hb>נִשְׁבַּעְתִּי</Hb>, a: <>Niphal perfect 1cs of <Hb>שׁבע</Hb> — “I have sworn.”</> },
       ]}
     />
+
+    <HbDrills id="niphal" />
+
+    <HbReview id="niphal" />
   </>
 )

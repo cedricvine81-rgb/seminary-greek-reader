@@ -5,7 +5,7 @@
    metathesis / assimilation quirks of the הת prefix.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_HITHPAEL = (
   <>
@@ -82,6 +82,8 @@ export const HB_HITHPAEL = (
 
     <HbExamples id="hithpael" />
 
+    <HbVocab id="hithpael" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -92,5 +94,9 @@ export const HB_HITHPAEL = (
         { q: <>Why is “he watched himself” spelled <Hb>הִשְׁתַּמֵּר</Hb> and not הִתְשַׁמֵּר?</>, a: <>Metathesis: before the sibilant שׁ the prefix-ת swaps into second place.</> },
       ]}
     />
+
+    <HbDrills id="hithpael" />
+
+    <HbReview id="hithpael" />
   </>
 )

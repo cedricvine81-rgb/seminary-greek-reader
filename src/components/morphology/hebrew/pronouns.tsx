@@ -5,7 +5,7 @@
    the relative אשׁר, and the interrogatives.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_PRONOUNS = (
   <>
@@ -93,6 +93,8 @@ export const HB_PRONOUNS = (
 
     <HbExamples id="pronouns" />
 
+    <HbVocab id="pronouns" />
+
     <Practice
       level="both"
       title="Try it"
@@ -103,5 +105,9 @@ export const HB_PRONOUNS = (
         { q: <>Parse <Hb>אַתֶּם</Hb>.</>, a: <>Independent personal pronoun, 2mp — “you (all).”</> },
       ]}
     />
+
+    <HbDrills id="pronouns" />
+
+    <HbReview id="pronouns" />
   </>
 )

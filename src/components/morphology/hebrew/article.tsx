@@ -5,7 +5,7 @@
    the gutturals force on both.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_ARTICLE = (
   <>
@@ -88,6 +88,8 @@ export const HB_ARTICLE = (
 
     <HbExamples id="article" />
 
+    <HbVocab id="article" />
+
     <Practice
       level="both"
       title="Try it"
@@ -98,5 +100,9 @@ export const HB_ARTICLE = (
         { q: <>Why is it <Hb>הֶהָרִים</Hb> and not <Hb>הַהָרִים</Hb>?</>, a: <>Before an unaccented הָ the article dissimilates to הֶ.</> },
       ]}
     />
+
+    <HbDrills id="article" />
+
+    <HbReview id="article" />
   </>
 )

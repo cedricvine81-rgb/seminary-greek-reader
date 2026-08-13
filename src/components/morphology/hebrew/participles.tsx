@@ -5,7 +5,7 @@
    attributive, substantive — plus the construct participle.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_PARTICIPLES = (
   <>
@@ -82,6 +82,8 @@ export const HB_PARTICIPLES = (
 
     <HbExamples id="participles" />
 
+    <HbVocab id="participles" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -92,5 +94,9 @@ export const HB_PARTICIPLES = (
         { q: <>Translate <Hb>הָעָם הַיֹּשֵׁב בָּאָרֶץ</Hb>.</>, a: <>“the people dwelling in the land” — attributive participle with article agreement.</> },
       ]}
     />
+
+    <HbDrills id="participles" />
+
+    <HbReview id="participles" />
   </>
 )

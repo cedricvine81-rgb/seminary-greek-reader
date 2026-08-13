@@ -6,7 +6,7 @@
    word in a Hebrew lexicon once prefixes and suffixes are stripped.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_NUMBERS = (
   <>
@@ -101,6 +101,8 @@ export const HB_NUMBERS = (
 
     <HbExamples id="numbers" />
 
+    <HbVocab id="numbers" />
+
     <Practice
       level="both"
       title="Try it"
@@ -111,5 +113,9 @@ export const HB_NUMBERS = (
         { q: <>You meet <Hb>וַיִּפֹּל</Hb> and find only two strong letters (פל). What root do you try?</>, a: <><Hb>נפל</Hb> “fall” — the initial נ assimilated into the dagesh (a I-נ weak verb).</> },
       ]}
     />
+
+    <HbDrills id="numbers" />
+
+    <HbReview id="numbers" />
   </>
 )

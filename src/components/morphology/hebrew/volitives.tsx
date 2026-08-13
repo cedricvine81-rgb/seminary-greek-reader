@@ -5,7 +5,7 @@
    two negatives and the politeness particle נא.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_VOLITIVES = (
   <>
@@ -102,6 +102,8 @@ export const HB_VOLITIVES = (
 
     <HbExamples id="volitives" />
 
+    <HbVocab id="volitives" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -112,5 +114,9 @@ export const HB_VOLITIVES = (
         { q: <Hb>אַל־תִּשְׁלַח</Hb>, a: <>אַל + Qal jussive 2ms of <Hb>שׁלח</Hb> — “do not send / do not stretch out (your hand)” (cf. Gen 22:12).</> },
       ]}
     />
+
+    <HbDrills id="volitives" />
+
+    <HbReview id="volitives" />
   </>
 )

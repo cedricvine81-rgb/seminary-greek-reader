@@ -1,1722 +1,7807 @@
 {
- "qal-perfect": [
-  {
-   "ref": "Deuteronomy 3:15",
-   "osis": "Deut",
-   "chapter": 3,
-   "verse": 15,
-   "he": "וּלְמָכִ֖יר נָתַ֥תִּי אֶת הַגִּלְעָֽד",
-   "en": "I gave Gilead to Machir.",
-   "target": {
-    "surface": "נָתַ֥תִּי",
-    "morph": "Vqp1cs",
-    "position": 1
+ "qal-perfect": {
+  "examples": [
+   {
+    "ref": "Deuteronomy 3:15",
+    "osis": "Deut",
+    "chapter": 3,
+    "verse": 15,
+    "he": "וּלְמָכִ֖יר נָתַ֥תִּי אֶת הַגִּלְעָֽד",
+    "en": "I gave Gilead to Machir.",
+    "target": {
+     "surface": "נָתַ֥תִּי",
+     "morph": "Vqp1cs",
+     "position": 1
+    },
+    "tier": 0
    },
-   "tier": 0
-  },
-  {
-   "ref": "Numbers 14:20",
-   "osis": "Num",
-   "chapter": 14,
-   "verse": 20,
-   "he": "וַיֹּ֣אמֶר יְהוָ֔ה סָלַ֖חְתִּי כִּדְבָרֶֽךָ",
-   "en": "Yahweh said, “I have pardoned according to your word:",
-   "target": {
-    "surface": "סָלַ֖חְתִּי",
-    "morph": "Vqp1cs",
-    "position": 2
+   {
+    "ref": "Numbers 14:20",
+    "osis": "Num",
+    "chapter": 14,
+    "verse": 20,
+    "he": "וַיֹּ֣אמֶר יְהוָ֔ה סָלַ֖חְתִּי כִּדְבָרֶֽךָ",
+    "en": "Yahweh said, “I have pardoned according to your word:",
+    "target": {
+     "surface": "סָלַ֖חְתִּי",
+     "morph": "Vqp1cs",
+     "position": 2
+    },
+    "tier": 0
    },
-   "tier": 0
-  },
-  {
-   "ref": "Numbers 26:11",
-   "osis": "Num",
-   "chapter": 26,
-   "verse": 11,
-   "he": "וּבְנֵי קֹ֖רַח לֹא מֵֽתוּ",
-   "en": "Notwithstanding, the sons of Korah didn’t die.",
-   "target": {
-    "surface": "מֵֽתוּ",
-    "morph": "Vqp3cp",
-    "position": 3
+   {
+    "ref": "Numbers 26:11",
+    "osis": "Num",
+    "chapter": 26,
+    "verse": 11,
+    "he": "וּבְנֵי קֹ֖רַח לֹא מֵֽתוּ",
+    "en": "Notwithstanding, the sons of Korah didn’t die.",
+    "target": {
+     "surface": "מֵֽתוּ",
+     "morph": "Vqp3cp",
+     "position": 3
+    },
+    "tier": 0
    },
-   "tier": 0
-  },
-  {
-   "ref": "Isaiah 48:22",
-   "osis": "Isa",
-   "chapter": 48,
-   "verse": 22,
-   "he": "אֵ֣ין שָׁל֔וֹם אָמַ֥ר יְהוָ֖ה לָרְשָׁעִֽים",
-   "en": "“There is no peace”, says Yahweh, “for the wicked.”",
-   "target": {
-    "surface": "אָמַ֥ר",
+   {
+    "ref": "Isaiah 48:22",
+    "osis": "Isa",
+    "chapter": 48,
+    "verse": 22,
+    "he": "אֵ֣ין שָׁל֔וֹם אָמַ֥ר יְהוָ֖ה לָרְשָׁעִֽים",
+    "en": "“There is no peace”, says Yahweh, “for the wicked.”",
+    "target": {
+     "surface": "אָמַ֥ר",
+     "morph": "Vqp3ms",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Job 34:26",
+    "osis": "Job",
+    "chapter": 34,
+    "verse": 26,
+    "he": "תַּֽחַת רְשָׁעִ֥ים סְפָקָ֗ם בִּמְק֥וֹם רֹאִֽים",
+    "en": "He strikes them as wicked men in the open sight of others;",
+    "target": {
+     "surface": "סְפָקָ֗ם",
+     "morph": "Sp3mp",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 5:2",
+    "osis": "Deut",
+    "chapter": 5,
+    "verse": 2,
+    "he": "יְהוָ֣ה אֱלֹהֵ֗ינוּ כָּרַ֥ת עִמָּ֛נוּ בְּרִ֖ית בְּחֹרֵֽב",
+    "en": "Yahweh our God made a covenant with us in Horeb.",
+    "target": {
+     "surface": "כָּרַ֥ת",
+     "morph": "Vqp3ms",
+     "position": 2
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "לֹא",
+    "gloss": "no, not",
+    "freq": 5186,
+    "pos": "Particle",
+    "strongs": "3808"
+   },
+   {
+    "lemma": "בֵּן",
+    "gloss": "son",
+    "freq": 4006,
+    "pos": "Noun",
+    "strongs": "1121"
+   },
+   {
+    "lemma": "נָתַן",
+    "gloss": "to give, put, set",
+    "freq": 1708,
+    "pos": "Verb",
+    "strongs": "5414"
+   },
+   {
+    "lemma": "אֱלֹהִים",
+    "gloss": "God; gods",
+    "freq": 1615,
+    "pos": "Noun",
+    "strongs": "430"
+   },
+   {
+    "lemma": "דָּבָר",
+    "gloss": "word, thing, matter",
+    "freq": 1249,
+    "pos": "Noun",
+    "strongs": "1697"
+   },
+   {
+    "lemma": "רָאָה",
+    "gloss": "to see",
+    "freq": 1170,
+    "pos": "Verb",
+    "strongs": "7200"
+   },
+   {
+    "lemma": "מוּת",
+    "gloss": "to die",
+    "freq": 738,
+    "pos": "Verb",
+    "strongs": "4191"
+   },
+   {
+    "lemma": "אַיִן",
+    "gloss": "there is not, nothing",
+    "freq": 685,
+    "pos": "Particle",
+    "strongs": "369"
+   },
+   {
+    "lemma": "עִם",
+    "gloss": "with",
+    "freq": 517,
+    "pos": "Prep",
+    "strongs": "5973"
+   },
+   {
+    "lemma": "תַּחַת",
+    "gloss": "under, instead of; beneath",
+    "freq": 344,
+    "pos": "Prep",
+    "strongs": "8478"
+   },
+   {
+    "lemma": "מָקוֹם",
+    "gloss": "place",
+    "freq": 320,
+    "pos": "Noun",
+    "strongs": "4725"
+   },
+   {
+    "lemma": "כָּרַת",
+    "gloss": "to cut, cut off; make (a covenant)",
+    "freq": 274,
+    "pos": "Verb",
+    "strongs": "3772"
+   },
+   {
+    "lemma": "רָשָׁע",
+    "gloss": "wicked, guilty",
+    "freq": 262,
+    "pos": "Adj",
+    "strongs": "7563"
+   },
+   {
+    "lemma": "שָׁלוֹם",
+    "gloss": "peace, welfare, wholeness",
+    "freq": 225,
+    "pos": "Noun",
+    "strongs": "7965"
+   },
+   {
+    "lemma": "בְּרִית",
+    "gloss": "covenant",
+    "freq": 199,
+    "pos": "Noun",
+    "strongs": "1285"
+   },
+   {
+    "lemma": "גִּלְעָד",
+    "gloss": "Gilead",
+    "freq": 131,
+    "pos": "Noun",
+    "strongs": "1568"
+   },
+   {
+    "lemma": "סָלַח",
+    "gloss": "to forgive, pardon",
+    "freq": 46,
+    "pos": "Verb",
+    "strongs": "5545"
+   },
+   {
+    "lemma": "קֹרַח",
+    "gloss": "Korah",
+    "freq": 37,
+    "pos": "Noun",
+    "strongs": "7141"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "הָיְתָ֥ה",
+    "morph": "Vqp3fs",
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 1:2",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 2
+   },
+   {
+    "surface": "קָ֣רָא",
     "morph": "Vqp3ms",
-    "position": 2
+    "strongs": "7121",
+    "kind": "parse",
+    "ref": "Genesis 1:5",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 5
    },
-   "tier": 0
-  },
-  {
-   "ref": "Job 34:26",
-   "osis": "Job",
-   "chapter": 34,
-   "verse": 26,
-   "he": "תַּֽחַת רְשָׁעִ֥ים סְפָקָ֗ם בִּמְק֥וֹם רֹאִֽים",
-   "en": "He strikes them as wicked men in the open sight of others;",
-   "target": {
-    "surface": "סְפָקָ֗ם",
-    "morph": "Sp3mp",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 5:2",
-   "osis": "Deut",
-   "chapter": 5,
-   "verse": 2,
-   "he": "יְהוָ֣ה אֱלֹהֵ֗ינוּ כָּרַ֥ת עִמָּ֛נוּ בְּרִ֖ית בְּחֹרֵֽב",
-   "en": "Yahweh our God made a covenant with us in Horeb.",
-   "target": {
-    "surface": "כָּרַ֥ת",
+   {
+    "surface": "קָרָ֣א",
     "morph": "Vqp3ms",
-    "position": 2
+    "strongs": "7121",
+    "kind": "parse",
+    "ref": "Genesis 1:10",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 10
    },
-   "tier": 0
-  }
- ],
- "article": [
-  {
-   "ref": "Deuteronomy 3:15",
-   "osis": "Deut",
-   "chapter": 3,
-   "verse": 15,
-   "he": "וּלְמָכִ֖יר נָתַ֥תִּי אֶת הַגִּלְעָֽד",
-   "en": "I gave Gilead to Machir.",
-   "target": {
-    "surface": "הַגִּלְעָֽד",
-    "morph": "Np",
-    "position": 3
+   {
+    "surface": "נָתַ֨תִּי",
+    "morph": "Vqp1cs",
+    "strongs": "5414",
+    "kind": "parse",
+    "ref": "Genesis 1:29",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 29
    },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 113:6",
-   "osis": "Ps",
-   "chapter": 113,
-   "verse": 6,
-   "he": "הַֽמַּשְׁפִּילִ֥י לִרְא֑וֹת בַּשָּׁמַ֥יִם וּבָאָֽרֶץ",
-   "en": "Who stoops down to see in heaven and in the earth?",
-   "target": {
-    "surface": "הַֽמַּשְׁפִּילִ֥י",
-    "morph": "Vhrmsc",
-    "position": 0
+   {
+    "surface": "עָשָׂ֔ה",
+    "morph": "Vqp3ms",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 1:31",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 31
    },
-   "tier": 0
-  },
-  {
-   "ref": "Numbers 21:31",
-   "osis": "Num",
-   "chapter": 21,
-   "verse": 31,
-   "he": "וַיֵּ֨שֶׁב֙ יִשְׂרָאֵ֔ל בְּאֶ֖רֶץ הָאֱמֹרִֽי",
-   "en": "Thus Israel lived in the land of the Amorites.",
-   "target": {
-    "surface": "הָאֱמֹרִֽי",
-    "morph": "Ngmsa",
-    "position": 3
+   {
+    "surface": "עָשָׂ֑ה",
+    "morph": "Vqp3ms",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 2:2",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 2
    },
-   "tier": 0
-  },
-  {
-   "ref": "Job 4:1",
-   "osis": "Job",
-   "chapter": 4,
-   "verse": 1,
-   "he": "וַ֭יַּעַן אֱלִיפַ֥ז הַֽתֵּימָנִ֗י וַיֹּאמַֽר",
-   "en": "Then Eliphaz the Temanite answered,",
-   "target": {
-    "surface": "הַֽתֵּימָנִ֗י",
-    "morph": "Ngmsa",
-    "position": 2
+   {
+    "surface": "שָׁמַ֖עְתִּי",
+    "morph": "Vqp1cs",
+    "strongs": "8085",
+    "kind": "parse",
+    "ref": "Genesis 3:10",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 10
    },
-   "tier": 0
-  },
-  {
-   "ref": "Job 8:1",
-   "osis": "Job",
-   "chapter": 8,
-   "verse": 1,
-   "he": "וַ֭יַּעַן בִּלְדַּ֥ד הַשּׁוּחִ֗י וַיֹאמַֽר",
-   "en": "Then Bildad the Shuhite answered,",
-   "target": {
-    "surface": "הַשּׁוּחִ֗י",
-    "morph": "Ngmsa",
-    "position": 2
+   {
+    "surface": "אָכָֽלְתָּ",
+    "morph": "Vqp2ms",
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 3:11",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 11
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Chronicles 11:47",
-   "osis": "1Chr",
-   "chapter": 11,
-   "verse": 47,
-   "he": "אֱלִיאֵ֣ל וְעוֹבֵ֔ד וְיַעֲשִׂיאֵ֖ל הַמְּצֹבָיָֽה",
-   "en": "Eliel, and Obed, and Jaasiel the Mezobaite.",
-   "target": {
-    "surface": "הַמְּצֹבָיָֽה",
-    "morph": "Np",
-    "position": 3
+   {
+    "surface": "נָתַ֣תָּה",
+    "morph": "Vqp2ms",
+    "strongs": "5414",
+    "kind": "parse",
+    "ref": "Genesis 3:12",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 12
    },
-   "tier": 0
-  }
- ],
- "prepositions": [
-  {
-   "ref": "Genesis 26:23",
-   "osis": "Gen",
-   "chapter": 26,
-   "verse": 23,
-   "he": "וַיַּ֥עַל מִשָּׁ֖ם בְּאֵ֥ר שָֽׁבַע",
-   "en": "He went up from there to Beersheba.",
-   "target": {
-    "surface": "מִשָּׁ֖ם",
-    "morph": "D",
-    "position": 1
+   {
+    "surface": "עָשִׂ֑ית",
+    "morph": "Vqp2fs",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 3:13",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 13
    },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 2:2",
-   "osis": "Deut",
-   "chapter": 2,
-   "verse": 2,
-   "he": "וַיֹּ֥אמֶר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
-   "en": "Yahweh spoke to me, saying,",
-   "target": {
-    "surface": "אֵלַ֥י",
-    "morph": "Sp1cs",
-    "position": 2
+   {
+    "surface": "עָשִׂ֣יתָ",
+    "morph": "Vqp2ms",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 3:14",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 14
    },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 3:15",
-   "osis": "Deut",
-   "chapter": 3,
-   "verse": 15,
-   "he": "וּלְמָכִ֖יר נָתַ֥תִּי אֶת הַגִּלְעָֽד",
-   "en": "I gave Gilead to Machir.",
-   "target": {
-    "surface": "וּלְמָכִ֖יר",
-    "morph": "Np",
-    "position": 0
+   {
+    "surface": "שָׁמַעְתָּ֮",
+    "morph": "Vqp2ms",
+    "strongs": "8085",
+    "kind": "parse",
+    "ref": "Genesis 3:17",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 17
+   }
+  ]
+ },
+ "article": {
+  "examples": [
+   {
+    "ref": "Deuteronomy 3:15",
+    "osis": "Deut",
+    "chapter": 3,
+    "verse": 15,
+    "he": "וּלְמָכִ֖יר נָתַ֥תִּי אֶת הַגִּלְעָֽד",
+    "en": "I gave Gilead to Machir.",
+    "target": {
+     "surface": "הַגִּלְעָֽד",
+     "morph": "Np",
+     "position": 3
+    },
+    "tier": 0
    },
-   "tier": 0
-  },
-  {
-   "ref": "Joshua 15:33",
-   "osis": "Josh",
-   "chapter": 15,
-   "verse": 33,
-   "he": "בַּשְּׁפֵלָ֑ה אֶשְׁתָּא֥וֹל וְצָרְעָ֖ה וְאַשְׁנָֽה",
-   "en": "In the lowland, Eshtaol, Zorah, Ashnah,",
-   "target": {
-    "surface": "בַּשְּׁפֵלָ֑ה",
-    "morph": "Ncfsa",
-    "position": 0
+   {
+    "ref": "Psalm 113:6",
+    "osis": "Ps",
+    "chapter": 113,
+    "verse": 6,
+    "he": "הַֽמַּשְׁפִּילִ֥י לִרְא֑וֹת בַּשָּׁמַ֥יִם וּבָאָֽרֶץ",
+    "en": "Who stoops down to see in heaven and in the earth?",
+    "target": {
+     "surface": "הַֽמַּשְׁפִּילִ֥י",
+     "morph": "Vhrmsc",
+     "position": 0
+    },
+    "tier": 0
    },
-   "tier": 0
-  },
-  {
-   "ref": "Joshua 15:48",
-   "osis": "Josh",
-   "chapter": 15,
-   "verse": 48,
-   "he": "וּבָהָ֑ר שָׁמִ֥יר וְיַתִּ֖יר וְשׂוֹכֹֽה",
-   "en": "In the hill country, Shamir, Jattir, Socoh,",
-   "target": {
-    "surface": "וּבָהָ֑ר",
+   {
+    "ref": "Numbers 21:31",
+    "osis": "Num",
+    "chapter": 21,
+    "verse": 31,
+    "he": "וַיֵּ֨שֶׁב֙ יִשְׂרָאֵ֔ל בְּאֶ֖רֶץ הָאֱמֹרִֽי",
+    "en": "Thus Israel lived in the land of the Amorites.",
+    "target": {
+     "surface": "הָאֱמֹרִֽי",
+     "morph": "Ngmsa",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Job 4:1",
+    "osis": "Job",
+    "chapter": 4,
+    "verse": 1,
+    "he": "וַ֭יַּעַן אֱלִיפַ֥ז הַֽתֵּימָנִ֗י וַיֹּאמַֽר",
+    "en": "Then Eliphaz the Temanite answered,",
+    "target": {
+     "surface": "הַֽתֵּימָנִ֗י",
+     "morph": "Ngmsa",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Job 8:1",
+    "osis": "Job",
+    "chapter": 8,
+    "verse": 1,
+    "he": "וַ֭יַּעַן בִּלְדַּ֥ד הַשּׁוּחִ֗י וַיֹאמַֽר",
+    "en": "Then Bildad the Shuhite answered,",
+    "target": {
+     "surface": "הַשּׁוּחִ֗י",
+     "morph": "Ngmsa",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Chronicles 11:47",
+    "osis": "1Chr",
+    "chapter": 11,
+    "verse": 47,
+    "he": "אֱלִיאֵ֣ל וְעוֹבֵ֔ד וְיַעֲשִׂיאֵ֖ל הַמְּצֹבָיָֽה",
+    "en": "Eliel, and Obed, and Jaasiel the Mezobaite.",
+    "target": {
+     "surface": "הַמְּצֹבָיָֽה",
+     "morph": "Np",
+     "position": 3
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "יִשְׂרָאֵל",
+    "gloss": "Israel",
+    "freq": 2506,
+    "pos": "Noun",
+    "strongs": "3478"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "נָתַן",
+    "gloss": "to give, put, set",
+    "freq": 1708,
+    "pos": "Verb",
+    "strongs": "5414"
+   },
+   {
+    "lemma": "רָאָה",
+    "gloss": "to see",
+    "freq": 1170,
+    "pos": "Verb",
+    "strongs": "7200"
+   },
+   {
+    "lemma": "יָשַׁב",
+    "gloss": "to sit, dwell, remain",
+    "freq": 1005,
+    "pos": "Verb",
+    "strongs": "3427"
+   },
+   {
+    "lemma": "שָׁמַיִם",
+    "gloss": "heavens, sky",
+    "freq": 405,
+    "pos": "Noun",
+    "strongs": "8064"
+   },
+   {
+    "lemma": "עָנָה",
+    "gloss": "to answer, respond",
+    "freq": 251,
+    "pos": "Verb",
+    "strongs": "6030"
+   },
+   {
+    "lemma": "גִּלְעָד",
+    "gloss": "Gilead",
+    "freq": 131,
+    "pos": "Noun",
+    "strongs": "1568"
+   },
+   {
+    "lemma": "אֱמֹרִי",
+    "gloss": "Amorite",
+    "freq": 87,
+    "pos": "Noun",
+    "strongs": "567"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "הַשָּׁמַ֖יִם",
+    "morph": "Ncmpa",
+    "strongs": "8064",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הַ",
+      "morph": "Td"
+     },
+     {
+      "text": "שָּׁמַ֖יִם",
+      "morph": "Ncmpa"
+     }
+    ],
+    "ref": "Genesis 1:1",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 1
+   },
+   {
+    "surface": "וְהָאָ֗רֶץ",
+    "morph": "Ncbsa",
+    "strongs": "776",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "וְ",
+      "morph": "C"
+     },
+     {
+      "text": "הָ",
+      "morph": "Td"
+     },
+     {
+      "text": "אָ֗רֶץ",
+      "morph": "Ncbsa"
+     }
+    ],
+    "ref": "Genesis 1:2",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 2
+   },
+   {
+    "surface": "הַמָּ֑יִם",
+    "morph": "Ncmpa",
+    "strongs": "4325",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הַ",
+      "morph": "Td"
+     },
+     {
+      "text": "מָּ֑יִם",
+      "morph": "Ncmpa"
+     }
+    ],
+    "ref": "Genesis 1:6",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 6
+   },
+   {
+    "surface": "הַמַּ֨יִם֙",
+    "morph": "Ncmpa",
+    "strongs": "4325",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הַ",
+      "morph": "Td"
+     },
+     {
+      "text": "מַּ֨יִם֙",
+      "morph": "Ncmpa"
+     }
+    ],
+    "ref": "Genesis 1:7",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 7
+   },
+   {
+    "surface": "הַמַּ֜יִם",
+    "morph": "Ncmpa",
+    "strongs": "4325",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הַ",
+      "morph": "Td"
+     },
+     {
+      "text": "מַּ֜יִם",
+      "morph": "Ncmpa"
+     }
+    ],
+    "ref": "Genesis 1:9",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 9
+   },
+   {
+    "surface": "הַמַּ֖יִם",
+    "morph": "Ncmpa",
+    "strongs": "4325",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הַ",
+      "morph": "Td"
+     },
+     {
+      "text": "מַּ֖יִם",
+      "morph": "Ncmpa"
+     }
+    ],
+    "ref": "Genesis 1:10",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 10
+   },
+   {
+    "surface": "הָאָ֨רֶץ֙",
+    "morph": "Ncbsa",
+    "strongs": "776",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הָ",
+      "morph": "Td"
+     },
+     {
+      "text": "אָ֨רֶץ֙",
+      "morph": "Ncbsa"
+     }
+    ],
+    "ref": "Genesis 1:11",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 11
+   },
+   {
+    "surface": "הָאָ֜רֶץ",
+    "morph": "Ncbsa",
+    "strongs": "776",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הָ",
+      "morph": "Td"
+     },
+     {
+      "text": "אָ֜רֶץ",
+      "morph": "Ncbsa"
+     }
+    ],
+    "ref": "Genesis 1:12",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 12
+   },
+   {
+    "surface": "הַשָּׁמַ֔יִם",
+    "morph": "Ncmpa",
+    "strongs": "8064",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הַ",
+      "morph": "Td"
+     },
+     {
+      "text": "שָּׁמַ֔יִם",
+      "morph": "Ncmpa"
+     }
+    ],
+    "ref": "Genesis 1:14",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 14
+   },
+   {
+    "surface": "הָאָ֑רֶץ",
+    "morph": "Ncbsa",
+    "strongs": "776",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הָ",
+      "morph": "Td"
+     },
+     {
+      "text": "אָ֑רֶץ",
+      "morph": "Ncbsa"
+     }
+    ],
+    "ref": "Genesis 1:15",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 15
+   },
+   {
+    "surface": "הַגְּדֹלִ֑ים",
+    "morph": "Aampa",
+    "strongs": "1419",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הַ",
+      "morph": "Td"
+     },
+     {
+      "text": "גְּדֹלִ֑ים",
+      "morph": "Aampa"
+     }
+    ],
+    "ref": "Genesis 1:16",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 16
+   },
+   {
+    "surface": "הַשָּׁמָ֑יִם",
+    "morph": "Ncmpa",
+    "strongs": "8064",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "הַ",
+      "morph": "Td"
+     },
+     {
+      "text": "שָּׁמָ֑יִם",
+      "morph": "Ncmpa"
+     }
+    ],
+    "ref": "Genesis 1:17",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 17
+   }
+  ]
+ },
+ "prepositions": {
+  "examples": [
+   {
+    "ref": "Genesis 26:23",
+    "osis": "Gen",
+    "chapter": 26,
+    "verse": 23,
+    "he": "וַיַּ֥עַל מִשָּׁ֖ם בְּאֵ֥ר שָֽׁבַע",
+    "en": "He went up from there to Beersheba.",
+    "target": {
+     "surface": "מִשָּׁ֖ם",
+     "morph": "D",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 2:2",
+    "osis": "Deut",
+    "chapter": 2,
+    "verse": 2,
+    "he": "וַיֹּ֥אמֶר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
+    "en": "Yahweh spoke to me, saying,",
+    "target": {
+     "surface": "אֵלַ֥י",
+     "morph": "Sp1cs",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 3:15",
+    "osis": "Deut",
+    "chapter": 3,
+    "verse": 15,
+    "he": "וּלְמָכִ֖יר נָתַ֥תִּי אֶת הַגִּלְעָֽד",
+    "en": "I gave Gilead to Machir.",
+    "target": {
+     "surface": "וּלְמָכִ֖יר",
+     "morph": "Np",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Joshua 15:33",
+    "osis": "Josh",
+    "chapter": 15,
+    "verse": 33,
+    "he": "בַּשְּׁפֵלָ֑ה אֶשְׁתָּא֥וֹל וְצָרְעָ֖ה וְאַשְׁנָֽה",
+    "en": "In the lowland, Eshtaol, Zorah, Ashnah,",
+    "target": {
+     "surface": "בַּשְּׁפֵלָ֑ה",
+     "morph": "Ncfsa",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Joshua 15:48",
+    "osis": "Josh",
+    "chapter": 15,
+    "verse": 48,
+    "he": "וּבָהָ֑ר שָׁמִ֥יר וְיַתִּ֖יר וְשׂוֹכֹֽה",
+    "en": "In the hill country, Shamir, Jattir, Socoh,",
+    "target": {
+     "surface": "וּבָהָ֑ר",
+     "morph": "Ncmsa",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Leviticus 21:13",
+    "osis": "Lev",
+    "chapter": 21,
+    "verse": 13,
+    "he": "וְה֕וּא אִשָּׁ֥ה בִבְתוּלֶ֖יהָ יִקָּֽח",
+    "en": "“‘He shall take a wife in her virginity.",
+    "target": {
+     "surface": "בִבְתוּלֶ֖יהָ",
+     "morph": "Sp3fs",
+     "position": 2
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "הוּא",
+    "gloss": "he, it; that",
+    "freq": 1879,
+    "pos": "Pron",
+    "strongs": "1931"
+   },
+   {
+    "lemma": "נָתַן",
+    "gloss": "to give, put, set",
+    "freq": 1708,
+    "pos": "Verb",
+    "strongs": "5414"
+   },
+   {
+    "lemma": "לָקַח",
+    "gloss": "to take, receive",
+    "freq": 874,
+    "pos": "Verb",
+    "strongs": "3947"
+   },
+   {
+    "lemma": "עָלָה",
+    "gloss": "to go up, ascend",
+    "freq": 828,
+    "pos": "Verb",
+    "strongs": "5927"
+   },
+   {
+    "lemma": "שָׁם",
+    "gloss": "there",
+    "freq": 693,
+    "pos": "Adv",
+    "strongs": "8033"
+   },
+   {
+    "lemma": "אִשָּׁה",
+    "gloss": "woman, wife",
+    "freq": 611,
+    "pos": "Noun",
+    "strongs": "802"
+   },
+   {
+    "lemma": "הַר",
+    "gloss": "mountain, hill",
+    "freq": 524,
+    "pos": "Noun",
+    "strongs": "2022"
+   },
+   {
+    "lemma": "גִּלְעָד",
+    "gloss": "Gilead",
+    "freq": 131,
+    "pos": "Noun",
+    "strongs": "1568"
+   },
+   {
+    "lemma": "בְּאֵר שֶׁבַע",
+    "gloss": "Beersheba",
+    "freq": 67,
+    "pos": "Noun",
+    "strongs": "884"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "עַל",
+    "morph": "R",
+    "strongs": "5921",
+    "kind": "parse",
+    "ref": "Genesis 1:2",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 2
+   },
+   {
+    "surface": "בֵּ֥ין",
+    "morph": "R",
+    "strongs": "996",
+    "kind": "parse",
+    "ref": "Genesis 1:4",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 4
+   },
+   {
+    "surface": "בְּת֣וֹךְ",
+    "morph": "Ncmsc",
+    "strongs": "8432",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "בְּ",
+      "morph": "R"
+     },
+     {
+      "text": "ת֣וֹךְ",
+      "morph": "Ncmsc"
+     }
+    ],
+    "ref": "Genesis 1:6",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 6
+   },
+   {
+    "surface": "בֵּ֤ין",
+    "morph": "R",
+    "strongs": "996",
+    "kind": "parse",
+    "ref": "Genesis 1:7",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 7
+   },
+   {
+    "surface": "מִתַּ֤חַת",
+    "morph": "R",
+    "strongs": "8478",
+    "kind": "parse",
+    "ref": "Genesis 1:9",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 9
+   },
+   {
+    "surface": "וּלְמ֣וֹעֲדִ֔ים",
+    "morph": "Ncmpa",
+    "strongs": "4150",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "וּ",
+      "morph": "C"
+     },
+     {
+      "text": "לְ",
+      "morph": "R"
+     },
+     {
+      "text": "מ֣וֹעֲדִ֔ים",
+      "morph": "Ncmpa"
+     }
+    ],
+    "ref": "Genesis 1:14",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 14
+   },
+   {
+    "surface": "בַּיּ֣וֹם",
     "morph": "Ncmsa",
-    "position": 0
+    "strongs": "3117",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "בַּ",
+      "morph": "Rd"
+     },
+     {
+      "text": "יּ֣וֹם",
+      "morph": "Ncmsa"
+     }
+    ],
+    "ref": "Genesis 1:18",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 18
    },
-   "tier": 0
-  },
-  {
-   "ref": "Leviticus 21:13",
-   "osis": "Lev",
-   "chapter": 21,
-   "verse": 13,
-   "he": "וְה֕וּא אִשָּׁ֥ה בִבְתוּלֶ֖יהָ יִקָּֽח",
-   "en": "“‘He shall take a wife in her virginity.",
-   "target": {
-    "surface": "בִבְתוּלֶ֖יהָ",
-    "morph": "Sp3fs",
-    "position": 2
+   {
+    "surface": "לֵאמֹ֑ר",
+    "morph": "Vqc",
+    "strongs": "559",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "לֵ",
+      "morph": "R"
+     },
+     {
+      "text": "אמֹ֑ר",
+      "morph": "Vqc"
+     }
+    ],
+    "ref": "Genesis 1:22",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 22
    },
-   "tier": 0
-  }
- ],
- "nouns": [
-  {
-   "ref": "Genesis 35:24",
-   "osis": "Gen",
-   "chapter": 35,
-   "verse": 24,
-   "he": "בְּנֵ֣י רָחֵ֔ל יוֹסֵ֖ף וּבִנְיָמִֽן",
-   "en": "The sons of Rachel: Joseph and Benjamin.",
-   "target": {
-    "surface": "בְּנֵ֣י",
-    "morph": "Ncmpc",
-    "position": 0
+   {
+    "surface": "וּבַבְּהֵמָה֙",
+    "morph": "Ncfsa",
+    "strongs": "929",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "וּ",
+      "morph": "C"
+     },
+     {
+      "text": "בַ",
+      "morph": "Rd"
+     },
+     {
+      "text": "בְּהֵמָה֙",
+      "morph": "Ncfsa"
+     }
+    ],
+    "ref": "Genesis 1:26",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 26
    },
-   "tier": 0
-  },
-  {
-   "ref": "Ezra 2:22",
-   "osis": "Ezra",
-   "chapter": 2,
-   "verse": 22,
-   "he": "אַנְשֵׁ֥י נְטֹפָ֖ה חֲמִשִּׁ֥ים וְשִׁשָּֽׁה",
-   "en": "The men of Netophah, fifty-six.",
-   "target": {
-    "surface": "אַנְשֵׁ֥י",
-    "morph": "Ncmpc",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Lamentations 3:6",
-   "osis": "Lam",
-   "chapter": 3,
-   "verse": 6,
-   "he": "בְּמַחֲשַׁכִּ֥ים הוֹשִׁיבַ֖נִי כְּמֵתֵ֥י עוֹלָֽם",
-   "en": "He has made me to dwell in dark places, as those that have been long dead.",
-   "target": {
-    "surface": "בְּמַחֲשַׁכִּ֥ים",
-    "morph": "Ncmpa",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "1 Chronicles 15:23",
-   "osis": "1Chr",
-   "chapter": 15,
-   "verse": 23,
-   "he": "וּבֶֽרֶכְיָה֙ וְאֶלְקָנָ֔ה שֹׁעֲרִ֖ים לָאָרֽוֹן",
-   "en": "Berechiah and Elkanah were doorkeepers for the ark.",
-   "target": {
-    "surface": "שֹׁעֲרִ֖ים",
-    "morph": "Ncmpa",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 2:1",
-   "osis": "Gen",
-   "chapter": 2,
-   "verse": 1,
-   "he": "וַיְכֻלּ֛וּ הַשָּׁמַ֥יִם וְהָאָ֖רֶץ וְכָל צְבָאָֽם",
-   "en": "The heavens, the earth, and all their vast array were finished.",
-   "target": {
-    "surface": "הַשָּׁמַ֥יִם",
-    "morph": "Ncmpa",
-    "position": 1
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 6:9",
-   "osis": "Deut",
-   "chapter": 6,
-   "verse": 9,
-   "he": "וּכְתַבְתָּ֛ם עַל מְזוּזֹ֥ת בֵּיתֶ֖ךָ וּבִשְׁעָרֶֽיךָ",
-   "en": "You shall write them on the door posts of your house, and on your gates.",
-   "target": {
-    "surface": "מְזוּזֹ֥ת",
-    "morph": "Ncfpc",
-    "position": 2
-   },
-   "tier": 0
-  }
- ],
- "construct": [
-  {
-   "ref": "Genesis 24:34",
-   "osis": "Gen",
-   "chapter": 24,
-   "verse": 34,
-   "he": "וַיֹּאמַ֑ר עֶ֥בֶד אַבְרָהָ֖ם אָנֹֽכִי",
-   "en": "He said, “I am Abraham’s servant.",
-   "target": {
-    "surface": "עֶ֥בֶד",
+   {
+    "surface": "וּבְכָל",
     "morph": "Ncmsc",
-    "position": 1
+    "strongs": "3605",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "וּ",
+      "morph": "C"
+     },
+     {
+      "text": "בְ",
+      "morph": "R"
+     },
+     {
+      "text": "כָל",
+      "morph": "Ncmsc"
+     }
+    ],
+    "ref": "Genesis 1:28",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 28
    },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 35:24",
-   "osis": "Gen",
-   "chapter": 35,
-   "verse": 24,
-   "he": "בְּנֵ֣י רָחֵ֔ל יוֹסֵ֖ף וּבִנְיָמִֽן",
-   "en": "The sons of Rachel: Joseph and Benjamin.",
-   "target": {
-    "surface": "בְּנֵ֣י",
-    "morph": "Ncmpc",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Numbers 26:46",
-   "osis": "Num",
-   "chapter": 26,
-   "verse": 46,
-   "he": "וְשֵׁ֥ם בַּת אָשֵׁ֖ר שָֽׂרַח",
-   "en": "The name of the daughter of Asher was Serah.",
-   "target": {
-    "surface": "וְשֵׁ֥ם",
+   {
+    "surface": "וּֽלְכָל",
     "morph": "Ncmsc",
-    "position": 0
+    "strongs": "3605",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "וּֽ",
+      "morph": "C"
+     },
+     {
+      "text": "לְ",
+      "morph": "R"
+     },
+     {
+      "text": "כָל",
+      "morph": "Ncmsc"
+     }
+    ],
+    "ref": "Genesis 1:30",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 30
    },
-   "tier": 0
-  },
-  {
-   "ref": "Ezra 2:22",
-   "osis": "Ezra",
-   "chapter": 2,
-   "verse": 22,
-   "he": "אַנְשֵׁ֥י נְטֹפָ֖ה חֲמִשִּׁ֥ים וְשִׁשָּֽׁה",
-   "en": "The men of Netophah, fifty-six.",
-   "target": {
-    "surface": "אַנְשֵׁ֥י",
+   {
+    "surface": "מִכָּל",
+    "morph": "Ncmsc",
+    "strongs": "3605",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "מִ",
+      "morph": "R"
+     },
+     {
+      "text": "כָּל",
+      "morph": "Ncmsc"
+     }
+    ],
+    "ref": "Genesis 2:2",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 2
+   }
+  ]
+ },
+ "nouns": {
+  "examples": [
+   {
+    "ref": "Genesis 35:24",
+    "osis": "Gen",
+    "chapter": 35,
+    "verse": 24,
+    "he": "בְּנֵ֣י רָחֵ֔ל יוֹסֵ֖ף וּבִנְיָמִֽן",
+    "en": "The sons of Rachel: Joseph and Benjamin.",
+    "target": {
+     "surface": "בְּנֵ֣י",
+     "morph": "Ncmpc",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Ezra 2:22",
+    "osis": "Ezra",
+    "chapter": 2,
+    "verse": 22,
+    "he": "אַנְשֵׁ֥י נְטֹפָ֖ה חֲמִשִּׁ֥ים וְשִׁשָּֽׁה",
+    "en": "The men of Netophah, fifty-six.",
+    "target": {
+     "surface": "אַנְשֵׁ֥י",
+     "morph": "Ncmpc",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Lamentations 3:6",
+    "osis": "Lam",
+    "chapter": 3,
+    "verse": 6,
+    "he": "בְּמַחֲשַׁכִּ֥ים הוֹשִׁיבַ֖נִי כְּמֵתֵ֥י עוֹלָֽם",
+    "en": "He has made me to dwell in dark places, as those that have been long dead.",
+    "target": {
+     "surface": "בְּמַחֲשַׁכִּ֥ים",
+     "morph": "Ncmpa",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Chronicles 15:23",
+    "osis": "1Chr",
+    "chapter": 15,
+    "verse": 23,
+    "he": "וּבֶֽרֶכְיָה֙ וְאֶלְקָנָ֔ה שֹׁעֲרִ֖ים לָאָרֽוֹן",
+    "en": "Berechiah and Elkanah were doorkeepers for the ark.",
+    "target": {
+     "surface": "שֹׁעֲרִ֖ים",
+     "morph": "Ncmpa",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 2:1",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 1,
+    "he": "וַיְכֻלּ֛וּ הַשָּׁמַ֥יִם וְהָאָ֖רֶץ וְכָל צְבָאָֽם",
+    "en": "The heavens, the earth, and all their vast array were finished.",
+    "target": {
+     "surface": "הַשָּׁמַ֥יִם",
+     "morph": "Ncmpa",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 6:9",
+    "osis": "Deut",
+    "chapter": 6,
+    "verse": 9,
+    "he": "וּכְתַבְתָּ֛ם עַל מְזוּזֹ֥ת בֵּיתֶ֖ךָ וּבִשְׁעָרֶֽיךָ",
+    "en": "You shall write them on the door posts of your house, and on your gates.",
+    "target": {
+     "surface": "מְזוּזֹ֥ת",
+     "morph": "Ncfpc",
+     "position": 2
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "כֹּל",
+    "gloss": "all, every, whole",
+    "freq": 5198,
+    "pos": "Noun",
+    "strongs": "3605"
+   },
+   {
+    "lemma": "עַל",
+    "gloss": "on, upon, over, above",
+    "freq": 4250,
+    "pos": "Prep",
+    "strongs": "5921"
+   },
+   {
+    "lemma": "בֵּן",
+    "gloss": "son",
+    "freq": 4006,
+    "pos": "Noun",
+    "strongs": "1121"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "אִישׁ",
+    "gloss": "man, husband",
+    "freq": 2077,
+    "pos": "Noun",
+    "strongs": "376"
+   },
+   {
+    "lemma": "בַּיִת",
+    "gloss": "house",
+    "freq": 1662,
+    "pos": "Noun",
+    "strongs": "1004"
+   },
+   {
+    "lemma": "יָשַׁב",
+    "gloss": "to sit, dwell, remain",
+    "freq": 1005,
+    "pos": "Verb",
+    "strongs": "3427"
+   },
+   {
+    "lemma": "מוּת",
+    "gloss": "to die",
+    "freq": 738,
+    "pos": "Verb",
+    "strongs": "4191"
+   },
+   {
+    "lemma": "עוֹלָם",
+    "gloss": "eternity, forever, everlasting",
+    "freq": 437,
+    "pos": "Noun",
+    "strongs": "5769"
+   },
+   {
+    "lemma": "צָבָא",
+    "gloss": "army, host",
+    "freq": 425,
+    "pos": "Noun",
+    "strongs": "6635"
+   },
+   {
+    "lemma": "שָׁמַיִם",
+    "gloss": "heavens, sky",
+    "freq": 405,
+    "pos": "Noun",
+    "strongs": "8064"
+   },
+   {
+    "lemma": "שַׁעַר",
+    "gloss": "gate",
+    "freq": 317,
+    "pos": "Noun",
+    "strongs": "8179"
+   },
+   {
+    "lemma": "שֵׁשׁ",
+    "gloss": "six",
+    "freq": 215,
+    "pos": "Adj",
+    "strongs": "8337"
+   },
+   {
+    "lemma": "יוֹסֵף",
+    "gloss": "Joseph",
+    "freq": 213,
+    "pos": "Noun",
+    "strongs": "3130"
+   },
+   {
+    "lemma": "כָּתַב",
+    "gloss": "to write",
+    "freq": 211,
+    "pos": "Verb",
+    "strongs": "3789"
+   },
+   {
+    "lemma": "אָרוֹן",
+    "gloss": "ark, chest",
+    "freq": 202,
+    "pos": "Noun",
+    "strongs": "727"
+   },
+   {
+    "lemma": "בִּנְיָמִין",
+    "gloss": "Benjamin",
+    "freq": 165,
+    "pos": "Noun",
+    "strongs": "1144"
+   },
+   {
+    "lemma": "כָּלָה",
+    "gloss": "to be complete, finished; end",
+    "freq": 159,
+    "pos": "Verb",
+    "strongs": "3615"
+   },
+   {
+    "lemma": "חֲמִשִּׁים",
+    "gloss": "fifty",
+    "freq": 155,
+    "pos": "Adj",
+    "strongs": "2572"
+   },
+   {
+    "lemma": "רָחֵל",
+    "gloss": "Rachel",
+    "freq": 47,
+    "pos": "Noun",
+    "strongs": "7354"
+   },
+   {
+    "lemma": "שׁוֹעֵר",
+    "gloss": "gatekeeper, porter",
+    "freq": 37,
+    "pos": "Noun",
+    "strongs": "7778"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "אֱלֹהִ֑ים",
+    "morph": "Ncmpa",
+    "strongs": "430",
+    "kind": "parse",
+    "ref": "Genesis 1:1",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 1
+   },
+   {
+    "surface": "אֱלֹהִ֔ים",
+    "morph": "Ncmpa",
+    "strongs": "430",
+    "kind": "parse",
+    "ref": "Genesis 1:2",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 2
+   },
+   {
+    "surface": "אֱלֹהִ֖ים",
+    "morph": "Ncmpa",
+    "strongs": "430",
+    "kind": "parse",
+    "ref": "Genesis 1:3",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 3
+   },
+   {
+    "surface": "אֱלֹהִ֛ים",
+    "morph": "Ncmpa",
+    "strongs": "430",
+    "kind": "parse",
+    "ref": "Genesis 1:4",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 4
+   },
+   {
+    "surface": "וְשָׁנִֽים",
+    "morph": "Ncfpa",
+    "strongs": "8141",
+    "kind": "parse",
+    "ref": "Genesis 1:14",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 14
+   },
+   {
+    "surface": "יְמֵ֥י",
     "morph": "Ncmpc",
-    "position": 0
+    "strongs": "3117",
+    "kind": "parse",
+    "ref": "Genesis 3:14",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 14
    },
-   "tier": 0
-  },
-  {
-   "ref": "Exodus 12:47",
-   "osis": "Exod",
-   "chapter": 12,
-   "verse": 47,
-   "he": "כָּל עֲדַ֥ת יִשְׂרָאֵ֖ל יַעֲשׂ֥וּ אֹתֽוֹ",
-   "en": "All the congregation of Israel shall keep it.",
-   "target": {
+   {
+    "surface": "חַיֶּֽיךָ",
+    "morph": "Sp2ms",
+    "strongs": "2416",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "חַיֶּֽי",
+      "morph": "Ncmpc"
+     },
+     {
+      "text": "ךָ",
+      "morph": "Sp2ms"
+     }
+    ],
+    "ref": "Genesis 3:17",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 17
+   },
+   {
+    "surface": "דְּמֵ֣י",
+    "morph": "Ncmpc",
+    "strongs": "1818",
+    "kind": "parse",
+    "ref": "Genesis 4:10",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 10
+   },
+   {
+    "surface": "דְּמֵ֥י",
+    "morph": "Ncmpc",
+    "strongs": "1818",
+    "kind": "parse",
+    "ref": "Genesis 4:11",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 11
+   },
+   {
+    "surface": "נָשִׁ֑ים",
+    "morph": "Ncfpa",
+    "strongs": "802",
+    "kind": "parse",
+    "ref": "Genesis 4:19",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 19
+   },
+   {
+    "surface": "לְנָשָׁ֗יו",
+    "morph": "Sp3ms",
+    "strongs": "802",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "לְ",
+      "morph": "R"
+     },
+     {
+      "text": "נָשָׁ֗י",
+      "morph": "Ncfpc"
+     },
+     {
+      "text": "ו",
+      "morph": "Sp3ms"
+     }
+    ],
+    "ref": "Genesis 4:23",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 23
+   },
+   {
+    "surface": "יְמֵי",
+    "morph": "Ncmpc",
+    "strongs": "3117",
+    "kind": "parse",
+    "ref": "Genesis 5:4",
+    "osis": "Gen",
+    "chapter": 5,
+    "verse": 4
+   }
+  ]
+ },
+ "construct": {
+  "examples": [
+   {
+    "ref": "Genesis 24:34",
+    "osis": "Gen",
+    "chapter": 24,
+    "verse": 34,
+    "he": "וַיֹּאמַ֑ר עֶ֥בֶד אַבְרָהָ֖ם אָנֹֽכִי",
+    "en": "He said, “I am Abraham’s servant.",
+    "target": {
+     "surface": "עֶ֥בֶד",
+     "morph": "Ncmsc",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 35:24",
+    "osis": "Gen",
+    "chapter": 35,
+    "verse": 24,
+    "he": "בְּנֵ֣י רָחֵ֔ל יוֹסֵ֖ף וּבִנְיָמִֽן",
+    "en": "The sons of Rachel: Joseph and Benjamin.",
+    "target": {
+     "surface": "בְּנֵ֣י",
+     "morph": "Ncmpc",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Numbers 26:46",
+    "osis": "Num",
+    "chapter": 26,
+    "verse": 46,
+    "he": "וְשֵׁ֥ם בַּת אָשֵׁ֖ר שָֽׂרַח",
+    "en": "The name of the daughter of Asher was Serah.",
+    "target": {
+     "surface": "וְשֵׁ֥ם",
+     "morph": "Ncmsc",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Ezra 2:22",
+    "osis": "Ezra",
+    "chapter": 2,
+    "verse": 22,
+    "he": "אַנְשֵׁ֥י נְטֹפָ֖ה חֲמִשִּׁ֥ים וְשִׁשָּֽׁה",
+    "en": "The men of Netophah, fifty-six.",
+    "target": {
+     "surface": "אַנְשֵׁ֥י",
+     "morph": "Ncmpc",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Exodus 12:47",
+    "osis": "Exod",
+    "chapter": 12,
+    "verse": 47,
+    "he": "כָּל עֲדַ֥ת יִשְׂרָאֵ֖ל יַעֲשׂ֥וּ אֹתֽוֹ",
+    "en": "All the congregation of Israel shall keep it.",
+    "target": {
+     "surface": "כָּל",
+     "morph": "Ncmsc",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Exodus 40:28",
+    "osis": "Exod",
+    "chapter": 40,
+    "verse": 28,
+    "he": "וַיָּ֛שֶׂם אֶת מָסַ֥ךְ הַפֶּ֖תַח לַמִּשְׁכָּֽן",
+    "en": "He put up the screen of the door to the tabernacle.",
+    "target": {
+     "surface": "מָסַ֥ךְ",
+     "morph": "Ncmsc",
+     "position": 2
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "כֹּל",
+    "gloss": "all, every, whole",
+    "freq": 5198,
+    "pos": "Noun",
+    "strongs": "3605"
+   },
+   {
+    "lemma": "בֵּן",
+    "gloss": "son",
+    "freq": 4006,
+    "pos": "Noun",
+    "strongs": "1121"
+   },
+   {
+    "lemma": "עָשָׂה",
+    "gloss": "to do, make",
+    "freq": 2511,
+    "pos": "Verb",
+    "strongs": "6213"
+   },
+   {
+    "lemma": "יִשְׂרָאֵל",
+    "gloss": "Israel",
+    "freq": 2506,
+    "pos": "Noun",
+    "strongs": "3478"
+   },
+   {
+    "lemma": "אִישׁ",
+    "gloss": "man, husband",
+    "freq": 2077,
+    "pos": "Noun",
+    "strongs": "376"
+   },
+   {
+    "lemma": "שׂוּם",
+    "gloss": "to put, place, set",
+    "freq": 490,
+    "pos": "Verb",
+    "strongs": "7760"
+   },
+   {
+    "lemma": "שֵׁם",
+    "gloss": "name",
+    "freq": 420,
+    "pos": "Noun",
+    "strongs": "8034"
+   },
+   {
+    "lemma": "בַּת",
+    "gloss": "daughter",
+    "freq": 364,
+    "pos": "Noun",
+    "strongs": "1323"
+   },
+   {
+    "lemma": "אָנֹכִי",
+    "gloss": "I",
+    "freq": 359,
+    "pos": "Pron",
+    "strongs": "595"
+   },
+   {
+    "lemma": "עֶבֶד",
+    "gloss": "servant, slave",
+    "freq": 259,
+    "pos": "Noun",
+    "strongs": "5650"
+   },
+   {
+    "lemma": "שֵׁשׁ",
+    "gloss": "six",
+    "freq": 215,
+    "pos": "Adj",
+    "strongs": "8337"
+   },
+   {
+    "lemma": "יוֹסֵף",
+    "gloss": "Joseph",
+    "freq": 213,
+    "pos": "Noun",
+    "strongs": "3130"
+   },
+   {
+    "lemma": "אַבְרָהָם",
+    "gloss": "Abraham",
+    "freq": 175,
+    "pos": "Noun",
+    "strongs": "85"
+   },
+   {
+    "lemma": "בִּנְיָמִין",
+    "gloss": "Benjamin",
+    "freq": 165,
+    "pos": "Noun",
+    "strongs": "1144"
+   },
+   {
+    "lemma": "חֲמִשִּׁים",
+    "gloss": "fifty",
+    "freq": 155,
+    "pos": "Adj",
+    "strongs": "2572"
+   },
+   {
+    "lemma": "פֶּתַח",
+    "gloss": "opening, entrance, doorway",
+    "freq": 155,
+    "pos": "Noun",
+    "strongs": "6607"
+   },
+   {
+    "lemma": "עֵדָה",
+    "gloss": "congregation, assembly",
+    "freq": 139,
+    "pos": "Noun",
+    "strongs": "5712"
+   },
+   {
+    "lemma": "מִשְׁכָּן",
+    "gloss": "tabernacle, dwelling place",
+    "freq": 123,
+    "pos": "Noun",
+    "strongs": "4908"
+   },
+   {
+    "lemma": "רָחֵל",
+    "gloss": "Rachel",
+    "freq": 47,
+    "pos": "Noun",
+    "strongs": "7354"
+   },
+   {
+    "lemma": "אָשֵׁר",
+    "gloss": "Asher",
+    "freq": 43,
+    "pos": "Noun",
+    "strongs": "836"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "בְּת֣וֹךְ",
+    "morph": "Ncmsc",
+    "strongs": "8432",
+    "kind": "parse",
+    "ref": "Genesis 1:6",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 6
+   },
+   {
+    "surface": "עֵ֣ץ",
+    "morph": "Ncmsc",
+    "strongs": "6086",
+    "kind": "parse",
+    "ref": "Genesis 1:11",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 11
+   },
+   {
     "surface": "כָּל",
     "morph": "Ncmsc",
-    "position": 0
+    "strongs": "3605",
+    "kind": "parse",
+    "ref": "Genesis 1:21",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 21
    },
-   "tier": 0
-  },
-  {
-   "ref": "Exodus 40:28",
-   "osis": "Exod",
-   "chapter": 40,
-   "verse": 28,
-   "he": "וַיָּ֛שֶׂם אֶת מָסַ֥ךְ הַפֶּ֖תַח לַמִּשְׁכָּֽן",
-   "en": "He put up the screen of the door to the tabernacle.",
-   "target": {
-    "surface": "מָסַ֥ךְ",
+   {
+    "surface": "וְחַֽיְתוֹ",
+    "morph": "Ncfsc",
+    "strongs": "2416",
+    "kind": "parse",
+    "ref": "Genesis 1:24",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 24
+   },
+   {
+    "surface": "חַיַּ֨ת",
+    "morph": "Ncfsc",
+    "strongs": "2416",
+    "kind": "parse",
+    "ref": "Genesis 1:25",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 25
+   },
+   {
+    "surface": "וּבְכָל",
     "morph": "Ncmsc",
-    "position": 2
+    "strongs": "3605",
+    "kind": "parse",
+    "ref": "Genesis 1:26",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 26
    },
-   "tier": 0
-  }
- ],
- "adjectives": [
-  {
-   "ref": "Deuteronomy 18:13",
-   "osis": "Deut",
-   "chapter": 18,
-   "verse": 13,
-   "he": "תָּמִ֣ים תִּֽהְיֶ֔ה עִ֖ם יְהוָ֥ה אֱלֹהֶֽיךָ",
-   "en": "You shall be perfect with Yahweh your God.",
-   "target": {
-    "surface": "תָּמִ֣ים",
-    "morph": "Aamsa",
-    "position": 0
+   {
+    "surface": "חַיַּ֣ת",
+    "morph": "Ncfsc",
+    "strongs": "2416",
+    "kind": "parse",
+    "ref": "Genesis 1:30",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 30
    },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 116:9",
-   "osis": "Ps",
-   "chapter": 116,
-   "verse": 9,
-   "he": "אֶ֭תְהַלֵּךְ לִפְנֵ֣י יְהוָ֑ה בְּ֝אַרְצ֗וֹת הַֽחַיִּֽים",
-   "en": "I will walk before Yahweh in the land of the living.",
-   "target": {
-    "surface": "הַֽחַיִּֽים",
-    "morph": "Aampa",
-    "position": 4
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Isaiah 48:22",
-   "osis": "Isa",
-   "chapter": 48,
-   "verse": 22,
-   "he": "אֵ֣ין שָׁל֔וֹם אָמַ֥ר יְהוָ֖ה לָרְשָׁעִֽים",
-   "en": "“There is no peace”, says Yahweh, “for the wicked.”",
-   "target": {
-    "surface": "לָרְשָׁעִֽים",
-    "morph": "Aampa",
-    "position": 4
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 24:2",
-   "osis": "Deut",
-   "chapter": 24,
-   "verse": 2,
-   "he": "וְיָצְאָ֖ה מִבֵּית֑וֹ וְהָלְכָ֖ה וְהָיְתָ֥ה לְאִישׁ אַחֵֽר",
-   "en": "When she has departed out of his house, she may go and be another man’s wife.",
-   "target": {
-    "surface": "אַחֵֽר",
-    "morph": "Aamsa",
-    "position": 5
-   },
-   "tier": 0
-  },
-  {
-   "ref": "2 Samuel 12:2",
-   "osis": "2Sam",
-   "chapter": 12,
-   "verse": 2,
-   "he": "לְעָשִׁ֗יר הָיָ֛ה צֹ֥אן וּבָקָ֖ר הַרְבֵּ֥ה מְאֹֽד",
-   "en": "The rich man had very many flocks and herds,",
-   "target": {
-    "surface": "לְעָשִׁ֗יר",
-    "morph": "Aamsa",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 37:27",
-   "osis": "Ps",
-   "chapter": 37,
-   "verse": 27,
-   "he": "ס֣וּר מֵ֭רָע וַעֲשֵׂה ט֗וֹב וּשְׁכֹ֥ן לְעוֹלָֽם",
-   "en": "Depart from evil, and do good. Live securely forever.",
-   "target": {
-    "surface": "מֵ֭רָע",
-    "morph": "Aamsa",
-    "position": 1
-   },
-   "tier": 0
-  }
- ],
- "pronouns": [
-  {
-   "ref": "Genesis 21:24",
-   "osis": "Gen",
-   "chapter": 21,
-   "verse": 24,
-   "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
-   "en": "Abraham said, “I will swear.”",
-   "target": {
-    "surface": "אָנֹכִ֖י",
-    "morph": "Pp1cs",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Joshua 15:49",
-   "osis": "Josh",
-   "chapter": 15,
-   "verse": 49,
-   "he": "וְדַנָּ֥ה וְקִרְיַת סַנָּ֖ה הִ֥יא דְבִֽר",
-   "en": "Dannah, Kiriath Sannah (which is Debir),",
-   "target": {
-    "surface": "הִ֥יא",
-    "morph": "Pp3fs",
-    "position": 3
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 115:15",
-   "osis": "Ps",
-   "chapter": 115,
-   "verse": 15,
-   "he": "בְּרוּכִ֣ים אַ֭תֶּם לַיהוָ֑ה עֹ֝שֵׂ֗ה שָׁמַ֥יִם וָאָֽרֶץ",
-   "en": "Blessed are you by Yahweh, who made heaven and earth.",
-   "target": {
-    "surface": "אַ֭תֶּם",
-    "morph": "Pp2mp",
-    "position": 1
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 120:7",
-   "osis": "Ps",
-   "chapter": 120,
-   "verse": 7,
-   "he": "אֲֽנִי שָׁ֭לוֹם וְכִ֣י אֲדַבֵּ֑ר הֵ֝֗מָּה לַמִּלְחָמָֽה",
-   "en": "I am for peace, but when I speak, they are for war.",
-   "target": {
-    "surface": "אֲֽנִי",
-    "morph": "Pp1cs",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "1 Chronicles 1:31",
-   "osis": "1Chr",
-   "chapter": 1,
-   "verse": 31,
-   "he": "יְט֥וּר נָפִ֖ישׁ וָקֵ֑דְמָה אֵ֥לֶּה הֵ֖ם בְּנֵ֥י יִשְׁמָעֵֽאל",
-   "en": "Jetur, Naphish, and Kedemah. These are the sons of Ishmael.",
-   "target": {
-    "surface": "הֵ֖ם",
-    "morph": "Pp3mp",
-    "position": 4
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Ezra 10:4",
-   "osis": "Ezra",
-   "chapter": 10,
-   "verse": 4,
-   "he": "ק֛וּם כִּֽי עָלֶ֥יךָ הַדָּבָ֖ר וַאֲנַ֣חְנוּ עִמָּ֑ךְ חֲזַ֖ק וַעֲשֵֽׂה",
-   "en": "Arise; for the matter belongs to you, and we are with you. Be courageous, and do it.”",
-   "target": {
-    "surface": "וַאֲנַ֣חְנוּ",
-    "morph": "Pp1cp",
-    "position": 4
-   },
-   "tier": 0
-  }
- ],
- "suffixes": [
-  {
-   "ref": "Deuteronomy 2:2",
-   "osis": "Deut",
-   "chapter": 2,
-   "verse": 2,
-   "he": "וַיֹּ֥אמֶר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
-   "en": "Yahweh spoke to me, saying,",
-   "target": {
-    "surface": "אֵלַ֥י",
-    "morph": "Sp1cs",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Leviticus 21:13",
-   "osis": "Lev",
-   "chapter": 21,
-   "verse": 13,
-   "he": "וְה֕וּא אִשָּׁ֥ה בִבְתוּלֶ֖יהָ יִקָּֽח",
-   "en": "“‘He shall take a wife in her virginity.",
-   "target": {
-    "surface": "בִבְתוּלֶ֖יהָ",
-    "morph": "Sp3fs",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "1 Chronicles 3:14",
-   "osis": "1Chr",
-   "chapter": 3,
-   "verse": 14,
-   "he": "אָמ֥וֹן בְּנ֖וֹ יֹאשִׁיָּ֥הוּ בְנֽוֹ",
-   "en": "Amon his son, Josiah his son.",
-   "target": {
-    "surface": "בְּנ֖וֹ",
+   {
+    "surface": "מְלַאכְתּ֖וֹ",
     "morph": "Sp3ms",
-    "position": 1
+    "strongs": "4399",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "מְלַאכְתּ֖",
+      "morph": "Ncfsc"
+     },
+     {
+      "text": "וֹ",
+      "morph": "Sp3ms"
+     }
+    ],
+    "ref": "Genesis 2:2",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 2
    },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 2:1",
-   "osis": "Gen",
-   "chapter": 2,
-   "verse": 1,
-   "he": "וַיְכֻלּ֛וּ הַשָּׁמַ֥יִם וְהָאָ֖רֶץ וְכָל צְבָאָֽם",
-   "en": "The heavens, the earth, and all their vast array were finished.",
-   "target": {
+   {
+    "surface": "מְלַאכְתּ֔וֹ",
+    "morph": "Sp3ms",
+    "strongs": "4399",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "מְלַאכְתּ֔",
+      "morph": "Ncfsc"
+     },
+     {
+      "text": "וֹ",
+      "morph": "Sp3ms"
+     }
+    ],
+    "ref": "Genesis 2:3",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 3
+   },
+   {
+    "surface": "וְאֶ֥בֶן",
+    "morph": "Ncfsc",
+    "strongs": "68",
+    "kind": "parse",
+    "ref": "Genesis 2:12",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 12
+   },
+   {
+    "surface": "שְׁמֽוֹ",
+    "morph": "Sp3ms",
+    "strongs": "8034",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "שְׁמֽ",
+      "morph": "Ncmsc"
+     },
+     {
+      "text": "וֹ",
+      "morph": "Sp3ms"
+     }
+    ],
+    "ref": "Genesis 2:19",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 19
+   },
+   {
+    "surface": "מִבְּשָׂרִ֑י",
+    "morph": "Sp1cs",
+    "strongs": "1320",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "מִ",
+      "morph": "R"
+     },
+     {
+      "text": "בְּשָׂרִ֑",
+      "morph": "Ncmsc"
+     },
+     {
+      "text": "י",
+      "morph": "Sp1cs"
+     }
+    ],
+    "ref": "Genesis 2:23",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 23
+   }
+  ]
+ },
+ "adjectives": {
+  "examples": [
+   {
+    "ref": "Deuteronomy 18:13",
+    "osis": "Deut",
+    "chapter": 18,
+    "verse": 13,
+    "he": "תָּמִ֣ים תִּֽהְיֶ֔ה עִ֖ם יְהוָ֥ה אֱלֹהֶֽיךָ",
+    "en": "You shall be perfect with Yahweh your God.",
+    "target": {
+     "surface": "תָּמִ֣ים",
+     "morph": "Aamsa",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 116:9",
+    "osis": "Ps",
+    "chapter": 116,
+    "verse": 9,
+    "he": "אֶ֭תְהַלֵּךְ לִפְנֵ֣י יְהוָ֑ה בְּ֝אַרְצ֗וֹת הַֽחַיִּֽים",
+    "en": "I will walk before Yahweh in the land of the living.",
+    "target": {
+     "surface": "הַֽחַיִּֽים",
+     "morph": "Aampa",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Isaiah 48:22",
+    "osis": "Isa",
+    "chapter": 48,
+    "verse": 22,
+    "he": "אֵ֣ין שָׁל֔וֹם אָמַ֥ר יְהוָ֖ה לָרְשָׁעִֽים",
+    "en": "“There is no peace”, says Yahweh, “for the wicked.”",
+    "target": {
+     "surface": "לָרְשָׁעִֽים",
+     "morph": "Aampa",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 24:2",
+    "osis": "Deut",
+    "chapter": 24,
+    "verse": 2,
+    "he": "וְיָצְאָ֖ה מִבֵּית֑וֹ וְהָלְכָ֖ה וְהָיְתָ֥ה לְאִישׁ אַחֵֽר",
+    "en": "When she has departed out of his house, she may go and be another man’s wife.",
+    "target": {
+     "surface": "אַחֵֽר",
+     "morph": "Aamsa",
+     "position": 5
+    },
+    "tier": 0
+   },
+   {
+    "ref": "2 Samuel 12:2",
+    "osis": "2Sam",
+    "chapter": 12,
+    "verse": 2,
+    "he": "לְעָשִׁ֗יר הָיָ֛ה צֹ֥אן וּבָקָ֖ר הַרְבֵּ֥ה מְאֹֽד",
+    "en": "The rich man had very many flocks and herds,",
+    "target": {
+     "surface": "לְעָשִׁ֗יר",
+     "morph": "Aamsa",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 37:27",
+    "osis": "Ps",
+    "chapter": 37,
+    "verse": 27,
+    "he": "ס֣וּר מֵ֭רָע וַעֲשֵׂה ט֗וֹב וּשְׁכֹ֥ן לְעוֹלָֽם",
+    "en": "Depart from evil, and do good. Live securely forever.",
+    "target": {
+     "surface": "מֵ֭רָע",
+     "morph": "Aamsa",
+     "position": 1
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "הָיָה",
+    "gloss": "to be, become, happen",
+    "freq": 3528,
+    "pos": "Verb",
+    "strongs": "1961"
+   },
+   {
+    "lemma": "עָשָׂה",
+    "gloss": "to do, make",
+    "freq": 2511,
+    "pos": "Verb",
+    "strongs": "6213"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "אִישׁ",
+    "gloss": "man, husband",
+    "freq": 2077,
+    "pos": "Noun",
+    "strongs": "376"
+   },
+   {
+    "lemma": "בַּיִת",
+    "gloss": "house",
+    "freq": 1662,
+    "pos": "Noun",
+    "strongs": "1004"
+   },
+   {
+    "lemma": "אֱלֹהִים",
+    "gloss": "God; gods",
+    "freq": 1615,
+    "pos": "Noun",
+    "strongs": "430"
+   },
+   {
+    "lemma": "פָּנִים",
+    "gloss": "face, presence",
+    "freq": 1250,
+    "pos": "Noun",
+    "strongs": "6440"
+   },
+   {
+    "lemma": "יָצָא",
+    "gloss": "to go out, come out",
+    "freq": 933,
+    "pos": "Verb",
+    "strongs": "3318"
+   },
+   {
+    "lemma": "אַיִן",
+    "gloss": "there is not, nothing",
+    "freq": 685,
+    "pos": "Particle",
+    "strongs": "369"
+   },
+   {
+    "lemma": "רַע",
+    "gloss": "evil, bad",
+    "freq": 604,
+    "pos": "Adj",
+    "strongs": "7451"
+   },
+   {
+    "lemma": "טוֹב",
+    "gloss": "good",
+    "freq": 557,
+    "pos": "Adj",
+    "strongs": "2896"
+   },
+   {
+    "lemma": "עִם",
+    "gloss": "with",
+    "freq": 517,
+    "pos": "Prep",
+    "strongs": "5973"
+   },
+   {
+    "lemma": "הָלַךְ",
+    "gloss": "to go, walk",
+    "freq": 499,
+    "pos": "Verb",
+    "strongs": "1980"
+   },
+   {
+    "lemma": "עוֹלָם",
+    "gloss": "eternity, forever, everlasting",
+    "freq": 437,
+    "pos": "Noun",
+    "strongs": "5769"
+   },
+   {
+    "lemma": "חַי",
+    "gloss": "living, alive",
+    "freq": 415,
+    "pos": "Adj",
+    "strongs": "2416"
+   },
+   {
+    "lemma": "מְאֹד",
+    "gloss": "very, exceedingly",
+    "freq": 298,
+    "pos": "Adv",
+    "strongs": "3966"
+   },
+   {
+    "lemma": "סוּר",
+    "gloss": "to turn aside, depart",
+    "freq": 281,
+    "pos": "Verb",
+    "strongs": "5493"
+   },
+   {
+    "lemma": "רָשָׁע",
+    "gloss": "wicked, guilty",
+    "freq": 262,
+    "pos": "Adj",
+    "strongs": "7563"
+   },
+   {
+    "lemma": "שָׁלוֹם",
+    "gloss": "peace, welfare, wholeness",
+    "freq": 225,
+    "pos": "Noun",
+    "strongs": "7965"
+   },
+   {
+    "lemma": "רָבָה",
+    "gloss": "to be(come) many, multiply",
+    "freq": 217,
+    "pos": "Verb",
+    "strongs": "7235"
+   },
+   {
+    "lemma": "צֹאן",
+    "gloss": "flock, sheep",
+    "freq": 204,
+    "pos": "Noun",
+    "strongs": "6629"
+   },
+   {
+    "lemma": "אַחֵר",
+    "gloss": "another, other",
+    "freq": 166,
+    "pos": "Adj",
+    "strongs": "312"
+   },
+   {
+    "lemma": "בָּקָר",
+    "gloss": "cattle, herd, ox",
+    "freq": 162,
+    "pos": "Noun",
+    "strongs": "1241"
+   },
+   {
+    "lemma": "שָׁכַן",
+    "gloss": "to dwell, settle, abide",
+    "freq": 126,
+    "pos": "Verb",
+    "strongs": "7931"
+   },
+   {
+    "lemma": "תָּמִים",
+    "gloss": "blameless, complete, perfect",
+    "freq": 91,
+    "pos": "Adj",
+    "strongs": "8549"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "ט֑וֹב",
+    "morph": "Aamsa",
+    "strongs": "2896",
+    "kind": "parse",
+    "ref": "Genesis 1:4",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 4
+   },
+   {
+    "surface": "טֽוֹב",
+    "morph": "Aamsa",
+    "strongs": "2896",
+    "kind": "parse",
+    "ref": "Genesis 1:10",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 10
+   },
+   {
+    "surface": "הַגְּדֹלִ֑ים",
+    "morph": "Aampa",
+    "strongs": "1419",
+    "kind": "parse",
+    "ref": "Genesis 1:16",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 16
+   },
+   {
+    "surface": "חַיָּ֑ה",
+    "morph": "Aafsa",
+    "strongs": "2416",
+    "kind": "parse",
+    "ref": "Genesis 1:20",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 20
+   },
+   {
+    "surface": "הַֽחַיָּ֣ה",
+    "morph": "Aafsa",
+    "strongs": "2416",
+    "kind": "parse",
+    "ref": "Genesis 1:21",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 21
+   },
+   {
+    "surface": "חַיָּה֙",
+    "morph": "Aafsa",
+    "strongs": "2416",
+    "kind": "parse",
+    "ref": "Genesis 1:24",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 24
+   },
+   {
+    "surface": "חַיָּ֔ה",
+    "morph": "Aafsa",
+    "strongs": "2416",
+    "kind": "parse",
+    "ref": "Genesis 1:30",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 30
+   },
+   {
+    "surface": "ט֖וֹב",
+    "morph": "Aamsa",
+    "strongs": "2896",
+    "kind": "parse",
+    "ref": "Genesis 1:31",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 31
+   },
+   {
+    "surface": "וְט֣וֹב",
+    "morph": "Aamsa",
+    "strongs": "2896",
+    "kind": "parse",
+    "ref": "Genesis 2:9",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 9
+   },
+   {
+    "surface": "טֹבֹ֖ת",
+    "morph": "Aafpa",
+    "strongs": "2896",
+    "kind": "parse",
+    "ref": "Genesis 6:2",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 2
+   },
+   {
+    "surface": "הַגִּבֹּרִ֛ים",
+    "morph": "Aampa",
+    "strongs": "1368",
+    "kind": "parse",
+    "ref": "Genesis 6:4",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 4
+   },
+   {
+    "surface": "אֲחֵרִ֑ים",
+    "morph": "Aampa",
+    "strongs": "312",
+    "kind": "parse",
+    "ref": "Genesis 8:10",
+    "osis": "Gen",
+    "chapter": 8,
+    "verse": 10
+   }
+  ]
+ },
+ "pronouns": {
+  "examples": [
+   {
+    "ref": "Genesis 21:24",
+    "osis": "Gen",
+    "chapter": 21,
+    "verse": 24,
+    "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
+    "en": "Abraham said, “I will swear.”",
+    "target": {
+     "surface": "אָנֹכִ֖י",
+     "morph": "Pp1cs",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Joshua 15:49",
+    "osis": "Josh",
+    "chapter": 15,
+    "verse": 49,
+    "he": "וְדַנָּ֥ה וְקִרְיַת סַנָּ֖ה הִ֥יא דְבִֽר",
+    "en": "Dannah, Kiriath Sannah (which is Debir),",
+    "target": {
+     "surface": "הִ֥יא",
+     "morph": "Pp3fs",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 115:15",
+    "osis": "Ps",
+    "chapter": 115,
+    "verse": 15,
+    "he": "בְּרוּכִ֣ים אַ֭תֶּם לַיהוָ֑ה עֹ֝שֵׂ֗ה שָׁמַ֥יִם וָאָֽרֶץ",
+    "en": "Blessed are you by Yahweh, who made heaven and earth.",
+    "target": {
+     "surface": "אַ֭תֶּם",
+     "morph": "Pp2mp",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 120:7",
+    "osis": "Ps",
+    "chapter": 120,
+    "verse": 7,
+    "he": "אֲֽנִי שָׁ֭לוֹם וְכִ֣י אֲדַבֵּ֑ר הֵ֝֗מָּה לַמִּלְחָמָֽה",
+    "en": "I am for peace, but when I speak, they are for war.",
+    "target": {
+     "surface": "אֲֽנִי",
+     "morph": "Pp1cs",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Chronicles 1:31",
+    "osis": "1Chr",
+    "chapter": 1,
+    "verse": 31,
+    "he": "יְט֥וּר נָפִ֖ישׁ וָקֵ֑דְמָה אֵ֥לֶּה הֵ֖ם בְּנֵ֥י יִשְׁמָעֵֽאל",
+    "en": "Jetur, Naphish, and Kedemah. These are the sons of Ishmael.",
+    "target": {
+     "surface": "הֵ֖ם",
+     "morph": "Pp3mp",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Ezra 10:4",
+    "osis": "Ezra",
+    "chapter": 10,
+    "verse": 4,
+    "he": "ק֛וּם כִּֽי עָלֶ֥יךָ הַדָּבָ֖ר וַאֲנַ֣חְנוּ עִמָּ֑ךְ חֲזַ֖ק וַעֲשֵֽׂה",
+    "en": "Arise; for the matter belongs to you, and we are with you. Be courageous, and do it.”",
+    "target": {
+     "surface": "וַאֲנַ֣חְנוּ",
+     "morph": "Pp1cp",
+     "position": 4
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "כִּי",
+    "gloss": "that, because, for; when",
+    "freq": 4487,
+    "pos": "Conj",
+    "strongs": "3588"
+   },
+   {
+    "lemma": "עַל",
+    "gloss": "on, upon, over, above",
+    "freq": 4250,
+    "pos": "Prep",
+    "strongs": "5921"
+   },
+   {
+    "lemma": "בֵּן",
+    "gloss": "son",
+    "freq": 4006,
+    "pos": "Noun",
+    "strongs": "1121"
+   },
+   {
+    "lemma": "עָשָׂה",
+    "gloss": "to do, make",
+    "freq": 2511,
+    "pos": "Verb",
+    "strongs": "6213"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "הוּא",
+    "gloss": "he, it; that",
+    "freq": 1879,
+    "pos": "Pron",
+    "strongs": "1931"
+   },
+   {
+    "lemma": "דָּבָר",
+    "gloss": "word, thing, matter",
+    "freq": 1249,
+    "pos": "Noun",
+    "strongs": "1697"
+   },
+   {
+    "lemma": "דָבַר",
+    "gloss": "to speak",
+    "freq": 1110,
+    "pos": "Verb",
+    "strongs": "1696"
+   },
+   {
+    "lemma": "אַתָּה",
+    "gloss": "you (m.s.)",
+    "freq": 1092,
+    "pos": "Pron",
+    "strongs": "859"
+   },
+   {
+    "lemma": "אֲנִי",
+    "gloss": "I",
+    "freq": 874,
+    "pos": "Pron",
+    "strongs": "589"
+   },
+   {
+    "lemma": "אֵלֶּה",
+    "gloss": "these",
+    "freq": 746,
+    "pos": "Pron",
+    "strongs": "428"
+   },
+   {
+    "lemma": "קוּם",
+    "gloss": "to arise, stand up",
+    "freq": 569,
+    "pos": "Verb",
+    "strongs": "6965"
+   },
+   {
+    "lemma": "הֵם",
+    "gloss": "they (m.)",
+    "freq": 563,
+    "pos": "Pron",
+    "strongs": "1992"
+   },
+   {
+    "lemma": "עִם",
+    "gloss": "with",
+    "freq": 517,
+    "pos": "Prep",
+    "strongs": "5973"
+   },
+   {
+    "lemma": "שָׁמַיִם",
+    "gloss": "heavens, sky",
+    "freq": 405,
+    "pos": "Noun",
+    "strongs": "8064"
+   },
+   {
+    "lemma": "אָנֹכִי",
+    "gloss": "I",
+    "freq": 359,
+    "pos": "Pron",
+    "strongs": "595"
+   },
+   {
+    "lemma": "מִלְחָמָה",
+    "gloss": "war, battle",
+    "freq": 306,
+    "pos": "Noun",
+    "strongs": "4421"
+   },
+   {
+    "lemma": "חָזַק",
+    "gloss": "to be strong, firm; grasp",
+    "freq": 267,
+    "pos": "Verb",
+    "strongs": "2388"
+   },
+   {
+    "lemma": "בָרַךְ",
+    "gloss": "to bless, kneel",
+    "freq": 244,
+    "pos": "Verb",
+    "strongs": "1288"
+   },
+   {
+    "lemma": "שָׁלוֹם",
+    "gloss": "peace, welfare, wholeness",
+    "freq": 225,
+    "pos": "Noun",
+    "strongs": "7965"
+   },
+   {
+    "lemma": "אַבְרָהָם",
+    "gloss": "Abraham",
+    "freq": 175,
+    "pos": "Noun",
+    "strongs": "85"
+   },
+   {
+    "lemma": "שָׁבַע",
+    "gloss": "to swear, take an oath",
+    "freq": 168,
+    "pos": "Verb",
+    "strongs": "7650"
+   },
+   {
+    "lemma": "אֲנַחְנוּ",
+    "gloss": "we",
+    "freq": 119,
+    "pos": "Pron",
+    "strongs": "587"
+   },
+   {
+    "lemma": "יִשְׁמָעֵאל",
+    "gloss": "Ishmael",
+    "freq": 48,
+    "pos": "Noun",
+    "strongs": "3458"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "ה֣וּא",
+    "morph": "Pp3ms",
+    "strongs": "1931",
+    "kind": "parse",
+    "ref": "Genesis 2:11",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 11
+   },
+   {
+    "surface": "הַהִ֖וא",
+    "morph": "Pp3fs",
+    "strongs": "1931",
+    "kind": "parse",
+    "ref": "Genesis 2:12",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 12
+   },
+   {
+    "surface": "ה֥וּא",
+    "morph": "Pp3ms",
+    "strongs": "1931",
+    "kind": "parse",
+    "ref": "Genesis 2:14",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 14
+   },
+   {
+    "surface": "הֵ֑ם",
+    "morph": "Pp3mp",
+    "strongs": "1992",
+    "kind": "parse",
+    "ref": "Genesis 3:7",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 7
+   },
+   {
+    "surface": "אָנֹ֖כִי",
+    "morph": "Pp1cs",
+    "strongs": "595",
+    "kind": "parse",
+    "ref": "Genesis 3:10",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 10
+   },
+   {
+    "surface": "אָ֑תָּה",
+    "morph": "Pp2ms",
+    "strongs": "859",
+    "kind": "parse",
+    "ref": "Genesis 3:11",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 11
+   },
+   {
+    "surface": "הִ֛וא",
+    "morph": "Pp3fs",
+    "strongs": "1931",
+    "kind": "parse",
+    "ref": "Genesis 3:12",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 12
+   },
+   {
+    "surface": "אַתָּה֙",
+    "morph": "Pp2ms",
+    "strongs": "859",
+    "kind": "parse",
+    "ref": "Genesis 3:14",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 14
+   },
+   {
+    "surface": "ה֚וּא",
+    "morph": "Pp3ms",
+    "strongs": "1931",
+    "kind": "parse",
+    "ref": "Genesis 3:15",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 15
+   },
+   {
+    "surface": "וְה֖וּא",
+    "morph": "Pp3ms",
+    "strongs": "1931",
+    "kind": "parse",
+    "ref": "Genesis 3:16",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 16
+   },
+   {
+    "surface": "אַ֔תָּה",
+    "morph": "Pp2ms",
+    "strongs": "859",
+    "kind": "parse",
+    "ref": "Genesis 3:19",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 19
+   },
+   {
+    "surface": "הִ֥וא",
+    "morph": "Pp3fs",
+    "strongs": "1931",
+    "kind": "parse",
+    "ref": "Genesis 3:20",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 20
+   }
+  ]
+ },
+ "suffixes": {
+  "examples": [
+   {
+    "ref": "Deuteronomy 2:2",
+    "osis": "Deut",
+    "chapter": 2,
+    "verse": 2,
+    "he": "וַיֹּ֥אמֶר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
+    "en": "Yahweh spoke to me, saying,",
+    "target": {
+     "surface": "אֵלַ֥י",
+     "morph": "Sp1cs",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Leviticus 21:13",
+    "osis": "Lev",
+    "chapter": 21,
+    "verse": 13,
+    "he": "וְה֕וּא אִשָּׁ֥ה בִבְתוּלֶ֖יהָ יִקָּֽח",
+    "en": "“‘He shall take a wife in her virginity.",
+    "target": {
+     "surface": "בִבְתוּלֶ֖יהָ",
+     "morph": "Sp3fs",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Chronicles 3:14",
+    "osis": "1Chr",
+    "chapter": 3,
+    "verse": 14,
+    "he": "אָמ֥וֹן בְּנ֖וֹ יֹאשִׁיָּ֥הוּ בְנֽוֹ",
+    "en": "Amon his son, Josiah his son.",
+    "target": {
+     "surface": "בְּנ֖וֹ",
+     "morph": "Sp3ms",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 2:1",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 1,
+    "he": "וַיְכֻלּ֛וּ הַשָּׁמַ֥יִם וְהָאָ֖רֶץ וְכָל צְבָאָֽם",
+    "en": "The heavens, the earth, and all their vast array were finished.",
+    "target": {
+     "surface": "צְבָאָֽם",
+     "morph": "Sp3mp",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 33:12",
+    "osis": "Gen",
+    "chapter": 33,
+    "verse": 12,
+    "he": "וַיֹּ֖אמֶר נִסְעָ֣ה וְנֵלֵ֑כָה וְאֵלְכָ֖ה לְנֶגְדֶּֽךָ",
+    "en": "Esau said, “Let us take our journey, and let us go, and I will go before you.”",
+    "target": {
+     "surface": "לְנֶגְדֶּֽךָ",
+     "morph": "Sp2ms",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Exodus 6:17",
+    "osis": "Exod",
+    "chapter": 6,
+    "verse": 17,
+    "he": "בְּנֵ֥י גֵרְשׁ֛וֹן לִבְנִ֥י וְשִׁמְעִ֖י לְמִשְׁפְּחֹתָֽם",
+    "en": "The sons of Gershon: Libni and Shimei, according to their families.",
+    "target": {
+     "surface": "לְמִשְׁפְּחֹתָֽם",
+     "morph": "Sp3mp",
+     "position": 4
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "כֹּל",
+    "gloss": "all, every, whole",
+    "freq": 5198,
+    "pos": "Noun",
+    "strongs": "3605"
+   },
+   {
+    "lemma": "בֵּן",
+    "gloss": "son",
+    "freq": 4006,
+    "pos": "Noun",
+    "strongs": "1121"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "הוּא",
+    "gloss": "he, it; that",
+    "freq": 1879,
+    "pos": "Pron",
+    "strongs": "1931"
+   },
+   {
+    "lemma": "יָלַךְ",
+    "gloss": "to go, walk",
+    "freq": 965,
+    "pos": "Verb",
+    "strongs": "3212"
+   },
+   {
+    "lemma": "לָקַח",
+    "gloss": "to take, receive",
+    "freq": 874,
+    "pos": "Verb",
+    "strongs": "3947"
+   },
+   {
+    "lemma": "אִשָּׁה",
+    "gloss": "woman, wife",
+    "freq": 611,
+    "pos": "Noun",
+    "strongs": "802"
+   },
+   {
+    "lemma": "צָבָא",
+    "gloss": "army, host",
+    "freq": 425,
+    "pos": "Noun",
+    "strongs": "6635"
+   },
+   {
+    "lemma": "שָׁמַיִם",
+    "gloss": "heavens, sky",
+    "freq": 405,
+    "pos": "Noun",
+    "strongs": "8064"
+   },
+   {
+    "lemma": "מִשְׁפָּחָה",
+    "gloss": "family, clan",
+    "freq": 193,
+    "pos": "Noun",
+    "strongs": "4940"
+   },
+   {
+    "lemma": "כָּלָה",
+    "gloss": "to be complete, finished; end",
+    "freq": 159,
+    "pos": "Verb",
+    "strongs": "3615"
+   },
+   {
+    "lemma": "נָסַע",
+    "gloss": "to set out, journey, pull up",
+    "freq": 142,
+    "pos": "Verb",
+    "strongs": "5265"
+   },
+   {
+    "lemma": "נֶגֶד",
+    "gloss": "before, in front of, opposite",
+    "freq": 96,
+    "pos": "Prep",
+    "strongs": "5048"
+   },
+   {
+    "lemma": "יֹאשִׁיָּה",
+    "gloss": "Josiah",
+    "freq": 53,
+    "pos": "Noun",
+    "strongs": "2977"
+   },
+   {
+    "lemma": "שִׁמְעִי",
+    "gloss": "Shimei",
+    "freq": 44,
+    "pos": "Noun",
+    "strongs": "8096"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "אֹתָ֛ם",
+    "morph": "Sp3mp",
+    "strongs": "853",
+    "kind": "parse",
+    "ref": "Genesis 1:17",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 17
+   },
+   {
+    "surface": "אֹת֑וֹ",
+    "morph": "Sp3ms",
+    "strongs": "853",
+    "kind": "parse",
+    "ref": "Genesis 1:27",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 27
+   },
+   {
+    "surface": "אֹתָם֮",
+    "morph": "Sp3mp",
+    "strongs": "853",
+    "kind": "parse",
+    "ref": "Genesis 1:28",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 28
+   },
+   {
     "surface": "צְבָאָֽם",
     "morph": "Sp3mp",
-    "position": 4
+    "strongs": "6635",
+    "kind": "parse",
+    "ref": "Genesis 2:1",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 1
    },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 33:12",
-   "osis": "Gen",
-   "chapter": 33,
-   "verse": 12,
-   "he": "וַיֹּ֖אמֶר נִסְעָ֣ה וְנֵלֵ֑כָה וְאֵלְכָ֖ה לְנֶגְדֶּֽךָ",
-   "en": "Esau said, “Let us take our journey, and let us go, and I will go before you.”",
-   "target": {
-    "surface": "לְנֶגְדֶּֽךָ",
-    "morph": "Sp2ms",
-    "position": 4
+   {
+    "surface": "מְלַאכְתּ֖וֹ",
+    "morph": "Sp3ms",
+    "strongs": "4399",
+    "kind": "parse",
+    "ref": "Genesis 2:2",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 2
    },
-   "tier": 0
-  },
-  {
-   "ref": "Exodus 6:17",
-   "osis": "Exod",
-   "chapter": 6,
-   "verse": 17,
-   "he": "בְּנֵ֥י גֵרְשׁ֛וֹן לִבְנִ֥י וְשִׁמְעִ֖י לְמִשְׁפְּחֹתָֽם",
-   "en": "The sons of Gershon: Libni and Shimei, according to their families.",
-   "target": {
-    "surface": "לְמִשְׁפְּחֹתָֽם",
-    "morph": "Sp3mp",
-    "position": 4
+   {
+    "surface": "מְלַאכְתּ֔וֹ",
+    "morph": "Sp3ms",
+    "strongs": "4399",
+    "kind": "parse",
+    "ref": "Genesis 2:3",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 3
    },
-   "tier": 0
-  }
- ],
- "numbers": [
-  {
-   "ref": "Numbers 31:44",
-   "osis": "Num",
-   "chapter": 31,
-   "verse": 44,
-   "he": "וּבָקָ֕ר שִׁשָּׁ֥ה וּשְׁלֹשִׁ֖ים אָֽלֶף",
-   "en": "and thirty-six thousand head of cattle,",
-   "target": {
-    "surface": "שִׁשָּׁ֥ה",
+   {
+    "surface": "בְּאַפָּ֖יו",
+    "morph": "Sp3ms",
+    "strongs": "639",
+    "kind": "parse",
+    "ref": "Genesis 2:7",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 7
+   },
+   {
+    "surface": "לְעָבְדָ֖הּ",
+    "morph": "Sp3fs",
+    "strongs": "5647",
+    "kind": "parse",
+    "ref": "Genesis 2:15",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 15
+   },
+   {
+    "surface": "מִמֶּ֑נּוּ",
+    "morph": "Sp1cp",
+    "strongs": "4480",
+    "kind": "parse",
+    "ref": "Genesis 2:17",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 17
+   },
+   {
+    "surface": "תַּחְתֶּֽנָּה",
+    "morph": "Sp3fs",
+    "strongs": "8478",
+    "kind": "parse",
+    "ref": "Genesis 2:21",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 21
+   },
+   {
+    "surface": "וַיְבִאֶ֖הָ",
+    "morph": "Sp3fs",
+    "strongs": "935",
+    "kind": "parse",
+    "ref": "Genesis 2:22",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 22
+   },
+   {
+    "surface": "מִבְּשָׂרִ֑י",
+    "morph": "Sp1cs",
+    "strongs": "1320",
+    "kind": "parse",
+    "ref": "Genesis 2:23",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 23
+   }
+  ]
+ },
+ "numbers": {
+  "examples": [
+   {
+    "ref": "Numbers 31:44",
+    "osis": "Num",
+    "chapter": 31,
+    "verse": 44,
+    "he": "וּבָקָ֕ר שִׁשָּׁ֥ה וּשְׁלֹשִׁ֖ים אָֽלֶף",
+    "en": "and thirty-six thousand head of cattle,",
+    "target": {
+     "surface": "שִׁשָּׁ֥ה",
+     "morph": "Acmsa",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Ezra 2:20",
+    "osis": "Ezra",
+    "chapter": 2,
+    "verse": 20,
+    "he": "בְּנֵ֥י גִבָּ֖ר תִּשְׁעִ֥ים וַחֲמִשָּֽׁה",
+    "en": "The children of Gibbar, ninety-five.",
+    "target": {
+     "surface": "תִּשְׁעִ֥ים",
+     "morph": "Acbpa",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Ezra 2:22",
+    "osis": "Ezra",
+    "chapter": 2,
+    "verse": 22,
+    "he": "אַנְשֵׁ֥י נְטֹפָ֖ה חֲמִשִּׁ֥ים וְשִׁשָּֽׁה",
+    "en": "The men of Netophah, fifty-six.",
+    "target": {
+     "surface": "חֲמִשִּׁ֥ים",
+     "morph": "Acbpa",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Chronicles 3:8",
+    "osis": "1Chr",
+    "chapter": 3,
+    "verse": 8,
+    "he": "וֶאֱלִישָׁמָ֧ע וְאֶלְיָדָ֛ע וֶאֱלִיפֶ֖לֶט תִּשְׁעָֽה",
+    "en": "and Elishama, and Eliada, and Eliphelet, nine.",
+    "target": {
+     "surface": "תִּשְׁעָֽה",
+     "morph": "Acmsa",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Joshua 15:28",
+    "osis": "Josh",
+    "chapter": 15,
+    "verse": 28,
+    "he": "וַחֲצַ֥ר שׁוּעָ֛ל וּבְאֵ֥ר שֶׁ֖בַע וּבִזְיוֹתְיָֽה",
+    "en": "Hazar Shual, Beersheba, Biziothiah,",
+    "target": {
+     "surface": "שֶׁ֖בַע",
+     "morph": "Acfsa",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Chronicles 7:6",
+    "osis": "1Chr",
+    "chapter": 7,
+    "verse": 6,
+    "he": "בִּנְיָמִ֗ן בֶּ֧לַע וָבֶ֛כֶר וִידִֽיעֲאֵ֖ל שְׁלֹשָֽׁה",
+    "en": "The sons of Benjamin: Bela, and Becher, and Jediael, three.",
+    "target": {
+     "surface": "שְׁלֹשָֽׁה",
+     "morph": "Acmsa",
+     "position": 4
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "בֵּן",
+    "gloss": "son",
+    "freq": 4006,
+    "pos": "Noun",
+    "strongs": "1121"
+   },
+   {
+    "lemma": "אִישׁ",
+    "gloss": "man, husband",
+    "freq": 2077,
+    "pos": "Noun",
+    "strongs": "376"
+   },
+   {
+    "lemma": "אֶלֶף",
+    "gloss": "thousand",
+    "freq": 501,
+    "pos": "Adj",
+    "strongs": "505"
+   },
+   {
+    "lemma": "שָׁלוֹשׁ",
+    "gloss": "three",
+    "freq": 425,
+    "pos": "Adj",
+    "strongs": "7969"
+   },
+   {
+    "lemma": "חָמֵשׁ",
+    "gloss": "five",
+    "freq": 344,
+    "pos": "Adj",
+    "strongs": "2568"
+   },
+   {
+    "lemma": "שֵׁשׁ",
+    "gloss": "six",
+    "freq": 215,
+    "pos": "Adj",
+    "strongs": "8337"
+   },
+   {
+    "lemma": "שְׁלוֹשִׁים",
+    "gloss": "thirty",
+    "freq": 174,
+    "pos": "Adj",
+    "strongs": "7970"
+   },
+   {
+    "lemma": "בִּנְיָמִין",
+    "gloss": "Benjamin",
+    "freq": 165,
+    "pos": "Noun",
+    "strongs": "1144"
+   },
+   {
+    "lemma": "בָּקָר",
+    "gloss": "cattle, herd, ox",
+    "freq": 162,
+    "pos": "Noun",
+    "strongs": "1241"
+   },
+   {
+    "lemma": "חֲמִשִּׁים",
+    "gloss": "fifty",
+    "freq": 155,
+    "pos": "Adj",
+    "strongs": "2572"
+   },
+   {
+    "lemma": "בְּאֵר שֶׁבַע",
+    "gloss": "Beersheba",
+    "freq": 67,
+    "pos": "Noun",
+    "strongs": "884"
+   },
+   {
+    "lemma": "תֵּשַׁע",
+    "gloss": "nine",
+    "freq": 58,
+    "pos": "Adj",
+    "strongs": "8672"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "אֶחָֽד",
     "morph": "Acmsa",
-    "position": 1
+    "strongs": "259",
+    "kind": "parse",
+    "ref": "Genesis 1:5",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 5
    },
-   "tier": 0
-  },
-  {
-   "ref": "Ezra 2:20",
-   "osis": "Ezra",
-   "chapter": 2,
-   "verse": 20,
-   "he": "בְּנֵ֥י גִבָּ֖ר תִּשְׁעִ֥ים וַחֲמִשָּֽׁה",
-   "en": "The children of Gibbar, ninety-five.",
-   "target": {
-    "surface": "תִּשְׁעִ֥ים",
-    "morph": "Acbpa",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Ezra 2:22",
-   "osis": "Ezra",
-   "chapter": 2,
-   "verse": 22,
-   "he": "אַנְשֵׁ֥י נְטֹפָ֖ה חֲמִשִּׁ֥ים וְשִׁשָּֽׁה",
-   "en": "The men of Netophah, fifty-six.",
-   "target": {
-    "surface": "חֲמִשִּׁ֥ים",
-    "morph": "Acbpa",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "1 Chronicles 3:8",
-   "osis": "1Chr",
-   "chapter": 3,
-   "verse": 8,
-   "he": "וֶאֱלִישָׁמָ֧ע וְאֶלְיָדָ֛ע וֶאֱלִיפֶ֖לֶט תִּשְׁעָֽה",
-   "en": "and Elishama, and Eliada, and Eliphelet, nine.",
-   "target": {
-    "surface": "תִּשְׁעָֽה",
+   {
+    "surface": "אֶחָ֔ד",
     "morph": "Acmsa",
-    "position": 3
+    "strongs": "259",
+    "kind": "parse",
+    "ref": "Genesis 1:9",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 9
    },
-   "tier": 0
-  },
-  {
-   "ref": "Joshua 15:28",
-   "osis": "Josh",
-   "chapter": 15,
-   "verse": 28,
-   "he": "וַחֲצַ֥ר שׁוּעָ֛ל וּבְאֵ֥ר שֶׁ֖בַע וּבִזְיוֹתְיָֽה",
-   "en": "Hazar Shual, Beersheba, Biziothiah,",
-   "target": {
-    "surface": "שֶׁ֖בַע",
+   {
+    "surface": "שְׁנֵ֥י",
+    "morph": "Acmdc",
+    "strongs": "8147",
+    "kind": "parse",
+    "ref": "Genesis 1:16",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 16
+   },
+   {
+    "surface": "לְאַרְבָּעָ֥ה",
+    "morph": "Acmsa",
+    "strongs": "702",
+    "kind": "parse",
+    "ref": "Genesis 2:10",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 10
+   },
+   {
+    "surface": "הָֽאֶחָ֖ד",
+    "morph": "Acmsa",
+    "strongs": "259",
+    "kind": "parse",
+    "ref": "Genesis 2:11",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 11
+   },
+   {
+    "surface": "אַחַת֙",
     "morph": "Acfsa",
-    "position": 3
+    "strongs": "259",
+    "kind": "parse",
+    "ref": "Genesis 2:21",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 21
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Chronicles 7:6",
-   "osis": "1Chr",
-   "chapter": 7,
-   "verse": 6,
-   "he": "בִּנְיָמִ֗ן בֶּ֧לַע וָבֶ֛כֶר וִידִֽיעֲאֵ֖ל שְׁלֹשָֽׁה",
-   "en": "The sons of Benjamin: Bela, and Becher, and Jediael, three.",
-   "target": {
-    "surface": "שְׁלֹשָֽׁה",
-    "morph": "Acmsa",
-    "position": 4
+   {
+    "surface": "שְׁנֵיהֶם֙",
+    "morph": "Sp3mp",
+    "strongs": "8147",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "שְׁנֵי",
+      "morph": "Acmdc"
+     },
+     {
+      "text": "הֶם֙",
+      "morph": "Sp3mp"
+     }
+    ],
+    "ref": "Genesis 2:25",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 25
    },
-   "tier": 0
-  }
- ],
- "qal-imperfect": [
-  {
-   "ref": "Exodus 12:47",
-   "osis": "Exod",
-   "chapter": 12,
-   "verse": 47,
-   "he": "כָּל עֲדַ֥ת יִשְׂרָאֵ֖ל יַעֲשׂ֥וּ אֹתֽוֹ",
-   "en": "All the congregation of Israel shall keep it.",
-   "target": {
-    "surface": "יַעֲשׂ֥וּ",
-    "morph": "Vqi3mp",
-    "position": 3
+   {
+    "surface": "שְׁנֵיהֶ֔ם",
+    "morph": "Sp3mp",
+    "strongs": "8147",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "שְׁנֵי",
+      "morph": "Acmdc"
+     },
+     {
+      "text": "הֶ֔ם",
+      "morph": "Sp3mp"
+     }
+    ],
+    "ref": "Genesis 3:7",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 7
    },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 25:1",
-   "osis": "Ps",
-   "chapter": 25,
-   "verse": 1,
-   "he": "לְדָוִ֡ד אֵלֶ֥יךָ יְ֝הוָ֗ה נַפְשִׁ֥י אֶשָּֽׂא",
-   "en": "To you, Yahweh, do I lift up my soul.",
-   "target": {
-    "surface": "אֶשָּֽׂא",
-    "morph": "Vqi1cs",
-    "position": 4
+   {
+    "surface": "כְּאַחַ֣ד",
+    "morph": "Acmsc",
+    "strongs": "259",
+    "kind": "parse",
+    "ref": "Genesis 3:22",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 22
    },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 122:6",
-   "osis": "Ps",
-   "chapter": 122,
-   "verse": 6,
-   "he": "שַׁ֭אֲלוּ שְׁל֣וֹם יְרוּשָׁלִָ֑ם יִ֝שְׁלָ֗יוּ אֹהֲבָֽיִךְ",
-   "en": "Pray for the peace of Jerusalem. Those who love you will prosper.",
-   "target": {
-    "surface": "יִ֝שְׁלָ֗יוּ",
-    "morph": "Vqi3mp",
-    "position": 3
+   {
+    "surface": "שְׁתֵּ֣י",
+    "morph": "Acfdc",
+    "strongs": "8147",
+    "kind": "parse",
+    "ref": "Genesis 4:19",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 19
    },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 9:4",
-   "osis": "Gen",
-   "chapter": 9,
-   "verse": 4,
-   "he": "אַךְ בָּשָׂ֕ר בְּנַפְשׁ֥וֹ דָמ֖וֹ לֹ֥א תֹאכֵֽלוּ",
-   "en": "But flesh with its life, that is, its blood, you shall not eat.",
-   "target": {
-    "surface": "תֹאכֵֽלוּ",
-    "morph": "Vqi2mp",
-    "position": 5
+   {
+    "surface": "שְׁלֹשִׁ֤ים",
+    "morph": "Acbpa",
+    "strongs": "7970",
+    "kind": "parse",
+    "ref": "Genesis 5:3",
+    "osis": "Gen",
+    "chapter": 5,
+    "verse": 3
    },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 49:16",
-   "osis": "Gen",
-   "chapter": 49,
-   "verse": 16,
-   "he": "דָּ֖ן יָדִ֣ין עַמּ֑וֹ כְּאַחַ֖ד שִׁבְטֵ֥י יִשְׂרָאֵֽל",
-   "en": "“Dan will judge his people, as one of the tribes of Israel.",
-   "target": {
-    "surface": "יָדִ֣ין",
+   {
+    "surface": "מֵאֹ֖ת",
+    "morph": "Acbpa",
+    "strongs": "3967",
+    "kind": "parse",
+    "ref": "Genesis 5:4",
+    "osis": "Gen",
+    "chapter": 5,
+    "verse": 4
+   }
+  ]
+ },
+ "qal-imperfect": {
+  "examples": [
+   {
+    "ref": "Exodus 12:47",
+    "osis": "Exod",
+    "chapter": 12,
+    "verse": 47,
+    "he": "כָּל עֲדַ֥ת יִשְׂרָאֵ֖ל יַעֲשׂ֥וּ אֹתֽוֹ",
+    "en": "All the congregation of Israel shall keep it.",
+    "target": {
+     "surface": "יַעֲשׂ֥וּ",
+     "morph": "Vqi3mp",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 25:1",
+    "osis": "Ps",
+    "chapter": 25,
+    "verse": 1,
+    "he": "לְדָוִ֡ד אֵלֶ֥יךָ יְ֝הוָ֗ה נַפְשִׁ֥י אֶשָּֽׂא",
+    "en": "To you, Yahweh, do I lift up my soul.",
+    "target": {
+     "surface": "אֶשָּֽׂא",
+     "morph": "Vqi1cs",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 122:6",
+    "osis": "Ps",
+    "chapter": 122,
+    "verse": 6,
+    "he": "שַׁ֭אֲלוּ שְׁל֣וֹם יְרוּשָׁלִָ֑ם יִ֝שְׁלָ֗יוּ אֹהֲבָֽיִךְ",
+    "en": "Pray for the peace of Jerusalem. Those who love you will prosper.",
+    "target": {
+     "surface": "יִ֝שְׁלָ֗יוּ",
+     "morph": "Vqi3mp",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 9:4",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 4,
+    "he": "אַךְ בָּשָׂ֕ר בְּנַפְשׁ֥וֹ דָמ֖וֹ לֹ֥א תֹאכֵֽלוּ",
+    "en": "But flesh with its life, that is, its blood, you shall not eat.",
+    "target": {
+     "surface": "תֹאכֵֽלוּ",
+     "morph": "Vqi2mp",
+     "position": 5
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 49:16",
+    "osis": "Gen",
+    "chapter": 49,
+    "verse": 16,
+    "he": "דָּ֖ן יָדִ֣ין עַמּ֑וֹ כְּאַחַ֖ד שִׁבְטֵ֥י יִשְׂרָאֵֽל",
+    "en": "“Dan will judge his people, as one of the tribes of Israel.",
+    "target": {
+     "surface": "יָדִ֣ין",
+     "morph": "Vqi3ms",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Exodus 20:9",
+    "osis": "Exod",
+    "chapter": 20,
+    "verse": 9,
+    "he": "שֵׁ֤שֶׁת יָמִים֙ תַּֽעֲבֹ֔ד וְעָשִׂ֖יתָ כָּל מְלַאכְתֶּֽךָ",
+    "en": "You shall labor six days, and do all your work,",
+    "target": {
+     "surface": "תַּֽעֲבֹ֔ד",
+     "morph": "Vqi2ms",
+     "position": 2
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "כֹּל",
+    "gloss": "all, every, whole",
+    "freq": 5198,
+    "pos": "Noun",
+    "strongs": "3605"
+   },
+   {
+    "lemma": "לֹא",
+    "gloss": "no, not",
+    "freq": 5186,
+    "pos": "Particle",
+    "strongs": "3808"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "עָשָׂה",
+    "gloss": "to do, make",
+    "freq": 2511,
+    "pos": "Verb",
+    "strongs": "6213"
+   },
+   {
+    "lemma": "יִשְׂרָאֵל",
+    "gloss": "Israel",
+    "freq": 2506,
+    "pos": "Noun",
+    "strongs": "3478"
+   },
+   {
+    "lemma": "יוֹם",
+    "gloss": "day",
+    "freq": 2173,
+    "pos": "Noun",
+    "strongs": "3117"
+   },
+   {
+    "lemma": "עַם",
+    "gloss": "people, nation",
+    "freq": 1358,
+    "pos": "Noun",
+    "strongs": "5971"
+   },
+   {
+    "lemma": "דָּוִד",
+    "gloss": "David",
+    "freq": 1075,
+    "pos": "Noun",
+    "strongs": "1732"
+   },
+   {
+    "lemma": "אֶחָד",
+    "gloss": "one",
+    "freq": 970,
+    "pos": "Adj",
+    "strongs": "259"
+   },
+   {
+    "lemma": "אָכַל",
+    "gloss": "to eat",
+    "freq": 701,
+    "pos": "Verb",
+    "strongs": "398"
+   },
+   {
+    "lemma": "יְרוּשָׁלַ͏ִם",
+    "gloss": "Jerusalem",
+    "freq": 638,
+    "pos": "Noun",
+    "strongs": "3389"
+   },
+   {
+    "lemma": "נָשָׂא",
+    "gloss": "to lift, carry, bear",
+    "freq": 591,
+    "pos": "Verb",
+    "strongs": "5375"
+   },
+   {
+    "lemma": "דָּם",
+    "gloss": "blood",
+    "freq": 273,
+    "pos": "Noun",
+    "strongs": "1818"
+   },
+   {
+    "lemma": "נֶפֶשׁ",
+    "gloss": "soul, life, self, person",
+    "freq": 263,
+    "pos": "Noun",
+    "strongs": "5315"
+   },
+   {
+    "lemma": "שָׁלוֹם",
+    "gloss": "peace, welfare, wholeness",
+    "freq": 225,
+    "pos": "Noun",
+    "strongs": "7965"
+   },
+   {
+    "lemma": "שֵׁשׁ",
+    "gloss": "six",
+    "freq": 215,
+    "pos": "Adj",
+    "strongs": "8337"
+   },
+   {
+    "lemma": "עָבַד",
+    "gloss": "to serve, work",
+    "freq": 207,
+    "pos": "Verb",
+    "strongs": "5647"
+   },
+   {
+    "lemma": "בָּשָׂר",
+    "gloss": "flesh, meat",
+    "freq": 171,
+    "pos": "Noun",
+    "strongs": "1320"
+   },
+   {
+    "lemma": "שֵׁבֶט",
+    "gloss": "tribe; rod, scepter",
+    "freq": 166,
+    "pos": "Noun",
+    "strongs": "7626"
+   },
+   {
+    "lemma": "אַךְ",
+    "gloss": "surely, only, however",
+    "freq": 161,
+    "pos": "Particle",
+    "strongs": "389"
+   },
+   {
+    "lemma": "שָׁאַל",
+    "gloss": "to ask, inquire, request",
+    "freq": 148,
+    "pos": "Verb",
+    "strongs": "7592"
+   },
+   {
+    "lemma": "מְלָאכָה",
+    "gloss": "work, occupation, service",
+    "freq": 148,
+    "pos": "Noun",
+    "strongs": "4399"
+   },
+   {
+    "lemma": "עֵדָה",
+    "gloss": "congregation, assembly",
+    "freq": 139,
+    "pos": "Noun",
+    "strongs": "5712"
+   },
+   {
+    "lemma": "אָהַב",
+    "gloss": "to love",
+    "freq": 138,
+    "pos": "Verb",
+    "strongs": "157"
+   },
+   {
+    "lemma": "דָּן",
+    "gloss": "Dan",
+    "freq": 70,
+    "pos": "Noun",
+    "strongs": "1835"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "וִיהִ֣י",
     "morph": "Vqi3ms",
-    "position": 1
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 1:6",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 6
    },
-   "tier": 0
-  },
-  {
-   "ref": "Exodus 20:9",
-   "osis": "Exod",
-   "chapter": 20,
-   "verse": 9,
-   "he": "שֵׁ֤שֶׁת יָמִים֙ תַּֽעֲבֹ֔ד וְעָשִׂ֖יתָ כָּל מְלַאכְתֶּֽךָ",
-   "en": "You shall labor six days, and do all your work,",
-   "target": {
-    "surface": "תַּֽעֲבֹ֔ד",
+   {
+    "surface": "נַֽעֲשֶׂ֥ה",
+    "morph": "Vqi1cp",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 1:26",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 26
+   },
+   {
+    "surface": "יִֽהְיֶ֖ה",
+    "morph": "Vqi3ms",
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 1:29",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 29
+   },
+   {
+    "surface": "יִֽהְיֶ֣ה",
+    "morph": "Vqi3ms",
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 2:5",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 5
+   },
+   {
+    "surface": "יַֽעֲלֶ֣ה",
+    "morph": "Vqi3ms",
+    "strongs": "5927",
+    "kind": "parse",
+    "ref": "Genesis 2:6",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 6
+   },
+   {
+    "surface": "תֹּאכֵֽל",
     "morph": "Vqi2ms",
-    "position": 2
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 2:16",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 16
    },
-   "tier": 0
-  }
- ],
- "waw-consecutive": [
-  {
-   "ref": "Genesis 21:24",
-   "osis": "Gen",
-   "chapter": 21,
-   "verse": 24,
-   "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
-   "en": "Abraham said, “I will swear.”",
-   "target": {
-    "surface": "וַיֹּ֨אמֶר֙",
+   {
+    "surface": "תֹאכַ֖ל",
+    "morph": "Vqi2ms",
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 2:17",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 17
+   },
+   {
+    "surface": "אֶֽעֱשֶׂהּ",
+    "morph": "Vqi1cs",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 2:18",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 18
+   },
+   {
+    "surface": "תֹֽאכְל֔וּ",
+    "morph": "Vqi2mp",
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 3:1",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 1
+   },
+   {
+    "surface": "נֹאכֵֽל",
+    "morph": "Vqi1cp",
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 3:2",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 2
+   },
+   {
+    "surface": "תֹֽאכְלוּ֙",
+    "morph": "Vqi2mp",
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 3:3",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 3
+   },
+   {
+    "surface": "תְּמֻתֽוּן",
+    "morph": "Sn",
+    "strongs": "4191",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "תְּמֻתֽוּ",
+      "morph": "Vqi2mp"
+     },
+     {
+      "text": "ן",
+      "morph": "Sn"
+     }
+    ],
+    "ref": "Genesis 3:4",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 4
+   }
+  ]
+ },
+ "waw-consecutive": {
+  "examples": [
+   {
+    "ref": "Genesis 21:24",
+    "osis": "Gen",
+    "chapter": 21,
+    "verse": 24,
+    "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
+    "en": "Abraham said, “I will swear.”",
+    "target": {
+     "surface": "וַיֹּ֨אמֶר֙",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 24:26",
+    "osis": "Gen",
+    "chapter": 24,
+    "verse": 26,
+    "he": "וַיִּקֹּ֣ד הָאִ֔ישׁ וַיִּשְׁתַּ֖חוּ לַֽיהוָֽה",
+    "en": "The man bowed his head, and worshiped Yahweh.",
+    "target": {
+     "surface": "וַיִּקֹּ֣ד",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Numbers 33:13",
+    "osis": "Num",
+    "chapter": 33,
+    "verse": 13,
+    "he": "וַיִּסְע֖וּ מִדָּפְקָ֑ה וַֽיַּחֲנ֖וּ בְּאָלֽוּשׁ",
+    "en": "They traveled from Dophkah, and encamped in Alush.",
+    "target": {
+     "surface": "וַיִּסְע֖וּ",
+     "morph": "Vqw3mp",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "2 Samuel 17:26",
+    "osis": "2Sam",
+    "chapter": 17,
+    "verse": 26,
+    "he": "וַיִּ֤חַן יִשְׂרָאֵל֙ וְאַבְשָׁלֹ֔ם אֶ֖רֶץ הַגִּלְעָֽד",
+    "en": "Israel and Absalom encamped in the land of Gilead.",
+    "target": {
+     "surface": "וַיִּ֤חַן",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Kings 6:14",
+    "osis": "1Kgs",
+    "chapter": 6,
+    "verse": 14,
+    "he": "וַיִּ֧בֶן שְׁלֹמֹ֛ה אֶת הַבַּ֖יִת וַיְכַלֵּֽהוּ",
+    "en": "So Solomon built the house, and finished it.",
+    "target": {
+     "surface": "וַיִּ֧בֶן",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Kings 17:2",
+    "osis": "1Kgs",
+    "chapter": 17,
+    "verse": 2,
+    "he": "וַיְהִ֥י דְבַר יְהוָ֖ה אֵלָ֥יו לֵאמֹֽר",
+    "en": "Yahweh’s word came to him, saying,",
+    "target": {
+     "surface": "וַיְהִ֥י",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "הָיָה",
+    "gloss": "to be, become, happen",
+    "freq": 3528,
+    "pos": "Verb",
+    "strongs": "1961"
+   },
+   {
+    "lemma": "יִשְׂרָאֵל",
+    "gloss": "Israel",
+    "freq": 2506,
+    "pos": "Noun",
+    "strongs": "3478"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "אִישׁ",
+    "gloss": "man, husband",
+    "freq": 2077,
+    "pos": "Noun",
+    "strongs": "376"
+   },
+   {
+    "lemma": "בַּיִת",
+    "gloss": "house",
+    "freq": 1662,
+    "pos": "Noun",
+    "strongs": "1004"
+   },
+   {
+    "lemma": "דָּבָר",
+    "gloss": "word, thing, matter",
+    "freq": 1249,
+    "pos": "Noun",
+    "strongs": "1697"
+   },
+   {
+    "lemma": "אָנֹכִי",
+    "gloss": "I",
+    "freq": 359,
+    "pos": "Pron",
+    "strongs": "595"
+   },
+   {
+    "lemma": "בָּנָה",
+    "gloss": "to build",
+    "freq": 357,
+    "pos": "Verb",
+    "strongs": "1129"
+   },
+   {
+    "lemma": "שְׁלֹמֹה",
+    "gloss": "Solomon",
+    "freq": 293,
+    "pos": "Noun",
+    "strongs": "8010"
+   },
+   {
+    "lemma": "אַבְרָהָם",
+    "gloss": "Abraham",
+    "freq": 175,
+    "pos": "Noun",
+    "strongs": "85"
+   },
+   {
+    "lemma": "שָׁחָה",
+    "gloss": "to bow down, worship",
+    "freq": 170,
+    "pos": "Verb",
+    "strongs": "7812"
+   },
+   {
+    "lemma": "שָׁבַע",
+    "gloss": "to swear, take an oath",
+    "freq": 168,
+    "pos": "Verb",
+    "strongs": "7650"
+   },
+   {
+    "lemma": "כָּלָה",
+    "gloss": "to be complete, finished; end",
+    "freq": 159,
+    "pos": "Verb",
+    "strongs": "3615"
+   },
+   {
+    "lemma": "נָסַע",
+    "gloss": "to set out, journey, pull up",
+    "freq": 142,
+    "pos": "Verb",
+    "strongs": "5265"
+   },
+   {
+    "lemma": "חָנָה",
+    "gloss": "to encamp, camp",
+    "freq": 139,
+    "pos": "Verb",
+    "strongs": "2583"
+   },
+   {
+    "lemma": "גִּלְעָד",
+    "gloss": "Gilead",
+    "freq": 131,
+    "pos": "Noun",
+    "strongs": "1568"
+   },
+   {
+    "lemma": "אֲבִישָׁלוֹם",
+    "gloss": "Absalom",
+    "freq": 111,
+    "pos": "Noun",
+    "strongs": "53"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "וַיֹּ֥אמֶר",
     "morph": "Vqw3ms",
-    "position": 0
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 1:3",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 3
    },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 24:26",
-   "osis": "Gen",
-   "chapter": 24,
-   "verse": 26,
-   "he": "וַיִּקֹּ֣ד הָאִ֔ישׁ וַיִּשְׁתַּ֖חוּ לַֽיהוָֽה",
-   "en": "The man bowed his head, and worshiped Yahweh.",
-   "target": {
-    "surface": "וַיִּקֹּ֣ד",
+   {
+    "surface": "וַיַּ֧רְא",
     "morph": "Vqw3ms",
-    "position": 0
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 1:4",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 4
    },
-   "tier": 0
-  },
-  {
-   "ref": "Numbers 33:13",
-   "osis": "Num",
-   "chapter": 33,
-   "verse": 13,
-   "he": "וַיִּסְע֖וּ מִדָּפְקָ֑ה וַֽיַּחֲנ֖וּ בְּאָלֽוּשׁ",
-   "en": "They traveled from Dophkah, and encamped in Alush.",
-   "target": {
-    "surface": "וַיִּסְע֖וּ",
+   {
+    "surface": "וַיִּקְרָ֨א",
+    "morph": "Vqw3ms",
+    "strongs": "7121",
+    "kind": "parse",
+    "ref": "Genesis 1:5",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 5
+   },
+   {
+    "surface": "וַיֹּ֣אמֶר",
+    "morph": "Vqw3ms",
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 1:6",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 6
+   },
+   {
+    "surface": "וַיִּֽהְי֤וּ",
     "morph": "Vqw3mp",
-    "position": 0
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 2:25",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 25
    },
-   "tier": 0
-  },
-  {
-   "ref": "2 Samuel 17:26",
-   "osis": "2Sam",
-   "chapter": 17,
-   "verse": 26,
-   "he": "וַיִּ֤חַן יִשְׂרָאֵל֙ וְאַבְשָׁלֹ֔ם אֶ֖רֶץ הַגִּלְעָֽד",
-   "en": "Israel and Absalom encamped in the land of Gilead.",
-   "target": {
-    "surface": "וַיִּ֤חַן",
-    "morph": "Vqw3ms",
-    "position": 0
+   {
+    "surface": "וַתֹּ֥אמֶר",
+    "morph": "Vqw3fs",
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 3:2",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 2
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Kings 6:14",
-   "osis": "1Kgs",
-   "chapter": 6,
-   "verse": 14,
-   "he": "וַיִּ֧בֶן שְׁלֹמֹ֛ה אֶת הַבַּ֖יִת וַיְכַלֵּֽהוּ",
-   "en": "So Solomon built the house, and finished it.",
-   "target": {
-    "surface": "וַיִּ֧בֶן",
-    "morph": "Vqw3ms",
-    "position": 0
+   {
+    "surface": "וַתֵּ֣רֶא",
+    "morph": "Vqw3fs",
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 3:6",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 6
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Kings 17:2",
-   "osis": "1Kgs",
-   "chapter": 17,
-   "verse": 2,
-   "he": "וַיְהִ֥י דְבַר יְהוָ֖ה אֵלָ֥יו לֵאמֹֽר",
-   "en": "Yahweh’s word came to him, saying,",
-   "target": {
-    "surface": "וַיְהִ֥י",
-    "morph": "Vqw3ms",
-    "position": 0
+   {
+    "surface": "וַיֵּ֣דְע֔וּ",
+    "morph": "Vqw3mp",
+    "strongs": "3045",
+    "kind": "parse",
+    "ref": "Genesis 3:7",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 7
    },
-   "tier": 0
-  }
- ],
- "volitives": [
-  {
-   "ref": "Ezekiel 34:9",
-   "osis": "Ezek",
-   "chapter": 34,
-   "verse": 9,
-   "he": "לָכֵן֙ הָֽרֹעִ֔ים שִׁמְע֖וּ דְּבַר יְהוָֽה",
-   "en": "therefore, you shepherds, hear Yahweh’s word:",
-   "target": {
-    "surface": "שִׁמְע֖וּ",
+   {
+    "surface": "וַֽיִּשְׁמְע֞וּ",
+    "morph": "Vqw3mp",
+    "strongs": "8085",
+    "kind": "parse",
+    "ref": "Genesis 3:8",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 8
+   },
+   {
+    "surface": "וָאִירָ֛א",
+    "morph": "Vqw1cs",
+    "strongs": "3372",
+    "kind": "parse",
+    "ref": "Genesis 3:10",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 10
+   },
+   {
+    "surface": "וָאֹכֵֽל",
+    "morph": "Vqw1cs",
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 3:12",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 12
+   },
+   {
+    "surface": "וַתֹּ֨אמֶר֙",
+    "morph": "Vqw3fs",
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 3:13",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 13
+   }
+  ]
+ },
+ "volitives": {
+  "examples": [
+   {
+    "ref": "Ezekiel 34:9",
+    "osis": "Ezek",
+    "chapter": 34,
+    "verse": 9,
+    "he": "לָכֵן֙ הָֽרֹעִ֔ים שִׁמְע֖וּ דְּבַר יְהוָֽה",
+    "en": "therefore, you shepherds, hear Yahweh’s word:",
+    "target": {
+     "surface": "שִׁמְע֖וּ",
+     "morph": "Vqv2mp",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 37:27",
+    "osis": "Ps",
+    "chapter": 37,
+    "verse": 27,
+    "he": "ס֣וּר מֵ֭רָע וַעֲשֵׂה ט֗וֹב וּשְׁכֹ֥ן לְעוֹלָֽם",
+    "en": "Depart from evil, and do good. Live securely forever.",
+    "target": {
+     "surface": "ס֣וּר",
+     "morph": "Vqv2ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 119:17",
+    "osis": "Ps",
+    "chapter": 119,
+    "verse": 17,
+    "he": "גְּמֹ֖ל עַֽל עַבְדְּךָ֥ אֶֽחְיֶ֗ה וְאֶשְׁמְרָ֥ה דְבָרֶֽךָ",
+    "en": "Do good to your servant. I will live and I will obey your word.",
+    "target": {
+     "surface": "גְּמֹ֖ל",
+     "morph": "Vqv2ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Job 13:22",
+    "osis": "Job",
+    "chapter": 13,
+    "verse": 22,
+    "he": "וּ֭קְרָא וְאָנֹכִ֣י אֶֽעֱנֶ֑ה אֽוֹ אֲ֝דַבֵּ֗ר וַהֲשִׁיבֵֽנִי",
+    "en": "Then call, and I will answer; or let me speak, and you answer me.",
+    "target": {
+     "surface": "וּ֭קְרָא",
+     "morph": "Vqv2ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 33:18",
+    "osis": "Deut",
+    "chapter": 33,
+    "verse": 18,
+    "he": "וְלִזְבוּלֻ֣ן אָמַ֔ר שְׂמַ֥ח זְבוּלֻ֖ן בְּצֵאתֶ֑ךָ וְיִשָּׂשכָ֖ר בְּאֹהָלֶֽיךָ",
+    "en": "About Zebulun he said, “Rejoice, Zebulun, in your going out; and Issachar, in your tents.",
+    "target": {
+     "surface": "שְׂמַ֥ח",
+     "morph": "Vqv2ms",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Kings 13:15",
+    "osis": "1Kgs",
+    "chapter": 13,
+    "verse": 15,
+    "he": "וַיֹּ֣אמֶר אֵלָ֔יו לֵ֥ךְ אִתִּ֖י הַבָּ֑יְתָה וֶאֱכֹ֖ל לָֽחֶם",
+    "en": "Then he said to him, “Come home with me, and eat bread.”",
+    "target": {
+     "surface": "לֵ֥ךְ",
+     "morph": "Vqv2ms",
+     "position": 2
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "עַל",
+    "gloss": "on, upon, over, above",
+    "freq": 4250,
+    "pos": "Prep",
+    "strongs": "5921"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "עָשָׂה",
+    "gloss": "to do, make",
+    "freq": 2511,
+    "pos": "Verb",
+    "strongs": "6213"
+   },
+   {
+    "lemma": "בַּיִת",
+    "gloss": "house",
+    "freq": 1662,
+    "pos": "Noun",
+    "strongs": "1004"
+   },
+   {
+    "lemma": "דָּבָר",
+    "gloss": "word, thing, matter",
+    "freq": 1249,
+    "pos": "Noun",
+    "strongs": "1697"
+   },
+   {
+    "lemma": "דָבַר",
+    "gloss": "to speak",
+    "freq": 1110,
+    "pos": "Verb",
+    "strongs": "1696"
+   },
+   {
+    "lemma": "שָׁמַע",
+    "gloss": "to hear, listen, obey",
+    "freq": 1066,
+    "pos": "Verb",
+    "strongs": "8085"
+   },
+   {
+    "lemma": "יָלַךְ",
+    "gloss": "to go, walk",
+    "freq": 965,
+    "pos": "Verb",
+    "strongs": "3212"
+   },
+   {
+    "lemma": "יָצָא",
+    "gloss": "to go out, come out",
+    "freq": 933,
+    "pos": "Verb",
+    "strongs": "3318"
+   },
+   {
+    "lemma": "שׁוּב",
+    "gloss": "to return, turn back",
+    "freq": 918,
+    "pos": "Verb",
+    "strongs": "7725"
+   },
+   {
+    "lemma": "כֵּן",
+    "gloss": "so, thus; right",
+    "freq": 770,
+    "pos": "Particle",
+    "strongs": "3651"
+   },
+   {
+    "lemma": "אָכַל",
+    "gloss": "to eat",
+    "freq": 701,
+    "pos": "Verb",
+    "strongs": "398"
+   },
+   {
+    "lemma": "קָרָא",
+    "gloss": "to call, proclaim, read",
+    "freq": 688,
+    "pos": "Verb",
+    "strongs": "7121"
+   },
+   {
+    "lemma": "רַע",
+    "gloss": "evil, bad",
+    "freq": 604,
+    "pos": "Adj",
+    "strongs": "7451"
+   },
+   {
+    "lemma": "טוֹב",
+    "gloss": "good",
+    "freq": 557,
+    "pos": "Adj",
+    "strongs": "2896"
+   },
+   {
+    "lemma": "עוֹלָם",
+    "gloss": "eternity, forever, everlasting",
+    "freq": 437,
+    "pos": "Noun",
+    "strongs": "5769"
+   },
+   {
+    "lemma": "אֵת",
+    "gloss": "with",
+    "freq": 429,
+    "pos": "Prep",
+    "strongs": "854"
+   },
+   {
+    "lemma": "שָׁמַר",
+    "gloss": "to keep, guard, watch",
+    "freq": 424,
+    "pos": "Verb",
+    "strongs": "8104"
+   },
+   {
+    "lemma": "אָנֹכִי",
+    "gloss": "I",
+    "freq": 359,
+    "pos": "Pron",
+    "strongs": "595"
+   },
+   {
+    "lemma": "אוֹ",
+    "gloss": "or",
+    "freq": 321,
+    "pos": "Conj",
+    "strongs": "176"
+   },
+   {
+    "lemma": "סוּר",
+    "gloss": "to turn aside, depart",
+    "freq": 281,
+    "pos": "Verb",
+    "strongs": "5493"
+   },
+   {
+    "lemma": "עֶבֶד",
+    "gloss": "servant, slave",
+    "freq": 259,
+    "pos": "Noun",
+    "strongs": "5650"
+   },
+   {
+    "lemma": "אֹהֶל",
+    "gloss": "tent",
+    "freq": 259,
+    "pos": "Noun",
+    "strongs": "168"
+   },
+   {
+    "lemma": "עָנָה",
+    "gloss": "to answer, respond",
+    "freq": 251,
+    "pos": "Verb",
+    "strongs": "6030"
+   },
+   {
+    "lemma": "לֶחֶם",
+    "gloss": "bread, food",
+    "freq": 251,
+    "pos": "Noun",
+    "strongs": "3899"
+   },
+   {
+    "lemma": "חָיָה",
+    "gloss": "to live, revive",
+    "freq": 228,
+    "pos": "Verb",
+    "strongs": "2421"
+   },
+   {
+    "lemma": "רָעָה",
+    "gloss": "to pasture, tend, shepherd",
+    "freq": 146,
+    "pos": "Verb",
+    "strongs": "7462"
+   },
+   {
+    "lemma": "שָׂמַח",
+    "gloss": "to rejoice, be glad",
+    "freq": 146,
+    "pos": "Verb",
+    "strongs": "8055"
+   },
+   {
+    "lemma": "שָׁכַן",
+    "gloss": "to dwell, settle, abide",
+    "freq": 126,
+    "pos": "Verb",
+    "strongs": "7931"
+   },
+   {
+    "lemma": "זְבוּלוּן",
+    "gloss": "Zebulun",
+    "freq": 45,
+    "pos": "Noun",
+    "strongs": "2074"
+   },
+   {
+    "lemma": "יִשָּׂשכָר",
+    "gloss": "Issachar",
+    "freq": 43,
+    "pos": "Noun",
+    "strongs": "3485"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "וּרְב֗וּ",
     "morph": "Vqv2mp",
-    "position": 2
+    "strongs": "7235",
+    "kind": "parse",
+    "ref": "Genesis 1:22",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 22
    },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 37:27",
-   "osis": "Ps",
-   "chapter": 37,
-   "verse": 27,
-   "he": "ס֣וּר מֵ֭רָע וַעֲשֵׂה ט֗וֹב וּשְׁכֹ֥ן לְעוֹלָֽם",
-   "en": "Depart from evil, and do good. Live securely forever.",
-   "target": {
-    "surface": "ס֣וּר",
+   {
+    "surface": "וּרְב֛וּ",
+    "morph": "Vqv2mp",
+    "strongs": "7235",
+    "kind": "parse",
+    "ref": "Genesis 1:28",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 28
+   },
+   {
+    "surface": "שְׁמַ֣עַן",
+    "morph": "Vqv2fp",
+    "strongs": "8085",
+    "kind": "parse",
+    "ref": "Genesis 4:23",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 23
+   },
+   {
+    "surface": "עֲשֵׂ֤ה",
     "morph": "Vqv2ms",
-    "position": 0
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 6:14",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 14
    },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 119:17",
-   "osis": "Ps",
-   "chapter": 119,
-   "verse": 17,
-   "he": "גְּמֹ֖ל עַֽל עַבְדְּךָ֥ אֶֽחְיֶ֗ה וְאֶשְׁמְרָ֥ה דְבָרֶֽךָ",
-   "en": "Do good to your servant. I will live and I will obey your word.",
-   "target": {
-    "surface": "גְּמֹ֖ל",
+   {
+    "surface": "קַח",
     "morph": "Vqv2ms",
-    "position": 0
+    "strongs": "3947",
+    "kind": "parse",
+    "ref": "Genesis 6:21",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 21
    },
-   "tier": 0
-  },
-  {
-   "ref": "Job 13:22",
-   "osis": "Job",
-   "chapter": 13,
-   "verse": 22,
-   "he": "וּ֭קְרָא וְאָנֹכִ֣י אֶֽעֱנֶ֑ה אֽוֹ אֲ֝דַבֵּ֗ר וַהֲשִׁיבֵֽנִי",
-   "en": "Then call, and I will answer; or let me speak, and you answer me.",
-   "target": {
-    "surface": "וּ֭קְרָא",
+   {
+    "surface": "בֹּֽא",
     "morph": "Vqv2ms",
-    "position": 0
+    "strongs": "935",
+    "kind": "parse",
+    "ref": "Genesis 7:1",
+    "osis": "Gen",
+    "chapter": 7,
+    "verse": 1
    },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 33:18",
-   "osis": "Deut",
-   "chapter": 33,
-   "verse": 18,
-   "he": "וְלִזְבוּלֻ֣ן אָמַ֔ר שְׂמַ֥ח זְבוּלֻ֖ן בְּצֵאתֶ֑ךָ וְיִשָּׂשכָ֖ר בְּאֹהָלֶֽיךָ",
-   "en": "About Zebulun he said, “Rejoice, Zebulun, in your going out; and Issachar, in your tents.",
-   "target": {
-    "surface": "שְׂמַ֥ח",
+   {
+    "surface": "צֵ֖א",
     "morph": "Vqv2ms",
-    "position": 2
+    "strongs": "3318",
+    "kind": "parse",
+    "ref": "Genesis 8:16",
+    "osis": "Gen",
+    "chapter": 8,
+    "verse": 16
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Kings 13:15",
-   "osis": "1Kgs",
-   "chapter": 13,
-   "verse": 15,
-   "he": "וַיֹּ֣אמֶר אֵלָ֔יו לֵ֥ךְ אִתִּ֖י הַבָּ֑יְתָה וֶאֱכֹ֖ל לָֽחֶם",
-   "en": "Then he said to him, “Come home with me, and eat bread.”",
-   "target": {
-    "surface": "לֵ֥ךְ",
-    "morph": "Vqv2ms",
-    "position": 2
+   {
+    "surface": "וּרְב֖וּ",
+    "morph": "Vqv2mp",
+    "strongs": "7235",
+    "kind": "parse",
+    "ref": "Genesis 9:1",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 1
    },
-   "tier": 0
-  }
- ],
- "infinitives": [
-  {
-   "ref": "Deuteronomy 2:2",
-   "osis": "Deut",
-   "chapter": 2,
-   "verse": 2,
-   "he": "וַיֹּ֥אמֶר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
-   "en": "Yahweh spoke to me, saying,",
-   "target": {
-    "surface": "לֵאמֹֽר",
+   {
+    "surface": "וּרְב֑וּ",
+    "morph": "Vqv2mp",
+    "strongs": "7235",
+    "kind": "parse",
+    "ref": "Genesis 9:7",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 7
+   },
+   {
+    "surface": "אִמְרִי",
+    "morph": "Vqv2fs",
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 12:13",
+    "osis": "Gen",
+    "chapter": 12,
+    "verse": 13
+   },
+   {
+    "surface": "קְחָ֥ה",
+    "morph": "Sh",
+    "strongs": "3947",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "קְחָ֥",
+      "morph": "Vqv2ms"
+     },
+     {
+      "text": "ה",
+      "morph": "Sh"
+     }
+    ],
+    "ref": "Genesis 15:9",
+    "osis": "Gen",
+    "chapter": 15,
+    "verse": 9
+   },
+   {
+    "surface": "עֲשִׂי",
+    "morph": "Vqv2fs",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 16:6",
+    "osis": "Gen",
+    "chapter": 16,
+    "verse": 6
+   }
+  ]
+ },
+ "infinitives": {
+  "examples": [
+   {
+    "ref": "Deuteronomy 2:2",
+    "osis": "Deut",
+    "chapter": 2,
+    "verse": 2,
+    "he": "וַיֹּ֥אמֶר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
+    "en": "Yahweh spoke to me, saying,",
+    "target": {
+     "surface": "לֵאמֹֽר",
+     "morph": "Vqc",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Proverbs 12:7",
+    "osis": "Prov",
+    "chapter": 12,
+    "verse": 7,
+    "he": "הָפ֣וֹךְ רְשָׁעִ֣ים וְאֵינָ֑ם וּבֵ֖ית צַדִּיקִ֣ים יַעֲמֹֽד",
+    "en": "The wicked are overthrown, and are no more, but the house of the righteous shall stand.",
+    "target": {
+     "surface": "הָפ֣וֹךְ",
+     "morph": "Vqa",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Lamentations 5:6",
+    "osis": "Lam",
+    "chapter": 5,
+    "verse": 6,
+    "he": "מִצְרַ֨יִם֙ נָתַ֣נּוּ יָ֔ד אַשּׁ֖וּר לִשְׂבֹּ֥עַֽ לָֽחֶם",
+    "en": "We have given the hand to the Egyptians, To the Assyrians, to be satisfied with bread.",
+    "target": {
+     "surface": "לִשְׂבֹּ֥עַֽ",
+     "morph": "Vqc",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Ezekiel 46:10",
+    "osis": "Ezek",
+    "chapter": 46,
+    "verse": 10,
+    "he": "וְֽהַנָּשִׂ֑יא בְּתוֹכָ֤ם בְּבוֹאָם֙ יָב֔וֹא וּבְצֵאתָ֖ם יֵצֵֽאוּ",
+    "en": "The prince, when they go in, shall go in with of them; and when they go out, he shall go out.",
+    "target": {
+     "surface": "בְּבוֹאָם֙",
+     "morph": "Sp3mp",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 33:18",
+    "osis": "Deut",
+    "chapter": 33,
+    "verse": 18,
+    "he": "וְלִזְבוּלֻ֣ן אָמַ֔ר שְׂמַ֥ח זְבוּלֻ֖ן בְּצֵאתֶ֑ךָ וְיִשָּׂשכָ֖ר בְּאֹהָלֶֽיךָ",
+    "en": "About Zebulun he said, “Rejoice, Zebulun, in your going out; and Issachar, in your tents.",
+    "target": {
+     "surface": "בְּצֵאתֶ֑ךָ",
+     "morph": "Sp2ms",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Joshua 23:11",
+    "osis": "Josh",
+    "chapter": 23,
+    "verse": 11,
+    "he": "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת יְהוָ֥ה אֱלֹהֵיכֶֽם",
+    "en": "Take good heed therefore to yourselves, that you love Yahweh your God.",
+    "target": {
+     "surface": "לְאַהֲבָ֖ה",
+     "morph": "Vqc",
+     "position": 3
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "בּוֹא",
+    "gloss": "to come, go in, enter",
+    "freq": 2297,
+    "pos": "Verb",
+    "strongs": "935"
+   },
+   {
+    "lemma": "נָתַן",
+    "gloss": "to give, put, set",
+    "freq": 1708,
+    "pos": "Verb",
+    "strongs": "5414"
+   },
+   {
+    "lemma": "בַּיִת",
+    "gloss": "house",
+    "freq": 1662,
+    "pos": "Noun",
+    "strongs": "1004"
+   },
+   {
+    "lemma": "אֱלֹהִים",
+    "gloss": "God; gods",
+    "freq": 1615,
+    "pos": "Noun",
+    "strongs": "430"
+   },
+   {
+    "lemma": "יָצָא",
+    "gloss": "to go out, come out",
+    "freq": 933,
+    "pos": "Verb",
+    "strongs": "3318"
+   },
+   {
+    "lemma": "יָד",
+    "gloss": "hand",
+    "freq": 709,
+    "pos": "Noun",
+    "strongs": "3027"
+   },
+   {
+    "lemma": "אַיִן",
+    "gloss": "there is not, nothing",
+    "freq": 685,
+    "pos": "Particle",
+    "strongs": "369"
+   },
+   {
+    "lemma": "מִצְרַיִם",
+    "gloss": "Egypt",
+    "freq": 607,
+    "pos": "Noun",
+    "strongs": "4714"
+   },
+   {
+    "lemma": "עָמַד",
+    "gloss": "to stand",
+    "freq": 485,
+    "pos": "Verb",
+    "strongs": "5975"
+   },
+   {
+    "lemma": "שָׁמַר",
+    "gloss": "to keep, guard, watch",
+    "freq": 424,
+    "pos": "Verb",
+    "strongs": "8104"
+   },
+   {
+    "lemma": "מְאֹד",
+    "gloss": "very, exceedingly",
+    "freq": 298,
+    "pos": "Adv",
+    "strongs": "3966"
+   },
+   {
+    "lemma": "תָּוֶךְ",
+    "gloss": "midst, middle",
+    "freq": 281,
+    "pos": "Noun",
+    "strongs": "8432"
+   },
+   {
+    "lemma": "נֶפֶשׁ",
+    "gloss": "soul, life, self, person",
+    "freq": 263,
+    "pos": "Noun",
+    "strongs": "5315"
+   },
+   {
+    "lemma": "רָשָׁע",
+    "gloss": "wicked, guilty",
+    "freq": 262,
+    "pos": "Adj",
+    "strongs": "7563"
+   },
+   {
+    "lemma": "אֹהֶל",
+    "gloss": "tent",
+    "freq": 259,
+    "pos": "Noun",
+    "strongs": "168"
+   },
+   {
+    "lemma": "לֶחֶם",
+    "gloss": "bread, food",
+    "freq": 251,
+    "pos": "Noun",
+    "strongs": "3899"
+   },
+   {
+    "lemma": "צַדִּיק",
+    "gloss": "righteous, just",
+    "freq": 206,
+    "pos": "Adj",
+    "strongs": "6662"
+   },
+   {
+    "lemma": "שָׂמַח",
+    "gloss": "to rejoice, be glad",
+    "freq": 146,
+    "pos": "Verb",
+    "strongs": "8055"
+   },
+   {
+    "lemma": "אַשּׁוּר",
+    "gloss": "Assyria, Asshur",
+    "freq": 145,
+    "pos": "Noun",
+    "strongs": "804"
+   },
+   {
+    "lemma": "אָהַב",
+    "gloss": "to love",
+    "freq": 138,
+    "pos": "Verb",
+    "strongs": "157"
+   },
+   {
+    "lemma": "נָשִׂיא",
+    "gloss": "leader, chief, prince",
+    "freq": 130,
+    "pos": "Noun",
+    "strongs": "5387"
+   },
+   {
+    "lemma": "הָפַךְ",
+    "gloss": "to turn, overturn, overthrow",
+    "freq": 90,
+    "pos": "Verb",
+    "strongs": "2015"
+   },
+   {
+    "lemma": "שָׂבַע",
+    "gloss": "to be satisfied, full",
+    "freq": 87,
+    "pos": "Verb",
+    "strongs": "7646"
+   },
+   {
+    "lemma": "זְבוּלוּן",
+    "gloss": "Zebulun",
+    "freq": 45,
+    "pos": "Noun",
+    "strongs": "2074"
+   },
+   {
+    "lemma": "יִשָּׂשכָר",
+    "gloss": "Issachar",
+    "freq": 43,
+    "pos": "Noun",
+    "strongs": "3485"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "לֵאמֹ֑ר",
     "morph": "Vqc",
-    "position": 3
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 1:22",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 22
    },
-   "tier": 0
-  },
-  {
-   "ref": "Proverbs 12:7",
-   "osis": "Prov",
-   "chapter": 12,
-   "verse": 7,
-   "he": "הָפ֣וֹךְ רְשָׁעִ֣ים וְאֵינָ֑ם וּבֵ֖ית צַדִּיקִ֣ים יַעֲמֹֽד",
-   "en": "The wicked are overthrown, and are no more, but the house of the righteous shall stand.",
-   "target": {
-    "surface": "הָפ֣וֹךְ",
+   {
+    "surface": "לַעֲשֽׂוֹת",
+    "morph": "Vqc",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 2:3",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 3
+   },
+   {
+    "surface": "עֲשׂ֛וֹת",
+    "morph": "Vqc",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 2:4",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 4
+   },
+   {
+    "surface": "לַֽעֲבֹ֖ד",
+    "morph": "Vqc",
+    "strongs": "5647",
+    "kind": "parse",
+    "ref": "Genesis 2:5",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 5
+   },
+   {
+    "surface": "לְעָבְדָ֖הּ",
+    "morph": "Sp3fs",
+    "strongs": "5647",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "לְ",
+      "morph": "R"
+     },
+     {
+      "text": "עָבְדָ֖",
+      "morph": "Vqc"
+     },
+     {
+      "text": "הּ",
+      "morph": "Sp3fs"
+     }
+    ],
+    "ref": "Genesis 2:15",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 15
+   },
+   {
+    "surface": "אָכֹ֥ל",
     "morph": "Vqa",
-    "position": 0
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 2:16",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 16
    },
-   "tier": 0
-  },
-  {
-   "ref": "Lamentations 5:6",
-   "osis": "Lam",
-   "chapter": 5,
-   "verse": 6,
-   "he": "מִצְרַ֨יִם֙ נָתַ֣נּוּ יָ֔ד אַשּׁ֖וּר לִשְׂבֹּ֥עַֽ לָֽחֶם",
-   "en": "We have given the hand to the Egyptians, To the Assyrians, to be satisfied with bread.",
-   "target": {
-    "surface": "לִשְׂבֹּ֥עַֽ",
-    "morph": "Vqc",
-    "position": 4
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Ezekiel 46:10",
-   "osis": "Ezek",
-   "chapter": 46,
-   "verse": 10,
-   "he": "וְֽהַנָּשִׂ֑יא בְּתוֹכָ֤ם בְּבוֹאָם֙ יָב֔וֹא וּבְצֵאתָ֖ם יֵצֵֽאוּ",
-   "en": "The prince, when they go in, shall go in with of them; and when they go out, he shall go out.",
-   "target": {
-    "surface": "בְּבוֹאָם֙",
-    "morph": "Sp3mp",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 33:18",
-   "osis": "Deut",
-   "chapter": 33,
-   "verse": 18,
-   "he": "וְלִזְבוּלֻ֣ן אָמַ֔ר שְׂמַ֥ח זְבוּלֻ֖ן בְּצֵאתֶ֑ךָ וְיִשָּׂשכָ֖ר בְּאֹהָלֶֽיךָ",
-   "en": "About Zebulun he said, “Rejoice, Zebulun, in your going out; and Issachar, in your tents.",
-   "target": {
-    "surface": "בְּצֵאתֶ֑ךָ",
+   {
+    "surface": "אֲכָלְךָ֥",
     "morph": "Sp2ms",
-    "position": 4
+    "strongs": "398",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "אֲכָלְ",
+      "morph": "Vqc"
+     },
+     {
+      "text": "ךָ֥",
+      "morph": "Sp2ms"
+     }
+    ],
+    "ref": "Genesis 2:17",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 17
    },
-   "tier": 0
-  },
-  {
-   "ref": "Joshua 23:11",
-   "osis": "Josh",
-   "chapter": 23,
-   "verse": 11,
-   "he": "וְנִשְׁמַרְתֶּ֥ם מְאֹ֖ד לְנַפְשֹֽׁתֵיכֶ֑ם לְאַהֲבָ֖ה אֶת יְהוָ֥ה אֱלֹהֵיכֶֽם",
-   "en": "Take good heed therefore to yourselves, that you love Yahweh your God.",
-   "target": {
-    "surface": "לְאַהֲבָ֖ה",
-    "morph": "Vqc",
-    "position": 3
+   {
+    "surface": "מ֖וֹת",
+    "morph": "Vqa",
+    "strongs": "4191",
+    "kind": "parse",
+    "ref": "Genesis 3:4",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 4
    },
-   "tier": 0
-  }
- ],
- "participles": [
-  {
-   "ref": "Psalm 37:32",
-   "osis": "Ps",
-   "chapter": 37,
-   "verse": 32,
-   "he": "צוֹפֶ֣ה רָ֭שָׁע לַצַּדִּ֑יק וּ֝מְבַקֵּ֗שׁ לַהֲמִיתוֹ",
-   "en": "The wicked watches the righteous, and seeks to kill him.",
-   "target": {
-    "surface": "צוֹפֶ֣ה",
+   {
+    "surface": "אֲכָלְכֶ֣ם",
+    "morph": "Sp2mp",
+    "strongs": "398",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "אֲכָלְ",
+      "morph": "Vqc"
+     },
+     {
+      "text": "כֶ֣ם",
+      "morph": "Sp2mp"
+     }
+    ],
+    "ref": "Genesis 3:5",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 5
+   },
+   {
+    "surface": "שֽׁוּבְךָ֙",
+    "morph": "Sp2ms",
+    "strongs": "7725",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "שֽׁוּבְ",
+      "morph": "Vqc"
+     },
+     {
+      "text": "ךָ֙",
+      "morph": "Sp2ms"
+     }
+    ],
+    "ref": "Genesis 3:19",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 19
+   },
+   {
+    "surface": "בִּהְיוֹתָ֣ם",
+    "morph": "Sp3mp",
+    "strongs": "1961",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "בִּ",
+      "morph": "R"
+     },
+     {
+      "text": "הְיוֹתָ֣",
+      "morph": "Vqc"
+     },
+     {
+      "text": "ם",
+      "morph": "Sp3mp"
+     }
+    ],
+    "ref": "Genesis 4:8",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 8
+   },
+   {
+    "surface": "הָל֣וֹךְ",
+    "morph": "Vqa",
+    "strongs": "1980",
+    "kind": "parse",
+    "ref": "Genesis 8:3",
+    "osis": "Gen",
+    "chapter": 8,
+    "verse": 3
+   }
+  ]
+ },
+ "participles": {
+  "examples": [
+   {
+    "ref": "Psalm 37:32",
+    "osis": "Ps",
+    "chapter": 37,
+    "verse": 32,
+    "he": "צוֹפֶ֣ה רָ֭שָׁע לַצַּדִּ֑יק וּ֝מְבַקֵּ֗שׁ לַהֲמִיתוֹ",
+    "en": "The wicked watches the righteous, and seeks to kill him.",
+    "target": {
+     "surface": "צוֹפֶ֣ה",
+     "morph": "Vqrmsa",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 143:9",
+    "osis": "Ps",
+    "chapter": 143,
+    "verse": 9,
+    "he": "הַצִּילֵ֖נִי מֵאֹיְבַ֥י יְהוָ֗ה אֵלֶ֥יךָ כִסִּֽתִי",
+    "en": "Deliver me, Yahweh, from my enemies. I flee to you to hide me.",
+    "target": {
+     "surface": "מֵאֹיְבַ֥י",
+     "morph": "Sp1cs",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Lamentations 3:25",
+    "osis": "Lam",
+    "chapter": 3,
+    "verse": 25,
+    "he": "ט֤וֹב יְהוָה֙ לְקוָֹ֔ו לְנֶ֖פֶשׁ תִּדְרְשֶֽׁנּוּ",
+    "en": "Yahweh is good to those who wait for him, to the soul that seeks him.",
+    "target": {
+     "surface": "לְקוָֹ֔ו",
+     "morph": "Sp3ms",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Ezekiel 16:35",
+    "osis": "Ezek",
+    "chapter": 16,
+    "verse": 35,
+    "he": "לָכֵ֣ן זוֹנָ֔ה שִׁמְעִ֖י דְּבַר יְהוָֽה",
+    "en": "Therefore, prostitute, hear Yahweh’s word:",
+    "target": {
+     "surface": "זוֹנָ֔ה",
+     "morph": "Vqrfsa",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Ezekiel 34:9",
+    "osis": "Ezek",
+    "chapter": 34,
+    "verse": 9,
+    "he": "לָכֵן֙ הָֽרֹעִ֔ים שִׁמְע֖וּ דְּבַר יְהוָֽה",
+    "en": "therefore, you shepherds, hear Yahweh’s word:",
+    "target": {
+     "surface": "הָֽרֹעִ֔ים",
+     "morph": "Vqrmpa",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Judges 20:29",
+    "osis": "Judg",
+    "chapter": 20,
+    "verse": 29,
+    "he": "וַיָּ֤שֶׂם יִשְׂרָאֵל֙ אֹֽרְבִ֔ים אֶל הַגִּבְעָ֖ה סָבִֽיב",
+    "en": "Israel set ambushes all around Gibeah.",
+    "target": {
+     "surface": "אֹֽרְבִ֔ים",
+     "morph": "Vqrmpa",
+     "position": 2
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "יִשְׂרָאֵל",
+    "gloss": "Israel",
+    "freq": 2506,
+    "pos": "Noun",
+    "strongs": "3478"
+   },
+   {
+    "lemma": "דָּבָר",
+    "gloss": "word, thing, matter",
+    "freq": 1249,
+    "pos": "Noun",
+    "strongs": "1697"
+   },
+   {
+    "lemma": "שָׁמַע",
+    "gloss": "to hear, listen, obey",
+    "freq": 1066,
+    "pos": "Verb",
+    "strongs": "8085"
+   },
+   {
+    "lemma": "כֵּן",
+    "gloss": "so, thus; right",
+    "freq": 770,
+    "pos": "Particle",
+    "strongs": "3651"
+   },
+   {
+    "lemma": "מוּת",
+    "gloss": "to die",
+    "freq": 738,
+    "pos": "Verb",
+    "strongs": "4191"
+   },
+   {
+    "lemma": "טוֹב",
+    "gloss": "good",
+    "freq": 557,
+    "pos": "Adj",
+    "strongs": "2896"
+   },
+   {
+    "lemma": "שׂוּם",
+    "gloss": "to put, place, set",
+    "freq": 490,
+    "pos": "Verb",
+    "strongs": "7760"
+   },
+   {
+    "lemma": "סָבִיב",
+    "gloss": "around, surrounding",
+    "freq": 277,
+    "pos": "Noun",
+    "strongs": "5439"
+   },
+   {
+    "lemma": "נֶפֶשׁ",
+    "gloss": "soul, life, self, person",
+    "freq": 263,
+    "pos": "Noun",
+    "strongs": "5315"
+   },
+   {
+    "lemma": "רָשָׁע",
+    "gloss": "wicked, guilty",
+    "freq": 262,
+    "pos": "Adj",
+    "strongs": "7563"
+   },
+   {
+    "lemma": "צַדִּיק",
+    "gloss": "righteous, just",
+    "freq": 206,
+    "pos": "Adj",
+    "strongs": "6662"
+   },
+   {
+    "lemma": "בָּקַשׁ",
+    "gloss": "to seek, search for",
+    "freq": 196,
+    "pos": "Verb",
+    "strongs": "1245"
+   },
+   {
+    "lemma": "רָעָה",
+    "gloss": "to pasture, tend, shepherd",
+    "freq": 146,
+    "pos": "Verb",
+    "strongs": "7462"
+   },
+   {
+    "lemma": "דָּרַשׁ",
+    "gloss": "to seek, inquire, require",
+    "freq": 140,
+    "pos": "Verb",
+    "strongs": "1875"
+   },
+   {
+    "lemma": "נָצַל",
+    "gloss": "to deliver, rescue, snatch away",
+    "freq": 133,
+    "pos": "Verb",
+    "strongs": "5337"
+   },
+   {
+    "lemma": "כָּסָה",
+    "gloss": "to cover, conceal",
+    "freq": 120,
+    "pos": "Verb",
+    "strongs": "3680"
+   },
+   {
+    "lemma": "זָנָה",
+    "gloss": "to be a prostitute, be unfaithful",
+    "freq": 89,
+    "pos": "Verb",
+    "strongs": "2181"
+   },
+   {
+    "lemma": "אֹיֵב",
+    "gloss": "enemy",
+    "freq": 72,
+    "pos": "Verb",
+    "strongs": "341"
+   },
+   {
+    "lemma": "קָוָה",
+    "gloss": "to wait for, hope",
+    "freq": 42,
+    "pos": "Verb",
+    "strongs": "6960"
+   },
+   {
+    "lemma": "אָרַב",
+    "gloss": "to lie in wait, ambush",
+    "freq": 40,
+    "pos": "Verb",
+    "strongs": "693"
+   },
+   {
+    "lemma": "גִּבְעָה",
+    "gloss": "Gibeah",
+    "freq": 37,
+    "pos": "Noun",
+    "strongs": "1390"
+   },
+   {
+    "lemma": "צָפָה",
+    "gloss": "to watch, keep watch, look out",
+    "freq": 33,
+    "pos": "Verb",
+    "strongs": "6822"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "עֹ֤שֶׂה",
     "morph": "Vqrmsa",
-    "position": 0
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 1:11",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 11
    },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 143:9",
-   "osis": "Ps",
-   "chapter": 143,
-   "verse": 9,
-   "he": "הַצִּילֵ֖נִי מֵאֹיְבַ֥י יְהוָ֗ה אֵלֶ֥יךָ כִסִּֽתִי",
-   "en": "Deliver me, Yahweh, from my enemies. I flee to you to hide me.",
-   "target": {
-    "surface": "מֵאֹיְבַ֥י",
+   {
+    "surface": "עֹֽשֶׂה",
+    "morph": "Vqrmsa",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 1:12",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 12
+   },
+   {
+    "surface": "יֹצֵ֣א",
+    "morph": "Vqrmsa",
+    "strongs": "3318",
+    "kind": "parse",
+    "ref": "Genesis 2:10",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 10
+   },
+   {
+    "surface": "הַסֹּבֵ֗ב",
+    "morph": "Vqrmsa",
+    "strongs": "5437",
+    "kind": "parse",
+    "ref": "Genesis 2:11",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 11
+   },
+   {
+    "surface": "יֹדְעֵ֖י",
+    "morph": "Vqrmpc",
+    "strongs": "3045",
+    "kind": "parse",
+    "ref": "Genesis 3:5",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 5
+   },
+   {
+    "surface": "רֹ֣עֵה",
+    "morph": "Vqrmsc",
+    "strongs": "7462",
+    "kind": "parse",
+    "ref": "Genesis 4:2",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 2
+   },
+   {
+    "surface": "מֹצְאִ֖י",
     "morph": "Sp1cs",
-    "position": 1
+    "strongs": "4672",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "מֹצְאִ֖",
+      "morph": "Vqrmsc"
+     },
+     {
+      "text": "י",
+      "morph": "Sp1cs"
+     }
+    ],
+    "ref": "Genesis 4:14",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 14
    },
-   "tier": 0
-  },
-  {
-   "ref": "Lamentations 3:25",
-   "osis": "Lam",
-   "chapter": 3,
-   "verse": 25,
-   "he": "ט֤וֹב יְהוָה֙ לְקוָֹ֔ו לְנֶ֖פֶשׁ תִּדְרְשֶֽׁנּוּ",
-   "en": "Yahweh is good to those who wait for him, to the soul that seeks him.",
-   "target": {
-    "surface": "לְקוָֹ֔ו",
-    "morph": "Sp3ms",
-    "position": 2
+   {
+    "surface": "הֹרֵ֣ג",
+    "morph": "Vqrmsc",
+    "strongs": "2026",
+    "kind": "parse",
+    "ref": "Genesis 4:15",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 15
    },
-   "tier": 0
-  },
-  {
-   "ref": "Ezekiel 16:35",
-   "osis": "Ezek",
-   "chapter": 16,
-   "verse": 35,
-   "he": "לָכֵ֣ן זוֹנָ֔ה שִׁמְעִ֖י דְּבַר יְהוָֽה",
-   "en": "Therefore, prostitute, hear Yahweh’s word:",
-   "target": {
-    "surface": "זוֹנָ֔ה",
-    "morph": "Vqrfsa",
-    "position": 1
+   {
+    "surface": "יֹשֵׁ֥ב",
+    "morph": "Vqrmsc",
+    "strongs": "3427",
+    "kind": "parse",
+    "ref": "Genesis 4:20",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 20
    },
-   "tier": 0
-  },
-  {
-   "ref": "Ezekiel 34:9",
-   "osis": "Ezek",
-   "chapter": 34,
-   "verse": 9,
-   "he": "לָכֵן֙ הָֽרֹעִ֔ים שִׁמְע֖וּ דְּבַר יְהוָֽה",
-   "en": "therefore, you shepherds, hear Yahweh’s word:",
-   "target": {
-    "surface": "הָֽרֹעִ֔ים",
+   {
+    "surface": "וְהַבָּאִ֗ים",
     "morph": "Vqrmpa",
-    "position": 1
+    "strongs": "935",
+    "kind": "parse",
+    "ref": "Genesis 7:16",
+    "osis": "Gen",
+    "chapter": 7,
+    "verse": 16
    },
-   "tier": 0
-  },
-  {
-   "ref": "Judges 20:29",
-   "osis": "Judg",
-   "chapter": 20,
-   "verse": 29,
-   "he": "וַיָּ֤שֶׂם יִשְׂרָאֵל֙ אֹֽרְבִ֔ים אֶל הַגִּבְעָ֖ה סָבִֽיב",
-   "en": "Israel set ambushes all around Gibeah.",
-   "target": {
-    "surface": "אֹֽרְבִ֔ים",
+   {
+    "surface": "יֹצְאֵ֣י",
+    "morph": "Vqrmpc",
+    "strongs": "3318",
+    "kind": "parse",
+    "ref": "Genesis 9:10",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 10
+   },
+   {
+    "surface": "הַיֹּֽצְאִים֙",
     "morph": "Vqrmpa",
-    "position": 2
+    "strongs": "3318",
+    "kind": "parse",
+    "ref": "Genesis 9:18",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 18
+   }
+  ]
+ },
+ "niphal": {
+  "examples": [
+   {
+    "ref": "Genesis 21:24",
+    "osis": "Gen",
+    "chapter": 21,
+    "verse": 24,
+    "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
+    "en": "Abraham said, “I will swear.”",
+    "target": {
+     "surface": "אִשָּׁבֵֽעַ",
+     "morph": "VNi1cs",
+     "position": 3
+    },
+    "tier": 0
    },
-   "tier": 0
-  }
- ],
- "niphal": [
-  {
-   "ref": "Genesis 21:24",
-   "osis": "Gen",
-   "chapter": 21,
-   "verse": 24,
-   "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
-   "en": "Abraham said, “I will swear.”",
-   "target": {
-    "surface": "אִשָּׁבֵֽעַ",
-    "morph": "VNi1cs",
-    "position": 3
+   {
+    "ref": "Judges 10:5",
+    "osis": "Judg",
+    "chapter": 10,
+    "verse": 5,
+    "he": "וַיָּ֣מָת יָאִ֔יר וַיִּקָּבֵ֖ר בְּקָמֽוֹן",
+    "en": "Jair died, and was buried in Kamon.",
+    "target": {
+     "surface": "וַיִּקָּבֵ֖ר",
+     "morph": "VNw3ms",
+     "position": 2
+    },
+    "tier": 0
    },
-   "tier": 0
-  },
-  {
-   "ref": "Judges 10:5",
-   "osis": "Judg",
-   "chapter": 10,
-   "verse": 5,
-   "he": "וַיָּ֣מָת יָאִ֔יר וַיִּקָּבֵ֖ר בְּקָמֽוֹן",
-   "en": "Jair died, and was buried in Kamon.",
-   "target": {
-    "surface": "וַיִּקָּבֵ֖ר",
+   {
+    "ref": "Psalm 119:89",
+    "osis": "Ps",
+    "chapter": 119,
+    "verse": 89,
+    "he": "לְעוֹלָ֥ם יְהוָ֑ה דְּ֝בָרְךָ֗ נִצָּ֥ב בַּשָּׁמָֽיִם",
+    "en": "Yahweh, your word is settled in heaven forever.",
+    "target": {
+     "surface": "נִצָּ֥ב",
+     "morph": "VNrmsa",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Exodus 17:8",
+    "osis": "Exod",
+    "chapter": 17,
+    "verse": 8,
+    "he": "וַיָּבֹ֖א עֲמָלֵ֑ק וַיִּלָּ֥חֶם עִם יִשְׂרָאֵ֖ל בִּרְפִידִֽם",
+    "en": "Then Amalek came and fought with Israel in Rephidim.",
+    "target": {
+     "surface": "וַיִּלָּ֥חֶם",
+     "morph": "VNw3ms",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Exodus 29:43",
+    "osis": "Exod",
+    "chapter": 29,
+    "verse": 43,
+    "he": "וְנֹעַדְתִּ֥י שָׁ֖מָּה לִבְנֵ֣י יִשְׂרָאֵ֑ל וְנִקְדַּ֖שׁ בִּכְבֹדִֽי",
+    "en": "There I will meet with the children of Israel; and the place shall be sanctified by my glory.",
+    "target": {
+     "surface": "וְנֹעַדְתִּ֥י",
+     "morph": "VNq1cs",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Judges 15:9",
+    "osis": "Judg",
+    "chapter": 15,
+    "verse": 9,
+    "he": "וַיַּעֲל֣וּ פְלִשְׁתִּ֔ים וַֽיַּחֲנ֖וּ בִּיהוּדָ֑ה וַיִּנָּטְשׁ֖וּ בַּלֶּֽחִי",
+    "en": "Then the Philistines went up, and encamped in Judah, and spread themselves in Lehi.",
+    "target": {
+     "surface": "וַיִּנָּטְשׁ֖וּ",
+     "morph": "VNw3mp",
+     "position": 4
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "בֵּן",
+    "gloss": "son",
+    "freq": 4006,
+    "pos": "Noun",
+    "strongs": "1121"
+   },
+   {
+    "lemma": "יִשְׂרָאֵל",
+    "gloss": "Israel",
+    "freq": 2506,
+    "pos": "Noun",
+    "strongs": "3478"
+   },
+   {
+    "lemma": "בּוֹא",
+    "gloss": "to come, go in, enter",
+    "freq": 2297,
+    "pos": "Verb",
+    "strongs": "935"
+   },
+   {
+    "lemma": "דָּבָר",
+    "gloss": "word, thing, matter",
+    "freq": 1249,
+    "pos": "Noun",
+    "strongs": "1697"
+   },
+   {
+    "lemma": "עָלָה",
+    "gloss": "to go up, ascend",
+    "freq": 828,
+    "pos": "Verb",
+    "strongs": "5927"
+   },
+   {
+    "lemma": "יְהוּדָה",
+    "gloss": "Judah",
+    "freq": 819,
+    "pos": "Noun",
+    "strongs": "3063"
+   },
+   {
+    "lemma": "מוּת",
+    "gloss": "to die",
+    "freq": 738,
+    "pos": "Verb",
+    "strongs": "4191"
+   },
+   {
+    "lemma": "שָׁם",
+    "gloss": "there",
+    "freq": 693,
+    "pos": "Adv",
+    "strongs": "8033"
+   },
+   {
+    "lemma": "עִם",
+    "gloss": "with",
+    "freq": 517,
+    "pos": "Prep",
+    "strongs": "5973"
+   },
+   {
+    "lemma": "עוֹלָם",
+    "gloss": "eternity, forever, everlasting",
+    "freq": 437,
+    "pos": "Noun",
+    "strongs": "5769"
+   },
+   {
+    "lemma": "שָׁמַיִם",
+    "gloss": "heavens, sky",
+    "freq": 405,
+    "pos": "Noun",
+    "strongs": "8064"
+   },
+   {
+    "lemma": "אָנֹכִי",
+    "gloss": "I",
+    "freq": 359,
+    "pos": "Pron",
+    "strongs": "595"
+   },
+   {
+    "lemma": "פְּלִשְׁתִּי",
+    "gloss": "Philistine",
+    "freq": 288,
+    "pos": "Noun",
+    "strongs": "6430"
+   },
+   {
+    "lemma": "אַבְרָהָם",
+    "gloss": "Abraham",
+    "freq": 175,
+    "pos": "Noun",
+    "strongs": "85"
+   },
+   {
+    "lemma": "לָחַם",
+    "gloss": "to fight, do battle",
+    "freq": 170,
+    "pos": "Verb",
+    "strongs": "3898"
+   },
+   {
+    "lemma": "שָׁבַע",
+    "gloss": "to swear, take an oath",
+    "freq": 168,
+    "pos": "Verb",
+    "strongs": "7650"
+   },
+   {
+    "lemma": "חָנָה",
+    "gloss": "to encamp, camp",
+    "freq": 139,
+    "pos": "Verb",
+    "strongs": "2583"
+   },
+   {
+    "lemma": "קָדַשׁ",
+    "gloss": "to be holy, consecrate, sanctify",
+    "freq": 138,
+    "pos": "Verb",
+    "strongs": "6942"
+   },
+   {
+    "lemma": "כָּבוֹד",
+    "gloss": "glory, honor, abundance",
+    "freq": 138,
+    "pos": "Noun",
+    "strongs": "3519"
+   },
+   {
+    "lemma": "קָבַר",
+    "gloss": "to bury",
+    "freq": 104,
+    "pos": "Verb",
+    "strongs": "6912"
+   },
+   {
+    "lemma": "נָצַב",
+    "gloss": "to stand, take one's stand; station",
+    "freq": 72,
+    "pos": "Verb",
+    "strongs": "5324"
+   },
+   {
+    "lemma": "עֲמָלֵק",
+    "gloss": "Amalek",
+    "freq": 39,
+    "pos": "Noun",
+    "strongs": "6002"
+   },
+   {
+    "lemma": "נָטַשׁ",
+    "gloss": "to leave, forsake, abandon; spread out",
+    "freq": 31,
+    "pos": "Verb",
+    "strongs": "5203"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "וְתֵרָאֶ֖ה",
+    "morph": "VNi3fs",
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 1:9",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 9
+   },
+   {
+    "surface": "יִקָּרֵ֣א",
+    "morph": "VNi3ms",
+    "strongs": "7121",
+    "kind": "parse",
+    "ref": "Genesis 2:23",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 23
+   },
+   {
+    "surface": "וַיִּוָּלֵ֤ד",
     "morph": "VNw3ms",
-    "position": 2
+    "strongs": "3205",
+    "kind": "parse",
+    "ref": "Genesis 4:18",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 18
    },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 119:89",
-   "osis": "Ps",
-   "chapter": 119,
-   "verse": 89,
-   "he": "לְעוֹלָ֥ם יְהוָ֑ה דְּ֝בָרְךָ֗ נִצָּ֥ב בַּשָּׁמָֽיִם",
-   "en": "Yahweh, your word is settled in heaven forever.",
-   "target": {
-    "surface": "נִצָּ֥ב",
-    "morph": "VNrmsa",
-    "position": 3
+   {
+    "surface": "וַתִּמָּלֵ֥א",
+    "morph": "VNw3fs",
+    "strongs": "4390",
+    "kind": "parse",
+    "ref": "Genesis 6:11",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 11
    },
-   "tier": 0
-  },
-  {
-   "ref": "Exodus 17:8",
-   "osis": "Exod",
-   "chapter": 17,
-   "verse": 8,
-   "he": "וַיָּבֹ֖א עֲמָלֵ֑ק וַיִּלָּ֥חֶם עִם יִשְׂרָאֵ֖ל בִּרְפִידִֽם",
-   "en": "Then Amalek came and fought with Israel in Rephidim.",
-   "target": {
-    "surface": "וַיִּלָּ֥חֶם",
+   {
+    "surface": "יֵֽאָכֵ֔ל",
+    "morph": "VNi3ms",
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 6:21",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 21
+   },
+   {
+    "surface": "נִפְתָּֽחוּ",
+    "morph": "VNp3cp",
+    "strongs": "6605",
+    "kind": "parse",
+    "ref": "Genesis 7:11",
+    "osis": "Gen",
+    "chapter": 7,
+    "verse": 11
+   },
+   {
+    "surface": "וַיִשָּׁ֧אֶר",
     "morph": "VNw3ms",
-    "position": 2
+    "strongs": "7604",
+    "kind": "parse",
+    "ref": "Genesis 7:23",
+    "osis": "Gen",
+    "chapter": 7,
+    "verse": 23
    },
-   "tier": 0
-  },
-  {
-   "ref": "Exodus 29:43",
-   "osis": "Exod",
-   "chapter": 29,
-   "verse": 43,
-   "he": "וְנֹעַדְתִּ֥י שָׁ֖מָּה לִבְנֵ֣י יִשְׂרָאֵ֑ל וְנִקְדַּ֖שׁ בִּכְבֹדִֽי",
-   "en": "There I will meet with the children of Israel; and the place shall be sanctified by my glory.",
-   "target": {
-    "surface": "וְנֹעַדְתִּ֥י",
-    "morph": "VNq1cs",
-    "position": 0
+   {
+    "surface": "נִרְא֖וּ",
+    "morph": "VNp3cp",
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 8:5",
+    "osis": "Gen",
+    "chapter": 8,
+    "verse": 5
    },
-   "tier": 0
-  },
-  {
-   "ref": "Judges 15:9",
-   "osis": "Judg",
-   "chapter": 15,
-   "verse": 9,
-   "he": "וַיַּעֲל֣וּ פְלִשְׁתִּ֔ים וַֽיַּחֲנ֖וּ בִּיהוּדָ֑ה וַיִּנָּטְשׁ֖וּ בַּלֶּֽחִי",
-   "en": "Then the Philistines went up, and encamped in Judah, and spread themselves in Lehi.",
-   "target": {
-    "surface": "וַיִּנָּטְשׁ֖וּ",
+   {
+    "surface": "נִתָּֽנוּ",
+    "morph": "VNp3cp",
+    "strongs": "5414",
+    "kind": "parse",
+    "ref": "Genesis 9:2",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 2
+   },
+   {
+    "surface": "יִכָּרֵ֧ת",
+    "morph": "VNi3ms",
+    "strongs": "3772",
+    "kind": "parse",
+    "ref": "Genesis 9:11",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 11
+   },
+   {
+    "surface": "וְנִרְאֲתָ֥ה",
+    "morph": "VNq3fs",
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 9:14",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 14
+   },
+   {
+    "surface": "וַיִּוָּלְד֥וּ",
     "morph": "VNw3mp",
-    "position": 4
+    "strongs": "3205",
+    "kind": "parse",
+    "ref": "Genesis 10:1",
+    "osis": "Gen",
+    "chapter": 10,
+    "verse": 1
+   }
+  ]
+ },
+ "piel-pual": {
+  "examples": [
+   {
+    "ref": "Deuteronomy 2:17",
+    "osis": "Deut",
+    "chapter": 2,
+    "verse": 17,
+    "he": "וַיְדַבֵּ֥ר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
+    "en": "Yahweh spoke to me, saying,",
+    "target": {
+     "surface": "וַיְדַבֵּ֥ר",
+     "morph": "Vpw3ms",
+     "position": 0
+    },
+    "tier": 0
    },
-   "tier": 0
-  }
- ],
- "piel-pual": [
-  {
-   "ref": "Deuteronomy 2:17",
-   "osis": "Deut",
-   "chapter": 2,
-   "verse": 17,
-   "he": "וַיְדַבֵּ֥ר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
-   "en": "Yahweh spoke to me, saying,",
-   "target": {
-    "surface": "וַיְדַבֵּ֥ר",
+   {
+    "ref": "1 Kings 6:14",
+    "osis": "1Kgs",
+    "chapter": 6,
+    "verse": 14,
+    "he": "וַיִּ֧בֶן שְׁלֹמֹ֛ה אֶת הַבַּ֖יִת וַיְכַלֵּֽהוּ",
+    "en": "So Solomon built the house, and finished it.",
+    "target": {
+     "surface": "וַיְכַלֵּֽהוּ",
+     "morph": "Sp3ms",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Proverbs 8:17",
+    "osis": "Prov",
+    "chapter": 8,
+    "verse": 17,
+    "he": "אֲ֭נִי אהביה אֵהָ֑ב וּ֝מְשַׁחֲרַ֗י יִמְצָאֻֽנְנִי",
+    "en": "I love those who love me. Those who seek me diligently will find me.",
+    "target": {
+     "surface": "וּ֝מְשַׁחֲרַ֗י",
+     "morph": "Sp1cs",
+     "position": 3
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Jeremiah 32:13",
+    "osis": "Jer",
+    "chapter": 32,
+    "verse": 13,
+    "he": "וָֽאֲצַוֶּה֙ אֶת בָּר֔וּךְ לְעֵינֵיהֶ֖ם לֵאמֹֽר",
+    "en": "I commanded Baruch before them, saying,",
+    "target": {
+     "surface": "וָֽאֲצַוֶּה֙",
+     "morph": "Vpw1cs",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Samuel 2:6",
+    "osis": "1Sam",
+    "chapter": 2,
+    "verse": 6,
+    "he": "יְהוָ֖ה מֵמִ֣ית וּמְחַיֶּ֑ה מוֹרִ֥יד שְׁא֖וֹל וַיָּֽעַל",
+    "en": "“Yahweh kills, and makes alive. He brings down to Sheol, and brings up.",
+    "target": {
+     "surface": "וּמְחַיֶּ֑ה",
+     "morph": "Vprmsa",
+     "position": 2
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Joshua 22:6",
+    "osis": "Josh",
+    "chapter": 22,
+    "verse": 6,
+    "he": "וַֽיְבָרְכֵ֖ם יְהוֹשֻׁ֑עַ וַֽיְשַׁלְּחֵ֔ם וַיֵּלְכ֖וּ אֶל אָהֳלֵיהֶֽם",
+    "en": "So Joshua blessed them, and sent them away; and they went to their tents.",
+    "target": {
+     "surface": "וַֽיְבָרְכֵ֖ם",
+     "morph": "Sp3mp",
+     "position": 0
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "בַּיִת",
+    "gloss": "house",
+    "freq": 1662,
+    "pos": "Noun",
+    "strongs": "1004"
+   },
+   {
+    "lemma": "דָבַר",
+    "gloss": "to speak",
+    "freq": 1110,
+    "pos": "Verb",
+    "strongs": "1696"
+   },
+   {
+    "lemma": "יָלַךְ",
+    "gloss": "to go, walk",
+    "freq": 965,
+    "pos": "Verb",
+    "strongs": "3212"
+   },
+   {
+    "lemma": "אֲנִי",
+    "gloss": "I",
+    "freq": 874,
+    "pos": "Pron",
+    "strongs": "589"
+   },
+   {
+    "lemma": "עָלָה",
+    "gloss": "to go up, ascend",
+    "freq": 828,
+    "pos": "Verb",
+    "strongs": "5927"
+   },
+   {
+    "lemma": "מוּת",
+    "gloss": "to die",
+    "freq": 738,
+    "pos": "Verb",
+    "strongs": "4191"
+   },
+   {
+    "lemma": "שָׁלַח",
+    "gloss": "to send, stretch out",
+    "freq": 671,
+    "pos": "Verb",
+    "strongs": "7971"
+   },
+   {
+    "lemma": "מָצָא",
+    "gloss": "to find, attain",
+    "freq": 382,
+    "pos": "Verb",
+    "strongs": "4672"
+   },
+   {
+    "lemma": "צָוָה",
+    "gloss": "to command, charge",
+    "freq": 370,
+    "pos": "Verb",
+    "strongs": "6680"
+   },
+   {
+    "lemma": "בָּנָה",
+    "gloss": "to build",
+    "freq": 357,
+    "pos": "Verb",
+    "strongs": "1129"
+   },
+   {
+    "lemma": "עַיִן",
+    "gloss": "eye; spring",
+    "freq": 355,
+    "pos": "Noun",
+    "strongs": "5869"
+   },
+   {
+    "lemma": "יָרַד",
+    "gloss": "to go down, descend",
+    "freq": 347,
+    "pos": "Verb",
+    "strongs": "3381"
+   },
+   {
+    "lemma": "שְׁלֹמֹה",
+    "gloss": "Solomon",
+    "freq": 293,
+    "pos": "Noun",
+    "strongs": "8010"
+   },
+   {
+    "lemma": "אֹהֶל",
+    "gloss": "tent",
+    "freq": 259,
+    "pos": "Noun",
+    "strongs": "168"
+   },
+   {
+    "lemma": "בָרַךְ",
+    "gloss": "to bless, kneel",
+    "freq": 244,
+    "pos": "Verb",
+    "strongs": "1288"
+   },
+   {
+    "lemma": "חָיָה",
+    "gloss": "to live, revive",
+    "freq": 228,
+    "pos": "Verb",
+    "strongs": "2421"
+   },
+   {
+    "lemma": "יְהוֹשׁוּעַ",
+    "gloss": "Joshua",
+    "freq": 218,
+    "pos": "Noun",
+    "strongs": "3091"
+   },
+   {
+    "lemma": "כָּלָה",
+    "gloss": "to be complete, finished; end",
+    "freq": 159,
+    "pos": "Verb",
+    "strongs": "3615"
+   },
+   {
+    "lemma": "אָהַב",
+    "gloss": "to love",
+    "freq": 138,
+    "pos": "Verb",
+    "strongs": "157"
+   },
+   {
+    "lemma": "שְׁאוֹל",
+    "gloss": "Sheol",
+    "freq": 56,
+    "pos": "Noun",
+    "strongs": "7585"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "וַיְבָ֧רֶךְ",
     "morph": "Vpw3ms",
-    "position": 0
+    "strongs": "1288",
+    "kind": "parse",
+    "ref": "Genesis 1:22",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 22
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Kings 6:14",
-   "osis": "1Kgs",
-   "chapter": 6,
-   "verse": 14,
-   "he": "וַיִּ֧בֶן שְׁלֹמֹ֛ה אֶת הַבַּ֖יִת וַיְכַלֵּֽהוּ",
-   "en": "So Solomon built the house, and finished it.",
-   "target": {
-    "surface": "וַיְכַלֵּֽהוּ",
-    "morph": "Sp3ms",
-    "position": 4
+   {
+    "surface": "וַיְבָ֣רֶךְ",
+    "morph": "Vpw3ms",
+    "strongs": "1288",
+    "kind": "parse",
+    "ref": "Genesis 1:28",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 28
    },
-   "tier": 0
-  },
-  {
-   "ref": "Proverbs 8:17",
-   "osis": "Prov",
-   "chapter": 8,
-   "verse": 17,
-   "he": "אֲ֭נִי אהביה אֵהָ֑ב וּ֝מְשַׁחֲרַ֗י יִמְצָאֻֽנְנִי",
-   "en": "I love those who love me. Those who seek me diligently will find me.",
-   "target": {
-    "surface": "וּ֝מְשַׁחֲרַ֗י",
-    "morph": "Sp1cs",
-    "position": 3
+   {
+    "surface": "וַיְכַ֤ל",
+    "morph": "Vpw3ms",
+    "strongs": "3615",
+    "kind": "parse",
+    "ref": "Genesis 2:2",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 2
    },
-   "tier": 0
-  },
-  {
-   "ref": "Jeremiah 32:13",
-   "osis": "Jer",
-   "chapter": 32,
-   "verse": 13,
-   "he": "וָֽאֲצַוֶּה֙ אֶת בָּר֔וּךְ לְעֵינֵיהֶ֖ם לֵאמֹֽר",
-   "en": "I commanded Baruch before them, saying,",
-   "target": {
-    "surface": "וָֽאֲצַוֶּה֙",
-    "morph": "Vpw1cs",
-    "position": 0
+   {
+    "surface": "וַיְבָ֤רֶךְ",
+    "morph": "Vpw3ms",
+    "strongs": "1288",
+    "kind": "parse",
+    "ref": "Genesis 2:3",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 3
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Samuel 2:6",
-   "osis": "1Sam",
-   "chapter": 2,
-   "verse": 6,
-   "he": "יְהוָ֖ה מֵמִ֣ית וּמְחַיֶּ֑ה מוֹרִ֥יד שְׁא֖וֹל וַיָּֽעַל",
-   "en": "“Yahweh kills, and makes alive. He brings down to Sheol, and brings up.",
-   "target": {
-    "surface": "וּמְחַיֶּ֑ה",
-    "morph": "Vprmsa",
-    "position": 2
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Joshua 22:6",
-   "osis": "Josh",
-   "chapter": 22,
-   "verse": 6,
-   "he": "וַֽיְבָרְכֵ֖ם יְהוֹשֻׁ֑עַ וַֽיְשַׁלְּחֵ֔ם וַיֵּלְכ֖וּ אֶל אָהֳלֵיהֶֽם",
-   "en": "So Joshua blessed them, and sent them away; and they went to their tents.",
-   "target": {
-    "surface": "וַֽיְבָרְכֵ֖ם",
-    "morph": "Sp3mp",
-    "position": 0
-   },
-   "tier": 0
-  }
- ],
- "hiphil-hophal": [
-  {
-   "ref": "Psalm 113:6",
-   "osis": "Ps",
-   "chapter": 113,
-   "verse": 6,
-   "he": "הַֽמַּשְׁפִּילִ֥י לִרְא֑וֹת בַּשָּׁמַ֥יִם וּבָאָֽרֶץ",
-   "en": "Who stoops down to see in heaven and in the earth?",
-   "target": {
-    "surface": "הַֽמַּשְׁפִּילִ֥י",
-    "morph": "Vhrmsc",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Exodus 33:18",
-   "osis": "Exod",
-   "chapter": 33,
-   "verse": 18,
-   "he": "וַיֹּאמַ֑ר הַרְאֵ֥נִי נָ֖א אֶת כְּבֹדֶֽךָ",
-   "en": "He said, “Please show me your glory.”",
-   "target": {
-    "surface": "הַרְאֵ֥נִי",
-    "morph": "Sp1cs",
-    "position": 1
-   },
-   "tier": 0
-  },
-  {
-   "ref": "2 Kings 10:28",
-   "osis": "2Kgs",
-   "chapter": 10,
-   "verse": 28,
-   "he": "וַיַּשְׁמֵ֥ד יֵה֛וּא אֶת הַבַּ֖עַל מִיִּשְׂרָאֵֽל",
-   "en": "Thus Jehu destroyed Baal out of Israel.",
-   "target": {
-    "surface": "וַיַּשְׁמֵ֥ד",
-    "morph": "Vhw3ms",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 78:62",
-   "osis": "Ps",
-   "chapter": 78,
-   "verse": 62,
-   "he": "וַיַּסְגֵּ֣ר לַחֶ֣רֶב עַמּ֑וֹ וּ֝בְנַחֲלָת֗וֹ הִתְעַבָּֽר",
-   "en": "He also gave his people over to the sword, and was angry with his inheritance.",
-   "target": {
-    "surface": "וַיַּסְגֵּ֣ר",
-    "morph": "Vhw3ms",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Leviticus 9:16",
-   "osis": "Lev",
-   "chapter": 9,
-   "verse": 16,
-   "he": "וַיַּקְרֵ֖ב אֶת הָעֹלָ֑ה וַֽיַּעֲשֶׂ֖הָ כַּמִּשְׁפָּֽט",
-   "en": "He presented the burnt offering, and offered it according to the ordinance.",
-   "target": {
-    "surface": "וַיַּקְרֵ֖ב",
-    "morph": "Vhw3ms",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Zechariah 3:6",
-   "osis": "Zech",
-   "chapter": 3,
-   "verse": 6,
-   "he": "וַיָּ֨עַד֙ מַלְאַ֣ךְ יְהוָ֔ה בִּיהוֹשֻׁ֖עַ לֵאמֹֽר",
-   "en": "Yahweh’s angel protested to Joshua, saying,",
-   "target": {
-    "surface": "וַיָּ֨עַד֙",
-    "morph": "Vhw3ms",
-    "position": 0
-   },
-   "tier": 0
-  }
- ],
- "hithpael": [
-  {
-   "ref": "Genesis 23:12",
-   "osis": "Gen",
-   "chapter": 23,
-   "verse": 12,
-   "he": "וַיִּשְׁתַּ֨חוּ֙ אַבְרָהָ֔ם לִפְנֵ֖י עַ֥ם הָאָֽרֶץ",
-   "en": "Abraham bowed himself down before the people of the land.",
-   "target": {
-    "surface": "וַיִּשְׁתַּ֨חוּ֙",
-    "morph": "Vtw3ms",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 116:9",
-   "osis": "Ps",
-   "chapter": 116,
-   "verse": 9,
-   "he": "אֶ֭תְהַלֵּךְ לִפְנֵ֣י יְהוָ֑ה בְּ֝אַרְצ֗וֹת הַֽחַיִּֽים",
-   "en": "I will walk before Yahweh in the land of the living.",
-   "target": {
-    "surface": "אֶ֭תְהַלֵּךְ",
-    "morph": "Vti1cs",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 119:52",
-   "osis": "Ps",
-   "chapter": 119,
-   "verse": 52,
-   "he": "זָ֘כַ֤רְתִּי מִשְׁפָּטֶ֖יךָ מֵעוֹלָ֥ם יְהוָ֗ה וָֽאֶתְנֶחָֽם",
-   "en": "I remember your ordinances of old, Yahweh, and have comforted myself.",
-   "target": {
-    "surface": "וָֽאֶתְנֶחָֽם",
-    "morph": "Vtw1cs",
-    "position": 4
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Isaiah 37:15",
-   "osis": "Isa",
-   "chapter": 37,
-   "verse": 15,
-   "he": "וַיִּתְפַּלֵּל֙ חִזְקִיָּ֔הוּ אֶל יְהוָ֖ה לֵאמֹֽר",
-   "en": "Hezekiah prayed to Yahweh, saying,",
-   "target": {
-    "surface": "וַיִּתְפַּלֵּל֙",
-    "morph": "Vtw3ms",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 3:23",
-   "osis": "Deut",
-   "chapter": 3,
-   "verse": 23,
-   "he": "וָאֶתְחַנַּ֖ן אֶל יְהוָ֑ה בָּעֵ֥ת הַהִ֖וא לֵאמֹֽר",
-   "en": "I begged Yahweh at that time, saying,",
-   "target": {
-    "surface": "וָאֶתְחַנַּ֖ן",
-    "morph": "Vtw1cs",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "2 Kings 19:27",
-   "osis": "2Kgs",
-   "chapter": 19,
-   "verse": 27,
-   "he": "וְשִׁבְתְּךָ֛ וְצֵאתְךָ֥ וּבֹאֲךָ֖ יָדָ֑עְתִּי וְאֵ֖ת הִֽתְרַגֶּזְךָ֥ אֵלָֽי",
-   "en": "But I know your sitting down, and your going out, and your coming in, and your raging against me.",
-   "target": {
-    "surface": "הִֽתְרַגֶּזְךָ֥",
+   {
+    "surface": "צִוִּיתִ֛יךָ",
     "morph": "Sp2ms",
-    "position": 5
+    "strongs": "6680",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "צִוִּיתִ֛י",
+      "morph": "Vpp1cs"
+     },
+     {
+      "text": "ךָ",
+      "morph": "Sp2ms"
+     }
+    ],
+    "ref": "Genesis 3:11",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 11
    },
-   "tier": 0
-  }
- ],
- "syntax": [
-  {
-   "ref": "Genesis 21:24",
-   "osis": "Gen",
-   "chapter": 21,
-   "verse": 24,
-   "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
-   "en": "Abraham said, “I will swear.”",
-   "target": {
-    "surface": "וַיֹּ֨אמֶר֙",
+   {
+    "surface": "צִוִּיתִ֨יךָ֙",
+    "morph": "Sp2ms",
+    "strongs": "6680",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "צִוִּיתִ֨י",
+      "morph": "Vpp1cs"
+     },
+     {
+      "text": "ךָ֙",
+      "morph": "Sp2ms"
+     }
+    ],
+    "ref": "Genesis 3:17",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 17
+   },
+   {
+    "surface": "וַֽיְשַׁלְּחֵ֛הוּ",
+    "morph": "Sp3ms",
+    "strongs": "7971",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "וַֽ",
+      "morph": "C"
+     },
+     {
+      "text": "יְשַׁלְּחֵ֛",
+      "morph": "Vpw3ms"
+     },
+     {
+      "text": "הוּ",
+      "morph": "Sp3ms"
+     }
+    ],
+    "ref": "Genesis 3:23",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 23
+   },
+   {
+    "surface": "תְּכַלֶ֣נָּה",
+    "morph": "Sp3fs",
+    "strongs": "3615",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "תְּכַלֶ֣",
+      "morph": "Vpi2ms"
+     },
+     {
+      "text": "נָּה",
+      "morph": "Sp3fs"
+     }
+    ],
+    "ref": "Genesis 6:16",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 16
+   },
+   {
+    "surface": "צִוָּ֥ה",
+    "morph": "Vpp3ms",
+    "strongs": "6680",
+    "kind": "parse",
+    "ref": "Genesis 6:22",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 22
+   },
+   {
+    "surface": "לְחַיּ֥וֹת",
+    "morph": "Vpc",
+    "strongs": "2421",
+    "kind": "parse",
+    "ref": "Genesis 7:3",
+    "osis": "Gen",
+    "chapter": 7,
+    "verse": 3
+   },
+   {
+    "surface": "צִוָּ֖הוּ",
+    "morph": "Sp3ms",
+    "strongs": "6680",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "צִוָּ֖",
+      "morph": "Vpp3ms"
+     },
+     {
+      "text": "הוּ",
+      "morph": "Sp3ms"
+     }
+    ],
+    "ref": "Genesis 7:5",
+    "osis": "Gen",
+    "chapter": 7,
+    "verse": 5
+   },
+   {
+    "surface": "שַׁלַּ֥ח",
+    "morph": "Vpc",
+    "strongs": "7971",
+    "kind": "parse",
+    "ref": "Genesis 8:10",
+    "osis": "Gen",
+    "chapter": 8,
+    "verse": 10
+   }
+  ]
+ },
+ "hiphil-hophal": {
+  "examples": [
+   {
+    "ref": "Psalm 113:6",
+    "osis": "Ps",
+    "chapter": 113,
+    "verse": 6,
+    "he": "הַֽמַּשְׁפִּילִ֥י לִרְא֑וֹת בַּשָּׁמַ֥יִם וּבָאָֽרֶץ",
+    "en": "Who stoops down to see in heaven and in the earth?",
+    "target": {
+     "surface": "הַֽמַּשְׁפִּילִ֥י",
+     "morph": "Vhrmsc",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Exodus 33:18",
+    "osis": "Exod",
+    "chapter": 33,
+    "verse": 18,
+    "he": "וַיֹּאמַ֑ר הַרְאֵ֥נִי נָ֖א אֶת כְּבֹדֶֽךָ",
+    "en": "He said, “Please show me your glory.”",
+    "target": {
+     "surface": "הַרְאֵ֥נִי",
+     "morph": "Sp1cs",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "2 Kings 10:28",
+    "osis": "2Kgs",
+    "chapter": 10,
+    "verse": 28,
+    "he": "וַיַּשְׁמֵ֥ד יֵה֛וּא אֶת הַבַּ֖עַל מִיִּשְׂרָאֵֽל",
+    "en": "Thus Jehu destroyed Baal out of Israel.",
+    "target": {
+     "surface": "וַיַּשְׁמֵ֥ד",
+     "morph": "Vhw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 78:62",
+    "osis": "Ps",
+    "chapter": 78,
+    "verse": 62,
+    "he": "וַיַּסְגֵּ֣ר לַחֶ֣רֶב עַמּ֑וֹ וּ֝בְנַחֲלָת֗וֹ הִתְעַבָּֽר",
+    "en": "He also gave his people over to the sword, and was angry with his inheritance.",
+    "target": {
+     "surface": "וַיַּסְגֵּ֣ר",
+     "morph": "Vhw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Leviticus 9:16",
+    "osis": "Lev",
+    "chapter": 9,
+    "verse": 16,
+    "he": "וַיַּקְרֵ֖ב אֶת הָעֹלָ֑ה וַֽיַּעֲשֶׂ֖הָ כַּמִּשְׁפָּֽט",
+    "en": "He presented the burnt offering, and offered it according to the ordinance.",
+    "target": {
+     "surface": "וַיַּקְרֵ֖ב",
+     "morph": "Vhw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Zechariah 3:6",
+    "osis": "Zech",
+    "chapter": 3,
+    "verse": 6,
+    "he": "וַיָּ֨עַד֙ מַלְאַ֣ךְ יְהוָ֔ה בִּיהוֹשֻׁ֖עַ לֵאמֹֽר",
+    "en": "Yahweh’s angel protested to Joshua, saying,",
+    "target": {
+     "surface": "וַיָּ֨עַד֙",
+     "morph": "Vhw3ms",
+     "position": 0
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "עָשָׂה",
+    "gloss": "to do, make",
+    "freq": 2511,
+    "pos": "Verb",
+    "strongs": "6213"
+   },
+   {
+    "lemma": "יִשְׂרָאֵל",
+    "gloss": "Israel",
+    "freq": 2506,
+    "pos": "Noun",
+    "strongs": "3478"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "עַם",
+    "gloss": "people, nation",
+    "freq": 1358,
+    "pos": "Noun",
+    "strongs": "5971"
+   },
+   {
+    "lemma": "רָאָה",
+    "gloss": "to see",
+    "freq": 1170,
+    "pos": "Verb",
+    "strongs": "7200"
+   },
+   {
+    "lemma": "עָבַר",
+    "gloss": "to pass over, cross",
+    "freq": 515,
+    "pos": "Verb",
+    "strongs": "5674"
+   },
+   {
+    "lemma": "שָׁמַיִם",
+    "gloss": "heavens, sky",
+    "freq": 405,
+    "pos": "Noun",
+    "strongs": "8064"
+   },
+   {
+    "lemma": "נָא",
+    "gloss": "please (particle of entreaty)",
+    "freq": 403,
+    "pos": "Particle",
+    "strongs": "4994"
+   },
+   {
+    "lemma": "חֶרֶב",
+    "gloss": "sword",
+    "freq": 350,
+    "pos": "Noun",
+    "strongs": "2719"
+   },
+   {
+    "lemma": "מִשְׁפָּט",
+    "gloss": "judgment, justice, ordinance",
+    "freq": 302,
+    "pos": "Noun",
+    "strongs": "4941"
+   },
+   {
+    "lemma": "עֹלָה",
+    "gloss": "burnt offering",
+    "freq": 259,
+    "pos": "Noun",
+    "strongs": "5930"
+   },
+   {
+    "lemma": "קָרַב",
+    "gloss": "to come near, approach",
+    "freq": 256,
+    "pos": "Verb",
+    "strongs": "7126"
+   },
+   {
+    "lemma": "יְהוֹשׁוּעַ",
+    "gloss": "Joshua",
+    "freq": 218,
+    "pos": "Noun",
+    "strongs": "3091"
+   },
+   {
+    "lemma": "מֲלְאָךְ",
+    "gloss": "messenger, angel",
+    "freq": 195,
+    "pos": "Noun",
+    "strongs": "4397"
+   },
+   {
+    "lemma": "כָּבוֹד",
+    "gloss": "glory, honor, abundance",
+    "freq": 138,
+    "pos": "Noun",
+    "strongs": "3519"
+   },
+   {
+    "lemma": "נַחֲלָה",
+    "gloss": "inheritance, possession",
+    "freq": 121,
+    "pos": "Noun",
+    "strongs": "5159"
+   },
+   {
+    "lemma": "בַּעַל",
+    "gloss": "Baal",
+    "freq": 80,
+    "pos": "Noun",
+    "strongs": "1168"
+   },
+   {
+    "lemma": "סָגַר",
+    "gloss": "to shut, close",
+    "freq": 77,
+    "pos": "Verb",
+    "strongs": "5462"
+   },
+   {
+    "lemma": "יֵהוּא",
+    "gloss": "Jehu",
+    "freq": 58,
+    "pos": "Noun",
+    "strongs": "3058"
+   },
+   {
+    "lemma": "שָׁמַד",
+    "gloss": "to be destroyed; destroy, exterminate",
+    "freq": 55,
+    "pos": "Verb",
+    "strongs": "8045"
+   },
+   {
+    "lemma": "עוּד",
+    "gloss": "to testify, warn, admonish",
+    "freq": 38,
+    "pos": "Verb",
+    "strongs": "5749"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "וַתּוֹצֵ֨א",
+    "morph": "Vhw3fs",
+    "strongs": "3318",
+    "kind": "parse",
+    "ref": "Genesis 1:12",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 12
+   },
+   {
+    "surface": "תּוֹצֵ֨א",
+    "morph": "Vhj3fs",
+    "strongs": "3318",
+    "kind": "parse",
+    "ref": "Genesis 1:24",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 24
+   },
+   {
+    "surface": "וַיָּבֵא֙",
+    "morph": "Vhw3ms",
+    "strongs": "935",
+    "kind": "parse",
+    "ref": "Genesis 2:19",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 19
+   },
+   {
+    "surface": "וַיַּפֵּל֩",
+    "morph": "Vhw3ms",
+    "strongs": "5307",
+    "kind": "parse",
+    "ref": "Genesis 2:21",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 21
+   },
+   {
+    "surface": "וַיְבִאֶ֖הָ",
+    "morph": "Sp3fs",
+    "strongs": "935",
+    "kind": "segment",
+    "segments": [
+     {
+      "text": "וַ",
+      "morph": "C"
+     },
+     {
+      "text": "יְבִאֶ֖",
+      "morph": "Vhw3ms"
+     },
+     {
+      "text": "הָ",
+      "morph": "Sp3fs"
+     }
+    ],
+    "ref": "Genesis 2:22",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 22
+   },
+   {
+    "surface": "הִגִּ֣יד",
+    "morph": "Vhp3ms",
+    "strongs": "5046",
+    "kind": "parse",
+    "ref": "Genesis 3:11",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 11
+   },
+   {
+    "surface": "הַרְבָּ֤ה",
+    "morph": "Vha",
+    "strongs": "7235",
+    "kind": "parse",
+    "ref": "Genesis 3:16",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 16
+   },
+   {
+    "surface": "וַיַּשְׁכֵּן֩",
+    "morph": "Vhw3ms",
+    "strongs": "7931",
+    "kind": "parse",
+    "ref": "Genesis 3:24",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 24
+   },
+   {
+    "surface": "וַתֹּ֣סֶף",
+    "morph": "Vhw3fs",
+    "strongs": "3254",
+    "kind": "parse",
+    "ref": "Genesis 4:2",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 2
+   },
+   {
+    "surface": "וַיָּבֵ֨א",
+    "morph": "Vhw3ms",
+    "strongs": "935",
+    "kind": "parse",
+    "ref": "Genesis 4:3",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 3
+   },
+   {
+    "surface": "הֵבִ֥יא",
+    "morph": "Vhp3ms",
+    "strongs": "935",
+    "kind": "parse",
+    "ref": "Genesis 4:4",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 4
+   },
+   {
+    "surface": "תֹסֵ֥ף",
+    "morph": "Vhj3fs",
+    "strongs": "3254",
+    "kind": "parse",
+    "ref": "Genesis 4:12",
+    "osis": "Gen",
+    "chapter": 4,
+    "verse": 12
+   }
+  ]
+ },
+ "hithpael": {
+  "examples": [
+   {
+    "ref": "Genesis 23:12",
+    "osis": "Gen",
+    "chapter": 23,
+    "verse": 12,
+    "he": "וַיִּשְׁתַּ֨חוּ֙ אַבְרָהָ֔ם לִפְנֵ֖י עַ֥ם הָאָֽרֶץ",
+    "en": "Abraham bowed himself down before the people of the land.",
+    "target": {
+     "surface": "וַיִּשְׁתַּ֨חוּ֙",
+     "morph": "Vtw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 116:9",
+    "osis": "Ps",
+    "chapter": 116,
+    "verse": 9,
+    "he": "אֶ֭תְהַלֵּךְ לִפְנֵ֣י יְהוָ֑ה בְּ֝אַרְצ֗וֹת הַֽחַיִּֽים",
+    "en": "I will walk before Yahweh in the land of the living.",
+    "target": {
+     "surface": "אֶ֭תְהַלֵּךְ",
+     "morph": "Vti1cs",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 119:52",
+    "osis": "Ps",
+    "chapter": 119,
+    "verse": 52,
+    "he": "זָ֘כַ֤רְתִּי מִשְׁפָּטֶ֖יךָ מֵעוֹלָ֥ם יְהוָ֗ה וָֽאֶתְנֶחָֽם",
+    "en": "I remember your ordinances of old, Yahweh, and have comforted myself.",
+    "target": {
+     "surface": "וָֽאֶתְנֶחָֽם",
+     "morph": "Vtw1cs",
+     "position": 4
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Isaiah 37:15",
+    "osis": "Isa",
+    "chapter": 37,
+    "verse": 15,
+    "he": "וַיִּתְפַּלֵּל֙ חִזְקִיָּ֔הוּ אֶל יְהוָ֖ה לֵאמֹֽר",
+    "en": "Hezekiah prayed to Yahweh, saying,",
+    "target": {
+     "surface": "וַיִּתְפַּלֵּל֙",
+     "morph": "Vtw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 3:23",
+    "osis": "Deut",
+    "chapter": 3,
+    "verse": 23,
+    "he": "וָאֶתְחַנַּ֖ן אֶל יְהוָ֑ה בָּעֵ֥ת הַהִ֖וא לֵאמֹֽר",
+    "en": "I begged Yahweh at that time, saying,",
+    "target": {
+     "surface": "וָאֶתְחַנַּ֖ן",
+     "morph": "Vtw1cs",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "2 Kings 19:27",
+    "osis": "2Kgs",
+    "chapter": 19,
+    "verse": 27,
+    "he": "וְשִׁבְתְּךָ֛ וְצֵאתְךָ֥ וּבֹאֲךָ֖ יָדָ֑עְתִּי וְאֵ֖ת הִֽתְרַגֶּזְךָ֥ אֵלָֽי",
+    "en": "But I know your sitting down, and your going out, and your coming in, and your raging against me.",
+    "target": {
+     "surface": "הִֽתְרַגֶּזְךָ֥",
+     "morph": "Sp2ms",
+     "position": 5
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "בּוֹא",
+    "gloss": "to come, go in, enter",
+    "freq": 2297,
+    "pos": "Verb",
+    "strongs": "935"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "הוּא",
+    "gloss": "he, it; that",
+    "freq": 1879,
+    "pos": "Pron",
+    "strongs": "1931"
+   },
+   {
+    "lemma": "עַם",
+    "gloss": "people, nation",
+    "freq": 1358,
+    "pos": "Noun",
+    "strongs": "5971"
+   },
+   {
+    "lemma": "פָּנִים",
+    "gloss": "face, presence",
+    "freq": 1250,
+    "pos": "Noun",
+    "strongs": "6440"
+   },
+   {
+    "lemma": "יָשַׁב",
+    "gloss": "to sit, dwell, remain",
+    "freq": 1005,
+    "pos": "Verb",
+    "strongs": "3427"
+   },
+   {
+    "lemma": "יָצָא",
+    "gloss": "to go out, come out",
+    "freq": 933,
+    "pos": "Verb",
+    "strongs": "3318"
+   },
+   {
+    "lemma": "יָדַע",
+    "gloss": "to know",
+    "freq": 838,
+    "pos": "Verb",
+    "strongs": "3045"
+   },
+   {
+    "lemma": "הָלַךְ",
+    "gloss": "to go, walk",
+    "freq": 499,
+    "pos": "Verb",
+    "strongs": "1980"
+   },
+   {
+    "lemma": "עוֹלָם",
+    "gloss": "eternity, forever, everlasting",
+    "freq": 437,
+    "pos": "Noun",
+    "strongs": "5769"
+   },
+   {
+    "lemma": "חַי",
+    "gloss": "living, alive",
+    "freq": 415,
+    "pos": "Adj",
+    "strongs": "2416"
+   },
+   {
+    "lemma": "מִשְׁפָּט",
+    "gloss": "judgment, justice, ordinance",
+    "freq": 302,
+    "pos": "Noun",
+    "strongs": "4941"
+   },
+   {
+    "lemma": "עֵת",
+    "gloss": "time",
+    "freq": 273,
+    "pos": "Noun",
+    "strongs": "6256"
+   },
+   {
+    "lemma": "זָכַר",
+    "gloss": "to remember",
+    "freq": 202,
+    "pos": "Verb",
+    "strongs": "2142"
+   },
+   {
+    "lemma": "אַבְרָהָם",
+    "gloss": "Abraham",
+    "freq": 175,
+    "pos": "Noun",
+    "strongs": "85"
+   },
+   {
+    "lemma": "שָׁחָה",
+    "gloss": "to bow down, worship",
+    "freq": 170,
+    "pos": "Verb",
+    "strongs": "7812"
+   },
+   {
+    "lemma": "חִזְקִיָּה",
+    "gloss": "Hezekiah",
+    "freq": 130,
+    "pos": "Noun",
+    "strongs": "2396"
+   },
+   {
+    "lemma": "נָחַם",
+    "gloss": "to comfort; be sorry, relent",
+    "freq": 82,
+    "pos": "Verb",
+    "strongs": "5162"
+   },
+   {
+    "lemma": "פָּלַל",
+    "gloss": "to pray, intercede",
+    "freq": 81,
+    "pos": "Verb",
+    "strongs": "6419"
+   },
+   {
+    "lemma": "חָנַן",
+    "gloss": "to be gracious, show favor",
+    "freq": 39,
+    "pos": "Verb",
+    "strongs": "2603"
+   },
+   {
+    "lemma": "רָגַז",
+    "gloss": "to tremble, quake, rage",
+    "freq": 34,
+    "pos": "Verb",
+    "strongs": "7264"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "מִתְהַלֵּ֥ךְ",
+    "morph": "Vtrmsa",
+    "strongs": "1980",
+    "kind": "parse",
+    "ref": "Genesis 3:8",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 8
+   },
+   {
+    "surface": "וַיִּתְהַלֵּ֨ךְ",
+    "morph": "Vtw3ms",
+    "strongs": "1980",
+    "kind": "parse",
+    "ref": "Genesis 5:22",
+    "osis": "Gen",
+    "chapter": 5,
+    "verse": 22
+   },
+   {
+    "surface": "וַיִּתְהַלֵּ֥ךְ",
+    "morph": "Vtw3ms",
+    "strongs": "1980",
+    "kind": "parse",
+    "ref": "Genesis 5:24",
+    "osis": "Gen",
+    "chapter": 5,
+    "verse": 24
+   },
+   {
+    "surface": "הִֽתְהַלֶּךְ",
+    "morph": "Vtp3ms",
+    "strongs": "1980",
+    "kind": "parse",
+    "ref": "Genesis 6:9",
+    "osis": "Gen",
+    "chapter": 6,
+    "verse": 9
+   },
+   {
+    "surface": "וַיִּתְגַּ֖ל",
+    "morph": "Vtw3ms",
+    "strongs": "1540",
+    "kind": "parse",
+    "ref": "Genesis 9:21",
+    "osis": "Gen",
+    "chapter": 9,
+    "verse": 21
+   },
+   {
+    "surface": "הִתְהַלֵּ֣ךְ",
+    "morph": "Vtv2ms",
+    "strongs": "1980",
+    "kind": "parse",
+    "ref": "Genesis 13:17",
+    "osis": "Gen",
+    "chapter": 13,
+    "verse": 17
+   },
+   {
+    "surface": "הִתְהַלֵּ֥ךְ",
+    "morph": "Vtv2ms",
+    "strongs": "1980",
+    "kind": "parse",
+    "ref": "Genesis 17:1",
+    "osis": "Gen",
+    "chapter": 17,
+    "verse": 1
+   },
+   {
+    "surface": "וַיִּשְׁתַּ֖חוּ",
+    "morph": "Vtw3ms",
+    "strongs": "7812",
+    "kind": "parse",
+    "ref": "Genesis 18:2",
+    "osis": "Gen",
+    "chapter": 18,
+    "verse": 2
+   },
+   {
+    "surface": "וְהִתְבָּרֲכ֣וּ",
+    "morph": "Vtq3cp",
+    "strongs": "1288",
+    "kind": "parse",
+    "ref": "Genesis 22:18",
+    "osis": "Gen",
+    "chapter": 22,
+    "verse": 18
+   },
+   {
+    "surface": "הִתְהַלַּ֣כְתִּי",
+    "morph": "Vtp1cs",
+    "strongs": "1980",
+    "kind": "parse",
+    "ref": "Genesis 24:40",
+    "osis": "Gen",
+    "chapter": 24,
+    "verse": 40
+   },
+   {
+    "surface": "וַתִּתְכָּֽס",
+    "morph": "Vtw3fs",
+    "strongs": "3680",
+    "kind": "parse",
+    "ref": "Genesis 24:65",
+    "osis": "Gen",
+    "chapter": 24,
+    "verse": 65
+   },
+   {
+    "surface": "וַיִּֽשְׁתַּחֲו֑וּ",
+    "morph": "Vtw3mp",
+    "strongs": "7812",
+    "kind": "parse",
+    "ref": "Genesis 33:7",
+    "osis": "Gen",
+    "chapter": 33,
+    "verse": 7
+   }
+  ]
+ },
+ "syntax": {
+  "examples": [
+   {
+    "ref": "Genesis 21:24",
+    "osis": "Gen",
+    "chapter": 21,
+    "verse": 24,
+    "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
+    "en": "Abraham said, “I will swear.”",
+    "target": {
+     "surface": "וַיֹּ֨אמֶר֙",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 24:26",
+    "osis": "Gen",
+    "chapter": 24,
+    "verse": 26,
+    "he": "וַיִּקֹּ֣ד הָאִ֔ישׁ וַיִּשְׁתַּ֖חוּ לַֽיהוָֽה",
+    "en": "The man bowed his head, and worshiped Yahweh.",
+    "target": {
+     "surface": "וַיִּקֹּ֣ד",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Numbers 33:13",
+    "osis": "Num",
+    "chapter": 33,
+    "verse": 13,
+    "he": "וַיִּסְע֖וּ מִדָּפְקָ֑ה וַֽיַּחֲנ֖וּ בְּאָלֽוּשׁ",
+    "en": "They traveled from Dophkah, and encamped in Alush.",
+    "target": {
+     "surface": "וַיִּסְע֖וּ",
+     "morph": "Vqw3mp",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "2 Samuel 17:26",
+    "osis": "2Sam",
+    "chapter": 17,
+    "verse": 26,
+    "he": "וַיִּ֤חַן יִשְׂרָאֵל֙ וְאַבְשָׁלֹ֔ם אֶ֖רֶץ הַגִּלְעָֽד",
+    "en": "Israel and Absalom encamped in the land of Gilead.",
+    "target": {
+     "surface": "וַיִּ֤חַן",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Kings 6:14",
+    "osis": "1Kgs",
+    "chapter": 6,
+    "verse": 14,
+    "he": "וַיִּ֧בֶן שְׁלֹמֹ֛ה אֶת הַבַּ֖יִת וַיְכַלֵּֽהוּ",
+    "en": "So Solomon built the house, and finished it.",
+    "target": {
+     "surface": "וַיִּ֧בֶן",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "1 Kings 17:2",
+    "osis": "1Kgs",
+    "chapter": 17,
+    "verse": 2,
+    "he": "וַיְהִ֥י דְבַר יְהוָ֖ה אֵלָ֥יו לֵאמֹֽר",
+    "en": "Yahweh’s word came to him, saying,",
+    "target": {
+     "surface": "וַיְהִ֥י",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "הָיָה",
+    "gloss": "to be, become, happen",
+    "freq": 3528,
+    "pos": "Verb",
+    "strongs": "1961"
+   },
+   {
+    "lemma": "יִשְׂרָאֵל",
+    "gloss": "Israel",
+    "freq": 2506,
+    "pos": "Noun",
+    "strongs": "3478"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "אִישׁ",
+    "gloss": "man, husband",
+    "freq": 2077,
+    "pos": "Noun",
+    "strongs": "376"
+   },
+   {
+    "lemma": "בַּיִת",
+    "gloss": "house",
+    "freq": 1662,
+    "pos": "Noun",
+    "strongs": "1004"
+   },
+   {
+    "lemma": "דָּבָר",
+    "gloss": "word, thing, matter",
+    "freq": 1249,
+    "pos": "Noun",
+    "strongs": "1697"
+   },
+   {
+    "lemma": "אָנֹכִי",
+    "gloss": "I",
+    "freq": 359,
+    "pos": "Pron",
+    "strongs": "595"
+   },
+   {
+    "lemma": "בָּנָה",
+    "gloss": "to build",
+    "freq": 357,
+    "pos": "Verb",
+    "strongs": "1129"
+   },
+   {
+    "lemma": "שְׁלֹמֹה",
+    "gloss": "Solomon",
+    "freq": 293,
+    "pos": "Noun",
+    "strongs": "8010"
+   },
+   {
+    "lemma": "אַבְרָהָם",
+    "gloss": "Abraham",
+    "freq": 175,
+    "pos": "Noun",
+    "strongs": "85"
+   },
+   {
+    "lemma": "שָׁחָה",
+    "gloss": "to bow down, worship",
+    "freq": 170,
+    "pos": "Verb",
+    "strongs": "7812"
+   },
+   {
+    "lemma": "שָׁבַע",
+    "gloss": "to swear, take an oath",
+    "freq": 168,
+    "pos": "Verb",
+    "strongs": "7650"
+   },
+   {
+    "lemma": "כָּלָה",
+    "gloss": "to be complete, finished; end",
+    "freq": 159,
+    "pos": "Verb",
+    "strongs": "3615"
+   },
+   {
+    "lemma": "נָסַע",
+    "gloss": "to set out, journey, pull up",
+    "freq": 142,
+    "pos": "Verb",
+    "strongs": "5265"
+   },
+   {
+    "lemma": "חָנָה",
+    "gloss": "to encamp, camp",
+    "freq": 139,
+    "pos": "Verb",
+    "strongs": "2583"
+   },
+   {
+    "lemma": "גִּלְעָד",
+    "gloss": "Gilead",
+    "freq": 131,
+    "pos": "Noun",
+    "strongs": "1568"
+   },
+   {
+    "lemma": "אֲבִישָׁלוֹם",
+    "gloss": "Absalom",
+    "freq": 111,
+    "pos": "Noun",
+    "strongs": "53"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "וַיֹּ֥אמֶר",
     "morph": "Vqw3ms",
-    "position": 0
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 1:3",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 3
    },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 24:26",
-   "osis": "Gen",
-   "chapter": 24,
-   "verse": 26,
-   "he": "וַיִּקֹּ֣ד הָאִ֔ישׁ וַיִּשְׁתַּ֖חוּ לַֽיהוָֽה",
-   "en": "The man bowed his head, and worshiped Yahweh.",
-   "target": {
-    "surface": "וַיִּקֹּ֣ד",
+   {
+    "surface": "וַיַּ֧רְא",
     "morph": "Vqw3ms",
-    "position": 0
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 1:4",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 4
    },
-   "tier": 0
-  },
-  {
-   "ref": "Numbers 33:13",
-   "osis": "Num",
-   "chapter": 33,
-   "verse": 13,
-   "he": "וַיִּסְע֖וּ מִדָּפְקָ֑ה וַֽיַּחֲנ֖וּ בְּאָלֽוּשׁ",
-   "en": "They traveled from Dophkah, and encamped in Alush.",
-   "target": {
-    "surface": "וַיִּסְע֖וּ",
+   {
+    "surface": "וַיִּקְרָ֨א",
+    "morph": "Vqw3ms",
+    "strongs": "7121",
+    "kind": "parse",
+    "ref": "Genesis 1:5",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 5
+   },
+   {
+    "surface": "וַיֹּ֣אמֶר",
+    "morph": "Vqw3ms",
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 1:6",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 6
+   },
+   {
+    "surface": "וַיִּֽהְי֤וּ",
     "morph": "Vqw3mp",
-    "position": 0
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 2:25",
+    "osis": "Gen",
+    "chapter": 2,
+    "verse": 25
    },
-   "tier": 0
-  },
-  {
-   "ref": "2 Samuel 17:26",
-   "osis": "2Sam",
-   "chapter": 17,
-   "verse": 26,
-   "he": "וַיִּ֤חַן יִשְׂרָאֵל֙ וְאַבְשָׁלֹ֔ם אֶ֖רֶץ הַגִּלְעָֽד",
-   "en": "Israel and Absalom encamped in the land of Gilead.",
-   "target": {
-    "surface": "וַיִּ֤חַן",
+   {
+    "surface": "וַתֹּ֥אמֶר",
+    "morph": "Vqw3fs",
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 3:2",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 2
+   },
+   {
+    "surface": "וַתֵּ֣רֶא",
+    "morph": "Vqw3fs",
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 3:6",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 6
+   },
+   {
+    "surface": "וַיֵּ֣דְע֔וּ",
+    "morph": "Vqw3mp",
+    "strongs": "3045",
+    "kind": "parse",
+    "ref": "Genesis 3:7",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 7
+   },
+   {
+    "surface": "וַֽיִּשְׁמְע֞וּ",
+    "morph": "Vqw3mp",
+    "strongs": "8085",
+    "kind": "parse",
+    "ref": "Genesis 3:8",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 8
+   },
+   {
+    "surface": "וָאִירָ֛א",
+    "morph": "Vqw1cs",
+    "strongs": "3372",
+    "kind": "parse",
+    "ref": "Genesis 3:10",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 10
+   },
+   {
+    "surface": "וָאֹכֵֽל",
+    "morph": "Vqw1cs",
+    "strongs": "398",
+    "kind": "parse",
+    "ref": "Genesis 3:12",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 12
+   },
+   {
+    "surface": "וַתֹּ֨אמֶר֙",
+    "morph": "Vqw3fs",
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 3:13",
+    "osis": "Gen",
+    "chapter": 3,
+    "verse": 13
+   }
+  ]
+ },
+ "verb-system": {
+  "examples": [
+   {
+    "ref": "Genesis 21:24",
+    "osis": "Gen",
+    "chapter": 21,
+    "verse": 24,
+    "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
+    "en": "Abraham said, “I will swear.”",
+    "target": {
+     "surface": "וַיֹּ֨אמֶר֙",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Genesis 24:26",
+    "osis": "Gen",
+    "chapter": 24,
+    "verse": 26,
+    "he": "וַיִּקֹּ֣ד הָאִ֔ישׁ וַיִּשְׁתַּ֖חוּ לַֽיהוָֽה",
+    "en": "The man bowed his head, and worshiped Yahweh.",
+    "target": {
+     "surface": "וַיִּקֹּ֣ד",
+     "morph": "Vqw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 2:17",
+    "osis": "Deut",
+    "chapter": 2,
+    "verse": 17,
+    "he": "וַיְדַבֵּ֥ר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
+    "en": "Yahweh spoke to me, saying,",
+    "target": {
+     "surface": "וַיְדַבֵּ֥ר",
+     "morph": "Vpw3ms",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Deuteronomy 3:15",
+    "osis": "Deut",
+    "chapter": 3,
+    "verse": 15,
+    "he": "וּלְמָכִ֖יר נָתַ֥תִּי אֶת הַגִּלְעָֽד",
+    "en": "I gave Gilead to Machir.",
+    "target": {
+     "surface": "נָתַ֥תִּי",
+     "morph": "Vqp1cs",
+     "position": 1
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Psalm 113:6",
+    "osis": "Ps",
+    "chapter": 113,
+    "verse": 6,
+    "he": "הַֽמַּשְׁפִּילִ֥י לִרְא֑וֹת בַּשָּׁמַ֥יִם וּבָאָֽרֶץ",
+    "en": "Who stoops down to see in heaven and in the earth?",
+    "target": {
+     "surface": "הַֽמַּשְׁפִּילִ֥י",
+     "morph": "Vhrmsc",
+     "position": 0
+    },
+    "tier": 0
+   },
+   {
+    "ref": "Numbers 26:11",
+    "osis": "Num",
+    "chapter": 26,
+    "verse": 11,
+    "he": "וּבְנֵי קֹ֖רַח לֹא מֵֽתוּ",
+    "en": "Notwithstanding, the sons of Korah didn’t die.",
+    "target": {
+     "surface": "מֵֽתוּ",
+     "morph": "Vqp3cp",
+     "position": 3
+    },
+    "tier": 0
+   }
+  ],
+  "vocab": [
+   {
+    "lemma": "אֵת",
+    "gloss": "(direct object marker)",
+    "freq": 9254,
+    "pos": "Particle",
+    "strongs": "853"
+   },
+   {
+    "lemma": "יְהֹוָה",
+    "gloss": "the LORD (Yahweh)",
+    "freq": 6521,
+    "pos": "Noun",
+    "strongs": "3068"
+   },
+   {
+    "lemma": "אָמַר",
+    "gloss": "to say",
+    "freq": 5263,
+    "pos": "Verb",
+    "strongs": "559"
+   },
+   {
+    "lemma": "לֹא",
+    "gloss": "no, not",
+    "freq": 5186,
+    "pos": "Particle",
+    "strongs": "3808"
+   },
+   {
+    "lemma": "בֵּן",
+    "gloss": "son",
+    "freq": 4006,
+    "pos": "Noun",
+    "strongs": "1121"
+   },
+   {
+    "lemma": "אֶל",
+    "gloss": "to, toward, unto",
+    "freq": 3879,
+    "pos": "Prep",
+    "strongs": "413"
+   },
+   {
+    "lemma": "אֶרֶץ",
+    "gloss": "earth, land",
+    "freq": 2229,
+    "pos": "Noun",
+    "strongs": "776"
+   },
+   {
+    "lemma": "אִישׁ",
+    "gloss": "man, husband",
+    "freq": 2077,
+    "pos": "Noun",
+    "strongs": "376"
+   },
+   {
+    "lemma": "נָתַן",
+    "gloss": "to give, put, set",
+    "freq": 1708,
+    "pos": "Verb",
+    "strongs": "5414"
+   },
+   {
+    "lemma": "רָאָה",
+    "gloss": "to see",
+    "freq": 1170,
+    "pos": "Verb",
+    "strongs": "7200"
+   },
+   {
+    "lemma": "דָבַר",
+    "gloss": "to speak",
+    "freq": 1110,
+    "pos": "Verb",
+    "strongs": "1696"
+   },
+   {
+    "lemma": "מוּת",
+    "gloss": "to die",
+    "freq": 738,
+    "pos": "Verb",
+    "strongs": "4191"
+   },
+   {
+    "lemma": "שָׁמַיִם",
+    "gloss": "heavens, sky",
+    "freq": 405,
+    "pos": "Noun",
+    "strongs": "8064"
+   },
+   {
+    "lemma": "אָנֹכִי",
+    "gloss": "I",
+    "freq": 359,
+    "pos": "Pron",
+    "strongs": "595"
+   },
+   {
+    "lemma": "אַבְרָהָם",
+    "gloss": "Abraham",
+    "freq": 175,
+    "pos": "Noun",
+    "strongs": "85"
+   },
+   {
+    "lemma": "שָׁחָה",
+    "gloss": "to bow down, worship",
+    "freq": 170,
+    "pos": "Verb",
+    "strongs": "7812"
+   },
+   {
+    "lemma": "שָׁבַע",
+    "gloss": "to swear, take an oath",
+    "freq": 168,
+    "pos": "Verb",
+    "strongs": "7650"
+   },
+   {
+    "lemma": "גִּלְעָד",
+    "gloss": "Gilead",
+    "freq": 131,
+    "pos": "Noun",
+    "strongs": "1568"
+   },
+   {
+    "lemma": "קֹרַח",
+    "gloss": "Korah",
+    "freq": 37,
+    "pos": "Noun",
+    "strongs": "7141"
+   }
+  ],
+  "drills": [
+   {
+    "surface": "הָיְתָ֥ה",
+    "morph": "Vqp3fs",
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 1:2",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 2
+   },
+   {
+    "surface": "וַיֹּ֥אמֶר",
     "morph": "Vqw3ms",
-    "position": 0
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 1:3",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 3
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Kings 6:14",
-   "osis": "1Kgs",
-   "chapter": 6,
-   "verse": 14,
-   "he": "וַיִּ֧בֶן שְׁלֹמֹ֛ה אֶת הַבַּ֖יִת וַיְכַלֵּֽהוּ",
-   "en": "So Solomon built the house, and finished it.",
-   "target": {
-    "surface": "וַיִּ֧בֶן",
+   {
+    "surface": "וַיַּ֧רְא",
     "morph": "Vqw3ms",
-    "position": 0
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 1:4",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 4
    },
-   "tier": 0
-  },
-  {
-   "ref": "1 Kings 17:2",
-   "osis": "1Kgs",
-   "chapter": 17,
-   "verse": 2,
-   "he": "וַיְהִ֥י דְבַר יְהוָ֖ה אֵלָ֥יו לֵאמֹֽר",
-   "en": "Yahweh’s word came to him, saying,",
-   "target": {
-    "surface": "וַיְהִ֥י",
+   {
+    "surface": "וַיִּקְרָ֨א",
     "morph": "Vqw3ms",
-    "position": 0
+    "strongs": "7121",
+    "kind": "parse",
+    "ref": "Genesis 1:5",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 5
    },
-   "tier": 0
-  }
- ],
- "verb-system": [
-  {
-   "ref": "Genesis 21:24",
-   "osis": "Gen",
-   "chapter": 21,
-   "verse": 24,
-   "he": "וַיֹּ֨אמֶר֙ אַבְרָהָ֔ם אָנֹכִ֖י אִשָּׁבֵֽעַ",
-   "en": "Abraham said, “I will swear.”",
-   "target": {
-    "surface": "וַיֹּ֨אמֶר֙",
+   {
+    "surface": "וַיֹּ֣אמֶר",
     "morph": "Vqw3ms",
-    "position": 0
+    "strongs": "559",
+    "kind": "parse",
+    "ref": "Genesis 1:6",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 6
    },
-   "tier": 0
-  },
-  {
-   "ref": "Genesis 24:26",
-   "osis": "Gen",
-   "chapter": 24,
-   "verse": 26,
-   "he": "וַיִּקֹּ֣ד הָאִ֔ישׁ וַיִּשְׁתַּ֖חוּ לַֽיהוָֽה",
-   "en": "The man bowed his head, and worshiped Yahweh.",
-   "target": {
-    "surface": "וַיִּקֹּ֣ד",
-    "morph": "Vqw3ms",
-    "position": 0
+   {
+    "surface": "וְתֵרָאֶ֖ה",
+    "morph": "VNi3fs",
+    "strongs": "7200",
+    "kind": "parse",
+    "ref": "Genesis 1:9",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 9
    },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 2:17",
-   "osis": "Deut",
-   "chapter": 2,
-   "verse": 17,
-   "he": "וַיְדַבֵּ֥ר יְהוָ֖ה אֵלַ֥י לֵאמֹֽר",
-   "en": "Yahweh spoke to me, saying,",
-   "target": {
-    "surface": "וַיְדַבֵּ֥ר",
+   {
+    "surface": "קָרָ֣א",
+    "morph": "Vqp3ms",
+    "strongs": "7121",
+    "kind": "parse",
+    "ref": "Genesis 1:10",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 10
+   },
+   {
+    "surface": "עֹ֤שֶׂה",
+    "morph": "Vqrmsa",
+    "strongs": "6213",
+    "kind": "parse",
+    "ref": "Genesis 1:11",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 11
+   },
+   {
+    "surface": "וַתּוֹצֵ֨א",
+    "morph": "Vhw3fs",
+    "strongs": "3318",
+    "kind": "parse",
+    "ref": "Genesis 1:12",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 12
+   },
+   {
+    "surface": "יְהִ֤י",
+    "morph": "Vqj3ms",
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 1:14",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 14
+   },
+   {
+    "surface": "וְהָי֤וּ",
+    "morph": "Vqq3cp",
+    "strongs": "1961",
+    "kind": "parse",
+    "ref": "Genesis 1:15",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 15
+   },
+   {
+    "surface": "וַיְבָ֧רֶךְ",
     "morph": "Vpw3ms",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Deuteronomy 3:15",
-   "osis": "Deut",
-   "chapter": 3,
-   "verse": 15,
-   "he": "וּלְמָכִ֖יר נָתַ֥תִּי אֶת הַגִּלְעָֽד",
-   "en": "I gave Gilead to Machir.",
-   "target": {
-    "surface": "נָתַ֥תִּי",
-    "morph": "Vqp1cs",
-    "position": 1
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Psalm 113:6",
-   "osis": "Ps",
-   "chapter": 113,
-   "verse": 6,
-   "he": "הַֽמַּשְׁפִּילִ֥י לִרְא֑וֹת בַּשָּׁמַ֥יִם וּבָאָֽרֶץ",
-   "en": "Who stoops down to see in heaven and in the earth?",
-   "target": {
-    "surface": "הַֽמַּשְׁפִּילִ֥י",
-    "morph": "Vhrmsc",
-    "position": 0
-   },
-   "tier": 0
-  },
-  {
-   "ref": "Numbers 26:11",
-   "osis": "Num",
-   "chapter": 26,
-   "verse": 11,
-   "he": "וּבְנֵי קֹ֖רַח לֹא מֵֽתוּ",
-   "en": "Notwithstanding, the sons of Korah didn’t die.",
-   "target": {
-    "surface": "מֵֽתוּ",
-    "morph": "Vqp3cp",
-    "position": 3
-   },
-   "tier": 0
-  }
- ]
+    "strongs": "1288",
+    "kind": "parse",
+    "ref": "Genesis 1:22",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 22
+   }
+  ]
+ }
 }

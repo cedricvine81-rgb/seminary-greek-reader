@@ -5,7 +5,7 @@
    denominative range, and the high-frequency Piel vocabulary.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_PIEL_PUAL = (
   <>
@@ -111,6 +111,8 @@ export const HB_PIEL_PUAL = (
 
     <HbExamples id="piel-pual" />
 
+    <HbVocab id="piel-pual" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -121,5 +123,9 @@ export const HB_PIEL_PUAL = (
         { q: <Hb>צִוִּיתִי</Hb>, a: <>Piel perfect 1cs of <Hb>צוה</Hb> — “I commanded” (a III-ה root in Piel).</> },
       ]}
     />
+
+    <HbDrills id="piel-pual" />
+
+    <HbReview id="piel-pual" />
   </>
 )

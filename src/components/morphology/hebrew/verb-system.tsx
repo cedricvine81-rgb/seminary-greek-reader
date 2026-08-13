@@ -6,7 +6,7 @@
    pane shows and the morphology quizzes ask for.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_VERB_SYSTEM = (
   <>
@@ -85,6 +85,8 @@ export const HB_VERB_SYSTEM = (
 
     <HbExamples id="verb-system" />
 
+    <HbVocab id="verb-system" />
+
     <Practice
       level="both"
       title="Try it"
@@ -95,5 +97,9 @@ export const HB_VERB_SYSTEM = (
         { q: <>Name the five parsing slots.</>, a: <>Stem, conjugation, person, gender, number — then add the root.</> },
       ]}
     />
+
+    <HbDrills id="verb-system" />
+
+    <HbReview id="verb-system" />
   </>
 )

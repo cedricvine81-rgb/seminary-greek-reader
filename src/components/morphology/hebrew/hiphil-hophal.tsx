@@ -5,7 +5,7 @@
    and the everyday Hiphil vocabulary.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_HIPHIL_HOPHAL = (
   <>
@@ -93,6 +93,8 @@ export const HB_HIPHIL_HOPHAL = (
 
     <HbExamples id="hiphil-hophal" />
 
+    <HbVocab id="hiphil-hophal" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -103,5 +105,9 @@ export const HB_HIPHIL_HOPHAL = (
         { q: <Hb>הָגְלָה</Hb>, a: <>Hophal perfect 3ms of <Hb>גלה</Hb> — “he was carried into exile.”</> },
       ]}
     />
+
+    <HbDrills id="hiphil-hophal" />
+
+    <HbReview id="hiphil-hophal" />
   </>
 )

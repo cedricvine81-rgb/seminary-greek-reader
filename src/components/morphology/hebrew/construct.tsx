@@ -5,7 +5,7 @@
    and what may (and may not) interrupt a construct chain.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_CONSTRUCT = (
   <>
@@ -88,6 +88,8 @@ export const HB_CONSTRUCT = (
 
     <HbExamples id="construct" />
 
+    <HbVocab id="construct" />
+
     <Practice
       level="both"
       title="Try it"
@@ -98,5 +100,9 @@ export const HB_CONSTRUCT = (
         { q: <>Form the construct of <Hb>בָּנִים</Hb> and translate <Hb>__ יִשְׂרָאֵל</Hb>.</>, a: <><Hb>בְּנֵי יִשְׂרָאֵל</Hb> — “the sons/children of Israel.”</> },
       ]}
     />
+
+    <HbDrills id="construct" />
+
+    <HbReview id="construct" />
   </>
 )

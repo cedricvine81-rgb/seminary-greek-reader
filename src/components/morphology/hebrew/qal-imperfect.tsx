@@ -5,7 +5,7 @@
    of meanings (future, habitual, modal, prohibition).
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_QAL_IMPERFECT = (
   <>
@@ -92,6 +92,8 @@ export const HB_QAL_IMPERFECT = (
 
     <HbExamples id="qal-imperfect" />
 
+    <HbVocab id="qal-imperfect" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -102,5 +104,9 @@ export const HB_QAL_IMPERFECT = (
         { q: <Hb>נִשְׁמֹר</Hb>, a: <>Qal imperfect 1cp of <Hb>שׁמר</Hb> — “we will keep.” (Don’t mistake the נ for Niphal: in the imperfect, Niphal shows a dagesh in the FIRST root letter — יִקָּטֵל.)</> },
       ]}
     />
+
+    <HbDrills id="qal-imperfect" />
+
+    <HbReview id="qal-imperfect" />
   </>
 )

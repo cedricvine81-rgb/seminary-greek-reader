@@ -5,7 +5,7 @@
    weqatal. The single most important chapter for actually reading.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_WAW = (
   <>
@@ -82,6 +82,8 @@ export const HB_WAW = (
 
     <HbExamples id="waw-consecutive" />
 
+    <HbVocab id="waw-consecutive" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -92,5 +94,9 @@ export const HB_WAW = (
         { q: <>Why is <Hb>וַיְהִי</Hb> so short?</>, a: <>Wayyiqtol prefers the shortened (jussive) form where one exists: יִהְיֶה → יְהִי, plus וַ. Qal wayyiqtol 3ms of <Hb>היה</Hb>.</> },
       ]}
     />
+
+    <HbDrills id="waw-consecutive" />
+
+    <HbReview id="waw-consecutive" />
   </>
 )

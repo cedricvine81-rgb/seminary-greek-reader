@@ -5,7 +5,7 @@
    clauses) and the absolute (emphasis).
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExamples, HbVocab, HbDrills, HbReview } from '../shared'
 
 export const HB_INFINITIVES = (
   <>
@@ -79,6 +79,8 @@ export const HB_INFINITIVES = (
 
     <HbExamples id="infinitives" />
 
+    <HbVocab id="infinitives" />
+
     <Practice
       level="both"
       title="Parse these"
@@ -89,5 +91,9 @@ export const HB_INFINITIVES = (
         { q: <Hb>לֵאמֹר</Hb>, a: <>לְ + Qal infinitive construct of <Hb>אמר</Hb> — “saying:” — the speech-introducer.</> },
       ]}
     />
+
+    <HbDrills id="infinitives" />
+
+    <HbReview id="infinitives" />
   </>
 )
