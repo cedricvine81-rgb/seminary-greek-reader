@@ -1849,7 +1849,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           title={t('reader.parallelTranslation')}
           className="hidden lg:block shrink-0 self-stretch lg:ml-auto rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 max-w-[10rem]"
         >
-          <option value="">{t('reader.greekOnly')}</option>
+          {/* "no parallel translation" — named for the text actually on screen, so the
+              Hebrew Bible does not offer "Greek only". */}
+          <option value="">{corpus === 'MT' ? t('reader.hebrewOnly') : t('reader.greekOnly')}</option>
           {PARALLEL_LANGS.filter(l => transCompatible(l.code, corpus)).map(l => <option key={l.code} value={l.code}>{t(l.labelKey)}</option>)}
         </select>
         <div ref={settingsRef} className="relative shrink-0">
