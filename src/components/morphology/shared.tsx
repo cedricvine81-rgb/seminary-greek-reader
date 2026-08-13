@@ -83,6 +83,19 @@ const TENSE_IDENTIFIERS = new Set(['σ', 'σα', 'θη', 'θε', 'θ', 'θησ',
  * vowel point), or Safari breaks the shaping — so a prefix segment carries its vowel with it.
  */
 function renderHebrewAffixes(tok: string, key: number): React.ReactNode {
+  // '~' toggles a red span anywhere in the word — for differences that are neither a prefix
+  // nor an ending (the construct state changes vowels INSIDE the word). Pairs of '~' wrap
+  // the changed part; the marker never falls before a combining mark, so shaping is safe.
+  if (tok.includes('~')) {
+    const bits = tok.split('~')
+    return (
+      <span key={key}>
+        {bits.map((b, i) => (i % 2 === 1
+          ? <span key={i} className="text-red-600">{b}</span>
+          : <span key={i}>{b}</span>))}
+      </span>
+    )
+  }
   const parts = tok.split('»')
   const pfx = parts.length > 1 ? parts[0] : null
   let rest = parts.length > 1 ? parts.slice(1).join('') : tok
@@ -104,13 +117,13 @@ function renderHebrewAffixes(tok: string, key: number): React.ReactNode {
 const HEBREW_RE = /[\u0590-\u05FF]/
 
 function renderCell(cell: string): React.ReactNode {
-  if (!cell.includes('|') && !cell.includes('»') && !/(^|\s)[‒–-]\S/.test(cell)) return cell
+  if (!cell.includes('|') && !cell.includes('»') && !cell.includes('~') && !/(^|\s)[‒–-]\S/.test(cell)) return cell
   // Hebrew tokens use the affix renderer (both ends, one colour); Greek keeps its
   // blue-identifier / red-ending scheme below.
   if (HEBREW_RE.test(cell)) {
     const parts = cell.split(/(\s+)/)
     return <>{parts.map((tok, i) => (/^\s*$/.test(tok) ? tok
-      : (tok.includes('»') || tok.includes('|')) ? renderHebrewAffixes(tok, i) : tok))}</>
+      : (tok.includes('»') || tok.includes('|') || tok.includes('~')) ? renderHebrewAffixes(tok, i) : tok))}</>
   }
   const parts = cell.split(/(\s+)/)
   return (
@@ -159,8 +172,10 @@ interface GrammarDrill {
   segments?: { text: string; morph: string }[]
   ref: string; osis: string; chapter: number; verse: number
 }
+interface GrammarReading { ref: string; osis: string; chapter: number; verse: number; he: string; en: string }
 interface GrammarChapterData {
   examples: GrammarExample[]; vocab: GrammarVocab[]; drills: GrammarDrill[]
+  reading?: GrammarReading[]
 }
 type GrammarData = Record<string, GrammarChapterData>
 let _exCache: GrammarData | null = null
@@ -355,12 +370,65 @@ function DrillList({ items, title, intro, froms, tone = 'gray' }: {
   )
 }
 
+/** Reading practice for the Alphabet chapter: familiar verses to sound out, with the
+ *  transliteration hidden behind its own button so the exercise is genuine — you decode
+ *  first, then check. Independent of the page-wide toggle, because here the whole point is
+ *  to look away from the answer. */
+export function HbReading({ id = 'alphabet' }: { id?: string }) {
+  const [rows, setRows] = useState<GrammarReading[] | null>(null)
+  const [show, setShow] = useState(false)
+  const [showEn, setShowEn] = useState(false)
+  useEffect(() => { loadExamples().then(d => setRows(d[id]?.reading ?? [])) }, [id])
+  if (!rows || rows.length === 0) return null
+  const btn = 'rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors'
+  return (
+    <div className="mb-5 rounded-xl border border-brand-200 bg-brand-50/40 px-4 py-3.5">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
+          Reading practice
+        </p>
+        <div className="ms-auto flex gap-2">
+          <button
+            type="button" onClick={() => setShow(v => !v)} aria-pressed={show}
+            className={`${btn} ${show ? 'border-brand-500 bg-brand-100 text-brand-800' : 'border-gray-300 bg-surface text-gray-600 hover:text-gray-900'}`}
+          >{show ? 'Hide transliteration' : 'Show transliteration'}</button>
+          <button
+            type="button" onClick={() => setShowEn(v => !v)} aria-pressed={showEn}
+            className={`${btn} ${showEn ? 'border-brand-500 bg-brand-100 text-brand-800' : 'border-gray-300 bg-surface text-gray-600 hover:text-gray-900'}`}
+          >{showEn ? 'Hide English' : 'Show English'}</button>
+        </div>
+      </div>
+      <p className="mb-3 text-sm text-gray-600">
+        Read each line aloud, right to left, before you check yourself. You are not expected to
+        understand them yet — this is about turning letters and points into sound.
+      </p>
+      <ol className="space-y-3">
+        {rows.map(r => (
+          <li key={r.ref} className="border-b border-brand-100 pb-2.5 last:border-0">
+            <p lang="he" dir="rtl" className="font-hebrew text-[26px] leading-loose text-gray-900">{r.he}</p>
+            {show && (
+              <p dir="ltr" className="text-[13px] italic leading-snug text-gray-500">{transliterate(r.he)}</p>
+            )}
+            <p className="mt-0.5 text-[13px] leading-snug text-gray-600">
+              {showEn && <span>{r.en} </span>}
+              <Link
+                href={`/reader?book=${r.osis}&chapter=${r.chapter}&verse=${r.verse}&corpus=MT`}
+                className="whitespace-nowrap text-[12px] font-medium text-brand-700 hover:underline"
+              >{r.ref}</Link>
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}
+
 /** Grey transliteration under a Hebrew table cell, when the toggle is on. Strips the
  *  affix markers (»,|) so the pronunciation reads as one word. */
 function XlitLine({ text }: { text: string }) {
   const xlit = useContext(XlitContext)
   if (!xlit) return null
-  const clean = text.replace(/[»|]/g, '')
+  const clean = text.replace(/[»|~]/g, '')
   if (!/[א-ת]/.test(clean)) return null
   // Ending/prefix-only cells ("־ָה", "יִ־") are fragments, not words: transliterating them
   // yields noise like "-h". Needs at least two letters and no leading maqqef.

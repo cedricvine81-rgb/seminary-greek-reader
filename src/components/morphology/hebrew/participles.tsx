@@ -29,7 +29,7 @@ export const HB_PARTICIPLES = (
       hCols={[1, 2]}
       rows={[
         ['singular', 'קֹטֵל', 'קֹטֶלֶת · קֹטְלָה'],
-        ['plural', 'קֹטְלִים', 'קֹטְלוֹת'],
+        ['plural', 'קֹטְלִ|ים', 'קֹטְל|וֹת'],
       ]}
       note="Signature: holem after the first radical, tsere after the second. The fs usually takes the ־ֶת shape."
     />
@@ -39,7 +39,7 @@ export const HB_PARTICIPLES = (
       hCols={[1, 2]}
       rows={[
         ['singular', 'קָטוּל', 'קְטוּלָה'],
-        ['plural', 'קְטוּלִים', 'קְטוּלוֹת'],
+        ['plural', 'קְטוּלִ|ים', 'קְטוּל|וֹת'],
       ]}
       note="Signature: shureq between the second and third radicals. בָּרוּךְ “blessed” is the passive participle of ברך."
     />

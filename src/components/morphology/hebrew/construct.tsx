@@ -32,14 +32,14 @@ export const HB_CONSTRUCT = (
       firstColIsData
       striped
       rows={[
-        ['דָּבָר', 'דְּבַר', 'word of'],
-        ['דְּבָרִים', 'דִּבְרֵי', 'words of'],
-        ['סוּסִים', 'סוּסֵי', 'horses of'],
-        ['תּוֹרָה', 'תּוֹרַת', 'law of'],
-        ['מִשְׁפָּחָה', 'מִשְׁפַּחַת', 'family of'],
-        ['בַּיִת', 'בֵּית', 'house of'],
-        ['בָּנִים', 'בְּנֵי', 'sons of'],
-        ['אֱלֹהִים', 'אֱלֹהֵי', 'God of'],
+        ['דָּבָר', '~דְּבַ~ר', 'word of'],
+        ['דְּבָרִים', '~דִּבְרֵ~י', 'words of'],
+        ['סוּסִים', 'סוּ~סֵ~י', 'horses of'],
+        ['תּוֹרָה', 'תּוֹ~רַת~', 'law of'],
+        ['מִשְׁפָּחָה', 'מִשְׁ~פַּחַת~', 'family of'],
+        ['בַּיִת', '~בֵּי~ת', 'house of'],
+        ['בָּנִים', '~בְּנֵ~י', 'sons of'],
+        ['אֱלֹהִים', 'אֱלֹ~הֵ~י', 'God of'],
       ]}
       note="The signatures: mp ־ִים → ־ֵי; fs ־ָה → ־ַת; and internal vowels shorten, because the construct gives up its own stress."
     />

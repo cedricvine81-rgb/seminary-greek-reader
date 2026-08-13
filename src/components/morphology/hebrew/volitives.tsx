@@ -36,9 +36,9 @@ export const HB_VOLITIVES = (
       tCols={[3]}
       rows={[
         ['2ms', 'תִּקְטֹל', 'קְטֹל', 'kill!'],
-        ['2fs', 'תִּקְטְלִי', 'קִטְלִי', 'kill!'],
-        ['2mp', 'תִּקְטְלוּ', 'קִטְלוּ', 'kill!'],
-        ['2fp', 'תִּקְטֹלְנָה', 'קְטֹלְנָה', 'kill!'],
+        ['2fs', 'תִּקְטְלִ|י', 'קִטְלִ|י', 'kill!'],
+        ['2mp', 'תִּקְטְל|וּ', 'קִטְל|וּ', 'kill!'],
+        ['2fp', 'תִּקְטֹלְנָ|ה', 'קְטֹלְנָ|ה', 'kill!'],
       ]}
       note="Where two shewas would collide (קְטְלִי), the first becomes hireq: קִטְלִי."
     />
@@ -54,8 +54,8 @@ export const HB_VOLITIVES = (
       hCols={[1]}
       tCols={[2]}
       rows={[
-        ['1cs', 'אֶקְטְלָה', 'let me kill'],
-        ['1cp', 'נִקְטְלָה', 'let us kill'],
+        ['1cs', 'אֶקְטְלָ|ה', 'let me kill'],
+        ['1cp', 'נִקְטְלָ|ה', 'let us kill'],
       ]}
     />
     <HbEx he="אָשִׁירָה לַיהוָה" en={<>“I will sing to the LORD” (Exod 15:1) — cohortative resolve.</>} />

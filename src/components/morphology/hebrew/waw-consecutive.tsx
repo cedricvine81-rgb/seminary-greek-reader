@@ -33,7 +33,7 @@ export const HB_WAW = (
         ['3ms', 'יִקְטֹל', 'וַיִּקְטֹל', 'and he killed'],
         ['3fs', 'תִּקְטֹל', 'וַתִּקְטֹל', 'and she killed'],
         ['1cs', 'אֶקְטֹל', 'וָאֶקְטֹל', 'and I killed'],
-        ['3mp', 'יִקְטְלוּ', 'וַיִּקְטְלוּ', 'and they killed'],
+        ['3mp', 'יִקְטְל|וּ', 'וַיִּקְטְל|וּ', 'and they killed'],
       ]}
       note="וַ + dagesh forte in the prefix letter. Before א (which refuses doubling) the vowel lengthens: וָאֶקְטֹל."
     />

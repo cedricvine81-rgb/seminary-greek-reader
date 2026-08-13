@@ -6,7 +6,7 @@
    chapter — the alphabet itself is consonants only.
 ───────────────────────────────────────────── */
 
-import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term } from '../shared'
+import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term, HbReading } from '../shared'
 
 export const HB_ALPHABET = (
   <>
@@ -132,5 +132,6 @@ export const HB_ALPHABET = (
         { q: <>Which letters of <Hb>מלאך</Hb> are gutturals?</>, a: <>Only the <Hb>א</Hb>. (mem, lamed, alef, final kaf — <Hb>מַלְאָךְ</Hb>, &ldquo;messenger, angel.&rdquo;)</> },
       ]}
     />
+    <HbReading />
   </>
 )

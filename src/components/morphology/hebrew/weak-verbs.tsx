@@ -76,7 +76,7 @@ export const HB_WEAK_VERBS = (
         ['וַיֹּאמֶר', 'Qal wayyiqtol 3ms, אמר', 'and he said'],
         ['וַיְהִי', 'Qal wayyiqtol 3ms, היה', 'and it came to pass'],
         ['וַיַּרְא', 'Qal wayyiqtol 3ms, ראה', 'and he saw'],
-        ['וַיֵּלֶךְ', 'Qal wayyiqtol 3ms, הלך', 'and he went'],
+        ['וַיֵּלֶ|ךְ', 'Qal wayyiqtol 3ms, הלך', 'and he went'],
         ['וַיָּבֹא', 'Qal wayyiqtol 3ms, בוא', 'and he came'],
       ]}
       note="These five open more narrative clauses than the rest of the lexicon combined."

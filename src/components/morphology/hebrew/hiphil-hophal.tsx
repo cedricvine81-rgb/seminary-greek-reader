@@ -55,8 +55,8 @@ export const HB_HIPHIL_HOPHAL = (
       firstColIsData
       rows={[
         ['perfect 3ms', 'הָ»קְטַל', 'he was caused to kill'],
-        ['imperfect 3ms', 'יָקְטַל', 'he will be caused to kill'],
-        ['participle', 'מָקְטָל', 'being caused to kill'],
+        ['imperfect 3ms', 'יָ»קְטַל', 'he will be caused to kill'],
+        ['participle', 'מָ»קְטָל', 'being caused to kill'],
       ]}
       note="The qamets under the prefix is qamets-hatuf: hoq-tal, yoq-tal. Some roots show qibbuts instead: הֻגַּד “it was told.”"
     />

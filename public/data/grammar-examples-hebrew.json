@@ -7803,5 +7803,260 @@
     "verse": 22
    }
   ]
+ },
+ "alphabet": {
+  "examples": [],
+  "vocab": [],
+  "drills": [],
+  "reading": [
+   {
+    "ref": "Genesis 1:1",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 1,
+    "he": "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ",
+    "en": "In the beginning, God created the heavens and the earth."
+   },
+   {
+    "ref": "Genesis 1:3",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 3,
+    "he": "וַיֹּ֥אמֶר אֱלֹהִ֖ים יְהִ֣י א֑וֹר וַֽיְהִי אֽוֹר",
+    "en": "God said, “Let there be light,” and there was light."
+   },
+   {
+    "ref": "Genesis 1:5",
+    "osis": "Gen",
+    "chapter": 1,
+    "verse": 5,
+    "he": "וַיִּקְרָ֨א אֱלֹהִ֤ים לָאוֹר֙ י֔וֹם וְלַחֹ֖שֶׁךְ קָ֣רָא לָ֑יְלָה וַֽיְהִי עֶ֥רֶב וַֽיְהִי בֹ֖קֶר י֥וֹם אֶחָֽד",
+    "en": "God called the light “day”, and the darkness he called “night”. There was evening and there was morning, the first day."
+   },
+   {
+    "ref": "Genesis 12:1",
+    "osis": "Gen",
+    "chapter": 12,
+    "verse": 1,
+    "he": "וַיֹּ֤אמֶר יְהוָה֙ אֶל אַבְרָ֔ם לֶךְ לְךָ֛ מֵאַרְצְךָ֥ וּמִמּֽוֹלַדְתְּךָ֖ וּמִבֵּ֣ית אָבִ֑יךָ אֶל הָאָ֖רֶץ אֲשֶׁ֥ר אַרְאֶֽךָּ",
+    "en": "Now Yahweh said to Abram, “Get out of your country, and from your relatives, and from your father’s house, to the land that I will show you."
+   },
+   {
+    "ref": "Exodus 20:3",
+    "osis": "Exod",
+    "chapter": 20,
+    "verse": 3,
+    "he": "לֹֽ֣א יִהְיֶֽה לְךָ֛ אֱלֹהִ֥ים אֲחֵרִ֖ים עַל פָּנָֽיַ",
+    "en": "“You shall have no other gods before me."
+   },
+   {
+    "ref": "Exodus 20:13",
+    "osis": "Exod",
+    "chapter": 20,
+    "verse": 13,
+    "he": "לֹ֖א תִּרְצָֽח",
+    "en": "“You shall not murder."
+   },
+   {
+    "ref": "Exodus 20:15",
+    "osis": "Exod",
+    "chapter": 20,
+    "verse": 15,
+    "he": "לֹ֖א תִּגְנֹֽב",
+    "en": "“You shall not steal."
+   },
+   {
+    "ref": "Deuteronomy 6:4",
+    "osis": "Deut",
+    "chapter": 6,
+    "verse": 4,
+    "he": "שְׁמַ֖ יִשְׂרָאֵ֑ל יְהוָ֥ה אֱלֹהֵ֖ינוּ יְהוָ֥ה אֶחָֽ",
+    "en": "Hear, Israel: Yahweh is our God. Yahweh is one."
+   },
+   {
+    "ref": "Deuteronomy 6:5",
+    "osis": "Deut",
+    "chapter": 6,
+    "verse": 5,
+    "he": "וְאָ֣הַבְתָּ֔ אֵ֖ת יְהוָ֣ה אֱלֹהֶ֑יךָ בְּכָל לְבָבְךָ֥ וּבְכָל נַפְשְׁךָ֖ וּבְכָל מְאֹדֶֽךָ",
+    "en": "You shall love Yahweh your God with all your heart, with all your soul, and with all your might."
+   },
+   {
+    "ref": "Numbers 6:24",
+    "osis": "Num",
+    "chapter": 6,
+    "verse": 24,
+    "he": "יְבָרֶכְךָ֥ יְהוָ֖ה וְיִשְׁמְרֶֽךָ",
+    "en": "‘Yahweh bless you, and keep you."
+   },
+   {
+    "ref": "Numbers 6:25",
+    "osis": "Num",
+    "chapter": 6,
+    "verse": 25,
+    "he": "יָאֵ֨ר יְהוָ֧ה פָּנָ֛יו אֵלֶ֖יךָ וִֽיחֻנֶּֽךָּ",
+    "en": "Yahweh make his face to shine on you, and be gracious to you."
+   },
+   {
+    "ref": "Numbers 6:26",
+    "osis": "Num",
+    "chapter": 6,
+    "verse": 26,
+    "he": "יִשָּׂ֨א יְהוָ֤ה פָּנָיו֙ אֵלֶ֔יךָ וְיָשֵׂ֥ם לְךָ֖ שָׁלֽוֹם",
+    "en": "Yahweh lift up his face toward you, and give you peace.’"
+   },
+   {
+    "ref": "Joshua 1:9",
+    "osis": "Josh",
+    "chapter": 1,
+    "verse": 9,
+    "he": "הֲל֤וֹא צִוִּיתִ֨יךָ֙ חֲזַ֣ק וֶאֱמָ֔ץ אַֽל תַּעֲרֹ֖ץ וְאַל תֵּחָ֑ת כִּ֤י עִמְּךָ֙ יְהוָ֣ה אֱלֹהֶ֔יךָ בְּכֹ֖ל אֲשֶׁ֥ר תֵּלֵֽךְ",
+    "en": "Haven’t I commanded you? Be strong and courageous. Don’t be afraid, neither be dismayed: for Yahweh your God is with you wherever you go.”"
+   },
+   {
+    "ref": "1 Samuel 3:10",
+    "osis": "1Sam",
+    "chapter": 3,
+    "verse": 10,
+    "he": "וַיָּבֹ֤א יְהוָה֙ וַיִּתְיַצַּ֔ב וַיִּקְרָ֥א כְפַֽעַם בְּפַ֖עַם שְׁמוּאֵ֣ל שְׁמוּאֵ֑ל וַיֹּ֤אמֶר שְׁמוּאֵל֙ דַּבֵּ֔ר כִּ֥י שֹׁמֵ֖עַ עַבְדֶּֽךָ",
+    "en": "Yahweh came, and stood, and called as at other times, “Samuel! Samuel!” Then Samuel said, “Speak; for your servant hears.”"
+   },
+   {
+    "ref": "Ruth 1:16",
+    "osis": "Ruth",
+    "chapter": 1,
+    "verse": 16,
+    "he": "וַתֹּ֤אמֶר רוּת֙ אַל תִּפְגְּעִי בִ֔י לְעָזְבֵ֖ךְ לָשׁ֣וּב מֵאַחֲרָ֑יִךְ כִּ֠י אֶל אֲשֶׁ֨ר תֵּלְכִ֜י אֵלֵ֗ךְ וּבַאֲשֶׁ֤ר תָּלִ֨ינִי֙ אָלִ֔ין עַמֵּ֣ךְ עַמִּ֔י וֵאלֹהַ֖יִךְ אֱלֹהָֽי",
+    "en": "Ruth said, “Don’t entreat me to leave you, and to return from following after you, for where you go, I will go; and where you lodge, I will lodge; your people shall be my people, and your God my God;"
+   },
+   {
+    "ref": "Psalm 1:1",
+    "osis": "Ps",
+    "chapter": 1,
+    "verse": 1,
+    "he": "אַ֥שְֽׁרֵי הָאִ֗ישׁ אֲשֶׁ֤ר לֹ֥א הָלַךְ֮ בַּעֲצַ֪ת רְשָׁ֫עִ֥ים וּבְדֶ֣רֶךְ חַ֭טָּאִים לֹ֥א עָמָ֑ד וּבְמוֹשַׁ֥ב לֵ֝צִ֗ים לֹ֣א יָשָֽׁב",
+    "en": "Blessed is the man who doesn’t walk in the counsel of the wicked, nor stand on the path of sinners, nor sit in the seat of scoffers;"
+   },
+   {
+    "ref": "Psalm 23:1",
+    "osis": "Ps",
+    "chapter": 23,
+    "verse": 1,
+    "he": "מִזְמ֥וֹר לְדָוִ֑ד יְהוָ֥ה רֹ֝עִ֗י לֹ֣א אֶחְסָֽר",
+    "en": "Yahweh is my shepherd: I shall lack nothing."
+   },
+   {
+    "ref": "Psalm 100:3",
+    "osis": "Ps",
+    "chapter": 100,
+    "verse": 3,
+    "he": "דְּע֗וּ כִּֽי יְהוָה֮ ה֤וּא אֱלֹ֫הִ֥ים הֽוּא עָ֭שָׂנוּ ולא אֲנַ֑חְנוּ עַ֝מּ֗וֹ וְצֹ֣אן מַרְעִיתֽוֹ",
+    "en": "Know that Yahweh, he is God. It is he who has made us, and we are his. We are his people, and the sheep of his pasture."
+   },
+   {
+    "ref": "Psalm 117:1",
+    "osis": "Ps",
+    "chapter": 117,
+    "verse": 1,
+    "he": "הַֽלְל֣וּ אֶת יְ֭הוָה כָּל גּוֹיִ֑ם שַׁ֝בְּח֗וּהוּ כָּל הָאֻמִּֽים",
+    "en": "Praise Yahweh, all you nations! Extol him, all you peoples!"
+   },
+   {
+    "ref": "Psalm 118:24",
+    "osis": "Ps",
+    "chapter": 118,
+    "verse": 24,
+    "he": "זֶה הַ֭יּוֹם עָשָׂ֣ה יְהוָ֑ה נָגִ֖ילָה וְנִשְׂמְחָ֣ה בֽוֹ",
+    "en": "This is the day that Yahweh has made. We will rejoice and be glad in it!"
+   },
+   {
+    "ref": "Psalm 121:1",
+    "osis": "Ps",
+    "chapter": 121,
+    "verse": 1,
+    "he": "שִׁ֗יר לַֽמַּ֫עֲל֥וֹת אֶשָּׂ֣א עֵ֭ינַי אֶל הֶהָרִ֑ים מֵ֝אַ֗יִן יָבֹ֥א עֶזְרִֽי",
+    "en": "I will lift up my eyes to the hills. Where does my help come from?"
+   },
+   {
+    "ref": "Psalm 133:1",
+    "osis": "Ps",
+    "chapter": 133,
+    "verse": 1,
+    "he": "שִׁ֥יר הַֽמַּעֲל֗וֹת לְדָ֫וִ֥ד הִנֵּ֣ה מַה טּ֭וֹב וּמַה נָּעִ֑ים שֶׁ֖בֶת אַחִ֣ים גַּם יָֽחַד",
+    "en": "See how good and how pleasant it is for brothers to live together in unity!"
+   },
+   {
+    "ref": "Proverbs 1:7",
+    "osis": "Prov",
+    "chapter": 1,
+    "verse": 7,
+    "he": "יִרְאַ֣ת יְ֭הוָה רֵאשִׁ֣ית דָּ֑עַת חָכְמָ֥ה וּ֝מוּסָ֗ר אֱוִילִ֥ים בָּֽזוּ",
+    "en": "The fear of Yahweh is the beginning of knowledge; but the foolish despise wisdom and instruction."
+   },
+   {
+    "ref": "Proverbs 3:5",
+    "osis": "Prov",
+    "chapter": 3,
+    "verse": 5,
+    "he": "בְּטַ֣ח אֶל יְ֭הוָה בְּכָל לִבֶּ֑ךָ וְאֶל בִּֽ֝ינָתְךָ֗ אַל תִּשָּׁעֵֽן",
+    "en": "Trust in Yahweh with all your heart, and don’t lean on your own understanding."
+   },
+   {
+    "ref": "Ecclesiastes 1:2",
+    "osis": "Eccl",
+    "chapter": 1,
+    "verse": 2,
+    "he": "הֲבֵ֤ל הֲבָלִים֙ אָמַ֣ר קֹהֶ֔לֶת הֲבֵ֥ל הֲבָלִ֖ים הַכֹּ֥ל הָֽבֶל",
+    "en": "“Vanity of vanities,” says the Preacher; “Vanity of vanities, all is vanity.”"
+   },
+   {
+    "ref": "Isaiah 6:3",
+    "osis": "Isa",
+    "chapter": 6,
+    "verse": 3,
+    "he": "וְקָרָ֨א זֶ֤ה אֶל זֶה֙ וְאָמַ֔ר קָד֧וֹשׁ קָד֛וֹשׁ קָד֖וֹשׁ יְהוָ֣ה צְבָא֑וֹת מְלֹ֥א כָל הָאָ֖רֶץ כְּבוֹדֽוֹ",
+    "en": "One called to another, and said, “Holy, holy, holy, is Yahweh of Armies! The whole earth is full of his glory!”"
+   },
+   {
+    "ref": "Isaiah 40:8",
+    "osis": "Isa",
+    "chapter": 40,
+    "verse": 8,
+    "he": "יָבֵ֥שׁ חָצִ֖יר נָ֣בֵֽל צִ֑יץ וּדְבַר אֱלֹהֵ֖ינוּ יָק֥וּם לְעוֹלָֽם",
+    "en": "The grass withers, the flower fades; but the word of our God stands forever.”"
+   },
+   {
+    "ref": "Amos 5:24",
+    "osis": "Amos",
+    "chapter": 5,
+    "verse": 24,
+    "he": "וְיִגַּ֥ל כַּמַּ֖יִם מִשְׁפָּ֑ט וּצְדָקָ֖ה כְּנַ֥חַל אֵיתָֽן",
+    "en": "But let justice roll on like rivers, and righteousness like a mighty stream."
+   },
+   {
+    "ref": "Micah 6:8",
+    "osis": "Mic",
+    "chapter": 6,
+    "verse": 8,
+    "he": "הִגִּ֥יד לְךָ֛ אָדָ֖ם מַה טּ֑וֹב וּמָֽה יְהוָ֞ה דּוֹרֵ֣שׁ מִמְּךָ֗ כִּ֣י אִם עֲשׂ֤וֹת מִשְׁפָּט֙ וְאַ֣הֲבַת חֶ֔סֶד וְהַצְנֵ֥עַ לֶ֖כֶת עִם אֱלֹהֶֽיךָ",
+    "en": "He has shown you, O man, what is good. What does Yahweh require of you, but to act justly, to love mercy, and to walk humbly with your God?"
+   },
+   {
+    "ref": "Habakkuk 2:4",
+    "osis": "Hab",
+    "chapter": 2,
+    "verse": 4,
+    "he": "הִנֵּ֣ה עֻפְּלָ֔ה לֹא יָשְׁרָ֥ה נַפְשׁ֖וֹ בּ֑וֹ וְצַדִּ֖יק בֶּאֱמוּנָת֥וֹ יִחְיֶֽה",
+    "en": "Behold, his soul is puffed up. It is not upright in him, but the righteous will live by his faith."
+   },
+   {
+    "ref": "Zechariah 4:6",
+    "osis": "Zech",
+    "chapter": 4,
+    "verse": 6,
+    "he": "וַיַּ֜עַן וַיֹּ֤אמֶר אֵלַי֙ לֵאמֹ֔ר זֶ֚ה דְּבַר יְהוָ֔ה אֶל זְרֻבָּבֶ֖ל לֵאמֹ֑ר לֹ֤א בְחַ֨יִל֙ וְלֹ֣א בְכֹ֔חַ כִּ֣י אִם בְּרוּחִ֔י אָמַ֖ר יְהוָ֥ה צְבָאֽוֹת",
+    "en": "Then he answered and spoke to me, saying, “This is Yahweh’s word to Zerubbabel, saying, ‘Not by might, nor by power, but by my Spirit,’ says Yahweh of Armies."
+   }
+  ]
  }
 }

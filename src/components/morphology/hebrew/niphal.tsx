@@ -49,9 +49,9 @@ export const HB_NIPHAL = (
       rows={[
         ['3ms', 'יִקָּטֵל', 'he will be killed'],
         ['3fs / 2ms', 'תִּקָּטֵל', 'she / you will be killed'],
-        ['2fs', 'תִּקָּטְלִי', 'you will be killed'],
+        ['2fs', 'תִּקָּטְלִ|י', 'you will be killed'],
         ['1cs', 'אֶקָּטֵל', 'I will be killed'],
-        ['3mp', 'יִקָּטְלוּ', 'they will be killed'],
+        ['3mp', 'יִקָּטְל|וּ', 'they will be killed'],
         ['1cp', 'נִקָּטֵל', 'we will be killed'],
       ]}
       note="The נ has assimilated: *yin-qatel → yiqqatel. That dagesh in the FIRST root letter is how you tell Niphal imperfect from Qal."
@@ -65,9 +65,9 @@ export const HB_NIPHAL = (
       tCols={[0]}
       firstColIsData
       rows={[
-        ['participle', 'נִקְטָל'],
-        ['imperative', 'הִקָּטֵל'],
-        ['infinitive construct', 'הִקָּטֵל'],
+        ['participle', 'נִ»קְטָל'],
+        ['imperative', 'הִ»קָּטֵל'],
+        ['infinitive construct', 'הִ»קָּטֵל'],
         ['infinitive absolute', 'נִקְטוֹל · הִקָּטֹל'],
       ]}
       note="Imperative and infinitive lead with הִ + dagesh — the assimilated נ again, behind a helping ה."

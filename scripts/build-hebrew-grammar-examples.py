@@ -337,6 +337,49 @@ def build_drills(match, core, want=12):
     return out
 
 
+# Reading practice for the Alphabet chapter: short, familiar verses to SOUND OUT. Chosen for
+# brevity and familiarity rather than grammar — at this stage the exercise is decoding letters
+# and vowels, so the Shema and Genesis 1:1 are worth more than anything statistically optimal.
+ALPHABET_PRACTICE = [
+    ('Gen', 1, 1), ('Gen', 1, 3), ('Gen', 1, 5), ('Gen', 12, 1),
+    ('Exod', 20, 3), ('Exod', 20, 13), ('Exod', 20, 15),
+    ('Deut', 6, 4), ('Deut', 6, 5),
+    ('Num', 6, 24), ('Num', 6, 25), ('Num', 6, 26),
+    ('Josh', 1, 9), ('1Sam', 3, 10), ('Ruth', 1, 16),
+    ('Ps', 1, 1), ('Ps', 19, 2), ('Ps', 23, 1), ('Ps', 100, 3), ('Ps', 117, 1),
+    ('Ps', 118, 24), ('Ps', 121, 1), ('Ps', 133, 1),
+    ('Prov', 1, 7), ('Prov', 3, 5), ('Eccl', 1, 2),
+    ('Isa', 6, 3), ('Isa', 9, 5), ('Isa', 40, 8),
+    ('Amos', 5, 24), ('Mic', 6, 8), ('Hab', 2, 4), ('Zech', 4, 6), ('Mal', 3, 6),
+    ('Jonah', 1, 1),
+]
+
+
+def build_alphabet_practice():
+    out = []
+    for osis, ch, v in ALPHABET_PRACTICE:
+        f = MT / f'{osis}_{ch}.json'
+        if not f.exists():
+            continue
+        data = json.loads(f.read_text())
+        vv = next((x for x in data['verses'] if x['verse'] == v), None)
+        if not vv:
+            continue
+        eng = web_english(osis, ch)
+        if len(eng) != len(data['verses']):     # versification guard, as everywhere else
+            continue
+        en = eng.get(str(v), '')
+        if not en:
+            continue
+        out.append({
+            'ref': f'{BOOK_NAME.get(osis, osis)} {ch}:{v}',
+            'osis': osis, 'chapter': ch, 'verse': v,
+            'he': ' '.join(w['surface'] for w in vv['words'] if w.get('surface')),
+            'en': re.sub(r'\s+', ' ', en),
+        })
+    return out
+
+
 def main():
     core, wide = deck_strongs()
     entries = deck_entries()
@@ -354,6 +397,10 @@ def main():
         result[cid] = {'examples': ex, 'vocab': vocab, 'drills': drills}
         core_n = sum(1 for e in ex if e['tier'] == 0)
         print(f'  {cid:18s} {len(ex)} examples ({core_n} core) · {len(vocab)} vocab · {len(drills)} drills')
+    if not only or only == 'alphabet':
+        ap = build_alphabet_practice()
+        result['alphabet'] = {'examples': [], 'vocab': [], 'drills': [], 'reading': ap}
+        print(f'  {"alphabet":18s} {len(ap)} reading-practice verses')
     OUT.write_text(json.dumps(result, ensure_ascii=False, indent=1))
     print(f'→ {OUT.relative_to(REPO)}')
 

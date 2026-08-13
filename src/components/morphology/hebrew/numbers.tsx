@@ -56,7 +56,7 @@ export const HB_NUMBERS = (
       striped
       rows={[
         ['11–19', 'unit + עָשָׂר / עֶשְׂרֵה', 'שְׁלֹשָׁה עָשָׂר “thirteen” (m); שְׁלֹשׁ עֶשְׂרֵה (f)'],
-        ['20', 'עֶשְׂרִים', 'the plural of “ten”'],
+        ['20', 'עֶשְׂרִ|ים', 'the plural of “ten”'],
         ['30–90', 'plural of the unit', 'שְׁלֹשִׁים “thirty,” אַרְבָּעִים “forty,” חֲמִשִּׁים “fifty”'],
         ['100', 'מֵאָה', 'dual מָאתַיִם “two hundred”; plural מֵאוֹת in compounds'],
         ['1,000', 'אֶלֶף', 'dual אַלְפַּיִם “two thousand”; plural אֲלָפִים'],
