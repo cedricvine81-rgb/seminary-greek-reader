@@ -128,13 +128,34 @@ describe('AnnotationLayer', () => {
     expect(screen.getByText('Handwritten note')).toBeInTheDocument()
   })
 
-  it('puts a note icon beside every block, not only the ones already annotated', async () => {
+  it('puts a note icon beside a block with no annotations at all', async () => {
     // The affordance has to exist BEFORE there is anything to show, which is the whole
-    // reason the rail is built from the blocks on screen rather than from the annotations.
+    // reason the rail is built from the DOM rather than from the annotations.
     stubFetch(200)
     renderLayer()
     await act(async () => { await new Promise(r => setTimeout(r, 0)) })
-    expect(screen.getByRole('button', { name: 'Add a note on this paragraph' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Add a note on this section' })).toBeInTheDocument()
+  })
+
+  it('gives one icon per section, not one per paragraph', async () => {
+    // ~96 blocks a chapter: an icon beside each read as clutter rather than an invitation.
+    // A section starts at a heading; everything before the first heading is one section.
+    stubFetch(200)
+    render(
+      <LocaleProvider locale="en">
+        <AnnotationLayer page="nouns">
+          <p><span data-ann-block="intro">Opening prose before any heading.</span></p>
+          <p><span data-ann-block="intro-2">More of the same section.</span></p>
+          <h3><span data-ann-block="h-gen">The Genitive</span></h3>
+          <p><span data-ann-block="gen-1">Genitive prose.</span></p>
+          <h3><span data-ann-block="h-dat">The Dative</span></h3>
+          <p><span data-ann-block="dat-1">Dative prose.</span></p>
+        </AnnotationLayer>
+      </LocaleProvider>,
+    )
+    await act(async () => { await new Promise(r => setTimeout(r, 0)) })
+    // Three sections from six blocks: the intro, the genitive, the dative.
+    expect(screen.getAllByRole('button', { name: 'Add a note on this section' })).toHaveLength(3)
   })
 
   it('keeps a note picked up by a colour swatch from being lost', async () => {

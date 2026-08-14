@@ -11,9 +11,16 @@ import { AnnotationPopup } from './AnnotationPopup'
 import { NoteSheet } from './NoteSheet'
 import { caretOffsetAt, canPaint, paint, unpaint, type PaintRange } from './paint'
 
-/** One rung of the margin rail: every annotatable block gets one, whether or not it has a
- *  note yet, so the way in is visible without knowing the drag gesture exists. */
-interface Marker { blockId: string; top: number; count: number; detached: boolean }
+/**
+ * One rung of the margin rail — one per SECTION, not per paragraph. A chapter runs to ~96
+ * annotatable blocks and an icon beside each read as clutter rather than as an invitation.
+ *
+ * A section starts at a heading and runs to the next one; anything before the first heading
+ * (the Getting Started card, a chapter's opening prose) is the first section. `blockId` is
+ * where a new note is anchored — the heading itself — and `blockIds` is everything the rung's
+ * count covers, so a note made by dragging over a paragraph mid-section still shows up here.
+ */
+interface Marker { blockId: string; blockIds: string[]; top: number; count: number; detached: boolean }
 
 /**
  * Makes a body of the app's own prose annotatable: drag to highlight, write a note, hover to
@@ -71,15 +78,24 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
     const ranges: PaintRange[] = []
     const containerTop = container.getBoundingClientRect().top
 
-    // A rung for EVERY block on screen, in document order — the rail is the affordance, so
-    // it cannot be built from the annotations that happen to exist. Blocks the level toggle
-    // has hidden aren't in the DOM and so get no rung, which is right: an icon beside a
-    // paragraph the reader cannot see would be pointing at nothing.
-    const byBlock = new Map<string, { top: number; count: number; detached: boolean }>()
+    // Group the blocks on screen into sections, in document order. Built from the DOM and
+    // not from the annotations that happen to exist: the rail is the affordance, so it has
+    // to be there before there is anything to show. Blocks the level toggle has hidden are
+    // not in the DOM and so get no rung — an icon beside a paragraph the reader cannot see
+    // would point at nothing.
+    const sections: Marker[] = []
+    const sectionOf = new Map<string, Marker>()
     for (const el of Array.from(container.querySelectorAll<HTMLElement>('[data-ann-block]'))) {
       const id = el.dataset.annBlock!
-      if (byBlock.has(id)) continue
-      byBlock.set(id, { top: el.getBoundingClientRect().top - containerTop, count: 0, detached: false })
+      if (sectionOf.has(id)) continue
+      const isHeading = !!el.closest('h1, h2, h3, h4')
+      let cur = sections[sections.length - 1]
+      if (isHeading || !cur) {
+        cur = { blockId: id, blockIds: [], top: el.getBoundingClientRect().top - containerTop, count: 0, detached: false }
+        sections.push(cur)
+      }
+      cur.blockIds.push(id)
+      sectionOf.set(id, cur)
     }
 
     for (const a of items) {
@@ -92,16 +108,14 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
       if (state.kind === 'exact' || state.kind === 'repaired') {
         ranges.push({ color: a.color, withNote: hasNote(a), start: state.start, end: state.end, block })
       }
-      const cur = byBlock.get(a.blockId)
-      if (cur) {
-        cur.count += hasNote(a) ? 1 : 0
-        cur.detached = cur.detached || state.kind === 'detached'
+      const sec = sectionOf.get(a.blockId)
+      if (sec) {
+        sec.count += hasNote(a) ? 1 : 0
+        sec.detached = sec.detached || state.kind === 'detached'
       }
     }
     paint(ranges)
-    // Array.from, not a spread — this tsconfig's target rejects Map-iterator spreads, and
-    // `next dev` does not run the check that `next build` (i.e. Vercel) does.
-    setMarkers(Array.from(byBlock, ([blockId, m]) => ({ blockId, ...m })))
+    setMarkers(sections)
   }, [items, locale])
 
   // Resolve after every render that could have moved the prose. A MutationObserver rather
@@ -210,15 +224,16 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
   }
 
   /**
-   * Open the note for a block from its margin icon. If the block has none yet, one is
-   * created with a ZERO-LENGTH anchor — a note about the paragraph rather than about any
-   * particular words, which is what an icon beside it means, and which is why nothing gets
-   * painted over the text.
+   * Open the note for a section from its margin icon. If the section has none yet, one is
+   * created with a ZERO-LENGTH anchor on its heading — a note about the section rather than
+   * about any particular words, which is what an icon beside it means, and which is why
+   * nothing gets painted over the text.
    */
-  async function openBlock(blockId: string) {
-    const existing = items.find(a => a.blockId === blockId && hasNote(a))
-      ?? items.find(a => a.blockId === blockId && isBlockNote(a))
+  async function openSection(m: Marker) {
+    const existing = items.find(a => m.blockIds.includes(a.blockId) && hasNote(a))
+      ?? items.find(a => m.blockIds.includes(a.blockId) && isBlockNote(a))
     if (existing) { setSheetId(existing.id); return }
+    const blockId = m.blockId
     const block = containerRef.current?.querySelector<HTMLElement>(`[data-ann-block="${CSS.escape(blockId)}"]`)
     if (!block) return
     const r = await fetch('/api/annotations', {
@@ -307,7 +322,7 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
               key={m.blockId}
               type="button"
               style={{ top: m.top }}
-              onClick={() => openBlock(m.blockId)}
+              onClick={() => openSection(m)}
               title={m.detached ? t('ann.detached')
                 : m.count > 0 ? t('ann.noteCount', { count: m.count })
                 : t('ann.addNoteHere')}
