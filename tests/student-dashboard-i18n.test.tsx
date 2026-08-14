@@ -38,6 +38,12 @@ const ASSIGNMENTS = [{
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }] as any
 
+// The action button reads "Start" only while the assignment is still open — a fixture with a
+// FIXED past due date flips it to "Overdue — Submit" the day that date passes, which is how
+// these two tests began failing on 2026-08-14 with no code change. Anything asserting the
+// button must use a due date that is still in the future whenever the suite runs.
+const UPCOMING = [{ ...ASSIGNMENTS[0], dueDate: new Date(Date.now() + 7 * 864e5).toISOString() }] as typeof ASSIGNMENTS
+
 const ROWS: GradebookRow[] = [
   { id: 'a1', title: 'Week 3 Vocabulary', weekNumber: 3, type: 'VOCABULARY_QUIZ', pct: 88 },
   { id: 'a2', title: 'Passage 1', weekNumber: 4, type: 'TRANSLATION_EXERCISE', pct: null },
@@ -45,14 +51,14 @@ const ROWS: GradebookRow[] = [
 
 describe('AssignmentList', () => {
   it('renders English unchanged', () => {
-    wrap('en', <AssignmentList assignments={ASSIGNMENTS} />)
+    wrap('en', <AssignmentList assignments={UPCOMING} />)
     expect(screen.getByText('Vocabulary')).toBeInTheDocument()   // the short type badge
     expect(screen.getByText('Start')).toBeInTheDocument()
     expect(screen.getByText(/Week 3 ·/)).toBeInTheDocument()
   })
 
   it('renders Spanish', () => {
-    wrap('es', <AssignmentList assignments={ASSIGNMENTS} />)
+    wrap('es', <AssignmentList assignments={UPCOMING} />)
     expect(screen.getByText('Vocabulario')).toBeInTheDocument()
     expect(screen.getByText('Empezar')).toBeInTheDocument()
     expect(screen.getByText(/Semana 3 ·/)).toBeInTheDocument()
