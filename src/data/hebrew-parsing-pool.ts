@@ -24,6 +24,10 @@ export interface HebrewParseEntry {
   stem?: string          // binyan: Qal, Niphal, Piel, Pual, Hiphil, Hophal, Hithpael…
   conjugation?: string   // Perfect, Imperfect, Sequential imperfect, Imperative, …
   person?: string        // 1st / 2nd / 3rd — absent on participles and infinitives
+  // Verbs only. 'Strong' (the regular verb a first-year course drills) or the weakness a
+  // grammar files the root under — I-nun, Hollow, III-he… See HEBREW_ROOT_CLASSES.
+  // NOT a tested field: it filters which forms a quiz draws, it is never the answer.
+  rootClass?: string
   // Noun / Adjective / participle
   state?: string         // Absolute / Construct / Determined
   // Shared

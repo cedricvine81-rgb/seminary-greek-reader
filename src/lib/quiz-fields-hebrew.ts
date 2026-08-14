@@ -53,6 +53,39 @@ export const HEBREW_STATES  = ['Absolute', 'Construct', 'Determined']
 export const HEBREW_PRONOUN_TYPES = ['Personal', 'Demonstrative', 'Relative', 'Interrogative', 'Indefinite']
 
 /**
+ * Root classes — the "regular verb" filter, and the one a first-year course needs most.
+ *
+ * A beginning syllabus spends its whole verb semester on the STRONG verb (Kelley L.12–L.20
+ * are each headed "of the Strong Verb"), because a weak root's vowel changes only make
+ * sense once the regular pattern is known. Strong verbs are about a seventh of the verbs
+ * in the Hebrew Bible, so an unfiltered quiz is overwhelmingly forms the student has not
+ * been taught: before this existed, a Qal-perfect quiz drew 18 weak forms in 20.
+ *
+ * 'Strong' first because that is the one a course asks for; the weak classes follow in the
+ * order a grammar introduces them. Each form carries exactly one class — see root_class()
+ * in scripts/build-hebrew-parsing-pool.py for why a root weak in two ways gets one label.
+ */
+export const HEBREW_ROOT_CLASSES = [
+  'Strong', 'I-guttural', 'I-nun', 'I-yod/waw', 'II-guttural', 'Hollow', 'Geminate',
+  'III-alef', 'III-he', 'III-guttural', 'Irregular',
+]
+
+/** Screen labels. 'Strong' is what a grammar calls it; 'regular' is what students say. */
+export const HEBREW_ROOT_CLASS_LABELS: Record<string, string> = {
+  'Strong':        'Strong (regular)',
+  'I-guttural':    'I-guttural',
+  'I-nun':         'I-nun (assimilating)',
+  'I-yod/waw':     'I-yod / I-waw',
+  'II-guttural':   'II-guttural',
+  'Hollow':        'Hollow (II-waw/yod)',
+  'Geminate':      'Geminate (doubled 3rd)',
+  'III-alef':      'III-alef',
+  'III-he':        'III-he',
+  'III-guttural':  'III-guttural',
+  'Irregular':     'Irregular / biliteral',
+}
+
+/**
  * Which parse fields may be tested for each subtype.
  *
  * Verbs are conjugation-dependent, so the verb list is the union and the generator keeps
@@ -118,6 +151,8 @@ export interface HebrewMorphParseFilter {
   numbers?: string[]
   states?: string[]
   types?: string[]
+  /** Verbs only. See HEBREW_ROOT_CLASSES — the "regular verb" filter. */
+  rootClasses?: string[]
 }
 
 // ── Level-aware selection ─────────────────────────────────────────────────────
@@ -159,6 +194,11 @@ export const POOL_GENDERS       = pv.gender      ?? HEBREW_GENDERS
 export const POOL_NUMBERS       = pv.number      ?? HEBREW_NUMBERS
 export const POOL_STATES        = pv.state       ?? HEBREW_STATES
 export const POOL_PRONOUN_TYPES = pv.type        ?? HEBREW_PRONOUN_TYPES
+export const POOL_ROOT_CLASSES  = pv.rootClass   ?? HEBREW_ROOT_CLASSES
+
+/** Pool order is alphabetical; show root classes in teaching order, Strong first. */
+export const POOL_ROOT_CLASSES_ORDERED = HEBREW_ROOT_CLASSES
+  .filter(c => POOL_ROOT_CLASSES.includes(c))
 
 /** Every value selected, i.e. no restriction — the starting state of the filter. */
 export const HEBREW_DEFAULT_PARSE_FILTER: HebrewMorphParseFilter = {
@@ -169,4 +209,5 @@ export const HEBREW_DEFAULT_PARSE_FILTER: HebrewMorphParseFilter = {
   numbers:      [...POOL_NUMBERS],
   states:       [...POOL_STATES],
   types:        [...POOL_PRONOUN_TYPES],
+  rootClasses:  [...POOL_ROOT_CLASSES],
 }

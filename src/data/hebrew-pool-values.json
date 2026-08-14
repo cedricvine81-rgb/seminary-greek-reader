@@ -57,6 +57,19 @@
   "2nd",
   "3rd"
  ],
+ "rootClass": [
+  "Geminate",
+  "Hollow",
+  "I-guttural",
+  "I-nun",
+  "I-yod/waw",
+  "II-guttural",
+  "III-alef",
+  "III-guttural",
+  "III-he",
+  "Irregular",
+  "Strong"
+ ],
  "type": [
   "Demonstrative",
   "Indefinite",

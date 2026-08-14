@@ -534,7 +534,8 @@ function applyHebrewParseFilter(
     has(filter.genders,      e.gender)      &&
     has(filter.numbers,      e.number)      &&
     has(filter.states,       e.state)       &&
-    has(filter.types,        e.type)
+    has(filter.types,        e.type)        &&
+    has(filter.rootClasses,  e.rootClass)
   )
 }
 

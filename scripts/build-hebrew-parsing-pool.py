@@ -42,7 +42,57 @@ VALUES_OUT = os.path.join(ROOT, 'src', 'data', 'hebrew-pool-values.json')
 
 # Distinct surface forms kept per parse signature. Nouns have few signatures (gender ×
 # number × state), so the cap is what gives those quizzes lexical variety.
+#
+# For VERBS the cap is applied per (signature × root class), not per signature alone.
+# Strong verbs are only ~16% of the verbs in the corpus, so a flat cap fills up on weak
+# roots and leaves almost none: the old pool held 100 Qal perfects, of which 10 were
+# strong. A first-year course drills the strong verb for its whole first semester, so a
+# quiz built from that pool handed a week-4 student יָלַד, מוּת and נוּס — I-yod, hollow
+# and I-nun forms Kelley does not reach until Hebrew II. Bucketing by root class keeps
+# each class on its own quota, so "strong verbs only" has enough forms to be a real quiz.
 MAX_PER_SIG = int(sys.argv[1]) if len(sys.argv) > 1 else 12
+
+# ── Root classes ─────────────────────────────────────────────────────────────────
+# Which verbs are "regular". A first-year syllabus is built on this distinction —
+# Kelley L.12-L.20 are all "the Strong Verb" — and the BibleOL exercises the course sets
+# are named `regular-verb` for the same reason. Without it a filter can say "Qal perfect"
+# but not "Qal perfect of the kind you have been taught", which is the only useful ask.
+#
+# ORDER MATTERS. A root can be weak in more than one way (נָתַן is I-nun AND III-nun;
+# יָצָא is I-yod AND III-alef). Each form gets the ONE label a grammar would file it
+# under, tested first-radical outward, because that is the feature that governs how the
+# form behaves and the order in which a course meets them.
+GUTTURALS = set('אהחע')
+FINAL_FORM = {'ך': 'כ', 'ם': 'מ', 'ן': 'נ', 'ף': 'פ', 'ץ': 'צ'}
+VOWEL_POINTS = re.compile(r'[֑-ׇ]')
+
+
+def radicals(lemma):
+    """The lemma's bare consonants, finals normalised to their medial form."""
+    letters = VOWEL_POINTS.sub('', lemma or '')
+    return [FINAL_FORM.get(c, c) for c in letters if 'א' <= c <= 'ת']
+
+
+def root_class(lemma):
+    """'Strong', or the weakness a grammar would file this root under."""
+    r = radicals(lemma)
+    if len(r) != 3:
+        # Biliteral lemmas here are overwhelmingly hollow roots whose middle waw/yod the
+        # lexicon has already dropped; quadriliterals are a genuine handful. Neither is
+        # a strong verb, and calling them so is the one error that matters.
+        return 'Irregular'
+    first, middle, last = r
+    if first == 'נ':          return 'I-nun'
+    if first in 'יו':         return 'I-yod/waw'
+    if first in GUTTURALS:    return 'I-guttural'
+    if middle in 'וי':        return 'Hollow'
+    if middle == last:        return 'Geminate'
+    if middle in GUTTURALS or middle == 'ר': return 'II-guttural'
+    if last == 'א':           return 'III-alef'
+    if last == 'ה':           return 'III-he'
+    if last in 'חע':          return 'III-guttural'
+    return 'Strong'
+
 
 # ── OSHB code tables (mirror of src/lib/hebrew-morph.ts) ─────────────────────────
 GENDER = {'m': 'Masculine', 'f': 'Feminine', 'b': 'Both', 'c': 'Common'}
@@ -260,7 +310,11 @@ def main():
                     continue
 
                 pos = parsed['partOfSpeech'].lower()
-                sig = (code,)
+                # Verbs bucket by (parse signature × root class) so the strong verb keeps
+                # its own quota instead of being crowded out by the weak roots, which
+                # outnumber it five to one. Everything else buckets by signature alone.
+                cls = root_class(entry['lemma']) if pos == 'verb' else None
+                sig = (code, cls)
                 surface = w['surface']
                 if surface in seen_surface[sig]:
                     continue                      # same form, same parse — no new value
@@ -275,6 +329,7 @@ def main():
                     'gloss': gloss_for(entry),
                     'reference': verse['reference'],
                     **parsed,
+                    **({'rootClass': cls} if cls else {}),
                 })
 
     out = {k: v for k, v in pools.items()}
@@ -285,7 +340,8 @@ def main():
     values = collections.defaultdict(set)
     for entries in pools.values():
         for e in entries:
-            for f in ('stem', 'conjugation', 'person', 'gender', 'number', 'state', 'type'):
+            for f in ('stem', 'conjugation', 'person', 'gender', 'number', 'state', 'type',
+                      'rootClass'):
                 if e.get(f):
                     values[f].add(e[f])
     with open(VALUES_OUT, 'w') as f:

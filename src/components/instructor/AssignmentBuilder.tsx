@@ -20,7 +20,8 @@ import { SUBTYPE_FIELD_OPTIONS, VERB_TENSES, VERB_VOICES, VERB_MOODS, PERSONS, N
 import {
   morphSubtypesFor, morphFieldOptionsFor, HEBREW_DEFAULT_PARSE_FILTER,
   POOL_STEMS, POOL_CONJUGATIONS, POOL_PERSONS, POOL_GENDERS, POOL_NUMBERS,
-  POOL_STATES, POOL_PRONOUN_TYPES, type HebrewMorphParseFilter,
+  POOL_STATES, POOL_PRONOUN_TYPES, POOL_ROOT_CLASSES_ORDERED,
+  type HebrewMorphParseFilter,
 } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
 import { scriptProps } from '@/lib/script-detect'
@@ -975,6 +976,9 @@ function HebrewParseFilterPicker({
       {isVerb && <>
         <FilterChipGroup compact={compact} label={groupLabel('stem', t, 'Stem (binyan)')} options={POOL_STEMS} selected={filter.stems ?? POOL_STEMS} onChange={v => patch({ stems: v })} />
         <FilterChipGroup compact={compact} label={groupLabel('conjugation', t, 'Conjugation')} options={POOL_CONJUGATIONS} selected={selectedConj} onChange={v => patch({ conjugations: v })} />
+        {/* Root class sits with the verb fields because a first-year course sets its quizzes
+            by it: "Qal perfect" means "Qal perfect of the strong verb" until Hebrew II. */}
+        <FilterChipGroup compact={compact} label={groupLabel('rootClass', t, 'Root class')} options={POOL_ROOT_CLASSES_ORDERED} selected={filter.rootClasses ?? POOL_ROOT_CLASSES_ORDERED} onChange={v => patch({ rootClasses: v })} />
       </>}
       {((isVerb && hasFinite) || isPronoun) && (
         <FilterChipGroup compact={compact} label={groupLabel('person', t, 'Person')} options={POOL_PERSONS} selected={filter.persons ?? POOL_PERSONS} onChange={v => patch({ persons: v })} />
