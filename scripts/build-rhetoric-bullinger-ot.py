@@ -294,12 +294,14 @@ FIXES = [
     (re.compile(r"[■•]+"), '"'),                        # broken quotation marks
     (re.compile(r"A\.\\?['\u2019]\."), "AV"),             # A.\'. / A.'. -> AV
     (re.compile(r"\{(?=[ci]\.?e?[.,)])"), "("),          # {i.e., -> (i.e.,   {c) -> (c)
-    (re.compile(r"\bi\.\s*c\.(?=\s)"), "i.e."),         # i.c. -> i.e.
+    (re.compile(r"\bi\.\s*c\.(?=[\s,])"), "i.e."),       # i.c. -> i.e.
     (re.compile(r"(?<![\w.])1(?=\s+(?:am|will|shall|have|had|know|knew|say|said|do|did|was|were|"
                 r"is|are|would|could|should|may|might|must|can|cannot|thought|saw|see|"
                 r"believe|speak|spake|write|wrote)\b)"), "I"),
     (re.compile(r"(?<![\w.])1(?=\s+(?:the|my|thy|this|that|will|am)\b)"), "I"),
     (re.compile(r"\bIxx"), "lxx"), (re.compile(r"\bIx\."), "lx."),   # capital I read for l
+    (re.compile(r",{2,}"), ","),
+    (re.compile(r"\bq-v\b"), "q.v."),
     (re.compile(r"\s*\u2014\s*$"), ""),
 ]
 
@@ -313,7 +315,14 @@ BROKEN_WORD = re.compile(
     r"\b(?:[a-z]+[A-Z][A-Za-z]*"
     r"|[A-Za-z]*\d[A-Za-z]+|[A-Za-z]{2,}\d[A-Za-z]*"
     r"|[a-z]{2,}['\u2019](?!s\b|t\b|d\b|ll\b|re\b|ve\b|m\b)[a-z]{2,})\b")
-STRAY = re.compile(r"[»«¢£§¡~^|\\{}*]")
+# A slash is never Bullinger's: it is what the scan makes of "i.e." and of the italic "if".
+STRAY = re.compile(r"[»«¢£§¡~^|\\{}*/]|\w[(;]+\w")
+
+# Punctuation where a letter belongs. The scan drops a bracket into the middle of a word
+# ("Ski:d", "h(;w"), reads a comma as a full stop ("3.nd"), and truncates a word to a stub
+# after a hyphen ("l-or", "q-v"). None of these can be repaired without inventing letters.
+PUNCT_IN_WORD = re.compile(r"[A-Za-z][(),;:\[\]][A-Za-z]|[A-Za-z0-9]\.[a-z]{2,}"
+                           r"|\b[A-Za-z]{1,2}-[a-z]{1,2}\b")
 # "See under Erotesis" is a pointer to another section, not a gloss; it can appear anywhere in
 # the run, not only at the start where SEE_ONLY looks for it.
 SEE_REF = re.compile(r"\bSee\s+(?:under|below|above|also)\b", re.I)
@@ -345,20 +354,26 @@ def vocabulary():
         with gzip.open(idx) as fh:
             for e in json.load(fh):
                 _VOCAB.update(re.findall(r"[a-z]{2,}", e.get("t", "").lower()))
-    for f in os.listdir(OUT_DIR) if os.path.isdir(OUT_DIR) else []:
-        if not f.endswith(".json") or f[:-5] in BOOKS_BY_OSIS:
-            continue                      # OT files are the ones being rebuilt — not evidence
-        with open(os.path.join(OUT_DIR, f), encoding="utf-8") as fh:
-            for d in json.load(fh).get("devices", []):
-                for o in d.get("occurrences", []):
-                    _VOCAB.update(re.findall(r"[a-z]{2,}", (o.get("note") or "").lower()))
+    # NOT the NT notes: their EPUB has its own scars ("trangression" is in them), and a
+    # vocabulary built from damaged text licenses the damage it was meant to catch.
     for wl in ("/usr/share/dict/words", "/usr/dict/words"):
         if os.path.exists(wl):
             with open(wl, encoding="utf-8", errors="ignore") as fh:
                 _VOCAB.update(w.strip().lower() for w in fh)
             break
-    _VOCAB.update(("viz", "marg", "esp", "lxx", "sept", "heb", "gr", "cf", "ver", "chap"))
+    _VOCAB.update(ALLOWED)
+    _VOCAB.update(w.lower() for f in FIG.values() if f for w in re.findall(r"[a-z]{3,}", f[1].lower()))
     return _VOCAB
+
+
+# Words the sources above do not have but Bullinger legitimately uses: his abbreviations, the
+# AV's archaic verbs, and British spellings that no rule reaches. Everything here is a word;
+# nothing here is a repair.
+ALLOWED = ("viz", "marg", "esp", "lxx", "sept", "heb", "gr", "cf", "ver", "chap", "ecc", "etc",
+           "hast", "hath", "doth", "dost", "didst", "shalt", "wilt", "art", "thyself", "himself",
+           "spake", "sware", "brethren", "whosoever", "whatsoever", "wherewith", "wherefore",
+           "fulness", "carcase", "carcases", "worshipper", "worshippers", "fulfilment",
+           "shew", "shewed", "shewing", "shewn", "sheweth", "unto", "thence", "hither")
 
 
 BRITISH = (("our", "or"), ("ise", "ize"), ("yse", "yze"))
@@ -372,6 +387,8 @@ def known_word(w):
         if w.endswith(suf) and len(w) > len(suf) + 2:
             stem = w[: -len(suf)]
             forms |= {stem, stem + "e", stem[:-1] if len(stem) > 3 and stem[-1] == stem[-2] else stem}
+            if stem.endswith("i"):                    # implied -> imply, replies -> reply
+                forms.add(stem[:-1] + "y")
     for f in list(forms):
         for a, b in BRITISH:
             if f.endswith(a):
@@ -394,11 +411,14 @@ def ot_note(after):
         seg = rx.sub(rep, seg)
     seg = re.sub(r"(\w)-\s+(\w)", r"\1\2", seg)      # "accord- ing" split across a line
     seg = re.sub(r"\s+", " ", seg).strip(" .,;:\u2014-")
-    if BROKEN_WORD.search(seg) or STRAY.search(seg):
+    if BROKEN_WORD.search(seg) or STRAY.search(seg) or PUNCT_IN_WORD.search(seg):
         return ""
     # A gloss that is now only a fragment teaches nothing; one that never closes its quotation
     # was cut mid-sentence by the page break.
-    seg = re.sub(r"^(?:[a-z0-9]{1,3}[).]\s*)+", "", seg).lstrip(" .,;:\u2014-")   # "g). —", "29 ("
+    seg = re.sub(r"^(?:[a-z0-9]{1,3}[).]?\s+)+", "", seg).lstrip(" .,;:\u2014-")  # "g). —", "10 distinctly"
+    seg = re.sub(r"\s+\b[A-Za-z]{1,2}$", "", seg)      # the window closed mid-word ("… by H")
+    if seg.count("(") != seg.count(")") or seg.count("[") != seg.count("]"):
+        return ""
     if sum(c.isalpha() for c in seg) < 20 or seg.count('"') % 2:
         return ""
     # Last gate. Everything above is a rule about a KNOWN defect; this is the catch-all for the
