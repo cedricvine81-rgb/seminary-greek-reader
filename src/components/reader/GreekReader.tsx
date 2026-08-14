@@ -48,7 +48,7 @@ import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
 import { highlightAt, verseAnchorProps } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
-import { READING_LANGS, readReadingLang, writeReadingLang } from '@/lib/reading-language'
+import { READING_LANGS, effectiveReadingLang, writeReadingLang } from '@/lib/reading-language'
 
 // ── BSB alignment loader ───────────────────────────────────────────────────────
 
@@ -301,13 +301,16 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   // Restore the reader's chosen inline translation on return. Hydrated after mount to
   // avoid an SSR mismatch; persisted whenever it changes.
   useEffect(() => {
-    setParallelLang(readReadingLang())
+    // effectiveReadingLang, not the raw preference: a reader who has never chosen gets the
+    // Bible of their interface language (Spanish interface → Reina-Valera), and switching
+    // the interface moves it. An explicit choice — including "Greek only" — always wins.
+    const sync = () => setParallelLang(effectiveReadingLang(locale))
+    sync()
     // Follow the Settings picker live, so changing the language in another pane updates the
     // open Reader instead of needing a reload.
-    const onChange = (e: Event) => setParallelLang((e as CustomEvent<string | null>).detail ?? null)
-    window.addEventListener('pref:reading-language', onChange)
-    return () => window.removeEventListener('pref:reading-language', onChange)
-  }, [])
+    window.addEventListener('pref:reading-language', sync)
+    return () => window.removeEventListener('pref:reading-language', sync)
+  }, [locale])
   // NOTE: the choice is persisted in switchView, where the student actually makes it — NOT in
   // an effect on parallelLang. An effect cannot do this safely: it runs in the same commit as
   // the hydrating read above, so it sees the initial null and would erase the saved language;

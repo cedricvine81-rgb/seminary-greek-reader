@@ -107,6 +107,15 @@ export function vocabItems(): Item[] {
   for (const [deck, file] of [['greek', 'src/data/bgvb-vocabulary.json'],
                               ['hebrew', 'src/data/hebrew-vocabulary.json']] as const) {
     const words = JSON.parse(fs.readFileSync(file, 'utf8')) as { word: string; gloss: string }[]
+    // The Hebrew deck is the file PLUS the words the corpus frequency pass structurally
+    // cannot see — the inseparable prefixes and adonai, merged in by vocab-decks.ts (see
+    // scripts/build-glanz-bands.py). Reading only the file left those seven with no
+    // Spanish while this audit reported 100%, because it never knew they existed.
+    if (deck === 'hebrew') {
+      const bands = JSON.parse(fs.readFileSync('src/data/hebrew-glanz-bands.json', 'utf8')) as
+        { supplement?: { word: string; gloss: string }[] }
+      for (const w of bands.supplement ?? []) words.push({ word: w.word, gloss: w.gloss })
+    }
     // HOMOGRAPHS. 19 Hebrew lemmas appear twice with unrelated senses — אֵת is both the
     // direct-object marker and "with"; עָנָה is both "answer" and "afflict". Keyed by lemma
     // alone they collide, and only one sense of each pair could ever be translated: the other

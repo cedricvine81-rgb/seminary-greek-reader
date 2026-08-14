@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { Search, ChevronDown, ChevronRight, Sparkles, X } from 'lucide-react'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
@@ -9,6 +9,7 @@ import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { MT_OSIS } from '@/lib/mt-books'
 import { CITATION_STOP, detectCitation } from '@/lib/citation-formula'
+import { defaultReadingLang, useEffectiveReadingLang, readingLangLabel } from '@/lib/reading-language'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 
@@ -175,6 +176,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
   onOpenInTexts?: (t: OpenInTextsTarget) => void
 }) {
   const t = useT()
+  const locale = useLocale()
   const parsed = useMemo(() => parseRef(controlledPassage ?? ''), [controlledPassage])
   // Per-verse notes on the anchor passage, like every reading pane (signed-in only).
   const [notedKeys, setNotedKeys] = useState<Set<number>>(new Set())
@@ -199,6 +201,12 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
   const [verses, setVerses] = useState<{ verse: number; words: WordTok[] }[]>([])
   const [loadState, setLoadState] = useState<'idle' | 'loading' | 'ok' | 'missing'>('idle')
   const [showEnglish, setShowEnglish] = useState(true)
+  // Which translation sits under the passage. Follows the reader's language (Settings →
+  // Reading language), so a Spanish reader gets Reina-Valera instead of the WEB. A reader
+  // who has chosen "original only" still needs SOMETHING here when they tick the box, so
+  // that case falls back to the interface language rather than to English.
+  const readingLang = useEffectiveReadingLang(locale)
+  const passageLang = readingLang ?? defaultReadingLang(locale)
   // OT chapters' English, keyed "osis.chapter" (the BSB file is NT-only — see the effect below).
   const [otEnglish, setOtEnglish] = useState<Record<string, Record<number, string>>>({})
   const [, setBsbTick] = useState(0)
@@ -252,17 +260,16 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
     }).catch(() => {})
   }, [])
 
-  // BSB English (one static file, shared with the other tabs' pattern).
+  // The passage translation. BSB is the one word-aligned edition and covers the Greek NT
+  // only; every other language — and every OT passage — is fetched per chapter, or the
+  // column is silently blank (which is how this checkbox looked broken on Hebrew).
   useEffect(() => {
     if (!showEnglish) return
-    // The BSB alignment file covers the Greek NT only; an OT passage needs a translation
-    // fetched per chapter, or the English column is silently blank (which is how this
-    // checkbox looked broken on every Hebrew passage).
-    if (isHebrewCorpus) {
+    if (isHebrewCorpus || passageLang !== 'bsb') {
       if (!parsed) return
-      const key = `${parsed.osis}.${parsed.chapter}`
+      const key = `${passageLang}.${parsed.osis}.${parsed.chapter}`
       if (otEnglish[key]) return
-      fetch(`/api/translation?book=${parsed.osis}&chapter=${parsed.chapter}&lang=en`)
+      fetch(`/api/translation?book=${parsed.osis}&chapter=${parsed.chapter}&lang=${passageLang}`)
         .then(r => r.json())
         .then((d: { verses?: Record<string, string> }) => {
           const map: Record<number, string> = {}
@@ -279,7 +286,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
     bsbInflight ??= fetch('/data/bsb-alignment.json?v=3').then(r => r.json())
       .then(d => { bsbCache = d }).catch(() => { bsbCache = {} })
     bsbInflight.then(() => setBsbTick(t => t + 1))
-  }, [showEnglish, isHebrewCorpus, parsed, otEnglish])
+  }, [showEnglish, isHebrewCorpus, parsed, otEnglish, passageLang])
 
   // Load the passage words from the phrase tree; reset the working state on passage change.
   useEffect(() => {
@@ -652,7 +659,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
               <label className="flex items-center gap-1.5 text-xs text-gray-500">
                 <input type="checkbox" checked={showEnglish} onChange={e => setShowEnglish(e.target.checked)}
                   className="h-3.5 w-3.5 rounded border-gray-300 text-brand-600 focus:ring-brand-500" />
-                English
+                {readingLangLabel(passageLang, t)}
               </label>
             </div>
 
@@ -707,8 +714,8 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
                     })}
                   </p>
                   {showEnglish && (() => {
-                    const en = isHebrewCorpus
-                      ? otEnglish[`${parsed!.osis}.${parsed!.chapter}`]?.[v.verse]
+                    const en = isHebrewCorpus || passageLang !== 'bsb'
+                      ? otEnglish[`${passageLang}.${parsed!.osis}.${parsed!.chapter}`]?.[v.verse]
                       : bsbCache?.[`${parsed!.osis}.${parsed!.chapter}.${v.verse}`]?.text
                     return en ? <p dir="ltr" className="mt-0.5 ml-4 text-sm text-gray-500">{en}</p> : null
                   })()}
@@ -716,9 +723,10 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
               ))}
             </div>
             <p className="mt-2.5 text-xs text-gray-400">
-              Dotted words are <b>{t(searchCorpus === 'MT' ? 'all.rareInMT' : 'all.rareInLXX')}</b> — sharing one is worth far more than sharing a common word.
-              Tap <b>{t('all.adjacent')}</b> words and they become a phrase, searched as a sequence
-              (&ldquo;ἐν ἀρχῇ&rdquo; is two common words but a rare pairing). Hover a word for its gloss.
+              {t('all.tapHelp', {
+                rare: t(searchCorpus === 'MT' ? 'all.rareInMT' : 'all.rareInLXX'),
+                adjacent: t('all.adjacent'),
+              })}
             </p>
           </div>
 

@@ -1572,6 +1572,9 @@ const en: Catalogue = {
   'all.rareInLXX': 'rare in the LXX',
   'all.rareInMT': 'rare in the Hebrew Bible',
   'all.adjacent': 'adjacent',
+  // One sentence, one key: it used to be English JSX wrapped around two translated
+  // fragments, so a Spanish reader met "Dotted words are raras en la LXX".
+  'all.tapHelp': 'Dotted words are {rare} — sharing one is worth far more than sharing a common word. Tap {adjacent} words and they become a phrase, searched as a sequence (“ἐν ἀρχῇ” is two common words but a rare pairing). Hover a word for its gloss.',
   'all.split': 'split',
   'all.join': 'join',
   'all.suggestWords': 'Suggest the distinctive words',
@@ -2438,6 +2441,10 @@ const en: Catalogue = {
     'These translations are machine-drafted and not yet checked by a native speaker. Anything untranslated appears in English. Please report anything that reads wrongly.',
 
   // ── Settings: reading language (existing card) ──
+  'settings.reading.auto': 'Follow interface language',
+  'settings.reading.autoSub': 'Currently {lang}',
+  'settings.reading.desc': 'The translation shown beside the Greek and Hebrew. The original text itself never changes — this is the language you read it with. Applies to the Reader and the Phrase explorer, and is remembered on this device.',
+  'settings.reading.licenceNote': 'These are the freely licensed editions available to us, so they are older translations — Reina-Valera 1909 rather than 1960, for instance. The Berean Standard Bible is the only one shown word-by-word beside the Greek New Testament; the rest appear verse by verse.',
   'settings.reading.title': 'Reading language',
   'settings.reading.greekOnly': 'Greek only',
   'settings.reading.noParallel': 'No parallel translation',
@@ -3929,6 +3936,7 @@ const es: Catalogue = {
   'all.rareInLXX': 'raras en la LXX',
   'all.rareInMT': 'poco frecuentes en la Biblia hebrea',
   'all.adjacent': 'contiguas',
+  'all.tapHelp': 'Las palabras punteadas son {rare}: compartir una vale mucho más que compartir una palabra común. Toca palabras {adjacent} y se convierten en una frase, que se busca como secuencia («ἐν ἀρχῇ» son dos palabras comunes, pero una combinación rara). Pasa el cursor sobre una palabra para ver su glosa.',
   'all.split': 'separar',
   'all.join': 'unir',
   'all.suggestWords': 'Sugerir las palabras distintivas',
@@ -4726,6 +4734,10 @@ const es: Catalogue = {
   'settings.language.note':
     'Estas traducciones son un borrador automático y todavía no las ha revisado un hablante nativo. Lo que no esté traducido aparece en inglés. Le agradecemos que informe de cualquier error.',
 
+  'settings.reading.auto': 'Seguir el idioma de la interfaz',
+  'settings.reading.autoSub': 'Actualmente: {lang}',
+  'settings.reading.desc': 'La traducción que se muestra junto al griego y al hebreo. El texto original nunca cambia: este es el idioma con el que lo lees. Se aplica al Lector y al Explorador de frases, y se recuerda en este dispositivo.',
+  'settings.reading.licenceNote': 'Estas son las ediciones de licencia libre a nuestro alcance, por lo que son traducciones antiguas: Reina-Valera 1909 en lugar de 1960, por ejemplo. La Berean Standard Bible es la única que se muestra palabra por palabra junto al Nuevo Testamento griego; las demás aparecen versículo por versículo.',
   'settings.reading.title': 'Idioma de lectura',
   'settings.reading.greekOnly': 'Solo griego',
   'settings.reading.noParallel': 'Sin traducción paralela',
@@ -5027,6 +5039,10 @@ const ru: Catalogue = {
   'settings.language.note':
     'Эти переводы сделаны машиной и ещё не проверены носителем языка. Непереведённое отображается по-английски. Пожалуйста, сообщайте об ошибках.',
 
+  'settings.reading.auto': 'Следовать языку интерфейса',
+  'settings.reading.autoSub': 'Сейчас: {lang}',
+  'settings.reading.desc': 'Перевод, показываемый рядом с греческим и еврейским текстом. Сам оригинальный текст не меняется — это язык, на котором вы его читаете. Применяется к Читателю и Обозревателю фраз и запоминается на этом устройстве.',
+  'settings.reading.licenceNote': 'Это доступные нам издания со свободной лицензией, поэтому переводы старые. Berean Standard Bible — единственный перевод, показываемый пословно рядом с греческим Новым Заветом; остальные отображаются по стихам.',
   'settings.reading.title': 'Язык чтения',
   'settings.reading.greekOnly': 'Только греческий',
   'settings.reading.noParallel': 'Без параллельного перевода',
@@ -5326,6 +5342,10 @@ const zh: Catalogue = {
   'settings.language.note':
     '這些譯文由機器初譯，尚未經母語人士校訂。未翻譯的部分會以英文顯示。若發現錯誤，歡迎回報。',
 
+  'settings.reading.auto': '跟隨介面語言',
+  'settings.reading.autoSub': '目前為{lang}',
+  'settings.reading.desc': '顯示在希臘文和希伯來文旁邊的譯本。原文本身不會改變——這是你用來閱讀原文的語言。適用於閱讀器和片語瀏覽器，並會記在此裝置上。',
+  'settings.reading.licenceNote': '這些是我們可取得的自由授權版本，因此都是較舊的譯本。只有 Berean Standard Bible 會逐字對照希臘文新約顯示；其餘則逐節顯示。',
   'settings.reading.title': '閱讀語言',
   'settings.reading.greekOnly': '僅希臘文',
   'settings.reading.noParallel': '不顯示對照譯文',

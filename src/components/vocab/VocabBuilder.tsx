@@ -567,7 +567,7 @@ function FlashcardPlayer({
               {missedWords.map(w => (
                 <div key={wid(w)} className="px-4 py-2.5 flex items-baseline justify-between gap-4">
                   <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-semibold text-gray-900`}>{w.word}</span>
-                  <span className="text-sm text-gray-600">{w.gloss}</span>
+                  <span className="text-sm text-gray-600">{V.gloss(w)}</span>
                 </div>
               ))}
             </div>
@@ -648,7 +648,7 @@ function FlashcardPlayer({
                 </>
               ) : (
                 <>
-                  <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                  <p className="text-3xl text-gray-900 font-semibold text-center">{V.gloss(word)}</p>
                   <p className="text-sm text-gray-500">{posLabelKey(word.pos) ? t(posLabelKey(word.pos)!) : word.pos}</p>
                 </>
               )}
@@ -657,7 +657,7 @@ function FlashcardPlayer({
                 <div className="my-1 w-12 h-px bg-gray-200" />
                 {greekFirst ? (
                   <>
-                    <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                    <p className="text-3xl text-gray-900 font-semibold text-center">{V.gloss(word)}</p>
                     <p className="text-sm text-gray-500">{posLabelKey(word.pos) ? t(posLabelKey(word.pos)!) : word.pos}</p>
                   </>
                 ) : (
