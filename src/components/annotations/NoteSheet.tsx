@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { X, Trash2, PenLine } from 'lucide-react'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { setNoteEditing } from '@/lib/note-editing'
 import type { HighlightColor } from '@/lib/highlight-colors'
 import { parseInk, serializeInk, isEmptyInk, type InkDrawing } from '@/lib/ink'
 import { InkPad } from './InkPad'
@@ -36,6 +37,8 @@ export function NoteSheet({ quote, color, body, ink, onSave, onDelete, onClose }
   const areaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => { areaRef.current?.focus() }, [])
+
+  useEffect(() => { setNoteEditing(true); return () => setNoteEditing(false) }, [])
 
   function saveAndClose() {
     const patch: { color?: string; body?: string; ink?: string } = {}

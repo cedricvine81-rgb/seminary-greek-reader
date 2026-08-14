@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react'
 import { Bold, Italic, List, Minus, Plus } from 'lucide-react'
 import { NOTE_FONT_SCALES } from '@/lib/note-prefs'
 import { sanitizeNoteHtml } from '@/lib/note-html'
+import { setNoteEditing } from '@/lib/note-editing'
 
 /**
  * WYSIWYG note editor: Bold/Italic/bullet-list actually format the selected text
@@ -24,6 +25,14 @@ export function NoteComposer({
   maxHeight?: number
 }) {
   const ref = useRef<HTMLDivElement>(null)
+
+  // Tell the context-menu guard a note is open, so a palm resting on the glass while writing
+  // with a Pencil stops opening the word menu over it. Mount/unmount, not focus/blur: the
+  // hand is still on the screen between strokes, and Scribble itself moves focus about.
+  useEffect(() => {
+    setNoteEditing(true)
+    return () => setNoteEditing(false)
+  }, [])
 
   useEffect(() => {
     const el = ref.current

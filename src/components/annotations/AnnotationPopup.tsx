@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Trash2, Maximize2 } from 'lucide-react'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { setNoteEditing } from '@/lib/note-editing'
 import type { HighlightColor } from '@/lib/highlight-colors'
 
 /**
@@ -31,6 +32,8 @@ export function AnnotationPopup({ x, y, color, body, canDelete, onColor, onSave,
   const [pos, setPos] = useState({ left: x, top: y })
 
   useEffect(() => { setDraft(body) }, [body])
+
+  useEffect(() => { setNoteEditing(true); return () => setNoteEditing(false) }, [])
 
   useEffect(() => {
     const el = ref.current

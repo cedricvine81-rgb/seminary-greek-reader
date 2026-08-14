@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Highlighter } from 'lucide-react'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { fingerprint } from '@/lib/i18n/content'
 import { resolveAnchor, hasNote, type BlockAnnotationRecord } from '@/lib/block-annotations'
@@ -200,11 +201,23 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
     await fetch(`/api/annotations?id=${id}`, { method: 'DELETE' }).catch(() => {})
   }
 
+  const noteCount = items.filter(hasNote).length
   const openItem = openId ? items.find(a => a.id === openId) ?? null : null
   const sheetItem = sheetId ? items.find(a => a.id === sheetId) ?? null : null
 
   return (
     <div ref={containerRef} className="relative">
+      {/* The feature has to announce itself. Drag-to-annotate is invisible until you already
+          know it is there, and the first report from a real reader was, exactly, "nothing is
+          visible" — the gesture worked and nothing on the page said so. One muted line,
+          shown only to a reader who could actually save an annotation. */}
+      {enabled && (
+        <p className="mb-3 flex items-center gap-1.5 text-[11px] text-gray-400 print:hidden">
+          <Highlighter size={12} className="shrink-0" />
+          {t('ann.gestureHint')}
+          {noteCount > 0 && <span className="text-brand-600">· {t('ann.chapterNotes', { count: noteCount })}</span>}
+        </p>
+      )}
       {children}
 
       {/* Margin markers: the only affordance that must work everywhere. A note is reachable
