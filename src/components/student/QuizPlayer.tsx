@@ -13,6 +13,7 @@ import {
 } from '@/lib/quiz-fields-hebrew'
 import type { QuizQuestion, QuizResult } from '@/types/quiz'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { rich } from '@/lib/i18n/rich'
 
 interface QuizPlayerProps {
   assignmentId: string
@@ -100,7 +101,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   // Per-response appeal status (after submit): which responseIds the student has appealed.
   const [appealedIds, setAppealedIds] = useState<Set<string>>(new Set())
   const [appealError, setAppealError] = useState<string | null>(null)
-  // Mid-quiz {t('quiz.appealAnswer')} intent: the questionIds marked for appeal.
+  // Mid-quiz Appeal this answer intent: the questionIds marked for appeal.
   // Actual appeals are POSTed after the quiz submits (responseIds don't exist mid-quiz).
   const [markedForAppeal, setMarkedForAppeal] = useState<Set<string>>(new Set())
 
@@ -111,7 +112,9 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
       <div className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-8 text-center space-y-2">
         <p className="text-base font-semibold text-amber-900">{t('quiz.noQuestions')}</p>
         <p className="text-sm text-amber-800">
-          Open the assignment&rsquo;s builder and click <strong>{t('quiz.generateQuestions')}</strong>, then return here.
+          {rich(t('quiz.noQuestionsHelp'), {
+            generate: <strong>{t('quiz.generateQuestions')}</strong>,
+          })}
         </p>
       </div>
     )
@@ -401,16 +404,16 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         <div className="text-center py-8 border border-gray-100 rounded-2xl bg-gray-50">
           <CheckCircle2 size={40} className="text-green-500 mx-auto mb-2" />
           <p className="text-4xl font-bold text-brand-700">{result.percentage}%</p>
-          <p className="text-gray-600 mt-1">{result.correctAnswers} / {result.totalQuestions} correct — submitted for grading</p>
+          <p className="text-gray-600 mt-1">{t('quiz.correctSubmitted', { n: result.correctAnswers, total: result.totalQuestions })}</p>
           {result.isNewBest ? (
             <p className="text-xs text-green-600 mt-1 font-medium">{t('quiz.newBest')}</p>
           ) : (
-            <p className="text-xs text-gray-400 mt-1">Best score: {bestPct}%</p>
+            <p className="text-xs text-gray-400 mt-1">{t('quiz.bestScore', { pct: bestPct ?? '' })}</p>
           )}
           {maxRetakes !== null && (
             <p className="text-xs text-gray-500 mt-2">
-              Attempt {attemptCount} of {maxAllowed} ·{' '}
-              {retakesRemaining === 0 ? t('quiz.noRetakes') : `${retakesRemaining} retake${retakesRemaining === 1 ? '' : 's'} remaining`}
+              {t('quiz.attemptOf', { n: attemptCount, max: maxAllowed ?? 0 })} ·{' '}
+              {retakesRemaining === 0 ? t('quiz.noRetakes') : t('quiz.retakesRemaining', { count: retakesRemaining ?? 0 })}
             </p>
           )}
         </div>
@@ -427,9 +430,11 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                 <>
                   {appealsEnabled && (
                     <p className="text-xs text-gray-500">
-                      Think a wrong answer should have counted? You may appeal up to{' '}
-                      <span className="font-semibold">{maxAppeals}</span> answer{maxAppeals === 1 ? '' : 's'} per attempt.
-                      {usedAppeals > 0 && <> ({remainingAppeals} remaining)</>}
+                      {/* count picks the plural; {max} stays a hole for rich() to fill. */}
+                      {rich(t('quiz.appealIntro', { count: maxAppeals }), {
+                        max: <span className="font-semibold">{maxAppeals}</span>,
+                      })}
+                      {usedAppeals > 0 && <> {t('quiz.appealsLeftParen', { count: remainingAppeals })}</>}
                     </p>
                   )}
                   {result.breakdown.map(b => {
@@ -467,7 +472,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                                     onClick={() => handleAppeal(b.responseId!)}
                                     className="text-xs font-medium text-red-700 hover:text-red-900 hover:underline"
                                   >
-                                    Appeal this answer
+                                    {t('quiz.appealAnswer')}
                                   </button>
                                 ) : remainingAppeals === 0 ? (
                                   <span className="text-xs text-gray-400">{t('quiz.noAppeals')}</span>
@@ -716,17 +721,17 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                 : <XCircle size={18} className="text-red-500 shrink-0" />
               }
               <span className={`text-sm font-semibold ${clientCorrect[q.id] ? 'text-green-700' : 'text-red-600'}`}>
-                {timedOut ? 'Time\'s up!' : clientCorrect[q.id] ? t('quiz.correct') : t('quiz.incorrect')}
+                {timedOut ? t('quiz.timesUp') : clientCorrect[q.id] ? t('quiz.correct') : t('quiz.incorrect')}
               </span>
             </div>
             {answers[q.id] && (
               <p className="text-sm text-gray-600">
-                Your answer: <span dir={scriptProps(answers[q.id]).dir} className={`${scriptProps(answers[q.id]).className} ${clientCorrect[q.id] ? 'text-green-700 font-medium' : 'text-red-600 font-medium'}`}>{answers[q.id]}</span>
+                {t('quiz.yourAnswer')}<span dir={scriptProps(answers[q.id]).dir} className={`${scriptProps(answers[q.id]).className} ${clientCorrect[q.id] ? 'text-green-700 font-medium' : 'text-red-600 font-medium'}`}>{answers[q.id]}</span>
               </p>
             )}
             {!clientCorrect[q.id] && (
               <p className="text-sm text-gray-600">
-                Correct answer: <span dir={scriptProps(q.correctAnswer).dir} className={`${scriptProps(q.correctAnswer).className} text-green-700 font-medium`}>{formatCorrectAnswer(q.correctAnswer ?? '')}</span>
+                {t('quiz.correctAnswerLabel')}<span dir={scriptProps(q.correctAnswer).dir} className={`${scriptProps(q.correctAnswer).className} text-green-700 font-medium`}>{formatCorrectAnswer(q.correctAnswer ?? '')}</span>
               </p>
             )}
             {/* Mid-quiz appeal control — vocab quizzes only, when appeals are enabled and budget remains. */}
@@ -740,7 +745,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                 if (isMarked) {
                   return (
                     <p className="text-xs text-amber-700 font-medium pt-1">
-                      ✓ Marked for appeal — will be submitted when you finish the quiz.
+                      ✓ {t('quiz.markedForAppeal')}
                     </p>
                   )
                 }
@@ -756,10 +761,10 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                       onClick={() => setMarkedForAppeal(prev => new Set(prev).add(q.id))}
                       className="text-xs font-medium text-red-700 hover:text-red-900 hover:underline"
                     >
-                      Appeal this answer
+                      {t('quiz.appealAnswer')}
                     </button>
                     <span className="ml-2 text-xs text-gray-400">
-                      {remaining} of {maxAppeals} appeal{maxAppeals === 1 ? '' : 's'} remaining
+                      {t('quiz.appealsRemaining', { n: remaining, max: maxAppeals, count: maxAppeals })}
                     </span>
                   </div>
                 )

@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
 import { getServerT } from '@/lib/i18n/server'
+import { rich } from '@/lib/i18n/rich'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { addDays } from 'date-fns'
@@ -129,7 +130,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             be used as an escape hatch mid-exam. */}
         {!(assignment.type === 'TRANSLATION_EXAM' && assignment.lockdown) && (
           <Link href="/student/assignments" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors mb-3 print:hidden">
-            <ArrowLeft size={14} /> Back to assignments
+            <ArrowLeft size={14} /> {t('assign.backToAssignments')}
           </Link>
         )}
 
@@ -137,21 +138,22 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
         {previewMode && (
           <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 flex items-center justify-between gap-4">
             <div>
-              <span className="font-semibold">Instructor Preview</span>
-              {' — '}you are viewing this assignment as a student would experience it. No student data will be affected.
+              {rich(t('assign.previewNote'), {
+                label: <span className="font-semibold">{t('assign.previewLabel')}</span>,
+              })}
             </div>
             <div className="flex items-center gap-3 shrink-0">
               <Link
                 href={`/instructor/assignments/${params.assignmentId}`}
                 className="font-medium hover:underline"
               >
-                ← Back to edit
+                ← {t('assign.backToEdit')}
               </Link>
               <Link
                 href="/api/preview?mode=exit"
                 className="font-medium hover:underline"
               >
-                Exit preview
+                {t('assign.exitPreview')}
               </Link>
             </div>
           </div>
@@ -161,7 +163,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
         {!isPassageExercise && (
           <>
             <div className="flex gap-2 flex-wrap">
-              <Badge variant="gray">Week {assignment.weekNumber}</Badge>
+              <Badge variant="gray">{t('student.weekN', { n: assignment.weekNumber })}</Badge>
               <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
                 {t(`course.level.${assignment.level}`)}
               </Badge>
@@ -187,7 +189,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
                     target="_blank"
                     className="inline-flex items-center gap-1.5 text-brand-700 hover:text-brand-900 hover:underline font-medium"
                   >
-                    ↓ Download Biblical Greek Vocabulary Builder (PDF)
+                    ↓ {t('assign.downloadGreekVocabPdf')}
                   </Link>
                 )}
               </div>
@@ -199,7 +201,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
                 target="_blank"
                 className="inline-flex items-center gap-1.5 text-sm text-brand-700 hover:text-brand-900 hover:underline font-medium"
               >
-                ↓ Download Hebrew Vocabulary List (PDF)
+                ↓ {t('assign.downloadHebrewVocabPdf')}
               </Link>
             )}
           </>
@@ -207,23 +209,25 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
 
         {isClosed && (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            <span className="font-semibold">This assignment is closed.</span>{' '}
-            The submission window has ended.
+            <span className="font-semibold">{t('assign.closedTitle')}</span>{' '}
+            {t('assign.closedWindow')}
             {isPassageExercise && existingSession?.submittedAt && (
-              <span className="ml-1">Your submitted work is shown below in read-only mode.</span>
+              <span className="ml-1">{t('assign.closedSubmittedReadonly')}</span>
             )}
             {isPassageExercise && existingSession && !existingSession.submittedAt && (
-              <span className="ml-1">Your in-progress work is shown below — submissions are no longer accepted.</span>
+              <span className="ml-1">{t('assign.closedInProgress')}</span>
             )}
           </div>
         )}
 
         {isLateWindow && (
           <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-            <span className="font-semibold">Late submission.</span>{' '}
+            <span className="font-semibold">{t('assign.lateSubmission')}</span>{' '}
             {lateDeadline
-              ? <>Accepting submissions until <span className="font-medium"><LocalDateTime iso={lateDeadline.toISOString()} withTime={false} /></span>.</>
-              : 'Accepting submissions indefinitely.'}
+              ? rich(t('assign.acceptingUntil'), {
+                  date: <span className="font-medium"><LocalDateTime iso={lateDeadline.toISOString()} withTime={false} /></span>,
+                })
+              : t('assign.acceptingIndefinitely')}
           </div>
         )}
 
@@ -231,7 +235,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
         {isPassageExercise && existingSession?.grade != null && (
           <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-4 space-y-1">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-brand-800">Your Grade</span>
+              <span className="text-sm font-semibold text-brand-800">{t('cs.yourGrade')}</span>
               <span className="text-2xl font-bold text-brand-700">{existingSession.grade}%</span>
             </div>
             {existingSession.gradeNote && (
@@ -302,13 +306,14 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             provisioned for them. Point them there instead of an empty quiz player. */}
         {assignment.type === 'COURSE_NOTES' && (
           <div className="rounded-2xl border border-brand-200 bg-brand-50 px-5 py-6 space-y-3">
-            <p className="text-base font-semibold text-brand-900">This is a course notes assignment</p>
+            <p className="text-base font-semibold text-brand-900">{t('assign.courseNotesTitle')}</p>
             <p className="text-sm text-brand-800">
-              There&rsquo;s no quiz to take — you write and submit your own notes. Your notes folder
-              {assignment.notesFolderName ? <>, <strong>{assignment.notesFolderName}</strong>,</> : ''} is in the Notes tab of the Exegesis workspace.
+              {assignment.notesFolderName
+                ? rich(t('assign.courseNotesBodyNamed'), { folder: <strong>{assignment.notesFolderName}</strong> })
+                : t('assign.courseNotesBody')}
             </p>
             <Link href="/exegesis?tab=notes" className="btn btn-primary inline-flex w-fit items-center gap-1.5 px-4 py-2">
-              Open your notes →
+              {t('assign.openYourNotes')} →
             </Link>
           </div>
         )}

@@ -10,7 +10,8 @@
 ───────────────────────────────────────────── */
 
 import { useState, useEffect, useContext, useMemo, useRef, createContext } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { formatNumber } from '@/lib/i18n/format'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
@@ -205,6 +206,7 @@ const HB_CHAPTER_TITLE: Record<string, string> = {
 
 /** The chapter's real-text examples. `n` caps how many are shown (default all). */
 export function HbExamples({ id, n, title }: { id: string; n?: number; title?: string }) {
+  const t = useT()
   const [all, setAll] = useState<GrammarExample[] | null>(null)
   const xlit = useContext(XlitContext)
   useEffect(() => { loadExamples().then(d => setAll(d[id]?.examples ?? [])) }, [id])
@@ -240,7 +242,7 @@ export function HbExamples({ id, n, title }: { id: string; n?: number; title?: s
         })}
       </ul>
       <p className="mt-2 text-[11px] italic text-gray-400">
-        Highlighted: the form this chapter teaches. English: World English Bible.
+        {t('morph.hb.exampleNote')}
       </p>
     </div>
   )
@@ -250,6 +252,8 @@ export function HbExamples({ id, n, title }: { id: string; n?: number; title?: s
  *  Standard grammars end each chapter with a list to memorise; this one is not invented —
  *  it is exactly the words needed to read the examples above without a lexicon. */
 export function HbVocab({ id }: { id: string }) {
+  const t = useT()
+  const locale = useLocale()
   const [rows, setRows] = useState<GrammarVocab[] | null>(null)
   const xlit = useContext(XlitContext)
   useEffect(() => { loadExamples().then(d => setRows(d[id]?.vocab ?? [])) }, [id])
@@ -257,7 +261,7 @@ export function HbVocab({ id }: { id: string }) {
   return (
     <div className="mb-5 rounded-lg border border-gray-200 bg-surface px-4 py-3">
       <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700">
-        Vocabulary for this chapter
+        {t('morph.hb.chapterVocab')}
       </p>
       <ul className="grid grid-cols-1 gap-x-6 gap-y-1.5 sm:grid-cols-2">
         {rows.map(v => (
@@ -265,13 +269,12 @@ export function HbVocab({ id }: { id: string }) {
             <span lang="he" dir="rtl" className="font-hebrew text-[20px] text-gray-900">{v.lemma}</span>
             {xlit && <span className="text-[11px] italic text-gray-400">{transliterate(v.lemma)}</span>}
             <span className="min-w-0 flex-1 truncate text-gray-700">{v.gloss}</span>
-            <span className="shrink-0 font-mono text-[11px] text-gray-400">{v.freq.toLocaleString()}×</span>
+            <span className="shrink-0 font-mono text-[11px] text-gray-400">{formatNumber(v.freq, locale)}×</span>
           </li>
         ))}
       </ul>
       <p className="mt-2 text-[11px] italic text-gray-400">
-        Frequency = times the word occurs in the Hebrew Bible. All of these are in the
-        Vocabulary deck, so they can be drilled there.
+        {t('morph.hb.freqNote')}
       </p>
     </div>
   )
@@ -282,14 +285,16 @@ export function HbVocab({ id }: { id: string }) {
 export function HbDrills({ id, n = 10, title, intro }: {
   id: string; n?: number; title?: string; intro?: React.ReactNode
 }) {
+  const t = useT()
   const [rows, setRows] = useState<GrammarDrill[] | null>(null)
   useEffect(() => { loadExamples().then(d => setRows(d[id]?.drills ?? [])) }, [id])
   if (!rows || rows.length === 0) return null
-  return <DrillList items={rows.slice(0, n)} title={title ?? 'Practice — parse these'} intro={intro} />
+  return <DrillList items={rows.slice(0, n)} title={title ?? t('morph.hb.parseThese')} intro={intro} />
 }
 
 /** Forms from EARLIER chapters, so a chapter keeps the previous ones alive. */
 export function HbReview({ id, n = 5 }: { id: string; n?: number }) {
+  const t = useT()
   const [items, setItems] = useState<{ drill: GrammarDrill; from: string }[] | null>(null)
   useEffect(() => {
     loadExamples().then(d => {
@@ -310,8 +315,8 @@ export function HbReview({ id, n = 5 }: { id: string; n?: number }) {
   if (!items || items.length === 0) return null
   return (
     <DrillList
-      title="Still remember these?"
-      intro={<>Forms from earlier chapters. If one stops you, the chapter that taught it is named in the answer.</>}
+      title={t('morph.hb.stillRemember')}
+      intro={<>{t('morph.hb.stillRememberIntro')}</>}
       items={items.map(x => x.drill)}
       froms={items.map(x => x.from)}
       tone="amber"
@@ -375,6 +380,7 @@ function DrillList({ items, title, intro, froms, tone = 'gray' }: {
  *  first, then check. Independent of the page-wide toggle, because here the whole point is
  *  to look away from the answer. */
 export function HbReading({ id = 'alphabet' }: { id?: string }) {
+  const t = useT()
   const [rows, setRows] = useState<GrammarReading[] | null>(null)
   const [show, setShow] = useState(false)
   const [showEn, setShowEn] = useState(false)
@@ -395,12 +401,11 @@ export function HbReading({ id = 'alphabet' }: { id?: string }) {
           <button
             type="button" onClick={() => setShowEn(v => !v)} aria-pressed={showEn}
             className={`${btn} ${showEn ? 'border-brand-500 bg-brand-100 text-brand-800' : 'border-gray-300 bg-surface text-gray-600 hover:text-gray-900'}`}
-          >{showEn ? 'Hide English' : 'Show English'}</button>
+          >{showEn ? t('morph.hb.hideEnglish') : t('morph.hb.showEnglish')}</button>
         </div>
       </div>
       <p className="mb-3 text-sm text-gray-600">
-        Read each line aloud, right to left, before you check yourself. You are not expected to
-        understand them yet — this is about turning letters and points into sound.
+        {t('morph.hb.readAloud')}
       </p>
       <ol className="space-y-3">
         {rows.map(r => (
@@ -876,7 +881,7 @@ export function GuidedExample({ title, sentence, source, translation, steps, lev
       {source && (
         <p className="text-xs mb-2">
           <Link href={`/reader?ref=${encodeURIComponent(source.ref)}`} className="text-brand-600 hover:underline">
-            {source.label ?? source.ref} — open in the Reader →
+            {source.label ?? source.ref} — {t('morph.openInReader')} →
           </Link>
         </p>
       )}
@@ -1207,6 +1212,7 @@ function fmtDeadline(iso: string) {
 }
 
 export function HomeworkAssignments({ chapter }: { chapter: string }) {
+  const t = useT()
   const [role, setRole] = useState<'none' | 'student' | 'instructor'>('none')
   const [entries, setEntries] = useState<HwStudentEntry[]>([])
   const [data, setData] = useState<HwInstructorData | null>(null)
@@ -1275,14 +1281,10 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-amber-300 bg-amber-50/70 px-4 py-3.5">
       <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-1">
-        Homework — instructor controls
+        {t('morph.hw.heading')}
       </p>
       <p className="text-xs text-amber-700 mb-3">
-        Activate a set for a class and it becomes a graded assignment on that course&rsquo;s dashboard
-        (and in the gradebook). Students get a single Round&nbsp;1 submission; tick &ldquo;Correction
-        round&rdquo; to open a Round&nbsp;2 window after the deadline where they revise their own work
-        (in class) before you grade. Tick &ldquo;Allow late&rdquo; to accept Round&nbsp;1 after the
-        deadline. Grade it from the assignment&rsquo;s Grade page — both rounds are shown side by side.
+        {t('morph.hw.help')}
       </p>
       <div className="space-y-3">
         {data.sets.map(set => {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useLayoutEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { rich } from '@/lib/i18n/rich'
 import { hasHebrew } from '@/lib/script-detect'
 import { formatHebrewParse } from '@/lib/hebrew-morph'
 import { loadHebrewLexicon, lookupHebrewStrongs, usableGloss, type HebrewLexicon } from '@/lib/hebrew-lexicon'
@@ -1697,9 +1698,9 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     const action = VIOLATION_MESSAGE_KEYS[type] ? t(VIOLATION_MESSAGE_KEYS[type]) : t('exeg.violFlagged')
     const consequence = maxViolations != null
       ? (willAutoSubmit
-          ? 'You have reached the limit — your exam is being submitted.'
-          : `This was recorded (${count} of ${maxViolations}). At ${maxViolations} your exam will be submitted automatically.`)
-      : 'This was recorded for your instructor. Stay in the exam window.'
+          ? t('exeg.limitReached')
+          : t('exeg.recordedCount', { count, max: maxViolations }))
+      : t('exeg.recordedForInstructor')
     setViolationWarning(`${action}. ${consequence}`)
     if (warningTimerRef.current) clearTimeout(warningTimerRef.current)
     warningTimerRef.current = setTimeout(() => setViolationWarning(null), 7000)
@@ -1810,9 +1811,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 <div className="text-4xl mb-2">🔒</div>
                 <h2 className="text-xl font-bold text-gray-900">{t('exeg.lockedExamHeading')}</h2>
                 <p className="mt-1 text-sm text-gray-600">
-                  {isIPadDevice
-                    ? 'While this exam is open, the following are recorded with a timestamp and shown to your instructor:'
-                    : 'This exam opens in fullscreen. While it is open, the following are recorded with a timestamp and shown to your instructor:'}
+                  {isIPadDevice ? t('exeg.rulesIntroTablet') : t('exeg.rulesIntro')}
                 </p>
               </div>
 
@@ -1820,32 +1819,32 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 {!isIPadDevice && (
                   <li className="flex gap-2"><span className="text-red-500">•</span> {t('exeg.leavingFullscreen')}</li>
                 )}
-                <li className="flex gap-2"><span className="text-red-500">•</span> Switching to another tab, window, or application (clicking outside this window)</li>
+                <li className="flex gap-2"><span className="text-red-500">•</span> {t('exeg.switchingAway')}</li>
                 <li className="flex gap-2"><span className="text-red-500">•</span> {t('exeg.copyPasteMenu')}</li>
               </ul>
 
               {maxViolations != null ? (
                 <p className="mt-4 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-800">
-                  {t('exeg.afterWord')} <strong>{maxViolations}</strong> {t('exeg.suchActions')} <strong>{t('exeg.submittedAutomatically')}</strong>{t('exeg.stayInThis')} {isIPadDevice ? t('exeg.browserTab') : t('exeg.windowFullscreen')} {t('exeg.untilFinish')}
+                  {rich(t('exeg.autoSubmitRule'), {
+                    max: <strong>{maxViolations}</strong>,
+                    submitted: <strong>{t('exeg.submittedAutomatically')}</strong>,
+                    where: isIPadDevice ? t('exeg.inBrowserTab') : t('exeg.inWindowFullscreen'),
+                  })}
                 </p>
               ) : (
                 <p className="mt-4 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-sm text-amber-800">
-                  {t('exeg.actionsLogged')} {isIPadDevice ? t('exeg.browserTab') : t('exeg.windowFullscreen')} {t('exeg.untilFinish')}
+                  {t('exeg.actionsLoggedRule', { where: isIPadDevice ? t('exeg.inBrowserTab') : t('exeg.inWindowFullscreen') })}
                 </p>
               )}
 
               <p className="mt-3 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2 text-xs text-emerald-800">
-                If your internet drops, don&rsquo;t worry — your answers are saved on this device and sync automatically when you reconnect. Keep working.
+                {t('exeg.offlineReassurance')}
               </p>
 
               {/* Academic-integrity consent — the checkbox below constitutes the student's
                   agreement to these terms before the exam can start. */}
               <p className="mt-3 rounded-lg bg-gray-50 border border-gray-200 px-3 py-2 text-xs text-gray-600">
-                To maintain academic integrity, your activity during this exam — including the actions
-                listed above and the timing of your answers — is recorded and reviewed by your instructor.
-                By beginning the exam you confirm that you are aware of this and give your permission. If
-                there is any suspicion that you have acted inappropriately, you may be required to
-                participate in an oral examination.
+                {t('exeg.integrityNotice')}
               </p>
 
               <label className="mt-5 flex items-start gap-2.5 cursor-pointer select-none">
@@ -1855,7 +1854,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                   onChange={e => setRulesAck(e.target.checked)}
                   className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                 />
-                <span className="text-sm text-gray-800">I have read and understand these rules, I agree to abide by them, and I consent to my exam being recorded for academic integrity as described above.</span>
+                <span className="text-sm text-gray-800">{t('exeg.integrityAck')}</span>
               </label>
 
               <button
@@ -1874,8 +1873,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <div className="text-4xl mb-3">🖥️</div>
               <h2 className="text-xl font-bold text-gray-900">{t('exeg.useComputer')}</h2>
               <p className="mt-2 text-sm text-gray-600">
-                This is a locked exam that must run in fullscreen, which phones don&rsquo;t support.
-                Please open it on a desktop or laptop (or a tablet) in an up-to-date browser to begin.
+                {t('exeg.phoneUnsupported')}
               </p>
             </div>
           )}
@@ -1889,7 +1887,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             <div className="text-4xl mb-3">⚠️</div>
             <h2 className="text-xl font-bold text-red-700">{t('exeg.youLeftFullscreen')}</h2>
             <p className="mt-2 text-sm text-gray-600">
-              This was recorded ({violations} violation{violations === 1 ? '' : 's'} so far). Return to fullscreen to continue your exam.
+              {t('exeg.recordedReturn', { count: violations })}
             </p>
             <button
               onClick={enterLockdown}
@@ -1904,8 +1902,12 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {/* ── Lockdown: persistent integrity status ── */}
       {lockdownOn && lockdownStarted && (
         <div className={`print:hidden flex items-center justify-between gap-3 px-4 py-1.5 text-xs font-medium ${violations > 0 ? 'bg-red-50 text-red-700 border-b border-red-200' : 'bg-gray-100 text-gray-600 border-b border-gray-200'}`}>
-          <span className="inline-flex items-center gap-1.5">🔒 Lockdown exam — {isIPadDevice ? t('exeg.stayInTab') : t('exeg.stayFullscreen')}; do not switch tabs or copy/paste.</span>
-          <span>{violations > 0 ? `${violations} violation${violations === 1 ? '' : 's'} recorded${lastViolation ? ` · last: ${lastViolation}` : ''}` : 'No violations'}{maxViolations != null ? ` (auto-submit at ${maxViolations})` : ''}</span>
+          <span className="inline-flex items-center gap-1.5">🔒 {t('exeg.lockdownBanner', { stay: isIPadDevice ? t('exeg.stayInTab') : t('exeg.stayFullscreen') })}</span>
+          <span>{violations > 0
+            ? t('exeg.violationsRecorded', { count: violations }) + (lastViolation
+                ? ` · ${t('exeg.lastViolation', { what: t(VIOLATION_MESSAGE_KEYS[lastViolation] ?? 'exeg.violFlagged') })}`
+                : '')
+            : t('exeg.noViolations')}{maxViolations != null ? ` ${t('exeg.autoSubmitAt', { n: maxViolations })}` : ''}</span>
         </div>
       )}
 
@@ -1933,10 +1935,10 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 here when the instructor named the exercise something different (then
                 it adds info) — otherwise we'd echo the same passage three times. */}
             {!assignment.isExam && assignment.reference && assignment.reference !== assignment.title && (
-              <p className="text-lg font-semibold text-gray-900">Passage: {assignment.reference}</p>
+              <p className="text-lg font-semibold text-gray-900">{t('exeg.passage')}: {assignment.reference}</p>
             )}
             {assignment.isExam && (
-              <p className="text-base text-gray-700 mt-0.5">{assignment.examPassages.length} passages · annotate all in one sitting</p>
+              <p className="text-base text-gray-700 mt-0.5">{t('exeg.examPassagesOneSitting', { count: assignment.examPassages.length })}</p>
             )}
             {assignment.instructions && (
               <p className="text-base text-gray-700 mt-1">{assignment.instructions}</p>
@@ -2104,7 +2106,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             ) : saveStatus === 'pending' ? (
               <span className="text-gray-400">{t('exeg.unsaved')}</span>
             ) : saveStatus === 'error' ? (
-              <span className="text-amber-600">Offline — your work is saved on this device and will sync when you reconnect</span>
+              <span className="text-amber-600">{t('exeg.offlineBanner')}</span>
             ) : (
               <span className="inline-flex items-center gap-1 text-emerald-600">{t('exeg.allSaved')}</span>
             )}
@@ -2220,7 +2222,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           ) : (
             <>
               <p className="text-lg font-medium">{t('exeg.selectBookChapter')}</p>
-              <p className="text-sm mt-1">The passage loads automatically — then click any Greek word to begin annotating</p>
+              <p className="text-sm mt-1">{t('exeg.passageAutoLoads')}</p>
             </>
           )}
         </div>
@@ -2241,7 +2243,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             {/* Review mode banner */}
             {reviewMode && !correctionLocked && (
               <div className="mb-3 rounded-lg bg-gray-100 border border-gray-300 px-3 py-2 text-xs text-gray-700 font-medium">
-                ✏️ Review phase — click any word to compare your analysis and add corrections in red.
+                ✏️ {t('exeg.reviewPhaseBanner')}
               </div>
             )}
             {correctionLocked && (
@@ -2374,7 +2376,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                   return (
                     <div className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 print:bg-transparent print:border-gray-300 print:break-inside-avoid">
                       <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                        Glossary · words less frequent than {threshold}×
+                        {t('exeg.glossaryThreshold', { n: threshold })}
                       </p>
                       <ul className="space-y-0.5">
                         {rare.map(r => (
@@ -2532,7 +2534,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                   {t('exeg.areasForImprovement')} <span className="text-red-500">*</span>
                 </label>
                 <p className="text-xs text-gray-500 mb-1.5">
-                  Reflect on what you found difficult and what you&rsquo;d work on next. This is required before you can submit for grading.
+                  {t('exeg.reflectionHelp')}
                 </p>
                 <textarea
                   value={notes}

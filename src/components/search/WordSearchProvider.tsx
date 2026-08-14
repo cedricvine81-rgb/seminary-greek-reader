@@ -7,17 +7,21 @@ import { openMasterSearch } from '@/lib/master-search-bus'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 // Mounted once in the root layout. Renders the shared "search this word" popover — the search
 // half of the Reader's right-click menu (no syntax) — and opens it via openWordSearch(). Every
 // action routes into the Master Search pane, pre-filled + run. Disabled during a lockdown exam.
 
-const TRANS_LABEL: Record<string, string> = {
-  en: 'English', bsb: 'English', es: 'Spanish', fr: 'French',
-  pt: 'Portuguese', ru: 'Russian', ko: 'Korean', zh: 'Mandarin',
+// Language NAMES translate; the BSB keeps the plain "English" label this menu has always
+// shown for it (the edition title belongs to the reading-language picker, not here).
+const TRANS_LABEL_KEY: Record<string, string> = {
+  en: 'lang.en', bsb: 'lang.en', es: 'lang.es', fr: 'lang.fr',
+  pt: 'lang.pt', ru: 'lang.ru', ko: 'lang.ko', zh: 'lang.zh',
 }
 
 export function WordSearchProvider() {
+  const t = useT()
   const [menu, setMenu] = useState<WordSearchPayload | null>(null)
   const [scope, setScope] = useState<'GNT' | 'LXX'>('GNT')
   const [copied, setCopied] = useState<string | null>(null)
@@ -61,7 +65,8 @@ export function WordSearchProvider() {
   const w = menu.surface
   const isGreek = menu.kind === 'greek'
   const isHebrew = menu.kind === 'hebrew'
-  const transLabel = TRANS_LABEL[menu.transLang ?? 'en'] ?? 'this translation'
+  const transKey = TRANS_LABEL_KEY[menu.transLang ?? 'en']
+  const transLabel = transKey ? t(transKey) : t('ws.thisTranslation')
   // Book name for the "this book" scope, derived from the reference (e.g. "Matthew 5:44" → "Matthew").
   const bookLabel = menu.reference ? menu.reference.replace(/\s*\d.*$/, '').trim() : null
   const btn = 'w-full text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors'
@@ -87,7 +92,7 @@ export function WordSearchProvider() {
       )}
 
       <div className="flex items-center justify-between gap-2">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Search this word</span>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{t('reader.searchThisWord')}</span>
         {isGreek && (
           <div className="flex rounded-md border border-gray-200 overflow-hidden text-[10px] leading-none">
             {(['GNT', 'LXX'] as const).map(s => (
@@ -108,11 +113,10 @@ export function WordSearchProvider() {
           <>
             <button type="button" className={btn}
               onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: 'hebrew:MT' }) }}>
-              Hebrew Bible <span className="text-gray-400">· all occurrences</span>
+              {t('ws.hebrewBible')} <span className="text-gray-400">· {t('ws.allOccurrences')}</span>
             </button>
             <p className="px-0.5 text-[10px] leading-snug text-gray-400">
-              The rabbinic works have no English and are not in the search index, so this word can
-              only be looked for in the Hebrew Bible.
+              {t('ws.rabbinicNote')}
             </p>
           </>
         ) : isGreek ? (
@@ -120,11 +124,11 @@ export function WordSearchProvider() {
             <div className="grid grid-cols-2 gap-1.5">
               <button type="button" className={btn}
                 onClick={() => { setMenu(null); openMasterSearch({ query: menu.lemma ?? w, scope: `greek:${scope}`, lemma: !!menu.lemma }) }}>
-                All forms
+                {t('reader.allForms')}
               </button>
               <button type="button" className={btn}
                 onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `greek:${scope}` }) }}>
-                This form
+                {t('reader.thisForm')}
               </button>
             </div>
             <button type="button" className={btn}
@@ -132,8 +136,8 @@ export function WordSearchProvider() {
                 ? openMasterSearch({ query: menu.lemma ?? w, scope: `bg:${menu.bgCollection}` })
                 : openBackgroundsSearch(menu.lemma ?? w, 'grc') }}>
               {menu.bgCollection
-                ? <>This collection{menu.bgCollectionLabel ? <span className="text-gray-400"> · {menu.bgCollectionLabel}</span> : null}</>
-                : <>Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span></>}
+                ? <>{t('ws.thisCollection')}{menu.bgCollectionLabel ? <span className="text-gray-400"> · {menu.bgCollectionLabel}</span> : null}</>
+                : <>{t('reader.backgroundTexts')} <span className="text-gray-400">· Philo, Josephus, LXX…</span></>}
             </button>
           </>
         ) : menu.bgCollection ? (
@@ -142,11 +146,11 @@ export function WordSearchProvider() {
           <>
             <button type="button" className={btn}
               onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `bg:${menu.bgCollection}` }) }}>
-              This collection{menu.bgCollectionLabel ? <span className="text-gray-400"> · {menu.bgCollectionLabel}</span> : null}
+              {t('ws.thisCollection')}{menu.bgCollectionLabel ? <span className="text-gray-400"> · {menu.bgCollectionLabel}</span> : null}
             </button>
             <button type="button" className={btn}
               onClick={() => { setMenu(null); openBackgroundsSearch(w, 'en') }}>
-              All library texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
+              {t('ws.allLibraryTexts')} <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </>
         ) : (
@@ -154,27 +158,27 @@ export function WordSearchProvider() {
             {menu.book && (
               <button type="button" className={btn}
                 onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `trans:${menu.transLang ?? 'en'}`, books: menu.book }) }}>
-                This book{bookLabel ? <span className="text-gray-400"> · {bookLabel}</span> : null}
+                {t('ws.thisBook')}{bookLabel ? <span className="text-gray-400"> · {bookLabel}</span> : null}
               </button>
             )}
             <button type="button" className={btn}
               onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `trans:${menu.transLang ?? 'en'}` }) }}>
-              Whole Bible <span className="text-gray-400">· {transLabel}</span>
+              {t('ws.wholeBible')} <span className="text-gray-400">· {transLabel}</span>
             </button>
             <button type="button" className={btn}
               onClick={() => { setMenu(null); openBackgroundsSearch(w, 'en') }}>
-              All library texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
+              {t('ws.allLibraryTexts')} <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </>
         )}
       </div>
 
       <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500 pt-0.5">
-        <span className="text-gray-400">Copy:</span>
-        <button type="button" onClick={() => copy(w, 'word')} className="underline decoration-gray-300 hover:text-brand-700">word</button>
-        {menu.lemma && <button type="button" onClick={() => copy(menu.lemma!, 'lemma')} className="underline decoration-gray-300 hover:text-brand-700">lemma</button>}
-        {menu.reference && <button type="button" onClick={() => copy(menu.reference!, 'reference')} className="underline decoration-gray-300 hover:text-brand-700">reference</button>}
-        {copied && <span className="text-green-600 inline-flex items-center gap-0.5"><Search size={10} /> copied {copied}</span>}
+        <span className="text-gray-400">{t('reader.copyLabel')}</span>
+        <button type="button" onClick={() => copy(w, t('reader.copyWord'))} className="underline decoration-gray-300 hover:text-brand-700">{t('reader.copyWord')}</button>
+        {menu.lemma && <button type="button" onClick={() => copy(menu.lemma!, t('reader.copyLemma'))} className="underline decoration-gray-300 hover:text-brand-700">{t('reader.copyLemma')}</button>}
+        {menu.reference && <button type="button" onClick={() => copy(menu.reference!, t('reader.copyRef'))} className="underline decoration-gray-300 hover:text-brand-700">{t('reader.copyRef')}</button>}
+        {copied && <span className="text-green-600 inline-flex items-center gap-0.5"><Search size={10} /> {t('ws.copiedWhat', { what: copied })}</span>}
       </div>
     </div>
   )

@@ -312,8 +312,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                   placeholder={t('inst.b.ex.passageExample')}
                 />
                 <p className="text-xs text-brand-600 mt-1">
-                  The passage students annotate in the Exegesis Workspace. Changing this affects new sessions;
-                  students who already started keep their current passage.
+                  {t('as.passageHelp')}
                 </p>
               </div>
             )}
@@ -349,7 +348,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                   >
                     {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                   </select>
-                  <p className="text-xs text-brand-600 mt-1">Lists definitions for each passage&rsquo;s less-frequent words beneath its verse translation box.</p>
+                  <p className="text-xs text-brand-600 mt-1">{t('as.glossaryHelp')}</p>
                 </div>
                 <hr className="border-brand-200" />
                 <div>
@@ -369,9 +368,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                     ))}
                   </div>
                   <p className={`text-xs mt-1 ${weightSum === 100 ? 'text-brand-600' : 'text-amber-600'}`}>
-                    {weightSum === 100
-                      ? 'Each passage grade is the weighted average of its parsing, syntax, and translation sub-scores.'
-                      : `Weights total ${weightSum}% — they’re applied relatively, but 100% is clearest.`}
+                    {weightSum === 100 ? t('as.weightsOk') : t('as.weightsOff', { n: weightSum })}
                   </p>
                 </div>
                 <hr className="border-brand-200" />
@@ -386,8 +383,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                     <div>
                       <span className="text-sm font-medium text-brand-800">{t('inst.b.lockdown')}</span>
                       <p className="text-xs text-brand-600 mt-0.5">
-                        Requires fullscreen, detects tab/window switching, blocks copy &amp; paste, and logs integrity
-                        events for you to review. A browser can deter and detect, but cannot fully prevent cheating.
+                        {t('as.lockdownHelp')}
                       </p>
                     </div>
                   </label>
@@ -410,7 +406,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                         <span className="text-xs text-gray-600">{t('as.violations')}</span>
                       </div>
                       <p className="text-[11px] text-gray-500 mt-1">
-                        Leave blank to only log violations (recommended — pair with proctoring). If set, the minimum is {MIN_LOCKDOWN_AUTOSUBMIT}, so a single accidental focus-loss can&rsquo;t end an exam.
+                        {t('as.autoSubmitHelp', { n: MIN_LOCKDOWN_AUTOSUBMIT })}
                       </p>
                     </div>
                   )}
@@ -421,10 +417,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             <>
             <hr className="border-brand-200" />
             <p className="text-sm font-semibold text-brand-800">{t('as.roundDeadlines')}</p>
-            <p className="text-xs text-brand-600 -mt-1">The exercise closes at the Round 2 deadline (or Round 1 if there&rsquo;s no Round 2); the due date is set from these.</p>
+            <p className="text-xs text-brand-600 -mt-1">{t('as.deadlinesHelp')}</p>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Round 1 deadline — annotations lock after this time
+                {t('as.round1Label')}
               </label>
               <input
                 type="datetime-local"
@@ -436,7 +432,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Round 2 deadline — corrections lock after this time
+                {t('as.round2Label')}
               </label>
               <input
                 type="datetime-local"
@@ -457,7 +453,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               <div>
                 <span className="text-sm font-medium text-brand-800">{t('inst.b.ex.readerRound2')}</span>
                 <p className="text-xs text-brand-600 mt-0.5">
-                  When on, clicking a word in Round 2 also shows the Reader's parsing, gloss, and lexicon entry next to the correction box.
+                  {t('as.readerRound2Help')}
                 </p>
               </div>
             </label>
@@ -471,7 +467,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               >
                 {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
-              <p className="text-xs text-brand-600 mt-1">Shows definitions for the verse&rsquo;s less-frequent words beneath each Verse Translation box.</p>
+              <p className="text-xs text-brand-600 mt-1">{t('as.verseGlossHelp')}</p>
             </div>
             <hr className="border-brand-200" />
             <p className="text-sm font-semibold text-brand-800">{t('as.timerSettings')}</p>
@@ -484,7 +480,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               onChange={e => setTimePerQuestion(Number(e.target.value))}
             />
             <p className="text-xs text-brand-600 -mt-2">
-              Students annotate each word. When the timer reaches zero, annotations lock and review mode begins.
+              {t('as.stage1Help')}
             </p>
             <Input
               label={t('as.stage2')}
@@ -495,9 +491,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               onChange={e => setReviewTimeSeconds(Number(e.target.value))}
             />
             <p className="text-xs text-brand-600 -mt-2">
-              After Stage 1 ends, students can make red corrections and see the passage reader.
-              When this timer expires, all edits lock and the exercise auto-submits.
-              Set to 0 for unlimited review time (student must click Submit manually).
+              {t('as.stage2Help')}
             </p>
             </>
             )}
@@ -541,13 +535,13 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
         {isVocabQuiz && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Type of Quiz —{' '}
+              {t('as.quizTypeLabel')} —{' '}
               <span className="text-brand-700 font-semibold">
                 {quizStylePct === 0
-                  ? 'All multiple-choice'
+                  ? t('as.allMultipleChoice')
                   : quizStylePct === 100
-                    ? 'All open-ended'
-                    : `${100 - quizStylePct}% multiple-choice / ${quizStylePct}% open-ended`}
+                    ? t('as.allOpenEnded')
+                    : t('as.mcOpenMix', { mc: 100 - quizStylePct, open: quizStylePct })}
               </span>
             </label>
             <input
@@ -578,7 +572,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
             <p className="text-sm font-semibold text-gray-800">{t('as.generateQuestions')}</p>
             <p className="text-xs text-gray-500">
-              Click after you&rsquo;ve set the Type of Quiz above. Regenerating replaces any existing questions for this quiz.
+              {t('as.regenerateHelp')}
             </p>
             <div className="flex items-end gap-3 flex-wrap">
               <div>
@@ -626,9 +620,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               options={appealOptions(t)}
             />
             <p className="mt-1 text-xs text-gray-500">
-              When enabled, students see an &ldquo;Appeal this answer&rdquo; link beside each wrong answer on the results screen.
-              You review pending appeals on the instructor Appeals page. Accepting an appeal updates that student&rsquo;s
-              score; the admin separately decides whether to add the answer to the global lexicon.
+              {t('as.appealsHelp')}{' '}
+              {t('as.appealsReviewHelp')}
             </p>
           </div>
         )}
