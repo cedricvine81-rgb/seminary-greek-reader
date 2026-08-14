@@ -221,7 +221,7 @@ export function FrequencySectionPicker({
                   <span className="text-sm text-gray-500 ml-2">
                     {t('vocab.wordCount', { n: subs.reduce((n, sub) => n + sub.words.length, 0) })}
                     {sectionRange && <> · {sectionRange}</>}
-                    {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: deck.corpusLabel })}
+                    {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: t(deck.lang === 'hebrew' ? 'vocab.corpus.hebrew' : 'vocab.corpus.greek') })}
                   </span>
                 </div>
                 <button

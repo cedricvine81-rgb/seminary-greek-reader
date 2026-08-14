@@ -118,7 +118,7 @@ interface VocabData {
   storageKey: string
   scriptLabel: string                          // 'Gk' / 'Heb' for the direction toggle
   scriptName: string                           // 'Greek' / 'Hebrew' for hints
-  corpusLabel: string                          // 'GNT' / 'the Hebrew Bible' for the frequency line
+  corpusKey: string                            // i18n key of the corpus name, for the frequency line
   /**
    * The gloss to SHOW. Every display, dedup and search site goes through this, so a translated
    * deck behaves like the English one: the multiple-choice distractor filter dedups on what the
@@ -130,7 +130,7 @@ interface VocabData {
 function buildVocab(
   words: BgvbWord[],
   coverage: Record<number, number>,
-  opts: { scriptClass: string; rtl: boolean; storageKey: string; scriptLabel: string; scriptName: string; corpusLabel: string },
+  opts: { scriptClass: string; rtl: boolean; storageKey: string; scriptLabel: string; scriptName: string; corpusKey: string },
 ): VocabData {
   const sections = Array.from(new Set(words.map(w => w.section))).sort((a, b) => a - b)
   const allPos = Array.from(new Set(words.map(w => w.pos))).sort()
@@ -188,12 +188,12 @@ function buildVocab(
 const GREEK_VOCAB = buildVocab(
   bgvbData as BgvbWord[],
   { 1: 69.5, 2: 77.2, 3: 81.6, 4: 84.4, 5: 86.4, 6: 87.8, 7: 89.2 },
-  { scriptClass: 'greek-text', rtl: false, storageKey: 'bgvb-progress-v1', scriptLabel: 'Gk', scriptName: 'Greek', corpusLabel: 'GNT' },
+  { scriptClass: 'greek-text', rtl: false, storageKey: 'bgvb-progress-v1', scriptLabel: 'Gk', scriptName: 'Greek', corpusKey: 'vocab.corpus.greek' },
 )
 const HEBREW_VOCAB = buildVocab(
   hebrewData as BgvbWord[],
   { 1: 60.8, 2: 71.1, 3: 76.9, 4: 80.3, 5: 82.8, 6: 84.9, 7: 86.8 },
-  { scriptClass: 'font-hebrew', rtl: true, storageKey: 'hebrew-vocab-progress-v1', scriptLabel: 'Heb', scriptName: 'Hebrew', corpusLabel: 'the Hebrew Bible' },
+  { scriptClass: 'font-hebrew', rtl: true, storageKey: 'hebrew-vocab-progress-v1', scriptLabel: 'Heb', scriptName: 'Hebrew', corpusKey: 'vocab.corpus.hebrew' },
 )
 const VOCAB: Record<VocabLang, VocabData> = { greek: GREEK_VOCAB, hebrew: HEBREW_VOCAB }
 
@@ -666,7 +666,7 @@ function FlashcardPlayer({
                     {word.inflection && <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-sm text-gray-500`}>{word.inflection}</p>}
                   </>
                 )}
-                {word.freq && <p className="text-xs text-gray-300 mt-0.5">{word.freq.toLocaleString()}× in {V.corpusLabel}</p>}
+                {word.freq && <p className="text-xs text-gray-300 mt-0.5">{t('vocab.freqInCorpus', { n: word.freq.toLocaleString(), corpus: t(V.corpusKey) })}</p>}
               </div>
             </div>
             <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
@@ -1201,7 +1201,7 @@ function StudySettings({
                       <span className="text-sm text-gray-500 ml-2">
                         {t('vocab.wordCount', { n: subs.reduce((n, sub) => n + sub.words.length, 0) })}
                         {sectionRange && <> · {sectionRange}</>}
-                        {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: V.corpusLabel })}
+                        {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: t(V.corpusKey) })}
                       </span>
                     </div>
                     <button

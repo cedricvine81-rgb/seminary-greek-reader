@@ -482,8 +482,16 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
 
 function applyParseFilter(entries: GreekParseEntry[], filter?: MorphParseFilter): GreekParseEntry[] {
   if (!filter) return entries
+  // A clause restricts only the forms that CARRY the field — same semantics, and same
+  // bug, as the Hebrew filter (see applyHebrewParseFilter). The builder's default filter
+  // selects every value of every field, and no verb form carries BOTH person and case
+  // (finite verbs have no case, participles no person), so under the old rule the
+  // filtered pool was always empty and the over-narrow fallback silently dropped the
+  // whole filter: an instructor narrowing to "Present only" still got all six tenses.
+  // Measured before the fix: builder-shaped Present-only quiz drew Perfect, Present,
+  // Future, Aorist, Pluperfect and Imperfect.
   const has = (list: string[] | undefined, val: string | undefined) =>
-    !list?.length || (val != null && list.includes(val))
+    !list?.length || val == null || list.includes(val)
   return entries.filter(e =>
     has(filter.tenses,  e.tense)  &&
     has(filter.voices,  e.voice)  &&

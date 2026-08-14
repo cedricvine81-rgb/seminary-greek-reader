@@ -1381,6 +1381,10 @@ const en: Catalogue = {
   'vocab.sectionN': 'Section §{n}',
   'vocab.wordCount': '{n} words',
   'vocab.upToCoverage': 'up to {pct}% of {corpus}',
+  // The corpus names, so the coverage line above is not half-English in Spanish.
+  'vocab.corpus.greek': 'the GNT',
+  'vocab.corpus.hebrew': 'the Hebrew Bible',
+  'vocab.freqInCorpus': '{n}× in {corpus}',
   'vocab.searchGreekOrEnglish': 'Search Greek or English...',
   'vocab.searchHebrewOrEnglish': 'Search Hebrew or English...',
   'vocab.wordCountPlural': { one: '{n} word', other: '{n} words' },
@@ -3733,6 +3737,11 @@ const es: Catalogue = {
   'vocab.sectionN': 'Sección §{n}',
   'vocab.wordCount': '{n} palabras',
   'vocab.upToCoverage': 'hasta el {pct}% de {corpus}',
+  // 'todo el' / 'toda la' so both host templates stay grammatical: 'de el' would need
+  // the contraction 'del', which a {corpus} placeholder cannot trigger.
+  'vocab.corpus.greek': 'todo el NT griego',
+  'vocab.corpus.hebrew': 'toda la Biblia hebrea',
+  'vocab.freqInCorpus': '{n}× en {corpus}',
   'vocab.searchGreekOrEnglish': 'Busca en griego o en español...',
   'vocab.searchHebrewOrEnglish': 'Busca en hebreo o en español...',
   'vocab.wordCountPlural': { one: '{n} palabra', other: '{n} palabras' },
