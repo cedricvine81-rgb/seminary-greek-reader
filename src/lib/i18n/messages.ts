@@ -1245,7 +1245,9 @@ const en: Catalogue = {
   // Shown instead when the Reader is on the Hebrew Bible or the LXX, neither of which
   // contains John.
   'reader.searchRefPlaceholderOT': 'e.g. Gen 1:1',
+  'reader.searchLangToggle': 'Search in {lang} instead of the original language',
   'reader.greekKeyboard': 'Greek keyboard — or just type Beta Code (l→λ, q→θ, h→η …)',
+  'reader.hebrewKeyboard': 'Hebrew keyboard — or just type the sounds (d→ד, sh→ש, ch→ח, ts→צ, T=ט, \'=ע)',
   'reader.backspace': 'Backspace',
   'reader.greekNT': 'Greek NT',
   'reader.searchHebrewPlaceholder': 'Search Hebrew word…',
@@ -3595,7 +3597,9 @@ const es: Catalogue = {
   'reader.searchGreekPlaceholder': 'Busca una palabra griega…',
   'reader.searchRefPlaceholder': 'p. ej. Juan 3:16',
   'reader.searchRefPlaceholderOT': 'p. ej. Gén 1:1',
+  'reader.searchLangToggle': 'Buscar en {lang} en lugar del idioma original',
   'reader.greekKeyboard': 'Teclado griego — o escribe en Beta Code (l→λ, q→θ, h→η …)',
+  'reader.hebrewKeyboard': 'Teclado hebreo — o escribe los sonidos (d→ד, sh→ש, ch→ח, ts→צ, T=ט, \'=ע)',
   'reader.backspace': 'Retroceso',
   'reader.greekNT': 'NT griego',
   'reader.searchHebrewPlaceholder': 'Busca una palabra hebrea…',

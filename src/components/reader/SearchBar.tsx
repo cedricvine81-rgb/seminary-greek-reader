@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, KeyboardEvent, ChangeEvent } from 'react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { Search, Delete } from 'lucide-react'
 import { betaCodeToGreek } from '@/lib/greek-translit'
+import { latinToHebrew } from '@/lib/hebrew-translit'
 
 const HEBREW_RE = /[֐-׿]/
 
@@ -22,6 +23,14 @@ const GREEK_ROWS = [
   ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι'],
   ['κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ'],
   ['σ', 'ς', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'],
+]
+
+// The alef-bet in the same compact shape, for the HB corpus. Rows read right-to-left on
+// screen (dir=rtl on the panel), matching how the letters are learned.
+const HEBREW_ROWS = [
+  ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט'],
+  ['י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ'],
+  ['צ', 'ק', 'ר', 'ש', 'ת'],
 ]
 
 export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLangLabel }: SearchBarProps) {
@@ -47,8 +56,15 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
     return () => mq.removeEventListener('change', sync)
   }, [])
   const effectiveType = isMobile ? 'word' : type
-  // On mobile, a non-null viewLang means a translation is showing → search that language.
-  const effectiveLang = isMobile && effectiveType === 'word' ? (viewLang ?? null) : null
+  // Word search in the language of the displayed translation. Mobile shows ONE text, so a
+  // visible translation simply is what the reader is searching. Desktop shows the original
+  // and the translation TOGETHER, so switching silently would take Greek search (and its
+  // Beta-Code typing) away from anyone who displays English — instead desktop gets an
+  // explicit toggle, defaulting to the original language.
+  const [searchTrans, setSearchTrans] = useState(false)
+  useEffect(() => { if (!viewLang) setSearchTrans(false) }, [viewLang])
+  const effectiveLang = effectiveType === 'word' && viewLang && (isMobile || searchTrans)
+    ? viewLang : null
   // Hebrew word mode: the HB corpus is in view (or Hebrew has been typed/pasted) → suggest
   // pointed Hebrew lemmas and skip the Greek Beta-Code transliteration.
   const hebrewMode = effectiveType === 'word' && !effectiveLang && (viewCorpus === 'MT' || HEBREW_RE.test(query))
@@ -104,11 +120,15 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
   // Greek text and non-letters pass through, and it's 1:1 so the cursor position is preserved.
   // Hebrew mode types raw (an OS Hebrew keyboard / paste), so no transliteration there.
   const greekTyping = effectiveType === 'word' && !effectiveLang && !hebrewMode
+  // Hebrew word mode transliterates too — the same latinToHebrew the Construct search
+  // and /search page already use, so 'shalom' types the same everywhere. Without it, a
+  // reader on an ordinary keyboard could not enter Hebrew here at all. Native script
+  // passes through, so an OS Hebrew keyboard or a paste still types raw.
   function onChange(e: ChangeEvent<HTMLInputElement>) {
-    if (!greekTyping) { setQuery(e.target.value); return }
+    if (!greekTyping && !hebrewMode) { setQuery(e.target.value); return }
     const el = e.target
     const pos = el.selectionStart ?? el.value.length
-    setQuery(betaCodeToGreek(el.value))
+    setQuery(greekTyping ? betaCodeToGreek(el.value) : latinToHebrew(el.value))
     requestAnimationFrame(() => { try { el.setSelectionRange(pos, pos) } catch {} })
   }
 
@@ -201,17 +221,29 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
               // in the Hebrew Bible — and is not even in the LXX.
               : viewCorpus === 'MT' || viewCorpus === 'LXX' ? t('reader.searchRefPlaceholderOT')
               : t('reader.searchRefPlaceholder')}
-          dir={HEBREW_RE.test(query) ? 'rtl' : undefined}
-          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekTyping ? 'greek-text' : hebrewMode ? 'font-hebrew' : ''} ${greekTyping ? 'pr-10' : 'pr-3'}`}
+          dir={hebrewMode || HEBREW_RE.test(query) ? 'rtl' : undefined}
+          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekTyping ? 'greek-text' : hebrewMode ? 'font-hebrew' : ''} ${(greekTyping || hebrewMode) && viewLang && !isMobile ? 'pr-16' : greekTyping || hebrewMode || (viewLang && !isMobile) ? 'pr-10' : 'pr-3'}`}
         />
-        {greekTyping && (
+        {/* Desktop, translation displayed: flip word search between the original language
+            and the translation. Shows what a search will target. */}
+        {!isMobile && effectiveType === 'word' && viewLang && (
           <button
             type="button"
-            title={t('reader.greekKeyboard')}
+            title={t('reader.searchLangToggle', { lang: viewLangLabel ?? viewLang })}
+            onClick={() => { setSearchTrans(v => !v); setShowKeyboard(false) }}
+            className={`absolute top-1/2 -translate-y-1/2 h-6 px-1.5 flex items-center justify-center rounded text-[0.7rem] font-semibold transition-colors ${greekTyping || hebrewMode ? 'right-9' : 'right-2'} ${searchTrans ? 'bg-brand-600 text-white' : 'text-gray-400 hover:bg-gray-100'}`}
+          >
+            {searchTrans ? viewLang.toUpperCase() : viewCorpus === 'MT' ? 'א→' : 'α→'}
+          </button>
+        )}
+        {(greekTyping || hebrewMode) && (
+          <button
+            type="button"
+            title={t(hebrewMode ? 'reader.hebrewKeyboard' : 'reader.greekKeyboard')}
             onClick={() => setShowKeyboard(v => !v)}
             className={`font-reading absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded text-sm font-semibold transition-colors ${showKeyboard ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}
           >
-            α
+            {hebrewMode ? 'א' : 'α'}
           </button>
         )}
 
@@ -240,22 +272,22 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
       </div>
 
       {/* Greek keyboard popup */}
-      {showKeyboard && greekTyping && (
-        <div className="absolute right-0 top-full mt-1 z-50 bg-popover border border-gray-200 rounded-xl shadow-lg p-2 select-none">
-          {GREEK_ROWS.map((row, ri) => (
+      {showKeyboard && (greekTyping || hebrewMode) && (
+        <div dir={hebrewMode ? 'rtl' : undefined} className="absolute right-0 top-full mt-1 z-50 bg-popover border border-gray-200 rounded-xl shadow-lg p-2 select-none">
+          {(hebrewMode ? HEBREW_ROWS : GREEK_ROWS).map((row, ri) => (
             <div key={ri} className="flex gap-1 mb-1">
               {row.map(letter => (
                 <button
                   key={letter}
                   type="button"
                   onMouseDown={e => { e.preventDefault(); insertLetter(letter) }}
-                  className="font-reading w-8 h-8 flex items-center justify-center rounded text-base text-brand-800 hover:bg-brand-50 active:bg-brand-100 transition-colors"
+                  className={`${hebrewMode ? 'font-hebrew' : 'font-reading'} w-8 h-8 flex items-center justify-center rounded text-base text-brand-800 hover:bg-brand-50 active:bg-brand-100 transition-colors`}
                 >
                   {letter}
                 </button>
               ))}
               {/* Backspace on last row */}
-              {ri === GREEK_ROWS.length - 1 && (
+              {ri === (hebrewMode ? HEBREW_ROWS : GREEK_ROWS).length - 1 && (
                 <button
                   type="button"
                   onMouseDown={e => { e.preventDefault(); deleteLetter() }}

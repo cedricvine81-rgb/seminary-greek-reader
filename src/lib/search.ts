@@ -293,7 +293,16 @@ export async function searchHebrewBySurface(query: string): Promise<BiblicalVers
 // pointed lemmas from the Hebrew lexicon, matched on the consonantal fold and ordered by
 // corpus frequency (counted from the verse index's per-word Strong's). Each suggestion
 // carries its Strong's number so a pick can run the "all forms" search.
-interface HebLemmaEntry { l: string; g: string; n: string; s: string; f: number }
+interface HebLemmaEntry { l: string; g: string; n: string; k: string; s: string; f: number }
+
+// The vowel-letters, for the fuzzy second pass below. A reader typing Hebrew phonetically
+// through the Latin transliteration gets א ה ו י ע standing in for the vowels ("melek" →
+// מעלעך), which prefix-matches nothing: the actual word is מלך. Dropping these letters
+// from BOTH sides lets the sounded-out spelling find the written one. Never the first
+// pass — the same letters are real consonants in countless words (שאול, עיר) and exact
+// matches must always win.
+const HEB_MATRES = /[אהויע]/g
+const hebSkeleton = (n: string) => n.replace(HEB_MATRES, '')
 let _hebLemmas: HebLemmaEntry[] | null = null
 function getHebLemmaIndex(): HebLemmaEntry[] {
   if (_hebLemmas) return _hebLemmas
@@ -307,7 +316,8 @@ function getHebLemmaIndex(): HebLemmaEntry[] {
   for (const [s, e] of Object.entries(lex)) {
     const f = freq.get(s) ?? 0
     if (!e.lemma || f === 0) continue          // not attested in the MT corpus
-    out.push({ l: e.lemma, g: e.gloss ?? '', n: normalizeHebrew(e.lemma), s, f })
+    const n = normalizeHebrew(e.lemma)
+    out.push({ l: e.lemma, g: e.gloss ?? '', n, k: hebSkeleton(n), s, f })
   }
   out.sort((a, b) => b.f - a.f)
   _hebLemmas = out
@@ -322,6 +332,20 @@ export function suggestHebrewLexemes(prefix: string, limit = 12): { word: string
     if (out.some(x => x.word === e.l && x.sub === e.g)) continue   // exact duplicate entry
     out.push({ word: e.l, sub: e.g, strongs: e.s })
     if (out.length >= limit) break
+  }
+  // Fuzzy second pass, only when exact prefixes found nothing: match with the
+  // vowel-letters dropped from both sides, so a phonetically typed word ("melek" →
+  // מעלעך) still reaches its written form (מלך). See HEB_MATRES.
+  if (out.length === 0) {
+    const pk = hebSkeleton(p)
+    if (pk.length >= 2) {
+      for (const e of getHebLemmaIndex()) {
+        if (!e.k.startsWith(pk)) continue
+        if (out.some(x => x.word === e.l && x.sub === e.g)) continue
+        out.push({ word: e.l, sub: e.g, strongs: e.s })
+        if (out.length >= limit) break
+      }
+    }
   }
   return out
 }
