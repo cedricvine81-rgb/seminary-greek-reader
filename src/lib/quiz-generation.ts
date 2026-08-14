@@ -525,8 +525,16 @@ function applyHebrewParseFilter(
   entries: HebrewParseEntry[], filter?: HebrewMorphParseFilter,
 ): HebrewParseEntry[] {
   if (!filter) return entries
+  // A clause restricts only the forms that CARRY the field; a form without it passes.
+  // The old rule — `val != null && list.includes(val)` — excluded every form lacking the
+  // field, and since the default filter selects every pronoun type while no verb carries
+  // `type`, it emptied the pool for every verb quiz. The generator's too-narrow fallback
+  // then quietly dropped the whole filter, so the chips looked functional and did
+  // nothing: a "Qal perfect only" quiz still drew Hiphil participles. Which forms must
+  // carry a field is the FIELDS mechanism's job (see the `testable` step below), not the
+  // filter's.
   const has = (list: string[] | undefined, val: string | undefined) =>
-    !list?.length || (val != null && list.includes(val))
+    !list?.length || val == null || list.includes(val)
   return entries.filter(e =>
     has(filter.stems,        e.stem)        &&
     has(filter.conjugations, e.conjugation) &&

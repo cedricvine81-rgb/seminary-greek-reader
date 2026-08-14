@@ -24,6 +24,7 @@ import {
   type HebrewMorphParseFilter,
 } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
+import { SERIES_PRESETS, presetsForLevel, type SeriesPreset } from '@/lib/series-presets'
 import { scriptProps } from '@/lib/script-detect'
 import type { CourseLevel } from '@/types/course'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
@@ -882,6 +883,13 @@ interface SampleData {
 
 // ── Parse Filter Chip Group ───────────────────────────────────────────────────
 
+/** A built-in preset's display name: the i18n key wins where translated. */
+function presetName(p: SeriesPreset, t: (k: string) => string): string {
+  const key = `inst.b.s.preset.${p.id}`
+  const out = t(key)
+  return out === key ? p.name : out
+}
+
 function FilterChipGroup({
   label,
   options,
@@ -1552,6 +1560,15 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
   }
 
   function loadTemplate(id: string) {
+    // Built-in presets share the dropdown with saved templates and apply the same way:
+    // the preset fills the series recipe, the instructor still picks course and dates.
+    const preset = SERIES_PRESETS.find(p => p.id === id)
+    if (preset) {
+      setForm(prev => ({ ...prev, quizType: preset.quizType, ...preset.config,
+        courseId: prev.courseId, startDate: prev.startDate }))
+      setTemplateMsg(t('inst.b.s.templateLoaded', { name: presetName(preset, t) }))
+      return
+    }
     const tpl = templates.find(x => x.id === id)
     if (!tpl) return
     // Course and start date stay: the template is the series recipe, not the term.
@@ -1721,7 +1738,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             (no course pre-selected) so the instructor allocates it explicitly. */}
         {/* Series templates: rebuild a saved series next term with one click. */}
         <div className="flex flex-wrap items-end gap-2">
-          {templates.length > 0 && (
+          {(templates.length > 0 || presetsForLevel(String(courseLevel)).length > 0) && (
             <div className="flex-1 min-w-48">
               <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.s.savedSeries')}</label>
               <select
@@ -1730,6 +1747,15 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                 onChange={e => { if (e.target.value) loadTemplate(e.target.value) }}
               >
                 <option value="">{t('inst.b.s.chooseTemplate')}</option>
+                {/* Built-ins for this course's level, above the instructor's own. */}
+                {presetsForLevel(String(courseLevel)).map(p => (
+                  <option key={p.id} value={p.id}>
+                    {t('inst.b.s.templateOption', {
+                      name: presetName(p, t),
+                      kind: t('inst.b.s.kindBuiltIn'),
+                    })}
+                  </option>
+                ))}
                 {templates.map(tpl => (
                   <option key={tpl.id} value={tpl.id}>
                     {t('inst.b.s.templateOption', {
