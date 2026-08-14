@@ -17,6 +17,8 @@ import { useHighlights } from '@/components/highlights/useHighlights'
 import { wordAtPoint, EDGE_PUNCT as CV_EDGE_PUNCT } from '@/lib/word-at-point'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { translatable, fenceOriginalScripts } from '@/lib/i18n/machine-translation'
+import { MachineTranslationHint } from '@/components/texts/MachineTranslationHint'
 
 /** Full-screen viewer for an original commentary page scan — lets a student read
  *  the source directly rather than a transcription. Click the image to toggle
@@ -187,8 +189,16 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
   // "Original View" option, which has no transcription — only page-scan links).
   useEffect(() => {
     if (!anchor || meta?.kind === 'original-view') { setVerseMap({}); return }
+    // Ignore a response that arrives after the selection has moved on. Opening an OT passage
+    // switches the commentary automatically (Robertson does not cover Genesis), which leaves two
+    // fetches in flight: the 404 for the old one was landing last and replacing Keil & Delitzsch
+    // with an empty map, so a chapter that has a comment reported having none.
+    let live = true
     fetch(`/data/commentary/${commentaryId}/${anchor.book}.json`)
-      .then(r => (r.ok ? r.json() : {})).then(setVerseMap).catch(() => setVerseMap({}))
+      .then(r => (r.ok ? r.json() : {}))
+      .then(m => { if (live) setVerseMap(m) })
+      .catch(() => { if (live) setVerseMap({}) })
+    return () => { live = false }
   }, [commentaryId, anchor?.book]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Scroll-tracking: whichever verse sits nearest the top of the Greek pane becomes
@@ -311,6 +321,11 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
             {commentaries.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
+        {/* These commentaries are English and will stay English: Keil & Delitzsch alone is four
+            million words, and no hand translation of it is coming. So a reader working in Spanish
+            is told the browser can do it, and the prose below is marked for the browser to act on.
+            Not shown over the page scans, which are images nothing can translate. */}
+        {!isOriginalView && <MachineTranslationHint />}
         {isOriginalView ? (
           <div className="flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-4">
             {availableScans.length === 0 ? (
@@ -338,8 +353,12 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
             style={{ fontSize: `${0.875 * fontScale}rem`, lineHeight: lineSpacing }}
             className="font-reading flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-4 text-ink-900 [&_p]:mb-2.5 [&_b]:font-semibold [&_b]:text-ink-900 [&_i]:italic"
           >
+            {/* The commentary is opted into browser translation HERE rather than on the pane,
+                so the "no commentary for this verse" placeholder above stays out of it — and the
+                Greek and Hebrew inside the prose is fenced off first, because this is one stream
+                of HTML with the words under discussion set inline in it. */}
             {html
-              ? <div dangerouslySetInnerHTML={{ __html: html }} />
+              ? <div {...translatable} dangerouslySetInnerHTML={{ __html: fenceOriginalScripts(html) }} />
               : <p className="text-gray-400 italic">No commentary for this verse{activeVerse != null ? ` (${anchor.name} ${anchor.chapter}:${activeVerse})` : ''}.</p>}
           </div>
         )}
