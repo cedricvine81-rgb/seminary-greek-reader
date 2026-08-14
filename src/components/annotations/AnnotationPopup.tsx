@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Maximize2 } from 'lucide-react'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import type { HighlightColor } from '@/lib/highlight-colors'
@@ -11,7 +11,7 @@ import type { HighlightColor } from '@/lib/highlight-colors'
  * back inside the viewport — the last paragraph of a chapter is near the bottom of the
  * screen, which is exactly where an un-nudged popover opens off it.
  */
-export function AnnotationPopup({ x, y, color, body, canDelete, onColor, onSave, onDelete, onClose }: {
+export function AnnotationPopup({ x, y, color, body, canDelete, onColor, onSave, onDelete, onClose, onExpand }: {
   x: number
   y: number
   color: string
@@ -21,6 +21,9 @@ export function AnnotationPopup({ x, y, color, body, canDelete, onColor, onSave,
   onSave: (body: string) => void
   onDelete: () => void
   onClose: () => void
+  /** Open the full note pane — the surface handwriting needs. Absent until the annotation
+   *  exists, since the pane edits a saved note. */
+  onExpand?: () => void
 }) {
   const t = useT()
   const ref = useRef<HTMLDivElement>(null)
@@ -62,6 +65,16 @@ export function AnnotationPopup({ x, y, color, body, canDelete, onColor, onSave,
     >
       <div className="flex items-center justify-between gap-2">
         <HighlightSwatches activeColor={color} onPick={onColor} />
+        {onExpand && (
+          <button
+            type="button"
+            onClick={() => { onSave(draft); onExpand() }}
+            title={t('ann.expand')}
+            className="flex h-6 w-6 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-brand-50 hover:text-brand-700"
+          >
+            <Maximize2 size={13} />
+          </button>
+        )}
         {canDelete && (
           <button
             type="button"

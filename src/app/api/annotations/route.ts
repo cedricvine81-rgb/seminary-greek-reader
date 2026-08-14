@@ -9,13 +9,16 @@ import { requireStudentAccess } from '@/lib/subscription'
 
 const SELECT = {
   id: true, page: true, blockId: true, locale: true,
-  startOffset: true, endOffset: true, quote: true, fp: true, color: true, body: true,
+  startOffset: true, endOffset: true, quote: true, fp: true, color: true, body: true, ink: true,
 } as const
 
 // A note is prose the reader wrote; the quote is a slice of a paragraph. Both are bounded so
 // a malformed client can't post a novel into a column that is read on every chapter open.
 const MAX_BODY = 20_000
 const MAX_QUOTE = 2_000
+// A page of dense handwriting serialises to roughly 60KB; this leaves generous headroom
+// while still refusing a runaway client.
+const MAX_INK = 400_000
 
 // GET: every annotation this user has on one page — ?surface=&page=
 export async function GET(req: NextRequest) {
@@ -63,6 +66,7 @@ export async function POST(req: NextRequest) {
         fp: String(b.fp),
         color: typeof b.color === 'string' ? b.color : 'yellow',
         body: String(b.body ?? '').slice(0, MAX_BODY),
+        ink: typeof b.ink === 'string' && b.ink !== '' ? b.ink.slice(0, MAX_INK) : null,
       },
       select: SELECT,
     })
@@ -87,6 +91,8 @@ export async function PATCH(req: NextRequest) {
     const data: Record<string, unknown> = {}
     if (typeof b.color === 'string') data.color = b.color
     if (typeof b.body === 'string') data.body = b.body.slice(0, MAX_BODY)
+    // '' is how the pad says "erased" — distinct from omitting the field, which leaves it be.
+    if (typeof b.ink === 'string') data.ink = b.ink === '' ? null : b.ink.slice(0, MAX_INK)
     if (b.startOffset != null && b.endOffset != null && typeof b.fp === 'string') {
       data.startOffset = Number(b.startOffset)
       data.endOffset = Number(b.endOffset)

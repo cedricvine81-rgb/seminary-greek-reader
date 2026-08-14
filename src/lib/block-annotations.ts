@@ -16,6 +16,7 @@ export interface BlockAnnotationRecord {
   fp: string
   color: string
   body: string
+  ink: string | null
 }
 
 /** How an annotation relates to the block as it stands on screen right now. */
@@ -55,5 +56,7 @@ export function resolveAnchor(a: BlockAnnotationRecord, text: string, locale: st
   return { kind: 'repaired', start: best, end: best + a.quote.length }
 }
 
-/** A note the reader has actually written something in, as opposed to a bare highlight. */
-export const hasNote = (a: { body: string }): boolean => a.body.trim() !== ''
+/** A note the reader has actually put something in — typed or handwritten — as opposed to a
+ *  bare highlight. Ink counts: a margin marker that ignored a drawing would hide it. */
+export const hasNote = (a: { body: string; ink?: string | null }): boolean =>
+  a.body.trim() !== '' || !!a.ink

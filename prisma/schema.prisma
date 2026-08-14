@@ -1062,6 +1062,10 @@ model BlockAnnotation {
   color       String   @default("yellow")
   // "" for a plain highlight — a note is the same object with something written in it.
   body        String   @default("") @db.Text
+  // Handwritten strokes as JSON (see lib/ink.ts). Null for every note that was typed. Ink is
+  // a picture: unsearchable, ungradable, untranslatable — so it is an EXTRA layer on `body`
+  // and never a substitute for it.
+  ink         String?  @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

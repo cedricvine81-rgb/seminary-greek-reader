@@ -10,7 +10,7 @@ function ann(over: Partial<BlockAnnotationRecord> = {}): BlockAnnotationRecord {
   return {
     id: 'a1', page: 'nouns', blockId: 'nouns-intro', locale: 'en',
     startOffset: START, endOffset: START + QUOTE.length,
-    quote: QUOTE, fp: fingerprint(BLOCK), color: 'yellow', body: 'ask about this',
+    quote: QUOTE, fp: fingerprint(BLOCK), color: 'yellow', body: 'ask about this', ink: null,
     ...over,
   }
 }

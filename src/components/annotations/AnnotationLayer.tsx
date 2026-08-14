@@ -7,6 +7,7 @@ import { offsetWithin } from '@/components/highlights/range-utils'
 import { DEFAULT_HIGHLIGHT_COLOR, type HighlightColor } from '@/lib/highlight-colors'
 import { useBlockSelection } from './useBlockSelection'
 import { AnnotationPopup } from './AnnotationPopup'
+import { NoteSheet } from './NoteSheet'
 import { caretOffsetAt, canPaint, paint, unpaint, type PaintRange } from './paint'
 
 /** A block that has something to show in the margin, and where it sits in the container. */
@@ -39,6 +40,8 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
   const [markers, setMarkers] = useState<Marker[]>([])
   const [hover, setHover] = useState<{ x: number; y: number; body: string } | null>(null)
   const [openId, setOpenId] = useState<string | null>(null)
+  // The expanded note pane — the surface Scribble and the ink pad need.
+  const [sheetId, setSheetId] = useState<string | null>(null)
   const { popup, open, close } = useBlockSelection(containerRef, enabled)
 
   // One request does double duty: it loads the page's annotations and tells us whether this
@@ -183,8 +186,10 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
     if (d.annotation) setItems(prev => [...prev, d.annotation])
   }
 
-  async function update(id: string, patch: { color?: string; body?: string }) {
-    setItems(prev => prev.map(a => a.id === id ? { ...a, ...patch } : a))
+  async function update(id: string, patch: { color?: string; body?: string; ink?: string }) {
+    setItems(prev => prev.map(a => a.id === id
+      ? { ...a, ...patch, ...(patch.ink !== undefined ? { ink: patch.ink === '' ? null : patch.ink } : {}) }
+      : a))
     await fetch(`/api/annotations?id=${id}`, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(patch),
     }).catch(() => {})
@@ -196,6 +201,7 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
   }
 
   const openItem = openId ? items.find(a => a.id === openId) ?? null : null
+  const sheetItem = sheetId ? items.find(a => a.id === sheetId) ?? null : null
 
   return (
     <div ref={containerRef} className="relative">
@@ -262,6 +268,19 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
           onSave={body => { if (body !== openItem.body) update(openItem.id, { body }) }}
           onDelete={() => { remove(openItem.id); setOpenId(null); close() }}
           onClose={() => { setOpenId(null); close() }}
+          onExpand={() => { setSheetId(openItem.id); close() }}
+        />
+      )}
+
+      {sheetItem && (
+        <NoteSheet
+          quote={sheetItem.quote}
+          color={sheetItem.color}
+          body={sheetItem.body}
+          ink={sheetItem.ink}
+          onSave={patch => update(sheetItem.id, patch)}
+          onDelete={() => { remove(sheetItem.id); setSheetId(null) }}
+          onClose={() => { setSheetId(null); setOpenId(null) }}
         />
       )}
 
