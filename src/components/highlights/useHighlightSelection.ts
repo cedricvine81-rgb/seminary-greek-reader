@@ -1,32 +1,11 @@
 import { useEffect, useState, type RefObject } from 'react'
+import { offsetWithin, clipRangeToElement } from './range-utils'
 
 export interface HighlightSplit { book: string; chapter: number; verse: number; start: number; end: number; layer: string }
 
 export type HighlightPopupState =
   | { kind: 'new'; x: number; y: number; splits: HighlightSplit[]; text: string }
   | { kind: 'edit'; x: number; y: number; id: string; book: string; chapter: number; color: string; text: string }
-
-// Character offset of `point` within `container`'s concatenated text content — the
-// standard DOM trick (a Range from the container's start to the point, measured as a
-// string) which works whether the container is one text node or many nested spans
-// (e.g. per-word Greek token spans), so it needs no per-view special-casing.
-function offsetWithin(container: Node, point: Node, pointOffset: number): number {
-  const r = document.createRange()
-  r.selectNodeContents(container)
-  r.setEnd(point, pointOffset)
-  return r.toString().length
-}
-
-// Clip `range` to fall entirely within `el` (a single verse's anchor element), so a
-// selection spanning several verses can be split into one sub-range per verse.
-function clipRangeToElement(range: Range, el: HTMLElement): Range | null {
-  const elRange = document.createRange()
-  elRange.selectNodeContents(el)
-  const clipped = range.cloneRange()
-  if (range.compareBoundaryPoints(Range.START_TO_START, elRange) < 0) clipped.setStart(el, 0)
-  if (range.compareBoundaryPoints(Range.END_TO_END, elRange) > 0) clipped.setEnd(el, el.childNodes.length)
-  return clipped.collapsed ? null : clipped
-}
 
 /**
  * Captures drag-selections within `containerRef` and turns them into per-verse character

@@ -724,9 +724,17 @@ export function Tr({ id, comps, paragraphs, children }: {
 }) {
   const cat = useContext(MorphContent)
   const entry = cat[id]
-  if (!entry) return <>{children}</>
+  // `data-ann-block` makes this run annotatable (see components/annotations). It goes HERE,
+  // on the translated run itself, and not on the <p> or <h3> around it: the anchored
+  // element's text has to be exactly the prose the offsets were measured against, and a
+  // SectionHeading's <h3> also contains its number badge.
+  //
+  // Inline by default — <Tr> is used mid-sentence — but a block whose children are whole
+  // paragraphs needs a <div>, since a <span> may not contain a <p>.
+  const Anchor = paragraphs ? 'div' : 'span'
+  if (!entry) return <Anchor data-ann-block={id}>{children}</Anchor>
   const english = serialize(children)
-  if (english === null || entry.fp !== fingerprint(english)) return <>{children}</>
+  if (english === null || entry.fp !== fingerprint(english)) return <Anchor data-ann-block={id}>{children}</Anchor>
   // {…} is "original language". Which one is decided by the characters inside it, so one
   // marker serves both grammars and a chapter needs no extra wiring.
   const Original = (p: { children: React.ReactNode }) =>
@@ -734,7 +742,7 @@ export function Tr({ id, comps, paragraphs, children }: {
       ? <Hb>{p.children}</Hb>
       : <Gk>{p.children}</Gk>
   const nodes = parse(entry.text, comps ?? { Gk: Original, Term })
-  if (!paragraphs) return <>{nodes}</>
+  if (!paragraphs) return <Anchor data-ann-block={id}>{nodes}</Anchor>
   // Split the parsed nodes on the ¶ marker back into <p> elements. Only blocks that are
   // paragraph-shaped ask for this — <P> itself is already a <p>, and nesting is invalid.
   const groups: React.ReactNode[][] = [[]]
@@ -747,7 +755,7 @@ export function Tr({ id, comps, paragraphs, children }: {
       })
     } else groups[groups.length - 1].push(n)
   }
-  return <>{groups.filter(g => g.length).map((g, i) => <p key={i} className="mb-1 last:mb-0">{g}</p>)}</>
+  return <Anchor data-ann-block={id}>{groups.filter(g => g.length).map((g, i) => <p key={i} className="mb-1 last:mb-0">{g}</p>)}</Anchor>
 }
 
 /* ─── Textbook components ───────────────────── */

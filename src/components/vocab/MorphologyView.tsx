@@ -14,6 +14,7 @@ import clsx from 'clsx'
 import { Menu, GraduationCap, ListChecks, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { ESS_EXPLANATIONS, TAB_EXPLANATIONS, type Explanation } from './morphology-explanations'
 import { LevelContext, MorphContentProvider, type MorphLevel } from '@/components/morphology/shared'
+import { AnnotationLayer } from '@/components/annotations/AnnotationLayer'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
 import { TranslationWorkbench } from '@/components/morphology/TranslationWorkbench'
@@ -514,7 +515,7 @@ export function MorphologyView({
                 </div>
               </div>
               <ExplanationCard explanation={ESS_EXPLANATIONS[essId]} level={level} />
-              {activeEss.content}
+              <AnnotationLayer page={`essentials.${essId}`}>{activeEss.content}</AnnotationLayer>
             </div>
           </>
         ) : (
@@ -532,7 +533,7 @@ export function MorphologyView({
               </div>
             </div>
             <ExplanationCard explanation={TAB_EXPLANATIONS[mainTab]} level={level} />
-            {REVISION_CONTENT[mainTab]}
+            <AnnotationLayer page={mainTab}>{REVISION_CONTENT[mainTab]}</AnnotationLayer>
             {courseMode && chapterIndex >= 0 && (
               <CourseNav index={chapterIndex} completed={completed} onComplete={setChapter} goTo={goToChapter} />
             )}

@@ -8,6 +8,10 @@ const config = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   testMatch: ['**/tests/**/*.test.ts', '**/tests/**/*.test.tsx'],
+  // Agent worktrees live under .claude/worktrees and are full checkouts, so without this
+  // every suite runs twice — and jest-haste-map warns about the "duplicate" package.json
+  // and mocks it finds in them.
+  testPathIgnorePatterns: ['/node_modules/', '/.claude/', '/.next/'],
   transform: {
     // jsx: the project tsconfig uses Next's 'preserve', which ts-jest can't emit — component tests
     // need real JSX output. testEnvironment stays 'node' for the library tests; component tests opt

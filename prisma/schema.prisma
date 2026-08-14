@@ -90,6 +90,7 @@ model User {
   noteSubmissions      NoteSubmission[]
   constructSubmissions ConstructSubmission[]
   highlights           Highlight[]
+  blockAnnotations     BlockAnnotation[]
   groupMemberships     CourseGroupMember[]
   groupContributions   GroupContribution[]
   morphologyProgress   MorphologyProgress[]
@@ -1025,6 +1026,48 @@ model Highlight {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, book, chapter])
+}
+
+// A highlight or margin note on a block of the app's OWN prose — the Grammar chapters
+// first. Deliberately NOT the Highlight model above: a verse is a canonical address that
+// survives every edit, whereas a paragraph we wrote is not, so this anchor needs two extra
+// things a verse anchor never does.
+//
+//  1. `blockId` — the hand-written, never-positional id the translation pipeline already
+//     puts on every translatable block (`<P id="…">`, `<Tr id="…">`). Character offsets are
+//     measured WITHIN one block, so rewording a different paragraph cannot move this note.
+//  2. `fp` + `quote` — the fingerprint of the block text the offsets were measured against,
+//     and the words that were selected. When the block is edited the fingerprint stops
+//     matching; rather than silently painting the wrong words, the client re-finds `quote`
+//     and repairs, or shows the note as detached. Missing and misplaced are not the same
+//     failure, and only one of them is acceptable.
+//
+// `locale` is which language's rendering of the block the offsets are into. The RANGE is
+// language-specific (Spanish words sit at different offsets); the NOTE is not — a note made
+// in English still shows on the Spanish page, against its block, because the thought is
+// about the grammar and not about the wording.
+model BlockAnnotation {
+  id          String   @id @default(cuid())
+  userId      String
+  // Which body of prose ("morphology" = the Greek/Hebrew Grammar chapters). Present from the
+  // start so Themes or the Texts summaries can join later with no migration.
+  surface     String   @default("morphology")
+  page        String // chapter id, e.g. "nouns" / "essentials.3"
+  blockId     String
+  locale      String   @default("en")
+  startOffset Int
+  endOffset   Int
+  quote       String   @db.Text
+  fp          String
+  color       String   @default("yellow")
+  // "" for a plain highlight — a note is the same object with something written in it.
+  body        String   @default("") @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, surface, page])
 }
 
 // ─── Morphology course-mode progress ─────────────────────────────
