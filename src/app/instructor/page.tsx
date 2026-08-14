@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { getServerT } from '@/lib/i18n/server'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { format } from 'date-fns'
@@ -15,6 +16,7 @@ import { EnrollmentRequests } from '@/components/instructor/EnrollmentRequests'
 export const metadata: Metadata = { title: 'Instructor Dashboard' }
 
 export default async function InstructorPage() {
+  const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
@@ -76,7 +78,9 @@ export default async function InstructorPage() {
     }),
   ])
 
-  const instructorName = user ? `${user.firstName} ${user.surname}`.trim() : 'Instructor'
+  // First name only — the dashboard greeting is the friendliest line on the page, and
+  // "Welcome back, Cedric Vine" reads like a form letter. Matches the student dashboard.
+  const instructorName = user?.firstName?.trim() || t('role.instructor')
 
   return (
     <DashboardShell role="INSTRUCTOR" pageTitle="Dashboard" pendingCount={pendingEnrollments.length}>
@@ -90,8 +94,8 @@ export default async function InstructorPage() {
         {/* ── Welcome + stats ── */}
         <div className="space-y-4">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Welcome back, {instructorName}</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Select a course to manage it, or create a new one.</p>
+            <h2 className="text-lg font-semibold text-gray-900">{t('inst.welcome', { name: instructorName })}</h2>
+            <p className="text-sm text-gray-500 mt-0.5">{t('inst.selectCourse')}</p>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
