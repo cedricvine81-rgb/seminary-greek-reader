@@ -135,11 +135,18 @@ function translationsFor(w: CatalogWork | null, t: (k: string, v?: Record<string
     }
     return out
   }
-  if (ES_PROSE_WORKS[w.id]) {
-    // The work's own published English is always the first option, so the reader can switch back.
+  // greekOnly works (the Greek Sibylline) have no second column worth offering — its Latin
+  // covers one acrostic — so they keep their previous behaviour of no column control at all.
+  if (w.greek && !w.greekOnly) {
+    // Every other Greek prose work offers its own published second column; only some also have ours.
+    // Listing it even when it is the only option is what lets a single menu carry the whole
+    // choice — original / original + translation / translation alone — instead of two menus that
+    // could disagree with each other, as they did: picking Spanish in one left the other still
+    // offering "+ English".
     const en = PROSE_ENGLISH_LABELS[w.id]
-    out.push({ id: 'source', label: en ? t('texts.englishBy', { who: en }) : t('texts.englishCol') })
-    out.push({ id: 'es', label: t('texts.spanishOurs') })
+    out.push({ id: 'source', label: en ? t('texts.englishBy', { who: en })
+      : w.secondaryLabel ?? t('texts.englishCol') })
+    if (ES_PROSE_WORKS[w.id]) out.push({ id: 'es', label: t('texts.spanishOurs') })
   }
   return out
 }
@@ -445,25 +452,26 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const greekHidden = (greekHiddenPref && isGreek && showEnglish) || (greekProse && proseModeEff === 'english')
   // Whether the parallel English column is rendered at all.
   const englishColShown = (isGreek && showEnglish && hasEnglish) || (greekProse && proseModeEff !== 'greek')
-  const translationLabel = translationId
-    ? (availableTranslations.find(t => t.id === translationId)?.label ?? t('texts.translationFallback'))
-    : null
-  const currentTranslationLabel = !isGreek
-    // Prose works pick Greek/both/English separately, so their button names the column only.
-    ? (translationLabel ?? '')
-    : !translationId
-      ? t('texts.greekOnly')
-      : greekHidden
-        ? t('texts.langOnly', { lang: translationLabel ?? '' })
-        : t('texts.greekPlus', { lang: translationLabel ?? '' })
   // The second column is English for most prose works, but Latin for the Greek Sibylline
   // (Augustine's rendering of the Book 8 acrostic).
   const secondLabel = work?.secondaryLabel ?? t('texts.englishCol')
   // The layout control is the only one that speaks for the Greek column, so it names the edition
   // where the work has one to name. Nothing else on screen says whose Greek this is.
   const primaryNamed = work?.greekEdition ? `${primaryLabel} (${work.greekEdition})` : primaryLabel
-  const proseModeLabel = proseModeEff === 'greek' ? `${primaryNamed} only`
-    : proseModeEff === 'english' ? `${secondLabel} only` : `${primaryNamed} + ${secondLabel}`
+  const translationLabel = translationId
+    ? (availableTranslations.find(t => t.id === translationId)?.label ?? t('texts.translationFallback'))
+    : null
+  const currentTranslationLabel = greekProse
+    ? (proseModeEff === 'greek' ? t('texts.onlyLabel', { label: primaryNamed })
+      : proseModeEff === 'english' ? t('texts.onlyLabel', { label: translationLabel ?? secondLabel })
+      : t('texts.greekPlus2', { primary: primaryNamed, lang: translationLabel ?? secondLabel }))
+    : !isGreek
+    ? (translationLabel ?? '')
+    : !translationId
+      ? t('texts.greekOnly')
+      : greekHidden
+        ? t('texts.langOnly', { lang: translationLabel ?? '' })
+        : t('texts.greekPlus', { lang: translationLabel ?? '' })
 
   // Which scripts the in-text search can target, given what's on screen.
   const greekSearchable = (isGreek || greekProse) && !greekHidden
@@ -1511,17 +1519,42 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                         {t('texts.greekOnly')}
                       </button>
                     )}
+                    {greekProse && !greekOnlyWork && (
+                      <button
+                        type="button"
+                        onClick={() => { setProseMode('greek'); setTranslationMenuOpen(false) }}
+                        className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${proseModeEff === 'greek' ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      >
+                        {t('texts.onlyLabel', { label: primaryNamed })}
+                      </button>
+                    )}
                     {availableTranslations.map(tr => (
                       <Fragment key={tr.id}>
                         <button
                           type="button"
-                          onClick={() => { setTranslationId(tr.id); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
-                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === tr.id && !greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                          onClick={() => {
+                            setTranslationId(tr.id); setGreekHiddenPref(false)
+                            if (greekProse) setProseMode('both')
+                            setTranslationMenuOpen(false)
+                          }}
+                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${
+                            translationId === tr.id && !greekHidden && (!greekProse || proseModeEff === 'both')
+                              ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
-                          {/* Prose works already have their own Greek/both/English control, so their
-                              menu names the column plainly instead of offering it twice. */}
-                          {isGreek ? t('texts.greekPlus', { lang: tr.label }) : tr.label}
+                          {greekProse ? t('texts.greekPlus2', { primary: primaryNamed, lang: tr.label })
+                            : isGreek ? t('texts.greekPlus', { lang: tr.label }) : tr.label}
                         </button>
+                        {greekProse && !greekOnlyWork && (
+                          <button
+                            type="button"
+                            onClick={() => { setTranslationId(tr.id); setProseMode('english'); setTranslationMenuOpen(false) }}
+                            className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${
+                              translationId === tr.id && proseModeEff === 'english'
+                                ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                          >
+                            {t('texts.onlyLabel', { label: tr.label })}
+                          </button>
+                        )}
                         {isGreek && (
                           <button
                             type="button"
@@ -1532,35 +1565,6 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                           </button>
                         )}
                       </Fragment>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {greekProse && !greekOnlyWork && (
-              <div className="relative" ref={translationMenuRef}>
-                <button
-                  type="button"
-                  onClick={() => setTranslationMenuOpen(o => !o)}
-                  className={`inline-flex items-center gap-1 rounded border border-gray-300 px-2 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100 ${
-                    translationMenuOpen ? 'bg-gray-100' : ''}`}
-                >
-                  {proseModeLabel}
-                  <ChevronDown size={13} className={`transition-transform ${translationMenuOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                {translationMenuOpen && (
-                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
-                    {([['greek', t('texts.langOnly', { lang: primaryNamed })], ['both', t('texts.greekPlus2', { primary: primaryNamed, lang: secondLabel })], ['english', t('texts.langOnly', { lang: secondLabel })]] as const).map(([mode, label]) => (
-                      <button
-                        key={mode}
-                        type="button"
-                        onClick={() => { setProseMode(mode); setTranslationMenuOpen(false) }}
-                        className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${proseMode === mode ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
-                      >
-                        {label}
-                      </button>
                     ))}
                   </div>
                 )}
