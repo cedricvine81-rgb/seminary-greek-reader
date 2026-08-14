@@ -50,8 +50,10 @@ export async function POST(req: NextRequest) {
     if (!b.page || !b.blockId || b.startOffset == null || b.endOffset == null || !b.fp) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
     }
-    if (Number(b.endOffset) <= Number(b.startOffset)) {
-      return NextResponse.json({ error: 'Empty range' }, { status: 400 })
+    // A zero-length range is legitimate: it is how a note on the WHOLE block is stored
+    // (made from the margin icon). Only a backwards range is nonsense.
+    if (Number(b.endOffset) < Number(b.startOffset)) {
+      return NextResponse.json({ error: 'Bad range' }, { status: 400 })
     }
     const annotation = await prisma.blockAnnotation.create({
       data: {

@@ -1,9 +1,9 @@
 'use client'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Highlighter } from 'lucide-react'
+import { Highlighter, StickyNote } from 'lucide-react'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { fingerprint } from '@/lib/i18n/content'
-import { resolveAnchor, hasNote, type BlockAnnotationRecord } from '@/lib/block-annotations'
+import { resolveAnchor, hasNote, isBlockNote, type BlockAnnotationRecord } from '@/lib/block-annotations'
 import { offsetWithin } from '@/components/highlights/range-utils'
 import { DEFAULT_HIGHLIGHT_COLOR, HIGHLIGHT_COLORS, type HighlightColor } from '@/lib/highlight-colors'
 import { useBlockSelection } from './useBlockSelection'
@@ -11,7 +11,8 @@ import { AnnotationPopup } from './AnnotationPopup'
 import { NoteSheet } from './NoteSheet'
 import { caretOffsetAt, canPaint, paint, unpaint, type PaintRange } from './paint'
 
-/** A block that has something to show in the margin, and where it sits in the container. */
+/** One rung of the margin rail: every annotatable block gets one, whether or not it has a
+ *  note yet, so the way in is visible without knowing the drag gesture exists. */
 interface Marker { blockId: string; top: number; count: number; detached: boolean }
 
 /**
@@ -68,8 +69,18 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
     const container = containerRef.current
     if (!container) return
     const ranges: PaintRange[] = []
-    const byBlock = new Map<string, { top: number; count: number; detached: boolean }>()
     const containerTop = container.getBoundingClientRect().top
+
+    // A rung for EVERY block on screen, in document order — the rail is the affordance, so
+    // it cannot be built from the annotations that happen to exist. Blocks the level toggle
+    // has hidden aren't in the DOM and so get no rung, which is right: an icon beside a
+    // paragraph the reader cannot see would be pointing at nothing.
+    const byBlock = new Map<string, { top: number; count: number; detached: boolean }>()
+    for (const el of Array.from(container.querySelectorAll<HTMLElement>('[data-ann-block]'))) {
+      const id = el.dataset.annBlock!
+      if (byBlock.has(id)) continue
+      byBlock.set(id, { top: el.getBoundingClientRect().top - containerTop, count: 0, detached: false })
+    }
 
     for (const a of items) {
       const block = container.querySelector<HTMLElement>(`[data-ann-block="${CSS.escape(a.blockId)}"]`)
@@ -81,14 +92,10 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
       if (state.kind === 'exact' || state.kind === 'repaired') {
         ranges.push({ color: a.color, withNote: hasNote(a), start: state.start, end: state.end, block })
       }
-      if (hasNote(a) || state.kind === 'detached') {
-        const top = block.getBoundingClientRect().top - containerTop
-        const cur = byBlock.get(a.blockId)
-        byBlock.set(a.blockId, {
-          top: cur?.top ?? top,
-          count: (cur?.count ?? 0) + (hasNote(a) ? 1 : 0),
-          detached: (cur?.detached ?? false) || state.kind === 'detached',
-        })
+      const cur = byBlock.get(a.blockId)
+      if (cur) {
+        cur.count += hasNote(a) ? 1 : 0
+        cur.detached = cur.detached || state.kind === 'detached'
       }
     }
     paint(ranges)
@@ -202,6 +209,30 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
     await fetch(`/api/annotations?id=${id}`, { method: 'DELETE' }).catch(() => {})
   }
 
+  /**
+   * Open the note for a block from its margin icon. If the block has none yet, one is
+   * created with a ZERO-LENGTH anchor — a note about the paragraph rather than about any
+   * particular words, which is what an icon beside it means, and which is why nothing gets
+   * painted over the text.
+   */
+  async function openBlock(blockId: string) {
+    const existing = items.find(a => a.blockId === blockId && hasNote(a))
+      ?? items.find(a => a.blockId === blockId && isBlockNote(a))
+    if (existing) { setSheetId(existing.id); return }
+    const block = containerRef.current?.querySelector<HTMLElement>(`[data-ann-block="${CSS.escape(blockId)}"]`)
+    if (!block) return
+    const r = await fetch('/api/annotations', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        surface, page, blockId, locale,
+        startOffset: 0, endOffset: 0, quote: '',
+        fp: fingerprint(block.textContent ?? ''), color: DEFAULT_HIGHLIGHT_COLOR, body: '',
+      }),
+    })
+    const d = await r.json().catch(() => ({}))
+    if (d.annotation) { setItems(prev => [...prev, d.annotation]); setSheetId(d.annotation.id) }
+  }
+
   const noteCount = items.filter(hasNote).length
   const openItem = openId ? items.find(a => a.id === openId) ?? null : null
   const sheetItem = sheetId ? items.find(a => a.id === sheetId) ?? null : null
@@ -263,28 +294,34 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
       )}
       {children}
 
-      {/* Margin markers: the only affordance that must work everywhere. A note is reachable
-          from here when its range cannot be painted at all — a browser without the
-          highlight API, a note written in the other language, or one whose words have been
-          edited away. */}
-      {markers.length > 0 && (
-        <div className="pointer-events-none absolute inset-y-0 right-0 print:hidden" aria-hidden={false}>
+      {/* The margin rail: a note icon beside every paragraph, the same gesture the Reader
+          uses for verses. Drag-to-highlight still works and is still the way to mark
+          particular WORDS, but it is discoverable only if you already know it — an icon is
+          not. A rung also reaches what a painted highlight cannot: a note written in the
+          other language, one whose words have been edited away, and any note at all in a
+          browser without the CSS Custom Highlight API. */}
+      {enabled && markers.length > 0 && (
+        <div className="pointer-events-none absolute inset-y-0 right-0 print:hidden">
           {markers.map(m => (
             <button
               key={m.blockId}
               type="button"
               style={{ top: m.top }}
-              onClick={() => {
-                const first = items.find(a => a.blockId === m.blockId && hasNote(a))
-                if (first) setSheetId(first.id)
-              }}
-              title={m.detached ? t('ann.detached') : t('ann.noteCount', { count: m.count })}
-              className={`pointer-events-auto absolute right-0 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold shadow-sm ring-1 ring-inset transition-colors ${
+              onClick={() => openBlock(m.blockId)}
+              title={m.detached ? t('ann.detached')
+                : m.count > 0 ? t('ann.noteCount', { count: m.count })
+                : t('ann.addNoteHere')}
+              aria-label={m.count > 0 ? t('ann.noteCount', { count: m.count }) : t('ann.addNoteHere')}
+              className={`pointer-events-auto absolute right-0 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold transition-all ${
                 m.detached
-                  ? 'bg-amber-100 text-amber-700 ring-amber-300 hover:bg-amber-200'
-                  : 'bg-brand-100 text-brand-700 ring-brand-300 hover:bg-brand-200'}`}
+                  ? 'bg-amber-100 text-amber-700 ring-1 ring-inset ring-amber-300 hover:bg-amber-200'
+                  : m.count > 0
+                    ? 'bg-brand-100 text-brand-700 ring-1 ring-inset ring-brand-300 hover:bg-brand-200'
+                    // Empty rungs stay faint so 90 of them read as a margin rule rather than
+                    // as 90 controls, and come forward on hover.
+                    : 'text-gray-300 opacity-60 hover:bg-brand-50 hover:text-brand-600 hover:opacity-100'}`}
             >
-              {m.detached ? '!' : m.count}
+              {m.detached ? '!' : m.count > 0 ? m.count : <StickyNote size={12} />}
             </button>
           ))}
         </div>
@@ -301,12 +338,12 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
 
       {popup?.kind === 'new' && (
         <AnnotationPopup
+          mode="new"
           x={popup.x} y={popup.y}
           color={DEFAULT_HIGHLIGHT_COLOR}
           body=""
           canDelete={false}
-          onColor={c => { create(c, ''); close() }}
-          onSave={body => { if (body.trim()) create(DEFAULT_HIGHLIGHT_COLOR, body) }}
+          onCommit={(c, body) => create(c, body)}
           onDelete={close}
           onClose={close}
         />
@@ -314,12 +351,13 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
 
       {popup?.kind === 'edit' && openItem && (
         <AnnotationPopup
+          mode="edit"
           x={popup.x} y={popup.y}
           color={openItem.color}
           body={openItem.body}
           canDelete
           onColor={c => update(openItem.id, { color: c })}
-          onSave={body => { if (body !== openItem.body) update(openItem.id, { body }) }}
+          onCommit={(_c, body) => { if (body !== openItem.body) update(openItem.id, { body }) }}
           onDelete={() => { remove(openItem.id); setOpenId(null); close() }}
           onClose={() => { setOpenId(null); close() }}
           onExpand={() => { setSheetId(openItem.id); close() }}
@@ -328,7 +366,7 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
 
       {sheetItem && (
         <NoteSheet
-          quote={sheetItem.quote}
+          quote={sheetItem.quote || t('ann.wholeParagraph')}
           color={sheetItem.color}
           body={sheetItem.body}
           ink={sheetItem.ink}

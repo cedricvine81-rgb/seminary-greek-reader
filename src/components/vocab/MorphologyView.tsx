@@ -514,8 +514,14 @@ export function MorphologyView({
                   <LevelToggle level={level} onChange={changeLevel} />
                 </div>
               </div>
-              <ExplanationCard explanation={ESS_EXPLANATIONS[essId]} level={level} />
-              <AnnotationLayer page={`essentials.${essId}`}>{activeEss.content}</AnnotationLayer>
+              {/* The Getting Started card is INSIDE the layer: its prose already carries
+                  anchors (its <T> delegates to <Tr>), but a selection is only captured
+                  within the layer's own container, so leaving the card outside made it the
+                  one part of the chapter that could not be highlighted. */}
+              <AnnotationLayer page={`essentials.${essId}`}>
+                <ExplanationCard explanation={ESS_EXPLANATIONS[essId]} level={level} />
+                {activeEss.content}
+              </AnnotationLayer>
             </div>
           </>
         ) : (
@@ -532,8 +538,10 @@ export function MorphologyView({
                 <LevelToggle level={level} onChange={changeLevel} />
               </div>
             </div>
-            <ExplanationCard explanation={TAB_EXPLANATIONS[mainTab]} level={level} />
-            <AnnotationLayer page={mainTab}>{REVISION_CONTENT[mainTab]}</AnnotationLayer>
+            <AnnotationLayer page={mainTab}>
+              <ExplanationCard explanation={TAB_EXPLANATIONS[mainTab]} level={level} />
+              {REVISION_CONTENT[mainTab]}
+            </AnnotationLayer>
             {courseMode && chapterIndex >= 0 && (
               <CourseNav index={chapterIndex} completed={completed} onComplete={setChapter} goTo={goToChapter} />
             )}

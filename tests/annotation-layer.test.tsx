@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import '@testing-library/jest-dom'
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { LocaleProvider } from '@/lib/i18n/LocaleProvider'
 import { AnnotationLayer } from '@/components/annotations/AnnotationLayer'
 import { fingerprint } from '@/lib/i18n/content'
@@ -126,6 +126,38 @@ describe('AnnotationLayer', () => {
     const opener = screen.getByRole('button', { name: /1 note on this chapter/i })
     await act(async () => { opener.click() })
     expect(screen.getByText('Handwritten note')).toBeInTheDocument()
+  })
+
+  it('puts a note icon beside every block, not only the ones already annotated', async () => {
+    // The affordance has to exist BEFORE there is anything to show, which is the whole
+    // reason the rail is built from the blocks on screen rather than from the annotations.
+    stubFetch(200)
+    renderLayer()
+    await act(async () => { await new Promise(r => setTimeout(r, 0)) })
+    expect(screen.getByRole('button', { name: 'Add a note on this paragraph' })).toBeInTheDocument()
+  })
+
+  it('keeps a note picked up by a colour swatch from being lost', async () => {
+    // The reported failure: clicking a swatch created the highlight and closed the popover,
+    // so the note box went away before it could be typed in.
+    const fetchMock = stubFetch(200)
+    const { container } = renderLayer()
+    await act(async () => { await new Promise(r => setTimeout(r, 0)) })
+    selectAndRelease(container, 'the ending')
+
+    const box = await screen.findByPlaceholderText('Write a note…')
+    await act(async () => { screen.getByTitle('Green').click() })
+    // Still open, and still holding what was typed.
+    expect(screen.getByPlaceholderText('Write a note…')).toBe(box)
+
+    fireEvent.change(box, { target: { value: 'genitive of source?' } })
+    await act(async () => { screen.getByRole('button', { name: 'Save' }).click() })
+
+    const post = fetchMock.mock.calls.find(c => c[1]?.method === 'POST')
+    expect(post).toBeDefined()
+    const sent = JSON.parse(post![1].body)
+    expect(sent.body).toBe('genitive of source?')
+    expect(sent.color).toBe('green')
   })
 
   it('ignores a selection that lands outside any annotatable block', async () => {

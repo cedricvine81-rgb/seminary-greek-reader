@@ -21,6 +21,10 @@ export interface BlockAnnotationRecord {
 
 /** How an annotation relates to the block as it stands on screen right now. */
 export type AnchorState =
+  /** A note on the whole block, with no range of its own — made from the margin icon rather
+   *  than from a selection. Nothing to paint, and nothing that CAN be misplaced, so it is
+   *  immune both to the block being edited and to the language changing. */
+  | { kind: 'block' }
   /** The block is unchanged since the annotation was made: paint the stored offsets. */
   | { kind: 'exact'; start: number; end: number }
   /** The block was edited, but the quoted words are still in it — paint the new position. */
@@ -44,6 +48,10 @@ export type AnchorState =
  * whenever an edit happened elsewhere in the block.
  */
 export function resolveAnchor(a: BlockAnnotationRecord, text: string, locale: string): AnchorState {
+  // Checked before the locale and the fingerprint, because neither can apply: a zero-length
+  // anchor marks the whole block, so there are no words to be in the wrong language or to
+  // have been edited away.
+  if (a.startOffset === a.endOffset) return { kind: 'block' }
   if (a.locale !== locale) return { kind: 'other-locale' }
   if (a.fp === fingerprint(text)) return { kind: 'exact', start: a.startOffset, end: a.endOffset }
   if (!a.quote) return { kind: 'detached' }
@@ -55,6 +63,10 @@ export function resolveAnchor(a: BlockAnnotationRecord, text: string, locale: st
   const best = hits.reduce((b, i) => Math.abs(i - a.startOffset) < Math.abs(b - a.startOffset) ? i : b, hits[0])
   return { kind: 'repaired', start: best, end: best + a.quote.length }
 }
+
+/** A note on the whole block rather than on a run of words within it. */
+export const isBlockNote = (a: { startOffset: number; endOffset: number }): boolean =>
+  a.startOffset === a.endOffset
 
 /** A note the reader has actually put something in — typed or handwritten — as opposed to a
  *  bare highlight. Ink counts: a margin marker that ignored a drawing would hide it. */
