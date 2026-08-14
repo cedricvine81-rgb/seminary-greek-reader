@@ -9,7 +9,7 @@ import { ALL_SYNTAX_OPTIONS } from '@/data/syntax-categories'
 import type { HomeworkWord } from '@/data/grammar-homework'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
-// Graded grammar homework (deck {t('ex.exercisesAB')} as a Translation Exercise).
+// Graded grammar homework (deck Exercises A / B as a Translation Exercise).
 // Each sentence opens in a right-hand pane — the Translation Workbench layout —
 // where the student enters parsing, syntax and translation per word plus a
 // whole-sentence translation. Work autosaves locally on every change; Submit

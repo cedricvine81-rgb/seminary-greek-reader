@@ -74,7 +74,7 @@ export default async function StudentCoursesPage() {
     }),
 
     // Institution courses — filtered by student's institution if they have one,
-    // otherwise ALL institution courses (shown as {t('courses.requestAccess')})
+    // otherwise ALL institution courses (shown as Request Access)
     hasInstitution
       ? prisma.course.findMany({
           where: {
