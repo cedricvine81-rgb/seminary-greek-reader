@@ -89,10 +89,10 @@ export async function POST(
     // Rebuild from the stored recipe so a regenerated Hebrew quiz tests the same fields
     // and parse values the instructor originally configured.
     const cfg = (assignment.morphConfig ?? null) as
-      { fields?: string[]; parseFilter?: HebrewMorphParseFilter } | null
+      { fields?: string[]; parseFilter?: HebrewMorphParseFilter; vocabThruBand?: string | null } | null
     questions = generateHebrewMorphologyQuestions(
       (assignment.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
-      qCount, cfg?.fields, cfg?.parseFilter)
+      qCount, cfg?.fields, cfg?.parseFilter, cfg?.vocabThruBand ?? null)
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {
       case 'VERB':        questions = generateVerbParseQuestions(qCount);       break

@@ -17,6 +17,7 @@ import pool from './hebrew-parsing-pool.json'
 export interface HebrewParseEntry {
   surface: string        // the inflected form shown to the student
   lexeme: string         // dictionary form
+  strongs: string        // Strong's number — identity for the vocabulary cap (lemma strings collide on homographs)
   gloss: string          // English meaning of the lexeme
   reference: string      // e.g. "Genesis 1:1"
   partOfSpeech: 'Verb' | 'Noun' | 'Adjective' | 'Pronoun'

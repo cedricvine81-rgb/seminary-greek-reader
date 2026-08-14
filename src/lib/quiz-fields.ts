@@ -108,6 +108,11 @@ export interface MorphTestConfig {
   vocabThruLesson: number | null  // null = no vocabulary filter
   // true = follow the vocabulary schedule: week N is limited to words taught through lesson N
   vocabAuto?: boolean
+  // HEBREW: cap forms to the vocabulary through this Glanz band ("Glanz 1F"). The Hebrew
+  // deck has no BGVB lesson map, so vocabThruLesson cannot express its schedule. Null/
+  // absent = no cap — which is the norm for strong-verb quizzes, where the cap would
+  // empty the pool (strong verbs and frequent verbs barely overlap).
+  vocabThruBand?: string | null
   fields: string[]                // which parse fields students must identify
   parseFilter?: MorphParseFilter  // restrict question pool to specific forms
   // Optional label for the quiz title: "Week N — <series> (<topic>)". Falls back to the

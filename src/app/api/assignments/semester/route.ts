@@ -205,6 +205,7 @@ export async function POST(req: NextRequest) {
               // The full recipe, so the quiz can be regenerated faithfully later.
               morphConfig: JSON.parse(JSON.stringify({ fields: testConfig.fields ?? [],
                 ...(testConfig.parseFilter ? { parseFilter: testConfig.parseFilter } : {}),
+                ...(testConfig.vocabThruBand ? { vocabThruBand: testConfig.vocabThruBand } : {}),
                 ...(testConfig.declensions?.length ? { declensions: testConfig.declensions } : {}) })) }
           : {}),
         maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
@@ -244,7 +245,8 @@ export async function POST(req: NextRequest) {
         testConfig.subtype as unknown as HebrewMorphologySubtype,
         qCount,
         testConfig.fields,
-        testConfig.parseFilter as unknown as HebrewMorphParseFilter | undefined)
+        testConfig.parseFilter as unknown as HebrewMorphParseFilter | undefined,
+        testConfig.vocabThruBand ?? null)
     } else if (testConfig) {
       // vocabAuto ties the quiz to the vocabulary schedule: week N tests only words
       // taught through lesson N, so students are never parsing unseen vocabulary.

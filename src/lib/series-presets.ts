@@ -77,14 +77,21 @@ export const SERIES_PRESETS: SeriesPreset[] = [
     levels: ['HEBREW_BEGINNING'],
     config: {
       seriesName: 'Hebrew Morphology',
+      // WHICH QUIZZES CAP BY TAUGHT VOCABULARY, AND WHY NOT ALL. The cap (vocabThruBand,
+      // the band the weekly vocab quizzes have reached by that quiz's week) is applied
+      // only where it leaves a real pool. Measured against the corpus: capping the
+      // strong-verb quizzes empties them — the frequent verbs of Hebrew are almost all
+      // weak, so "strong verbs taught by mid-October" is one or two lexemes, and a
+      // 20-question quiz on one verb is a paradigm recital. Those quizzes run uncapped;
+      // every prompt glosses its lexeme inline, so an untaught word costs no marks.
       morphologySeries: [
         // ── Section 1: nominal forms (Kelley L.7–L.11) ──────────────────────────
-        nominalTest('NOUN_PARSING', 'Nouns — gender, number, state',
-          ['gender', 'number', 'state']),
+        { ...nominalTest('NOUN_PARSING', 'Nouns — gender, number, state',
+          ['gender', 'number', 'state']), vocabThruBand: 'Glanz 1B' },
         nominalTest('ADJECTIVE_PARSING', 'Adjectives',
           ['gender', 'number', 'state']),
-        nominalTest('PRONOUN_PARSING', 'Pronouns',
-          ['type', 'person', 'gender', 'number']),
+        { ...nominalTest('PRONOUN_PARSING', 'Pronouns',
+          ['type', 'person', 'gender', 'number']), vocabThruBand: 'Glanz 1C' },
         // ── Section 2: the strong verb (Kelley L.12–L.20) ───────────────────────
         verbTest('Qal perfect', ['Qal'], ['Perfect']),
         verbTest('Perfect — all stems', STEMS7, ['Perfect']),
@@ -92,15 +99,16 @@ export const SERIES_PRESETS: SeriesPreset[] = [
         verbTest('Imperfect — all stems', STEMS7, ['Imperfect']),
         verbTest('Vav-consecutive narrative', STEMS7,
           ['Sequential imperfect', 'Sequential perfect']),
-        verbTest('Imperative, jussive & cohortative', STEMS7,
-          ['Imperative', 'Jussive', 'Cohortative']),
+        { ...verbTest('Imperative, jussive & cohortative', STEMS7,
+          ['Imperative', 'Jussive', 'Cohortative']), vocabThruBand: 'Glanz 1K' },
         // Infinitives carry no agreement at all: parse = stem + conjugation.
-        verbTest('Infinitives — construct & absolute', STEMS7,
+        { ...verbTest('Infinitives — construct & absolute', STEMS7,
           ['Infinitive construct', 'Infinitive absolute'], ['stem', 'conjugation']),
+          vocabThruBand: 'Glanz 1L' },
         // Participles decline like adjectives: state replaces person.
-        verbTest('Participles', STEMS7,
+        { ...verbTest('Participles', STEMS7,
           ['Active participle', 'Passive participle'],
-          ['stem', 'conjugation', 'gender', 'number', 'state']),
+          ['stem', 'conjugation', 'gender', 'number', 'state']), vocabThruBand: 'Glanz 1L' },
       ],
     },
   },

@@ -3,7 +3,7 @@ import { isHebrewLevel } from './constants'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
 import { wordsForSelection, subsectionKeysBefore, type BgvbWord } from './vocab-subsections'
-import { HEBREW_DECK, GREEK_DECK, deckWordsForSelection, deckKeysBefore, type VocabLang } from './vocab-decks'
+import { HEBREW_DECK, GREEK_DECK, deckWordsForSelection, deckKeysBefore, strongsThroughBand, type VocabLang } from './vocab-decks'
 import { isAnswerCorrect } from './answer-matching'
 import { lessonSubsectionKey, lessonSubsectionKeysBefore, lessonSubsectionKeysThrough } from './vocab-lesson-map'
 
@@ -561,6 +561,9 @@ export function generateHebrewMorphologyQuestions(
   count: number,
   fields?: string[],
   parseFilter?: HebrewMorphParseFilter,
+  /** Glanz band key ("Glanz 1F"): only forms whose lexeme is in the vocabulary through
+   *  that band. The Hebrew counterpart of the Greek vocabThruLesson. */
+  vocabThruBand?: string | null,
 ) {
   let entries = hebrewEntriesForSubtype(subtype)
 
@@ -568,6 +571,16 @@ export function generateHebrewMorphologyQuestions(
     const filtered = applyHebrewParseFilter(entries, parseFilter)
     // Same rule as Greek: an over-narrow filter falls back rather than yielding nothing.
     if (filtered.length >= Math.min(count, 3)) entries = filtered
+  }
+
+  // The vocabulary cap follows the Greek rule: explicit instructor intent, NEVER silently
+  // relaxed. A thin pool yields a shorter quiz the caller can see, not a quiz that
+  // quietly tests words the schedule hasn't reached. (For strong-verb quizzes this cap is
+  // usually left off — the strong verbs and the frequent verbs of Hebrew barely overlap,
+  // so capping one by the other empties the pool; see series-presets.ts.)
+  if (vocabThruBand) {
+    const known = strongsThroughBand(HEBREW_DECK, vocabThruBand)
+    if (known.size > 0) entries = entries.filter(e => known.has(e.strongs))
   }
 
   const testable = fields?.length

@@ -25,6 +25,7 @@ import {
 } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
 import { SERIES_PRESETS, presetsForLevel, type SeriesPreset } from '@/lib/series-presets'
+import { HEBREW_DECK } from '@/lib/vocab-decks'
 import { scriptProps } from '@/lib/script-detect'
 import type { CourseLevel } from '@/types/course'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
@@ -1330,8 +1331,29 @@ function MorphSeriesBuilder({
                   className="input w-20 text-sm"
                 />
               </div>
-              {/* The vocab cap is keyed to BGVB lessons — Greek only. A Hebrew series
-                  shows no cap until a Hebrew lesson map exists (Glanz buckets, planned). */}
+              {/* Hebrew: the vocabulary schedule is the Glanz bands, so the cap is a band.
+                  Left off by default — for strong-verb quizzes the strong verbs and the
+                  frequent verbs barely overlap, so a cap can empty the pool; the preset
+                  applies it only where the pool stays healthy. */}
+              {hebrew && (
+                <div className="flex-1 min-w-48">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    {t('inst.b.m.vocabFilter')}
+                  </label>
+                  <select
+                    value={test.vocabThruBand ?? ''}
+                    onChange={e => updateTest(i, { vocabThruBand: e.target.value || null })}
+                    className="input text-sm w-full"
+                  >
+                    <option value="">{t('inst.b.m.vocabAll')}</option>
+                    {(HEBREW_DECK.bands ?? []).map(b => (
+                      <option key={b.key} value={b.key}>
+                        {t('inst.b.m.vocabThruBand', { band: b.label, range: b.rankRange })}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
               {!hebrew && (
               <div className="flex-1 min-w-48">
                 <label className="block text-xs font-medium text-gray-600 mb-1">

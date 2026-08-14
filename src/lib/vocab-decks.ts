@@ -245,6 +245,33 @@ export function deckKeysBefore(deck: Deck, subsections: string[]): string[] {
   const idx = subsections
     .map(k => deck.allSubsectionKeys.indexOf(k))
     .filter(i => i >= 0)
-  if (idx.length === 0) return []
-  return deck.allSubsectionKeys.slice(0, Math.min(...idx))
+  const before = idx.length > 0 ? deck.allSubsectionKeys.slice(0, Math.min(...idx)) : []
+  // Glanz bands are their own ordered sequence, invisible to allSubsectionKeys — before
+  // this clause, "Glanz 1F with 30% review" silently reviewed nothing.
+  const bandKeys = (deck.bands ?? []).map(b => b.key)
+  const bandIdx = subsections.map(k => bandKeys.indexOf(k)).filter(i => i >= 0)
+  const beforeBands = bandIdx.length > 0 ? bandKeys.slice(0, Math.min(...bandIdx)) : []
+  return [...before, ...beforeBands]
+}
+
+/**
+ * Every Strong's number in the Glanz bands up to and including `band` ("Glanz 1F") — the
+ * vocabulary a student has been assigned by the week that band is set. The morphology
+ * generator caps its question pool with this, the Hebrew counterpart of the Greek
+ * vocabThruLesson. Matching is by Strong's, not lemma string, because the deck has 19
+ * homographs whose written form is identical.
+ */
+export function strongsThroughBand(deck: Deck, band: string): Set<string> {
+  const bandKeys = (deck.bands ?? []).map(b => b.key)
+  const limit = bandKeys.indexOf(band)
+  if (limit < 0) return new Set()
+  const included = new Set(bandKeys.slice(0, limit + 1))
+  const out = new Set<string>()
+  for (const w of deck.words) {
+    const id = wordId(w)
+    if (deck.wordBand?.[id] && included.has(deck.wordBand[id])) {
+      out.add(id.split('|')[1] ?? '')
+    }
+  }
+  return out
 }

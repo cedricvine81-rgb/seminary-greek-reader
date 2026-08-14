@@ -326,6 +326,12 @@ def main():
                 pools[pos].append({
                     'surface': surface,
                     'lexeme': entry['lemma'],
+                    # Strong's number, so a vocabulary cap can match forms to deck words
+                    # by identity. Lemma STRINGS are not identity: the deck has 19
+                    # homographs (same pointing, different Strong's). DIGITS ONLY — OSHB
+                    # writes sense letters ('1004b') that the deck's ids do not carry,
+                    # and a mismatched suffix silently drops the word from every cap.
+                    'strongs': re.sub(r'[^0-9]', '', strongs).lstrip('0'),
                     'gloss': gloss_for(entry),
                     'reference': verse['reference'],
                     **parsed,

@@ -195,14 +195,15 @@ export async function PATCH(req: NextRequest) {
     }
     for (const r of rows) {
       const hebrewRow = isHebrewLevel(String(r.level))
-      // The cap is a BGVB lesson number — meaningless for Hebrew, so a Hebrew quiz
-      // rebuilds uncapped from its stored recipe and stores no cap.
+      // The lesson cap is a BGVB number — meaningless for Hebrew, whose vocabulary cap
+      // is the Glanz band stored in morphConfig.vocabThruBand and re-applied below.
       const cap = hebrewRow ? null : mode === 'auto' ? Math.min(r.weekNumber, 16) : null
-      const cfg = (r.morphConfig ?? null) as { fields?: string[]; parseFilter?: HebrewMorphParseFilter } | null
+      const cfg = (r.morphConfig ?? null) as
+        { fields?: string[]; parseFilter?: HebrewMorphParseFilter; vocabThruBand?: string | null } | null
       const qs = hebrewRow
         ? generateHebrewMorphologyQuestions(
             (r.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
-            r._count.questions || 20, cfg?.fields, cfg?.parseFilter)
+            r._count.questions || 20, cfg?.fields, cfg?.parseFilter, cfg?.vocabThruBand ?? null)
         : await generateMorphQuestionsFromConfig(
             (r.morphSubtype ?? 'MIXED') as MorphologySubtype,
             r._count.questions || 20, cap, r.morphConfig as MorphGenConfig)
