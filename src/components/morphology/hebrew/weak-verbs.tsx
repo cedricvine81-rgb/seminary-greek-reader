@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term } from '../s
 
 export const HB_WEAK_VERBS = (
   <>
-    <P>
+    <P id="weak-verbs.p1">
       A verb is <strong>weak</strong> when one of its <Term t="root">root</Term> letters is
       a <Term t="guttural">guttural</Term>, a{' '}
       <Hb>נ</Hb> or <Hb>י</Hb> that likes to vanish, a middle <Hb>ו/י</Hb> that never really
@@ -19,13 +19,13 @@ export const HB_WEAK_VERBS = (
       <em>fingerprint</em>, and let this table be the reference you return to.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="weak-verbs.b1" title="In plain English">
       <p className="mb-1">English has regular verbs (walk, walked) and irregular ones (sing/sang, go/went, be/was) that you simply learned by meeting them. Hebrew’s “weak” verbs are its irregulars — with one mercy: they are irregular by RULE. Certain letters (gutturals, <Hb>נ</Hb>, <Hb>ו</Hb>, <Hb>י</Hb>, final <Hb>ה</Hb>) misbehave in predictable ways wherever they sit in a root.</p>
       <p>So instead of memorising thousands of odd forms, you learn a handful of letter-habits — “<Hb>נ</Hb> assimilates (disappears into the next letter, leaving a doubling dot),” “gutturals refuse doubling” — and whole families of verbs fall into place at once.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The classes at a glance (Qal)</SectionHeading>
-    <MorphTable
+    <SectionHeading id="weak-verbs.h1" n={1}>The classes at a glance (Qal)</SectionHeading>
+    <MorphTable id="weak-verbs.t1"
       title="Weak classes — Qal reference forms"
       headers={['Class', 'Root', 'Perfect', 'Imperfect', 'Wayyiqtol', 'Inf. c. (with לְ)', 'Fingerprint']}
       tCols={[0, 6]}
@@ -54,8 +54,8 @@ export const HB_WEAK_VERBS = (
       note="Blank fingerprint cells share the note above them. Doubly weak verbs (נתן, לקח, היה) misbehave in two directions at once — which is why the commonest verbs are the strangest."
     />
 
-    <SectionHeading n={2}>How to find a root</SectionHeading>
-    <P>
+    <SectionHeading id="weak-verbs.h2" n={2}>How to find a root</SectionHeading>
+    <P id="weak-verbs.p2">
       When a form has fewer than three visible root letters, ask in order: Is there a{' '}
       <strong>dagesh</strong> hiding an assimilated <Hb>נ</Hb> (<Hb>יִפֹּל</Hb> ←{' '}
       <Hb>נפל</Hb>)? Is there a <strong>tsere prefix</strong> where a <Hb>י</Hb> fell out
@@ -65,8 +65,8 @@ export const HB_WEAK_VERBS = (
       answer key while these instincts form.
     </P>
 
-    <SectionHeading n={3}>The five verbs worth over-learning</SectionHeading>
-    <MorphTable
+    <SectionHeading id="weak-verbs.h3" n={3}>The five verbs worth over-learning</SectionHeading>
+    <MorphTable id="weak-verbs.t2"
       title="Memorise these forms as words"
       headers={['Form', 'Parse', 'Meaning']}
       hCols={[0]}
@@ -82,13 +82,13 @@ export const HB_WEAK_VERBS = (
       note="These five open more narrative clauses than the rest of the lexicon combined."
     />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="weak-verbs.b2" title="Watch for">
       <p className="mb-1">Hollow verbs in the perfect (<Hb>קָם</Hb>, <Hb>בָּא</Hb>) look like participles (<Hb>קָם</Hb> can be either) — context and accent decide.</p>
       <p className="mb-1">III-ה verbs keep a real ה only in the 3ms perfect and similar forms; before endings it becomes י or vanishes: <Hb>בָּנִיתִי</Hb> “I built.”</p>
       <p>In other stems the same instincts apply — e.g. Hiphil of I-י roots shows holem-waw: <Hb>הוֹשִׁיעַ</Hb> “he saved” (ישׁע).</p>
     </InfoBox>
 
-    <Practice
+    <Practice id="weak-verbs.x1"
       level="both"
       title="Find the root, then parse"
       items={[

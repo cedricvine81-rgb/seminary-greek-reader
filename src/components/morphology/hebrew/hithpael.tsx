@@ -9,20 +9,20 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_HITHPAEL = (
   <>
-    <P>
+    <P id="hithpael.p1">
       The Hithpael doubles the middle root letter like the <Term t="piel">Piel</Term> and
       adds the prefix <Hb>הִתְ</Hb>: action done to or among <em>oneself</em> —{' '}
       <Term t="reflexive">reflexive</Term>, reciprocal, or repeated. Its most famous member needs no introduction: <Hb>הִתְפַּלֵּל</Hb>,
       &ldquo;pray.&rdquo;
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="hithpael.b1" title="In plain English">
       <p className="mb-1"><strong>Reflexive = the action folds back on its doer.</strong> English says it with “-self”: he hid <em>himself</em>, she prepared <em>herself</em>, they washed <em>themselves</em>. Hebrew says it with the <Hb>הִתְ</Hb> prefix on the stem: <Hb>קִדֵּשׁ</Hb> “he consecrated (someone)” → <Hb>הִתְקַדֵּשׁ</Hb> “he consecrated <em>himself</em>.”</p>
       <p>It can also be <strong>each other</strong> (“they looked at one another”) or acting-a-part (<Hb>הִתְנַבֵּא</Hb> “behave as a prophet”). The common thread: the subject is on both ends of the verb.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>Forms</SectionHeading>
-    <MorphTable
+    <SectionHeading id="hithpael.h1" n={1}>Forms</SectionHeading>
+    <MorphTable id="hithpael.t1"
       title="Hithpael of קטל"
       headers={['Conjugation', 'Form', 'Meaning']}
       hCols={[1]}
@@ -41,8 +41,8 @@ export const HB_HITHPAEL = (
       note="In the imperfect and participle the ה gives way to the prefix letter (יִתְ־, מִתְ־); the ת of the stem survives everywhere."
     />
 
-    <SectionHeading n={2}>What Hithpael means</SectionHeading>
-    <MorphTable
+    <SectionHeading id="hithpael.h2" n={2}>What Hithpael means</SectionHeading>
+    <MorphTable id="hithpael.t2"
       title="The range"
       headers={['Nuance', 'Example', '']}
       tCols={[0, 2]}
@@ -57,12 +57,12 @@ export const HB_HITHPAEL = (
     />
     <HbEx he="וַיִּתְהַלֵּךְ חֲנוֹךְ אֶת־הָאֱלֹהִים" en={<>“and Enoch walked with God” (Gen 5:22) — the iterative Hithpael of הלך: a settled walking-about, a way of life.</>} />
 
-    <SectionHeading n={3}>The ת and the sibilants</SectionHeading>
-    <P>
+    <SectionHeading id="hithpael.h3" n={3}>The ת and the sibilants</SectionHeading>
+    <P id="hithpael.p2">
       When the first root letter is a sibilant, the <Hb>ת</Hb> of the prefix misbehaves — the
       one genuinely tricky thing about this stem:
     </P>
-    <MorphTable
+    <MorphTable id="hithpael.t3"
       title="Metathesis and assimilation"
       headers={['First radical', 'What happens', 'Example', '']}
       tCols={[0, 1, 3]}
@@ -75,7 +75,7 @@ export const HB_HITHPAEL = (
       ]}
     />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="hithpael.b2" title="Watch for">
       <p className="mb-1">Parse by fingerprints in order: הת (or ית/מת) prefix → dagesh in the middle radical → Hithpael. Metathesis does not change the parse, only the spelling.</p>
       <p>Like Niphal, some Hithpaels translate simply active: הִתְפַּלֵּל “pray,” הִתְהַלֵּךְ “walk about.”</p>
     </InfoBox>
@@ -84,7 +84,7 @@ export const HB_HITHPAEL = (
 
     <HbVocab id="hithpael" />
 
-    <Practice
+    <Practice id="hithpael.x1"
       level="both"
       title="Parse these"
       items={[

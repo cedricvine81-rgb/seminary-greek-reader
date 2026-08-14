@@ -10,7 +10,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term, HbExamples,
 
 export const HB_VERB_SYSTEM = (
   <>
-    <P>
+    <P id="verb-system.p1">
       Almost every Hebrew verb is built on a <Term t="root"><strong>root</strong></Term>{' '}
       (<Hb>שֹׁרֶשׁ</Hb>) of three consonants. The root carries the core idea; everything
       else — who acts, when, in what <Term t="voice">voice</Term> — is said by the{' '}
@@ -20,12 +20,12 @@ export const HB_VERB_SYSTEM = (
       letters never misbehave.
     </P>
 
-    <SectionHeading n={1}>The stems (binyanim)</SectionHeading>
-    <P>
+    <SectionHeading id="verb-system.h1" n={1}>The stems (binyanim)</SectionHeading>
+    <P id="verb-system.p2">
       A <strong>stem</strong> (Hebrew <em>binyan</em>, &ldquo;building&rdquo;) is a fixed
       pattern that sets the verb&rsquo;s voice and nuance. Seven do nearly all the work:
     </P>
-    <MorphTable
+    <MorphTable id="verb-system.t1"
       title="The seven major stems"
       headers={['Stem', 'Pattern (3ms perfect)', 'Nuance', 'Example']}
       tCols={[0, 2]}
@@ -44,13 +44,13 @@ export const HB_VERB_SYSTEM = (
       note="Red = the stem's identifying prefix, the first thing to look for — reading right to left, it is the first thing you meet. Qal has none (“light,” the unmarked stem — about seventy percent of all verb forms); Piel and Pual carry their signature INSIDE the word instead: the doubling dot in the middle letter and the i–e / u–a vowels."
     />
 
-    <SectionHeading n={2}>The conjugations</SectionHeading>
-    <P>
+    <SectionHeading id="verb-system.h2" n={2}>The conjugations</SectionHeading>
+    <P id="verb-system.p3">
       Within each stem, a verb inflects in a handful of <strong>conjugations</strong>. Hebrew
       marks <em>aspect</em> — complete versus incomplete action — more than tense; time comes
       from context.
     </P>
-    <MorphTable
+    <MorphTable id="verb-system.t2"
       title="What each conjugation does"
       headers={['Conjugation', 'Built with', 'Typical force', 'Example']}
       tCols={[0, 1, 2]}
@@ -68,8 +68,8 @@ export const HB_VERB_SYSTEM = (
       ]}
     />
 
-    <SectionHeading n={3}>The shape of a parse</SectionHeading>
-    <P>
+    <SectionHeading id="verb-system.h3" n={3}>The shape of a parse</SectionHeading>
+    <P id="verb-system.p4">
       To parse a Hebrew verb is to fill five slots: <strong>stem — conjugation — person —
       gender — number</strong>, plus the root. So <Hb>וַיֹּאמֶר</Hb> parses as Qal, sequential
       imperfect, 3ms, from <Hb>אמר</Hb> — &ldquo;and he said.&rdquo; These are exactly the
@@ -77,7 +77,7 @@ export const HB_VERB_SYSTEM = (
       dropdowns a morphology quiz offers.
     </P>
 
-    <InfoBox title="How to read the coming chapters">
+    <InfoBox id="verb-system.b1" title="How to read the coming chapters">
       <p className="mb-1">Qal gets three chapters (perfect, imperfect, the waw-consecutive) because every other stem reuses its machinery — the endings and prefixes never change, only the vowel pattern between them.</p>
       <p className="mb-1">Learn each stem by its <em>fingerprint</em>: Niphal’s נ, Piel’s doubled middle letter, Hiphil’s ה + hireq-yod, Hithpael’s הִתְ.</p>
       <p>The pronoun chapter’s person-gender-number labels (3ms, 2fs…) now become verb endings — same grid, new use.</p>
@@ -87,7 +87,7 @@ export const HB_VERB_SYSTEM = (
 
     <HbVocab id="verb-system" />
 
-    <Practice
+    <Practice id="verb-system.x1"
       level="both"
       title="Try it"
       items={[

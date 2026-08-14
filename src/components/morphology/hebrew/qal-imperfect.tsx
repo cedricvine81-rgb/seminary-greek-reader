@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_QAL_IMPERFECT = (
   <>
-    <P>
+    <P id="qal-imperfect.p1">
       The <Term t="imperfect"><strong>imperfect</strong></Term> (or <em>yiqtol</em>) views
       action as incomplete — English future (&ldquo;he will keep&rdquo;), habitual
       (&ldquo;he used to keep&rdquo;), or modal (&ldquo;he may keep&rdquo;). Where the perfect used endings, the imperfect leads with{' '}
@@ -17,13 +17,13 @@ export const HB_QAL_IMPERFECT = (
       plural forms. This prefix set, too, is universal across the stems.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="qal-imperfect.b1" title="In plain English">
       <p className="mb-1"><strong>Incomplete = still open.</strong> English has no one tense for this, so the imperfect scatters across several: “he <em>will</em> keep” (not yet done), “he <em>keeps / used to</em> keep” (repeats, never a finished lump), “he <em>may</em> keep” (possible). What unites them: the action is not being viewed as over.</p>
       <p><strong>The pronoun moved to the FRONT.</strong> The perfect welded its pronouns on as endings; the imperfect welds them on as prefixes — red in the table. Only four letters do it: <Hb>י ת א נ</Hb> (yod “he/they,” taw “she/you,” alef “I,” nun “we”). Learn those four and you can spot an imperfect across the room.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The paradigm</SectionHeading>
-    <MorphTable
+    <SectionHeading id="qal-imperfect.h1" n={1}>The paradigm</SectionHeading>
+    <MorphTable id="qal-imperfect.t1"
       title="Qal imperfect of קטל"
       headers={['', 'Form', 'Prefix / ending', 'Meaning']}
       hCols={[1, 2]}
@@ -44,17 +44,17 @@ export const HB_QAL_IMPERFECT = (
       ]}
       note="Ambiguities to accept now: 3fs = 2ms (תִּקְטֹל), and 3fp = 2fp (תִּקְטֹלְנָה). Context decides."
     />
-    <P>
+    <P id="qal-imperfect.p2">
       The theme vowel of the strong Qal imperfect is holem (<Hb>יִקְטֹל</Hb>). Before the
       vowel-endings <Hb>־ִי</Hb> and <Hb>־וּ</Hb> it reduces to shewa: <Hb>יִקְטְלוּ</Hb>.
     </P>
 
-    <SectionHeading n={2}>The a-class imperfect</SectionHeading>
-    <P>
+    <SectionHeading id="qal-imperfect.h2" n={2}>The a-class imperfect</SectionHeading>
+    <P id="qal-imperfect.p3">
       Verbs whose second or third root letter is a guttural pull the theme vowel to patach —
       the guttural&rsquo;s standing preference:
     </P>
-    <MorphTable
+    <MorphTable id="qal-imperfect.t2"
       title="a-class imperfects"
       headers={['Perfect', 'Imperfect', '']}
       hCols={[0, 1]}
@@ -68,8 +68,8 @@ export const HB_QAL_IMPERFECT = (
       ]}
     />
 
-    <SectionHeading n={3}>What the imperfect means</SectionHeading>
-    <MorphTable
+    <SectionHeading id="qal-imperfect.h3" n={3}>What the imperfect means</SectionHeading>
+    <MorphTable id="qal-imperfect.t3"
       title="The imperfect’s range"
       headers={['Force', 'Example', '']}
       tCols={[0, 2]}
@@ -84,7 +84,7 @@ export const HB_QAL_IMPERFECT = (
     />
     <HbEx he="יְהוָה יִמְלֹךְ לְעֹלָם וָעֶד" en={<>“The LORD will reign for ever and ever” (Exod 15:18).</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="qal-imperfect.b2" title="Watch for">
       <p className="mb-1">The prefixes spell <Hb>איתן</Hb> (etan) — alef, yod, taw, nun — a traditional mnemonic for the set.</p>
       <p className="mb-1">A begadkephat letter directly after the prefix keeps its dagesh lene only when the prefix vowel is silent-shewa’d away — compare <Hb>יִכְתֹּב</Hb>: the כ is soft (after the vowel of יִ), the ת hard (after silent shewa).</p>
       <p>לֹא + imperfect is the categorical “never” of the commandments; the immediate “don’t!” uses אַל + jussive — Volitives chapter.</p>
@@ -94,7 +94,7 @@ export const HB_QAL_IMPERFECT = (
 
     <HbVocab id="qal-imperfect" />
 
-    <Practice
+    <Practice id="qal-imperfect.x1"
       level="both"
       title="Parse these"
       items={[

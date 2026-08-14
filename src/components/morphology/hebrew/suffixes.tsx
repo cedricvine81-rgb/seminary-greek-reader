@@ -10,7 +10,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_SUFFIXES = (
   <>
-    <P>
+    <P id="suffixes.p1">
       Hebrew has no possessive words like &ldquo;my&rdquo; or &ldquo;his.&rdquo; The pronoun
       attaches to the end of the noun as a <Term t="suffix">suffix</Term>: <Hb>סוּסִי</Hb>{' '}
       &ldquo;my horse.&rdquo; The same
@@ -19,13 +19,13 @@ export const HB_SUFFIXES = (
       <Term t="definite">definite</Term> — no article needed or allowed.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="suffixes.b1" title="In plain English">
       <p className="mb-1">English says <em>my horse, your horse, his horse</em> — a little word in front. Hebrew glues the owner on as an ENDING instead: <Hb>סוּסִי</Hb> “horse-my,” <Hb>סוּסְךָ</Hb> “horse-your,” <Hb>סוּסוֹ</Hb> “horse-his.” One word where English needs two.</p>
       <p>The suffixes are the same little set everywhere — on nouns (“my horse”), on prepositions (“to-me,” <Hb>לִי</Hb>), and later on verbs (“he kept-me”). Learn the set once and you will meet it on every page of the Bible.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>On a singular noun</SectionHeading>
-    <MorphTable
+    <SectionHeading id="suffixes.h1" n={1}>On a singular noun</SectionHeading>
+    <MorphTable id="suffixes.t1"
       title="סוּס “horse” + suffixes"
       headers={['', 'Form', 'Meaning']}
       hCols={[1]}
@@ -46,12 +46,12 @@ export const HB_SUFFIXES = (
       ]}
     />
 
-    <SectionHeading n={2}>On a plural noun</SectionHeading>
-    <P>
+    <SectionHeading id="suffixes.h2" n={2}>On a plural noun</SectionHeading>
+    <P id="suffixes.p2">
       Plural nouns keep the <Hb>י</Hb> of their ending inside every suffix — that yod is your
       clue that the <em>possessed</em> thing is plural:
     </P>
-    <MorphTable
+    <MorphTable id="suffixes.t2"
       title="סוּסִים “horses” + suffixes"
       headers={['', 'Form', 'Meaning']}
       hCols={[1]}
@@ -71,8 +71,8 @@ export const HB_SUFFIXES = (
       note="Feminine plurals in ־וֹת take these same “plural-style” suffixes on top of the ות: תּוֹרוֹתָיו “his laws”."
     />
 
-    <SectionHeading n={3}>On prepositions</SectionHeading>
-    <MorphTable
+    <SectionHeading id="suffixes.h3" n={3}>On prepositions</SectionHeading>
+    <MorphTable id="suffixes.t3"
       title="Prepositions + suffixes"
       headers={['', 'לְ “to”', 'בְּ “in”', 'עִם “with”', 'מִן “from”', 'עַל “on”  (plural-style)']}
       hCols={[1, 2, 3, 4, 5]}
@@ -89,8 +89,8 @@ export const HB_SUFFIXES = (
       note="אֶל “to” declines like עַל: אֵלַי, אֵלֶיךָ, אֵלָיו… Note מִמֶּנּוּ is BOTH “from him” and “from us” — context decides."
     />
 
-    <SectionHeading n={4}>On the object marker</SectionHeading>
-    <MorphTable
+    <SectionHeading id="suffixes.h4" n={4}>On the object marker</SectionHeading>
+    <MorphTable id="suffixes.t4"
       title="את + suffixes: the object pronouns"
       headers={['', 'Singular', 'Plural']}
       hCols={[1, 2]}
@@ -104,14 +104,14 @@ export const HB_SUFFIXES = (
     />
     <HbEx he="עִמָּנוּ אֵל" en={<>Immanuel (Isa 7:14) — עִם “with” + ־נוּ “us” + אֵל “God”: the name is a suffix lesson.</>} />
 
-    <SectionHeading n={5}>On verbs</SectionHeading>
-    <P>
+    <SectionHeading id="suffixes.h5" n={5}>On verbs</SectionHeading>
+    <P id="suffixes.p3">
       The same pronouns ride on <strong>verbs</strong> — as objects. Hebrew can say
       &ldquo;he kept him&rdquo; two ways: object marker + suffix (<Hb>שָׁמַר אֹתוֹ</Hb>) or
       the suffix welded straight onto the verb (<Hb>שְׁמָרוֹ</Hb>). Both are everywhere;
       the welded form is tighter and loves poetry.
     </P>
-    <MorphTable
+    <MorphTable id="suffixes.t5"
       title="Object suffixes on the verb"
       headers={['Hebrew', 'Built from', 'Meaning']}
       hCols={[0]}
@@ -128,12 +128,12 @@ export const HB_SUFFIXES = (
       ]}
       note="The verb's vowels compress to make room (שָׁמַר → שְׁמָר־), exactly as nouns compressed before their suffixes. On the imperfect a linking vowel ֵ (sometimes ֶנּ) carries the suffix."
     />
-    <P>
+    <P id="suffixes.p4">
       Reading tip: a verb that seems one syllable too long usually ends in an object
       suffix. Parse the verb first, then peel the pronoun off the end.
     </P>
 
-    <InfoBox title="Watch for">
+    <InfoBox id="suffixes.b2" title="Watch for">
       <p className="mb-1"><Hb>אֹתוֹ</Hb> “him” (object marker) vs <Hb>אִתּוֹ</Hb> “with him” (the preposition את, hireq + dagesh). Same consonants, different words.</p>
       <p className="mb-1">The 3ms singular suffix ‏<Hb>וֹ</Hb> and the 3ms plural-style ‏<Hb>ָיו</Hb> both mean “his” — the yod tells you whether he owns one or many.</p>
       <p>Nouns often shift vowels before suffixes (<Hb>דָּבָר</Hb> → <Hb>דְּבָרוֹ</Hb> “his word”; segholates restore the old vowel: <Hb>מַלְכִּי</Hb> “my king”).</p>
@@ -143,7 +143,7 @@ export const HB_SUFFIXES = (
 
     <HbVocab id="suffixes" />
 
-    <Practice
+    <Practice id="suffixes.x1"
       level="both"
       title="Try it"
       items={[

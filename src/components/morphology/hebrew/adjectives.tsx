@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_ADJECTIVES = (
   <>
-    <P>
+    <P id="adjectives.p1">
       An <Term t="adjective">adjective</Term> describes a noun — &ldquo;the <em>good</em>{' '}
       word,&rdquo; &ldquo;a <em>great</em> king.&rdquo; In Hebrew an adjective changes its
       ending to match the noun it describes in <Term t="gender">gender</Term> and{' '}
@@ -17,17 +17,18 @@ export const HB_ADJECTIVES = (
       the noun chapter has already taught you the forms.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="adjectives.b1" title="In plain English">
       <p className="mb-1"><strong>Agreement is the new idea here.</strong> An English adjective never changes: <em>the tall man, the tall woman, the tall men</em> — “tall” sits still. A Hebrew adjective changes its ending to MATCH its noun in gender and number — the same red endings the nouns chapter taught: <Hb>אִישׁ טוֹב</Hb> “a good man,” <Hb>אִשָּׁה טוֹבָה</Hb> “a good woman,” <Hb>אֲנָשִׁים טוֹבִים</Hb> “good men.”</p>
       <p>Spanish speakers know this move already (<em>alto / alta / altos / altas</em>). The payoff for reading: the matching endings tell you which noun an adjective belongs to, even from a distance.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>Forms</SectionHeading>
-    <P>
+    <SectionHeading id="adjectives.h1" n={1}>Forms</SectionHeading>
+    <P id="adjectives.p2">
       Adjectives take the same endings as nouns and agree with their noun in gender and
       number — using the noun&rsquo;s <em>real</em> gender, not its ending.
     </P>
-    <MorphTable
+    <MorphTable id="adjectives.t1"
+      tCols={[0]}
       title="טוֹב “good” and גָּדוֹל “great”"
       headers={['', 'ms', 'fs', 'mp', 'fp']}
       hCols={[1, 2, 3, 4]}
@@ -38,12 +39,12 @@ export const HB_ADJECTIVES = (
       note="The usual vowel reduction applies when the ending draws the stress: גָּדוֹל → גְּדוֹלָה."
     />
 
-    <SectionHeading n={2}>Attributive: “the good man”</SectionHeading>
-    <P>
+    <SectionHeading id="adjectives.h2" n={2}>Attributive: “the good man”</SectionHeading>
+    <P id="adjectives.p3">
       An attributive adjective <strong>follows</strong> its noun and matches it in
       definiteness — a definite noun means an article on the adjective too:
     </P>
-    <MorphTable
+    <MorphTable id="adjectives.t2"
       title="Attributive position"
       headers={['Hebrew', 'Meaning']}
       hCols={[0]}
@@ -57,13 +58,13 @@ export const HB_ADJECTIVES = (
       ]}
     />
 
-    <SectionHeading n={3}>Predicate: “the man is good”</SectionHeading>
-    <P>
+    <SectionHeading id="adjectives.h3" n={3}>Predicate: “the man is good”</SectionHeading>
+    <P id="adjectives.p4">
       Drop the adjective&rsquo;s article — and usually put it first — and the phrase becomes a
       whole sentence, no verb &ldquo;to be&rdquo; required. This <em>verbless clause</em> is
       one of Hebrew&rsquo;s most characteristic constructions.
     </P>
-    <MorphTable
+    <MorphTable id="adjectives.t3"
       title="Attributive vs predicate"
       headers={['Hebrew', 'Meaning']}
       hCols={[0]}
@@ -78,20 +79,20 @@ export const HB_ADJECTIVES = (
     />
     <HbEx he="טוֹב־יְהוָה לַכֹּל" en={<>“the LORD is good to all” (Ps 145:9).</>} />
 
-    <SectionHeading n={4}>Substantive: “the wise (one)”</SectionHeading>
-    <P>
+    <SectionHeading id="adjectives.h4" n={4}>Substantive: “the wise (one)”</SectionHeading>
+    <P id="adjectives.p5">
       With no noun at all, the adjective stands as one: <Hb>הֶחָכָם</Hb> &ldquo;the wise
       man,&rdquo; <Hb>הָרְשָׁעִים</Hb> &ldquo;the wicked.&rdquo; English does the same with
       &ldquo;the good, the bad…&rdquo;
     </P>
 
-    <SectionHeading n={5}>Comparison</SectionHeading>
-    <P>
+    <SectionHeading id="adjectives.h5" n={5}>Comparison</SectionHeading>
+    <P id="adjectives.p6">
       Hebrew has no &ldquo;-er&rdquo; or &ldquo;more.&rdquo; It compares with <Hb>מִן</Hb>:
       literally &ldquo;good <em>from</em>&rdquo; = &ldquo;better than.&rdquo; The superlative
       is usually a definite adjective or a construct idiom.
     </P>
-    <MorphTable
+    <MorphTable id="adjectives.t4"
       title="Comparative and superlative"
       headers={['Hebrew', 'Meaning']}
       hCols={[0]}
@@ -105,7 +106,7 @@ export const HB_ADJECTIVES = (
       ]}
     />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="adjectives.b2" title="Watch for">
       <p className="mb-1">Demonstratives sit in the same slots: attributive <Hb>הָאִישׁ הַזֶּה</Hb> “this man”, predicate <Hb>זֶה הָאִישׁ</Hb> “this is the man.”</p>
       <p>When both readings are grammatical (<Hb>הָאִישׁ טוֹב</Hb>), context decides — start by trying the predicate.</p>
     </InfoBox>
@@ -114,7 +115,7 @@ export const HB_ADJECTIVES = (
 
     <HbVocab id="adjectives" />
 
-    <Practice
+    <Practice id="adjectives.x1"
       level="both"
       title="Try it"
       items={[

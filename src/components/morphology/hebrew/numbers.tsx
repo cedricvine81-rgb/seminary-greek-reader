@@ -10,21 +10,21 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_NUMBERS = (
   <>
-    <P>
+    <P id="numbers.p1">
       Hebrew numbers are nouns and adjectives, not a separate species — they have{' '}
       <Term t="gender">gender</Term>, they stand in <Term t="construct state">construct</Term>,
       and they agree (or famously refuse to agree) with what they count.
     </P>
 
-    <SectionHeading n={1}>One to ten — and the polarity rule</SectionHeading>
-    <P>
+    <SectionHeading id="numbers.h1" n={1}>One to ten — and the polarity rule</SectionHeading>
+    <P id="numbers.p2">
       <strong>One</strong> behaves like an adjective (after its noun, agreeing);{' '}
       <strong>two</strong> is a dual noun; and from <strong>three to ten</strong> the forms
       swap: <em>masculine nouns take the feminine-looking numeral, feminine nouns the
       masculine-looking one</em>. Grammars call it <strong>polarity</strong>. It is not a
       mistake in the text — it is the system.
     </P>
-    <MorphTable
+    <MorphTable id="numbers.t1"
       title="Cardinals 1–10"
       headers={['', 'With masculine nouns', 'With feminine nouns']}
       hCols={[1, 2]}
@@ -46,8 +46,8 @@ export const HB_NUMBERS = (
     />
     <HbEx he="שְׁנֵי הָאֲנָשִׁים" en={<>“the two men” — the construct form שְׁנֵי leans on a definite noun, so the pair is definite.</>} />
 
-    <SectionHeading n={2}>Teens, tens, hundreds</SectionHeading>
-    <MorphTable
+    <SectionHeading id="numbers.h2" n={2}>Teens, tens, hundreds</SectionHeading>
+    <MorphTable id="numbers.t2"
       title="Building larger numbers"
       headers={['Number', 'Form', '']}
       hCols={[1]}
@@ -64,14 +64,14 @@ export const HB_NUMBERS = (
       ]}
       note="Compound numbers simply string together, usually largest first, often with וְ: “four hundred and thirty years” (Exod 12:40)."
     />
-    <P>
+    <P id="numbers.p3">
       With large numbers the counted noun often stays <em>singular</em>:{' '}
       <Hb>שִׁבְעִים שָׁנָה</Hb> &ldquo;seventy year(s)&rdquo; — the idiom behind many an odd-looking
       census line.
     </P>
 
-    <SectionHeading n={3}>Ordinals</SectionHeading>
-    <MorphTable
+    <SectionHeading id="numbers.h3" n={3}>Ordinals</SectionHeading>
+    <MorphTable id="numbers.t3"
       title="First to tenth"
       headers={['', 'Ordinal', '', 'Ordinal']}
       hCols={[1, 3]}
@@ -87,12 +87,12 @@ export const HB_NUMBERS = (
     />
     <HbEx he="יוֹם הַשִּׁשִּׁי" en={<>“the sixth day” (Gen 1:31) — the ordinal with the article, closing each creation day.</>} />
 
-    <SectionHeading n={4}>Using a lexicon</SectionHeading>
-    <P>
+    <SectionHeading id="numbers.h4" n={4}>Using a lexicon</SectionHeading>
+    <P id="numbers.p4">
       A Hebrew dictionary files words by <Term t="root">root</Term> or by dictionary form —
       never by the form you meet on the page. To find a word, <strong>undress it</strong>:
     </P>
-    <InfoBox title="The stripping order">
+    <InfoBox id="numbers.b1" title="The stripping order">
       <p className="mb-1">1. Remove what the earlier chapters taught you to see: the article <Hb>הַ</Hb>, the inseparable prepositions <Hb>בְּ כְּ לְ</Hb>, the conjunction <Hb>וְ</Hb>, and any pronominal <Term t="suffix">suffix</Term>.</p>
       <p className="mb-1">2. Remove verb prefixes (<Hb>י ת א נ</Hb> of the imperfect, <Hb>מ</Hb> of participles, <Hb>ה</Hb> of Hiphil/Hithpael) and endings.</p>
       <p className="mb-1">3. What remains should be three letters. If only two remain, a weak letter has vanished — try <Hb>נ</Hb> or <Hb>י</Hb> at the front, <Hb>ה</Hb> at the back, or a middle <Hb>ו/י</Hb> (the weak-verbs chapter is the map).</p>
@@ -103,7 +103,7 @@ export const HB_NUMBERS = (
 
     <HbVocab id="numbers" />
 
-    <Practice
+    <Practice id="numbers.x1"
       level="both"
       title="Try it"
       items={[

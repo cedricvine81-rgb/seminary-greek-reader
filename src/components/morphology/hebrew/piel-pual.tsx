@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_PIEL_PUAL = (
   <>
-    <P>
+    <P id="piel-pual.p1">
       The <Term t="piel">Piel</Term>&rsquo;s fingerprint is a{' '}
       <Term t="dagesh"><strong>dagesh forte (a dot that doubles the letter)</strong></Term> — a doubling dot —{' '}
       <strong>in the middle root letter</strong>.
@@ -19,8 +19,8 @@ export const HB_PIEL_PUAL = (
       passive.
     </P>
 
-    <SectionHeading n={1}>Piel forms</SectionHeading>
-    <MorphTable
+    <SectionHeading id="piel-pual.h1" n={1}>Piel forms</SectionHeading>
+    <MorphTable id="piel-pual.t1"
       title="Piel of קטל"
       headers={['Conjugation', 'Form', 'Meaning']}
       hCols={[1]}
@@ -40,8 +40,8 @@ export const HB_PIEL_PUAL = (
       note="Perfect: hireq–tsere. Imperfect: shewa under the prefix (יְ) — a Piel tell, since Qal prefixes carry hireq. Participle: מְ prefix."
     />
 
-    <SectionHeading n={2}>Pual forms</SectionHeading>
-    <MorphTable
+    <SectionHeading id="piel-pual.h2" n={2}>Pual forms</SectionHeading>
+    <MorphTable id="piel-pual.t2"
       title="Pual of קטל"
       headers={['Conjugation', 'Form', 'Meaning']}
       hCols={[1]}
@@ -55,8 +55,8 @@ export const HB_PIEL_PUAL = (
       note="Same skeleton with u-class vowels (qibbuts). Rare in the flesh; instantly recognisable."
     />
 
-    <SectionHeading n={3}>What Piel means — and what “intensive” really is</SectionHeading>
-    <P>
+    <SectionHeading id="piel-pual.h3" n={3}>What Piel means — and what “intensive” really is</SectionHeading>
+    <P id="piel-pual.p2">
       Older grammars call the Piel the <strong>“intensive” stem</strong>, and the label has a
       certain logic: the middle letter is doubled, so — the thought ran — the action is
       &ldquo;doubled&rdquo; too. Sometimes that is exactly right. <Hb>שָׁבַר</Hb> in Qal is
@@ -65,7 +65,7 @@ export const HB_PIEL_PUAL = (
       When Moses came down the mountain and <Hb>וַיְשַׁבֵּר</Hb> the tablets (Exod 32:19),
       the text chose the Piel: not &ldquo;cracked&rdquo; but <em>shattered</em>.
     </P>
-    <P>
+    <P id="piel-pual.p3">
       But test that idea across the language and it fails more often than it works —
       <Hb>דִּבֶּר</Hb> &ldquo;speak&rdquo; is not intense speaking, and <Hb>בִּקֵּשׁ</Hb>{' '}
       &ldquo;seek&rdquo; is not frantic seeking. Modern grammars therefore treat the Piel&rsquo;s
@@ -75,13 +75,13 @@ export const HB_PIEL_PUAL = (
       <Hb>גָּדַל</Hb> &ldquo;to <em>be</em> great&rdquo; becomes Piel <Hb>גִּדַּל</Hb>{' '}
       &ldquo;to make great — to raise a child, to magnify.&rdquo;
     </P>
-    <InfoBox title="In plain English">
+    <InfoBox id="piel-pual.b1" title="In plain English">
       <p className="mb-1">English does the factitive with suffixes and word-pairs, so you already know the move:</p>
       <p className="mb-1">· <em>pure → purify</em>, <em>sterile → sterilize</em>, <em>modern → modernize</em> — an adjective (a state) turned into an action done to something. That is Qal → Piel in miniature.</p>
       <p className="mb-1">· <em>learn → teach</em> — “to teach” is “to cause someone to learn.” Hebrew says it with the same root: Qal <Hb>לָמַד</Hb> “learn” → Piel <Hb>לִמַּד</Hb> “teach.”</p>
       <p>· <em>break → smash</em>, <em>hit → batter</em>, <em>bite → gnaw</em> — the genuinely “intensive” pairs. English needs a different word; Hebrew doubles a letter.</p>
     </InfoBox>
-    <MorphTable
+    <MorphTable id="piel-pual.t3"
       title="The range"
       headers={['Nuance', 'Qal', 'Piel', 'English parallel']}
       tCols={[0, 3]}
@@ -95,7 +95,7 @@ export const HB_PIEL_PUAL = (
       ]}
       note="Practical rule: the dagesh tells you the STEM; the lexicon tells you the SENSE. Never translate a Piel “harder” on principle — check whether this root actually pairs a Qal state with a Piel act."
     />
-    <P>
+    <P id="piel-pual.p4">
       High-frequency Piels to bank now: <Hb>דִּבֶּר</Hb> speak, <Hb>צִוָּה</Hb> command,{' '}
       <Hb>בִּקֵּשׁ</Hb> seek, <Hb>הִלֵּל</Hb> praise, <Hb>לִמַּד</Hb> teach,{' '}
       <Hb>סִפֵּר</Hb> recount, <Hb>שִׁלַּח</Hb> send away, <Hb>בֵּרַךְ</Hb> bless — that last
@@ -103,7 +103,7 @@ export const HB_PIEL_PUAL = (
     </P>
     <HbEx he="הַלְלוּ־יָהּ" en={<>“Praise the LORD!” — Piel imperative (a direct command to “you”) 2mp of הלל + the short divine name. You have been parsing Piel since before you started.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="piel-pual.b2" title="Watch for">
       <p className="mb-1">A dagesh in the middle radical after a vowel = Piel family (Piel, Pual, or Hithpael). The vowels around it pick which.</p>
       <p className="mb-1">Piel perfect <Hb>דִּבֶּר</Hb> vs the noun <Hb>דָּבָר</Hb>: hireq + dagesh vs qamets. Related root, different worlds.</p>
       <p>When the middle letter is a guttural or ר, look for compensatory tsere/qamets instead of a dagesh: בֵּרַךְ, מֵאֵן.</p>
@@ -113,7 +113,7 @@ export const HB_PIEL_PUAL = (
 
     <HbVocab id="piel-pual" />
 
-    <Practice
+    <Practice id="piel-pual.x1"
       level="both"
       title="Parse these"
       items={[

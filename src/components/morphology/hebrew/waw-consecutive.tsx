@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_WAW = (
   <>
-    <P>
+    <P id="waw-consecutive.p1">
       Open any page of Hebrew narrative and most <Term t="clause">clauses</Term> begin the
       same way: <Hb>וַיּ…</Hb> &ldquo;and he…&rdquo;. This is the{' '}
       <Term t="waw-consecutive (the “and then” chain that carries Hebrew narrative)"><strong>wayyiqtol</strong></Term> (sequential imperfect):
@@ -18,13 +18,13 @@ export const HB_WAW = (
       went, and he said…
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="waw-consecutive.b1" title="In plain English">
       <p className="mb-1">Listen to anyone tell a story: <em>“And then he got up, and then he went out, and then he saw…”</em> — a chain of “and then”s. Biblical narrative runs on exactly that chain: <Hb>וַ</Hb> (“and”) + a verb, verse after verse. It is the single most common verbal form in the Bible.</p>
       <p>The surprise this chapter explains: inside that chain, the verb form that normally means future (“he will get up”) is the one that tells the PAST. The <Hb>וַ</Hb> “flips” it — which is why the old name is “waw-conversive.” Spot the chain (<Hb>וַ</Hb> + doubling), and you are reading narrative.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The form</SectionHeading>
-    <MorphTable
+    <SectionHeading id="waw-consecutive.h1" n={1}>The form</SectionHeading>
+    <MorphTable id="waw-consecutive.t1"
       title="Wayyiqtol of קטל"
       headers={['', 'Imperfect', 'Wayyiqtol', 'Meaning']}
       hCols={[1, 2]}
@@ -37,7 +37,7 @@ export const HB_WAW = (
       ]}
       note="וַ + dagesh forte in the prefix letter. Before א (which refuses doubling) the vowel lengthens: וָאֶקְטֹל."
     />
-    <P>
+    <P id="waw-consecutive.p2">
       Where a verb has a shortened (jussive (a wish about someone else — “may he”)-style) imperfect, the wayyiqtol uses it — which is
       why the commonest narrative verbs look clipped: <Hb>וַיְהִי</Hb> &ldquo;and it
       was&rdquo; (not <Hb>וַיִּהְיֶה</Hb>), <Hb>וַיַּרְא</Hb> &ldquo;and he saw,&rdquo;{' '}
@@ -45,13 +45,13 @@ export const HB_WAW = (
       said.&rdquo;
     </P>
 
-    <SectionHeading n={2}>Weqatal: the mirror</SectionHeading>
-    <P>
+    <SectionHeading id="waw-consecutive.h2" n={2}>Weqatal: the mirror</SectionHeading>
+    <P id="waw-consecutive.p3">
       The perfect plays the same trick in reverse. <Hb>וְ</Hb> + perfect
       (<strong>weqatal</strong>) does not mean &ldquo;and he did&rdquo; — it carries{' '}
       <em>imperfect</em> force, continuing commands, instructions and futures:
     </P>
-    <MorphTable
+    <MorphTable id="waw-consecutive.t2"
       title="The two sequential forms"
       headers={['Form', 'Looks like', 'Acts like', 'Home territory']}
       tCols={[2, 3]}
@@ -65,8 +65,8 @@ export const HB_WAW = (
     />
     <HbEx he="וְאָהַבְתָּ אֵת יְהוָה אֱלֹהֶיךָ" en={<>“And you shall love the LORD your God” (Deut 6:5) — a perfect in form, a command in force: weqatal.</>} />
 
-    <SectionHeading n={3}>Reading narrative</SectionHeading>
-    <P>
+    <SectionHeading id="waw-consecutive.h3" n={3}>Reading narrative</SectionHeading>
+    <P id="waw-consecutive.p4">
       The chain <Hb>וַיּ… וַיּ… וַיּ…</Hb> is the story&rsquo;s spine; the subject follows its
       verb. When a narrator breaks the chain — <Hb>וְ</Hb> + something <em>other</em> than a
       verb first — the mainline pauses for background, contrast, or a new scene:{' '}
@@ -74,7 +74,7 @@ export const HB_WAW = (
     </P>
     <HbEx he="וַיֹּאמֶר אֱלֹהִים יְהִי אוֹר וַיְהִי־אוֹר" en={<>“And God said, ‘Let there be light,’ and there was light” (Gen 1:3) — wayyiqtol, jussive, wayyiqtol: three chapters of grammar in seven words.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="waw-consecutive.b2" title="Watch for">
       <p className="mb-1">Don’t confuse <Hb>וַ</Hb> + dagesh (sequential) with plain <Hb>וְ</Hb> + imperfect (“and he will…”). The patach and the doubling are the signature.</p>
       <p className="mb-1"><Hb>וַיְהִי</Hb> also serves as a discourse marker — “and it came to pass” — often followed by a time phrase before the story resumes.</p>
       <p>In the 1cs, וָ before א: <Hb>וָאֹמַר</Hb> “and I said.”</p>
@@ -84,7 +84,7 @@ export const HB_WAW = (
 
     <HbVocab id="waw-consecutive" />
 
-    <Practice
+    <Practice id="waw-consecutive.x1"
       level="both"
       title="Parse these"
       items={[

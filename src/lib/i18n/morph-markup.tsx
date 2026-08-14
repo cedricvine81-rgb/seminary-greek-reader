@@ -20,6 +20,8 @@
  *     {x}   Greek — NEVER translated, and checked to survive the translation intact
  *     [k:x] glossary term, k = GLOSSARY key
  *
+ *     ¶     end of a paragraph (inside a multi-paragraph block)
+ *
  * ONE SERIALIZER, TWO CALLERS. `serialize` runs at build time (over the chapter's React tree,
  * imported directly by scripts/i18n-content.ts) and again in the browser (over the same tree's
  * children). Both must agree exactly or every fingerprint would mismatch and every block would
@@ -100,6 +102,10 @@ export function serialize(node: ReactNode): string | null {
   switch (typeof el.type === 'string' ? el.type : '') {
     case 'em': return wrap('_', '_')
     case 'strong': return wrap('*', '*')
+    // A paragraph inside a translated block (the multi-paragraph InfoBoxes). Marked rather
+    // than dropped: without it the whole box was "not representable" and stayed English —
+    // which stranded exactly the plain-language explanations a translation is most needed for.
+    case 'p': return core ? `${pre}${core}¶${post}` : inner
     // The chapters write Greek two ways: <Gk> and a bare <span className="normal-case">, which is
     // exactly what <Gk> renders. Both are Greek and both must survive translation untouched.
     case 'span': {
@@ -134,19 +140,28 @@ export function parse(template: string, c: MarkupComponents): ReactNode[] {
   const out: ReactNode[] = []
   let last = 0
   let i = 0
-  TOKEN.lastIndex = 0
+  // A FRESH matcher per call, not the shared TOKEN: a glossary term's display text is parsed
+  // recursively (below), and a recursive call sharing one regex would move the outer loop's
+  // lastIndex and swallow the rest of the paragraph.
+  const re = new RegExp(TOKEN.source, 'g')
   let m: RegExpExecArray | null
-  while ((m = TOKEN.exec(template)) !== null) {
+  while ((m = re.exec(template)) !== null) {
     const at = m.index
     if (at > last) out.push(template.slice(last, at))
     const tok = m[0]
     const body = tok.slice(1, -1)
-    if (tok.startsWith('_')) out.push(<em key={i++}>{body}</em>)
-    else if (tok.startsWith('*')) out.push(<strong key={i++}>{body}</strong>)
+    // Emphasis nests the other way too — <strong>middle or <Term>reflexive</Term></strong>
+    // serialises as *middle or [reflexive:reflexive]* — so these recurse as well.
+    if (tok.startsWith('_')) out.push(<em key={i++}>{parse(body, c)}</em>)
+    else if (tok.startsWith('*')) out.push(<strong key={i++}>{parse(body, c)}</strong>)
     else if (tok.startsWith('{')) out.push(<c.Gk key={i++}>{body}</c.Gk>)
     else {
+      // Terms routinely wrap emphasised text — the chapters write <Term t="perfect"><strong>
+      // perfect</strong></Term>, which serialises as [perfect:*perfect*]. Parse the display text
+      // too, or the reader sees the literal asterisks the English never shows.
       const split = body.indexOf(':')
-      out.push(<c.Term key={i++} t={body.slice(0, split)}>{body.slice(split + 1)}</c.Term>)
+      const shown = body.slice(split + 1)
+      out.push(<c.Term key={i++} t={body.slice(0, split)}>{parse(shown, c)}</c.Term>)
     }
     last = at + tok.length
   }

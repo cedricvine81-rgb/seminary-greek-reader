@@ -17,7 +17,9 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { Menu } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
-import { XlitContext, XLIT_STORAGE_KEY } from '../shared'
+import { XlitContext, XLIT_STORAGE_KEY, MorphContentProvider } from '../shared'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
 import { HB_ALPHABET } from './alphabet'
 import { HB_VOWELS } from './vowels'
 import { HB_ARTICLE } from './article'
@@ -41,6 +43,18 @@ import { HB_HIPHIL_HOPHAL } from './hiphil-hophal'
 import { HB_HITHPAEL } from './hithpael'
 import { HB_WEAK_VERBS } from './weak-verbs'
 import { HB_SYNTAX } from './syntax'
+
+const hbChapterCache: Record<string, ContentCatalogue> = {}
+const hbChapterInflight: Record<string, Promise<ContentCatalogue>> = {}
+function loadHebrewChapterContent(locale: string, chapter: string): Promise<ContentCatalogue> {
+  const k = `${locale}.${chapter}`
+  if (hbChapterCache[k]) return Promise.resolve(hbChapterCache[k])
+  if (!hbChapterInflight[k]) hbChapterInflight[k] = fetch(`/data/morphology/${locale}/${chapter}.json`)
+    .then(r => (r.ok ? r.json() : {}))
+    .then((d: ContentCatalogue) => (hbChapterCache[k] = d))
+    .catch(() => (hbChapterCache[k] = {}))
+  return hbChapterInflight[k]
+}
 
 // Order follows a standard first-year sequence: script → the nominal system →
 // the verb, Qal before the derived stems, weak verbs and syntax as capstones.
@@ -92,6 +106,18 @@ export function HebrewGrammarView() {
   }, [menuOpen])
 
 
+  // The open chapter's Spanish, fetched per chapter exactly as the Greek grammar does — an
+  // English reader fetches nothing, and a chapter costs only its own prose. Buckets are
+  // "hb-<chapter>" so a shared chapter name (nouns, pronouns) cannot collide with the Greek.
+  const locale = useLocale()
+  const [chapterContent, setChapterContent] = useState<ContentCatalogue>(NO_CONTENT)
+  useEffect(() => {
+    if (locale === 'en') { setChapterContent(NO_CONTENT); return }
+    let alive = true
+    loadHebrewChapterContent(locale, `hb-${tab}`).then(c => { if (alive) setChapterContent(c) })
+    return () => { alive = false }
+  }, [locale, tab])
+
   // Transliteration toggle: beginners read the pronunciation beside the Hebrew until they
   // no longer need it. Remembered per device (localStorage, like the other reading prefs).
   const [xlit, setXlit] = useState(false)
@@ -106,6 +132,7 @@ export function HebrewGrammarView() {
   const active = HEBREW_TABS.find(x => x.id === tab) ?? HEBREW_TABS[0]
 
   return (
+    <MorphContentProvider value={chapterContent}>
     <XlitContext.Provider value={xlit}>
     <div className="flex flex-col min-h-0">
       {/* Mobile: chapters collapse into a hamburger, as in the Greek view. */}
@@ -185,5 +212,6 @@ export function HebrewGrammarView() {
       </div>
     </div>
     </XlitContext.Provider>
+    </MorphContentProvider>
   )
 }

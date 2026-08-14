@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_ARTICLE = (
   <>
-    <P>
+    <P id="article.p1">
       Hebrew has no word for &ldquo;a&rdquo;: <Hb>מֶלֶךְ</Hb> is &ldquo;a king&rdquo; on its
       own. The <Term t="definite">definite</Term> <Term t="article">article</Term> —
       Hebrew&rsquo;s word for &ldquo;the&rdquo; — is not a separate word but a prefix:{' '}
@@ -18,13 +18,13 @@ export const HB_ARTICLE = (
       king.&rdquo;
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="article.b1" title="In plain English">
       <p className="mb-1">English has two little words for definiteness: <em>a</em> (any one) and <em>the</em> (that particular one). Hebrew has only “the” — and it is not a separate word but a syllable glued to the front: <Hb>בַּיִת</Hb> “a house,” <Hb>הַבַּיִת</Hb> “the house.” Think of it as writing “thehouse.”</p>
       <p>There is no word for “a” at all: a bare noun is indefinite by default. So every unglued noun you meet already means “a …”.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The article: הַ + dagesh forte (a dot that doubles the letter)</SectionHeading>
-    <MorphTable
+    <SectionHeading id="article.h1" n={1}>The article: הַ + dagesh forte (a dot that doubles the letter)</SectionHeading>
+    <MorphTable id="article.t1"
       title="The regular article"
       headers={['Without', 'With the article', '']}
       hCols={[0, 1]}
@@ -37,13 +37,13 @@ export const HB_ARTICLE = (
       ]}
     />
 
-    <SectionHeading n={2}>Before gutturals</SectionHeading>
-    <P>
+    <SectionHeading id="article.h2" n={2}>Before gutturals</SectionHeading>
+    <P id="article.p2">
       Gutturals refuse doubling, so the article compensates — usually by lengthening its own
       vowel. The pattern is worth memorising once, because the inseparable prepositions reuse
       it.
     </P>
-    <MorphTable
+    <MorphTable id="article.t2"
       title="The article before gutturals"
       headers={['Next letter', 'Article', 'Example', '']}
       tCols={[0, 3]}
@@ -57,13 +57,13 @@ export const HB_ARTICLE = (
       note="More examples: הָעָם the people, הָרֹאשׁ the head, הַחֶרֶב the sword, הֶהָרִים the mountains, הֶחָכָם the wise man."
     />
 
-    <SectionHeading n={3}>The conjunction וְ</SectionHeading>
-    <P>
+    <SectionHeading id="article.h3" n={3}>The conjunction וְ</SectionHeading>
+    <P id="article.p3">
       &ldquo;And&rdquo; is likewise a prefix: <Hb>וְ</Hb>. It glues clauses together so
       relentlessly that most verses of narrative begin with it. Its pointing shifts with what
       follows:
     </P>
-    <MorphTable
+    <MorphTable id="article.t3"
       title="Pointing the conjunction"
       headers={['Before…', 'Form', 'Example', '']}
       tCols={[0, 3]}
@@ -80,7 +80,7 @@ export const HB_ARTICLE = (
     />
     <HbEx he="וְהָאָרֶץ הָיְתָה תֹהוּ וָבֹהוּ" en={<>“and the earth was formless and void” (Gen 1:2) — the plain וְ on the article, and the accented-pair וָ.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="article.b2" title="Watch for">
       <p className="mb-1">The וּ form is a vowel, so a begadkephat letter after it goes soft: <Hb>וּבַיִת</Hb> is <em>u-vayit</em> — no dagesh lene in the ב.</p>
       <p className="mb-1">The article’s ה never elides after itself — but it does after the inseparable prepositions (next chapter): <Hb>בַּבַּיִת</Hb> = <Hb>בְּ</Hb> + <Hb>הַבַּיִת</Hb>.</p>
       <p>Names are definite without the article; so are nouns with a pronominal suffix. <Hb>הַ</Hb> on a proper name almost always signals something else (a he-interrogative, or a gentilic).</p>
@@ -90,7 +90,7 @@ export const HB_ARTICLE = (
 
     <HbVocab id="article" />
 
-    <Practice
+    <Practice id="article.x1"
       level="both"
       title="Try it"
       items={[

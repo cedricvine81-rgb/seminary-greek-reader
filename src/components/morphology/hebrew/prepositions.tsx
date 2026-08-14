@@ -10,26 +10,26 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_PREPOSITIONS = (
   <>
-    <P>
+    <P id="prepositions.p1">
       A <Term t="preposition">preposition</Term> is a little relationship word — &ldquo;in,
       to, like, from, with.&rdquo; Hebrew&rsquo;s three commonest are not even separate
       words: they are single letters glued to the front of the next word, which is why they
       are called <em>inseparable</em>.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="prepositions.b1" title="In plain English">
       <p className="mb-1">A preposition is a small word that positions one thing relative to another: <em>in</em> the house, <em>to</em> the city, <em>like</em> a lion, <em>from</em> Egypt. English writes them as separate words; Hebrew glues its three commonest to the front of the next word, exactly as it glued “the”: <Hb>בְּבַיִת</Hb> “in-a-house,” one word.</p>
       <p>English actually does this in a few fossils — <em>aboard</em> (“on board”), <em>ashore</em>, <em>tonight</em> — it just stopped doing it productively. Hebrew never stopped.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The inseparable prepositions: בְּ, כְּ, לְ</SectionHeading>
-    <P>
+    <SectionHeading id="prepositions.h1" n={1}>The inseparable prepositions: בְּ, כְּ, לְ</SectionHeading>
+    <P id="prepositions.p2">
       Three prepositions are prefixes, never separate words: <Hb>בְּ</Hb> &ldquo;in, by,
       with,&rdquo; <Hb>כְּ</Hb> &ldquo;like, as,&rdquo; <Hb>לְ</Hb> &ldquo;to, for.&rdquo;
       Their pointing follows the same instincts as the conjunction <Hb>וְ</Hb> (taught with
       the article, in the previous chapter):
     </P>
-    <MorphTable
+    <MorphTable id="prepositions.t1"
       title="Pointing בְּ, כְּ, לְ"
       headers={['Before…', 'Form', 'Example', '']}
       tCols={[0, 3]}
@@ -45,14 +45,14 @@ export const HB_PREPOSITIONS = (
       note="So לְ + הָעָם → לָעָם “for the people”; כְּ + הַיּוֹם → כַּיּוֹם “as the day”. The ה of the article vanishes; its vowel and dagesh remain."
     />
 
-    <SectionHeading n={2}>מִן — “from”</SectionHeading>
-    <P>
+    <SectionHeading id="prepositions.h2" n={2}>מִן — “from”</SectionHeading>
+    <P id="prepositions.p3">
       <Hb>מִן</Hb> stands free with a maqqef (<Hb>מִן־הָעִיר</Hb>, &ldquo;from the city&rdquo;)
       or fuses onto the word. When it fuses, its <Hb>נ</Hb> assimilates (disappears into the next letter, leaving a doubling dot) into the next letter as
       a dagesh forte — and before a guttural, which cannot take the dagesh, the vowel
       lengthens to <Hb>מֵ</Hb>:
     </P>
-    <MorphTable
+    <MorphTable id="prepositions.t2"
       title="מן fused"
       headers={['', 'Example', '']}
       tCols={[0, 2]}
@@ -64,8 +64,8 @@ export const HB_PREPOSITIONS = (
       ]}
     />
 
-    <SectionHeading n={3}>The independent prepositions</SectionHeading>
-    <MorphTable
+    <SectionHeading id="prepositions.h3" n={3}>The independent prepositions</SectionHeading>
+    <MorphTable id="prepositions.t3"
       title="Common independent prepositions"
       headers={['Hebrew', 'Meaning']}
       hCols={[0]}
@@ -86,15 +86,15 @@ export const HB_PREPOSITIONS = (
       ]}
     />
 
-    <SectionHeading n={4}>The object marker אֵת</SectionHeading>
-    <P>
+    <SectionHeading id="prepositions.h4" n={4}>The object marker אֵת</SectionHeading>
+    <P id="prepositions.p4">
       Hebrew flags a <strong>definite direct object</strong> with <Hb>אֵת</Hb> (usually{' '}
       <Hb>אֶת־</Hb> with maqqef (the raised hyphen joining two words)). It is untranslated — a grammatical signpost, not a word with
       meaning. Indefinite objects go unmarked.
     </P>
     <HbEx he="בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ" en={<>“God created the heavens and the earth” (Gen 1:1) — both objects are definite, so both carry אֵת.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="prepositions.b2" title="Watch for">
       <p className="mb-1">Two different words spell את: the object marker (<Hb>אֹתוֹ</Hb> “him” with suffixes) and the preposition “with” (<Hb>אִתּוֹ</Hb> “with him” — hireq and dagesh). Context and pointing separate them.</p>
       <p className="mb-1"><Hb>לְ</Hb> + infinitive construct (<Hb>לִקְטֹל</Hb>) is the ordinary way to say “to do” — you will meet it constantly from the Infinitives chapter on.</p>
       <p>מִן also builds the comparative: <Hb>טוֹב מִזָּהָב</Hb>, “better than gold.”</p>
@@ -104,7 +104,7 @@ export const HB_PREPOSITIONS = (
 
     <HbVocab id="prepositions" />
 
-    <Practice
+    <Practice id="prepositions.x1"
       level="both"
       title="Try it"
       items={[

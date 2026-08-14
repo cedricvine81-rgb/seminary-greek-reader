@@ -207,6 +207,28 @@ const CHAPTER_TAB: Record<string, string> = {
   conditionals: 'conjunctions',
 }
 
+/**
+ * The HEBREW grammar's chapters. Same walk as the Greek one, but bucketed under "hb-<chapter>"
+ * so a Hebrew chapter that shares a name with a Greek one (nouns, pronouns, prepositions,
+ * participles) writes its own catalogue instead of overwriting it. HebrewGrammarView fetches
+ * by exactly that name.
+ */
+export function hebrewMorphologyItems(): Item[] {
+  const items: Item[] = []
+  const dir = 'src/components/morphology/hebrew'
+  for (const f of fs.existsSync(dir) ? fs.readdirSync(dir).sort() : []) {
+    if (!f.endsWith('.tsx') || f === 'HebrewGrammarView.tsx') continue
+    const chapter = f.replace(/\.tsx$/, '')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod = require(`../${dir}/${chapter}`) as Record<string, unknown>
+    for (const exported of Object.values(mod)) collect(exported, items, `hb-${chapter}`)
+  }
+  // HbExamples / HbVocab / HbDrills / HbReview take an `id` naming a chapter of GENERATED DATA,
+  // not a translation key, and they have no children — the collector sees them as empty blocks.
+  // Translation ids are always "<chapter>.<slot>", so the dot tells the two apart.
+  return items.filter(i => i.key.includes('.'))
+}
+
 export function morphologyItems(): Item[] {
   const items: Item[] = []
   const dir = 'src/components/morphology/chapters'
@@ -290,11 +312,19 @@ function collect(node: unknown, items: Item[], chapter: string) {
       for (const v of Object.values(props)) if (v && typeof v === 'object') collect(v, items, chapter)
       return
     }
+    // A titled block (InfoBox) renders its heading through the same catalogue but keeps its body
+    // in `children`, so it is NOT a field component — collecting it as one would skip the
+    // serialize below and drop the body. Take the title here and let the body fall through.
+    if (typeof props.title === 'string' && props.title.trim()) {
+      items.push({ key: `${id}.title`, english: props.title, bucket: chapter })
+    }
     const english = serialize(props.children as never)
     if (english === null) {
       console.error(`  ${chapter}: ${id} — markup not representable; left English`)
     } else if (!english.trim()) {
-      console.error(`  ${chapter}: ${id} — empty`)
+      // A dot-less id belongs to a DATA component (HbExamples id="nouns"), not a translation
+      // slot — it is meant to have no children, so this is not a fault to report.
+      if (id.includes('.')) console.error(`  ${chapter}: ${id} — empty`)
     } else {
       items.push({ key: id, english, bucket: chapter })
     }
@@ -479,7 +509,7 @@ export function lexiconGlossItems(): Item[] {
 
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
-  rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems, vocab: vocabItems,
+  rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems, hebrewMorphology: hebrewMorphologyItems, vocab: vocabItems,
   constructPresets: constructPresetItems,
   lexiconGlosses: lexiconGlossItems,
 }
@@ -496,6 +526,9 @@ const SPLIT: Record<string, SplitPath | undefined> = {
   // panel is mounted in the root layout, where a server-loaded catalogue would ride along with
   // every page in the app. Fetched per chapter instead, by the chapter that needs it.
   morphology: (loc, chapter) => `public/data/morphology/${loc}/${chapter}.json`,
+  // The Hebrew grammar, same reasoning and the same directory — its buckets are already
+  // prefixed "hb-", so the two never collide on a shared chapter name.
+  hebrewMorphology: (loc, chapter) => `public/data/morphology/${loc}/${chapter}.json`,
   // One file per deck. A Greek reader never downloads the Hebrew glosses.
   vocab: (loc, deck) => `public/data/vocab/${loc}/${deck}.json`,
   // ~4,300 short glosses. Too many for a page payload, and only the reader needs them, so it
@@ -507,8 +540,13 @@ const FAN_OUT: Record<string, (t: Record<string, string>) => { key: string; engl
   summaries: summaryFanOut,
 }
 
-function allItems(): Item[] {
-  return Object.values(SOURCES).flatMap(f => f())
+/**
+ * Every item, tagged with the source it came from. The tag is not decoration: the Greek and the
+ * Hebrew grammars deliberately share chapter ids (nouns.t1, participles.t2 …), so a key alone
+ * names two different strings and any report keyed on it silently conflates them.
+ */
+function allItems(): (Item & { source: string })[] {
+  return Object.entries(SOURCES).flatMap(([source, f]) => f().map(i => ({ ...i, source })))
 }
 
 function readJson(loc: Loc, name: string): Record<string, string> {
@@ -530,7 +568,11 @@ function translations(loc: Loc): Record<string, string> {
 function list(name: string, bucket?: string) {
   let items = SOURCES[name]?.() ?? []
   if (bucket) items = items.filter(i => i.bucket === bucket)
-  const have = translations('es')
+  // This source's OWN file, not the merge of all of them. The Hebrew grammar reuses the Greek
+  // grammar's chapter ids (nouns.t1, participles.t2 …), so the merged view hid sixty Hebrew keys
+  // behind their Greek namesakes and reported them done — while `build`, which reads per source,
+  // shipped them as English.
+  const have = readJson('es', name)
   const todo = items.filter(i => !have[i.key])
   console.log(JSON.stringify(Object.fromEntries(todo.map(i => [i.key, i.english])), null, 2))
   console.error(`${todo.length} untranslated of ${items.length}`
@@ -540,7 +582,7 @@ function list(name: string, bucket?: string) {
 /** `--buckets <source>` — how much is left in each bucket, to pick the next one to do. */
 function buckets(name: string) {
   const items = SOURCES[name]?.() ?? []
-  const have = translations('es')
+  const have = readJson('es', name)
   const tally = new Map<string, { done: number; total: number; words: number }>()
   for (const i of items) {
     const b = i.bucket ?? '—'
@@ -607,7 +649,9 @@ function build() {
       let orphans = 0
       const emit = (key: string, english: string, text: string) => {
         checkMarkers(loc, text, key, badMarkers)
-        if (name === 'morphology') checkGreek(loc, english, text, key, badMarkers)
+        // The Hebrew grammar has exactly the same exposure: a paradigm silently dropped
+        // out of a fluent Spanish sentence is the one error the format cannot show.
+        if (name === 'morphology' || name === 'hebrewMorphology') checkGreek(loc, english, text, key, badMarkers)
         if (split) {
           const b = bucketOf.get(key)
           if (!b) return   // unbucketed key in a split source: nowhere to put it
@@ -684,13 +728,15 @@ function audit() {
   // a completion report that cannot say "done" is worse than no report.
   const words = (s: string) => (s.trim() ? s.trim().split(/\s+/).length : 0)
   for (const loc of LOCALES) {
-    const t = translations(loc)
     // Recompute rather than importing the catalogue, so the audit reports on the JSON the
     // translator is editing and not on a stale generated file.
-    const missing = items.filter(i => !t[i.key])
+    const bySource: Record<string, Record<string, string>> =
+      Object.fromEntries(Object.keys(SOURCES).map(n => [n, readJson(loc, n)]))
+    const has = (i: { source: string; key: string }) => Boolean(bySource[i.source]?.[i.key])
+    const missing = items.filter(i => !has(i))
     const stale = items.filter(i => {
-      const gen = generatedFp(loc, i.key)
-      return t[i.key] && gen !== undefined && gen !== fingerprint(i.english)
+      const gen = generatedFp(loc, i.source, i.key)
+      return has(i) && gen !== undefined && gen !== fingerprint(i.english)
     })
     const done = items.length - missing.length
     const pct = ((done / items.length) * 100).toFixed(1)
@@ -698,41 +744,50 @@ function audit() {
       + `${words(missing.map(m => m.english).join(' '))} English words left`)
     if (stale.length) {
       console.log(`  ${stale.length} STALE — the English changed after these were translated:`)
-      stale.slice(0, 20).forEach(s => console.log('    ' + s.key))
+      stale.slice(0, 20).forEach(s => console.log(`    ${s.source}: ${s.key}`))
     }
   }
 }
 
-/** The fp recorded in the generated catalogue, if it has been built. */
+/**
+ * The fp recorded in the generated catalogue, if it has been built — per SOURCE, because two
+ * split sources can write into one directory (the Greek and Hebrew grammars both live under
+ * public/data/morphology/<loc>/) and a flat map would let one overwrite the other's fingerprint,
+ * reporting a perfectly current translation as stale.
+ */
 const genCache: Partial<Record<Loc, Record<string, string>>> = {}
-function generatedFp(loc: Loc, key: string): string | undefined {
+const fpKey = (source: string, key: string) => `${source}\u0000${key}`
+function generatedFp(loc: Loc, source: string, key: string): string | undefined {
   if (!genCache[loc]) {
-    const files = Object.keys(SOURCES).filter(n => !SPLIT[n])
-      .map(n => `src/lib/i18n/generated/${loc}.${n}.ts`)
     const map: Record<string, string> = {}
-    // Split sources emit JSON under public/ rather than a generated module, but their
-    // fingerprints are the same evidence of staleness and the audit has to see them.
-    for (const path of Object.values(SPLIT)) {
-      if (!path) continue
-      const dir = path(loc, 'x').replace(/\/[^/]+$/, '')
-      if (!fs.existsSync(dir)) continue
-      for (const f of fs.readdirSync(dir)) {
-        if (!f.endsWith('.json')) continue
-        const j = JSON.parse(fs.readFileSync(`${dir}/${f}`, 'utf8')) as Record<string, { fp: string }>
-        for (const [k, v] of Object.entries(j)) map[k] = v.fp
+    for (const [name, fn] of Object.entries(SOURCES)) {
+      const split = SPLIT[name]
+      if (split) {
+        // Split sources emit JSON under public/ rather than a generated module, but their
+        // fingerprints are the same evidence of staleness and the audit has to see them. Only
+        // this source's own buckets are read, which is what keeps the two grammars apart.
+        const seen = new Set<string>()
+        for (const i of fn()) {
+          if (!i.bucket || seen.has(i.bucket)) continue
+          seen.add(i.bucket)
+          const f = split(loc, i.bucket)
+          if (!fs.existsSync(f)) continue
+          const j = JSON.parse(fs.readFileSync(f, 'utf8')) as Record<string, { fp: string }>
+          for (const [k, v] of Object.entries(j)) map[fpKey(name, k)] = v.fp
+        }
+        continue
       }
-    }
-    for (const f of files) {
+      const f = `src/lib/i18n/generated/${loc}.${name}.ts`
       if (!fs.existsSync(f)) continue
       // exec in a loop, not matchAll: its iterator needs downlevelIteration under this tsconfig.
       const src = fs.readFileSync(f, 'utf8')
       const re = /"([^"]+)": \{ fp: "([^"]+)"/g
       let m: RegExpExecArray | null
-      while ((m = re.exec(src)) !== null) map[m[1]] = m[2]
+      while ((m = re.exec(src)) !== null) map[fpKey(name, m[1])] = m[2]
     }
     genCache[loc] = map
   }
-  return genCache[loc]![key]
+  return genCache[loc]![fpKey(source, key)]
 }
 
 const args = process.argv.slice(2)

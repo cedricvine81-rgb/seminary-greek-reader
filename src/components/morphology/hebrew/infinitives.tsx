@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_INFINITIVES = (
   <>
-    <P>
+    <P id="infinitives.p1">
       Hebrew has two <Term t="infinitive">infinitives</Term> — &ldquo;to do&rdquo; forms
       that name an action without saying who does it — with divided labor. The <strong>infinitive construct (the “to do” form)</strong>{' '}
       (<Hb>קְטֹל</Hb>) is the &ldquo;to do&rdquo; form — it takes prepositions and suffixes
@@ -18,13 +18,13 @@ export const HB_INFINITIVES = (
       slots, which is why the morphology quizzes ask only stem and conjugation for them.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="infinitives.b1" title="In plain English">
       <p className="mb-1">An infinitive is the verb as an idea, with nobody doing it yet: English <em>“to run”</em> — and English has a second, nouny version, the “-ing” gerund: <em>“running is hard.”</em> Hebrew likewise has two: the <strong>infinitive construct</strong> does roughly the work of “to run / running,” and the <strong>infinitive absolute</strong> is an emphatic doubling English can only imitate: <Hb>מוֹת תָּמוּת</Hb>, “dying you shall die” = “you shall surely die.”</p>
       <p>If you have ever said “I really, truly mean it,” you have felt what the infinitive absolute does.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>Infinitive construct</SectionHeading>
-    <MorphTable
+    <SectionHeading id="infinitives.h1" n={1}>Infinitive construct</SectionHeading>
+    <MorphTable id="infinitives.t1"
       title="The construct at work"
       headers={['Use', 'Example', '']}
       tCols={[0, 2]}
@@ -37,15 +37,15 @@ export const HB_INFINITIVES = (
         ['negated with לְבִלְתִּי', 'לְבִלְתִּי אֲכָל־מִמֶּנּוּ', 'not to eat from it  (Gen 3:11)'],
       ]}
     />
-    <P>
+    <P id="infinitives.p2">
       The temporal idiom is everywhere in narrative: preposition + infinitive + subject
       suffix, often after <Hb>וַיְהִי</Hb> — <Hb>וַיְהִי בִּהְיוֹתָם בַּשָּׂדֶה</Hb>,
       &ldquo;and it happened, when they were in the field…&rdquo; (Gen 4:8).
     </P>
     <HbEx he="לְעָבְדָהּ וּלְשָׁמְרָהּ" en={<>“to work it and to keep it” (Gen 2:15) — two infinitive constructs with לְ, each carrying a 3fs object suffix (the garden).</>} />
 
-    <SectionHeading n={2}>Infinitive absolute</SectionHeading>
-    <MorphTable
+    <SectionHeading id="infinitives.h2" n={2}>Infinitive absolute</SectionHeading>
+    <MorphTable id="infinitives.t2"
       title="The absolute at work"
       headers={['Use', 'Example', '']}
       tCols={[0, 2]}
@@ -59,8 +59,9 @@ export const HB_INFINITIVES = (
       note="The classic translation of the emphatic doubling — “dying you shall die” — is where the KJV’s “thou shalt surely die” comes from."
     />
 
-    <SectionHeading n={3}>Forms to recognise</SectionHeading>
-    <MorphTable
+    <SectionHeading id="infinitives.h3" n={3}>Forms to recognise</SectionHeading>
+    <MorphTable id="infinitives.t3"
+      tCols={[0]}
       title="Qal infinitives"
       headers={['', 'Form', 'With לְ']}
       hCols={[1, 2]}
@@ -71,7 +72,7 @@ export const HB_INFINITIVES = (
       note="Weak roots reshape the construct heavily: לָלֶכֶת “to go” (הלך), לָתֵת “to give” (נתן), לָשֶׁבֶת “to sit” (ישׁב), לִבְנוֹת “to build” (בנה). The Weak Verbs chapter collects them."
     />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="infinitives.b2" title="Watch for">
       <p className="mb-1">The bare construct looks identical to the ms imperative (<Hb>קְטֹל</Hb>). A preposition in front settles it; so does a suffix.</p>
       <p className="mb-1">A suffix on an infinitive can be its subject (<Hb>בְּשָׁמְעוֹ</Hb> “when HE heard”) or its object (<Hb>לְשָׁמְרוֹ</Hb> “to keep IT”) — sense decides.</p>
       <p><Hb>לֵאמֹר</Hb> (“saying”) introduces direct speech — an infinitive construct of אמר so common it functions as a quotation mark.</p>
@@ -81,7 +82,7 @@ export const HB_INFINITIVES = (
 
     <HbVocab id="infinitives" />
 
-    <Practice
+    <Practice id="infinitives.x1"
       level="both"
       title="Parse these"
       items={[

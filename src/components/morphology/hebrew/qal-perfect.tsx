@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_QAL_PERFECT = (
   <>
-    <P>
+    <P id="qal-perfect.p1">
       The <Term t="perfect"><strong>perfect</strong></Term> (or <em>qatal</em>) views an
       action as complete — usually English past tense: &ldquo;he kept.&rdquo; It{' '}
       <Term t="conjugation">conjugates</Term> with <strong>endings only</strong> — one ending
@@ -17,14 +17,14 @@ export const HB_QAL_PERFECT = (
       this ending set cold: every <Term t="binyan">stem</Term> in the language reuses it.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="qal-perfect.b1" title="In plain English">
       <p className="mb-1"><strong>Reading the codes:</strong> “3ms” is shorthand for <em>third person, masculine, singular</em> — “he.” First person is the speaker (I / we), second is who you are talking to (you), third is who you are talking about (he / she / they). So 2fp = “you (women),” 1cs = “I,” 3cp = “they.” The “c” means <em>common</em>: one form serves both genders.</p>
       <p className="mb-1"><strong>English changes the pronoun; Hebrew changes the ending.</strong> English says <em>I kept, you kept, she kept</em> — the verb never moves, the pronoun does the work. Hebrew welds the pronoun onto the verb as an ending: <Hb>קָטַלְתִּי</Hb> is “kept-I,” <Hb>קָטַלְתָּ</Hb> “kept-you,” one word each. That is why a Hebrew sentence can be a single word.</p>
       <p><strong>“Complete” is a viewpoint, not a date.</strong> English tenses put events on a timeline (past / present / future). The Hebrew perfect instead views the action as a whole, finished package — usually that lands in English as past (“he kept”), but it can be “he has kept,” or with statives “he is old.”</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The paradigm</SectionHeading>
-    <MorphTable
+    <SectionHeading id="qal-perfect.h1" n={1}>The paradigm</SectionHeading>
+    <MorphTable id="qal-perfect.t1"
       title="Qal perfect of קטל"
       headers={['', 'Form', 'Ending', 'Meaning']}
       hCols={[1, 2]}
@@ -44,18 +44,18 @@ export const HB_QAL_PERFECT = (
       ]}
       note="Third plural and first person do not mark gender (“common”). Before the vowel-endings ־ָה and ־וּ the second qamets reduces to shewa; before the heavy endings ־תֶּם / ־תֶּן the FIRST one does."
     />
-    <P>
+    <P id="qal-perfect.p2">
       Memory hooks: the 2ms/2fs/1cs endings echo the pronouns (<Hb>אַתָּה</Hb> → <Hb>־תָּ</Hb>,{' '}
       <Hb>אֲנִי</Hb>… <Hb>־תִּי</Hb>), and <Hb>־נוּ</Hb> is the &ldquo;our/us&rdquo; suffix
       you already know.
     </P>
 
-    <SectionHeading n={2}>Stative (describing a state rather than an action) verbs</SectionHeading>
-    <P>
+    <SectionHeading id="qal-perfect.h2" n={2}>Stative (describing a state rather than an action) verbs</SectionHeading>
+    <P id="qal-perfect.p3">
       Verbs describing a <em>state</em> rather than an action take tsere or holem in the 3ms
       and often translate as an English adjective with &ldquo;be&rdquo;:
     </P>
-    <MorphTable
+    <MorphTable id="qal-perfect.t2"
       title="Statives"
       headers={['Form', 'Meaning']}
       hCols={[0]}
@@ -70,23 +70,23 @@ export const HB_QAL_PERFECT = (
       ]}
     />
 
-    <SectionHeading n={3}>What the perfect means</SectionHeading>
-    <P>
+    <SectionHeading id="qal-perfect.h3" n={3}>What the perfect means</SectionHeading>
+    <P id="qal-perfect.p4">
       Complete action, viewed whole. In practice: simple past (&ldquo;he kept&rdquo;),
       present perfect (&ldquo;he has kept&rdquo;), a present state with statives
       (&ldquo;he is old&rdquo;) — and occasionally the <em>prophetic perfect</em>, where a
       future certainty is spoken of as already done.
     </P>
 
-    <SectionHeading n={4}>Word order</SectionHeading>
-    <P>
+    <SectionHeading id="qal-perfect.h4" n={4}>Word order</SectionHeading>
+    <P id="qal-perfect.p5">
       The neutral order is <strong>Verb — Subject — Object</strong>:{' '}
       <Hb>שָׁמַר הָאִישׁ אֶת־הַתּוֹרָה</Hb>, &ldquo;the man kept the law.&rdquo; When
       something else stands first, Hebrew is drawing attention to it.
     </P>
     <HbEx he="בְּרֵאשִׁית בָּרָא אֱלֹהִים" en={<>“In the beginning God created” (Gen 1:1) — בָּרָא is a Qal perfect 3ms; the fronted phrase sets the stage.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="qal-perfect.b2" title="Watch for">
       <p className="mb-1"><Hb>קָטְלָה</Hb> (3fs perfect) vs a feminine noun in ־ָה: the verb has no article and its first vowel is qamets + vocal shewa.</p>
       <p className="mb-1">2ms <Hb>קָטַלְתָּ</Hb> and 2fs <Hb>קָטַלְתְּ</Hb> differ only in the final vowel — qamets = masculine.</p>
       <p>The perfect + וְ (weqatal) is NOT simple “and” + past — it flips to future/command force. That surprise is the Waw-Consecutive (the “and then” chain that carries Hebrew narrative) chapter.</p>
@@ -96,7 +96,7 @@ export const HB_QAL_PERFECT = (
 
     <HbVocab id="qal-perfect" />
 
-    <Practice
+    <Practice id="qal-perfect.x1"
       level="both"
       title="Parse these"
       items={[

@@ -10,23 +10,25 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, Term, HbReading }
 
 export const HB_ALPHABET = (
   <>
-    <P>
+    <P id="alphabet.p1">
       Hebrew is written <strong>right to left</strong>, in consonants. The vowel signs you see
       under and above the letters — the <Term t="pointing">pointing</Term> — were added by the
       Masoretes centuries after the text was written; they are the next chapter. (Throughout
-      this grammar, any <span className="underline decoration-dotted decoration-brand-400 underline-offset-2">dotted-underlined</span>{' '}
-      term can be tapped for a plain-English definition — no grammar background is assumed.) You already know more Hebrew than you think:{' '}
+      this grammar, any dotted-underlined term — like <Term t="pointing">pointing</Term> just
+      above — can be tapped for a plain-English definition; no grammar background is assumed.)
+      You already know more Hebrew than you think:{' '}
       <Hb>אָמֵן</Hb> (amen), <Hb>שָׁלוֹם</Hb> (shalom), <Hb>הַלְלוּ־יָהּ</Hb> (hallelu-Yah,
       &ldquo;praise the LORD&rdquo;) all carry straight into English.
     </P>
 
-    <SectionHeading n={1}>The 23 consonants</SectionHeading>
-    <P>
+    <SectionHeading id="alphabet.h1" n={1}>The 23 consonants</SectionHeading>
+    <P id="alphabet.p2">
       Say each letter&rsquo;s name aloud as you copy it out — the names rehearse the sounds.
       Where two pronunciations are listed, the first is the hard sound (with a dot, next
       section) and the second the soft.
     </P>
-    <MorphTable
+    <MorphTable id="alphabet.t1"
+      tCols={[2]}
       title="The Hebrew alphabet"
       headers={['Letter', 'Name', 'Sound', 'Transliteration']}
       hCols={[0]}
@@ -60,13 +62,13 @@ export const HB_ALPHABET = (
       note="Sin and shin are the same letter shape distinguished by the dot: left dot = sin (s), right dot = shin (sh)."
     />
 
-    <SectionHeading n={2}>Final forms</SectionHeading>
-    <P>
+    <SectionHeading id="alphabet.h2" n={2}>Final forms</SectionHeading>
+    <P id="alphabet.p3">
       Five letters change shape at the end of a word — the mnemonic is the made-up word{' '}
       <em>kemnepets</em> (<Hb>כמנפץ</Hb>). The sound does not change, only the shape: most
       finals drop a tail below the line.
     </P>
-    <MorphTable
+    <MorphTable id="alphabet.t2"
       title="Final (sofit) forms"
       headers={['Normal', 'Final', 'Example']}
       hCols={[0, 1, 2]}
@@ -80,14 +82,15 @@ export const HB_ALPHABET = (
       ]}
     />
 
-    <SectionHeading n={3}>Begadkephat: the six two-sound letters</SectionHeading>
-    <P>
+    <SectionHeading id="alphabet.h3" n={3}>Begadkephat: the six two-sound letters</SectionHeading>
+    <P id="alphabet.p4">
       Six letters — <Hb>ב ג ד כ פ ת</Hb>, remembered as <em>begadkephat</em> — each have a hard
       and a soft pronunciation. A dot inside the letter (the <em>dagesh lene (a dot that hardens the letter)</em>) marks the
       hard sound; without it the letter is soft. In practice most readers today only
       distinguish three pairs: <Hb>בּ/ב</Hb> (b/v), <Hb>כּ/כ</Hb> (k/ch), <Hb>פּ/פ</Hb> (p/f).
     </P>
-    <MorphTable
+    <MorphTable id="alphabet.t3"
+      tCols={[2, 3]}
       title="Begadkephat"
       headers={['Hard (with dagesh)', 'Soft (without)', 'Hard sound', 'Soft sound']}
       hCols={[0, 1]}
@@ -103,8 +106,8 @@ export const HB_ALPHABET = (
       note="Rule of thumb: begadkephat is hard at the start of a word or syllable, soft after a vowel."
     />
 
-    <SectionHeading n={4}>The gutturals</SectionHeading>
-    <P>
+    <SectionHeading id="alphabet.h4" n={4}>The gutturals</SectionHeading>
+    <P id="alphabet.p5">
       <Hb>א ה ח ע</Hb> — plus <Hb>ר</Hb>, which behaves like them half the time — are the{' '}
       <strong>gutturals</strong>, made at the back of the throat. Learn the set now: gutturals{' '}
       <strong>refuse to be doubled</strong> and <strong>prefer a-class vowels</strong>, and
@@ -112,8 +115,8 @@ export const HB_ALPHABET = (
       the article, the prepositions, and the weak verbs.
     </P>
 
-    <SectionHeading n={5}>Look-alikes</SectionHeading>
-    <InfoBox title="Letters beginners confuse">
+    <SectionHeading id="alphabet.h5" n={5}>Look-alikes</SectionHeading>
+    <InfoBox id="alphabet.b1" title="Letters beginners confuse">
       <p className="mb-1"><Hb>ב</Hb> bet vs <Hb>כ</Hb> kaf — bet has a heel jutting out at the bottom right.</p>
       <p className="mb-1"><Hb>ד</Hb> dalet vs <Hb>ר</Hb> resh — dalet has a sharp corner; resh is rounded.</p>
       <p className="mb-1"><Hb>ה</Hb> he vs <Hb>ח</Hb> het vs <Hb>ת</Hb> taw — he has a gap at the top left; het is closed; taw has a foot.</p>
@@ -121,7 +124,7 @@ export const HB_ALPHABET = (
       <p><Hb>ס</Hb> samek vs final <Hb>ם</Hb> mem — samek is round; final mem is squared.</p>
     </InfoBox>
 
-    <Practice
+    <Practice id="alphabet.x1"
       level="both"
       title="Try it"
       intro={<>Name each letter, right to left.</>}

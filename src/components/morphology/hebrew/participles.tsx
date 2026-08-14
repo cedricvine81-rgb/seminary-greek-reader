@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_PARTICIPLES = (
   <>
-    <P>
+    <P id="participles.p1">
       The <Term t="participle">participle</Term> is a verb wearing a noun&rsquo;s clothes —
       like English &ldquo;-ing&rdquo; words used to describe (&ldquo;the <em>ruling</em>{' '}
       king&rdquo;). It has <Term t="gender">gender</Term>, <Term t="number">number</Term> and{' '}
@@ -17,13 +17,14 @@ export const HB_PARTICIPLES = (
       grows into the present tense.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="participles.b1" title="In plain English">
       <p className="mb-1">English turns verbs into describing-words with “-ing”: <em>the ruling king, running water</em>. It also turns them into people-words: <em>a singer</em> is “one who sings,” <em>a judge</em> “one who judges.” The Hebrew participle does both jobs with one form: <Hb>שֹׁפֵט</Hb> is “judging” — and therefore also “a judge.” Many job-titles in the Bible are just participles.</p>
       <p>Because it describes like an adjective, it AGREES like one — the same red gender/number endings — but it never marks person: “who is doing it” comes from the noun it leans on, not from the form itself.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>Forms</SectionHeading>
-    <MorphTable
+    <SectionHeading id="participles.h1" n={1}>Forms</SectionHeading>
+    <MorphTable id="participles.t1"
+      tCols={[0]}
       title="Qal active participle (“killing”)"
       headers={['', 'Masculine', 'Feminine']}
       hCols={[1, 2]}
@@ -33,7 +34,8 @@ export const HB_PARTICIPLES = (
       ]}
       note="Signature: holem after the first radical, tsere after the second. The fs usually takes the ־ֶת shape."
     />
-    <MorphTable
+    <MorphTable id="participles.t2"
+      tCols={[0]}
       title="Qal passive participle (“killed”)"
       headers={['', 'Masculine', 'Feminine']}
       hCols={[1, 2]}
@@ -44,8 +46,8 @@ export const HB_PARTICIPLES = (
       note="Signature: shureq between the second and third radicals. בָּרוּךְ “blessed” is the passive participle of ברך."
     />
 
-    <SectionHeading n={2}>The three uses</SectionHeading>
-    <MorphTable
+    <SectionHeading id="participles.h2" n={2}>The three uses</SectionHeading>
+    <MorphTable id="participles.t3"
       title="How participles work"
       headers={['Use', 'Example', '']}
       tCols={[0, 2]}
@@ -57,7 +59,7 @@ export const HB_PARTICIPLES = (
         ['substantive — “the one who…”', 'הַיֹּשֵׁב בַּשָּׁמַיִם', 'the One sitting in the heavens  (Ps 2:4)'],
       ]}
     />
-    <P>
+    <P id="participles.p2">
       The substantive use supplies Hebrew&rsquo;s agent nouns: <Hb>שֹׁפֵט</Hb> a judge
       (&ldquo;one judging&rdquo;), <Hb>רֹעֶה</Hb> a shepherd, <Hb>כֹּהֵן</Hb> a priest. Like
       any noun, a participle can stand in construct: <Hb>יֹשְׁבֵי הָאָרֶץ</Hb>, &ldquo;the
@@ -65,8 +67,8 @@ export const HB_PARTICIPLES = (
     </P>
     <HbEx he="שֹׁמֵר יִשְׂרָאֵל" en={<>“the Keeper of Israel” (Ps 121:4) — participle in construct; the psalm turns on the root שׁמר repeated as a participle.</>} />
 
-    <SectionHeading n={3}>Participle clauses</SectionHeading>
-    <P>
+    <SectionHeading id="participles.h3" n={3}>Participle clauses</SectionHeading>
+    <P id="participles.p3">
       Participle + subject (either order) makes a present-tense clause without any
       &ldquo;is&rdquo;: <Hb>הִנֵּה אָנֹכִי עֹשֶׂה</Hb>, &ldquo;behold, I am doing…&rdquo;
       With <Hb>הָיָה</Hb> it builds past continuous: <Hb>הָיָה רֹעֶה</Hb>, &ldquo;he was
@@ -74,7 +76,7 @@ export const HB_PARTICIPLES = (
       no one listening.&rdquo;
     </P>
 
-    <InfoBox title="Watch for">
+    <InfoBox id="participles.b2" title="Watch for">
       <p className="mb-1"><Hb>קֹטֵל</Hb> vs perfect <Hb>קָטַל</Hb>: holem in the first syllable = participle. The holem is often written plene: קוֹטֵל.</p>
       <p className="mb-1">In parsing, participles take gender / number / state — never person. Ticking “person” on a quiz excludes every participle.</p>
       <p>The far demonstrative and the article turn a participle into a relative clause on the cheap: <Hb>הָעֹשֶׂה</Hb> “the one who does / who did.”</p>
@@ -84,7 +86,7 @@ export const HB_PARTICIPLES = (
 
     <HbVocab id="participles" />
 
-    <Practice
+    <Practice id="participles.x1"
       level="both"
       title="Parse these"
       items={[

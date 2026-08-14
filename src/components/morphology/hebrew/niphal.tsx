@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_NIPHAL = (
   <>
-    <P>
+    <P id="niphal.p1">
       The <Term t="niphal">Niphal</Term> is <Term t="qal">Qal</Term>&rsquo;s counterpart:
       usually <Term t="passive"><strong>passive</strong></Term>{' '}
       (<Hb>נִכְתַּב</Hb> &ldquo;it was written&rdquo;), often <strong>middle or{' '}
@@ -19,13 +19,13 @@ export const HB_NIPHAL = (
       the first root letter everywhere else.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="niphal.b1" title="In plain English">
       <p className="mb-1"><strong>Active vs passive is an English idea too.</strong> “The boy broke the window” is active — the subject does the deed. “The window <em>was broken</em>” is passive — the subject receives it, and the doer can go unnamed. English builds its passive with a helping verb (“was broken”); Hebrew builds it by moving the same root into a different stem: <Hb>שָׁמַר</Hb> “he kept” → <Hb>נִשְׁמַר</Hb> “he was kept.” One added letter does the work of the whole English phrase.</p>
       <p><strong>Reflexive is the other face:</strong> sometimes the Niphal is “he kept <em>himself</em>” — subject and object are the same person. Context decides which face you are looking at.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>Perfect and imperfect</SectionHeading>
-    <MorphTable
+    <SectionHeading id="niphal.h1" n={1}>Perfect and imperfect</SectionHeading>
+    <MorphTable id="niphal.t1"
       title="Niphal perfect of קטל"
       headers={['', 'Form', 'Meaning']}
       hCols={[1]}
@@ -41,7 +41,7 @@ export const HB_NIPHAL = (
       ]}
       note="נִ + the familiar perfect endings. (The 2fs and 2fp rows follow the Qal pattern exactly.)"
     />
-    <MorphTable
+    <MorphTable id="niphal.t2"
       title="Niphal imperfect of קטל"
       headers={['', 'Form', 'Meaning']}
       hCols={[1]}
@@ -57,8 +57,8 @@ export const HB_NIPHAL = (
       note="The נ has assimilated: *yin-qatel → yiqqatel. That dagesh in the FIRST root letter is how you tell Niphal imperfect from Qal."
     />
 
-    <SectionHeading n={2}>The other forms</SectionHeading>
-    <MorphTable
+    <SectionHeading id="niphal.h2" n={2}>The other forms</SectionHeading>
+    <MorphTable id="niphal.t3"
       title="Niphal at a glance"
       headers={['Conjugation', 'Form']}
       hCols={[1]}
@@ -73,8 +73,8 @@ export const HB_NIPHAL = (
       note="Imperative and infinitive lead with הִ + dagesh — the assimilated נ again, behind a helping ה."
     />
 
-    <SectionHeading n={3}>What Niphal means</SectionHeading>
-    <MorphTable
+    <SectionHeading id="niphal.h3" n={3}>What Niphal means</SectionHeading>
+    <MorphTable id="niphal.t4"
       title="The range"
       headers={['Nuance', 'Example', '']}
       tCols={[0, 2]}
@@ -87,14 +87,14 @@ export const HB_NIPHAL = (
         ['tolerative', 'נִמְצָא', 'he let himself be found / he was found'],
       ]}
     />
-    <P>
+    <P id="niphal.p2">
       Some verbs live only in the Niphal, with active meaning — Hebrew&rsquo;s deponents, if
       you know Greek: <Hb>נִשְׁבַּע</Hb> swear, <Hb>נִלְחַם</Hb> fight. Parse them Niphal;
       translate them active.
     </P>
     <HbEx he="וְנִבְרְכוּ בְךָ כֹּל מִשְׁפְּחֹת הָאֲדָמָה" en={<>“and in you all the families of the earth shall be blessed” (Gen 12:3) — Niphal weqatal of ברך.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="niphal.b2" title="Watch for">
       <p className="mb-1">Niphal perfect 1cp <Hb>נִקְטַלְנוּ</Hb> vs Qal imperfect 1cp <Hb>נִקְטֹל</Hb> — both start with נ. The endings (and the theme vowel) separate them.</p>
       <p>Before a guttural the assimilated dagesh cannot stand and the vowel lengthens: <Hb>יֵעָשֶׂה</Hb> “it will be done.”</p>
     </InfoBox>
@@ -103,7 +103,7 @@ export const HB_NIPHAL = (
 
     <HbVocab id="niphal" />
 
-    <Practice
+    <Practice id="niphal.x1"
       level="both"
       title="Parse these"
       items={[

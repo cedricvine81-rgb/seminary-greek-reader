@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_PRONOUNS = (
   <>
-    <P>
+    <P id="pronouns.p1">
       A <Term t="pronoun">pronoun</Term> stands in for a noun: &ldquo;he,&rdquo;
       &ldquo;she,&rdquo; &ldquo;this,&rdquo; &ldquo;who.&rdquo; Hebrew&rsquo;s personal
       pronouns come in two forms: <em>independent</em> words (this section) used mostly as
@@ -17,18 +17,18 @@ export const HB_PRONOUNS = (
       &ldquo;my / your / his&rdquo; and for objects, which get their own chapter.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="pronouns.b1" title="In plain English">
       <p className="mb-1">A pronoun stands in for a name: <em>I, you, he, she, we, they</em>. Grammars sort them by <strong>person</strong> — first person is the speaker (I/we), second is the one spoken TO (you), third is the one spoken ABOUT (he/she/they) — and Hebrew adds gender to “you” and “they”: <Hb>אַתָּה</Hb> is “you” to a man, <Hb>אַתְּ</Hb> “you” to a woman.</p>
       <p>One habit to build now: Hebrew usually buries its pronouns inside verb endings, so when a sentence spells out a separate pronoun — <Hb>אֲנִי</Hb>, <Hb>הוּא</Hb> — it is leaning on it: “<em>I myself</em> …”, “<em>he</em> is the one who …”.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>Independent personal pronouns</SectionHeading>
-    <P>
+    <SectionHeading id="pronouns.h1" n={1}>Independent personal pronouns</SectionHeading>
+    <P id="pronouns.p2">
       These are <strong>subject</strong> pronouns. Since the verb already encodes its subject,
       an independent pronoun beside a verb adds emphasis; their everyday work is in verbless
       clauses — <Hb>אֲנִי יְהוָה</Hb>, &ldquo;I <em>am</em> the LORD.&rdquo;
     </P>
-    <MorphTable
+    <MorphTable id="pronouns.t1"
       title="Personal pronouns"
       headers={['', 'Singular', 'Plural']}
       hCols={[1, 2]}
@@ -42,8 +42,9 @@ export const HB_PRONOUNS = (
       note="אֲנִי and אָנֹכִי are interchangeable; the longer form is common in solemn speech. In the Pentateuch הִוא is often written for הִיא."
     />
 
-    <SectionHeading n={2}>Demonstratives</SectionHeading>
-    <MorphTable
+    <SectionHeading id="pronouns.h2" n={2}>Demonstratives</SectionHeading>
+    <MorphTable id="pronouns.t2"
+      tCols={[0]}
       title="“this / these” and “that / those”"
       headers={['', 'ms', 'fs', 'plural']}
       hCols={[1, 2, 3]}
@@ -53,15 +54,15 @@ export const HB_PRONOUNS = (
       ]}
       note="“That” is simply the third-person pronoun pressed into service."
     />
-    <P>
+    <P id="pronouns.p3">
       Demonstratives behave exactly like adjectives. Attributive — after the noun, with the
       article: <Hb>הָאִישׁ הַזֶּה</Hb> &ldquo;this man,&rdquo; <Hb>הָאִישׁ הַהוּא</Hb>{' '}
       &ldquo;that man.&rdquo; Predicate — first and bare: <Hb>זֶה הַדָּבָר</Hb> &ldquo;this is
       the word.&rdquo;
     </P>
 
-    <SectionHeading n={3}>The relative: אֲשֶׁר</SectionHeading>
-    <P>
+    <SectionHeading id="pronouns.h3" n={3}>The relative: אֲשֶׁר</SectionHeading>
+    <P id="pronouns.p4">
       One indeclinable word covers &ldquo;who, whom, which, that&rdquo;:{' '}
       <Hb>הָאִישׁ אֲשֶׁר שָׁמַר אֶת־הַתּוֹרָה</Hb>, &ldquo;the man who kept the law.&rdquo;
       Where English needs &ldquo;in which / whose,&rdquo; Hebrew resumes with a pronoun inside
@@ -70,8 +71,8 @@ export const HB_PRONOUNS = (
       <Hb>שֶׁ־</Hb>.
     </P>
 
-    <SectionHeading n={4}>Interrogatives</SectionHeading>
-    <MorphTable
+    <SectionHeading id="pronouns.h4" n={4}>Interrogatives</SectionHeading>
+    <MorphTable id="pronouns.t3"
       title="Question words"
       headers={['Hebrew', 'Meaning']}
       hCols={[0]}
@@ -86,7 +87,7 @@ export const HB_PRONOUNS = (
     />
     <HbEx he="מִי־כָמֹכָה בָּאֵלִם יְהוָה" en={<>“Who is like you among the gods, O LORD?” (Exod 15:11).</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="pronouns.b2" title="Watch for">
       <p className="mb-1"><Hb>הוּא</Hb> after a definite noun with its own article is “that” (<Hb>הַיּוֹם הַהוּא</Hb> “that day”); between two nouns it can be the copula: <Hb>יְהוָה הוּא הָאֱלֹהִים</Hb> “the LORD, he is God” (1 Kgs 18:39).</p>
       <p><Hb>זֶה</Hb> without the article before a noun is predicate: <Hb>זֶה הַיּוֹם</Hb> “this is the day” (Ps 118:24).</p>
     </InfoBox>
@@ -95,7 +96,7 @@ export const HB_PRONOUNS = (
 
     <HbVocab id="pronouns" />
 
-    <Practice
+    <Practice id="pronouns.x1"
       level="both"
       title="Try it"
       items={[

@@ -489,11 +489,15 @@ export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows
   )
 }
 
-export function InfoBox({ title, children }: { title?: React.ReactNode; children: React.ReactNode }) {
+export function InfoBox({ id, title, children }: { id?: string; title?: React.ReactNode; children: React.ReactNode }) {
+  const tm = useTm()
+  // `id` opts the box into translation, like P and MorphTable. The "In plain English" boxes are
+  // the most useful prose in the Hebrew chapters for a reader without a second language, so they
+  // must be translatable rather than stranded in English.
   return (
     <div className="mb-5 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-[15px] leading-relaxed text-gray-700">
-      {title && <p className="font-semibold text-gray-800 mb-1.5">{title}</p>}
-      {children}
+      {title && <p className="font-semibold text-gray-800 mb-1.5">{typeof title === 'string' && id ? tm(K.title(id), title) : title}</p>}
+      {id ? <Tr id={id} paragraphs>{children}</Tr> : children}
     </div>
   )
 }
@@ -636,6 +640,12 @@ function transliterateNode(node: React.ReactNode): string {
   return /[א-ת]/.test(text) ? transliterate(text) : ''
 }
 
+// Same role as Gk: the serializer writes it as {…}, so Hebrew inside a translated paragraph is
+// carried through the translation untouched and checked to come back intact. Without this, every
+// Hebrew-bearing paragraph — which is nearly all of them — was "not representable" and stayed
+// English no matter what the translator did.
+Hb.i18nRole = 'greek' as const
+
 /** An example line: Hebrew → English. */
 export function HbEx({ he, en }: { he: React.ReactNode; en: React.ReactNode }) {
   const xlit = useContext(XlitContext)
@@ -698,8 +708,10 @@ export function useTm(): (key: string, english: string) => string {
   return useMemo(() => (key: string, english: string) => content(cat, key, english), [cat])
 }
 
-export function Tr({ id, comps, children }: {
+export function Tr({ id, comps, paragraphs, children }: {
   id: string
+  /** Rebuild <p> elements from the ¶ markers — for blocks whose English is several paragraphs. */
+  paragraphs?: boolean
   /** Which components a translated {…} / [k:x] renders as. Defaults to this module's own —
    *  the Getting Started notes override it so their Greek keeps its own styling. */
   comps?: MarkupComponents
@@ -710,7 +722,27 @@ export function Tr({ id, comps, children }: {
   if (!entry) return <>{children}</>
   const english = serialize(children)
   if (english === null || entry.fp !== fingerprint(english)) return <>{children}</>
-  return <>{parse(entry.text, comps ?? { Gk, Term })}</>
+  // {…} is "original language". Which one is decided by the characters inside it, so one
+  // marker serves both grammars and a chapter needs no extra wiring.
+  const Original = (p: { children: React.ReactNode }) =>
+    typeof p.children === 'string' && /[\u0590-\u05FF]/.test(p.children)
+      ? <Hb>{p.children}</Hb>
+      : <Gk>{p.children}</Gk>
+  const nodes = parse(entry.text, comps ?? { Gk: Original, Term })
+  if (!paragraphs) return <>{nodes}</>
+  // Split the parsed nodes on the ¶ marker back into <p> elements. Only blocks that are
+  // paragraph-shaped ask for this — <P> itself is already a <p>, and nesting is invalid.
+  const groups: React.ReactNode[][] = [[]]
+  for (const n of nodes) {
+    if (typeof n === 'string' && n.includes('¶')) {
+      const bits = n.split('¶')
+      bits.forEach((b, i) => {
+        if (b) groups[groups.length - 1].push(b)
+        if (i < bits.length - 1) groups.push([])
+      })
+    } else groups[groups.length - 1].push(n)
+  }
+  return <>{groups.filter(g => g.length).map((g, i) => <p key={i} className="mb-1 last:mb-0">{g}</p>)}</>
 }
 
 /* ─── Textbook components ───────────────────── */

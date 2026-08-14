@@ -11,15 +11,16 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term } from
 
 export const HB_VOWELS = (
   <>
-    <P>
+    <P id="vowels.p1">
       The biblical text was written in consonants; the vowel <Term t="pointing">points</Term>{' '}
       were added by the Masoretes (ca. AD 600–900) to preserve the traditional pronunciation. Almost every sign
       sits <strong>under</strong> the consonant it follows: <Hb>דָּ</Hb> is read <em>da</em> —
       consonant first, then the vowel beneath it.
     </P>
 
-    <SectionHeading n={1}>The vowel signs</SectionHeading>
-    <MorphTable
+    <SectionHeading id="vowels.h1" n={1}>The vowel signs</SectionHeading>
+    <MorphTable id="vowels.t1"
+      tCols={[2]}
       title="Vowels, by class"
       headers={['Sign', 'Name', 'Sound', 'Class']}
       hCols={[0]}
@@ -41,14 +42,14 @@ export const HB_VOWELS = (
       note="Where two rows sound alike, the difference is spelling, not pronunciation: adding a vowel letter (ו or י) writes the long vowel “fully”. Holem and holem-waw are one sound spelled two ways, as are hireq and hireq-yod. Qamets and qamets-hatuf are the reverse case — one sign, two sounds; §6 tells you which is which."
     />
 
-    <InfoBox title="Why some vowels look duplicated">
+    <InfoBox id="vowels.b1" title="Why some vowels look duplicated">
       <p className="mb-1">Hebrew has five vowel qualities — a, e, i, o, u — and each comes short or long, which is why the table has eleven rows for five sounds.</p>
       <p className="mb-1"><strong>Length is about timing, not quality.</strong> To an English ear the a of patach and the a of qamets are the same sound; what differs is how the syllable counts when the grammar divides words and places the accent. That is why length matters so much later (and so little when reading aloud).</p>
       <p>Three pairs sound identical because they are the same vowel written two ways — with or without a vowel letter: holem / holem-waw, hireq / hireq-yod, and (nearly) qibbuts / shureq. The spelled-out form is the long one.</p>
     </InfoBox>
 
-    <SectionHeading n={2}>Vowel letters (matres lectionis)</SectionHeading>
-    <P>
+    <SectionHeading id="vowels.h2" n={2}>Vowel letters (matres lectionis)</SectionHeading>
+    <P id="vowels.p2">
       Before the points existed, scribes used the consonants <Hb>י</Hb>, <Hb>ו</Hb> and{' '}
       <Hb>ה</Hb> to hint at vowels — &ldquo;mothers of reading.&rdquo; The pointed text keeps
       them: <Hb>ִי</Hb>, <Hb>ֵי</Hb>, <Hb>וֹ</Hb>, <Hb>וּ</Hb>, and final <Hb>ָה</Hb> as in{' '}
@@ -56,14 +57,14 @@ export const HB_VOWELS = (
       consonant; when it carries none, it is serving as a vowel letter.
     </P>
 
-    <SectionHeading n={3}>Shewa</SectionHeading>
-    <P>
+    <SectionHeading id="vowels.h3" n={3}>Shewa</SectionHeading>
+    <P id="vowels.p3">
       The two dots <Hb>בְ</Hb> are the <strong>shewa</strong>. It is either <em>vocal</em> — a
       grunt of a half-vowel, like the first e of &ldquo;because&rdquo; (<Hb>דְּבָרִים</Hb>{' '}
       <em>devarim</em>) — or <em>silent</em>, simply closing a syllable (<Hb>מִדְבָּר</Hb>{' '}
       <em>mid-bar</em>). The working rules:
     </P>
-    <MorphTable
+    <MorphTable id="vowels.t2"
       title="Vocal or silent?"
       headers={['Position', 'Value', 'Example']}
       tCols={[0, 1]}
@@ -76,15 +77,15 @@ export const HB_VOWELS = (
         ['Under a doubled letter (dagesh forte)', 'vocal', 'הַמְּלָכִים'],
       ]}
     />
-    <P>
+    <P id="vowels.p4">
       Gutturals cannot manage a plain vocal shewa, so they take a <strong>composite
       shewa</strong> — shewa fused with a short vowel: <Hb>חֲ</Hb> (hateph-patach),{' '}
       <Hb>אֱ</Hb> (hateph-seghol), <Hb>חֳ</Hb> (hateph-qamets). Hence <Hb>אֲשֶׁר</Hb>,{' '}
       <Hb>אֱלֹהִים</Hb>, <Hb>חֳדָשִׁים</Hb>.
     </P>
 
-    <SectionHeading n={4}>Dagesh: one dot, two jobs</SectionHeading>
-    <MorphTable
+    <SectionHeading id="vowels.h4" n={4}>Dagesh: one dot, two jobs</SectionHeading>
+    <MorphTable id="vowels.t3"
       title="Dagesh lene vs dagesh forte"
       headers={['', 'Where', 'What it does', 'Example']}
       tCols={[1, 2]}
@@ -95,15 +96,15 @@ export const HB_VOWELS = (
       ]}
       note="Tell them apart by what precedes: after a vowel it must be forte; where no vowel precedes, in a begadkephat letter, it is lene."
     />
-    <P>
+    <P id="vowels.p5">
       Doubling matters grammatically: the article doubles the next letter, the Piel stem
       doubles the middle root letter, and assimilated <Hb>נ</Hb> hides as a dagesh forte (a dot that doubles the letter). When
       you see a dagesh after a vowel, read the letter twice: <Hb>הַשָּׁמַיִם</Hb> ={' '}
       <em>hash-shamayim</em>.
     </P>
 
-    <SectionHeading n={5}>The small marks</SectionHeading>
-    <MorphTable
+    <SectionHeading id="vowels.h5" n={5}>The small marks</SectionHeading>
+    <MorphTable id="vowels.t4"
       title="Other pointing"
       headers={['Mark', 'Name', 'What it means']}
       tCols={[1, 2]}
@@ -117,8 +118,8 @@ export const HB_VOWELS = (
       ]}
     />
 
-    <SectionHeading n={6}>Syllables and accent</SectionHeading>
-    <P>
+    <SectionHeading id="vowels.h6" n={6}>Syllables and accent</SectionHeading>
+    <P id="vowels.p6">
       Every syllable begins with a consonant and is <em>open</em> (ends in a vowel:{' '}
       <Hb>דָּ</Hb>) or <em>closed</em> (ends in a consonant: <Hb>בָר</Hb>). Stress usually
       falls on the <strong>last</strong> syllable (<Hb>דָּבָר</Hb> da-<em>var</em>), sometimes
@@ -128,13 +129,13 @@ export const HB_VOWELS = (
     </P>
     <HbEx he="בְּרֵאשִׁית בָּרָא אֱלֹהִים" en={<>be-re-SHIT ba-RA e-lo-HIM (Gen 1:1) — vocal shewa, qamets, composite shewa, all in the Bible’s first three words.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="vowels.b2" title="Watch for">
       <p className="mb-1">A shewa under the <em>last</em> letter of a word is always silent: <Hb>מֶלֶךְ</Hb>.</p>
       <p className="mb-1">Furtive patach: final <Hb>ח</Hb> or <Hb>ע</Hb> after a long vowel slips an a-sound in <em>before</em> itself — <Hb>רוּחַ</Hb> is <em>ru-aḥ</em>, not <em>ru-ḥa</em>.</p>
       <p>Alef at the end of a syllable is silent and lengthens the vowel: <Hb>רֹאשׁ</Hb> = <em>rosh</em>.</p>
     </InfoBox>
 
-    <Practice
+    <Practice id="vowels.x1"
       level="both"
       title="Try it"
       items={[

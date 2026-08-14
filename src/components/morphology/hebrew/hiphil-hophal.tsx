@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_HIPHIL_HOPHAL = (
   <>
-    <P>
+    <P id="hiphil-hophal.p1">
       The <Term t="hiphil">Hiphil</Term> is the{' '}
       <Term t="causative"><strong>causative</strong></Term> — it makes someone else do the
       action, as English &ldquo;feed&rdquo; is to &ldquo;eat&rdquo;: Qal <Hb>מָלַךְ</Hb>{' '}
@@ -19,13 +19,13 @@ export const HB_HIPHIL_HOPHAL = (
       theme vowel almost everywhere.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="hiphil-hophal.b1" title="In plain English">
       <p className="mb-1"><strong>Causative = making it happen rather than doing it.</strong> English keeps a few fossil pairs that work exactly like Qal → Hiphil: the tree <em>falls</em> / the logger <em>fells</em> it; you <em>sit</em> / you <em>set</em> the cup down; you <em>lie</em> down / you <em>lay</em> the book down; the sun <em>rises</em> / you <em>raise</em> the flag. Hebrew does that to nearly ANY verb: <Hb>בָּא</Hb> “he came” → <Hb>הֵבִיא</Hb> “he brought” (caused to come); <Hb>מָלַךְ</Hb> “he reigned” → <Hb>הִמְלִיךְ</Hb> “he made (someone) king.”</p>
       <p>Where English has no pair, it says “make / have / let someone do it” — which is the wooden gloss the table uses. Real translations pick a natural verb: “bring,” “raise,” “crown.”</p>
     </InfoBox>
 
-    <SectionHeading n={1}>Hiphil forms</SectionHeading>
-    <MorphTable
+    <SectionHeading id="hiphil-hophal.h1" n={1}>Hiphil forms</SectionHeading>
+    <MorphTable id="hiphil-hophal.t1"
       title="Hiphil of קטל"
       headers={['Conjugation', 'Form', 'Meaning']}
       hCols={[1]}
@@ -46,8 +46,8 @@ export const HB_HIPHIL_HOPHAL = (
       note="Note the vowel shifts: perfect הִ but imperfect/participle patach (יַ, מַ); consonant-endings in the perfect drop the yod (הִקְטַלְתָּ); the jussive shortens hireq-yod to tsere — and wayyiqtol follows the jussive: וַיַּקְטֵל."
     />
 
-    <SectionHeading n={2}>Hophal forms</SectionHeading>
-    <MorphTable
+    <SectionHeading id="hiphil-hophal.h2" n={2}>Hophal forms</SectionHeading>
+    <MorphTable id="hiphil-hophal.t2"
       title="Hophal of קטל"
       headers={['Conjugation', 'Form', 'Meaning']}
       hCols={[1]}
@@ -61,8 +61,8 @@ export const HB_HIPHIL_HOPHAL = (
       note="The qamets under the prefix is qamets-hatuf: hoq-tal, yoq-tal. Some roots show qibbuts instead: הֻגַּד “it was told.”"
     />
 
-    <SectionHeading n={3}>What Hiphil means</SectionHeading>
-    <MorphTable
+    <SectionHeading id="hiphil-hophal.h3" n={3}>What Hiphil means</SectionHeading>
+    <MorphTable id="hiphil-hophal.t3"
       title="Qal → Hiphil pairs"
       headers={['Qal', '', 'Hiphil', '']}
       hCols={[0, 2]}
@@ -77,7 +77,7 @@ export const HB_HIPHIL_HOPHAL = (
       ]}
       note="Weak roots bend the prefix vowel (הֵבִיא, הוֹצִיא) — the ה + causative sense still gives the stem away."
     />
-    <P>
+    <P id="hiphil-hophal.p2">
       Everyday Hiphils whose Qal you will rarely meet: <Hb>הִגִּיד</Hb> tell (root{' '}
       <Hb>נגד</Hb>), <Hb>הִצִּיל</Hb> deliver (<Hb>נצל</Hb>), <Hb>הִשְׁלִיךְ</Hb> throw
       (<Hb>שׁלך</Hb>), <Hb>הֶאֱמִין</Hb> believe (<Hb>אמן</Hb>), <Hb>הוֹשִׁיעַ</Hb> save
@@ -85,7 +85,7 @@ export const HB_HIPHIL_HOPHAL = (
     </P>
     <HbEx he="וְהֶאֱמִן בַּיהוָה" en={<>“and he believed in the LORD” (Gen 15:6) — Hiphil of אמן: to take God as reliable.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="hiphil-hophal.b2" title="Watch for">
       <p className="mb-1">Hiphil perfect <Hb>הִקְטִיל</Hb> vs Niphal imperative/infinitive <Hb>הִקָּטֵל</Hb>: both begin הִ — the dagesh in the first radical and the tsere mark the Niphal.</p>
       <p className="mb-1">In the imperfect there is no ה at all (it has elided into the prefix): patach under the prefix + hireq-yod = Hiphil.</p>
       <p>Participle מַ + hireq-yod (מַקְטִיל) vs Piel’s מְ + dagesh (מְקַטֵּל).</p>
@@ -95,7 +95,7 @@ export const HB_HIPHIL_HOPHAL = (
 
     <HbVocab id="hiphil-hophal" />
 
-    <Practice
+    <Practice id="hiphil-hophal.x1"
       level="both"
       title="Parse these"
       items={[

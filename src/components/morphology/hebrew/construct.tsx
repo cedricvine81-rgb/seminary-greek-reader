@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_CONSTRUCT = (
   <>
-    <P>
+    <P id="construct.p1">
       Hebrew has no word for &ldquo;of.&rdquo; To say &ldquo;the word of the king&rdquo; it
       simply sets two nouns side by side — <Hb>דְּבַר הַמֶּלֶךְ</Hb> — with the first noun in
       a compressed form called the <Term t="construct state"><strong>construct state</strong></Term>,
@@ -18,13 +18,13 @@ export const HB_CONSTRUCT = (
       <Term t="absolute"><strong>absolute</strong></Term> state.
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="construct.b1" title="In plain English">
       <p className="mb-1">English owns two ways to say possession: <em>the king’s horse</em> and <em>the horse of the king</em>. Hebrew has only the second — minus the word “of.” The two nouns simply stand together, and the first one compresses (loses its stress, often shortens its vowels) because it is hurrying on to the noun that completes it: <Hb>סוּס הַמֶּלֶךְ</Hb> “the horse of-the-king.”</p>
       <p>Chains work like English possessive chains — “my brother’s wife’s mother” — except read forwards: <Hb>דְּבַר עֶבֶד הַמֶּלֶךְ</Hb> “the word of the servant of the king.” Every link but the last is in construct.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>Construct forms</SectionHeading>
-    <MorphTable
+    <SectionHeading id="construct.h1" n={1}>Construct forms</SectionHeading>
+    <MorphTable id="construct.t1"
       title="Absolute → construct"
       headers={['Absolute', 'Construct', '']}
       hCols={[0, 1]}
@@ -44,13 +44,13 @@ export const HB_CONSTRUCT = (
       note="The signatures: mp ־ִים → ־ֵי; fs ־ָה → ־ַת; and internal vowels shorten, because the construct gives up its own stress."
     />
 
-    <SectionHeading n={2}>The definiteness rule</SectionHeading>
-    <P>
+    <SectionHeading id="construct.h2" n={2}>The definiteness rule</SectionHeading>
+    <P id="construct.p2">
       A construct noun <strong>never takes the article</strong>. The whole chain is{' '}
       <Term t="definite">definite</Term> if its <em>last</em> noun is definite — by article,
       by suffix, or by being a name:
     </P>
-    <MorphTable
+    <MorphTable id="construct.t2"
       title="Definiteness travels up the chain"
       headers={['Hebrew', 'Meaning']}
       hCols={[0]}
@@ -64,13 +64,13 @@ export const HB_CONSTRUCT = (
         ['אֱלֹהֵי יִשְׂרָאֵל', 'the God of Israel'],
       ]}
     />
-    <P>
+    <P id="construct.p3">
       That is why &ldquo;a word of the king&rdquo; cannot be said with a construct chain at
       all — Hebrew must paraphrase with <Hb>לְ</Hb>: <Hb>דָּבָר לַמֶּלֶךְ</Hb>.
     </P>
 
-    <SectionHeading n={3}>Chain rules</SectionHeading>
-    <P>
+    <SectionHeading id="construct.h3" n={3}>Chain rules</SectionHeading>
+    <P id="construct.p4">
       Nothing may interrupt a chain — not even an adjective. Modifiers wait until the chain
       is finished, then agree with whichever noun they describe:{' '}
       <Hb>דְּבַר הַמֶּלֶךְ הַגָּדוֹל</Hb> — &ldquo;the word of the great king&rdquo; (or
@@ -80,7 +80,7 @@ export const HB_CONSTRUCT = (
     </P>
     <HbEx he="בְּיוֹם עֲשׂוֹת יְהוָה אֱלֹהִים אֶרֶץ וְשָׁמָיִם" en={<>“in the day the LORD God made earth and heavens” (Gen 2:4) — even an infinitive can stand in construct: “in the day of the making of…”.</>} />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="construct.b2" title="Watch for">
       <p className="mb-1">Construct plural <Hb>־ֵי</Hb> looks like the 1cs suffix <Hb>־ַי</Hb> (“my”) at a glance. The construct is followed by another noun; the suffix ends the phrase.</p>
       <p className="mb-1"><Hb>בֶּן־</Hb> “son of” builds ages and classes: <Hb>בֶּן־שָׁנָה</Hb> “a year old.”</p>
       <p>Translate chains back to front when English needs it, but <em>parse</em> them front to back.</p>
@@ -90,7 +90,7 @@ export const HB_CONSTRUCT = (
 
     <HbVocab id="construct" />
 
-    <Practice
+    <Practice id="construct.x1"
       level="both"
       title="Try it"
       items={[

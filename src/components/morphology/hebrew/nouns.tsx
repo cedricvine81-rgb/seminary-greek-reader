@@ -9,7 +9,7 @@ import { MorphTable, InfoBox, P, SectionHeading, Practice, Hb, HbEx, Term, HbExa
 
 export const HB_NOUNS = (
   <>
-    <P>
+    <P id="nouns.p1">
       Every Hebrew <Term t="noun">noun</Term> has a <Term t="gender">gender</Term> — masculine
       or feminine, with no neuter — even for things: &ldquo;land&rdquo; is feminine,
       &ldquo;word&rdquo; is masculine, and nothing about the meaning tells you which.{' '}
@@ -17,13 +17,14 @@ export const HB_NOUNS = (
       paired things like eyes, hands, and ears) <strong>dual</strong>. The endings:
     </P>
 
-    <InfoBox title="In plain English">
+    <InfoBox id="nouns.b1" title="In plain English">
       <p className="mb-1"><strong>Grammatical gender is a filing system, not biology.</strong> English nouns have no gender — “table” is just “it.” Hebrew (like Spanish or French) files every noun as masculine or feminine, and the label often has nothing to do with sex: <Hb>אֶרֶץ</Hb> “land” is feminine, <Hb>לַיְלָה</Hb> “night” is masculine despite its feminine-looking ending. The label matters because OTHER words must match it — adjectives and verbs change their form to agree with the noun's gender.</p>
       <p><strong>Number:</strong> English marks plural with -s (dog → dogs); Hebrew marks it with the red endings in the table — and keeps a special <em>dual</em> ending for natural pairs (hands, eyes, ears), something English lost long ago.</p>
     </InfoBox>
 
-    <SectionHeading n={1}>The endings</SectionHeading>
-    <MorphTable
+    <SectionHeading id="nouns.h1" n={1}>The endings</SectionHeading>
+    <MorphTable id="nouns.t1"
+      tCols={[0]}
       title="Noun endings"
       headers={['', 'Singular', 'Plural', 'Dual']}
       hCols={[1, 2, 3]}
@@ -33,15 +34,15 @@ export const HB_NOUNS = (
       ]}
       note="Red = the ending that marks gender and number — the part to train your eye on. The feminine singular also appears as ־ֶת (דַּעַת knowledge) and ־ִית / ־וּת. The dual ־ַיִם serves both genders."
     />
-    <P>
+    <P id="nouns.p2">
       The dual survives for things that come in pairs and a few time words:{' '}
       <Hb>יָדַיִם</Hb> hands, <Hb>עֵינַיִם</Hb> eyes, <Hb>רַגְלַיִם</Hb> feet,{' '}
       <Hb>יוֹמַיִם</Hb> two days — and, frozen in form, <Hb>שָׁמַיִם</Hb> heavens and{' '}
       <Hb>מִצְרַיִם</Hb> Egypt.
     </P>
 
-    <SectionHeading n={2}>Ending ≠ gender</SectionHeading>
-    <P>
+    <SectionHeading id="nouns.h2" n={2}>Ending ≠ gender</SectionHeading>
+    <P id="nouns.p3">
       The endings are a guide, not a guarantee. <Hb>אָבוֹת</Hb> &ldquo;fathers&rdquo; is
       masculine despite <Hb>־וֹת</Hb>; <Hb>נָשִׁים</Hb> &ldquo;women&rdquo; and{' '}
       <Hb>עָרִים</Hb> &ldquo;cities&rdquo; are feminine despite <Hb>־ִים</Hb>. Body parts that
@@ -49,15 +50,15 @@ export const HB_NOUNS = (
       adjectives and verbs — follows the noun&rsquo;s real gender, not its ending.
     </P>
 
-    <SectionHeading n={3}>Segholates</SectionHeading>
-    <P>
+    <SectionHeading id="nouns.h3" n={3}>Segholates</SectionHeading>
+    <P id="nouns.p4">
       A large family of two-syllable nouns is accented on the <em>first</em> syllable and
       carries seghol(s): <Hb>מֶלֶךְ</Hb> king, <Hb>סֵפֶר</Hb> book, <Hb>קֹדֶשׁ</Hb> holiness,{' '}
       <Hb>נֶפֶשׁ</Hb> soul, <Hb>אֶרֶץ</Hb> land. They were originally one-syllable words
       (*malk), and the old vowel resurfaces whenever a suffix is added:{' '}
       <Hb>מַלְכִּי</Hb> &ldquo;my king.&rdquo; Their plural swaps to a shared pattern:
     </P>
-    <MorphTable
+    <MorphTable id="nouns.t2"
       title="Segholate plurals"
       headers={['Singular', 'Plural', '']}
       hCols={[0, 1]}
@@ -71,8 +72,8 @@ export const HB_NOUNS = (
       ]}
     />
 
-    <SectionHeading n={4}>Why the vowels move</SectionHeading>
-    <P>
+    <SectionHeading id="nouns.h4" n={4}>Why the vowels move</SectionHeading>
+    <P id="nouns.p5">
       Adding an ending pulls the stress toward the end of the word, and unstressed long
       vowels two syllables before the stress reduce to shewa: <Hb>דָּבָר</Hb> →{' '}
       <Hb>דְּבָרִים</Hb>, <Hb>נָבִיא</Hb> → <Hb>נְבִיאִים</Hb>, <Hb>שָׁנָה</Hb> →{' '}
@@ -80,8 +81,8 @@ export const HB_NOUNS = (
       and it returns in the construct state and with every suffix.
     </P>
 
-    <SectionHeading n={5}>Irregular plurals</SectionHeading>
-    <MorphTable
+    <SectionHeading id="nouns.h5" n={5}>Irregular plurals</SectionHeading>
+    <MorphTable id="nouns.t3"
       title="Learn these as pairs"
       headers={['Singular', 'Plural', '']}
       hCols={[0, 1]}
@@ -102,13 +103,13 @@ export const HB_NOUNS = (
       ]}
     />
 
-    <InfoBox title="Watch for">
+    <InfoBox id="nouns.b2" title="Watch for">
       <p className="mb-1"><Hb>אֱלֹהִים</Hb> is plural in form but takes singular verbs and adjectives when it means the God of Israel: <Hb>בָּרָא אֱלֹהִים</Hb> — “God created,” singular verb.</p>
       <p><Hb>פָּנִים</Hb> “face” and <Hb>מַיִם</Hb> “water” exist only in the plural/dual form; translate as singular.</p>
     </InfoBox>
 
-    <SectionHeading n={6}>The directional ending ־ָה (he-directive)</SectionHeading>
-    <P>
+    <SectionHeading id="nouns.h6" n={6}>The directional ending ־ָה (he-directive)</SectionHeading>
+    <P id="nouns.p6">
       An unaccented <Hb>ָה-</Hb> on the end of a place-word means <em>toward</em> it — motion,
       with no preposition needed: <Hb>הַבַּיְתָה</Hb> &ldquo;to the house,&rdquo;{' '}
       <Hb>מִצְרַיְמָה</Hb> &ldquo;to Egypt,&rdquo; <Hb>הַשָּׁמַיְמָה</Hb> &ldquo;heavenward,&rdquo;{' '}
@@ -121,7 +122,7 @@ export const HB_NOUNS = (
 
     <HbVocab id="nouns" />
 
-    <Practice
+    <Practice id="nouns.x1"
       level="both"
       title="Try it"
       items={[
