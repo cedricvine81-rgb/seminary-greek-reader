@@ -641,7 +641,21 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
   if (loadState === 'idle') return <p className="text-gray-400 text-sm mt-6 text-center">{t('all.enterPassage')}</p>
   // An unparseable reference must not fall through to the main render: loadState still says
   // 'ok' from the previous passage, and everything below dereferences `parsed!`.
-  if (!parsed || loadState === 'missing') return <p className="text-gray-500 text-sm mt-6 text-center">Allusion search works from a <b>{t('var.newTestament')}</b> or Hebrew Bible passage. Try e.g. <span className="font-medium">Mark 1:1-8</span> or <span className="font-medium">Jonah 4:1-2</span>.</p>
+  if (!parsed || loadState === 'missing') return (
+    <p className="text-gray-500 text-sm mt-6 text-center">
+      {(() => {
+        // One sentence, three holes — the examples and the testament name sit in
+        // different places in different languages.
+        const parts = t('all.worksFromFull', { nt: '\u0000', eg1: '\u0001', eg2: '\u0002' })
+          .split(/([\u0000\u0001\u0002])/)
+        return parts.map((x, i) =>
+          x === '\u0000' ? <b key={i}>{t('var.newTestament')}</b>
+          : x === '\u0001' ? <span key={i} className="font-medium">Mark 1:1-8</span>
+          : x === '\u0002' ? <span key={i} className="font-medium">Jonah 4:1-2</span>
+          : <span key={i}>{x}</span>)
+      })()}
+    </p>
+  )
   if (loadState === 'loading') return <p className="text-gray-400 text-sm mt-6 text-center">{t('reader.loading')}</p>
 
   return (
@@ -743,7 +757,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
                     rare ? 'border-blue-300 bg-blue-50 text-blue-900' : 'border-blue-200 bg-blue-50/50 text-blue-800'}`}>
                     <span className="font-reading">“{g.words.map(w => w.tok.surface).join(' ')}”</span>
                     <span className={`text-[10px] ${rare ? 'text-blue-700 font-semibold' : 'text-blue-400'}`}>
-                      {n == null ? 'phrase' : n === 0 ? 'sequence not in LXX' : `sequence ×${n}`}
+                      {n == null ? t('all.phrase') : n === 0 ? t('all.seqNotInLXX') : t('all.seqTimes', { n })}
                     </span>
                     <button type="button" title={t('all.searchSeparate')}
                       onClick={() => setSplitGroups(prev => new Set(prev).add(g.key))}
@@ -761,7 +775,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
                     rare ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 bg-gray-50 text-gray-700'}`}>
                     <span className="font-reading">{tok.surface}</span>
                     {n != null && <span className={`text-[10px] ${rare ? 'text-brand-600 font-semibold' : 'text-gray-400'}`}>
-                      {n === 0 ? 'not in LXX' : `×${n}`}
+                      {n === 0 ? t('all.notInLXX') : `×${n}`}
                     </span>}
                     {g.words.length >= 2 && (
                       <button type="button" title={t('all.rejoinPhrase')}
@@ -775,9 +789,9 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
               })
             })}
             <button type="button" onClick={suggest}
-              title="Select every word distinctive enough in the LXX to carry weight — or the rarest few, if none are"
+              title={t('all.suggestWordsTitle')}
               className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-surface px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:border-brand-300 hover:text-brand-700">
-              <Sparkles size={13} /> Suggest the distinctive words
+              <Sparkles size={13} /> {t('all.suggestWords')}
             </button>
             <button type="button" disabled={terms.length === 0 || searching} onClick={runSearch}
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
@@ -796,18 +810,18 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
             <div className="mt-4">
               <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                  {hits.length === 0 ? 'No LXX passage shares two of those words closely.' :
-                    <>Candidates, strongest first — searched for <span className="font-reading normal-case">{searchedFor.join(', ')}</span></>}
+                  {hits.length === 0 ? t('all.noCandidates') :
+                    <>{t('all.candidates')} <span className="font-reading normal-case">{searchedFor.join(', ')}</span></>}
                 </p>
                 {hits.length > 0 && (
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                     <span className="flex items-center gap-3 text-[11px] text-gray-400">
-                      <span><span className="font-semibold text-red-600">red</span> = key word</span>
-                      <span><span className="font-semibold text-blue-700">blue</span> = phrase</span>
+                      <span><span className="font-semibold text-red-600">{t('all.legendRed')}</span> {t('all.legendKeyWord')}</span>
+                      <span><span className="font-semibold text-blue-700">{t('all.legendBlue')}</span> {t('all.legendPhrase')}</span>
                       <span>{t('all.hoverColoured')}</span>
                     </span>
                     <label className="flex items-center gap-1.5 text-xs text-gray-500">
-                      Translation
+                      {t('all.translationLabel')}
                       <select value={transLang} onChange={e => setTransLang(e.target.value)}
                         className="rounded-lg border border-gray-300 bg-input px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
                         {RESULT_TRANSLATIONS.map(t => <option key={t.code} value={t.code}>{t.label}</option>)}
@@ -818,9 +832,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
               </div>
               {transLang !== 'brenton' && hits.length > 0 && (
                 <p className="mb-2 text-[11px] text-gray-400">
-                  Only Brenton translates the Septuagint itself; the others translate the Hebrew, whose chapter/verse
-                  numbering can differ from the LXX (notably in Psalms and Jeremiah), and which lacks the
-                  deutero-canonical books.
+                  {t('all.brentonNote')}
                 </p>
               )}
               <div className="space-y-2">
@@ -839,7 +851,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
                           {h.run && (
                             <span className={`rounded-md px-1.5 py-0.5 text-[11px] font-medium ${
                               isNearVerbatim ? 'bg-amber-100 text-amber-800' : 'bg-blue-50 text-blue-700'}`}>
-                              {isNearVerbatim ? `near-verbatim — ${h.run.length} words in order` : `${h.run.length} words in the same order`}
+                              {isNearVerbatim ? t('all.nearVerbatim', { n: h.run.length }) : t('all.wordsInOrder', { n: h.run.length })}
                             </span>
                           )}
                         </div>
@@ -879,11 +891,11 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
                   {!showApparatus ? (
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm text-amber-900">
-                        Formed your view? Compare your candidates with the scholarly cross-reference apparatus.
+                        {t('all.formedView')}
                       </p>
                       <button type="button" onClick={revealApparatus}
                         className="rounded-lg border border-amber-300 bg-surface px-3 py-1.5 text-xs font-medium text-amber-800 hover:bg-amber-100">
-                        Compare with the apparatus
+                        {t('all.compareApparatus')}
                       </button>
                     </div>
                   ) : (
@@ -957,24 +969,26 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
             </ul>
             <details className="mt-3">
               <summary className="cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-xs font-medium text-brand-600 hover:text-brand-700">
-                Allison&rsquo;s guidelines for weighing a case
+                {t('all.allisonGuidelines')}
               </summary>
               <ul className="mt-2 space-y-1.5 text-xs text-gray-600 list-disc pl-4">
-                <li>The subtext must be <b>earlier</b> than the alluding text.</li>
-                <li>The case strengthens if the proposed source book demonstrably <b>mattered to the author</b> elsewhere.</li>
-                <li>Without explicit citation or clear borrowing, a typology needs <b>several</b> of devices 3–6 together.</li>
-                <li>The type should be <b>prominent</b> — a famous figure or scene, not an obscurity.</li>
-                <li>Confidence grows when other ancient writers made the <b>same typological use</b> of the material.</li>
-                <li><b>Unusual imagery</b> shared between the texts counts for far more than commonplaces.</li>
+                {/* One key per guideline with a {b} hole for its bolded phrase. Split into
+                    fragments, a translator cannot move the emphasis to where the target
+                    language actually wants it. */}
+                {(['g1', 'g2', 'g3', 'g4', 'g5', 'g6'] as const).map(g => {
+                  const [before, after] = t(`all.${g}`, { b: '\u0000' }).split('\u0000')
+                  return <li key={g}>{before}<b>{t(`all.${g}b`)}</b>{after}</li>
+                })}
               </ul>
               <p className="mt-2 text-[11px] leading-relaxed text-gray-400">
-                Dale C. Allison, Jr., <em>The New Moses: A Matthean Typology</em> (Minneapolis: Fortress
-                Press, 1993). The six devices: pp. 19–23; the guidelines above: pp. 21–22.
+                {(() => {
+                  const [before, after] = t('all.allisonCite', { work: '\u0000' }).split('\u0000')
+                  return <>{before}<em>{t('all.allisonWork')}</em>{after}</>
+                })()}
               </p>
             </details>
             <p className="mt-3 text-[11px] leading-relaxed text-gray-400">
-              Devices 1–2 are readily perceived; 3–6 are indistinct and can occur by chance. A high score here is a
-              candidate, not a conclusion.
+              {t('all.devicesNote')}
             </p>
           </div>
         </aside>
