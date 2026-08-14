@@ -256,7 +256,7 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
     // pr-7 below sm: the rail hangs in the right margin, and on a phone there is no right
     // margin — the prose runs to the edge, so without this the icons sit on top of the words.
     // From sm up the page's own max-width leaves whitespace there already.
-    <div ref={containerRef} className="relative pr-7 sm:pr-0">
+    <div ref={containerRef} className="relative pr-8 sm:pr-0">
       {/* The feature has to announce itself. Drag-to-annotate is invisible until you already
           know it is there, and the first report from a real reader was, exactly, "nothing is
           visible" — the gesture worked and nothing on the page said so. One muted line,
@@ -330,16 +330,18 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
                 : m.count > 0 ? t('ann.noteCount', { count: m.count })
                 : t('ann.addNoteHere')}
               aria-label={m.count > 0 ? t('ann.noteCount', { count: m.count }) : t('ann.addNoteHere')}
-              className={`pointer-events-auto absolute right-0 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold transition-all ${
+              // An empty rung was faint on purpose back when there was one per PARAGRAPH and
+              // ninety of them would have read as clutter. At one per section there are about
+              // a dozen, and the reason no longer holds — it just made the way in invisible.
+              // They are ordinary bordered buttons now.
+              className={`pointer-events-auto absolute right-0 flex h-6 w-6 items-center justify-center rounded-full border text-[11px] font-semibold shadow-sm transition-colors ${
                 m.detached
-                  ? 'bg-amber-100 text-amber-700 ring-1 ring-inset ring-amber-300 hover:bg-amber-200'
+                  ? 'border-amber-300 bg-amber-100 text-amber-700 hover:bg-amber-200'
                   : m.count > 0
-                    ? 'bg-brand-100 text-brand-700 ring-1 ring-inset ring-brand-300 hover:bg-brand-200'
-                    // Empty rungs stay faint so 90 of them read as a margin rule rather than
-                    // as 90 controls, and come forward on hover.
-                    : 'text-gray-300 opacity-60 hover:bg-brand-50 hover:text-brand-600 hover:opacity-100'}`}
+                    ? 'border-brand-300 bg-brand-100 text-brand-700 hover:bg-brand-200'
+                    : 'border-gray-300 bg-surface text-gray-500 hover:border-brand-400 hover:bg-brand-50 hover:text-brand-700'}`}
             >
-              {m.detached ? '!' : m.count > 0 ? m.count : <StickyNote size={12} />}
+              {m.detached ? '!' : m.count > 0 ? m.count : <StickyNote size={13} />}
             </button>
           ))}
         </div>
