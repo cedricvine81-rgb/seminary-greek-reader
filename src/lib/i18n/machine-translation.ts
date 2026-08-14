@@ -84,3 +84,28 @@ export function fenceOriginalScripts(html: string): string {
     return `<span translate="no" lang="${HEBREW_ONLY.test(decoded) ? 'he' : 'grc'}">${run}</span>`
   }))
 }
+
+/**
+ * The same fence for prose that is NOT html.
+ *
+ * Bengel's Gnomon is stored as plain text and rendered as plain text — 172,590 Greek characters
+ * across 2,836 entries — so it cannot take the span treatment above without being turned into
+ * markup first, which would mean escaping third-party text to un-escape it again. Instead it is
+ * handed back as segments and the component wraps them: same fence, built out of React rather
+ * than out of a string.
+ */
+export function segmentOriginalScripts(text: string): { text: string; lang: 'grc' | 'he' | null }[] {
+  if (!SCRIPT.test(text)) return [{ text, lang: null }]
+  const out: { text: string; lang: 'grc' | 'he' | null }[] = []
+  let last = 0
+  const re = new RegExp(RUN.source, 'g')
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    if (!SCRIPT.test(m[0])) continue
+    if (m.index > last) out.push({ text: text.slice(last, m.index), lang: null })
+    out.push({ text: m[0], lang: HEBREW_ONLY.test(m[0]) ? 'he' : 'grc' })
+    last = m.index + m[0].length
+  }
+  if (last < text.length) out.push({ text: text.slice(last), lang: null })
+  return out
+}

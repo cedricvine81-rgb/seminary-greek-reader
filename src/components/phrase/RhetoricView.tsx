@@ -15,6 +15,7 @@ import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/hi
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { MT_OSIS, MT_BOOK_LIST } from '@/lib/mt-books'
+import { translatable, greekText, hebrewText, fenceOriginalScripts, segmentOriginalScripts } from '@/lib/i18n/machine-translation'
 import { formatHebrewParse } from '@/lib/hebrew-morph'
 import { loadHebrewLexicon, hebrewizeInfo, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -789,11 +790,18 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                           {ot ? ui('rhetoric.noNote') : ui('rhetoric.noGnomon')}
                         </p>
                       ) : ot ? (
-                        // K&D arrives as HTML (with Hebrew as numeric entities), like the Commentary tab.
-                        <div className="font-reading text-gray-700 leading-relaxed [&_p]:mb-2" style={READING_FS}
-                          dangerouslySetInnerHTML={{ __html: note }} />
+                        // K&D arrives as HTML (with Hebrew as numeric entities), like the Commentary tab —
+                        // and is opted into browser translation the same way, its Hebrew fenced off first.
+                        <div {...translatable} className="font-reading text-gray-700 leading-relaxed [&_p]:mb-2" style={READING_FS}
+                          dangerouslySetInnerHTML={{ __html: fenceOriginalScripts(note) }} />
                       ) : (
-                        <p className="font-reading text-gray-700 leading-relaxed whitespace-pre-line" style={READING_FS}>{tidyBengel(note)}</p>
+                        // Bengel is plain text, so the fence is built out of React instead: his Greek
+                        // stays as written while the English around it may be translated.
+                        <p {...translatable} className="font-reading text-gray-700 leading-relaxed whitespace-pre-line" style={READING_FS}>
+                          {segmentOriginalScripts(tidyBengel(note)).map((seg, i) => seg.lang
+                            ? <span key={i} {...(seg.lang === 'he' ? hebrewText : greekText)}>{seg.text}</span>
+                            : <span key={i}>{seg.text}</span>)}
+                        </p>
                       )}
                     </div>
                   )
