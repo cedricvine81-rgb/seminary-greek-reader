@@ -43,7 +43,10 @@ const INTENTIONAL = ['app/terms/', 'app/privacy/', 'app/refunds/', 'app/pricing/
 // translatable anyway and the noise would bury the real finds.
 const FUNCTION_WORDS = /\b(the|and|is|are|was|were|be|this|that|these|with|from|for|which|when|where|only|each|every|their|its|has|have|you|your|will|can|not|but|any|all|into|than|then|shown|use|used)\b/i
 
-const CODEY = /^[\s{}()[\];,.<>/\\|&%$#@!?*+=~`^-]*$|^[A-Za-z]+\(|=>|\bconst\b|\bfunction\b|className|https?:/
+// Not prose: code that happens to sit between a '>' and a '<', and runs that are ALREADY
+// translated — a t() call whose arguments the hole-collapsing above reduced to noise reads
+// like a sentence otherwise, and reporting it would train the reader to ignore the output.
+const CODEY = /^[\s{}()[\];,.<>/\\|&%$#@!?*+=~`^-]*$|^[A-Za-z]+\(|=>|\bconst\b|\bfunction\b|className|https?:|\bt\(|\.json\(|\bRecord<|\bawait\b|\breturn\b/
 
 function jsxTextRuns(src) {
   // Strip comments and the import block, then walk the file finding text that sits between

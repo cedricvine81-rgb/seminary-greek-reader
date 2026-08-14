@@ -5,6 +5,7 @@
 
 import { BookOpen } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { rich } from '@/lib/i18n/rich'
 import { WORD_LEVEL, NARRATIVE_LEVEL, TECHNIQUE_SOURCES, type TechniqueRef } from '@/lib/redaction-techniques'
 import { openProsePassage } from '@/lib/prose-panel-bus'
 
@@ -49,21 +50,14 @@ export function RedactionKey() {
       <div>
         <h3 className="font-semibold text-gray-800">{t('red.heading')}</h3>
         <p className="mt-1 text-xs leading-relaxed text-gray-500">
-          The compositional exercises every Greco-Roman student practiced — preserved in Theon&rsquo;s{' '}
-          <span className="italic">Progymnasmata</span> and Quintilian&rsquo;s <span className="italic">Institutio Oratoria</span> —
-          taught writers to retell a source in their own words. In his chapter <span className="italic">On Paraphrase</span>{' '}
-          Theon names four ways: <span className="font-medium">variation in syntax, addition, subtraction,
-          substitution</span>, plus combinations of them. Compare mode detects those four automatically.
-          The narrative-level devices below them (catalogued by Michael Licona from Plutarch&rsquo;s parallel
-          <span className="italic"> Lives</span>) work at the level of the whole episode — the colors give you the evidence,
-          but naming the device is your exegetical judgment. Hover any coloured word for its specific
-          evidence: the source word and reference it was judged against. On the Nestle 1904 edition the
-          alignment also reads the phrase-structure trees — an article travels with its own noun, and a
-          substitution must occupy the same grammatical slot (subject for subject, object for object). Examples here are worded from Markan
-          priority, which both major source models share; where a note&rsquo;s direction depends on whether
-          Luke used Matthew (Farrer) or Matthew and Luke independently used Q (Two-Source), the note
-          follows the <span className="font-medium">{t('red.sourceModel')}</span> selector beside the device chips. The compare
-          tool itself takes no position — make any column the source to test a direction of dependence.
+          {rich(t('red.intro'), {
+            progym:   <span className="italic">Progymnasmata</span>,
+            inst:     <span className="italic">Institutio Oratoria</span>,
+            onPara:   <span className="italic">On Paraphrase</span>,
+            lives:    <span className="italic">Lives</span>,
+            modes:    <span className="font-medium">{t('red.fourModes')}</span>,
+            selector: <span className="font-medium">{t('red.sourceModel')}</span>,
+          })}
         </p>
       </div>
 
@@ -72,7 +66,7 @@ export function RedactionKey() {
         <ul className="space-y-3">
           <li className="flex flex-col gap-0.5">
             <span className="rounded border border-gray-300 px-1.5 py-0.5 text-xs font-medium text-gray-700 w-fit">{t('red.plainVerbatim')}</span>
-            <span className="text-xs text-gray-500">Unmarked words are identical in form to the source: the copied core both columns share. Function words — articles, conjunctions, prepositions, particles — are never flagged as editorial acts of their own (an article&rsquo;s case follows its noun); they are judged with the phrase they belong to, so they read plain when their phrase is retained and colour only as part of added or omitted material.</span>
+            <span className="text-xs text-gray-500">{t('red.plainDesc')}</span>
           </li>
           {WORD_LEVEL.map(tech => (
             <li key={tech.tag} className="flex flex-col gap-0.5">
@@ -91,12 +85,11 @@ export function RedactionKey() {
       <div>
         <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t('red.narrativeDevices')}</h4>
         <p className="mb-2 text-xs leading-relaxed text-gray-500">
-          Two chip styles keep the registers apart on this page. <span className="rounded border border-parchment-300 bg-parchment-50 px-1 text-gray-700">{t('red.parchmentChips')}</span> are
-          curated study notes on the whole pericope. <span className="rounded border border-dashed border-gray-400 px-1 text-gray-600">{t('red.dashedChips')}</span> are
-          computed <span className="italic">signals</span> — person shifts, dropped names, plural-to-singular verbs, add/omit balance,
-          pericope order — each clickable to ring the exact words that generated it. Both are inferences
-          about the whole episode; only the word-level colours above record direct observations, and no
-          device is ever asserted automatically.
+          {rich(t('red.registers'), {
+            parchment: <span className="rounded border border-parchment-300 bg-parchment-50 px-1 text-gray-700">{t('red.parchmentChips')}</span>,
+            dashed:    <span className="rounded border border-dashed border-gray-400 px-1 text-gray-600">{t('red.dashedChips')}</span>,
+            signals:   <span className="italic">{t('red.signals')}</span>,
+          })}
         </p>
         <ul className="grid gap-3 sm:grid-cols-2">
           {NARRATIVE_LEVEL.map(tech => (
@@ -112,15 +105,13 @@ export function RedactionKey() {
       </div>
 
       <p className="text-[11px] text-gray-400">
-        Sources: <Refs refs={TECHNIQUE_SOURCES} />. Citations marked with a book icon open here in a
-        side panel, beside this key. The Theon passages open <span className="italic">{t('red.ourTranslation')}</span>,
-        made for this app directly from the public-domain Greek of Walz and shown alongside it.
-        Theon&rsquo;s Greek breaks off in the chapter on law: everything through <span className="italic">On the Chreia</span> survives
-        in Greek and is translated here, but the closing pedagogical chapters — including
-        <span className="italic"> On Paraphrase</span>, the source of the four modes above — are lost in Greek and survive only
-        in a classical-Armenian version. That chapter is therefore the one citation with nothing to
-        open; the standard English of it is George A. Kennedy, <span className="italic">Progymnasmata: Greek Textbooks of
-        Prose Composition and Rhetoric</span> (SBL, 2003), which is under copyright.
+        {rich(t('red.sourcesNote'), {
+          refs:    <Refs refs={TECHNIQUE_SOURCES} />,
+          ours:    <span className="italic">{t('red.ourTranslation')}</span>,
+          chreia:  <span className="italic">On the Chreia</span>,
+          onPara:  <span className="italic">On Paraphrase</span>,
+          kennedy: <span className="italic">Progymnasmata: Greek Textbooks of Prose Composition and Rhetoric</span>,
+        })}
       </p>
     </div>
   )
