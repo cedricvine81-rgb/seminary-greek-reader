@@ -15,7 +15,7 @@ import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/hi
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { MT_OSIS, MT_BOOK_LIST } from '@/lib/mt-books'
-import { translatable, greekText, hebrewText, fenceOriginalScripts, segmentOriginalScripts } from '@/lib/i18n/machine-translation'
+import { translatable, greekText, hebrewText, segmentOriginalScripts } from '@/lib/i18n/machine-translation'
 import { formatHebrewParse } from '@/lib/hebrew-morph'
 import { loadHebrewLexicon, hebrewizeInfo, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -45,7 +45,7 @@ const NT_BOOKS: NT[] = [
   { osis: 'Rev', name: 'Revelation', abbr: ['re', 'rev', 'rv'] },
 ]
 // The Hebrew Bible, in the same shape — an OT anchor gets Bullinger's OT figure data, the
-// WLC in the passage column and Keil & Delitzsch where the NT gets Bengel.
+// WLC in the passage column; the verse-note card is Bengel, and so New Testament only.
 const OT_BOOKS: NT[] = MT_BOOK_LIST.map(b => ({ osis: b.osis, name: b.name, abbr: b.abbr }))
 const norm = (s: string) => s.toLowerCase().replace(/\s+/g, '')
 function matchBook(bp: string): NT | undefined {
@@ -75,35 +75,6 @@ function loadBengel(): Promise<Record<string, string>> {
   if (!bengelInflight) bengelInflight = fetch('/data/rhetoric/bengel.json').then(r => r.json())
     .then(d => (bengelCache = d)).catch(() => ({}))
   return bengelInflight
-}
-
-// Bengel's Gnomon is the New Testament only. The Old Testament's counterpart in this app is
-// Keil & Delitzsch, already imported for the Commentary tab and keyed "ch:v" per book — so
-// an OT figure gets a commentary note on its verse exactly as a NT one does.
-const kdCache: Record<string, Record<string, string>> = {}
-const kdInflight: Record<string, Promise<Record<string, string>>> = {}
-function loadKeil(osis: string): Promise<Record<string, string>> {
-  if (kdCache[osis]) return Promise.resolve(kdCache[osis])
-  if (!kdInflight[osis]) kdInflight[osis] = fetch(`/data/commentary/keil-delitzsch/${osis}.json`)
-    .then(r => (r.ok ? r.json() : {}))
-    .then((d: Record<string, string>) => (kdCache[osis] = d))
-    .catch(() => (kdCache[osis] = {}))
-  return kdInflight[osis]
-}
-
-
-// Keil & Delitzsch comments on blocks of verses, keyed by the verse each block opens with
-// ("1:1" covers Ps 1:1-3, "1:4" covers 1:4-6). So a lookup falls back to the nearest
-// preceding key in the same chapter rather than reporting no note.
-function keilFor(kd: Record<string, string>, chapter: number, verse: number): string | undefined {
-  const exact = kd[`${chapter}:${verse}`]
-  if (exact) return exact
-  let best = 0
-  for (const k of Object.keys(kd)) {
-    const [c, v] = k.split(':').map(Number)
-    if (c === chapter && v <= verse && v > best) best = v
-  }
-  return best ? kd[`${chapter}:${best}`] : undefined
 }
 
 // Per-book Bullinger datasets (public/data/rhetoric/devices/<Osis>.json), fetched once each.
@@ -181,8 +152,7 @@ function loadFullCatalogue(): Promise<Device[]> {
 
 const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech Used in the Bible (1898), '
   + 'whose Old Testament data is taken from the public-domain first edition. '
-  + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857) for the NT, and '
-  + 'Keil & Delitzsch, Biblical Commentary on the Old Testament, for the OT — both via Biblehub, both public domain. '
+  + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857), via Biblehub, public domain. '
   + 'Parallelism follows Robert Lowth, De sacra poesi Hebraeorum (1753). '
   + 'Entries marked “Editorial” are identified editorially (AI-assisted, reviewed), not drawn from a printed source.'
 
@@ -273,7 +243,6 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   const hebrewAnchor = !!parsed && MT_OSIS.has(parsed.osis)
   const [version, setVersion] = useState(() => (MT_OSIS.has(parseRef(controlledPassage ?? '')?.osis ?? '') ? 'mt' : 'na1904'))
   const [bengel, setBengel] = useState<Record<string, string>>(bengelCache ?? {})
-  const [keil, setKeil] = useState<Record<string, string>>({})
   const [bookDevices, setBookDevices] = useState<Device[]>(() => bookCache[parseRef(controlledPassage ?? '')?.osis ?? ''] ?? [])
   const [selected, setSelected] = useState<{ id: string; ref: string } | null>(null)
   // Figures browser: 'passage' = figures in the open passage; 'browse' = the whole catalogue.
@@ -310,7 +279,6 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   useEffect(() => {
     setVersion(v => (hebrewAnchor ? (NT_ONLY.has(v) ? 'mt' : v) : (OT_ONLY.has(v) ? 'na1904' : v)))
   }, [hebrewAnchor])
-  useEffect(() => { if (hebrewAnchor && parsed) loadKeil(parsed.osis).then(setKeil) }, [hebrewAnchor, parsed?.osis]) // eslint-disable-line react-hooks/exhaustive-deps
   // The Hebrew lexicon gives the parsing pane a lemma and gloss for a clicked Hebrew word,
   // as it does in the Reader; without it the pane would show only Strong's and the parsing.
   const [hebLex, setHebLex] = useState<HebrewLexicon | null>(null)
@@ -775,25 +743,24 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                   )
                 })()}
 
-                {/* The commentary note on this verse: Bengel for the NT, Keil & Delitzsch for the OT */}
+                {/* Bengel's Gnomon on this verse — New Testament only.
+                    There is deliberately no Old Testament counterpart here. Keil & Delitzsch was
+                    tried and removed: this column exists to explain a figure of speech, and K&D is
+                    the wrong shape for it — median 262 words against Bengel's 127, 45% of entries
+                    over 300, the longest 17,000 — so a single note pushed the explanation it sits
+                    beside off the bottom of the column. K&D is a click away in the Commentary tab,
+                    which is built to hold it. */}
                 {(() => {
                   const sr = parseRef(selected!.ref)
-                  const ot = !!sr && MT_OSIS.has(sr.osis)
-                  const note = ot ? (sr && keilFor(keil, sr.chapter, sr.vStart)) : bengel[selected!.ref]
+                  if (sr && MT_OSIS.has(sr.osis)) return null
+                  const note = bengel[selected!.ref]
                   return (
                     <div>
                       <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-500 mb-1">
-                        {ot ? 'Keil & Delitzsch' : ui('rhetoric.gnomon')} · {selected!.ref}
+                        {ui('rhetoric.gnomon')} · {selected!.ref}
                       </p>
                       {!note ? (
-                        <p className="text-xs text-gray-400 italic">
-                          {ot ? ui('rhetoric.noNote') : ui('rhetoric.noGnomon')}
-                        </p>
-                      ) : ot ? (
-                        // K&D arrives as HTML (with Hebrew as numeric entities), like the Commentary tab —
-                        // and is opted into browser translation the same way, its Hebrew fenced off first.
-                        <div {...translatable} className="font-reading text-gray-700 leading-relaxed [&_p]:mb-2" style={READING_FS}
-                          dangerouslySetInnerHTML={{ __html: fenceOriginalScripts(note) }} />
+                        <p className="text-xs text-gray-400 italic">{ui('rhetoric.noGnomon')}</p>
                       ) : (
                         // Bengel is plain text, so the fence is built out of React instead: his Greek
                         // stays as written while the English around it may be translated.
