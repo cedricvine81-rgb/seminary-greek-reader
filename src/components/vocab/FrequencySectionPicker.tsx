@@ -150,6 +150,45 @@ export function FrequencySectionPicker({
         </div>
       )}
 
+      {/* Glanz bands — a SECOND way into the same deck, for a course that sets its weekly
+          vocabulary as "Glanz 1F" rather than by our frequency sections. The two groupings
+          do not line up (different frequency list), so they are offered side by side and a
+          selection may mix them. Hebrew only; see scripts/build-glanz-bands.py. */}
+      {deck.bands && deck.bands.length > 0 && (
+        <div className="mb-4 rounded-lg border border-gray-200 bg-gray-50/60 p-3">
+          <div className="flex items-baseline justify-between mb-2">
+            <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+              {t('vocab.glanzBands')}
+            </p>
+            <p className="text-xs text-gray-400">{t('vocab.glanzBandsHint')}</p>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {deck.bands.map(b => {
+              const on = subSet.has(b.key)
+              return (
+                <button
+                  key={b.key}
+                  type="button"
+                  onClick={() => toggleSubsection(b.key)}
+                  title={`${t('vocab.glanzRanks', { range: b.rankRange })} · ${b.words.length}`}
+                  className={clsx(
+                    'px-2.5 py-1 text-xs rounded-lg border font-medium transition-colors',
+                    on
+                      ? 'bg-brand-600 border-brand-600 text-white'
+                      : 'bg-surface border-gray-300 text-gray-600 hover:border-gray-400',
+                  )}
+                >
+                  {b.label}
+                  <span className={clsx('ml-1', on ? 'text-white/70' : 'text-gray-400')}>
+                    {b.words.length}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Section list */}
       <div className="space-y-1.5">
         {deck.sections.map(s => {

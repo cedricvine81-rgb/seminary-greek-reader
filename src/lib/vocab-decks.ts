@@ -15,6 +15,7 @@
 
 import bgvbData from '@/data/bgvb-vocabulary.json'
 import hebrewData from '@/data/hebrew-vocabulary.json'
+import glanzBands from '@/data/hebrew-glanz-bands.json'
 
 export interface DeckWord {
   word: string
@@ -56,6 +57,10 @@ export interface Deck {
   /** word id → its subsection key. */
   wordSubsection: Record<string, string>
   allSubsectionKeys: string[]
+  /** word id → Glanz band key ("Glanz 1F"). Hebrew only; absent on the Greek deck. */
+  wordBand?: Record<string, string>
+  /** The Glanz bands in order, for pickers. Hebrew only. */
+  bands?: DeckSubsection[]
 }
 
 export type VocabLang = 'greek' | 'hebrew'
@@ -139,6 +144,59 @@ function buildDeck(lang: VocabLang, words: DeckWord[], meta: DeckMeta): Deck {
   }
 }
 
+// ── Glanz bands (Hebrew only) ────────────────────────────────────────────────────
+//
+// A SECOND grouping over the same deck, alongside the frequency sections. OTST 551 sets
+// its weekly vocabulary as "Glanz 1F", which is a slice of a different frequency list
+// (see scripts/build-glanz-bands.py), so it does not line up with our own §1–§7 at all.
+// Both groupings are therefore offered and a selection may mix them: `wordSubsection`
+// answers "which of our sections", `wordBand` answers "which Glanz band", and
+// deckWordsForSelection consults both.
+//
+// Only the ranks come from Glanz. The glosses on these cards are ours.
+
+/** The deck plus the seven words the corpus frequency pass structurally cannot see. */
+function hebrewDeckWords(): DeckWord[] {
+  const supplement = (glanzBands.supplement ?? []) as unknown as DeckWord[]
+  // Given a section so they appear in the ordinary study lists too, not only in a band:
+  // these are the commonest words in the Hebrew Bible, so §1 is where they belong.
+  return [...(hebrewData as DeckWord[]), ...supplement.map(w => ({ ...w, section: 1 }))]
+}
+
+function withGlanzBands(deck: Deck): Deck {
+  const ranks = glanzBands.ranks as Record<string, number>
+  const bandOf = (rank: number) => `Glanz 1${'ABCDEFGHIJKL'[Math.floor((rank - 1) / 20)]}`
+  const wordBand: Record<string, string> = {}
+  for (const [id, rank] of Object.entries(ranks)) wordBand[id] = bandOf(rank)
+  for (const s of glanzBands.supplement ?? []) {
+    wordBand[(s as { id: string }).id] = bandOf((s as { glanzRank: number }).glanzRank)
+  }
+  const rankOf: Record<string, number> = { ...ranks }
+  for (const s of glanzBands.supplement ?? []) {
+    rankOf[(s as { id: string }).id] = (s as { glanzRank: number }).glanzRank
+  }
+  const inBand: Record<string, DeckWord[]> = {}
+  for (const w of deck.words) {
+    const band = wordBand[wordId(w)]
+    if (band) (inBand[band] ??= []).push(w)
+  }
+  // Within a band, Glanz's own order — a student works down the list as he prints it.
+  for (const list of Object.values(inBand)) {
+    list.sort((a, b) => (rankOf[wordId(a)] ?? 0) - (rankOf[wordId(b)] ?? 0))
+  }
+  return {
+    ...deck,
+    wordBand,
+    bands: (glanzBands._bands as string[]).map((b, i) => ({
+      key: `Glanz ${b}`,
+      label: b,
+      // 20 words each, cumulative: band N is ranks (N-1)*20+1 … N*20.
+      rankRange: `${i * 20 + 1}–${(i + 1) * 20}`,
+      words: inBand[`Glanz ${b}`] ?? [],
+    })),
+  }
+}
+
 export const GREEK_DECK = buildDeck('greek', bgvbData as DeckWord[], {
   coverage: { 1: 69.5, 2: 77.2, 3: 81.6, 4: 84.4, 5: 86.4, 6: 87.8, 7: 89.2 },
   corpusLabel: 'GNT',
@@ -146,13 +204,13 @@ export const GREEK_DECK = buildDeck('greek', bgvbData as DeckWord[], {
   rtl: false,
   scriptName: 'Greek',
 })
-export const HEBREW_DECK = buildDeck('hebrew', hebrewData as DeckWord[], {
+export const HEBREW_DECK = withGlanzBands(buildDeck('hebrew', hebrewDeckWords(), {
   coverage: { 1: 60.8, 2: 71.1, 3: 76.9, 4: 80.3, 5: 82.8, 6: 84.9, 7: 86.8 },
   corpusLabel: 'the Hebrew Bible',
   scriptClass: 'font-hebrew',
   rtl: true,
   scriptName: 'Hebrew',
-})
+}))
 
 export const DECKS: Record<VocabLang, Deck> = { greek: GREEK_DECK, hebrew: HEBREW_DECK }
 
@@ -164,7 +222,14 @@ export function deckWordsForSelection(deck: Deck, subsections: string[], pos: st
   const subSet = subsections.length > 0 ? new Set(subsections) : null
   const posSet = pos.length > 0 ? new Set(pos) : null
   return deck.words.filter(w => {
-    if (subSet && !subSet.has(deck.wordSubsection[wordId(w)])) return false
+    // A key may name one of OUR sections or a Glanz band; a selection may mix the two,
+    // so a word is in scope if either grouping puts it there.
+    if (subSet) {
+      const id = wordId(w)
+      if (!subSet.has(deck.wordSubsection[id]) && !subSet.has(deck.wordBand?.[id] ?? '')) {
+        return false
+      }
+    }
     if (posSet && !posSet.has(w.pos)) return false
     return true
   })
