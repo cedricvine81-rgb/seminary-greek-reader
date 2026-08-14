@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { translateParsing } from '@/lib/i18n/morph-labels'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { X } from 'lucide-react'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { WordHighlight } from '@/lib/word-search-bus'
@@ -9,6 +9,7 @@ import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { loadMaculaHebrew, lookupMaculaHebrew, maculaRole, maculaClause, type MaculaHebrewEntry } from '@/lib/macula-hebrew'
+import { resolverFor, type GlossResolver } from '@/lib/vocab-gloss-lookup'
 
 // The right-click menu for a Hebrew word: an optional Highlight row (signed-in readers) plus the
 // full Strong's lexicon entry — the parity counterpart to the Greek word's syntax/search menu.
@@ -22,6 +23,17 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
   onClose: () => void
 }) {
   const t = useT()
+  const locale = useLocale()
+  // The same deck resolver the parsing pane uses. Without it this menu showed the raw
+  // English gloss beside a fully Spanish lexicon entry — the Hebrew reader's most-used
+  // click target, and the surface where a student can least guess the meaning.
+  const [deckGloss, setDeckGloss] = useState<GlossResolver>(() => () => null)
+  useEffect(() => {
+    let alive = true
+    resolverFor(locale, 'hebrew').then(r => { if (alive) setDeckGloss(() => r) })
+    return () => { alive = false }
+  }, [locale])
+  const translatedGloss = info.lexeme ? deckGloss(info.lexeme) : null
   const ref = useRef<HTMLDivElement>(null)
   const [copied, setCopied] = useState<string | null>(null)
   const [syntax, setSyntax] = useState<MaculaHebrewEntry | null>(null)
@@ -155,10 +167,10 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
 
         {/* Lexicon entry — short gloss, then the fuller Brown-Driver-Briggs entry (or Strong's
             concise definition where BDB has no matching entry). */}
-        {info.gloss && (
+        {(translatedGloss ?? info.gloss) && (
           <p className="text-gray-800">
             <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">{t('reader.gloss')}</span>
-            {info.gloss}
+            {translatedGloss ?? info.gloss}
           </p>
         )}
         {info.bdbDefinition ? (

@@ -1,11 +1,12 @@
 'use client'
 import { useState } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { Check, ChevronRight, ChevronDown, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
 import { DECKS, type VocabLang } from '@/lib/vocab-decks'
 import type { Subsection } from '@/lib/vocab-subsections'
+import { useDeckGloss } from '@/lib/use-deck-gloss'
 
 /**
  * Band labels via LITERAL t() keys, not `t(`vocab.band.${band}.short`)`. A template-literal key
@@ -71,8 +72,12 @@ export function FrequencySectionPicker({
   lang = 'greek',
 }: FrequencySectionPickerProps) {
   const t = useT()
+  const locale = useLocale()
   const bandL = useBandLabels()
   const deck = DECKS[lang]
+  // The word lists here are the SAME deck the flashcards show, and were rendering raw
+  // English for the same reason: nothing called the resolver.
+  const gloss = useDeckGloss(locale, lang)
   // The Beginning/Intermediate bands are NT frequency bands — they describe which BGVB
   // sections a Greek course covers. The Hebrew deck's sections mean something else, so the
   // band legend and chips are Greek-only rather than mislabelled.
@@ -346,7 +351,7 @@ export function FrequencySectionPicker({
                                     {w.inflection && (
                                       <span dir={deck.rtl ? 'rtl' : undefined} className={clsx(deck.scriptClass, 'text-xs text-gray-400 ml-1')}>{w.inflection}</span>
                                     )}
-                                    <span className="text-sm text-gray-600 ml-1.5">{w.gloss}</span>
+                                    <span className="text-sm text-gray-600 ml-1.5">{gloss(w)}</span>
                                   </div>
                                 </div>
                               )}
@@ -359,7 +364,7 @@ export function FrequencySectionPicker({
                                 </div>
                               )}
                               {mode === 'english' && (
-                                <span className="text-sm text-gray-700">{w.gloss}</span>
+                                <span className="text-sm text-gray-700">{gloss(w)}</span>
                               )}
                             </div>
                           ))}

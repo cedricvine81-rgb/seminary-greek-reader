@@ -1,8 +1,7 @@
 'use client'
 import { useState, useMemo, useEffect, createContext, useContext, type ReactNode } from 'react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
-import { content, NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
-import { glossKey, duplicatedLemmas } from '@/lib/vocab-gloss-key'
+import { useDeckGloss } from '@/lib/use-deck-gloss'
 import Link from 'next/link'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen, FileText } from 'lucide-react'
 import { clsx } from 'clsx'
@@ -197,21 +196,6 @@ const HEBREW_VOCAB = buildVocab(
 )
 const VOCAB: Record<VocabLang, VocabData> = { greek: GREEK_VOCAB, hebrew: HEBREW_VOCAB }
 
-// Deck glosses are a SPLIT content source: public/data/vocab/<loc>/<deck>.json, one file per
-// deck, so a Greek reader never downloads the Hebrew glosses. Missing or stale entries fall back
-// to the English in the deck itself — the same never-mislead rule as every other content surface.
-const glossCache: Record<string, ContentCatalogue> = {}
-const glossInflight: Record<string, Promise<ContentCatalogue>> = {}
-function loadGlosses(locale: string, deck: VocabLang): Promise<ContentCatalogue> {
-  const k = `${locale}.${deck}`
-  if (glossCache[k]) return Promise.resolve(glossCache[k])
-  if (!glossInflight[k]) glossInflight[k] = fetch(`/data/vocab/${locale}/${deck}.json`)
-    .then(r => (r.ok ? r.json() : {}))
-    .then((d: ContentCatalogue) => (glossCache[k] = d))
-    .catch(() => (glossCache[k] = NO_CONTENT))
-  return glossInflight[k]
-}
-
 const VocabCtx = createContext<VocabData>(GREEK_VOCAB)
 const useVocab = () => useContext(VocabCtx)
 
@@ -259,19 +243,10 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
   // per-language state (config, session, progress) simply starts fresh — no cross-over.
   const base = VOCAB[lang]
   const locale = useLocale()
-  const [glosses, setGlosses] = useState<ContentCatalogue>(NO_CONTENT)
-  useEffect(() => {
-    let alive = true
-    if (locale === 'en') { setGlosses(NO_CONTENT); return }
-    loadGlosses(locale, lang).then(g => { if (alive) setGlosses(g) })
-    return () => { alive = false }
-  }, [locale, lang])
-  const dupLemmas = useMemo(() => duplicatedLemmas(base.words), [base.words])
-  const V = useMemo<VocabData>(() => ({
-    ...base,
-    // content() enforces the fingerprint: a gloss whose English was edited since falls back.
-    gloss: (w: BgvbWord) => content(glosses, glossKey(lang, w.word, w.gloss, dupLemmas), w.gloss),
-  }), [base, glosses, lang, dupLemmas])
+  // One shared implementation (lib/use-deck-gloss.ts) — every surface that shows deck words
+  // needs this, and each private copy was a place for English to leak back in.
+  const deckGloss = useDeckGloss(locale, lang)
+  const V = useMemo<VocabData>(() => ({ ...base, gloss: deckGloss }), [base, deckGloss])
   const [tab, setTab] = useState<Tab>('study')
   const [progress, setProgress] = useState<ProgressMap>({})
   const [config, setConfig] = useState<StudyConfig>(() => defaultConfig(V))
