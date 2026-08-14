@@ -51,19 +51,24 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           </Link>
         </div>
 
-        {/* Center nav — icons only on mobile, icons + text on md+ */}
-        <nav className="flex items-center gap-0.5">
+        {/* Center nav — icons only until lg, icons + text above it.
+            The labels used to appear at `md`, which is 768px, which is an iPad in portrait:
+            the row grew to 966px and pushed the language switcher and the menu button clean
+            off the screen. They now wait for lg, where there is room.
+            min-w-0 + overflow-x-auto is the belt to that braces: whatever ends up in here,
+            the row scrolls rather than shoving the controls after it out of the viewport. */}
+        <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Link href="/reader" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <BookOpen size={18} /> <span className="hidden md:inline">{t('nav.reader')}</span>
+            <BookOpen size={18} /> <span className="hidden lg:inline">{t('nav.reader')}</span>
           </Link>
           <Link href="/vocab" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <BookMarked size={18} /> <span className="hidden md:inline">{t('nav.vocab')}</span>
+            <BookMarked size={18} /> <span className="hidden lg:inline">{t('nav.vocab')}</span>
           </Link>
           <Link href="/grammar" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <Table2 size={18} /> <span className="hidden md:inline">{t('nav.grammar')}</span>
+            <Table2 size={18} /> <span className="hidden lg:inline">{t('nav.grammar')}</span>
           </Link>
           <Link href="/exegesis" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <Scroll size={18} /> <span className="hidden md:inline">{t('nav.exegesis')}</span>
+            <Scroll size={18} /> <span className="hidden lg:inline">{t('nav.exegesis')}</span>
           </Link>
           <TextsNavMenu />
           {/* Between Texts and Dashboard: everything behind it works ON the Texts corpora, so it
@@ -76,7 +81,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
               href={userRole === 'INSTRUCTOR' ? '/instructor' : userRole === 'ADMIN' ? '/admin' : '/student'}
               className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5"
             >
-              <LayoutDashboard size={18} /> <span className="hidden md:inline">{t('nav.dashboard')}</span>
+              <LayoutDashboard size={18} /> <span className="hidden lg:inline">{t('nav.dashboard')}</span>
             </Link>
           )}
         </nav>

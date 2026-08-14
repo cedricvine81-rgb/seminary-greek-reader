@@ -7,6 +7,7 @@ import {
   LayoutDashboard, Calendar, ClipboardList, FileText,
   BarChart2, GraduationCap, TrendingUp,
   BookMarked, Archive, Mail, Users,
+  BookOpen, Table2, Scroll, Library, Wrench,
 } from 'lucide-react'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { PageGuideMenuItem } from '@/components/help/PageGuideButton'
@@ -17,6 +18,27 @@ interface AppMenuProps {
   userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN'
   userName?: string
 }
+
+/**
+ * The study sections, repeated here for every viewport below `lg`.
+ *
+ * They live in the header as a row of icons, and that row cannot shrink: on a phone it
+ * overflowed by 13px and pushed this very menu button off the screen, and on an iPad in
+ * portrait — where the labels switch on at exactly 768px — by nearly 200px, taking Tools,
+ * the language switcher and the menu with it. A reader who searched from the Reader landed
+ * on the results page with no labelled way back to any section of the app.
+ *
+ * So the menu now carries them. The icon row is a convenience at desktop widths; this is the
+ * one that has to be complete.
+ */
+const STUDY_NAV = [
+  { href: '/reader',   label: 'nav.reader',   icon: BookOpen },
+  { href: '/vocab',    label: 'nav.vocab',    icon: BookMarked },
+  { href: '/grammar',  label: 'nav.grammar',  icon: Table2 },
+  { href: '/exegesis', label: 'nav.exegesis', icon: Scroll },
+  { href: '/texts',    label: 'nav.texts',    icon: Library },
+  { href: '/tools',    label: 'nav.tools',    icon: Wrench },
+]
 
 // `label` is an i18n key, not display text — resolved with t() at render.
 const INSTRUCTOR_NAV = [
@@ -91,6 +113,26 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
           {/* "About this page" — the header's ? button is desktop-only, same as search above.
               PageGuideMenuItem hides itself on pages that have no guide. */}
           <PageGuideMenuItem onNavigate={() => setOpen(false)} />
+
+          {/* Study sections — below lg only, where the header's icon row is either clipped
+              or unlabelled. At lg and up the row is complete and this would duplicate it. */}
+          <div className="lg:hidden border-b border-gray-100">
+            <div className="px-4 pt-2 pb-1">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{t('nav.study')}</p>
+            </div>
+            {STUDY_NAV.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                <Icon size={15} className="text-gray-400 shrink-0" />
+                {t(label)}
+              </Link>
+            ))}
+          </div>
+
           {isAuthenticated ? (
             <>
               {/* User info */}

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { parseMTRef } from '@/lib/mt-books'
 import { OTVariantsView } from './OTVariantsView'
 import { useT } from '@/lib/i18n/LocaleProvider'
-import { X, ChevronDown, Info, Printer } from 'lucide-react'
+import { X, ChevronDown, Info, Printer, SlidersHorizontal } from 'lucide-react'
 import { FONT_SIZE_MAP, FONT_SIZES, type PhraseFontSize } from './PhraseExplorer'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -160,6 +160,8 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
   // ── control-bar state (persisted) ──────────────────────────────────────────────────────
   const [ctrl, setCtrl] = useState<Controls>(DEFAULT_CONTROLS)
+  const [optionsOpen, setOptionsOpen] = useState(false)
+  const [legendOpen, setLegendOpen] = useState(false)
   const [openMenu, setOpenMenu] = useState<'ref' | 'wit' | null>(null)
   const [hoverCol, setHoverCol] = useState<number | null>(null)
   const [openNote, setOpenNote] = useState<string | null>(null)
@@ -408,8 +410,19 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
         {status === 'ok' && data && (
           <>
-            {/* Control bar */}
-            <div ref={barRef} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-3 text-xs relative z-20 print:hidden">
+            {/* Control bar. Four controls plus Print in one unwrapped row is more than a
+                phone has width for — the row ran off the screen and took Print with it. Below
+                sm they fold behind a single Options button; from sm up nothing changes. */}
+            <div ref={barRef} className="mb-3 text-xs relative z-20 print:hidden">
+              <button
+                type="button"
+                onClick={() => setOptionsOpen(o => !o)}
+                className={`sm:hidden mb-1.5 inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 text-gray-600 ${optionsOpen ? 'bg-gray-50' : ''}`}
+              >
+                <SlidersHorizontal size={13} /> {t('var.options')}
+                <ChevronDown size={12} className={`text-gray-400 transition-transform ${optionsOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <div className={`${optionsOpen ? 'flex' : 'hidden'} sm:flex flex-wrap items-center gap-x-3 gap-y-1.5`}>
               {/* Reference selector */}
               <div className="relative">
                 <button type="button" className={ctrlBtn} onClick={() => setOpenMenu(openMenu === 'ref' ? null : 'ref')}>
@@ -477,6 +490,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
               <button type="button" title={t('var.printPdf')} className="ml-auto inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50"
                 onClick={() => window.print()}><Printer size={13} /> {t('var.print')}</button>
+              </div>
             </div>
 
             {displayed.length === 0 && (
@@ -530,7 +544,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                     <tbody>
                       {vm.rows.map((r, ri) => (
                         <tr key={ri} className={r.isRef ? 'font-semibold' : ''}>
-                          <td className="pr-2 align-baseline text-[0.7rem] font-mono text-gray-500 select-none whitespace-nowrap">
+                          <td className="sticky left-0 z-10 bg-surface pr-2 align-baseline text-[0.7rem] font-mono text-gray-500 select-none whitespace-nowrap">
                             {ri === 0 && (
                               <span className="inline-flex items-center gap-1">
                                 <span className="font-semibold text-gray-600">{parsed!.chapter}:{vm.verse}</span>
@@ -578,16 +592,27 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               </p>
             )}
 
-            {/* Legend */}
-            <div className="text-[0.7rem] text-gray-400 mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 items-center pl-1">
-              <span>Reference: <b className="font-greek">{refSigil}</b></span>
-              <span>Underline = differs · — = omission</span>
-              {familiesPresent.map(f => (
-                <span key={f} className="inline-flex items-center gap-1">
-                  <span className="inline-block w-[7px] h-[7px] rounded-full" style={{ background: FAMILY_COLOR[f] }} />{FAMILY_LABEL[f]}
-                </span>
-              ))}
-              <span className="text-gray-300">· Click a word to parse it · click a siglum for details</span>
+            {/* Legend. On a phone it wrapped to six lines of sigla above the fold, so it
+                folds behind a Key toggle there and stays open from sm up. */}
+            <div className="mt-4 pt-3 border-t border-gray-100">
+              <button
+                type="button"
+                onClick={() => setLegendOpen(o => !o)}
+                className="sm:hidden inline-flex items-center gap-1 text-[0.7rem] text-gray-400"
+              >
+                {t('var.key')}
+                <ChevronDown size={11} className={`transition-transform ${legendOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <div className={`${legendOpen ? 'flex' : 'hidden'} sm:flex text-[0.7rem] text-gray-400 flex-wrap gap-x-4 gap-y-1 items-center pl-1 mt-1 sm:mt-0`}>
+                <span>{t('var.reference')} <b className="font-greek">{refSigil}</b></span>
+                <span>{t('var.legendMarks')}</span>
+                {familiesPresent.map(f => (
+                  <span key={f} className="inline-flex items-center gap-1">
+                    <span className="inline-block w-[7px] h-[7px] rounded-full" style={{ background: FAMILY_COLOR[f] }} />{FAMILY_LABEL[f]}
+                  </span>
+                ))}
+                <span className="text-gray-300">{t('var.legendClicks')}</span>
+              </div>
             </div>
           </>
         )}
@@ -595,7 +620,14 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
       {/* Shared parsing pane — filled by clicking/hovering any Greek word above. */}
       {status === 'ok' && (
-        <ResizableParsingPane storageKey="variants" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" className="print:hidden" />
+        <ResizableParsingPane
+          storageKey="variants"
+          info={selectedInfo ?? defaultParsingInfo}
+          bgClass="bg-gray-50"
+          // On a phone the pane was claiming a third of the screen to say "click a word".
+          // It appears once there is something to show; from sm up it is always there.
+          className={`print:hidden ${selectedInfo ? '' : 'hidden sm:block'}`}
+        />
       )}
 
       {/* Witness info popover */}

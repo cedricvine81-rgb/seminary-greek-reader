@@ -253,7 +253,10 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
   const sheetItem = sheetId ? items.find(a => a.id === sheetId) ?? null : null
 
   return (
-    <div ref={containerRef} className="relative">
+    // pr-7 below sm: the rail hangs in the right margin, and on a phone there is no right
+    // margin — the prose runs to the edge, so without this the icons sit on top of the words.
+    // From sm up the page's own max-width leaves whitespace there already.
+    <div ref={containerRef} className="relative pr-7 sm:pr-0">
       {/* The feature has to announce itself. Drag-to-annotate is invisible until you already
           know it is there, and the first report from a real reader was, exactly, "nothing is
           visible" — the gesture worked and nothing on the page said so. One muted line,

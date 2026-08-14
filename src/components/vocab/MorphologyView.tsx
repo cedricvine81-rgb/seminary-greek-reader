@@ -507,9 +507,9 @@ export function MorphologyView({
               ))}
             </div>
             <div className="py-4">
-              <div className="flex items-center justify-between gap-3 mb-4">
-                <h2 className="text-base font-semibold text-gray-900">{activeEss.title}</h2>
-                <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <h2 className="min-w-0 text-base font-semibold text-gray-900">{activeEss.title}</h2>
+                <div className="flex flex-wrap items-center gap-2">
                   <CourseToggle on={courseMode} onToggle={toggleCourse} />
                   <LevelToggle level={level} onChange={changeLevel} />
                 </div>
@@ -526,14 +526,14 @@ export function MorphologyView({
           </>
         ) : (
           <div className="py-4">
-            <div className="flex items-center justify-between gap-3 mb-4">
-              <h2 className="text-base font-semibold text-gray-900">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <h2 className="min-w-0 text-base font-semibold text-gray-900">
                 {courseMode && chapterIndex >= 0 && (
                   <span className="text-gray-400 font-normal">{t('morph.chapterNo', { n: chapterIndex + 1 })}</span>
                 )}
                 {(() => { const m = MAIN_TABS.find(x => x.id === mainTab); return m ? t(m.labelKey) : '' })()}
               </h2>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <CourseToggle on={courseMode} onToggle={toggleCourse} />
                 <LevelToggle level={level} onChange={changeLevel} />
               </div>
