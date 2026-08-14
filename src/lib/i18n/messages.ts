@@ -1344,6 +1344,7 @@ const en: Catalogue = {
   'ws.copiedWhat': 'copied {what}',
   // ── Annotations on the Grammar chapters (drag to highlight, write a margin note) ──
   'ann.gestureHint': 'Select any text to highlight it or add a note.',
+  'ann.handwrittenOnly': 'Handwritten note',
   'ann.chapterNotes': { one: '{count} note on this chapter', other: '{count} notes on this chapter' },
   'ann.notePlaceholder': 'Write a note…',
   'ann.expand': 'Open the full note',
@@ -3896,6 +3897,7 @@ const es: Catalogue = {
   'ws.copiedWhat': 'se copió: {what}',
   // ── Anotaciones en los capítulos de gramática ──
   'ann.gestureHint': 'Selecciona cualquier texto para resaltarlo o añadir una nota.',
+  'ann.handwrittenOnly': 'Nota escrita a mano',
   'ann.chapterNotes': { one: '{count} nota en este capítulo', other: '{count} notas en este capítulo' },
   'ann.notePlaceholder': 'Escribe una nota…',
   'ann.expand': 'Abrir la nota completa',

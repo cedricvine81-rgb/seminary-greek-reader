@@ -5,7 +5,7 @@ import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { fingerprint } from '@/lib/i18n/content'
 import { resolveAnchor, hasNote, type BlockAnnotationRecord } from '@/lib/block-annotations'
 import { offsetWithin } from '@/components/highlights/range-utils'
-import { DEFAULT_HIGHLIGHT_COLOR, type HighlightColor } from '@/lib/highlight-colors'
+import { DEFAULT_HIGHLIGHT_COLOR, HIGHLIGHT_COLORS, type HighlightColor } from '@/lib/highlight-colors'
 import { useBlockSelection } from './useBlockSelection'
 import { AnnotationPopup } from './AnnotationPopup'
 import { NoteSheet } from './NoteSheet'
@@ -43,6 +43,7 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
   const [openId, setOpenId] = useState<string | null>(null)
   // The expanded note pane — the surface Scribble and the ink pad need.
   const [sheetId, setSheetId] = useState<string | null>(null)
+  const [listOpen, setListOpen] = useState(false)
   const { popup, open, close } = useBlockSelection(containerRef, enabled)
 
   // One request does double duty: it loads the page's annotations and tells us whether this
@@ -212,11 +213,53 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
           visible" — the gesture worked and nothing on the page said so. One muted line,
           shown only to a reader who could actually save an annotation. */}
       {enabled && (
-        <p className="mb-3 flex items-center gap-1.5 text-[11px] text-gray-400 print:hidden">
-          <Highlighter size={12} className="shrink-0" />
-          {t('ann.gestureHint')}
-          {noteCount > 0 && <span className="text-brand-600">· {t('ann.chapterNotes', { count: noteCount })}</span>}
-        </p>
+        <div className="mb-3 print:hidden">
+          <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-gray-400">
+            <Highlighter size={12} className="shrink-0" />
+            {t('ann.gestureHint')}
+            {noteCount > 0 && (
+              // A written note MUST be reachable from a plain, labelled control. The margin
+              // dot was the only way in, and the second report from a real reader was "I
+              // wrote a note but cannot see how to access what I wrote". A list also reaches
+              // the notes a marker structurally cannot: a block the level toggle has hidden,
+              // and a note whose range can't be painted at all.
+              <button
+                type="button"
+                onClick={() => setListOpen(o => !o)}
+                className="font-medium text-brand-600 underline decoration-dotted underline-offset-2 hover:text-brand-800"
+              >
+                {t('ann.chapterNotes', { count: noteCount })}
+              </button>
+            )}
+          </p>
+
+          {listOpen && (
+            <ul className="mt-2 space-y-1.5 rounded-lg border border-gray-200 bg-surface p-2.5">
+              {items.filter(hasNote).map(a => (
+                <li key={a.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      containerRef.current
+                        ?.querySelector(`[data-ann-block="${CSS.escape(a.blockId)}"]`)
+                        ?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+                      setSheetId(a.id)
+                    }}
+                    className="flex w-full items-start gap-2 rounded-md px-1.5 py-1 text-left transition-colors hover:bg-gray-50"
+                  >
+                    <span className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${HIGHLIGHT_COLORS[(a.color as HighlightColor)]?.swatch ?? 'bg-yellow-300'}`} />
+                    <span className="min-w-0">
+                      <span className="block truncate text-xs italic text-gray-500">“{a.quote}”</span>
+                      <span className="block truncate text-sm text-gray-800">
+                        {a.body.trim() || t('ann.handwrittenOnly')}
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
       {children}
 
@@ -225,23 +268,21 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
           highlight API, a note written in the other language, or one whose words have been
           edited away. */}
       {markers.length > 0 && (
-        <div className="pointer-events-none absolute inset-y-0 left-0 print:hidden" aria-hidden={false}>
+        <div className="pointer-events-none absolute inset-y-0 right-0 print:hidden" aria-hidden={false}>
           {markers.map(m => (
             <button
               key={m.blockId}
               type="button"
               style={{ top: m.top }}
-              onClick={e => {
+              onClick={() => {
                 const first = items.find(a => a.blockId === m.blockId && hasNote(a))
-                if (!first) return
-                setOpenId(first.id)
-                open(first.id, e.clientX, e.clientY)
+                if (first) setSheetId(first.id)
               }}
               title={m.detached ? t('ann.detached') : t('ann.noteCount', { count: m.count })}
-              className={`pointer-events-auto absolute -left-4 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-semibold transition-colors sm:-left-5 ${
+              className={`pointer-events-auto absolute right-0 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold shadow-sm ring-1 ring-inset transition-colors ${
                 m.detached
-                  ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
-                  : 'bg-brand-100 text-brand-700 hover:bg-brand-200'}`}
+                  ? 'bg-amber-100 text-amber-700 ring-amber-300 hover:bg-amber-200'
+                  : 'bg-brand-100 text-brand-700 ring-brand-300 hover:bg-brand-200'}`}
             >
               {m.detached ? '!' : m.count}
             </button>

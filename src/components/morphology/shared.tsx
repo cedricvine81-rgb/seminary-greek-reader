@@ -803,9 +803,15 @@ export function Term({ t, children }: { t: string; children?: React.ReactNode })
     <span className="relative inline-block">
       <button
         type="button"
-        onClick={() => setOpen(o => !o)}
+        // A drag that crosses this term is a highlight, not a tap on the glossary: opening the
+        // definition would cover the words being selected. Only an actual click (nothing
+        // selected) opens it.
+        onClick={() => { if (window.getSelection()?.isCollapsed !== false) setOpen(o => !o) }}
         onBlur={() => setOpen(false)}
-        className="underline decoration-dotted decoration-brand-400 underline-offset-2 cursor-help text-inherit"
+        // select-text because a <button> is not selectable by default (WebKit in particular),
+        // so without it a drag across a glossary term breaks the selection in half — which is
+        // most sentences in these chapters.
+        className="select-text underline decoration-dotted decoration-brand-400 underline-offset-2 cursor-help text-inherit"
       >
         {children ?? t}
       </button>

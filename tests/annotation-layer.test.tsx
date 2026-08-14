@@ -5,6 +5,7 @@ import '@testing-library/jest-dom'
 import { act, render, screen } from '@testing-library/react'
 import { LocaleProvider } from '@/lib/i18n/LocaleProvider'
 import { AnnotationLayer } from '@/components/annotations/AnnotationLayer'
+import { fingerprint } from '@/lib/i18n/content'
 
 /**
  * The end-to-end path a reader takes to START a note: select some words in a block, lift the
@@ -86,6 +87,45 @@ describe('AnnotationLayer', () => {
     await act(async () => { await new Promise(r => setTimeout(r, 0)) })
     selectAndRelease(container, 'the ending')
     expect(screen.queryByPlaceholderText('Write a note…')).not.toBeInTheDocument()
+  })
+
+  it('lists a saved note so it can be reached without finding a margin dot', async () => {
+    // The reported failure: a note was written and saved, and there was no labelled way back
+    // to it. A painted highlight can be missed, a margin dot can be missed or unsupported —
+    // the list is the affordance that cannot be.
+    stubFetch(200, {
+      annotations: [{
+        id: 'n1', page: 'nouns', blockId: 'nouns-intro', locale: 'en',
+        startOffset: TEXT.indexOf('the ending'), endOffset: TEXT.indexOf('the ending') + 10,
+        quote: 'the ending', fp: fingerprint(TEXT), color: 'yellow',
+        body: 'ask about this in class', ink: null,
+      }],
+    })
+    renderLayer()
+    await act(async () => { await new Promise(r => setTimeout(r, 0)) })
+
+    // The count is a control, not decoration.
+    const opener = screen.getByRole('button', { name: /1 note on this chapter/i })
+    await act(async () => { opener.click() })
+    expect(screen.getByText(/ask about this in class/)).toBeInTheDocument()
+    // The quoted words come with it, so the note reads as being ABOUT something — scoped to
+    // the list, since the same phrase is in the prose behind it.
+    expect(screen.getByRole('listitem').textContent).toContain('the ending')
+  })
+
+  it('lists a handwriting-only note, which has no body text to show', async () => {
+    stubFetch(200, {
+      annotations: [{
+        id: 'n2', page: 'nouns', blockId: 'nouns-intro', locale: 'en',
+        startOffset: 0, endOffset: 7, quote: 'A Greek', fp: fingerprint(TEXT),
+        color: 'blue', body: '', ink: '{"w":10,"h":10,"strokes":[{"color":"#000","size":2,"pts":[1,2,0.5]}]}',
+      }],
+    })
+    renderLayer()
+    await act(async () => { await new Promise(r => setTimeout(r, 0)) })
+    const opener = screen.getByRole('button', { name: /1 note on this chapter/i })
+    await act(async () => { opener.click() })
+    expect(screen.getByText('Handwritten note')).toBeInTheDocument()
   })
 
   it('ignores a selection that lands outside any annotatable block', async () => {
