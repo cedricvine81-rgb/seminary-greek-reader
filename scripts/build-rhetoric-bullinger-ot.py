@@ -265,6 +265,157 @@ SEE_ONLY = re.compile(r"^\s*See\s+(?:below|above|under|also)?\b", re.I)
 GARBAGE = re.compile(r"[»«¢£§¡~^|\\{}]")
 
 
+# ── OCR repair, OT only ───────────────────────────────────────────────────────────────
+# The NT sibling reads a modernised EPUB; this reads a 1898 scan, and the two need different
+# medicine. Everything below is confined to this file so the NT notes — already translated —
+# keep byte-for-byte the English they were translated from.
+#
+# The governing rule is the one this script already follows for figure headings: REPAIR only
+# what is unambiguous, DROP the rest. A guessed word in a gloss on a figure of speech is worse
+# than no gloss, because the gloss exists to say precisely what the words are doing.
+
+# 1. Where the gloss ENDS. Bullinger's comment runs until he starts citing parallels, and the
+#    scan cites them in Roman numerals ("Mai. i. 2, 3. Rom. ix. 13."), which the NT cutter —
+#    written for Arabic "1:2" — walked straight past, swallowing whole chains of other verses.
+BOOK_TOK = (r"Gen|Ex(?:od)?|Lev|Num|Deut|Josh|Judg|Ruth|Sam|Kings?|Kgs|Chron|Ezra|Neh|Esth|Job|"
+            r"Ps(?:a|alm)?s?|Prov|Eccl|Cant|Song|Isa|Jer|Lam|Ezek|Dan|Hos|Joel|Amos|Obad|Jon(?:ah)?|"
+            r"Mic|Nah|Hab|Zeph|Hag|Zech|Mal|Mai|Matt|Mark|Luke|John|Acts|Rom|Cor|Gal|Eph|Phil|Col|"
+            r"Thess|Tim|Tit|Philem|Heb|Jas|Pet|Jude|Rev|Sept")
+# The book name may be spelled out ("Judges", "Psalms"), and the verse number after the Roman
+# chapter is often itself mangled ("Ps. vii. I(i") — so the cut keys on book + Roman chapter and
+# does not wait for a readable verse.
+ROMAN_REF = re.compile(r"(?:[12]\s|I{1,3}\s)?(?:" + BOOK_TOK + r")[a-z]*[.,]?\s+[ivxlcIVXLC]{1,7}\.")
+# 2. Page furniture: the running head, a figure name set as a heading, a bare page number.
+FURNITURE = re.compile(r"FIGURES\s+OF\s+SPEECH|\b[A-Z]{4,}(?:\s+[A-Z(][A-Z )]{2,})*\s*[.(]|(?<![\d:])\b\d{3}\b")
+
+# 3. Character-level damage that recurs and can only be read one way. Nothing here changes a
+#    word into a different word: "1 know" is not English, "A.\'." is not a word at all.
+FIXES = [
+    (re.compile(r"[■•]+"), '"'),                        # broken quotation marks
+    (re.compile(r"A\.\\?['\u2019]\."), "AV"),             # A.\'. / A.'. -> AV
+    (re.compile(r"\{(?=[ci]\.?e?[.,)])"), "("),          # {i.e., -> (i.e.,   {c) -> (c)
+    (re.compile(r"\bi\.\s*c\.(?=\s)"), "i.e."),         # i.c. -> i.e.
+    (re.compile(r"(?<![\w.])1(?=\s+(?:am|will|shall|have|had|know|knew|say|said|do|did|was|were|"
+                r"is|are|would|could|should|may|might|must|can|cannot|thought|saw|see|"
+                r"believe|speak|spake|write|wrote)\b)"), "I"),
+    (re.compile(r"(?<![\w.])1(?=\s+(?:the|my|thy|this|that|will|am)\b)"), "I"),
+    (re.compile(r"\bIxx"), "lxx"), (re.compile(r"\bIx\."), "lx."),   # capital I read for l
+    (re.compile(r"\s*\u2014\s*$"), ""),
+]
+
+# 4. What cannot be repaired. A run of letters with an apostrophe or a stray capital inside it
+#    ("li'ithdraw", "WJicrcof", "knoic", "huntinj") is a word the scan lost; two of them in one
+#    gloss means the sentence can no longer be trusted to say what Bullinger said.
+# A word the scan lost: a capital inside a lowercase word (tJie, chabOd), a digit inside a word
+# (N3P), or an apostrophe splicing two word-halves (li'ithdraw) — the last excluding the English
+# contractions and possessives that legitimately carry one.
+BROKEN_WORD = re.compile(
+    r"\b(?:[a-z]+[A-Z][A-Za-z]*"
+    r"|[A-Za-z]*\d[A-Za-z]+|[A-Za-z]{2,}\d[A-Za-z]*"
+    r"|[a-z]{2,}['\u2019](?!s\b|t\b|d\b|ll\b|re\b|ve\b|m\b)[a-z]{2,})\b")
+STRAY = re.compile(r"[»«¢£§¡~^|\\{}*]")
+# "See under Erotesis" is a pointer to another section, not a gloss; it can appear anywhere in
+# the run, not only at the start where SEE_ONLY looks for it.
+SEE_REF = re.compile(r"\bSee\s+(?:under|below|above|also)\b", re.I)
+
+
+# Within one book Bullinger drops the book name and cites the chapter alone ("So xliii. 8",
+# "(xviii. 12)"). Two letters minimum, so "i.e." is not mistaken for a chapter.
+BARE_ROMAN = re.compile(r"\(?\b[ivxl]{2,}\.\s*\d|\bvol\.\s*[IVXL]")
+
+
+# ── Is this a word, or is it what the scan made of one? ───────────────────────────────
+# The damage that survives every rule above is all-lowercase and structurally innocent —
+# "tlie", "witii", "touchcth", "jfncob", "comntandiiieiit". No pattern separates those from
+# English; only a vocabulary does. Three sources, none of them a guess about this text:
+#   · the English Bible we already ship — Bullinger is quoting it most of the time;
+#   · his own NT notes, which came from a clean EPUB and are the control corpus;
+#   · the system word list, when the platform has one (macOS/BSD do; it is optional).
+# A note with an unrecognised word is dropped, not repaired. That costs a handful of real
+# rarities ("forgat", "skilfully") and buys a corpus a reader can trust.
+_VOCAB = set()
+
+
+def vocabulary():
+    if _VOCAB:
+        return _VOCAB
+    idx = os.path.join(REPO, "public", "data", "search-index-en.json.gz")
+    if os.path.exists(idx):
+        import gzip
+        with gzip.open(idx) as fh:
+            for e in json.load(fh):
+                _VOCAB.update(re.findall(r"[a-z]{2,}", e.get("t", "").lower()))
+    for f in os.listdir(OUT_DIR) if os.path.isdir(OUT_DIR) else []:
+        if not f.endswith(".json") or f[:-5] in BOOKS_BY_OSIS:
+            continue                      # OT files are the ones being rebuilt — not evidence
+        with open(os.path.join(OUT_DIR, f), encoding="utf-8") as fh:
+            for d in json.load(fh).get("devices", []):
+                for o in d.get("occurrences", []):
+                    _VOCAB.update(re.findall(r"[a-z]{2,}", (o.get("note") or "").lower()))
+    for wl in ("/usr/share/dict/words", "/usr/dict/words"):
+        if os.path.exists(wl):
+            with open(wl, encoding="utf-8", errors="ignore") as fh:
+                _VOCAB.update(w.strip().lower() for w in fh)
+            break
+    _VOCAB.update(("viz", "marg", "esp", "lxx", "sept", "heb", "gr", "cf", "ver", "chap"))
+    return _VOCAB
+
+
+BRITISH = (("our", "or"), ("ise", "ize"), ("yse", "yze"))
+SUFFIXES = ("edst", "eth", "est", "ing", "ed", "es", "th", "s")
+
+
+def known_word(w):
+    v = vocabulary()
+    forms = {w}
+    for suf in SUFFIXES:
+        if w.endswith(suf) and len(w) > len(suf) + 2:
+            stem = w[: -len(suf)]
+            forms |= {stem, stem + "e", stem[:-1] if len(stem) > 3 and stem[-1] == stem[-2] else stem}
+    for f in list(forms):
+        for a, b in BRITISH:
+            if f.endswith(a):
+                forms.add(f[: -len(a)] + b)
+    return any(f in v for f in forms)
+
+
+def ot_note(after):
+    """Bullinger's gloss on this verse, cut at his cross-references and repaired where the
+    damage is unambiguous. Returns "" when the scan is past saving."""
+    after = after.lstrip(" .,:;")
+    cuts = [m.start() for m in (ROMAN_REF.search(after), FURNITURE.search(after),
+                                BARE_ROMAN.search(after), SEE_REF.search(after)) if m]
+    if cuts:
+        after = after[:min(cuts)]
+    seg = _nt.make_note(after)
+    if not seg:
+        return ""
+    for rx, rep in FIXES:
+        seg = rx.sub(rep, seg)
+    seg = re.sub(r"(\w)-\s+(\w)", r"\1\2", seg)      # "accord- ing" split across a line
+    seg = re.sub(r"\s+", " ", seg).strip(" .,;:\u2014-")
+    if BROKEN_WORD.search(seg) or STRAY.search(seg):
+        return ""
+    # A gloss that is now only a fragment teaches nothing; one that never closes its quotation
+    # was cut mid-sentence by the page break.
+    seg = re.sub(r"^(?:[a-z0-9]{1,3}[).]\s*)+", "", seg).lstrip(" .,;:\u2014-")   # "g). —", "29 ("
+    if sum(c.isalpha() for c in seg) < 20 or seg.count('"') % 2:
+        return ""
+    # Last gate. Everything above is a rule about a KNOWN defect; this is the catch-all for the
+    # ones that are not worth a rule of their own — a surviving Roman-numeral reference, a
+    # running head, a word the scan broke. Eight notes out of fifteen hundred fail here, and a
+    # reader is better served by a figure with no gloss than by a gloss that reads as gibberish.
+    if re.search(r"\b[ivxl]{2,}\.|FIGURES OF SPEECH|\b[a-z]+[A-Z]|[»«¢£§¡~^|\\{}]|[A-Za-z]/", seg):
+        return ""
+    # A dangling connective is where the cut landed, not something Bullinger wrote.
+    seg = re.sub(r"[\s,;:]*\b(?:So|See|And|But|Compare|Also|Thus|Hence|For)\.?$", "", seg).rstrip(" .,;:")
+    # Capitalised words are tested too — "Raniah" for Ramah passes every structural rule, and
+    # every proper name Bullinger uses is in the English Bible or in his own NT notes.
+    if any(not known_word(w.lower()) for w in re.findall(r"\b[A-Za-z]{3,}\b", seg)):
+        return ""
+    return seg
+
+
 def usable_note(s):
     if not s or SEE_ONLY.match(s):
         return ""
@@ -314,6 +465,68 @@ def head_events(text):
     return out
 
 
+# ── Does the gloss quote the verse it is filed under? ─────────────────────────────────
+# The extractor takes the prose that FOLLOWS a reference, which is right until Bullinger runs
+# two references together — and then a comment on Luke iv. 19 ends up filed under Isaiah 10:2.
+# Structure cannot catch that; content can. Every gloss that quotes scripture is checked
+# against the English text we ship: if its quotation matches some OTHER verse far better than
+# its own, the note is wrong about itself and is dropped.
+#
+# The comparison is deliberately one-sided. Bullinger quotes the AV and we ship the WEB, so a
+# gloss that matches its own verse only loosely proves nothing and is left alone; only a gloss
+# with NO overlap with its own verse and a strong match elsewhere is condemned.
+_EN_STOP = set("the a an and or of to in is was that this his her their my thy thee thou ye you "
+               "for with not be shall will have hath are it he she they them who which as but by "
+               "from on at so also".split())
+_EN = {}
+_EN_INV = {}
+
+
+def english_index():
+    if _EN:
+        return _EN, _EN_INV
+    f = os.path.join(REPO, "public", "data", "search-index-en.json.gz")
+    if not os.path.exists(f):
+        return _EN, _EN_INV
+    import gzip
+    with gzip.open(f) as fh:
+        for e in json.load(fh):
+            _EN[e["id"]] = e.get("t", "")
+    for k, t in _EN.items():
+        for w in content_words(t):
+            _EN_INV.setdefault(w, set()).add(k)
+    return _EN, _EN_INV
+
+
+def content_words(s):
+    return {w for w in re.findall(r"[a-z]{4,}", s.lower()) if w not in _EN_STOP}
+
+
+def misattached(osis, ch, v, note):
+    en, inv = english_index()
+    key = f"{osis}.{ch}.{v}"
+    if key not in en:
+        return False
+    quoted = re.findall(r'"([^"]{12,})"', note)
+    if not quoted:
+        return False
+    qw = content_words(quoted[0])
+    if len(qw) < 3 or qw & content_words(en[key]):
+        return False                       # says something its own verse says: keep
+    best, score = None, 0
+    tally = {}
+    for w in qw:
+        for k in inv.get(w, ()):
+            tally[k] = tally.get(k, 0) + 1
+    for k, n in tally.items():
+        if n > score:
+            best, score = k, n
+    return best is not None and best != key and score / len(qw) >= 0.7
+
+
+BOOKS_BY_OSIS = {b["osis"] for b in BOOKS.values()}
+
+
 def build_book(book, text, heads):
     b = BOOKS[book]
     # Single-chapter books are cited by verse alone ("Obad. 4"); the rest carry a Roman chapter.
@@ -345,7 +558,9 @@ def build_book(book, text, heads):
         if not 1 <= v <= real_verses(b["osis"], ch):     # checked against our own MT text
             continue
         did, name, greek, group, definition = cur
-        note = usable_note(_nt.make_note(text[end:end + 240])) if primary else ""
+        note = usable_note(ot_note(text[end:end + 260])) if primary else ""
+        if note and misattached(b["osis"], ch, v, note):
+            note = ""
         d = devices.setdefault(did, dict(id=did, name=name, greek=greek, group=group,
                                          definition=definition, occ={}))
         r = f"{b['name']} {ch}:{v}"
