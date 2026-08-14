@@ -29,9 +29,19 @@ export const canPaint = (): boolean =>
   registry() !== null && typeof (globalThis as { Highlight?: HighlightCtor }).Highlight === 'function'
 
 /** Highlight-registry names are global to the document, so they carry the surface prefix. */
-const nameFor = (color: string, withNote: boolean) => `ann-${color}${withNote ? '-note' : ''}`
+const PENDING = 'ann-pending'
+const nameFor = (r: PaintRange) => r.pending ? PENDING : `ann-${r.color}${r.withNote ? '-note' : ''}`
 
-export interface PaintRange { color: string; withNote: boolean; start: number; end: number; block: HTMLElement }
+export interface PaintRange {
+  color: string
+  withNote: boolean
+  start: number
+  end: number
+  block: HTMLElement
+  /** The selection currently under the palette, which on touch has already been cleared —
+   *  this is the only thing showing the reader what they picked. */
+  pending?: boolean
+}
 
 /**
  * Register every range with the document, grouped by the style it should get. Called after
@@ -48,30 +58,31 @@ export function paint(ranges: PaintRange[]): void {
   for (const r of ranges) {
     const live = rangeFromOffsets(r.block, r.start, r.end)
     if (!live) continue
-    const key = nameFor(r.color, r.withNote)
+    const key = nameFor(r)
     const list = groups.get(key)
     if (list) list.push(live)
     else groups.set(key, [live])
   }
 
-  for (const color of HIGHLIGHT_COLOR_KEYS) {
-    for (const withNote of [false, true]) {
-      const key = nameFor(color, withNote)
-      const list = groups.get(key)
-      if (list && list.length) reg.set(key, new Ctor(...list))
-      else reg.delete(key)
-    }
+  for (const key of ALL_GROUPS) {
+    const list = groups.get(key)
+    if (list && list.length) reg.set(key, new Ctor(...list))
+    else reg.delete(key)
   }
 }
+
+/** Every registry name this module owns — rebuilt wholesale on each pass, so a group that
+ *  has emptied is cleared rather than left painting something that is no longer true. */
+const ALL_GROUPS = [
+  PENDING,
+  ...HIGHLIGHT_COLOR_KEYS.flatMap(c => [`ann-${c}`, `ann-${c}-note`]),
+]
 
 /** Clear every group this module owns — on unmount, and when leaving a chapter. */
 export function unpaint(): void {
   const reg = registry()
   if (!reg) return
-  for (const color of HIGHLIGHT_COLOR_KEYS) {
-    reg.delete(nameFor(color, false))
-    reg.delete(nameFor(color, true))
-  }
+  for (const key of ALL_GROUPS) reg.delete(key)
 }
 
 /**

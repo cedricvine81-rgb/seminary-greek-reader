@@ -71,6 +71,11 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
     return () => { alive = false }
   }, [surface, page])
 
+  // The selection sitting under the palette. On touch it has already been cleared from the
+  // document (iOS hangs its Copy / Look Up menu on any live selection), so painting it here
+  // is the only thing telling the reader what they picked.
+  const pendingSel = popup?.kind === 'new' && popup.sel.cleared ? popup.sel : null
+
   /** Re-resolve every anchor against the live DOM, then paint and place the margin markers. */
   const resolve = useCallback(() => {
     const container = containerRef.current
@@ -114,9 +119,13 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
         sec.detached = sec.detached || state.kind === 'detached'
       }
     }
+    if (pendingSel) {
+      const block = container.querySelector<HTMLElement>(`[data-ann-block="${CSS.escape(pendingSel.blockId)}"]`)
+      if (block) ranges.push({ color: '', withNote: false, pending: true, start: pendingSel.start, end: pendingSel.end, block })
+    }
     paint(ranges)
     setMarkers(sections)
-  }, [items, locale])
+  }, [items, locale, pendingSel])
 
   // Resolve after every render that could have moved the prose. A MutationObserver rather
   // than a dependency list because the things that move it — the level toggle, a chapter
@@ -362,6 +371,7 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
           x={popup.x} y={popup.y}
           color={DEFAULT_HIGHLIGHT_COLOR}
           body=""
+          quote={popup.sel.quote}
           canDelete={false}
           onCommit={(c, body) => create(c, body)}
           onDelete={close}

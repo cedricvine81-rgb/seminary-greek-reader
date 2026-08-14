@@ -181,6 +181,44 @@ describe('AnnotationLayer', () => {
     expect(sent.color).toBe('green')
   })
 
+  it('drops the native selection on a touch device once the range is captured', async () => {
+    // iOS raises Copy / Look Up / Translate over any live selection and the callout cannot be
+    // suppressed while one exists, so it opened on top of the palette every time. Clearing the
+    // selection takes the callout with it — the range is already measured by then, and the
+    // layer paints it so the reader still sees what they picked.
+    const real = window.matchMedia
+    // @ts-ignore coarse pointer, i.e. an iPad
+    window.matchMedia = (q: string) => ({
+      matches: q.includes('coarse'), media: q, onchange: null,
+      addEventListener: () => {}, removeEventListener: () => {},
+      addListener: () => {}, removeListener: () => {}, dispatchEvent: () => false,
+    })
+    try {
+      stubFetch(200)
+      const { container } = renderLayer()
+      await act(async () => { await new Promise(r => setTimeout(r, 0)) })
+      selectAndRelease(container, 'the ending')
+
+      // The palette still opens — the range survived the clear...
+      expect(await screen.findByPlaceholderText('Write a note…')).toBeInTheDocument()
+      // ...and the document has no selection left for iOS to decorate.
+      expect(window.getSelection()?.rangeCount ?? 0).toBe(0)
+      // The Copy the system menu used to provide is on the palette instead.
+      expect(screen.getByTitle('Copy text')).toBeInTheDocument()
+    } finally {
+      window.matchMedia = real
+    }
+  })
+
+  it('leaves the selection alone on a mouse, where nothing competes with it', async () => {
+    stubFetch(200)
+    const { container } = renderLayer()
+    await act(async () => { await new Promise(r => setTimeout(r, 0)) })
+    selectAndRelease(container, 'the ending')
+    await screen.findByPlaceholderText('Write a note…')
+    expect(window.getSelection()?.rangeCount).toBe(1)
+  })
+
   it('ignores a selection that lands outside any annotatable block', async () => {
     stubFetch(200)
     const { container } = render(

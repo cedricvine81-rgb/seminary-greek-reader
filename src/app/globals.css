@@ -542,6 +542,14 @@ body.exam-lockdown nav.fixed.bottom-0 {
   mix-blend-mode: screen;
 }
 
+/* Long-press on annotatable prose must not raise the iOS callout: the annotation palette
+   opens there instead. Touch only — a desktop right-click still gets its native menu. */
+@media (hover: none) and (pointer: coarse) {
+  [data-ann-block] {
+    -webkit-touch-callout: none;
+  }
+}
+
 /* Block annotations (Grammar chapters) — painted with the CSS Custom Highlight API rather
    than by wrapping the text, so a highlight can cross a <Gk> span or a glossary Term button
    without splitting the React tree. Same ink ramp as .hl-mark so a highlighted paragraph and
@@ -549,6 +557,12 @@ body.exam-lockdown nav.fixed.bottom-0 {
    which is how a highlight that CARRIES a note is told apart from a bare one at a glance.
    Kept outside @layer, and written out per colour rather than built from a variable, because
    ::highlight() names cannot be composed and Tailwind's JIT never sees them. */
+/* The selection currently under the annotation palette. On touch the native selection has
+   been dropped by then — iOS raises Copy / Look Up / Translate over any live selection and
+   the callout cannot be suppressed while one exists — so this is what shows the reader what
+   they picked. Deliberately the neutral blue of a selection rather than a highlighter colour:
+   nothing has been saved yet. */
+::highlight(ann-pending)     { background-color: rgb(96 165 250 / 0.35); }
 ::highlight(ann-yellow)      { background-color: rgb(250 204 21 / 0.45); }
 ::highlight(ann-green)       { background-color: rgb(74 222 128 / 0.45); }
 ::highlight(ann-blue)        { background-color: rgb(96 165 250 / 0.45); }

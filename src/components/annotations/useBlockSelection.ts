@@ -9,6 +9,9 @@ export interface BlockSelection {
   quote: string
   /** The block's whole plain text, so the caller can fingerprint what it measured against. */
   blockText: string
+  /** True when the native selection was dropped after capture (touch devices — see below),
+   *  so the caller knows to paint the range itself; there is nothing left to show it. */
+  cleared: boolean
 }
 
 export type BlockPopupState =
@@ -34,6 +37,11 @@ export function useBlockSelection(containerRef: RefObject<HTMLElement | null>, e
 
   useEffect(() => {
     if (!enabled) return
+
+    // Touch selection is not finished when the finger lifts — iOS leaves grab handles and
+    // the reader drags them to adjust — and it is the platform whose callout we are avoiding.
+    const coarse = typeof window !== 'undefined'
+      && window.matchMedia('(hover: none) and (pointer: coarse)').matches
 
     /** Read the live selection, or null if it isn't an annotatable range in one block. */
     function currentSelection(): { sel: BlockSelection; rect: DOMRect } | null {
@@ -61,7 +69,7 @@ export function useBlockSelection(containerRef: RefObject<HTMLElement | null>, e
 
       const blockText = block.textContent ?? ''
       return {
-        sel: { blockId: block.dataset.annBlock!, start, end, quote: blockText.slice(start, end), blockText },
+        sel: { blockId: block.dataset.annBlock!, start, end, quote: blockText.slice(start, end), blockText, cleared: false },
         rect: clipped.getBoundingClientRect(),
       }
     }
@@ -72,6 +80,18 @@ export function useBlockSelection(containerRef: RefObject<HTMLElement | null>, e
       const key = `${found.sel.blockId}:${found.sel.start}:${found.sel.end}`
       if (shownFor.current === key) return
       shownFor.current = key
+
+      // On a touch device, drop the native selection now that we have measured it.
+      //
+      // iOS raises Copy / Look Up / Translate / Search Web for any live selection, and that
+      // menu cannot be suppressed while one exists — it opened on top of our own palette
+      // every time. The callout belongs to the selection, so clearing the selection takes it
+      // with it. The range is already captured, and the caller paints it, so the reader still
+      // sees exactly what they picked; the Copy the menu provided is on our palette instead.
+      if (coarse) {
+        window.getSelection()?.removeAllRanges()
+        found.sel.cleared = true
+      }
       setPopup({ kind: 'new', x: found.rect.left + found.rect.width / 2, y: found.rect.top, sel: found.sel })
     }
 
@@ -85,12 +105,9 @@ export function useBlockSelection(containerRef: RefObject<HTMLElement | null>, e
       offer()
     }
 
-    // Touch selection is not finished when the finger lifts — iOS leaves grab handles and the
-    // reader drags them to adjust. There is no "selection finished" event, so settle for a
-    // pause. Coarse pointers only: on desktop the pointerup above is exact, and running this
-    // as well would pop the palette during an ordinary click-drag.
-    const coarse = typeof window !== 'undefined'
-      && window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    // There is no "selection finished" event, so settle for a pause. Coarse pointers only:
+    // on desktop the pointerup above is exact, and running this as well would pop the palette
+    // during an ordinary click-drag.
     let settle: ReturnType<typeof setTimeout> | undefined
     function onSelectionChange() {
       clearTimeout(settle)

@@ -26,13 +26,16 @@ import { DEFAULT_HIGHLIGHT_COLOR, type HighlightColor } from '@/lib/highlight-co
  * and the body is saved on the way out.
  */
 export function AnnotationPopup({
-  mode, x, y, color, body, canDelete, onColor, onCommit, onDelete, onClose, onExpand,
+  mode, x, y, color, body, quote, canDelete, onColor, onCommit, onDelete, onClose, onExpand,
 }: {
   mode: 'new' | 'edit'
   x: number
   y: number
   color: string
   body: string
+  /** The selected words. Gives the palette a Copy button — on iOS the native selection (and
+   *  with it the system's own Copy) is dropped the moment we capture the range. */
+  quote?: string
   canDelete: boolean
   /** `edit` only: apply a colour change immediately. */
   onColor?: (c: HighlightColor) => void
@@ -91,6 +94,7 @@ export function AnnotationPopup({
       <div className="flex items-center justify-between gap-2">
         <HighlightSwatches
           activeColor={pen}
+          copyValue={quote}
           onPick={c => {
             setPen(c)
             setPickedColor(true)
