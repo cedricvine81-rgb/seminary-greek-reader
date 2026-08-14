@@ -11,6 +11,23 @@ export function normalise(s: string): string {
   return s.trim().toLowerCase().replace(/[.,;:!?]/g, '').trim()
 }
 
+/**
+ * Fold an answer written in Greek or Hebrew script down to what a student can actually
+ * type: Greek loses its accents and breathings (and final sigma becomes medial), Hebrew
+ * loses its points and final letter forms. No ordinary keyboard produces ὑπέρ or מֶלֶךְ —
+ * marking υπερ or מלך wrong fails the student for the keyboard, not the vocabulary.
+ * English text passes through unchanged (the combining-mark strip touches only marks).
+ */
+export function foldScript(s: string): string {
+  return s
+    .normalize('NFD')
+    .replace(/[̀-ͯ͂-ͅ]/g, '')   // Greek diacritics (as combining marks)
+    .normalize('NFC')
+    .replace(/ς/g, 'σ')
+    .replace(/[֑-ׇ]/g, '')                 // Hebrew points + cantillation
+    .replace(/[ךםןףץ]/g, ch => ({ 'ך': 'כ', 'ם': 'מ', 'ן': 'נ', 'ף': 'פ', 'ץ': 'צ' }[ch] as string))
+}
+
 /** Levenshtein edit distance between two strings. */
 export function levenshtein(a: string, b: string): number {
   const m = a.length, n = b.length
@@ -124,9 +141,16 @@ export function isAnswerCorrect(studentAnswer: string, correctAnswer: string, fu
   // matched only against the parts they were being marked wrong.
   const alts = [...splitAlternatives(correctAnswer), correctAnswer].flatMap(glossForms)
   const altForms = Array.from(new Set(alts.flatMap(a => [a, stripVerbMarker(a)]))).filter(Boolean)
-  return fuzzy
-    ? studentForms.some(s => altForms.some(alt => fuzzyMatch(s, alt)))
-    : studentForms.some(s => altForms.includes(s))
+  if (fuzzy ? studentForms.some(s => altForms.some(alt => fuzzyMatch(s, alt)))
+            : studentForms.some(s => altForms.includes(s))) {
+    return true
+  }
+  // Script-folded second chance for answers WRITTEN IN Greek or Hebrew (English→Greek /
+  // English→Hebrew): accents, breathings and points are not typeable on an ordinary
+  // keyboard, so υπερ must match ὑπέρ and מלך must match מֶלֶךְ. Folding changes nothing
+  // for English answers, so this costs plain glosses no strictness.
+  const foldedAlts = altForms.map(foldScript)
+  return studentForms.map(foldScript).some(s => s && foldedAlts.includes(s))
 }
 
 /**

@@ -269,6 +269,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [morphParseFilter, setMorphParseFilter] = useState<MorphParseFilter>({ ...DEFAULT_PARSE_FILTER })
   const [filterOpen, setFilterOpen] = useState(false)
   const [vocabThruLesson, setVocabThruLesson] = useState<number | null>(null)
+  // Hebrew's vocabulary cap: a Glanz band, since the lesson map above is BGVB (Greek).
+  const [vocabThruBand, setVocabThruBand] = useState<string | null>(null)
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
   const [maxRetakes, setMaxRetakes] = useState<number | null>(null)
@@ -337,7 +339,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           // Appeals are only meaningful on vocab quizzes; ignore the value otherwise
           maxAppeals: form.type === 'VOCABULARY_QUIZ' ? maxAppeals : 0,
           // quizStylePct (0–100) is the real open-ended/MC mix; provideDefinition is derived (>0 → typed answers graded leniently).
-          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0, vocabSubsections, vocabReviewPct } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}),
+          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0, vocabSubsections, vocabReviewPct } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, vocabThruBand, fields: morphologyFields, parseFilter: morphParseFilter } : {}),
           // Construct searches store the search as the assignment's reference — the server
           // re-parses it, so a pasted absolute URL is normalised to a same-origin path there.
           ...(form.type === 'CONSTRUCT_SEARCH' ? { constructUrl: form.constructUrl, constructCount: form.constructCount, constructAskTranslation: form.constructAskTranslation, constructAskComment: form.constructAskComment } : {}) }),
@@ -498,11 +500,26 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               )}
             </div>
           )}
-          {/* The vocab cap is a BGVB-lesson cap, so it applies to Greek only — a Hebrew
-              course has no lesson map yet, and offering it would suggest a filter that
-              silently does nothing. */}
+          {/* The vocab cap: BGVB lessons for Greek, Glanz bands for Hebrew. */}
           {!isHebrewLevel(courseLevel) && (
             <VocabLessonFilter value={vocabThruLesson} onChange={setVocabThruLesson} />
+          )}
+          {isHebrewLevel(courseLevel) && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.m.vocabFilter')}</label>
+              <select
+                value={vocabThruBand ?? ''}
+                onChange={e => setVocabThruBand(e.target.value || null)}
+                className="input w-full text-sm"
+              >
+                <option value="">{t('inst.b.m.vocabAll')}</option>
+                {(HEBREW_DECK.bands ?? []).map(b => (
+                  <option key={b.key} value={b.key}>
+                    {t('inst.b.m.vocabThruBand', { band: b.label, range: b.rankRange })}
+                  </option>
+                ))}
+              </select>
+            </div>
           )}
         </>
       )}

@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, vocabThruBand, notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment } = body
 
   // Construct searches: the search link is the assignment, so it is parsed here rather than
   // trusted — what gets stored is the same-origin path it decodes to.
@@ -147,6 +147,20 @@ export async function POST(req: NextRequest) {
             askComment: constructConfig.askComment,
           }
         : undefined,
+      // Morphology quizzes: subtype + full generation recipe, exactly as the semester
+      // route stores them. Without these, regenerating a singly-created quiz fell back
+      // to VERB_PARSING with no fields and no filter — it silently changed what the
+      // quiz tests.
+      ...(type === 'MORPHOLOGY_QUIZ'
+        ? { morphSubtype: String(morphologySubtype ?? 'VERB_PARSING'),
+            vocabThruLesson: !isHebrewLevel(String(level)) && vocabThruLesson != null
+              ? Number(vocabThruLesson) : null,
+            morphConfig: JSON.parse(JSON.stringify({
+              fields: body.fields ?? [],
+              ...(body.parseFilter ? { parseFilter: body.parseFilter } : {}),
+              ...(vocabThruBand ? { vocabThruBand } : {}),
+            })) }
+        : {}),
       createdById: payload.sub,
       isPublished: Boolean(isPublished),
     },
@@ -197,11 +211,12 @@ export async function POST(req: NextRequest) {
     const fields: string[] | undefined = body.fields?.length ? body.fields : undefined
     if (isHebrewLevel(String(level))) {
       // Hebrew draws on its own pool and field vocabulary (binyan/conjugation/state rather
-      // than tense/voice/mood). vocabThruLesson is Greek-only — it caps by BGVB lesson —
-      // so it is not applied here; a Hebrew course has no lesson map yet.
+      // than tense/voice/mood). vocabThruLesson is Greek-only (BGVB lessons); Hebrew's
+      // vocabulary cap is the Glanz band, passed through here and stored in morphConfig.
       questions = generateHebrewMorphologyQuestions(
         (morphologySubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
-        Number(numQuestions ?? 10), fields, body.parseFilter ?? undefined)
+        Number(numQuestions ?? 10), fields, body.parseFilter ?? undefined,
+        vocabThruBand ?? null)
     } else {
       const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
       questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null, fields, body.parseFilter ?? undefined)
