@@ -122,7 +122,7 @@ const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel'])
 
 // The parallel translations available for a work. A work only gets a selector once it has more
 // than one option — a single column needs no menu, which is why most works still return [].
-function translationsFor(w: CatalogWork | null, t: (k: string) => string): { id: string; label: string }[] {
+function translationsFor(w: CatalogWork | null, t: (k: string, v?: Record<string, string>) => string): { id: string; label: string }[] {
   if (!w) return []
   const out: { id: string; label: string }[] = []
   if (w.source === 'lxx') {
@@ -137,7 +137,8 @@ function translationsFor(w: CatalogWork | null, t: (k: string) => string): { id:
   }
   if (ES_PROSE_WORKS[w.id]) {
     // The work's own published English is always the first option, so the reader can switch back.
-    out.push({ id: 'source', label: PROSE_ENGLISH_LABELS[w.id] ?? 'English' })
+    const en = PROSE_ENGLISH_LABELS[w.id]
+    out.push({ id: 'source', label: en ? t('texts.englishBy', { who: en }) : t('texts.englishCol') })
     out.push({ id: 'es', label: t('texts.spanishOurs') })
   }
   return out
@@ -145,6 +146,11 @@ function translationsFor(w: CatalogWork | null, t: (k: string) => string): { id:
 
 // Who translated the English a prose work ships with — named so the selector never implies our
 // Spanish and the published English come from the same hand.
+//
+// The label leads with the COLUMN, not the translator. "Whiston (1737)" alone sits beside a
+// layout control reading "Greek + English" and reads as though Whiston governs the whole pane,
+// Greek included — which he does not: the Greek is Niese's, and Whiston never made a Greek text.
+// Naming the column makes the Greek's absence from this control deliberate rather than ambiguous.
 const PROSE_ENGLISH_LABELS: Record<string, string> = { antiquities: 'Whiston (1737)' }
 
 const FONT_SIZE_MAP: Record<string, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem', '2xl': '2.1rem', '3xl': '2.6rem' }
@@ -426,7 +432,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // The first ("original") column is Greek for almost everything, but Latin for Quintilian.
   // primaryLabel names it in the mode selector and the search box; it also turns off the
   // QWERTY→Greek Beta-Code transliteration, which would garble a Latin query.
-  const primaryLabel = work?.primaryLabel ?? 'Greek'
+  // Column names are localised: the catalog stores them in English because that is the language
+  // of the code, but a Spanish reader must not meet "Greek + English" in an otherwise Spanish
+  // interface. Only the non-default names (Latin, Aramaic) pass through as written.
+  const primaryLabel = work?.primaryLabel ?? t('texts.greekCol')
   const primaryIsGreek = primaryLabel === 'Greek'
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
   const availableTranslations = translationsFor(work, t)
@@ -449,9 +458,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         : t('texts.greekPlus', { lang: translationLabel ?? '' })
   // The second column is English for most prose works, but Latin for the Greek Sibylline
   // (Augustine's rendering of the Book 8 acrostic).
-  const secondLabel = work?.secondaryLabel ?? 'English'
-  const proseModeLabel = proseModeEff === 'greek' ? `${primaryLabel} only`
-    : proseModeEff === 'english' ? `${secondLabel} only` : `${primaryLabel} + ${secondLabel}`
+  const secondLabel = work?.secondaryLabel ?? t('texts.englishCol')
+  // The layout control is the only one that speaks for the Greek column, so it names the edition
+  // where the work has one to name. Nothing else on screen says whose Greek this is.
+  const primaryNamed = work?.greekEdition ? `${primaryLabel} (${work.greekEdition})` : primaryLabel
+  const proseModeLabel = proseModeEff === 'greek' ? `${primaryNamed} only`
+    : proseModeEff === 'english' ? `${secondLabel} only` : `${primaryNamed} + ${secondLabel}`
 
   // Which scripts the in-text search can target, given what's on screen.
   const greekSearchable = (isGreek || greekProse) && !greekHidden
@@ -1540,7 +1552,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
                 {translationMenuOpen && (
                   <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
-                    {([['greek', t('texts.greekOnly')], ['both', t('texts.greekPlus', { lang: secondLabel })], ['english', t('texts.langOnly', { lang: secondLabel })]] as const).map(([mode, label]) => (
+                    {([['greek', t('texts.langOnly', { lang: primaryNamed })], ['both', t('texts.greekPlus2', { primary: primaryNamed, lang: secondLabel })], ['english', t('texts.langOnly', { lang: secondLabel })]] as const).map(([mode, label]) => (
                       <button
                         key={mode}
                         type="button"

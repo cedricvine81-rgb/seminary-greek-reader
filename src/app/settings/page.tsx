@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { SettingsForm } from '@/components/settings/SettingsForm'
 import { ManageSubscription } from '@/components/settings/ManageSubscription'
+import { SourcesCredits } from '@/components/settings/SourcesCredits'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import type { Role } from '@/types/auth'
@@ -50,6 +51,7 @@ export default async function SettingsPage() {
           institutions={institutions}
         />
         {payload.role === 'STUDENT' && <ManageSubscription />}
+        <SourcesCredits />
       </div>
     </DashboardShell>
   )

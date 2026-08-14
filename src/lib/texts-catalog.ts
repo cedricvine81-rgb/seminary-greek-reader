@@ -36,6 +36,10 @@ export interface CatalogWork {
   // Name of the second column when it is not English — e.g. the Latin of Augustine's
   // rendering of the Sibylline acrostic. Defaults to 'English'.
   secondaryLabel?: string
+  // Whose edition the original-language column prints — "Niese", "Rahlfs", "Perseus". Shown in
+  // the layout control, which is the only place on screen that speaks for that column: without
+  // it a reader sees the English translator named and reasonably assumes he made the Greek too.
+  greekEdition?: string
   // Name of the FIRST ("original") column when it is not Greek — 'Latin' for Quintilian.
   // Defaults to 'Greek'; also turns off the Greek Beta-Code search transliteration.
   primaryLabel?: string
@@ -145,10 +149,10 @@ const RAW_CATEGORIES: TextCategory[] = [
     label: 'Josephus',
     blurb: 'The complete works of Flavius Josephus — the Greek (Niese) with Whiston’s English alongside, numbered by the standard Niese sections (Perseus, CC-BY-SA).',
     works: [
-      { id: 'antiquities', name: 'Antiquities of the Jews', source: 'josephus', work: 'antiquities', greek: true, books: [22, 16, 15, 8, 11, 14, 15, 15, 14, 11, 8, 11, 16, 16, 11, 11, 13, 9, 9, 12] },
-      { id: 'jewish-war', name: 'The Jewish War', source: 'josephus', work: 'jewish-war', greek: true, books: [33, 22, 10, 11, 13, 10, 11] },
-      { id: 'against-apion', name: 'Against Apion', source: 'josephus', work: 'against-apion', greek: true, books: [1, 1] },
-      { id: 'life', name: 'The Life', source: 'josephus', work: 'life', greek: true, books: [1] },
+      { id: 'antiquities', name: 'Antiquities of the Jews', source: 'josephus', work: 'antiquities', greek: true, greekEdition: 'Niese', books: [22, 16, 15, 8, 11, 14, 15, 15, 14, 11, 8, 11, 16, 16, 11, 11, 13, 9, 9, 12] },
+      { id: 'jewish-war', name: 'The Jewish War', source: 'josephus', work: 'jewish-war', greek: true, greekEdition: 'Niese', books: [33, 22, 10, 11, 13, 10, 11] },
+      { id: 'against-apion', name: 'Against Apion', source: 'josephus', work: 'against-apion', greek: true, greekEdition: 'Niese', books: [1, 1] },
+      { id: 'life', name: 'The Life', source: 'josephus', work: 'life', greek: true, greekEdition: 'Niese', books: [1] },
     ],
   },
   {
