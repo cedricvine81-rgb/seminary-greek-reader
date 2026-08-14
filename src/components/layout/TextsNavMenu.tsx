@@ -92,10 +92,11 @@ export function TextsNavMenu() {
   return (
     <div className="relative" onMouseEnter={openNow} onMouseLeave={closeSoon}>
       <Link
+        title={t('nav.texts')}
         href="/texts"
         className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5"
       >
-        <Library size={18} /> <span className="hidden md:inline">{t('nav.texts')}</span>
+        <Library size={18} /> <span className="hidden xl:inline">{t('nav.texts')}</span>
       </Link>
 
       {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap. */}

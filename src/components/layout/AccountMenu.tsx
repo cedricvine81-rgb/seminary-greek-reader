@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Calendar, ClipboardList, FileText,
   BarChart2, GraduationCap, TrendingUp,
   BookMarked, Archive, Mail, Users,
-  BookOpen, Table2, Scroll, Library, Wrench,
+  BookOpen, Table2, Scroll, Library, Wrench, StickyNote,
 } from 'lucide-react'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { PageGuideMenuItem } from '@/components/help/PageGuideButton'
@@ -36,6 +36,7 @@ const STUDY_NAV = [
   { href: '/vocab',    label: 'nav.vocab',    icon: BookMarked },
   { href: '/grammar',  label: 'nav.grammar',  icon: Table2 },
   { href: '/exegesis', label: 'nav.exegesis', icon: Scroll },
+  { href: '/exegesis?tab=notes', label: 'tab.notes', icon: StickyNote },
   { href: '/texts',    label: 'nav.texts',    icon: Library },
   { href: '/tools',    label: 'nav.tools',    icon: Wrench },
 ]

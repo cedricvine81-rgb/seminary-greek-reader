@@ -6,7 +6,7 @@ import { PageGuideButton } from '@/components/help/PageGuideButton'
 import { LanguageMenu } from '@/components/layout/LanguageMenu'
 import { ToolsNavMenu } from '@/components/layout/ToolsNavMenu'
 import { TextsNavMenu } from './TextsNavMenu'
-import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
+import { BookOpen, BookMarked, Table2, Scroll, StickyNote, LayoutDashboard } from 'lucide-react'
 import { getServerT } from '@/lib/i18n/server'
 import { getServerBrand } from '@/lib/track-server'
 import { TrackToggle } from './TrackToggle'
@@ -51,24 +51,29 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           </Link>
         </div>
 
-        {/* Center nav — icons only until lg, icons + text above it.
-            The labels used to appear at `md`, which is 768px, which is an iPad in portrait:
-            the row grew to 966px and pushed the language switcher and the menu button clean
-            off the screen. They now wait for lg, where there is room.
-            min-w-0 + overflow-x-auto is the belt to that braces: whatever ends up in here,
-            the row scrolls rather than shoving the controls after it out of the viewport. */}
-        <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <Link href="/reader" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <BookOpen size={18} /> <span className="hidden lg:inline">{t('nav.reader')}</span>
+        {/* Center nav — DESKTOP ONLY. Below lg the same six sections are in the ☰ menu, and
+            showing both put every option on screen twice on an iPad. One navigation surface
+            per width: the menu below lg, this row above it.
+            min-w-0 + overflow-x-auto stays as the backstop — whatever ends up in here, the
+            row scrolls rather than shoving the controls after it off the viewport, which is
+            how the menu button came to be 13px off the edge of a phone. */}
+        <nav className="hidden min-w-0 items-center gap-0.5 overflow-x-auto lg:flex [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Link href="/reader" title={t('nav.reader')} className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <BookOpen size={18} /> <span className="hidden xl:inline">{t('nav.reader')}</span>
           </Link>
-          <Link href="/vocab" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <BookMarked size={18} /> <span className="hidden lg:inline">{t('nav.vocab')}</span>
+          <Link href="/vocab" title={t('nav.vocab')} className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <BookMarked size={18} /> <span className="hidden xl:inline">{t('nav.vocab')}</span>
           </Link>
-          <Link href="/grammar" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <Table2 size={18} /> <span className="hidden lg:inline">{t('nav.grammar')}</span>
+          <Link href="/grammar" title={t('nav.grammar')} className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <Table2 size={18} /> <span className="hidden xl:inline">{t('nav.grammar')}</span>
           </Link>
-          <Link href="/exegesis" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <Scroll size={18} /> <span className="hidden lg:inline">{t('nav.exegesis')}</span>
+          <Link href="/exegesis" title={t('nav.exegesis')} className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <Scroll size={18} /> <span className="hidden xl:inline">{t('nav.exegesis')}</span>
+          </Link>
+          {/* Notes is a tab inside Exegesis, but it is somewhere a reader goes deliberately
+              rather than a step in exegesis, so it gets its own way in. */}
+          <Link href="/exegesis?tab=notes" title={t('tab.notes')} className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <StickyNote size={18} /> <span className="hidden xl:inline">{t('tab.notes')}</span>
           </Link>
           <TextsNavMenu />
           {/* Between Texts and Dashboard: everything behind it works ON the Texts corpora, so it
@@ -79,9 +84,10 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           {isAuthenticated && (userRole === 'INSTRUCTOR' || userRole === 'STUDENT' || userRole === 'ADMIN') && (
             <Link
               href={userRole === 'INSTRUCTOR' ? '/instructor' : userRole === 'ADMIN' ? '/admin' : '/student'}
+              title={t('nav.dashboard')}
               className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5"
             >
-              <LayoutDashboard size={18} /> <span className="hidden lg:inline">{t('nav.dashboard')}</span>
+              <LayoutDashboard size={18} /> <span className="hidden xl:inline">{t('nav.dashboard')}</span>
             </Link>
           )}
         </nav>
