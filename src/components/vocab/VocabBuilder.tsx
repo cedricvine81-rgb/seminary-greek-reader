@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect, createContext, useContext, type ReactNode } from 'react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { useDeckGloss } from '@/lib/use-deck-gloss'
+import { useNarrowScreen } from '@/lib/use-narrow-screen'
 import Link from 'next/link'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen, FileText } from 'lucide-react'
 import { clsx } from 'clsx'
@@ -1017,6 +1018,7 @@ function StudySettings({
   onStart: (mode: LaunchMode) => void
 }) {
   const t = useT()
+  const narrow = useNarrowScreen()
   const bandL = useBandLabels()
   const V = useVocab()
   const isGreek = V.scriptName === 'Greek'
@@ -1235,11 +1237,13 @@ function StudySettings({
                         const mode: SectionListMode = subListMode[sub.key] ?? 'greek-english'
                         const setMode = (m: SectionListMode) =>
                           setSubListMode(prev => ({ ...prev, [sub.key]: m }))
-                        const cols = mode === 'greek-english' ? 2 : 3
+                        // One column on a phone for word+gloss, two for the single-language lists. Two columns
+                        // of ~130px each showed neither the whole Greek/Hebrew word nor its English.
+                        const cols = mode === 'greek-english' ? (narrow ? 1 : 2) : (narrow ? 2 : 3)
                         return (
                           <div className="rounded-lg border border-gray-200 overflow-hidden">
                             {/* List header */}
-                            <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-b border-gray-100">
+                            <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5 px-4 py-2.5 bg-gray-50 border-b border-gray-100">
                               <p className="text-sm font-semibold text-gray-700">
                                 §{s}{sub.label} · Words {sub.rankRange}
                                 <span className="text-gray-400 font-normal ml-1.5">({t('vocab.wordCountPlural', { count: sub.words.length, n: sub.words.length })})</span>
@@ -1274,7 +1278,7 @@ function StudySettings({
                               </div>
                             </div>
                             {/* Word rows */}
-                            <div className={mode === 'greek-english' ? 'grid grid-cols-2' : 'grid grid-cols-3'}>
+                            <div className={clsx('grid', cols === 1 ? 'grid-cols-1' : cols === 2 ? 'grid-cols-2' : 'grid-cols-3')}>
                               {sub.words.map((w, i) => (
                                 <div
                                   key={wid(w)}
@@ -1286,7 +1290,7 @@ function StudySettings({
                                 >
                                   {mode === 'greek-english' && (
                                     <div className="flex items-baseline justify-between gap-2 min-w-0">
-                                      <div className="min-w-0 flex-1 truncate">
+                                      <div className="min-w-0 flex-1 sm:truncate">
                                         <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-semibold text-gray-900`}>{w.word}</span>
                                         {w.inflection && (
                                           <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-xs text-gray-400 ml-1`}>{w.inflection}</span>

@@ -8,6 +8,7 @@ const config = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   testMatch: ['**/tests/**/*.test.ts', '**/tests/**/*.test.tsx'],
+  setupFiles: ['<rootDir>/tests/setup-jsdom.ts'],
   // Agent worktrees live under .claude/worktrees and are full checkouts, so without this
   // every suite runs twice — and jest-haste-map warns about the "duplicate" package.json
   // and mocks it finds in them.

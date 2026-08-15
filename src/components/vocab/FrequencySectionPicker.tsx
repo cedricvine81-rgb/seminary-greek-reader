@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { Check, ChevronRight, ChevronDown, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
+import { useNarrowScreen } from '@/lib/use-narrow-screen'
 import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
 import { DECKS, type VocabLang } from '@/lib/vocab-decks'
 import type { Subsection } from '@/lib/vocab-subsections'
@@ -73,6 +74,7 @@ export function FrequencySectionPicker({
 }: FrequencySectionPickerProps) {
   const t = useT()
   const locale = useLocale()
+  const narrow = useNarrowScreen()
   const bandL = useBandLabels()
   const deck = DECKS[lang]
   // The word lists here are the SAME deck the flashcards show, and were rendering raw
@@ -291,12 +293,14 @@ export function FrequencySectionPicker({
                     const mode: SectionListMode = subListMode[sub.key] ?? 'greek-english'
                     const setMode = (m: SectionListMode) =>
                       setSubListMode(prev => ({ ...prev, [sub.key]: m }))
-                    const cols = mode === 'greek-english' ? 2 : 3
+                    // One column on a phone for word+gloss, two for the single-language lists. Two columns
+                    // of ~130px each showed neither the whole Greek/Hebrew word nor its English.
+                    const cols = mode === 'greek-english' ? (narrow ? 1 : 2) : (narrow ? 2 : 3)
                     return (
                       <div className="rounded-lg border border-gray-200 overflow-hidden">
                         {/* List header */}
-                        <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-b border-gray-100">
-                          <p className="text-sm font-semibold text-gray-700">
+                        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5 px-4 py-2.5 bg-gray-50 border-b border-gray-100">
+                          <p className="min-w-0 text-sm font-semibold text-gray-700">
                             §{s}{sub.label} · Words {sub.rankRange}
                             <span className="text-gray-400 font-normal ml-1.5">
                               ({sub.words.length} words)
@@ -334,7 +338,7 @@ export function FrequencySectionPicker({
                           </div>
                         </div>
                         {/* Word rows */}
-                        <div className={mode === 'greek-english' ? 'grid grid-cols-2' : 'grid grid-cols-3'}>
+                        <div className={clsx('grid', cols === 1 ? 'grid-cols-1' : cols === 2 ? 'grid-cols-2' : 'grid-cols-3')}>
                           {sub.words.map((w, i) => (
                             <div
                               key={w.word}
@@ -346,7 +350,7 @@ export function FrequencySectionPicker({
                             >
                               {mode === 'greek-english' && (
                                 <div className="flex items-baseline justify-between gap-2 min-w-0">
-                                  <div className="min-w-0 flex-1 truncate">
+                                  <div className="min-w-0 flex-1 sm:truncate">
                                     <span dir={deck.rtl ? 'rtl' : undefined} className={clsx(deck.scriptClass, 'text-base font-semibold text-gray-900')}>{w.word}</span>
                                     {w.inflection && (
                                       <span dir={deck.rtl ? 'rtl' : undefined} className={clsx(deck.scriptClass, 'text-xs text-gray-400 ml-1')}>{w.inflection}</span>
