@@ -19,6 +19,7 @@ import { usePref } from '@/lib/use-pref'
 import { useCommentaryFontScale, useCommentaryLineSpacing, useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
 import { SBL_ABBREVIATIONS } from '@/lib/sbl-abbreviations'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { useNarrowScreen } from '@/lib/use-narrow-screen'
 import { useTrackValue } from '@/lib/track-client'
 
 type Section = { c: number; v: number; ec: number; ev: number; t: string }
@@ -60,7 +61,9 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
 ]
 
 // Mobile switches tabs from inside the ⋮ menu and omits the wide desktop-only views
-// (Backgrounds, Synopsis, Rhetoric — too wide for a phone). Variants has its own mobile layout.
+// (Backgrounds, Synopsis, Rhetoric — too wide for a phone). Variants is hidden one notch
+// further down, on PHONES only (see `menuTabs`): its collation works on an iPad, but on a
+// phone it never really did (user verdict, 2026-08-14), so there it is not offered at all.
 const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis', 'rhetoric', 'allusions']
 const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
@@ -69,9 +72,16 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
   const router = useRouter()
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
   // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
+  // Phones lose the Variants tab entirely — and a deep link (?tab=variants) falls back to
+  // the workspace there, rather than opening a view that does not work at that width.
+  const narrow = useNarrowScreen()
+  const menuTabs = MOBILE_TAB_LIST.filter(({ id }) => !(narrow && id === 'variants'))
   const [tab, setTab] = useState<ExegesisTab>(
     EXEGESIS_TABS.includes(initialTab as ExegesisTab) ? (initialTab as ExegesisTab) : 'workspace'
   )
+  useEffect(() => {
+    if (narrow && tab === 'variants') setTab('workspace')
+  }, [narrow, tab])
   // The single passage that coordinates every tab. `input` is the live box text;
   // `passage` is committed on Enter/blur and pushed to the tabs. Both seed from `?ref=`
   // so a "Return to page" from the Search page lands back on the same passage.
@@ -380,7 +390,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                 <div className="lg:hidden border-b border-gray-100 pb-3">
                   <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">View</p>
                   <div className="grid grid-cols-2 gap-1">
-                    {MOBILE_TAB_LIST.map(({ id, label, Icon }) => (
+                    {menuTabs.map(({ id, label, Icon }) => (
                       <button
                         key={id}
                         type="button"
