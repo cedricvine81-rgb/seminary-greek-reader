@@ -363,8 +363,8 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
   return (
     <VocabCtx.Provider value={V}>
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6 space-y-6">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+        <div className="flex shrink-0 gap-1 bg-gray-100 rounded-xl p-1 w-fit">
           {TABS.map(({ id, label, action }) => (
             <button
               key={id}
@@ -397,7 +397,7 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
         )}
 
         {onLangChange && (
-          <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+          <div className="flex shrink-0 gap-1 bg-gray-100 rounded-xl p-1 w-fit">
             {([['greek', t('vocab.langGreek')], ['hebrew', t('vocab.langHebrew')]] as const).map(([id, label]) => (
               <button
                 key={id}
