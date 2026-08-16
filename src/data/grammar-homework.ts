@@ -9,8 +9,14 @@
 // translation; the instructor grades per sentence and the score feeds the
 // gradebook through the existing question-based translation-exercise path.
 //
-// To add a pack: append to GRAMMAR_HOMEWORK_SETS. `chapter` must be a Grammar
+// To add a pack: append to HAND_WRITTEN_SETS below. `chapter` must be a Grammar
 // page tab id (e.g. 'prepositions', 'nouns') so the chapter can list its sets.
+//
+// The packs generated from the lesson decks live in grammar-homework-slides.ts and are
+// concatenated onto the end of GRAMMAR_HOMEWORK_SETS; that file type-imports this one, which
+// is erased at compile time, so the two do not form a runtime cycle.
+
+import { SLIDE_HOMEWORK_SETS } from './grammar-homework-slides'
 
 export interface HomeworkWord {
   w: string
@@ -34,7 +40,7 @@ export interface HomeworkSet {
 
 const ART = 'Article'
 
-export const GRAMMAR_HOMEWORK_SETS: HomeworkSet[] = [
+const HAND_WRITTEN_SETS: HomeworkSet[] = [
   {
     id: 'l3-prepositions-a',
     chapter: 'prepositions',
@@ -1117,6 +1123,42 @@ export const GRAMMAR_HOMEWORK_SETS: HomeworkSet[] = [
       ],
         translation: "The lord opened the eyes of the blind man.",
         note: "ἤνοιξεν: aorist of ἀνοίγω.",
+      },
+      { words: [
+        { w: "και", parsing: "Conjunction", gloss: "and" },
+        { w: "καλεσεις", parsing: "Fut Act Ind 2 Sg — καλέω", gloss: "you will call" },
+        { w: "το", parsing: "Article — Acc Sg Neut", gloss: "the" },
+        { w: "τεκνον", parsing: "Acc Sg Neut — τέκνον", syntax: "Direct Object", gloss: "child" },
+        { w: "Ἰησουν∙", parsing: "Acc Sg Masc — Ἰησοῦς", syntax: "Object Complement", gloss: "Jesus" },
+        { w: "σωσει", parsing: "Fut Act Ind 3 Sg — σῴζω", gloss: "he will save" },
+        { w: "τον", parsing: "Article — Acc Sg Masc", gloss: "the" },
+        { w: "λαον", parsing: "Acc Sg Masc — λαός", syntax: "Direct Object", gloss: "people" },
+        { w: "αὐτου", parsing: "Gen Sg Masc — αὐτός", syntax: "Genitive of Possession", gloss: "his" },
+        { w: "ἀπο", parsing: "Preposition + genitive", gloss: "from" },
+        { w: "των", parsing: "Article — Gen Pl Fem", gloss: "—" },
+        { w: "ἁμαρτιων", parsing: "Gen Pl Fem — ἁμαρτία", gloss: "sins" },
+        { w: "αὐτων.", parsing: "Gen Pl Masc — αὐτός", syntax: "Genitive of Possession", gloss: "their" },
+      ],
+        translation: "And you will call the child Jesus; he will save his people from their sins.",
+        note: "Cf. Matthew 1:21 — two σ-futures (καλέσεις, σώσει) side by side.",
+      },
+      { words: [
+        { w: "και", parsing: "Conjunction", gloss: "and" },
+        { w: "ἐλαλησαν", parsing: "Aor Act Ind 3 Pl — λαλέω", gloss: "they spoke" },
+        { w: "τον", parsing: "Article — Acc Sg Masc", gloss: "the" },
+        { w: "λογον", parsing: "Acc Sg Masc — λόγος", syntax: "Direct Object", gloss: "word" },
+        { w: "του", parsing: "Article — Gen Sg Masc", gloss: "of the" },
+        { w: "κυριου", parsing: "Gen Sg Masc — κύριος", syntax: "Genitive of Possession", gloss: "Lord" },
+        { w: "τοις", parsing: "Article — Dat Pl Masc", gloss: "to the" },
+        { w: "πιστοις", parsing: "Dat Pl Masc — πιστός", gloss: "faithful" },
+        { w: "ἀδελφοις", parsing: "Dat Pl Masc — ἀδελφός", syntax: "Dative of Indirect Object", gloss: "brothers" },
+        { w: "ἐν", parsing: "Preposition + dative", gloss: "in" },
+        { w: "τῃ", parsing: "Article — Dat Sg Fem", gloss: "the" },
+        { w: "οἰκιᾳ", parsing: "Dat Sg Fem — οἰκία", gloss: "house" },
+        { w: "αὐτου.", parsing: "Gen Sg Masc — αὐτός", syntax: "Genitive of Possession", gloss: "his" },
+      ],
+        translation: "And they spoke the word of the Lord to the faithful brothers in his house.",
+        note: "Cf. Acts 16:32. ἐλάλησαν: σ-aorist of the contract verb λαλέω.",
       },
     ],
   },
@@ -2258,6 +2300,14 @@ export const GRAMMAR_HOMEWORK_SETS: HomeworkSet[] = [
       },
     ],
   },
+]
+
+// The hand-written packs above, then every exercise the lesson decks point at but the app
+// never had — see grammar-homework-slides.ts. One list, so the Assignment Builder, the
+// /api/grammar-homework route and the unlearned-vocab helper all see the same sets.
+export const GRAMMAR_HOMEWORK_SETS: HomeworkSet[] = [
+  ...HAND_WRITTEN_SETS,
+  ...SLIDE_HOMEWORK_SETS,
 ]
 
 export function getHomeworkSet(id: string): HomeworkSet | undefined {
