@@ -6,6 +6,7 @@ import { CalendarDays, FileText, CheckCircle2, Download, Eye } from 'lucide-reac
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { GRAMMAR_HOMEWORK_SETS } from '@/data/grammar-homework'
+import { HomeworkSetPreviewLink } from '@/components/instructor/HomeworkSetPreview'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { toEndOfDayLocalISO, toDueISO } from '@/lib/due-date'
@@ -725,7 +726,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               placeholder={t('inst.b.ex.homeworkNone')}
               options={GRAMMAR_HOMEWORK_SETS.map(s => ({ value: s.id, label: s.title }))}
             />
-            <p className="mt-1 text-xs text-brand-600">{t('inst.b.ex.homeworkHelp')}</p>
+            <p className="mt-1 text-xs text-brand-600">
+              {t('inst.b.ex.homeworkHelp')}
+              {form.homeworkSet && <>{' · '}<HomeworkSetPreviewLink setId={form.homeworkSet} /></>}
+            </p>
           </div>
           )}
           {form.homeworkSet ? (

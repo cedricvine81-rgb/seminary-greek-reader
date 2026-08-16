@@ -19,6 +19,7 @@ import { NO_CONTENT, content, fingerprint, type ContentCatalogue } from '@/lib/i
 import { serialize, parse, type MarkupComponents } from '@/lib/i18n/morph-markup'
 import { K } from '@/lib/i18n/morph-fields'
 import { openTranslationWorkbench, type WorkbenchSentence } from '@/lib/translation-workbench-bus'
+import { HomeworkSetPreviewLink } from '@/components/instructor/HomeworkSetPreview'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { encodeConstruct, type ConstructQuery } from '@/lib/construct-query'
 import { transliterate } from '@/lib/hebrew-xlit'
@@ -1327,7 +1328,8 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
           return (
             <div key={set.id} className="rounded-lg border border-amber-200 bg-surface p-3">
               <p className="text-sm font-semibold text-gray-800">
-                {set.title} <span className="text-xs font-normal text-gray-400">· {set.sentenceCount} sentences</span>
+                {set.title} <span className="text-xs font-normal text-gray-400">· {set.sentenceCount} sentences ·</span>{' '}
+                <HomeworkSetPreviewLink setId={set.id} />
               </p>
               <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
                 <label className="flex flex-col gap-1 text-xs font-medium text-gray-500">
