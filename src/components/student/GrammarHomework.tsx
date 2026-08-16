@@ -7,6 +7,7 @@ import { X, Check, Send, ChevronRight, CheckCircle2 } from 'lucide-react'
 import { Select } from '@/components/ui/Select'
 import { ALL_SYNTAX_OPTIONS } from '@/data/syntax-categories'
 import type { HomeworkWord } from '@/data/grammar-homework'
+import { unlearnedWordsForSetId } from '@/lib/homework-vocab'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
 // Graded grammar homework (deck Exercises A / B as a Translation Exercise).
@@ -48,12 +49,14 @@ function storageKey(assignmentId: string) {
   return `grammar-homework-${assignmentId}`
 }
 
-export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate, round2Deadline }: {
+export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate, round2Deadline, setId }: {
   assignmentId: string
   questions: HwQuestion[]
   attemptCount: number
   dueDate: string | null
   round2Deadline: string | null
+  /** Which homework pack this is, so the pane can list the vocabulary not yet taught. */
+  setId?: string | null
 }) {
   const t = useT()
   const router = useRouter()
@@ -202,6 +205,8 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
   const fmt = (iso: string) => new Date(iso).toLocaleString(undefined,
     { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
 
+  const newWords = useMemo(() => setId ? unlearnedWordsForSetId(setId) : [], [setId])
+
   return (
     <div className="space-y-4">
       {correctionOpen && (
@@ -229,6 +234,27 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
                 ? <>{t('ex.submittedForGrading')}</>
                 : <>Submitted for grading. This homework takes a single submission — no further changes can be made.</>}
           </span>
+        </div>
+      )}
+
+      {/* Vocabulary this set uses that the course has not reached yet. Listed with glosses
+          because the student has to supply the gloss themselves — without this, an untaught
+          word is a blank they cannot fill rather than a question they can attempt. */}
+      {newWords.length > 0 && (
+        <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3">
+          <p className="text-sm font-semibold text-brand-800">{t('hw.newWords')}</p>
+          <p className="mt-0.5 text-xs text-brand-700">{t('hw.newWordsHelp')}</p>
+          <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+            {newWords.map(w => (
+              <li key={w.lemma} className="text-sm text-brand-900">
+                <span className="greek-text font-medium">{w.lemma}</span>
+                {w.gloss && <span className="text-brand-700"> — {w.gloss}</span>}
+                {w.rank == null && (
+                  <span className="ml-1 text-xs text-brand-600">({t('hw.beyondList')})</span>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

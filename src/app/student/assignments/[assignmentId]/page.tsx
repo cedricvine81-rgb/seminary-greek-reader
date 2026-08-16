@@ -261,10 +261,15 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             worked in the right-hand homework pane; graded by the instructor. */}
         {(!isClosed || previewMode) && isGrammarHomework && (() => {
           const priorByQuestion = new Map(priorResponses.map(r => [r.questionId, r.answer]))
+          // Every question in the assignment comes from one pack, so the first one names it.
+          let setId: string | null = null
+          try { setId = (JSON.parse(assignment.questions[0]?.options[0] ?? '{}') as { set?: string }).set ?? null }
+          catch { /* leave null — the new-words list is simply omitted */ }
           return (
             <GrammarHomework
               assignmentId={assignment.id}
               attemptCount={attemptCount}
+              setId={setId}
               dueDate={assignment.dueDate?.toISOString() ?? null}
               round2Deadline={assignment.round2Deadline?.toISOString() ?? null}
               questions={assignment.questions.map(q => {

@@ -257,13 +257,29 @@ export const PARTICIPLES_CONTENT = (
         ]}
       />
     </TableAside>
-    <InfoBox title={<Tr id="participles.ib.decision-process">Parsing a Participle — Decision Process</Tr>}>
-      <ol className="text-xs text-gray-600 space-y-1 list-decimal list-inside">
-        <li><Tr id="participles.wo.stem-been-changed">Has the stem been changed? No → regular; Yes → 2nd aorist (uses ‛o' present endings)</Tr></li>
-        <li><Tr id="participles.wo.what-connecting-vowel">What is the connecting vowel? ο/ου → present; α → aorist</Tr></li>
-        <li><Tr id="participles.wo.present-active-participle">Is ‒μεν‒ present? No → active participle; Yes → middle/passive (or aorist middle)</Tr></li>
+    {/* The three questions are the chapter's method — a student who can run them can parse any
+        participle in the NT. They were set in the smallest, faintest type on the page, below
+        even the surrounding prose; they now carry the weight the method deserves. The wording
+        and the Tr ids are untouched, so the translations still resolve. */}
+    <div className="mb-5 rounded-xl border-2 border-brand-300 bg-brand-50 px-5 py-4">
+      <p className="mb-3 text-sm font-bold uppercase tracking-wide text-brand-800">
+        <Tr id="participles.ib.decision-process">Parsing a Participle — Decision Process</Tr>
+      </p>
+      <ol className="space-y-3">
+        {[
+          <Tr key="1" id="participles.wo.stem-been-changed">Has the stem been changed? No → regular; Yes → 2nd aorist (uses ‛o' present endings)</Tr>,
+          <Tr key="2" id="participles.wo.what-connecting-vowel">What is the connecting vowel? ο/ου → present; α → aorist</Tr>,
+          <Tr key="3" id="participles.wo.present-active-participle">Is ‒μεν‒ present? No → active participle; Yes → middle/passive (or aorist middle)</Tr>,
+        ].map((q, i) => (
+          <li key={i} className="flex items-start gap-3">
+            <span className="grid h-7 w-7 flex-none place-items-center rounded-full bg-brand-600 text-sm font-bold text-white">
+              {i + 1}
+            </span>
+            <span className="text-base leading-relaxed text-gray-900">{q}</span>
+          </li>
+        ))}
       </ol>
-    </InfoBox>
+    </div>
 
     {/* ── 5 · Genitive absolute ──────────────────────────── */}
     <DropdownPractice id="participles.d3"
