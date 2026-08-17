@@ -36,7 +36,9 @@ const CATALOGUE_DIRS = [
  * the terms a real person is bound by, and a machine-assisted translation of a contract is
  * a liability, not a courtesy — they carry their own language notice instead.
  */
-const INTENTIONAL = ['app/terms/', 'app/privacy/', 'app/refunds/', 'app/pricing/']
+// syntax-reference renders the instructor's official grading document verbatim — English by
+// intent in every locale, like the legal pages.
+const INTENTIONAL = ['app/terms/', 'app/privacy/', 'app/refunds/', 'app/pricing/', 'SyntaxReferenceLink']
 
 // A run of prose is English if it has function words. Deliberately conservative: single
 // nouns ("Beta Code", a proper name, a siglum) are not flagged, because most are not

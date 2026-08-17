@@ -16,6 +16,7 @@ import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { saveLocalDraft, markLocalDraftSynced, readLocalDraft, clearLocalDraft } from '@/lib/exam-draft'
 import { setExamLocked } from '@/lib/exam-lockdown'
+import { SyntaxReferenceLink } from '@/components/student/SyntaxReferenceLink'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { PassageAutocomplete } from '@/components/phrase/PassageAutocomplete'
@@ -1939,6 +1940,11 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             )}
             {assignment.isExam && (
               <p className="text-base text-gray-700 mt-0.5">{t('exeg.examPassagesOneSitting', { count: assignment.examPassages.length })}</p>
+            )}
+            {assignment.isExam && (
+              <div className="mt-1.5">
+                <SyntaxReferenceLink lockdown={lockdownOn} />
+              </div>
             )}
             {assignment.instructions && (
               <p className="text-base text-gray-700 mt-1">{assignment.instructions}</p>
