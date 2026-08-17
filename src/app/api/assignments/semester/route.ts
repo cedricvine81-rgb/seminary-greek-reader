@@ -19,7 +19,7 @@ import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz
 import { isHebrewLevel } from '@/lib/constants'
 import { HEBREW_DECK } from '@/lib/vocab-decks'
 import { glossResolver } from '@/lib/vocab-gloss-server'
-import { getLessonForWeek } from '@/lib/vocab-lesson-map'
+import { getLessonForWeek, lessonSubsectionKey } from '@/lib/vocab-lesson-map'
 import type { AssignmentType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 
@@ -195,6 +195,12 @@ export async function POST(req: NextRequest) {
     let title = `Week ${weekNum} — `
     if (quizType === 'VOCABULARY_QUIZ') {
       title += name ?? 'Vocabulary Quiz'
+      // The week's slice goes in the title — "(§1-A)" for the Greek lesson map, "(Glanz 1A)"
+      // or "(§1-A)" for the Hebrew schedules — so a student can open the Vocab page and see
+      // the exact material the quiz draws on. The series bulk actions also parse the Greek
+      // suffix back out when regenerating, so it is load-bearing, not decoration.
+      const lessonKey = lesson ? lessonSubsectionKey(lesson.lesson) : null
+      if (lessonKey) title += ` (§${lessonKey})`
       if (hebrewWeekly) title += ` (${hebrewWeekly.label})`
     } else if (testConfig) {
       const topic = testConfig.topic?.trim() || SUBTYPE_LABEL[testConfig.subtype]
