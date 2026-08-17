@@ -7,6 +7,7 @@ import {
   generateVocabQuestionsForLesson,
   generateVocabQuestionsFromSelection,
   generateHebrewVocabQuestionsFromSelection,
+  generateHebrewVocabPoolFromSelection,
   generateHebrewMorphologyQuestions,
   generateMorphologyQuestionsBySubtype,
   generateMorphQuestionsFromConfig,
@@ -16,6 +17,7 @@ import {
 } from '@/lib/quiz-generation'
 import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
+import { HEBREW_DECK } from '@/lib/vocab-decks'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import { getLessonForWeek } from '@/lib/vocab-lesson-map'
 import type { AssignmentType } from '@/types/assignment'
@@ -146,6 +148,22 @@ export async function POST(req: NextRequest) {
     const dueDate = new Date(item.dueDate)
     const sourceLabel = QUIZ_SOURCES_LABEL[source] ?? source
     const lesson = useLessonMap ? getLessonForWeek(weekNum) : null
+    // Hebrew's counterpart of the Greek lesson map. With no explicit selection, week N draws
+    // from Glanz band N (Glanz assigns 20 words a week; the bands are 20 ranks each) with the
+    // review slider's share from earlier bands; weeks past band 1L become cumulative review
+    // over the whole list. This is what an unconfigured Hebrew series MEANS — before this
+    // clause it silently meant "the whole deck, every week", so week 1 could quiz week-12
+    // words (the flat pool scripts/fix-hebrew-vocab-quizzes.ts repaired on FA2026).
+    const hebrewWeekly = hebrew && quizType === 'VOCABULARY_QUIZ' && !vocabSel
+      ? (() => {
+          const bands = (HEBREW_DECK.bands ?? []).map(b => b.key)
+          const review = weekNum > bands.length
+          const subsections = review ? bands : [bands[Math.max(1, weekNum) - 1]]
+          const reviewPct = review || weekNum <= 1 ? 0
+            : Math.min(Math.max(Number(prevSectionsPct ?? 0), 0), 100)
+          return { subsections, reviewPct, label: review ? 'Glanz review' : subsections[0] }
+        })()
+      : null
 
     // Resolve per-test config (series mode vs single subtype)
     const testConfig: MorphTestConfig | null = isMorphSeries
@@ -165,6 +183,7 @@ export async function POST(req: NextRequest) {
     let title = `Week ${weekNum} — `
     if (quizType === 'VOCABULARY_QUIZ') {
       title += name ?? 'Vocabulary Quiz'
+      if (hebrewWeekly) title += ` (${hebrewWeekly.label})`
     } else if (testConfig) {
       const topic = testConfig.topic?.trim() || SUBTYPE_LABEL[testConfig.subtype]
       title += name ? `${name} (${topic})` : `Morphology Quiz${isMorphSeries ? ` ${i + 1}` : ''}: ${topic}`
@@ -214,7 +233,10 @@ export async function POST(req: NextRequest) {
         maxAppeals: quizType === 'VOCABULARY_QUIZ' && maxAppeals != null && Number(maxAppeals) > 0
           ? Number(maxAppeals)
           : null,
-        vocabSelection: vocabSel ?? undefined,
+        vocabSelection: hebrewWeekly
+          ? { subsections: hebrewWeekly.subsections, pos: [], perAttempt: qCount,
+              reviewPct: hebrewWeekly.reviewPct }
+          : vocabSel ?? undefined,
         isPublished: Boolean(isPublished),
       },
     })
@@ -226,9 +248,14 @@ export async function POST(req: NextRequest) {
       const glossOf = (w: { word: string; gloss: string }) => resolveGloss(w.word, w.gloss)
       if (hebrew) {
         // The Hebrew deck and its own question type, so the runner sets the prompt in
-        // Hebrew script right-to-left. An empty selection means the whole deck.
-        questions = generateHebrewVocabQuestionsFromSelection(
-          vocabSel?.subsections ?? [], vocabSel?.pos ?? [], 'HEBREW_TO_ENGLISH', qCount, pct, glossOf)
+        // Hebrew script right-to-left. No selection = the weekly Glanz schedule (a stored
+        // pool of the band + its review words; the player samples perAttempt each try);
+        // an explicit selection is respected as given.
+        questions = hebrewWeekly
+          ? generateHebrewVocabPoolFromSelection(
+              hebrewWeekly.subsections, [], 'HEBREW_TO_ENGLISH', pct, hebrewWeekly.reviewPct, glossOf)
+          : generateHebrewVocabQuestionsFromSelection(
+              vocabSel?.subsections ?? [], vocabSel?.pos ?? [], 'HEBREW_TO_ENGLISH', qCount, pct, glossOf)
       } else if (vocabSel) {
         // Instructor picked sections → draw every week's quiz from those words.
         questions = generateVocabQuestionsFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', qCount, pct, glossOf)

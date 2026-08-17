@@ -1918,6 +1918,9 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                 selectedSubsections={form.vocabSubsections}
                 onChange={keys => setF('vocabSubsections', keys)}
               />
+              {isHebrewLevel(courseLevel) && form.vocabSubsections.length === 0 && (
+                <p className="text-xs text-brand-600">{t('inst.b.s.hebrewWeeklyHint')}</p>
+              )}
               {form.vocabSubsections.length === 0 && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
