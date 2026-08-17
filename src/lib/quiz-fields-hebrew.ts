@@ -46,7 +46,10 @@ export const HEBREW_CONJUGATIONS = [
 
 export const HEBREW_PERSONS = ['1st', '2nd', '3rd']
 // "Common" is a real value: 1st-person forms do not distinguish gender.
-export const HEBREW_GENDERS = ['Masculine', 'Feminine', 'Common', 'Both']
+// No 'Both': OSHB's dual-gender tag is a lexical fact about the lemma, not something a
+// student can read off the form, so the pool builder resolves it from the ending (or leaves
+// the form untested for gender). See gender_from_ending in build-hebrew-parsing-pool.py.
+export const HEBREW_GENDERS = ['Masculine', 'Feminine', 'Common']
 // Hebrew has a dual, mostly on natural pairs (eyes, hands) and time words.
 export const HEBREW_NUMBERS = ['Singular', 'Plural', 'Dual']
 export const HEBREW_STATES  = ['Absolute', 'Construct', 'Determined']

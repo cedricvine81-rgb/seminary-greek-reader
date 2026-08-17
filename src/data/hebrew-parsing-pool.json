@@ -293,7 +293,7 @@
 "gloss": "(as noun) a circle, neighbour, or environs",
 "reference": "1 Chronicles 10:9",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -469,7 +469,7 @@
 "gloss": "a net, or (abstractly) capture",
 "reference": "1 Chronicles 11:5",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -502,7 +502,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 11:9",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -744,7 +744,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 12:9",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -832,7 +832,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 12:25",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -876,7 +876,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 12:34",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -931,7 +931,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 12:37",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -942,7 +942,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 12:38",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -997,7 +997,7 @@
 "gloss": "food (for man or beast)",
 "reference": "1 Chronicles 12:41",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -1019,7 +1019,7 @@
 "gloss": "the earth (at large, or partitively a land)",
 "reference": "1 Chronicles 13:2",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Plural",
 "state": "Construct"
 },
@@ -1030,7 +1030,7 @@
 "gloss": "a box",
 "reference": "1 Chronicles 13:3",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1041,7 +1041,7 @@
 "gloss": "a box",
 "reference": "1 Chronicles 13:5",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1052,7 +1052,7 @@
 "gloss": "a box",
 "reference": "1 Chronicles 13:6",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1063,7 +1063,7 @@
 "gloss": "a box",
 "reference": "1 Chronicles 13:7",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1074,7 +1074,7 @@
 "gloss": "a threshing-floor (as made even)",
 "reference": "1 Chronicles 13:9",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1129,7 +1129,7 @@
 "gloss": "an encampment (of travellers or troops)",
 "reference": "1 Chronicles 14:15",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1140,7 +1140,7 @@
 "gloss": "an encampment (of travellers or troops)",
 "reference": "1 Chronicles 14:16",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1151,7 +1151,7 @@
 "gloss": "a box",
 "reference": "1 Chronicles 15:2",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1162,7 +1162,7 @@
 "gloss": "a song",
 "reference": "1 Chronicles 15:16",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -1195,7 +1195,7 @@
 "gloss": "a box",
 "reference": "1 Chronicles 15:29",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1217,7 +1217,7 @@
 "gloss": "a circle",
 "reference": "1 Chronicles 16:3",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -1228,7 +1228,7 @@
 "gloss": "food (for man or beast)",
 "reference": "1 Chronicles 16:3",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -1250,7 +1250,7 @@
 "gloss": "weight",
 "reference": "1 Chronicles 16:28",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -1294,7 +1294,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 17:7",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1305,7 +1305,7 @@
 "gloss": "(moral) evil",
 "reference": "1 Chronicles 17:9",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -1327,7 +1327,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 17:24",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1371,7 +1371,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Chronicles 19:8",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -1382,7 +1382,7 @@
 "gloss": "the face (as the part that turns)",
 "reference": "1 Chronicles 19:10",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1393,7 +1393,7 @@
 "gloss": "the face (as the part that turns)",
 "reference": "1 Chronicles 19:10",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1481,7 +1481,7 @@
 "gloss": "repose or (adverbially) peacefully",
 "reference": "1 Chronicles 22:9",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Singular",
 "state": "Absolute"
 },
@@ -1492,7 +1492,7 @@
 "gloss": "a circle",
 "reference": "1 Chronicles 22:14",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1503,7 +1503,7 @@
 "gloss": "a circle",
 "reference": "1 Chronicles 22:14",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1514,7 +1514,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "1 Chronicles 25:2",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -1525,7 +1525,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "1 Chronicles 25:3",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -1536,7 +1536,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "1 Chronicles 25:6",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -1547,7 +1547,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "1 Chronicles 25:6",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -1624,7 +1624,7 @@
 "gloss": "a circle",
 "reference": "1 Chronicles 29:4",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1635,7 +1635,7 @@
 "gloss": "a circle",
 "reference": "1 Chronicles 29:7",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1646,7 +1646,7 @@
 "gloss": "a circle",
 "reference": "1 Chronicles 29:7",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1657,7 +1657,7 @@
 "gloss": "a circle",
 "reference": "1 Chronicles 29:7",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1668,7 +1668,7 @@
 "gloss": "a circle",
 "reference": "1 Chronicles 29:7",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1690,7 +1690,7 @@
 "gloss": "(as noun) a circle, neighbour, or environs",
 "reference": "1 Chronicles 4:33",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Plural",
 "state": "Construct"
 },
@@ -1701,7 +1701,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "1 Chronicles 4:40",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -1712,7 +1712,7 @@
 "gloss": "the face (as the part that turns)",
 "reference": "1 Chronicles 5:10",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1723,7 +1723,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "1 Chronicles 6:16",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -1745,7 +1745,7 @@
 "gloss": "wind",
 "reference": "1 Chronicles 9:24",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1756,7 +1756,7 @@
 "gloss": "an eye",
 "reference": "1 Kings 1:20",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -1778,7 +1778,7 @@
 "gloss": "a shield (i.e. the small one or buckler)",
 "reference": "1 Kings 10:17",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Plural",
 "state": "Absolute"
 },
@@ -1789,7 +1789,7 @@
 "gloss": "the face (as the part that turns)",
 "reference": "1 Kings 10:24",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1888,7 +1888,7 @@
 "gloss": "the face (as the part that turns)",
 "reference": "1 Kings 12:6",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1899,7 +1899,7 @@
 "gloss": "the face (as the part that turns)",
 "reference": "1 Kings 13:6",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1910,7 +1910,7 @@
 "gloss": "the face (as the part that turns)",
 "reference": "1 Kings 13:34",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1921,7 +1921,7 @@
 "gloss": "a shield (i.e. the small one or buckler)",
 "reference": "1 Kings 14:26",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1932,7 +1932,7 @@
 "gloss": "a shield (i.e. the small one or buckler)",
 "reference": "1 Kings 14:27",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -1987,7 +1987,7 @@
 "gloss": "a mass of persons (or figuratively",
 "reference": "1 Kings 2:5",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": "Feminine",
 "number": "Plural",
 "state": "Construct"
 },
@@ -1998,7 +1998,7 @@
 "gloss": "a horn (as projecting)",
 "reference": "1 Kings 22:11",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -2119,7 +2119,7 @@
 "gloss": "an eye",
 "reference": "1 Samuel 16:12",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2196,7 +2196,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "2 Chronicles 29:27",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -2284,7 +2284,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "2 Kings 19:18",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -2306,7 +2306,7 @@
 "gloss": "an eye",
 "reference": "2 Kings 25:7",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -2317,7 +2317,7 @@
 "gloss": "a circle",
 "reference": "2 Kings 5:23",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2328,7 +2328,7 @@
 "gloss": "a circle",
 "reference": "2 Kings 5:23",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2339,7 +2339,7 @@
 "gloss": "an eye",
 "reference": "2 Kings 6:17",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -2350,7 +2350,7 @@
 "gloss": "an eye",
 "reference": "2 Kings 6:20",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Construct"
 },
@@ -2460,7 +2460,7 @@
 "gloss": "the leg (from the knee to the ankle) of men or locusts (only in the dual)",
 "reference": "Amos 3:12",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2471,7 +2471,7 @@
 "gloss": "a tooth (as sharp)",
 "reference": "Amos 4:6",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2515,7 +2515,7 @@
 "gloss": "a horn (as projecting)",
 "reference": "Daniel 8:3",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2559,7 +2559,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "Ecclesiastes 10:18",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2614,7 +2614,7 @@
 "gloss": "an eye",
 "reference": "Ezekiel 1:18",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2636,7 +2636,7 @@
 "gloss": "an eye",
 "reference": "Ezekiel 10:12",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2647,7 +2647,7 @@
 "gloss": "an eye",
 "reference": "Ezekiel 12:2",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -2669,7 +2669,7 @@
 "gloss": "a hand (the open one (indicating power",
 "reference": "Ezekiel 21:12",
 "partOfSpeech": "Noun",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -178997,7 +178997,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 11:11",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179085,7 +179085,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 11:20",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179140,7 +179140,7 @@
 "gloss": "thirty",
 "reference": "1 Chronicles 11:42",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179173,7 +179173,7 @@
 "gloss": "eleven or (ordinal) eleventh",
 "reference": "1 Chronicles 12:14",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -179239,7 +179239,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 12:25",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179261,7 +179261,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 12:26",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179283,7 +179283,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 12:27",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179316,7 +179316,7 @@
 "gloss": "twenty",
 "reference": "1 Chronicles 12:29",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179338,7 +179338,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 12:30",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179349,7 +179349,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 12:31",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179360,7 +179360,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 12:31",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179404,7 +179404,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 12:32",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179415,7 +179415,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 12:33",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -179426,7 +179426,7 @@
 "gloss": "fifty",
 "reference": "1 Chronicles 12:34",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179437,7 +179437,7 @@
 "gloss": "thirty",
 "reference": "1 Chronicles 12:35",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179448,7 +179448,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 12:35",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179459,7 +179459,7 @@
 "gloss": "twenty",
 "reference": "1 Chronicles 12:36",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Absolute"
 },
@@ -179470,7 +179470,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 12:38",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179547,7 +179547,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 15:6",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -179558,7 +179558,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 15:8",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -179569,7 +179569,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 15:10",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179635,7 +179635,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 18:4",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179657,7 +179657,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 18:4",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179690,7 +179690,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 19:7",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179789,7 +179789,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 21:3",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179800,7 +179800,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 21:5",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179822,7 +179822,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Chronicles 21:5",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179910,7 +179910,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 22:14",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Absolute"
 },
@@ -179954,7 +179954,7 @@
 "gloss": "eleven or (ordinal) eleventh",
 "reference": "1 Chronicles 24:12",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -179998,7 +179998,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 25:7",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -180009,7 +180009,7 @@
 "gloss": "eleven or (ordinal) eleventh",
 "reference": "1 Chronicles 25:18",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -180240,7 +180240,7 @@
 "gloss": "a hundred",
 "reference": "1 Chronicles 5:21",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -180636,7 +180636,7 @@
 "gloss": "a hundred",
 "reference": "1 Kings 7:20",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -180801,7 +180801,7 @@
 "gloss": "a hundred",
 "reference": "1 Samuel 18:27",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -180856,7 +180856,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "1 Samuel 23:23",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -180878,7 +180878,7 @@
 "gloss": "a hundred",
 "reference": "1 Samuel 25:18",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -180955,7 +180955,7 @@
 "gloss": "a hundred",
 "reference": "2 Chronicles 29:32",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -181285,7 +181285,7 @@
 "gloss": "a hundred",
 "reference": "Ecclesiastes 8:12",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -181362,7 +181362,7 @@
 "gloss": "eleven or (ordinal) eleventh",
 "reference": "Exodus 26:7",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -181428,7 +181428,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "Exodus 32:28",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -181450,7 +181450,7 @@
 "gloss": "eleven or (ordinal) eleventh",
 "reference": "Exodus 36:14",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -181516,7 +181516,7 @@
 "gloss": "eleven or (ordinal) eleventh",
 "reference": "Ezekiel 40:49",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -181582,7 +181582,7 @@
 "gloss": "a hundred",
 "reference": "Ezra 8:9",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -181802,7 +181802,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "Job 1:3",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -181813,7 +181813,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "Job 1:3",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -181824,7 +181824,7 @@
 "gloss": "hence (the ox's head being the first letter of the alphabet",
 "reference": "Joshua 22:30",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -181923,7 +181923,7 @@
 "gloss": "a hundred",
 "reference": "Numbers 2:9",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -181934,7 +181934,7 @@
 "gloss": "a hundred",
 "reference": "Numbers 2:24",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -181945,7 +181945,7 @@
 "gloss": "a hundred",
 "reference": "Numbers 2:31",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Singular",
 "state": "Construct"
 },
@@ -181967,7 +181967,7 @@
 "gloss": "eleven or (ordinal) eleventh",
 "reference": "Numbers 29:20",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Plural",
 "state": "Construct"
 },
@@ -181989,7 +181989,7 @@
 "gloss": "seven-times",
 "reference": "Proverbs 6:31",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -182000,7 +182000,7 @@
 "gloss": "a myriad, i.e. indefinitely, large number",
 "reference": "Psalms 68:18",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": null,
 "number": "Dual",
 "state": "Absolute"
 },
@@ -182011,7 +182011,7 @@
 "gloss": "some one (i.e. so and so",
 "reference": "Ruth 4:1",
 "partOfSpeech": "Adjective",
-"gender": "Both",
+"gender": "Masculine",
 "number": "Singular",
 "state": "Absolute"
 },

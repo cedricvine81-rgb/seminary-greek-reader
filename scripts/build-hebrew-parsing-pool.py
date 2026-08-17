@@ -96,6 +96,59 @@ def root_class(lemma):
 
 # ── OSHB code tables (mirror of src/lib/hebrew-morph.ts) ─────────────────────────
 GENDER = {'m': 'Masculine', 'f': 'Feminine', 'b': 'Both', 'c': 'Common'}
+
+# ── OSHB gender "b" (both) → what the ENDING shows ───────────────────────────────────────
+#
+# OSHB tags a noun "b" when the LEMMA is attested as masculine AND feminine (צָבָא, יָד,
+# עַיִן). As a quiz answer "Both" is unusable: it is a lexical fact about the word, not
+# something a student can read off the form in front of them, and it was 28% of the noun
+# pool. The instructor's rule (2026-08-17) is to follow the endings instead — the word
+# genuinely is both genders, so the ending is a fair and teachable answer.
+#
+# Two traps, both found by testing this rule against the entries whose gender OSHB DOES
+# know, so the guards below are measured rather than assumed:
+#
+#   NUMERALS invert it. Hebrew numeral concord is chiastic — the ־ָה form goes with
+#   masculine nouns — so the ending says the opposite of the tag. All but one of the 53
+#   "both" adjectives are numerals, so numerals are never gender-tested.
+#
+#   DUAL AND CONSTRUCT SINGULAR do not mark gender at all. ־ַיִם is a number ending
+#   (יָדַיִם, עֵינַיִם), and a construct singular in ת is as often masculine (בֵּית) as
+#   feminine. Both are left untested.
+#
+# On the entries with a known gender the surviving rule scores 90% for nouns and 98% for
+# adjectives; the residue is the closed class of irregular plurals (נָשִׁים, עָרִים,
+# שֵׁמוֹת), which keep their own OSHB tag and never reach this function.
+#
+# `None` means "do not test gender on this form" — the quiz generator only offers an entry
+# for a field it actually has, so these stay available for number and state questions.
+NUMERAL_LEMMAS = {
+    'אחד', 'אחת', 'שנים', 'שתים', 'שלוש', 'שלושה', 'ארבע', 'חמש', 'שש', 'שבע', 'שמונה',
+    'תשע', 'עשר', 'עשרה', 'עשרים', 'שלושים', 'ארבעים', 'חמשים', 'ששים', 'שבעים', 'שמונים',
+    'תשעים', 'מאה', 'מאות', 'אלף', 'אלפים', 'רבבה', 'רבו', 'עשתי', 'שבעתים',
+}
+
+def _consonants(text):
+    import unicodedata as _u
+    return ''.join(c for c in _u.normalize('NFD', text) if not _u.combining(c))
+
+def gender_from_ending(surface, number, state, lexeme):
+    """Gender as the form shows it, or None when the ending does not mark gender."""
+    if _consonants(lexeme) in NUMERAL_LEMMAS:
+        return None
+    c = _consonants(surface)
+    if number == 'Dual':
+        return None
+    if number == 'Plural':
+        if c.endswith('ות'):
+            return 'Feminine'
+        if c.endswith('ים'):
+            return 'Masculine'
+        return None
+    if number == 'Singular' and state == 'Absolute':
+        return 'Feminine' if (c.endswith('ה') or c.endswith('ת')) else 'Masculine'
+    return None    # construct singular: ־ת is not a reliable feminine marker (בֵּית)
+
 NUMBER = {'s': 'Singular', 'p': 'Plural', 'd': 'Dual'}
 STATE  = {'a': 'Absolute', 'c': 'Construct', 'd': 'Determined'}
 PERSON = {'1': '1st', '2': '2nd', '3': '3rd'}
@@ -343,6 +396,22 @@ def main():
     # chips are built from this, so a chip can never promise a value the pool cannot
     # supply (Hebrew has no Pr/Pi codes in OSHB, so there are no relative or interrogative
     # pronouns to filter for).
+    # Replace the unusable "Both" tag with what the ending shows (see gender_from_ending).
+    # BEFORE the value sets are collected below, so the answer options the quiz UI offers
+    # come from the post-processed pool and "Both" never reaches a student.
+    resolved = dropped = 0
+    for entries in pools.values():
+        for e in entries:
+            if e.get('gender') != 'Both':
+                continue
+            g = gender_from_ending(e['surface'], e.get('number'), e.get('state'), e.get('lexeme', ''))
+            e['gender'] = g
+            if g:
+                resolved += 1
+            else:
+                dropped += 1
+    print(f'gender: {resolved} "Both" resolved from the ending, {dropped} left untested')
+
     values = collections.defaultdict(set)
     for entries in pools.values():
         for e in entries:
@@ -350,6 +419,7 @@ def main():
                       'rootClass'):
                 if e.get(f):
                     values[f].add(e[f])
+
     with open(VALUES_OUT, 'w') as f:
         json.dump({k: sorted(v) for k, v in values.items()}, f, ensure_ascii=False, indent=1)
     print(f'wrote {VALUES_OUT}')
