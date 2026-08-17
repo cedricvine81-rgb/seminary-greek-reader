@@ -85,8 +85,9 @@ export default async function StudentScoresPage() {
     exegesisSessions.map(s => [s.assignmentId ?? '', s])
   )
 
-  // Build per-assignment rows
-  const rows = assignments.map(a => {
+  // Build per-assignment rows. Class exercises (assessed=false) carry no grade by
+  // definition, so the Grades page leaves them out entirely.
+  const rows = assignments.filter(a => a.assessed).map(a => {
     const isPassage = isExegesisGraded(a)
 
     if (isPassage) {

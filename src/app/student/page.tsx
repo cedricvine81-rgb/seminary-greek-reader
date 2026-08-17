@@ -99,7 +99,9 @@ export default async function StudentPage() {
         weekNumber: a.weekNumber,
         completed: completedIds.has(a.id),
       })),
-      gradebookRows: published.map(a => ({ id: a.id, title: a.title, weekNumber: a.weekNumber, type: a.type as string, pct: scoreFor(a) })),
+      // Class exercises (assessed=false) stay in `assignments` — they are real work with a
+      // due date — but never enter the grade book or the course average.
+      gradebookRows: published.filter(a => a.assessed).map(a => ({ id: a.id, title: a.title, weekNumber: a.weekNumber, type: a.type as string, pct: scoreFor(a) })),
       gradeCategoryWeights: normalizeCategoryWeights(e.course.gradeCategoryWeights),
     }
   })

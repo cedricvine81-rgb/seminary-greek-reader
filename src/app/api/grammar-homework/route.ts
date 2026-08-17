@@ -47,11 +47,11 @@ export async function GET(req: NextRequest) {
         where: { type: 'TRANSLATION_EXERCISE', courseId: { in: courses.map(c => c.id) } },
         select: {
           id: true, courseId: true, dueDate: true, isPublished: true, allowLate: true, lateDaysLimit: true,
-          round2Deadline: true,
+          round2Deadline: true, assessed: true,
           questions: { orderBy: { position: 'asc' }, take: 1, select: { options: true } },
         },
       })
-      const assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean; allowLate: boolean; lateDaysLimit: number | null; round2Deadline: string | null }[] = []
+      const assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean; allowLate: boolean; lateDaysLimit: number | null; round2Deadline: string | null; assessed: boolean }[] = []
       for (const a of candidates) {
         const opt = a.questions[0]?.options[0] ?? ''
         if (!opt.includes('"hw":1')) continue
@@ -63,6 +63,7 @@ export async function GET(req: NextRequest) {
             dueDate: a.dueDate.toISOString(), isPublished: a.isPublished,
             allowLate: a.allowLate, lateDaysLimit: a.lateDaysLimit,
             round2Deadline: a.round2Deadline?.toISOString() ?? null,
+            assessed: a.assessed,
           })
         } catch { /* ignore */ }
       }
@@ -82,7 +83,7 @@ export async function GET(req: NextRequest) {
         course: { enrollments: { some: { userId: payload.sub, status: 'APPROVED' } } },
       },
       select: {
-        id: true, title: true, dueDate: true, round2Deadline: true,
+        id: true, title: true, dueDate: true, round2Deadline: true, assessed: true,
         questions: { orderBy: { position: 'asc' }, take: 1, select: { options: true } },
       },
     })
@@ -106,6 +107,7 @@ export async function GET(req: NextRequest) {
         title: a.title,
         dueDate: a.dueDate.toISOString(),
         round2Deadline: a.round2Deadline?.toISOString() ?? null,
+        assessed: a.assessed,
         submitted: attempted.has(a.id),
       })),
     })

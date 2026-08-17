@@ -1208,11 +1208,11 @@ export function ClassSentences({ id, lesson, intro, items, level = 'beginning' }
  *
  * Renders nothing when signed out or when the chapter has no sets.
  */
-interface HwStudentEntry { assignmentId: string; title: string; dueDate: string; round2Deadline: string | null; submitted: boolean }
+interface HwStudentEntry { assignmentId: string; title: string; dueDate: string; round2Deadline: string | null; assessed: boolean; submitted: boolean }
 interface HwInstructorData {
   sets: { id: string; title: string; sentenceCount: number }[]
   courses: { id: string; name: string; level: string }[]
-  assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean; allowLate: boolean; lateDaysLimit: number | null; round2Deadline: string | null }[]
+  assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean; allowLate: boolean; lateDaysLimit: number | null; round2Deadline: string | null; assessed: boolean }[]
 }
 
 // ISO instant → a datetime-local input value ("YYYY-MM-DDTHH:mm") in local time.
@@ -1237,6 +1237,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
   const [late, setLate] = useState<Record<string, boolean>>({})        // `${setId}:${courseId}` -> allow late
   const [lateDays, setLateDays] = useState<Record<string, number>>({}) // `${setId}:${courseId}` -> days (0 = no limit)
   const [r2, setR2] = useState<Record<string, boolean>>({})            // `${setId}:${courseId}` -> correction round on
+  const [classEx, setClassEx] = useState<Record<string, boolean>>({})  // `${setId}:${courseId}` -> class exercise (not graded)
   const [r2Dates, setR2Dates] = useState<Record<string, string>>({})   // `${setId}:${courseId}` -> round 2 datetime-local
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState('')
@@ -1258,7 +1259,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
     if (entries.length === 0) return null
     return (
       <div className="my-5 max-w-3xl rounded-xl border border-amber-200 bg-amber-50/60 px-4 py-3.5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-2">Homework — graded</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-2">{t('morph.hw.studentHeading')}</p>
         <ul className="space-y-1.5">
           {entries.map(e => (
             <li key={e.assignmentId} className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm">
@@ -1266,6 +1267,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                 {e.title} →
               </Link>
               <span className="text-xs text-amber-700">
+                {!e.assessed && <>{t('morph.hw.classExercise')} · </>}
                 due {fmtDeadline(e.dueDate)}
                 {e.round2Deadline && ` · corrections until ${fmtDeadline(e.round2Deadline)}`}
                 {e.submitted && ' · submitted ✓'}
@@ -1319,6 +1321,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
           const lateVal = late[key] ?? (existing ? existing.allowLate : false)
           const daysVal = lateDays[key] ?? (existing ? (existing.lateDaysLimit ?? 0) : 0)
           const r2On = r2[key] ?? (existing ? !!existing.round2Deadline : false)
+          const classExVal = classEx[key] ?? (existing ? !existing.assessed : false)
           const r2Val = r2Dates[key] ?? (existing?.round2Deadline ? toLocalInput(existing.round2Deadline) : '')
           // Round 2 must end after Round 1 (the due date).
           const r2Invalid = r2On && !!r2Val && !!dtVal && new Date(r2Val) <= new Date(dtVal)
@@ -1327,6 +1330,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
           const latePayload = { allowLate: lateVal, lateDaysLimit: lateVal && daysVal > 0 ? daysVal : null }
           const r2Payload = { round2Deadline: r2On && r2Val ? new Date(r2Val).toISOString() : null }
           const changed = !!existing && (
+            classExVal !== !existing.assessed ||
             (!!dtVal && dtVal !== toLocalInput(existing.dueDate)) ||
             lateVal !== existing.allowLate ||
             (lateVal && (daysVal || 0) !== (existing.lateDaysLimit ?? 0)) ||
@@ -1358,6 +1362,15 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                     onChange={e => setDates(prev => ({ ...prev, [key]: e.target.value }))}
                     className={fieldCls}
                   />
+                </label>
+                <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600" title={t('morph.hw.classExerciseHelp')}>
+                  <input
+                    type="checkbox"
+                    checked={classExVal}
+                    onChange={e => setClassEx(prev => ({ ...prev, [key]: e.target.checked }))}
+                    className="h-3.5 w-3.5 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  {t('morph.hw.classExercise')}
                 </label>
                 <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600">
                   <input
@@ -1412,6 +1425,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                           weekNumber: 1, dueDate: new Date(dtVal).toISOString(), level: course.level,
                           homeworkSet: set.id, isPublished: true,
                           maxRetakes: 0,   // one Round 1 submission; corrections go through their own endpoint
+                          assessed: !classExVal,
                           ...latePayload,
                           ...r2Payload,
                         }),
@@ -1425,7 +1439,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                       <span className={clsx('rounded-md px-2 py-1 text-xs font-medium',
                         existing.isPublished ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500')}>
                         {existing.isPublished
-                          ? `active · due ${fmtDeadline(existing.dueDate)}${existing.round2Deadline ? ` · corrections until ${fmtDeadline(existing.round2Deadline)}` : ''}${existing.allowLate ? ` · late ${existing.lateDaysLimit ? `+${existing.lateDaysLimit}d` : 'open'}` : ''}`
+                          ? `active${existing.assessed ? '' : ` · ${t('morph.hw.classExercise')}`} · due ${fmtDeadline(existing.dueDate)}${existing.round2Deadline ? ` · corrections until ${fmtDeadline(existing.round2Deadline)}` : ''}${existing.allowLate ? ` · late ${existing.lateDaysLimit ? `+${existing.lateDaysLimit}d` : 'open'}` : ''}`
                           : 'deactivated'}
                       </span>
                       {existing.isPublished && changed && (
@@ -1434,7 +1448,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                           disabled={busy === key || r2Invalid || (r2On && !r2Val)}
                           onClick={() => act(key, () => fetch(`/api/assignments/${existing.assignmentId}`, {
                             method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ dueDate: new Date(dtVal).toISOString(), ...latePayload, ...r2Payload }),
+                            body: JSON.stringify({ dueDate: new Date(dtVal).toISOString(), assessed: !classExVal, ...latePayload, ...r2Payload }),
                           }))}
                           className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
                         >

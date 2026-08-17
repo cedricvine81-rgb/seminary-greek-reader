@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, vocabThruBand, notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, assessed, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, vocabThruBand, notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment } = body
 
   // Construct searches: the search link is the assignment, so it is parsed here rather than
   // trusted — what gets stored is the same-origin path it decodes to.
@@ -120,6 +120,9 @@ export async function POST(req: NextRequest) {
       round2Deadline: round2Deadline ? new Date(round2Deadline) : null,
       allowLate: Boolean(allowLate),
       lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
+      // assessed=false = a class exercise: worked like homework, but no grade — omitted
+      // means true, so nothing changes for callers that predate the flag
+      assessed: assessed === undefined ? true : Boolean(assessed),
       // For vocab quizzes provideDefinition is derived from the mix: any open-ended
       // portion → typed answers are graded leniently (fuzzy). For other types, use
       // the supplied boolean.

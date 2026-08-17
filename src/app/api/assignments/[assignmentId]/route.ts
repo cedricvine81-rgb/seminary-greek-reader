@@ -70,7 +70,7 @@ export async function PATCH(
     isPublished,
     title, weekNumber, dueDate, instructions, reference,
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
-    allowLate, lateDaysLimit, opensAt, submissionDeadline, round1Deadline, round2Deadline,
+    allowLate, lateDaysLimit, opensAt, submissionDeadline, round1Deadline, round2Deadline, assessed,
     allowReaderInRound2, maxAppeals, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations,
     notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment,
   } = body
@@ -124,6 +124,7 @@ export async function PATCH(
     if (maxAppeals !== undefined) data.maxAppeals = maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null
     if ('maxRetakes' in body)
       data.maxRetakes = maxRetakes != null ? Number(maxRetakes) : null
+    if (assessed !== undefined)     data.assessed = Boolean(assessed)
     if (allowLate !== undefined) {
       data.allowLate = Boolean(allowLate)
       data.lateDaysLimit = allowLate && lateDaysLimit != null ? Number(lateDaysLimit) : null
