@@ -11,8 +11,7 @@ import {
   generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype,
   generateHebrewVocabQuestionsFromSelection, generateHebrewVocabPoolFromSelection,
   generateHebrewMorphologyQuestions,
-  type MorphologySubtype,
-} from '@/lib/quiz-generation'
+  type MorphologySubtype, resolveHebrewVocabBand } from '@/lib/quiz-generation'
 import type { HebrewMorphologySubtype } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
 import { glossResolver } from '@/lib/vocab-gloss-server'
@@ -219,7 +218,7 @@ export async function POST(req: NextRequest) {
       questions = generateHebrewMorphologyQuestions(
         (morphologySubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
         Number(numQuestions ?? 10), fields, body.parseFilter ?? undefined,
-        vocabThruBand ?? null)
+        resolveHebrewVocabBand(Number(weekNumber), vocabThruBand ?? null))
     } else {
       const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
       questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null, fields, body.parseFilter ?? undefined)

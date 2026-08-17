@@ -104,6 +104,9 @@ const DEFAULT_MORPH_TEST: MorphTestConfig = {
   // Default to the vocabulary schedule: week N tests only words taught through lesson N.
   // The instructor can still choose "All parsing examples" or a fixed lesson.
   vocabAuto: true,
+  // The Hebrew counterpart ('auto' = follow this course's vocab quizzes); the Greek
+  // generation path never reads vocabThruBand, so one shared default is safe.
+  vocabThruBand: 'auto',
   fields: SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key),
   parseFilter: { ...DEFAULT_PARSE_FILTER },
 }
@@ -514,6 +517,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                 className="input w-full text-sm"
               >
                 <option value="">{t('inst.b.m.vocabAll')}</option>
+                <option value="auto">{t('inst.b.m.vocabAutoBand')}</option>
                 {(HEBREW_DECK.bands ?? []).map(b => (
                   <option key={b.key} value={b.key}>
                     {t('inst.b.m.vocabThruBand', { band: b.label, range: b.rankRange })}
@@ -1367,6 +1371,7 @@ function MorphSeriesBuilder({
                     className="input text-sm w-full"
                   >
                     <option value="">{t('inst.b.m.vocabAll')}</option>
+                    <option value="auto">{t('inst.b.m.vocabAutoBand')}</option>
                     {(HEBREW_DECK.bands ?? []).map(b => (
                       <option key={b.key} value={b.key}>
                         {t('inst.b.m.vocabThruBand', { band: b.label, range: b.rankRange })}

@@ -7,6 +7,28 @@ import { HEBREW_DECK, GREEK_DECK, deckWordsForSelection, deckKeysBefore, strongs
 import { isAnswerCorrect } from './answer-matching'
 import { lessonSubsectionKey, lessonSubsectionKeysBefore, lessonSubsectionKeysThrough } from './vocab-lesson-map'
 
+/**
+ * Resolve the Hebrew morphology vocabulary cap when it is set to 'auto' — the Hebrew
+ * counterpart of the Greek series' vocabAuto (week N → lesson N). Glanz sets vocabulary
+ * at 20 words a week and the bands are 20 ranks each, so the week number IS the band:
+ * week 1 → Glanz 1A, week 2 → 1B, … week 12+ → 1L (the whole Glanz list).
+ *
+ * Deliberately NOT derived from the course's vocab quizzes: in practice those each draw a
+ * random sample from one fixed pool all semester (verified on Beginning Hebrew FA2026 —
+ * all 32 quizzes carry the identical selection), so they encode no progression to follow.
+ * The weekly schedule is the real syllabus, and it is what the built-in 11-quiz series
+ * hard-codes band-by-band.
+ */
+export function resolveHebrewVocabBand(
+  weekNumber: number | null | undefined, band: string | null | undefined,
+): string | null {
+  if (band !== 'auto') return band ?? null
+  const bands = HEBREW_DECK.bands ?? []
+  if (bands.length === 0) return null
+  const week = Math.max(1, Number(weekNumber ?? 1))
+  return bands[Math.min(week, bands.length) - 1].key
+}
+
 export interface GeneratedQuestion {
   position: number
   type: QuestionType

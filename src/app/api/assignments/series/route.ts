@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import {
   generateVocabQuestionsForLesson, generateMorphQuestionsFromConfig, type MorphGenConfig,
   generateHebrewVocabPoolFromSelection, generateHebrewMorphologyQuestions,
+  resolveHebrewVocabBand,
 } from '@/lib/quiz-generation'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { MorphologySubtype } from '@/lib/quiz-fields'
@@ -203,7 +204,8 @@ export async function PATCH(req: NextRequest) {
       const qs = hebrewRow
         ? generateHebrewMorphologyQuestions(
             (r.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
-            r._count.questions || 20, cfg?.fields, cfg?.parseFilter, cfg?.vocabThruBand ?? null)
+            r._count.questions || 20, cfg?.fields, cfg?.parseFilter,
+            resolveHebrewVocabBand(r.weekNumber, cfg?.vocabThruBand ?? null))
         : await generateMorphQuestionsFromConfig(
             (r.morphSubtype ?? 'MIXED') as MorphologySubtype,
             r._count.questions || 20, cap, r.morphConfig as MorphGenConfig)

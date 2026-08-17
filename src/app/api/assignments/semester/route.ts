@@ -12,6 +12,7 @@ import {
   generateMorphQuestionsFromConfig,
   type MorphologySubtype,
   type MorphTestConfig,
+  resolveHebrewVocabBand,
 } from '@/lib/quiz-generation'
 import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
@@ -246,7 +247,8 @@ export async function POST(req: NextRequest) {
         qCount,
         testConfig.fields,
         testConfig.parseFilter as unknown as HebrewMorphParseFilter | undefined,
-        testConfig.vocabThruBand ?? null)
+        // 'auto' = the weekly Glanz schedule: this quiz's week number is its band.
+        resolveHebrewVocabBand(weekNum, testConfig.vocabThruBand ?? null))
     } else if (testConfig) {
       // vocabAuto ties the quiz to the vocabulary schedule: week N tests only words
       // taught through lesson N, so students are never parsing unseen vocabulary.

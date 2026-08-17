@@ -8,6 +8,7 @@ import {
   generateVerbParseQuestions, generateNounParseQuestions,
   generateAdjectiveParseQuestions, generatePronounParseQuestions,
   generateConditionalQuestions, generateSubjunctiveQuestions,
+  resolveHebrewVocabBand,
 } from '@/lib/quiz-generation'
 import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
@@ -36,6 +37,7 @@ export async function POST(
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
     select: { type: true, level: true, morphSubtype: true, morphConfig: true, provideDefinition: true,
+             weekNumber: true,
              vocabSelection: true, course: { select: { language: true } } },
   })
   if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -92,7 +94,8 @@ export async function POST(
       { fields?: string[]; parseFilter?: HebrewMorphParseFilter; vocabThruBand?: string | null } | null
     questions = generateHebrewMorphologyQuestions(
       (assignment.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
-      qCount, cfg?.fields, cfg?.parseFilter, cfg?.vocabThruBand ?? null)
+      qCount, cfg?.fields, cfg?.parseFilter,
+      resolveHebrewVocabBand(assignment.weekNumber, cfg?.vocabThruBand ?? null))
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {
       case 'VERB':        questions = generateVerbParseQuestions(qCount);       break
