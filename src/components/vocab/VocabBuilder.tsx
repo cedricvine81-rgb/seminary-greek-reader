@@ -8,6 +8,7 @@ import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCirc
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
 import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
+import { HEBREW_DECK } from '@/lib/vocab-decks'
 import bgvbData from '@/data/bgvb-vocabulary.json'
 import hebrewData from '@/data/hebrew-vocabulary.json'
 
@@ -113,6 +114,10 @@ interface VocabData {
   subsections: Record<number, Subsection[]>
   wordSubsection: Record<string, string>      // word → its subsection key ("1-A")
   allSubsectionKeys: string[]
+  // Glanz bands (Hebrew only): the OTST 551 weekly list, a SECOND grouping over the same
+  // deck. Selecting a band studies exactly the 20 words its quizzes draw on.
+  bands?: { key: string; label: string; rankRange: string; words: BgvbWord[] }[]
+  wordBand?: Record<string, string>           // word → its band key ("Glanz 1A")
   scriptClass: string                          // headword font class: greek-text | font-hebrew
   rtl: boolean
   storageKey: string
@@ -195,6 +200,24 @@ const HEBREW_VOCAB = buildVocab(
   { 1: 60.8, 2: 71.1, 3: 76.9, 4: 80.3, 5: 82.8, 6: 84.9, 7: 86.8 },
   { scriptClass: 'font-hebrew', rtl: true, storageKey: 'hebrew-vocab-progress-v1', scriptLabel: 'Heb', scriptName: 'Hebrew', corpusKey: 'vocab.corpus.hebrew' },
 )
+// The quiz generators draw from lib/vocab-decks' HEBREW_DECK, which carries the Glanz
+// bands and seven supplement words (וְ, הַ, לְ … — words the corpus frequency pass cannot
+// see) that this page's own build lacks. Graft both on, so a student can open the exact
+// band a quiz names — supplement words included. The supplement gets no §-subsection, so
+// the §-view and everyone's saved selections stay byte-identical to before.
+{
+  const known = new Set(HEBREW_VOCAB.words.map(w => wid(w)))
+  const extras = (HEBREW_DECK.bands ?? [])
+    .flatMap(b => b.words)
+    .filter(w => !known.has(w.id ?? w.word)) as unknown as BgvbWord[]
+  HEBREW_VOCAB.words = [...HEBREW_VOCAB.words, ...extras]
+  HEBREW_VOCAB.bands = (HEBREW_DECK.bands ?? []).map(b => ({
+    key: b.key, label: b.label, rankRange: b.rankRange,
+    words: b.words as unknown as BgvbWord[],
+  }))
+  HEBREW_VOCAB.wordBand = HEBREW_DECK.wordBand
+}
+
 const VOCAB: Record<VocabLang, VocabData> = { greek: GREEK_VOCAB, hebrew: HEBREW_VOCAB }
 
 const VocabCtx = createContext<VocabData>(GREEK_VOCAB)
@@ -230,7 +253,11 @@ function filterWords(config: StudyConfig, V: VocabData): BgvbWord[] {
     : new Set(config.subsections)
 
   return V.words.filter(w => {
-    if (!effectiveSubSet.has(V.wordSubsection[wid(w)] ?? '')) return false
+    // A word belongs if its §-subsection OR its Glanz band is selected. With nothing
+    // selected the effective set is all §-subsections, so band-only words (the Hebrew
+    // supplement) appear exactly when their band is chosen — never by default.
+    if (!effectiveSubSet.has(V.wordSubsection[wid(w)] ?? '')
+      && !effectiveSubSet.has(V.wordBand?.[wid(w)] ?? '')) return false
     if (!config.pos.includes(w.pos)) return false
     return true
   })
@@ -1326,6 +1353,83 @@ function StudySettings({
             })}
           </div>
         </div>
+
+        {/* Glanz bands (Hebrew): the OTST 551 weekly list. Quiz titles name these —
+            "Week 5 — Vocabulary Quiz (Glanz 1E)" — so a student clicks the same band here
+            and studies exactly the twenty words that quiz draws on. */}
+        {V.bands && V.bands.length > 0 && (
+          <div className="p-5">
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{t('vocab.glanzBands')}</p>
+              <button
+                onClick={() => onChange({ ...config, subsections: config.subsections.filter(k => !V.bands!.some(b => b.key === k)) })}
+                className="text-sm text-gray-500 hover:text-gray-700"
+              >
+                {t('action.clear')}
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mb-3">{t('vocab.glanzBandsQuizHint')}</p>
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+              {V.bands.map(b => {
+                const isSelected = subSet.has(b.key)
+                const isListed = listSubKey === b.key
+                return (
+                  <div key={b.key} className="flex flex-col gap-1">
+                    <button
+                      onClick={() => toggleSubsection(b.key)}
+                      className={clsx(
+                        'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
+                        isSelected
+                          ? 'bg-gray-100 border-gray-300 text-gray-900'
+                          : 'bg-surface border-gray-200 text-gray-600 hover:text-gray-900'
+                      )}
+                    >
+                      <span className="text-base font-semibold leading-none">{b.label}</span>
+                      <span className={clsx('text-xs mt-1 leading-none', isSelected ? 'text-gray-600' : 'text-gray-500')}>
+                        {b.rankRange}
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => setListSubKey(isListed ? null : b.key)}
+                      title={`View ${b.label} word list`}
+                      className={clsx(
+                        'flex items-center justify-center py-1 rounded border text-center transition-colors',
+                        isListed ? 'border-gray-200 bg-gray-50 text-gray-700' : 'border-gray-200 text-gray-500 hover:text-gray-700'
+                      )}
+                    >
+                      <List size={11} />
+                    </button>
+                  </div>
+                )
+              })}
+            </div>
+            {listSubKey && V.bands.some(b => b.key === listSubKey) && (() => {
+              const b = V.bands!.find(b => b.key === listSubKey)!
+              return (
+                <div className="mt-3 rounded-lg border border-gray-200 bg-gray-50/60 p-3">
+                  <p className="mb-2 text-sm font-semibold text-gray-700">
+                    {b.key}
+                    <span className="text-gray-400 font-normal ml-1.5">({t('vocab.wordCountPlural', { count: b.words.length, n: b.words.length })})</span>
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+                    {b.words.map(w => (
+                      <div key={wid(w)} className="flex items-baseline justify-between gap-2 py-1 border-b border-gray-100 min-w-0">
+                        <div className="min-w-0 flex-1">
+                          <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-semibold text-gray-900`}>{w.word}</span>
+                          {w.inflection && (
+                            <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-xs text-gray-400 ml-1`}>{w.inflection}</span>
+                          )}
+                          <span className="text-sm text-gray-600 ml-1.5">{V.gloss(w)}</span>
+                        </div>
+                        {w.freq && <span className="text-xs text-gray-300 shrink-0">×{w.freq.toLocaleString()}</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            })()}
+          </div>
+        )}
 
         {/* Part of Speech */}
         <div className="p-5">
