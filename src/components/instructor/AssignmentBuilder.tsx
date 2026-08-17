@@ -1677,6 +1677,16 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
   }
 
   const selectedCourse = courses.find(c => c.id === form.courseId)
+  // Switching to a Hebrew course hides the section picker (the weekly schedule replaces it),
+  // so any selection made while a Greek course was chosen would linger invisibly and, being
+  // truthy, override the schedule server-side. Clear it when the picker goes away.
+  const hebrewCourseSelected = isHebrewLevel(selectedCourse?.level ?? form.level)
+  useEffect(() => {
+    if (hebrewCourseSelected && form.hebrewVocabSchedule !== 'custom' && form.vocabSubsections.length > 0) {
+      setF('vocabSubsections', [])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hebrewCourseSelected, form.hebrewVocabSchedule])
   // DERIVED, never stored: form.level was seeded from courses[0] while courseId honoured
   // defaultCourseId, so arriving from a course page (…/assignments/new?courseId=…) built the
   // series at the FIRST course's level. On a Hebrew course that meant a Greek quiz. The

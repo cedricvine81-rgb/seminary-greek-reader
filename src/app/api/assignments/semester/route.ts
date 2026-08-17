@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
   // If the instructor picked frequency sections, that selection overrides the
   // per-week lesson rank-range distribution for vocab quizzes (same words pool
   // each week) and is saved on each created quiz so it can be edited later.
-  const vocabSel = quizType === 'VOCABULARY_QUIZ' && Array.isArray(vocabSubsections) && vocabSubsections.length > 0
+  const rawVocabSel = quizType === 'VOCABULARY_QUIZ' && Array.isArray(vocabSubsections) && vocabSubsections.length > 0
     ? { subsections: vocabSubsections, pos: [] as string[] }
     : null
 
@@ -130,6 +130,14 @@ export async function POST(req: NextRequest) {
   // letting it win here would store a Greek level on every quiz in the series.
   const hebrew = isHebrewLevel(String(level))
   const resolvedLevel: CourseLevel = hebrew ? (level as CourseLevel) : (SOURCE_LEVEL[source] ?? (level as CourseLevel))
+
+  // THE SCHEDULE WINS unless the instructor explicitly chose to pick sections. The section
+  // picker is HIDDEN in the two weekly modes, so a selection made before the course was
+  // switched to Hebrew survives in the form where nobody can see or clear it — and, being
+  // truthy, silently replaced the whole weekly plan: every week the same 320-word pool and
+  // no section in the title. That is exactly how the FA2026 quizzes lost their schedule
+  // (2026-08-17). The server, not the form, now decides.
+  const vocabSel = hebrew && hebrewVocabSchedule && hebrewVocabSchedule !== 'custom' ? null : rawVocabSel
   // The lesson map is the BGVB week-by-week schedule: Greek only.
   const useLessonMap = !hebrew && source === 'VOCAB_BUILDER' && resolvedLevel === 'BEGINNING'
 
@@ -195,6 +203,12 @@ export async function POST(req: NextRequest) {
     let title = `Week ${weekNum} — `
     if (quizType === 'VOCABULARY_QUIZ') {
       title += name ?? 'Vocabulary Quiz'
+      // A manual selection is the same words every week, so name its span rather than
+      // leaving the instructor to guess what a title-less quiz covers.
+      if (!hebrewWeekly && vocabSel && vocabSel.subsections.length > 0) {
+        const keys = vocabSel.subsections
+        title += keys.length === 1 ? ` (§${keys[0]})` : ` (§${keys[0]}–${keys[keys.length - 1]})`
+      }
       // The week's slice goes in the title — "(§1-A)" for the Greek lesson map, "(Glanz 1A)"
       // or "(§1-A)" for the Hebrew schedules — so a student can open the Vocab page and see
       // the exact material the quiz draws on. The series bulk actions also parse the Greek

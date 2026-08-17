@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { AlertTriangle, RefreshCw, LayoutDashboard } from 'lucide-react'
+import { reportRenderError } from '@/lib/report-error'
 
 export default function InstructorError({
   error,
@@ -12,6 +13,9 @@ export default function InstructorError({
 }) {
   useEffect(() => {
     console.error('[instructor]', error)
+    // Also send it to the admin Errors page: a boundary swallows the error before
+    // window.onerror sees it, so without this a render crash is invisible in monitoring.
+    reportRenderError('instructor-page', error)
   }, [error])
 
   return (

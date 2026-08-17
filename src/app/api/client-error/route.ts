@@ -26,14 +26,17 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json().catch(() => null) as
-      { message?: string; stack?: string; url?: string; scope?: string } | null
+      { message?: string; stack?: string; url?: string; scope?: string; digest?: string } | null
     if (!body?.message) return NextResponse.json({ ok: true })
 
     const token = getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
 
+    // The digest is how a server render error is matched to the hosting platform's log,
+    // where its actual message lives — keep it with the row.
     await persist('client', (body.scope ?? 'window.onerror').slice(0, 200),
-      { message: body.message, stack: body.stack }, undefined, {
+      { message: body.message, stack: body.stack },
+      body.digest ? { digest: String(body.digest).slice(0, 100) } : undefined, {
         url: body.url,
         ua: req.headers.get('user-agent') ?? undefined,
         userId: payload?.sub,
