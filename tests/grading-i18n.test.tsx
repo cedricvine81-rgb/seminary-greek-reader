@@ -51,7 +51,10 @@ describe('the grade components', () => {
   it('translates them rather than falling through to English', () => {
     expect(t('es')('grade.component.parsing')).toBe('Análisis')
     expect(t('es')('grade.component.translation')).toBe('Traducción')
-    expect(t('en')('grade.componentShort.translation')).toBe('Trans.')
+    // The word pane's third field is labelled "Notes" (instructor, 2026-08-16) — the
+    // stored field and the grade.component.* score labels keep the Translation name.
+    expect(t('en')('grade.componentShort.translation')).toBe('Notes')
+    expect(t('es')('grade.componentShort.translation')).toBe('Notas')
   })
 })
 
