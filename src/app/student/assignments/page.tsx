@@ -40,6 +40,8 @@ export default async function StudentAssignmentsPage() {
     // while the same assignment reads Completed on the student's course card.
     completedAssignmentIds(payload.sub),
   ])
+  // AssignmentList is a client component; a Set can't cross the RSC boundary.
+  const completedList = Array.from(completedIds)
   const serialized = assignments.map(a => ({
     ...a,
     dueDate: a.dueDate.toISOString(),
@@ -60,19 +62,19 @@ export default async function StudentAssignmentsPage() {
   return (
     <DashboardShell role="STUDENT" pageTitle="Assignments">
       {serialized.length === 0 ? (
-        <AssignmentList assignments={serialized} completedIds={completedIds} courseNames={courseNames} />
+        <AssignmentList assignments={serialized} completedIds={completedList} courseNames={courseNames} />
       ) : (
         <div className="space-y-6">
           {live.length > 0 && (
             <div className="space-y-2">
               {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('assign.currentCourses')}</h2>}
-              <AssignmentList assignments={live} completedIds={completedIds} courseNames={courseNames} />
+              <AssignmentList assignments={live} completedIds={completedList} courseNames={courseNames} />
             </div>
           )}
           {earlier.length > 0 && (
             <div className="space-y-2">
               {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('assign.earlierCourses')}</h2>}
-              <AssignmentList assignments={earlier} completedIds={completedIds} courseNames={courseNames} />
+              <AssignmentList assignments={earlier} completedIds={completedList} courseNames={courseNames} />
             </div>
           )}
         </div>

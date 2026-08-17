@@ -1,3 +1,9 @@
+'use client'
+
+// Load-bearing directive: this component calls useT, and /instructor/courses (a server
+// page) renders it directly — without 'use client' the hook import is a client-reference
+// proxy and the whole page crashes at render in the production build.
+
 import Link from 'next/link'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { Table } from '@/components/ui/Table'

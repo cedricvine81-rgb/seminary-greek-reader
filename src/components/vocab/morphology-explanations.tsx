@@ -1,3 +1,5 @@
+'use client'
+
 /* ─────────────────────────────────────────────
    Morphology explanations — Beginning / Intermediate
 

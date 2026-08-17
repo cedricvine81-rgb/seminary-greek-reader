@@ -1,3 +1,10 @@
+'use client'
+
+// This file calls useT/useLocale, so the directive above is load-bearing: without it,
+// a server page that imports this component gets client-reference proxies for the hooks
+// and every render dies with `(0 , x.NT) is not a function` — an error that only appears
+// in the production build, streamed after the 200 status, so curl checks look clean.
+
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import type { Assignment } from '@/types/assignment'
@@ -8,7 +15,9 @@ import { formatDate } from '@/lib/i18n/format'
 
 interface AssignmentListProps {
   assignments: Assignment[]
-  completedIds?: Set<string>
+  /** An array, not a Set — this crosses the server→client boundary from the assignments
+      page, and a Set doesn't survive RSC serialization on this Next version. */
+  completedIds?: string[]
   /** courseId → course name. This list mixes every enrolled course, and two courses can
       easily both have a "Week 3 Quiz" — without the course a student can open the wrong one. */
   courseNames?: Record<string, string>
@@ -30,9 +39,10 @@ const typeColors: Record<string, 'blue' | 'purple' | 'green'> = {
 const hrefFor = (a: { id: string; type: string }) =>
   a.type === 'GROUP_PRESENTATION' ? '/student/group-presentations' : `/student/assignments/${a.id}`
 
-export function AssignmentList({ assignments, completedIds = new Set(), courseNames = {} }: AssignmentListProps) {
+export function AssignmentList({ assignments, completedIds = [], courseNames = {} }: AssignmentListProps) {
   const t = useT()
   const locale = useLocale()
+  const completed = new Set(completedIds)
   if (assignments.length === 0) {
     return (
       <div className="text-center py-10 space-y-2">
@@ -48,7 +58,7 @@ export function AssignmentList({ assignments, completedIds = new Set(), courseNa
   return (
     <div className="space-y-2">
       {assignments.map(a => {
-        const done = completedIds.has(a.id)
+        const done = completed.has(a.id)
         // Two-round passage exercises run until the Round 2 deadline, so judge
         // "overdue"/"due" by that, not their dueDate (the Round 1 cut-off).
         const finalDue = a.round2Deadline ?? a.round1Deadline ?? a.dueDate
