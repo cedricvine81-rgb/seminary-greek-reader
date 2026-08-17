@@ -32,7 +32,21 @@ export function TextsNavMenu() {
   const authorsRef = useRef<HTMLDivElement>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const openNow = () => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(true) }
+  // The header nav scrolls horizontally when cramped (overflow-x-auto), and a scrollable
+  // box always clips on BOTH axes — an in-flow absolute dropdown gets cut off at the nav's
+  // bottom edge, invisibly. So the category panel is PORTALLED to <body> and fixed at the
+  // trigger's measured position; `anchor` is that measurement, taken every time the menu
+  // opens. The books flyout below portals for the same reason (its clipper is the author
+  // panel's own scroll).
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [anchor, setAnchor] = useState<{ top: number; right: number }>({ top: 0, right: 0 })
+
+  const openNow = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    const r = wrapRef.current?.getBoundingClientRect()
+    if (r) setAnchor({ top: r.bottom, right: Math.max(8, window.innerWidth - r.right) })
+    setOpen(true)
+  }
   // Small delay so moving the mouse across the tiny gap into a sub-panel doesn't close it.
   const closeSoon = () => { closeTimer.current = setTimeout(() => { setOpen(false); setCat(null); setSub(null) }, 160) }
   const close = () => { setOpen(false); setCat(null); setSub(null) }
@@ -90,7 +104,7 @@ export function TextsNavMenu() {
   }, [sub])
 
   return (
-    <div className="relative" onMouseEnter={openNow} onMouseLeave={closeSoon}>
+    <div ref={wrapRef} className="relative" onMouseEnter={openNow} onMouseLeave={closeSoon}>
       <Link
         title={t('nav.texts')}
         href="/texts"
@@ -99,9 +113,12 @@ export function TextsNavMenu() {
         <Library size={18} /> <span className="hidden xl:inline">{t('nav.texts')}</span>
       </Link>
 
-      {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap. */}
-      {open && (
-        <div className="hidden md:block absolute right-0 top-full pt-1 z-50">
+      {/* Desktop hover menu only — portalled past the nav's overflow clip (see `anchor`).
+          pt-1 keeps the panel hover-connected across the gap; since the portal is outside
+          the wrapper div, it needs its own enter/leave handlers to hold the menu open. */}
+      {open && typeof document !== 'undefined' && createPortal(
+        <div className="hidden md:block fixed pt-1 z-50" style={{ top: anchor.top, right: anchor.right }}
+          onMouseEnter={openNow} onMouseLeave={closeSoon}>
           <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
             {TEXT_CATEGORIES.map(c => (
               <div key={c.id} className="relative" onMouseEnter={e => openAuthors(c.id, c.works, e.currentTarget)}>
@@ -149,7 +166,8 @@ export function TextsNavMenu() {
               </div>
             ))}
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
 
       {/* Books for the hovered author — portalled so the author panel's overflow can't clip it. */}

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Wrench } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
@@ -25,12 +26,22 @@ export function ToolsNavMenu() {
   const [open, setOpen] = useState(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const openNow = () => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(true) }
+  // Portalled + fixed for the same reason as the Texts menu: the nav's overflow-x-auto
+  // clips any in-flow dropdown at its bottom edge, so the panel must escape to <body>.
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [anchor, setAnchor] = useState<{ top: number; right: number }>({ top: 0, right: 0 })
+
+  const openNow = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    const r = wrapRef.current?.getBoundingClientRect()
+    if (r) setAnchor({ top: r.bottom, right: Math.max(8, window.innerWidth - r.right) })
+    setOpen(true)
+  }
   // Small delay so crossing the gap into the panel doesn't close it — as in the Texts menu.
   const closeSoon = () => { closeTimer.current = setTimeout(() => setOpen(false), 160) }
 
   return (
-    <div className="relative" onMouseEnter={openNow} onMouseLeave={closeSoon}>
+    <div ref={wrapRef} className="relative" onMouseEnter={openNow} onMouseLeave={closeSoon}>
       <Link
         title={t('nav.tools')}
         href="/tools"
@@ -39,9 +50,11 @@ export function ToolsNavMenu() {
         <Wrench size={18} /> <span className="hidden xl:inline">{t('nav.tools')}</span>
       </Link>
 
-      {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap. */}
-      {open && (
-        <div className="hidden md:block absolute right-0 top-full pt-1 z-50">
+      {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap.
+          Outside the wrapper via the portal, so it carries its own enter/leave handlers. */}
+      {open && typeof document !== 'undefined' && createPortal(
+        <div className="hidden md:block fixed pt-1 z-50" style={{ top: anchor.top, right: anchor.right }}
+          onMouseEnter={openNow} onMouseLeave={closeSoon}>
           <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
             {TOOLS.map(tool => (
               <Link
@@ -54,7 +67,8 @@ export function ToolsNavMenu() {
               </Link>
             ))}
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   )
