@@ -84,6 +84,9 @@ interface SemesterForm {
   days: number[]          // 0=Sun … 6=Sat
   quizType: AssignmentType
   vocabSubsections: string[]  // selected subsection keys when quizType is VOCABULARY_QUIZ
+  // Hebrew vocab series: which weekly schedule to follow — Glanz bands (week 1 → 1A),
+  // the Hebrew vocabulary page's own sections (week 1 → §1-A), or a manual selection.
+  hebrewVocabSchedule: 'glanz' | 'sections' | 'custom'
   morphologySubtype: MorphologySubtype   // used when not in series mode
   morphologySeries: MorphTestConfig[]    // per-test configs in series mode
   level: CourseLevel
@@ -1642,6 +1645,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     days:             [4],   // Thursday by default
     quizType:          'VOCABULARY_QUIZ',
     vocabSubsections:  [],
+    hebrewVocabSchedule: 'glanz',
     morphologySubtype: 'VERB_PARSING' as MorphologySubtype,
     morphologySeries:  [{ ...DEFAULT_MORPH_TEST }],
     seriesName:        '',
@@ -1913,13 +1917,29 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
           {form.quizType === 'VOCABULARY_QUIZ' && (
             <>
-              <FrequencySectionPicker
-                lang={isHebrewLevel(courseLevel) ? 'hebrew' : 'greek'}
-                selectedSubsections={form.vocabSubsections}
-                onChange={keys => setF('vocabSubsections', keys)}
-              />
-              {isHebrewLevel(courseLevel) && form.vocabSubsections.length === 0 && (
-                <p className="text-xs text-brand-600">{t('inst.b.s.hebrewWeeklyHint')}</p>
+              {isHebrewLevel(courseLevel) && (
+                <Select
+                  label={t('inst.b.s.hebrewSchedule')}
+                  value={form.hebrewVocabSchedule}
+                  onChange={e => {
+                    const v = e.target.value as SemesterForm['hebrewVocabSchedule']
+                    setF('hebrewVocabSchedule', v)
+                    // A leftover manual selection would silently override the schedule.
+                    if (v !== 'custom') setF('vocabSubsections', [])
+                  }}
+                  options={[
+                    { value: 'glanz', label: t('inst.b.s.hebrewScheduleGlanz') },
+                    { value: 'sections', label: t('inst.b.s.hebrewScheduleSections') },
+                    { value: 'custom', label: t('inst.b.s.hebrewScheduleCustom') },
+                  ]}
+                />
+              )}
+              {(!isHebrewLevel(courseLevel) || form.hebrewVocabSchedule === 'custom') && (
+                <FrequencySectionPicker
+                  lang={isHebrewLevel(courseLevel) ? 'hebrew' : 'greek'}
+                  selectedSubsections={form.vocabSubsections}
+                  onChange={keys => setF('vocabSubsections', keys)}
+                />
               )}
               {form.vocabSubsections.length === 0 && (
                 <div>

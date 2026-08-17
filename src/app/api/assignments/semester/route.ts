@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
     vocabThruLesson,
     vocabSubsections,
     prevSectionsPct,
+    hebrewVocabSchedule,
     seriesName,
     schedule,
   }: {
@@ -97,6 +98,7 @@ export async function POST(req: NextRequest) {
     prevSectionsPct?: number   // % of each vocab quiz drawn from EARLIER lessons
     seriesName?: string        // custom series name for the quiz titles (and series grouping)
     schedule: ScheduleItem[]
+    hebrewVocabSchedule?: 'glanz' | 'sections' | 'custom'
   } = body
 
   // If the instructor picked frequency sections, that selection overrides the
@@ -156,12 +158,22 @@ export async function POST(req: NextRequest) {
     // words (the flat pool scripts/fix-hebrew-vocab-quizzes.ts repaired on FA2026).
     const hebrewWeekly = hebrew && quizType === 'VOCABULARY_QUIZ' && !vocabSel
       ? (() => {
-          const bands = (HEBREW_DECK.bands ?? []).map(b => b.key)
-          const review = weekNum > bands.length
-          const subsections = review ? bands : [bands[Math.max(1, weekNum) - 1]]
+          // Two schedules, the instructor's choice: Glanz bands (the printed list OTST 551
+          // assigns week by week) or the Hebrew vocabulary page's own §-sections — both are
+          // 20-word slices, but of DIFFERENTLY ORDERED frequency lists, so week 3 is a
+          // different twenty words under each.
+          const useSections = hebrewVocabSchedule === 'sections'
+          const keys = useSections
+            ? HEBREW_DECK.allSubsectionKeys
+            : (HEBREW_DECK.bands ?? []).map(b => b.key)
+          const review = weekNum > keys.length
+          const subsections = review ? keys : [keys[Math.max(1, weekNum) - 1]]
           const reviewPct = review || weekNum <= 1 ? 0
             : Math.min(Math.max(Number(prevSectionsPct ?? 0), 0), 100)
-          return { subsections, reviewPct, label: review ? 'Glanz review' : subsections[0] }
+          const label = review
+            ? (useSections ? '§ review' : 'Glanz review')
+            : (useSections ? `§${subsections[0]}` : subsections[0])
+          return { subsections, reviewPct, label }
         })()
       : null
 
