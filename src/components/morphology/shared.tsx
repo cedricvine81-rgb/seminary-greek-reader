@@ -1228,6 +1228,7 @@ function fmtDeadline(iso: string) {
 
 export function HomeworkAssignments({ chapter }: { chapter: string }) {
   const t = useT()
+  const level = useContext(LevelContext)
   const [role, setRole] = useState<'none' | 'student' | 'instructor'>('none')
   const [entries, setEntries] = useState<HwStudentEntry[]>([])
   const [data, setData] = useState<HwInstructorData | null>(null)
@@ -1277,6 +1278,13 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
   }
 
   if (role !== 'instructor' || !data) return null
+
+  // The activation panel shows on the BEGINNING view only (instructor, 2026-08-16): the
+  // homework packs are the Beginning course's deck exercises, and Intermediate students work
+  // translation exercises instead, so listing every set again under Intermediate was noise.
+  // Only the instructor controls are gated — the student branch above stays at both levels,
+  // so a student who prefers the Intermediate explanations still sees their graded homework.
+  if (level === 'intermediate') return null
 
   async function act(key: string, fn: () => Promise<Response>) {
     setBusy(key); setError('')
