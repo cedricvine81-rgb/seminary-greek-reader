@@ -4,7 +4,7 @@ import { prisma } from '@/lib/db'
 import {
   generateVocabQuestionsForLesson, generateMorphQuestionsFromConfig, type MorphGenConfig,
   generateHebrewVocabPoolFromSelection, generateHebrewMorphologyQuestions,
-  resolveHebrewVocabBand,
+  resolveHebrewVocabCap,
 } from '@/lib/quiz-generation'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { MorphologySubtype } from '@/lib/quiz-fields'
@@ -116,10 +116,17 @@ export async function PATCH(req: NextRequest) {
           lesson, 'GREEK_TO_ENGLISH', count, fill, pct,
           w => resolve(w.word, w.gloss))
       }
+      // vocabSelection.reviewPct is updated alongside the column: the per-assignment
+      // generate route reads the JSON while this file's fillPct action reads the column,
+      // and leaving them disagreeing makes a later regeneration silently revert the mix.
+      const sel = (r.vocabSelection ?? null) as VocabSel
       await prisma.$transaction([
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
-        prisma.assignment.update({ where: { id: r.id }, data: { vocabReviewPct: pct } }),
+        prisma.assignment.update({ where: { id: r.id }, data: {
+          vocabReviewPct: pct,
+          ...(sel ? { vocabSelection: JSON.parse(JSON.stringify({ ...sel, reviewPct: pct })) } : {}),
+        } }),
       ])
       updated++
     }
@@ -205,7 +212,7 @@ export async function PATCH(req: NextRequest) {
         ? generateHebrewMorphologyQuestions(
             (r.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
             r._count.questions || 20, cfg?.fields, cfg?.parseFilter,
-            resolveHebrewVocabBand(r.weekNumber, cfg?.vocabThruBand ?? null))
+            await resolveHebrewVocabCap(r.courseId, r.dueDate, r.weekNumber, cfg?.vocabThruBand ?? null))
         : await generateMorphQuestionsFromConfig(
             (r.morphSubtype ?? 'MIXED') as MorphologySubtype,
             r._count.questions || 20, cap, r.morphConfig as MorphGenConfig)

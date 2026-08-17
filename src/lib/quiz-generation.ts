@@ -3,30 +3,57 @@ import { isHebrewLevel } from './constants'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
 import { wordsForSelection, subsectionKeysBefore, type BgvbWord } from './vocab-subsections'
-import { HEBREW_DECK, GREEK_DECK, deckWordsForSelection, deckKeysBefore, strongsThroughBand, type VocabLang } from './vocab-decks'
+import { HEBREW_DECK, GREEK_DECK, deckWordsForSelection, deckKeysBefore, strongsThroughBand, wordId, type VocabLang } from './vocab-decks'
 import { isAnswerCorrect } from './answer-matching'
 import { lessonSubsectionKey, lessonSubsectionKeysBefore, lessonSubsectionKeysThrough } from './vocab-lesson-map'
 
-/**
- * Resolve the Hebrew morphology vocabulary cap when it is set to 'auto' — the Hebrew
- * counterpart of the Greek series' vocabAuto (week N → lesson N). Glanz sets vocabulary
- * at 20 words a week and the bands are 20 ranks each, so the week number IS the band:
- * week 1 → Glanz 1A, week 2 → 1B, … week 12+ → 1L (the whole Glanz list).
- *
- * Deliberately NOT derived from the course's vocab quizzes: in practice those each draw a
- * random sample from one fixed pool all semester (verified on Beginning Hebrew FA2026 —
- * all 32 quizzes carry the identical selection), so they encode no progression to follow.
- * The weekly schedule is the real syllabus, and it is what the built-in 11-quiz series
- * hard-codes band-by-band.
- */
-export function resolveHebrewVocabBand(
-  weekNumber: number | null | undefined, band: string | null | undefined,
-): string | null {
-  if (band !== 'auto') return band ?? null
+/** Week N → Glanz band N (20 words a week, 20 ranks a band), clamped to the last band. */
+export function hebrewWeekBand(weekNumber: number | null | undefined): string | null {
   const bands = HEBREW_DECK.bands ?? []
   if (bands.length === 0) return null
   const week = Math.max(1, Number(weekNumber ?? 1))
   return bands[Math.min(week, bands.length) - 1].key
+}
+
+/**
+ * The Strong's numbers covered by a set of vocab-quiz selections — the union of their
+ * subsection keys resolved through the same deck logic the quizzes themselves use, so
+ * Glanz bands, our §-sections and manual mixes all count correctly. Null when the
+ * selections carry no keys (nothing to derive a cap from).
+ */
+export function hebrewStrongsForSelections(selections: string[][]): Set<string> | null {
+  const keys = new Set(selections.flat())
+  if (keys.size === 0) return null
+  const out = new Set<string>()
+  for (const w of deckWordsForSelection(HEBREW_DECK, Array.from(keys), [])) {
+    const strongs = wordId(w).split('|')[1]
+    if (strongs) out.add(strongs)
+  }
+  return out.size > 0 ? out : null
+}
+
+/**
+ * Resolve the Hebrew morphology vocabulary cap when it is set to 'auto' — the Hebrew
+ * counterpart of the Greek series' vocabAuto.
+ *
+ * 'auto' follows THE COURSE'S OWN VOCAB QUIZZES: the cap is every word any vocabulary
+ * quiz due on or before this quiz's date draws on. Since the weekly schedules store each
+ * quiz's slice (Glanz band or §-section), the union is exactly "taught so far" — under
+ * either schedule, and after any rescheduling, because regeneration re-resolves. Only a
+ * course with no vocab quizzes at all falls back to the week→Glanz-band map.
+ */
+export async function resolveHebrewVocabCap(
+  courseId: string, dueDate: Date | string, weekNumber: number | null | undefined,
+  band: string | null | undefined,
+): Promise<string | Set<string> | null> {
+  if (band !== 'auto') return band ?? null
+  const rows = await prisma.assignment.findMany({
+    where: { courseId, type: 'VOCABULARY_QUIZ', dueDate: { lte: new Date(dueDate) } },
+    select: { vocabSelection: true },
+  })
+  const fromQuizzes = hebrewStrongsForSelections(
+    rows.map(r => (r.vocabSelection as { subsections?: string[] } | null)?.subsections ?? []))
+  return fromQuizzes ?? hebrewWeekBand(weekNumber)
 }
 
 export interface GeneratedQuestion {
@@ -591,9 +618,10 @@ export function generateHebrewMorphologyQuestions(
   count: number,
   fields?: string[],
   parseFilter?: HebrewMorphParseFilter,
-  /** Glanz band key ("Glanz 1F"): only forms whose lexeme is in the vocabulary through
-   *  that band. The Hebrew counterpart of the Greek vocabThruLesson. */
-  vocabThruBand?: string | null,
+  /** The vocabulary cap: a Glanz band key ("Glanz 1F", cumulative through that band) or a
+   *  ready Set of Strong's numbers (resolveHebrewVocabCap's schedule-agnostic form). The
+   *  Hebrew counterpart of the Greek vocabThruLesson. */
+  vocabCap?: string | Set<string> | null,
 ) {
   let entries = hebrewEntriesForSubtype(subtype)
 
@@ -608,8 +636,8 @@ export function generateHebrewMorphologyQuestions(
   // quietly tests words the schedule hasn't reached. (For strong-verb quizzes this cap is
   // usually left off — the strong verbs and the frequent verbs of Hebrew barely overlap,
   // so capping one by the other empties the pool; see series-presets.ts.)
-  if (vocabThruBand) {
-    const known = strongsThroughBand(HEBREW_DECK, vocabThruBand)
+  if (vocabCap) {
+    const known = typeof vocabCap === 'string' ? strongsThroughBand(HEBREW_DECK, vocabCap) : vocabCap
     if (known.size > 0) entries = entries.filter(e => known.has(e.strongs))
   }
 
