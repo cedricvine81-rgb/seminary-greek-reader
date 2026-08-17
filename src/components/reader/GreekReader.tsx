@@ -219,7 +219,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     { href: '/exegesis', label: 'Syntax', icon: PencilLine },
     { href: '/exegesis?tab=phrasing', label: 'Phrasing', icon: ListTree },
     { href: '/texts', label: 'Texts', icon: Library },
-    { href: '/exegesis?tab=notes', label: 'Notes', icon: StickyNote },
+    { href: '/notes', label: 'Notes', icon: StickyNote },
   ]
   async function handleReaderSignOut() {
     await fetch('/api/auth', { method: 'DELETE' })

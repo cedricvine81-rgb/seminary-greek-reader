@@ -36,7 +36,7 @@ const STUDY_NAV = [
   { href: '/vocab',    label: 'nav.vocab',    icon: BookMarked },
   { href: '/grammar',  label: 'nav.grammar',  icon: Table2 },
   { href: '/exegesis', label: 'nav.exegesis', icon: Scroll },
-  { href: '/exegesis?tab=notes', label: 'tab.notes', icon: StickyNote },
+  { href: '/notes', label: 'tab.notes', icon: StickyNote },
   { href: '/texts',    label: 'nav.texts',    icon: Library },
   { href: '/tools',    label: 'nav.tools',    icon: Wrench },
 ]

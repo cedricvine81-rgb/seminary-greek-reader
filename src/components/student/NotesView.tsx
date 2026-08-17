@@ -67,11 +67,15 @@ function toLexicalInfo(tok: WordToken, ref: string): LexicalInfoPanel {
   return { surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: ref }
 }
 
-export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
+export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage, standalone }: {
   isAuthenticated: boolean
   anchor: NoteAnchor | null
   books: Book[]
   onJumpToPassage: (ref: string) => void
+  /** The /notes page has no passage box, so its side text pane could only ever show the
+      "enter a passage above" placeholder — hide the pane there and let the notebook go
+      full-width. In the Exegesis tab the pane stays: the passage box is right above it. */
+  standalone?: boolean
 }) {
   const t = useT()
   const [folders, setFolders] = useState<FolderT[]>([])
@@ -279,7 +283,9 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 pb-10">
-      <div className="flex-1 min-w-0 max-w-3xl space-y-8">
+      {/* The notebook keeps its reading-width cap even standalone; centred there, since
+          no side pane balances it. */}
+      <div className={`flex-1 min-w-0 max-w-3xl space-y-8${standalone ? ' mx-auto' : ''}`}>
         {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
         {/* (The old {t('notes.thisPassage')} section — editors for the loaded passage's noted verses +
@@ -455,11 +461,13 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 <p className="text-sm text-gray-400 italic py-6">No notes match “{query}”.</p>
               ) : noteKind === 'verse' ? (
                 <p className="text-sm text-gray-400 italic py-6">
-                  No verse notes here yet. Open a passage above and write on a verse, or use the note icon beside a verse in the Reader.
+                  {standalone
+                    ? 'No verse notes here yet. Use the note icon beside a verse in the Reader, or open a passage in the Exegesis workspace.'
+                    : 'No verse notes here yet. Open a passage above and write on a verse, or use the note icon beside a verse in the Reader.'}
                 </p>
               ) : (
                 <p className="text-sm text-gray-400 italic py-6">
-                  No notes here yet. Use <span className="font-medium text-gray-600">{t('notes.newTopicNote')}</span> for a free-standing note, or open a passage above to write on a verse.
+                  No notes here yet. Use <span className="font-medium text-gray-600">{t('notes.newTopicNote')}</span> for a free-standing note, or {standalone ? 'write on a verse from the Reader' : 'open a passage above to write on a verse'}.
                 </p>
               )
             ) : (
@@ -475,6 +483,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
       </div>
 
       {/* ── Side text pane: read the passage (any version) while you write notes ── */}
+      {!standalone && (
       <div className="lg:w-96 shrink-0 flex flex-col gap-3">
         <div className="rounded-xl border border-gray-200 overflow-hidden flex flex-col" style={{ maxHeight: '55vh' }}>
           <div className="shrink-0 flex items-center justify-between gap-2 px-3 py-1.5 bg-gray-50 border-b border-gray-200">
@@ -571,6 +580,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
         {isGreek && <ResizableParsingPane storageKey="notes" info={selectedInfo} bgClass="bg-gray-50" growDown />}
       </div>
+      )}
 
       {isAuthenticated && highlightSelection.popup && (
         <HighlightPopup

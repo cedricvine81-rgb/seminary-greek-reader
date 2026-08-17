@@ -72,7 +72,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           </Link>
           {/* Notes is a tab inside Exegesis, but it is somewhere a reader goes deliberately
               rather than a step in exegesis, so it gets its own way in. */}
-          <Link href="/exegesis?tab=notes" title={t('tab.notes')} className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+          <Link href="/notes" title={t('tab.notes')} className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
             <StickyNote size={18} /> <span className="hidden xl:inline">{t('tab.notes')}</span>
           </Link>
           <TextsNavMenu />

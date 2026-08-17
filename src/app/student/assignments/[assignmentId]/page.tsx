@@ -317,7 +317,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
                 ? rich(t('assign.courseNotesBodyNamed'), { folder: <strong>{assignment.notesFolderName}</strong> })
                 : t('assign.courseNotesBody')}
             </p>
-            <Link href="/exegesis?tab=notes" className="btn btn-primary inline-flex w-fit items-center gap-1.5 px-4 py-2">
+            <Link href="/notes" className="btn btn-primary inline-flex w-fit items-center gap-1.5 px-4 py-2">
               {t('assign.openYourNotes')} →
             </Link>
           </div>
