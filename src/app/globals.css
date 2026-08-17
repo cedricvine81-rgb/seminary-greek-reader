@@ -694,11 +694,13 @@ body.exam-lockdown nav.fixed.bottom-0 {
    callout everywhere, and on touch devices also suppress the long-press text selection.
    Desktop (fine pointer) keeps text selection so drag-to-highlight still works; on touch,
    highlighting is done from the word menu's colour palette. */
-.reading-word {
+.reading-word,
+.greek-word {
   -webkit-touch-callout: none;
 }
 @media (hover: none) and (pointer: coarse) {
-  .reading-word {
+  .reading-word,
+  .greek-word {
     -webkit-user-select: none;
     user-select: none;
   }

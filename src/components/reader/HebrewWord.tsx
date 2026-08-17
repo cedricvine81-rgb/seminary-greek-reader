@@ -70,13 +70,20 @@ interface HebrewWordProps {
 function HebrewWordImpl({ word, reference, isActive, lexicon, highlightId, highlightColor, hlBook, hlChapter, onHover, onClick, onRightClick }: HebrewWordProps) {
   const longPressTimer  = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longPressCoords = useRef<{ x: number; y: number } | null>(null)
+  // See GreekWord: swallow the synthetic click iOS fires after a long-press, or it lands as
+  // an outside-mousedown and closes the menu the long-press just opened.
+  const longPressFired  = useRef(false)
 
   function handleTouchStart(e: React.TouchEvent) {
     if (!onRightClick) return
+    longPressFired.current = false
     const touch = e.touches[0]
     longPressCoords.current = { x: touch.clientX, y: touch.clientY }
     longPressTimer.current = setTimeout(() => {
-      if (longPressCoords.current) onRightClick(word, longPressCoords.current.x, longPressCoords.current.y)
+      if (longPressCoords.current) {
+        longPressFired.current = true
+        onRightClick(word, longPressCoords.current.x, longPressCoords.current.y)
+      }
       longPressTimer.current = null
       longPressCoords.current = null
     }, 500)
@@ -84,6 +91,13 @@ function HebrewWordImpl({ word, reference, isActive, lexicon, highlightId, highl
   function cancelLongPress() {
     if (longPressTimer.current) { clearTimeout(longPressTimer.current); longPressTimer.current = null }
     longPressCoords.current = null
+  }
+  function handleTouchEnd(e: React.TouchEvent) {
+    cancelLongPress()
+    if (longPressFired.current) {
+      e.preventDefault()
+      longPressFired.current = false
+    }
   }
 
   const info = () => buildHebrewInfo(word, reference, lexicon)
@@ -97,8 +111,9 @@ function HebrewWordImpl({ word, reference, isActive, lexicon, highlightId, highl
       onClick={() => onClick(info())}
       onContextMenu={onRightClick ? e => { e.preventDefault(); onRightClick(word, e.clientX, e.clientY) } : undefined}
       onTouchStart={handleTouchStart}
-      onTouchEnd={cancelLongPress}
+      onTouchEnd={handleTouchEnd}
       onTouchMove={cancelLongPress}
+      onTouchCancel={cancelLongPress}
     >
       {word.surface}
     </span>

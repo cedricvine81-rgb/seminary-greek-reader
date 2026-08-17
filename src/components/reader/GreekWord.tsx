@@ -30,13 +30,20 @@ function GreekWordImpl({ word, reference, objectCase, isActive, isBsbHighlight, 
   // Long-press state for touch devices (fires the same handler as desktop right-click)
   const longPressTimer  = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longPressCoords = useRef<{ x: number; y: number } | null>(null)
+  // True once THIS touch's long-press has opened the word menu. iOS then fires synthetic
+  // mousedown+click on the word ~300ms after the finger lifts, and the menu closes itself on
+  // any outside mousedown — so the menu used to vanish the instant it appeared. Preventing
+  // the default on that touchend suppresses the synthetic mouse events and the menu stays.
+  const longPressFired  = useRef(false)
 
   function handleTouchStart(e: React.TouchEvent) {
     if (!onRightClick) return
+    longPressFired.current = false
     const touch = e.touches[0]
     longPressCoords.current = { x: touch.clientX, y: touch.clientY }
     longPressTimer.current = setTimeout(() => {
       if (longPressCoords.current) {
+        longPressFired.current = true
         onRightClick(word, longPressCoords.current.x, longPressCoords.current.y)
       }
       longPressTimer.current  = null
@@ -50,6 +57,14 @@ function GreekWordImpl({ word, reference, objectCase, isActive, isBsbHighlight, 
       longPressTimer.current = null
     }
     longPressCoords.current = null
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    cancelLongPress()
+    if (longPressFired.current) {
+      e.preventDefault()
+      longPressFired.current = false
+    }
   }
 
   function buildInfo(): LexicalInfoPanel | null {
@@ -91,8 +106,9 @@ function GreekWordImpl({ word, reference, objectCase, isActive, isBsbHighlight, 
       onClick={() => onClick(buildInfo())}
       onContextMenu={onRightClick ? e => { e.preventDefault(); onRightClick(word, e.clientX, e.clientY) } : undefined}
       onTouchStart={handleTouchStart}
-      onTouchEnd={cancelLongPress}
+      onTouchEnd={handleTouchEnd}
       onTouchMove={cancelLongPress}
+      onTouchCancel={cancelLongPress}
     >
       {word.surface}
     </span>
