@@ -1,4 +1,4 @@
-import { useEffect, useState, type RefObject } from 'react'
+import { useEffect, useRef, useState, type RefObject } from 'react'
 import { offsetWithin, clipRangeToElement } from './range-utils'
 
 export interface HighlightSplit { book: string; chapter: number; verse: number; start: number; end: number; layer: string }
@@ -17,8 +17,16 @@ export type HighlightPopupState =
  */
 export function useHighlightSelection(containerRef: RefObject<HTMLElement | null>) {
   const [popup, setPopup] = useState<HighlightPopupState | null>(null)
+  // Which selection the palette is currently for, so a settling touch selection doesn't
+  // reopen it on every adjustment.
+  const shownFor = useRef<string | null>(null)
 
   useEffect(() => {
+    // Touch selection is not finished when the finger lifts — iOS leaves grab handles and the
+    // reader drags them to adjust — so a coarse pointer also needs the settle timer below.
+    const coarse = typeof window !== 'undefined'
+      && window.matchMedia('(hover: none) and (pointer: coarse)').matches
+
     function onMouseUp(e: MouseEvent) {
       // Only a left-button drag-selection opens the highlight palette. Right-click
       // (button 2) leaves the word selected but must NOT pop the palette — that word's
@@ -52,7 +60,38 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
       if (splits.length === 0) return
 
       const rect = range.getBoundingClientRect()
-      setPopup({ kind: 'new', x: rect.left + rect.width / 2, y: rect.top, splits, text: sel.toString() })
+      const key = splits.map(s => `${s.book}${s.chapter}:${s.verse}:${s.start}-${s.end}`).join('|')
+      if (shownFor.current === key) return
+      shownFor.current = key
+      const text = sel.toString()
+      // On touch, drop the native selection once measured: iOS raises Copy / Look Up over any
+      // live selection and that callout cannot be suppressed while one exists, so it would
+      // cover this palette. The range is already captured and the highlight is painted from
+      // it, so the reader still sees exactly what they picked.
+      if (coarse) window.getSelection()?.removeAllRanges()
+      setPopup({ kind: 'new', x: rect.left + rect.width / 2, y: rect.top, splits, text })
+    }
+
+    // `pointerup` covers mouse, finger and Apple Pencil; the mouseup this used to rely on is
+    // synthesised inconsistently after a touch, which is why a drag-highlight on an iPad or
+    // iPhone never opened the palette.
+    function onPointerUp(e: PointerEvent) {
+      if (e.button !== 0) return
+      onMouseUp(e as unknown as MouseEvent)
+    }
+
+    // There is no "selection finished" event, so settle for a pause — coarse pointers only,
+    // where the handles keep moving after the finger lifts.
+    let settle: ReturnType<typeof setTimeout> | undefined
+    function onSelectionChange() {
+      clearTimeout(settle)
+      settle = setTimeout(() => {
+        const container = containerRef.current
+        const sel = window.getSelection()
+        if (!container || !sel || sel.isCollapsed || sel.rangeCount === 0) return
+        if (!container.contains(sel.getRangeAt(0).commonAncestorContainer)) return
+        onMouseUp({ button: 0, target: sel.getRangeAt(0).commonAncestorContainer } as unknown as MouseEvent)
+      }, 550)
     }
 
     // Click-to-edit an existing highlight — only when the click didn't just create (or
@@ -71,12 +110,18 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
       })
     }
 
-    document.addEventListener('mouseup', onMouseUp)
+    document.addEventListener('pointerup', onPointerUp)
     document.addEventListener('click', onClick)
-    return () => { document.removeEventListener('mouseup', onMouseUp); document.removeEventListener('click', onClick) }
+    if (coarse) document.addEventListener('selectionchange', onSelectionChange)
+    return () => {
+      document.removeEventListener('pointerup', onPointerUp)
+      document.removeEventListener('click', onClick)
+      if (coarse) document.removeEventListener('selectionchange', onSelectionChange)
+      clearTimeout(settle)
+    }
   }, [containerRef])
 
-  function close() { setPopup(null); window.getSelection()?.removeAllRanges() }
+  function close() { setPopup(null); shownFor.current = null; window.getSelection()?.removeAllRanges() }
 
   return { popup, close }
 }

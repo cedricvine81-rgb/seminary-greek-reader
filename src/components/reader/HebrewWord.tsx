@@ -110,6 +110,7 @@ function HebrewWordImpl({ word, reference, isActive, lexicon, highlightId, highl
       onMouseLeave={() => onHover(null)}
       onClick={() => onClick(info())}
       onContextMenu={onRightClick ? e => { e.preventDefault(); onRightClick(word, e.clientX, e.clientY) } : undefined}
+      data-longpress-own=""
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchMove={cancelLongPress}

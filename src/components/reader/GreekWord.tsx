@@ -105,6 +105,7 @@ function GreekWordImpl({ word, reference, objectCase, isActive, isBsbHighlight, 
       onMouseLeave={() => onHover(null)}
       onClick={() => onClick(buildInfo())}
       onContextMenu={onRightClick ? e => { e.preventDefault(); onRightClick(word, e.clientX, e.clientY) } : undefined}
+      data-longpress-own=""
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchMove={cancelLongPress}
