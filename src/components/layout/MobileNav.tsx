@@ -7,8 +7,7 @@ import { useApi } from '@/lib/api-client'
 import {
   LayoutDashboard, Calendar, ClipboardList,
   TrendingUp, BarChart2, BookMarked,
-  Archive, FileText, Bell, Users, BookOpen, Building2, Mail, ShieldAlert, Settings,
-} from 'lucide-react'
+  Archive, FileText, Bell, Users, BookOpen, Building2, Mail, ShieldAlert, Settings, Bug } from 'lucide-react'
 
 const instructorTabs = [
   { label: 'nav.dashboard',   href: '/instructor',             icon: LayoutDashboard },
@@ -32,6 +31,7 @@ const adminTabs = [
   { label: 'nav.courses',      href: '/admin/courses',       icon: BookOpen },
   { label: 'nav.institutions', href: '/admin/institutions',  icon: Building2 },
   { label: 'Audit',        href: '/admin/audit',         icon: ShieldAlert },
+  { label: 'Errors',       href: '/admin/errors',        icon: Bug },
   { label: 'Notifications', href: '/admin/settings',     icon: Settings },
 ]
 

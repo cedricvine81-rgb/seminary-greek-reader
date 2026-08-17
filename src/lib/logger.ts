@@ -53,6 +53,46 @@ export function logError(scope: string, err: unknown, context?: LogContext) {
   // Don't pollute logs with Next's internal control-flow signals.
   if (isNextControlFlowSignal(err)) return
   emit('error', scope, { ...context, error: serializeError(err) })
+  void persist('server', scope, serializeError(err), context)
+}
+
+// ── Durable copy ──────────────────────────────────────────────────────────────────────────
+// Console output on Vercel scrolls away; the ErrorLog table is what /admin/errors reads.
+// Fire-and-forget and triple-guarded: never throws, never recurses into logError, and a
+// missing table (the SQL not yet run) is swallowed — so this file can deploy first.
+// A repeat of the same scope+message within a minute is not re-written: one crash loop
+// should read as one row per minute, not a thousand.
+const recentlyPersisted = new Map<string, number>()
+
+export async function persist(
+  source: 'server' | 'client',
+  scope: string,
+  err: { message?: unknown; stack?: unknown },
+  context?: LogContext,
+  extra?: { url?: string; ua?: string; userId?: string },
+) {
+  if (typeof window !== 'undefined') return
+  try {
+    const message = String(err.message ?? '').slice(0, 500)
+    const key = `${scope}|${message}`
+    const now = Date.now()
+    const last = recentlyPersisted.get(key)
+    if (last && now - last < 60_000) return
+    recentlyPersisted.set(key, now)
+    if (recentlyPersisted.size > 500) recentlyPersisted.clear()
+
+    const { prisma } = await import('./db')
+    await prisma.errorLog.create({
+      data: {
+        source, scope: scope.slice(0, 200), message,
+        stack: typeof err.stack === 'string' ? err.stack.slice(0, 4000) : null,
+        context: context ? JSON.parse(JSON.stringify(context)) : undefined,
+        url: extra?.url?.slice(0, 500), ua: extra?.ua?.slice(0, 300), userId: extra?.userId,
+      },
+    })
+  } catch {
+    // Monitoring must never take the app down with it.
+  }
 }
 
 export function logWarn(scope: string, context?: LogContext) {

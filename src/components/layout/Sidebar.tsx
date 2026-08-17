@@ -8,7 +8,7 @@ import {
   LayoutDashboard, BookMarked, Calendar, Archive,
   ClipboardList, BarChart2, FileText,
   Settings, Bell,
-  Users, BookOpen, Building2, Mail, ShieldAlert, Gavel,
+  Users, BookOpen, Building2, Mail, ShieldAlert, Gavel, Bug,
 } from 'lucide-react'
 
 interface NavItem {
@@ -37,6 +37,7 @@ const adminNav: NavItem[] = [
   { label: 'nav.vocabSynonyms',href: '/admin/vocab/synonyms',     icon: <BookMarked size={16} /> },
   { label: 'nav.vocabAppeals', href: '/admin/appeals',            icon: <Gavel size={16} /> },
   { label: 'nav.auditLog',     href: '/admin/audit',              icon: <ShieldAlert size={16} /> },
+  { label: 'nav.errors',       href: '/admin/errors',             icon: <Bug size={16} /> },
   { label: 'nav.notifications', href: '/admin/settings',           icon: <Settings size={16} /> },
 ]
 

@@ -5,6 +5,7 @@ import { AppHeader } from '@/components/layout/AppHeader'
 import { AppFooter } from '@/components/layout/AppFooter'
 import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
 import { NativeMenuGuard } from '@/components/layout/NativeMenuGuard'
+import { ClientErrorReporter } from '@/components/layout/ClientErrorReporter'
 import { ChunkErrorReload } from '@/components/layout/ChunkErrorReload'
 import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
 import { PageGuideProvider } from '@/components/help/PageGuideProvider'
@@ -143,6 +144,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <AppFooter />
         </div>
         <NativeMenuGuard />
+        <ClientErrorReporter />
         <MasterSearchProvider isAuthenticated={headerProps.isAuthenticated} />
         <PageGuideProvider />
         <GrammarPanelProvider />

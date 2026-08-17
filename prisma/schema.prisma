@@ -1093,3 +1093,21 @@ model MorphologyProgress {
 
   @@unique([userId, chapterId])
 }
+
+// Production error log — the app's own monitoring. Written fire-and-forget by lib/logger
+// (server errors) and /api/client-error (browser errors); read by /admin/errors. Rows are
+// diagnostic exhaust, prunable at will.
+model ErrorLog {
+  id      String   @id @default(cuid())
+  time    DateTime @default(now())
+  source  String // 'server' | 'client'
+  scope   String // route or reporting site, e.g. "POST /api/quizzes"
+  message String
+  stack   String?
+  context Json?
+  url     String? // client errors: the page the error happened on
+  ua      String? // client errors: user agent
+  userId  String?
+
+  @@index([time])
+}

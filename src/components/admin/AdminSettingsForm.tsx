@@ -17,6 +17,18 @@ export function AdminSettingsForm() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [saved, setSaved] = useState(false)
+  const [testState, setTestState] = useState<'idle' | 'sending' | 'sent' | string>('idle')
+
+  async function sendTest() {
+    setTestState('sending')
+    try {
+      const res = await fetch('/api/admin/test-email', { method: 'POST' })
+      const body = await res.json().catch(() => ({}))
+      setTestState(res.ok ? 'sent' : (body.error ?? 'Send failed.'))
+    } catch {
+      setTestState('Send failed.')
+    }
+  }
 
   useEffect(() => {
     let alive = true
@@ -77,6 +89,18 @@ export function AdminSettingsForm() {
           {error && <FormMessage kind="error">{error}</FormMessage>}
           {saved && <FormMessage kind="success">Settings saved.</FormMessage>}
           <Button onClick={save} loading={saving} size="sm">Save</Button>
+
+          {/* Proves the whole Resend pipeline (env vars, domain verification, API) by
+              sending to the signed-in admin's own address. */}
+          <div className="border-t border-gray-100 pt-4">
+            <Button onClick={sendTest} loading={testState === 'sending'} size="sm" variant="secondary">
+              Send me a test email
+            </Button>
+            {testState === 'sent' && <FormMessage kind="success">Sent — check your inbox.</FormMessage>}
+            {testState !== 'idle' && testState !== 'sending' && testState !== 'sent' && (
+              <FormMessage kind="error">{testState}</FormMessage>
+            )}
+          </div>
         </div>
       )}
     </Card>

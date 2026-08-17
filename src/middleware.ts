@@ -31,6 +31,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/vocab-sentence', // "Identify the word" drill — public read-only Bible text, like /api/reader
   '/api/preview',
   '/api/profile/institutions', // institution list for the sign-up dropdown (public, non-sensitive)
+  '/api/client-error', // browser error reports — errors happen signed out too; rate-limited in the route
   '/api/webhooks/paddle', // Paddle calls this with no session cookie — trust is via HMAC signature instead
 ]
 

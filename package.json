@@ -22,7 +22,9 @@
     "i18n:content": "tsx --tsconfig tsconfig.i18n.json scripts/i18n-content.ts --build",
     "i18n:audit": "tsx --tsconfig tsconfig.i18n.json scripts/i18n-content.ts --audit",
     "audit:quizzes": "tsx scripts/audit-quizzes.ts",
-    "i18n:literals": "node scripts/i18n-literals.mjs"
+    "i18n:literals": "node scripts/i18n-literals.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "seed:test-accounts": "node --env-file=.env.local scripts/seed-test-accounts.mjs"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.6.4",

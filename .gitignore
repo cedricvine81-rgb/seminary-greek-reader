@@ -61,3 +61,4 @@ public/data/theology/*.candidates.json
 .bullinger-cache/
 .web-cache/
 .ot-runs/
+.tmp/
