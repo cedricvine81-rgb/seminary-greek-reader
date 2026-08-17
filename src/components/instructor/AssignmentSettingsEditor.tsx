@@ -346,7 +346,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                     onChange={e => setGlossFrequency(e.target.value ? Number(e.target.value) : null)}
                     className="input"
                   >
-                    {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    {glossaryOptions(t, isHebrewLevel(level ?? '')).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                   </select>
                   <p className="text-xs text-brand-600 mt-1">{t('as.glossaryHelp')}</p>
                 </div>
@@ -465,7 +465,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 onChange={e => setGlossFrequency(e.target.value ? Number(e.target.value) : null)}
                 className="input"
               >
-                {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                {glossaryOptions(t, isHebrewLevel(level ?? '')).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
               <p className="text-xs text-brand-600 mt-1">{t('as.verseGlossHelp')}</p>
             </div>

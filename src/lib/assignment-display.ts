@@ -58,8 +58,26 @@ export const appealOptions = (t: T) => [
   ...[1, 2, 3, 5].map(n => ({ value: String(n), label: t('inst.b.appealsN', { count: n, n }) })),
 ]
 
-export const glossaryOptions = (t: T) => [
-  { value: '', label: t('inst.b.glossaryOff') },
-  { value: '50', label: t('inst.b.glossaryBeginner') },
-  { value: '30', label: t('inst.b.glossaryIntermediate') },
-]
+/**
+ * Glossary thresholds, per corpus. "Fewer than N occurrences" means very different things in
+ * the two testaments, so one pair of numbers cannot serve both.
+ *
+ * The Hebrew Bible has ~300,000 tagged words to the NT's ~138,000, and a Beginning Hebrew
+ * student's whole vocabulary is the top ~240 words — which reach down only to about 135
+ * occurrences. At the Greek thresholds (50/30) a Hebrew passage therefore glosses almost
+ * nothing: Genesis 12:1-3, set as an exercise, has no word rarer than 61x and so produced an
+ * empty glossary, which is what the instructor noticed on 2026-08-17. The Hebrew numbers
+ * below sit just past the taught vocabulary, so what a student has not met gets a gloss.
+ */
+export const glossaryOptions = (t: T, hebrew = false) => hebrew
+  ? [
+      { value: '', label: t('inst.b.glossaryOff') },
+      { value: '300', label: t('inst.b.glossaryBeginnerHeb') },
+      { value: '150', label: t('inst.b.glossaryIntermediateHeb') },
+      { value: '50', label: t('inst.b.glossaryAdvancedHeb') },
+    ]
+  : [
+      { value: '', label: t('inst.b.glossaryOff') },
+      { value: '50', label: t('inst.b.glossaryBeginner') },
+      { value: '30', label: t('inst.b.glossaryIntermediate') },
+    ]

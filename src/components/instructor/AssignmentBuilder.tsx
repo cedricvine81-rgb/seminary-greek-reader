@@ -652,7 +652,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               onChange={e => set('glossFrequency', e.target.value ? Number(e.target.value) : undefined)}
               className="input"
             >
-              {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+              {glossaryOptions(t, isHebrewLevel(courseLevel)).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
             <p className="mt-1 text-xs text-brand-600">{t('inst.b.glossaryHelpExam')}</p>
           </div>
@@ -821,7 +821,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                 onChange={e => set('glossFrequency', e.target.value ? Number(e.target.value) : undefined)}
                 className="input"
               >
-                {glossaryOptions(t).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                {glossaryOptions(t, isHebrewLevel(courseLevel)).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
               <p className="text-xs text-brand-600 mt-1">{t('inst.b.glossaryHelpExercise')}</p>
             </div>
