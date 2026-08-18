@@ -161,7 +161,12 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
   const [gradeNote, setGradeNote] = useState('')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState('')          // fatal: the submission could not be loaded
+  // A failed SAVE must never unmount the grader. This used to reuse `error`, which the
+  // early-return below renders instead of the whole component — so one expired session or
+  // dropped connection replaced the exam with a red line and took every sub-score the
+  // instructor had typed since the last successful save with it.
+  const [saveError, setSaveError] = useState('')
   const [isExam, setIsExam] = useState(false)
   const [reopening, setReopening] = useState(false)
   // Exam passages, in display order: each holds its reference line (used as the grade key) and its verses.
@@ -269,12 +274,13 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       })
       if (!res.ok) throw new Error('Save failed')
       lastSavedRef.current = JSON.stringify({ grade, gradeNote, passageGrades })
+      setSaveError('')
       setSaved(true)
       // Refresh server components (course gradebook) so the saved grade is reflected on navigation
       router.refresh()
       setTimeout(() => setSaved(false), 3000)
     } catch {
-      setError(t('sub.saveFailed'))
+      setSaveError(t('sub.saveFailed'))
     } finally {
       setSaving(false)
     }
@@ -290,23 +296,35 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
     return () => clearTimeout(t)
   }, [grade, gradeNote, passageGrades, saveGrade])
 
+  // Closing the tab (or hitting Back) within the 800ms debounce used to discard the edit
+  // silently — the cleanup above cancels the pending save. Students already get this guard
+  // on their own work; graders now do too.
+  const dirty = loadedRef.current
+    && JSON.stringify({ grade, gradeNote, passageGrades }) !== lastSavedRef.current
+  useEffect(() => {
+    if (!dirty) return
+    const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = '' }
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [dirty])
+
   // Reopen this student's submission so they can edit and resubmit. Clears the
   // submitted state and grade; their work is preserved (shares the results un-submit API).
   async function reopen() {
     if (!confirm(t('sub.reopenConfirm', { name: studentName || t('sub.theStudent') }))) return
     setReopening(true)
-    setError('')
+    setSaveError('')
     try {
       const res = await fetch(`/api/assignments/${assignmentId}/results?sessionId=${encodeURIComponent(sessionId)}`, { method: 'DELETE' })
       if (!res.ok) {
         const d = await res.json().catch(() => ({}))
-        setError(d.error || t('sub.reopenFailed'))
+        setSaveError(d.error || t('sub.reopenFailed'))
         return
       }
       router.push(onBack)
       router.refresh()
     } catch {
-      setError(t('sub.reopenFailed'))
+      setSaveError(t('sub.reopenFailed'))
     } finally {
       setReopening(false)
     }
@@ -605,6 +623,11 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                 <Save size={14} /> {saved ? t('sub.savedBang') : t('sub.saveGrade')}
               </Button>
               <span className="text-xs text-gray-400">{saving ? t('sub.saving') : saved ? t('sub.saved') : t('sub.autoSaves')}</span>
+              {saveError && (
+                <span className="text-xs font-medium text-red-600" role="alert">
+                  {saveError} — {t('sub.saveRetryHint')}
+                </span>
+              )}
             </div>
           </div>
         ) : (
@@ -631,6 +654,11 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                 <Save size={14} /> {saved ? t('sub.savedBang') : t('sub.saveGrade')}
               </Button>
               <span className="text-xs text-gray-400">{saving ? t('sub.saving') : saved ? t('sub.saved') : t('sub.autoSaves')}</span>
+              {saveError && (
+                <span className="text-xs font-medium text-red-600" role="alert">
+                  {saveError} — {t('sub.saveRetryHint')}
+                </span>
+              )}
             </div>
           </div>
         )}

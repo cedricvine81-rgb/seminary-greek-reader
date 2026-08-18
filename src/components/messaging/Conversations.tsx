@@ -94,6 +94,7 @@ function ComposeButton({ courses, onSent }: { courses: ComposeCourse[]; onSent: 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
               <textarea
+                maxLength={20_000}
                 value={body}
                 onChange={e => setBody(e.target.value)}
                 rows={6}
@@ -199,6 +200,7 @@ function ThreadView({ rootId, meId, onChanged, isBroadcast }: { rootId: string; 
       ) : (
         <div className="flex items-end gap-2">
           <textarea
+            maxLength={20_000}
             value={reply}
             onChange={e => setReply(e.target.value)}
             rows={2}

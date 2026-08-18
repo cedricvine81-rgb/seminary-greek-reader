@@ -96,7 +96,15 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
         setSavedFlash(responseId)
         setTimeout(() => setSavedFlash(f => (f === responseId ? null : f)), 1500)
         mutate()
+      } else {
+        // Silence here was the bug: this grader saves once PER SENTENCE, so a 15-sentence
+        // set across 25 students is ~375 chances for a score to look entered and never
+        // reach the server. The typed value stays in the box, so Save can just be retried.
+        const d = await res.json().catch(() => ({}))
+        alert(`${t('hw.saveFailed')}${d.error ? `\n\n${d.error}` : ''}`)
       }
+    } catch {
+      alert(t('hw.saveFailed'))
     } finally {
       setSaving(null)
     }

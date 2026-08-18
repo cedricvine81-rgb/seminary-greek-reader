@@ -27,6 +27,7 @@ export function EnrollmentRequests({ pending: initial }: Props) {
   const [acting, setActing] = useState<string | null>(null)
   const [messageOpen, setMessageOpen] = useState<string | null>(null)
   const [messageText, setMessageText] = useState('')
+  const [error, setError] = useState('')
 
   // Poll for new enrollment requests every 15 seconds
   useEffect(() => {
@@ -53,8 +54,13 @@ export function EnrollmentRequests({ pending: initial }: Props) {
 
   if (pending.length === 0) return null
 
-  async function decide(enrollmentId: string, status: 'APPROVED' | 'REJECTED') {
+  async function decide(enrollmentId: string, status: 'APPROVED' | 'REJECTED', studentName?: string) {
+    // Deny is one click from Approve and cannot be undone from any instructor screen: the
+    // row leaves the pending list for good, and the student is then blocked from asking
+    // again. Worth one question first.
+    if (status === 'REJECTED' && !confirm(t('er.denyConfirm', { name: studentName || t('er.thisStudent') }))) return
     setActing(enrollmentId)
+    setError('')
     try {
       const res = await fetch(`/api/enrollments/${enrollmentId}`, {
         method: 'PATCH',
@@ -67,7 +73,15 @@ export function EnrollmentRequests({ pending: initial }: Props) {
         // SWR key), rather than waiting for its next 60s poll.
         void mutate('/api/enrollments/pending')
         router.refresh()
+      } else {
+        // Previously an `if (res.ok)` with no else: an expired session or a 500 left the
+        // row sitting there and the instructor unable to tell "not clicked yet" from
+        // "clicked and silently failed".
+        const d = await res.json().catch(() => ({}))
+        setError(d.error || t('er.actionFailed'))
       }
+    } catch {
+      setError(t('er.actionFailed'))
     } finally {
       setActing(null)
     }
@@ -94,6 +108,12 @@ export function EnrollmentRequests({ pending: initial }: Props) {
           {pending.length}
         </span>
       </CardTitle>
+
+      {error && (
+        <p className="mb-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+          {error}
+        </p>
+      )}
 
       <div className="space-y-3">
         {pending.map(e => (
@@ -128,7 +148,7 @@ export function EnrollmentRequests({ pending: initial }: Props) {
                   size="sm"
                   variant="secondary"
                   loading={acting === e.id}
-                  onClick={() => decide(e.id, 'REJECTED')}
+                  onClick={() => decide(e.id, 'REJECTED', `${e.user.firstName} ${e.user.surname}`.trim())}
                   className="text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-1"
                 >
                   <XCircle size={13} /> {t('er.deny')}

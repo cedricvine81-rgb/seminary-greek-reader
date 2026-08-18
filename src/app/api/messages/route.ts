@@ -12,6 +12,9 @@ type Participant = { id: string; firstName: string; surname: string; title: stri
 // GET /api/messages — conversation threads the current user is part of (either role).
 // Each thread is a 1:1 conversation between an instructor and a student, or — when
 // the recipient has opted in — between two students in the same course.
+const MAX_BODY = 20_000   // characters in one message body
+const MAX_LIST = 500      // most recent messages considered when building the thread list
+
 export async function GET(_req: NextRequest) {
   try {
     const payload = getPayload()
@@ -20,9 +23,14 @@ export async function GET(_req: NextRequest) {
 
     const me = payload.sub
     // Exclude messages this user has deleted from their own side.
-    const messages = await prisma.message.findMany({
+    // Newest-first with a ceiling, then re-sorted below. Unbounded, this pulled EVERY
+    // message body the user had ever sent or received on each page load — and a broadcast
+    // is one full copy per student, so an instructor's list grew by class-size every
+    // announcement. The cap is far above a semester of real conversation.
+    const messages = (await prisma.message.findMany({
       where: { OR: [{ senderId: me, senderDeletedAt: null }, { recipientId: me, recipientDeletedAt: null }] },
-      orderBy: { createdAt: 'asc' },
+      orderBy: { createdAt: 'desc' },
+      take: MAX_LIST,
       select: {
         id: true, subject: true, body: true, threadId: true, broadcastId: true, readAt: true, createdAt: true,
         senderId: true, recipientId: true,
@@ -30,7 +38,7 @@ export async function GET(_req: NextRequest) {
         sender: { select: { id: true, firstName: true, surname: true, title: true, role: true, email: true, messagingConsent: true } },
         recipient: { select: { id: true, firstName: true, surname: true, title: true, role: true, email: true, messagingConsent: true } },
       },
-    })
+    })).reverse()   // oldest-first, as the thread grouping below expects
 
     type Thread = {
       rootId: string; subject: string; course: { id: string; name: string }; other: Participant
@@ -113,6 +121,15 @@ export async function POST(req: NextRequest) {
     if (subject.length > 200) {
       return NextResponse.json({ error: 'Subject must be 200 characters or fewer.' }, { status: 400 })
     }
+    // The body was uncapped. A class broadcast stores one full COPY per recipient, so an
+    // oversized body is multiplied by the class size in a single insert — and then re-read
+    // in full by the thread list below. 20k characters is far more than any real message
+    // and matches the cap the notes/annotations routes already use.
+    if (body.length > MAX_BODY) {
+      return NextResponse.json({
+        error: `Message is too long (${body.length.toLocaleString()} characters). The limit is ${MAX_BODY.toLocaleString()}.`,
+      }, { status: 400 })
+    }
 
     // ── Student-initiated message → the course's instructor by default, or a
     //    coursemate who has opted in to being messaged (recipientId provided) ──
@@ -131,12 +148,18 @@ export async function POST(req: NextRequest) {
         })
         if (!membership) return NextResponse.json({ error: 'You are not a member of that group.' }, { status: 403 })
         const others = await prisma.courseGroupMember.findMany({
-          where: { groupId, userId: { not: payload.sub }, user: { deletedAt: null } },
+          // messagingConsent is honoured here as it is for direct classmate messages: a
+          // student who declined peer messaging at signup was still reachable through any
+          // group they shared, which is the one promise the setting makes.
+          where: { groupId, userId: { not: payload.sub },
+                   user: { deletedAt: null, messagingConsent: true } },
           select: { userId: true },
         })
         const groupRecipients = others.map(m => m.userId)
         if (groupRecipients.length === 0) {
-          return NextResponse.json({ error: 'Your group has no other members to message yet.' }, { status: 400 })
+          return NextResponse.json({
+            error: 'No one in your group can be messaged yet — group members choose whether to receive messages.',
+          }, { status: 400 })
         }
         const groupBroadcastId = crypto.randomUUID()
         await prisma.message.createMany({

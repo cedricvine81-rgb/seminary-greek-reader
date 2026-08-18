@@ -8,6 +8,8 @@ import { requireStudentAccess } from '@/lib/subscription'
 
 // POST /api/messages/thread/[rootId]/reply — reply within a conversation.
 // Either participant (the instructor or the student) may reply.
+const MAX_BODY = 20_000
+
 export async function POST(req: NextRequest, { params }: { params: { rootId: string } }) {
   try {
     const payload = getPayload()
@@ -26,6 +28,12 @@ export async function POST(req: NextRequest, { params }: { params: { rootId: str
 
     const { body } = await req.json()
     if (!body?.trim()) return NextResponse.json({ error: 'Message body is required.' }, { status: 400 })
+    // Same ceiling as a new message — a reply is stored and re-read the same way.
+    if (body.length > MAX_BODY) {
+      return NextResponse.json({
+        error: `Message is too long (${body.length.toLocaleString()} characters). The limit is ${MAX_BODY.toLocaleString()}.`,
+      }, { status: 400 })
+    }
 
     // The root anchors the conversation: courseId, subject, and the two participants.
     const root = await prisma.message.findUnique({

@@ -11,8 +11,11 @@ export async function GET() {
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 
+    // recipientDeletedAt matters here: deleting an UNREAD thread removes it from the list
+    // (which filters on that column) without marking it read, so the badge kept counting a
+    // conversation the student no longer had any way to open and clear.
     const count = await prisma.message.count({
-      where: { recipientId: payload.sub, readAt: null },
+      where: { recipientId: payload.sub, readAt: null, recipientDeletedAt: null },
     })
     return NextResponse.json({ count })
   } catch (err) {

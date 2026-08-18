@@ -105,6 +105,7 @@ export function MessageClassPanel({ courseId, students }: Props) {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">{t('mc.messageLabel')}</label>
               <textarea
+                maxLength={20_000}
                 value={body}
                 onChange={e => setBody(e.target.value)}
                 rows={6}
