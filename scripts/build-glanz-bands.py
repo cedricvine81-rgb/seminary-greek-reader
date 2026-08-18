@@ -57,6 +57,12 @@ OVERRIDES: dict[int, tuple[str | None, str]] = {
     # Pairs our consonantal matching cannot tell apart, because Hebrew spells them alike
     # once the points come off. Each is a different word with a different Strong's, and
     # getting one wrong would put the noun on the card and ask for the verb.
+    # Found by the 2026-08-18 gloss comparison against Glanz's own gloss column: the
+    # spelling match had paired these three ranks with the WRONG homograph, so band 1B
+    # taught "to turn" where Glanz teaches "face".
+    26:  ('6440', 'paneh "face" — consonantal matching gave it panah the verb "turn" (his rank 335)'),
+    182: ('639',  'aph "nose, anger" — matching gave it aph "also", which Glanz ranks 343'),
+    160: ('MERGED:7451', 'ra\'ah the noun "evil" — same Strong\'s as ra at rank 147; matching gave it the shepherd verb (his rank 276)'),
     39:  ('1696', 'dabar the VERB "speak" — rank 32 is the noun "word"'),
     46:  ('5973', '\'im "with" — rank 29 is \'am "people"'),
     56:  ('854',  '\'et "with" — rank 5 is the object marker, the same pointing'),
