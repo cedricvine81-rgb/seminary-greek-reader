@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
+import { realignCourseMorphologyCaps } from '@/lib/morph-cap-realign'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import {
   generateVocabQuestions,
@@ -328,6 +329,14 @@ export async function POST(req: NextRequest) {
     }
 
     created++
+  }
+
+  // A vocab series just (re)defined the course's weekly vocabulary schedule — re-align any
+  // existing schedule-following morphology caps to it. This is what saves an instructor
+  // who builds the morphology series FIRST: those quizzes were capped by the week-band
+  // fallback, and this sweep re-resolves them against the real vocab quizzes.
+  if (quizType === 'VOCABULARY_QUIZ' && created > 0) {
+    await realignCourseMorphologyCaps(courseId, logError)
   }
 
   return NextResponse.json({ count: created }, { status: 201 })

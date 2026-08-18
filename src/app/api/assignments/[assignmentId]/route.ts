@@ -205,13 +205,20 @@ export async function DELETE(
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
-  // Capture the course before deleting so we can bust its cached pages
+  // Capture the course (and type) before deleting so we can bust its cached pages —
+  // and, for a vocab quiz, re-align the course's morphology caps afterwards.
   const existing = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { courseId: true },
+    select: { courseId: true, type: true },
   })
 
   await prisma.assignment.delete({ where: { id: params.assignmentId } })
+
+  // Removing a vocab quiz shrinks what "taught by then" means for schedule-following
+  // morphology caps; sweep the course (coverage-unchanged quizzes are skipped).
+  if (existing?.type === 'VOCABULARY_QUIZ') {
+    await realignCourseMorphologyCaps(existing.courseId, logError)
+  }
 
   // Bust the Router Cache so the deleted assignment doesn't linger on
   // the course page / assignment lists after redirect.

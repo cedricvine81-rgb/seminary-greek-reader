@@ -12,6 +12,7 @@ import {
 } from '@/lib/quiz-generation'
 import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
+import { realignCourseMorphologyCaps } from '@/lib/morph-cap-realign'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import type { QuestionType } from '@/types/assignment'
@@ -129,6 +130,13 @@ export async function POST(
       })
     }
   })
+
+  // A vocab quiz regenerated with a NEW section selection changes what "taught by then"
+  // means for the course's schedule-following morphology caps — re-align them (quizzes
+  // whose coverage didn't change are skipped, so resending the same sections is free).
+  if (assignment.type === 'VOCABULARY_QUIZ' && reqSel) {
+    await realignCourseMorphologyCaps(assignment.courseId, logError, [params.assignmentId])
+  }
 
   // For pooled (re-sampling) vocab quizzes, report the per-attempt count for the UI
   // message, plus the pool size. Otherwise count is just the generated total.

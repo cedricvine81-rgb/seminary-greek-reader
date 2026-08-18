@@ -14,6 +14,7 @@ import {
   type MorphologySubtype, resolveHebrewVocabCap } from '@/lib/quiz-generation'
 import type { HebrewMorphologySubtype } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
+import { realignCourseMorphologyCaps } from '@/lib/morph-cap-realign'
 import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -243,6 +244,12 @@ export async function POST(req: NextRequest) {
     await prisma.question.createMany({
       data: questions.map(q => ({ ...q, assignmentId: assignment.id })),
     })
+  }
+
+  // A new vocab quiz changes what "taught by then" means for the course's
+  // schedule-following morphology caps — re-align them (coverage-unchanged skip).
+  if (type === 'VOCABULARY_QUIZ') {
+    await realignCourseMorphologyCaps(courseId, logError)
   }
 
   // Bust the Router Cache so the course page shows the new assignment immediately

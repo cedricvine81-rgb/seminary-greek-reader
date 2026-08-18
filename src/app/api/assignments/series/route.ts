@@ -226,15 +226,18 @@ export async function PATCH(req: NextRequest) {
       // is the Glanz band stored in morphConfig.vocabThruBand and re-applied below.
       const cap = hebrewRow ? null : mode === 'auto' ? Math.min(r.weekNumber, 16) : null
       const cfg = (r.morphConfig ?? null) as
-        { fields?: string[]; parseFilter?: HebrewMorphParseFilter; vocabThruBand?: string | null } | null
+        { fields?: string[]; parseFilter?: HebrewMorphParseFilter; vocabThruBand?: string | null; numQuestions?: number } | null
+      // The recipe's requested count where recorded — the stored pool can be thinner when
+      // a vocab cap thinned it, and reading that back would ratchet the quiz smaller.
+      const count = cfg?.numQuestions ?? (r._count.questions || 20)
       const qs = hebrewRow
         ? generateHebrewMorphologyQuestions(
             (r.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
-            r._count.questions || 20, cfg?.fields, cfg?.parseFilter,
+            count, cfg?.fields, cfg?.parseFilter,
             await resolveHebrewVocabCap(r.courseId, r.dueDate, r.weekNumber, cfg?.vocabThruBand ?? null))
         : await generateMorphQuestionsFromConfig(
             (r.morphSubtype ?? 'MIXED') as MorphologySubtype,
-            r._count.questions || 20, cap, r.morphConfig as MorphGenConfig)
+            count, cap, r.morphConfig as MorphGenConfig)
       await prisma.$transaction([
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
