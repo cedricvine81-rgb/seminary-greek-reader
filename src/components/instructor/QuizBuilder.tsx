@@ -32,12 +32,23 @@ export function QuizBuilder({ assignmentId, level, provideDefinition = false }: 
     setLoading(true)
     setGenerated(null)
     try {
-      const res = await fetch(`/api/assignments/${assignmentId}/generate`, {
+      // 409 = students have already answered. Confirm with the count before replacing
+      // their questions (which detaches every answer), and never report success on an
+      // error — this used to read `data.count ?? count` and flash "generated" on failure.
+      const send = (force?: boolean) => fetch(`/api/assignments/${assignmentId}/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, count, level }),
+        body: JSON.stringify({ type, count, level, ...(force ? { force: true } : {}) }),
       })
-      const data = await res.json()
+      let res = await send()
+      let data = await res.json().catch(() => ({}))
+      if (res.status === 409 && data.error === 'studentWorkExists') {
+        const n = (data.responses ?? 0) + (data.attempts ?? 0)
+        if (!confirm(t('as.regenWarn', { n }))) return
+        res = await send(true)
+        data = await res.json().catch(() => ({}))
+      }
+      if (!res.ok) { alert(data.error ?? 'Could not generate questions.'); return }
       setGenerated(data.count ?? count)
       router.refresh()
     } finally {

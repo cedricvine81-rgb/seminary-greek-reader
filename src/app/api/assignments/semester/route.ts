@@ -46,7 +46,20 @@ interface ScheduleItem {
   dueDate: string | Date
 }
 
+// Building a semester is a long write: one transaction per quiz, serialized because the
+// pooled connection allows one at a time. Without this the route runs at the platform's
+// short default and a big series dies mid-way.
+export const maxDuration = 300
+
+// The builder can reach 52 weeks × several quiz days, which is hundreds of assignments in
+// one request. Past this the instructor has misconfigured something — say so instead of
+// spending five minutes writing rows they will have to delete.
+const MAX_SERIES = 60
+
 export async function POST(req: NextRequest) {
+  // Declared outside the try so a failure can still say how many quizzes were made.
+  let created = 0
+  let effectiveScheduleLength = 0
   try {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
@@ -112,6 +125,21 @@ export async function POST(req: NextRequest) {
   if (!courseId || !schedule?.length) {
     return NextResponse.json({ error: 'courseId and schedule are required.' }, { status: 400 })
   }
+  if (schedule.length > MAX_SERIES) {
+    return NextResponse.json({
+      error: `That schedule has ${schedule.length} dates. Series are limited to ${MAX_SERIES} — check the number of weeks and how many quiz days you selected.`,
+    }, { status: 400 })
+  }
+  // Every date must carry a usable week number. Unchecked, `Number(item.week)` became NaN
+  // and travelled all the way into the insert, which failed there — mid-loop, after earlier
+  // quizzes were already committed.
+  const badWeek = schedule.findIndex(it => !Number.isFinite(Number(it?.week)) || Number(it?.week) < 1)
+  const badDate = schedule.findIndex(it => Number.isNaN(new Date(it?.dueDate).getTime()))
+  if (badWeek !== -1 || badDate !== -1) {
+    return NextResponse.json({
+      error: `Schedule entry ${(badWeek !== -1 ? badWeek : badDate) + 1} is missing a valid week number or due date.`,
+    }, { status: 400 })
+  }
 
   const course = await prisma.course.findFirst({
     where: {
@@ -146,12 +174,11 @@ export async function POST(req: NextRequest) {
   // For a morphology series, only create N assignments (one per test config)
   const isMorphSeries = quizType === 'MORPHOLOGY_QUIZ' && Array.isArray(morphologySeries) && morphologySeries.length > 0
   const effectiveSchedule = isMorphSeries ? schedule.slice(0, morphologySeries!.length) : schedule
+  effectiveScheduleLength = effectiveSchedule.length
 
   // One resolver for the whole semester: every week's quiz is set in the course's language.
   const semesterCourse = await prisma.course.findUnique({ where: { id: courseId }, select: { language: true } })
   const resolveGloss = glossResolver(semesterCourse?.language ?? 'en')
-
-  let created = 0
 
   for (let i = 0; i < effectiveSchedule.length; i++) {
     const item = effectiveSchedule[i]
@@ -230,7 +257,11 @@ export async function POST(req: NextRequest) {
         ? `Vocabulary through Lesson ${testConfig.vocabThruLesson}`
         : (source ? `Source: ${sourceLabel}` : '')
 
-    const assignment = await prisma.assignment.create({
+    // Built here, WRITTEN below — once the questions exist, so the row and its questions
+    // land in one transaction. Previously the assignment was inserted first and the
+    // questions separately, so any failure in between left a published, question-less
+    // quiz in the students' list.
+    const assignmentData = {
       data: {
         courseId,
         createdById: payload.sub,
@@ -275,7 +306,7 @@ export async function POST(req: NextRequest) {
           : vocabSel ?? undefined,
         isPublished: Boolean(isPublished),
       },
-    })
+    }
 
     let questions: Awaited<ReturnType<typeof generateVocabQuestions>> = []
 
@@ -322,11 +353,14 @@ export async function POST(req: NextRequest) {
         { fields: testConfig.fields, parseFilter: testConfig.parseFilter, declensions: testConfig.declensions })
     }
 
-    if (questions.length > 0) {
-      await prisma.question.createMany({
-        data: questions.map(q => ({ ...q, assignmentId: assignment.id })),
-      })
-    }
+    await prisma.$transaction(async tx => {
+      const assignment = await tx.assignment.create(assignmentData)
+      if (questions.length > 0) {
+        await tx.question.createMany({
+          data: questions.map(q => ({ ...q, assignmentId: assignment.id })),
+        })
+      }
+    })
 
     created++
   }
@@ -343,7 +377,15 @@ export async function POST(req: NextRequest) {
 
   } catch (err) {
     logError('api/assignments/semester', err)
-    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+    // Say what actually landed. A bare "Server error." left the instructor unable to tell
+    // an untouched course from a half-built one, so the natural next move — press Create
+    // again — silently doubled whatever had already been written.
+    return NextResponse.json({
+      error: created > 0
+        ? `Stopped after creating ${created} of ${effectiveScheduleLength} assignments. The ones already created are in the course — delete them before trying again.`
+        : 'Server error.',
+      count: created,
+    }, { status: 500 })
   }
 }
 

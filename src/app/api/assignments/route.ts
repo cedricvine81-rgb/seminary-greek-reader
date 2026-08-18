@@ -22,6 +22,10 @@ import { normalizeWeights } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { requireStudentAccess } from '@/lib/subscription'
 
+// Creating one assignment also generates its questions and, for a vocab quiz, re-aligns
+// the course's morphology caps — more than a default-timeout slice of work.
+export const maxDuration = 120
+
 export async function GET(req: NextRequest) {
   try {
   const payload = getPayload()
@@ -66,7 +70,14 @@ export async function POST(req: NextRequest) {
   // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
   // perAttempt = how many questions each attempt shows; the quiz stores the whole
   // selected pool and draws perAttempt at random each attempt (different on retake).
-  const vocabSel = type === 'VOCABULARY_QUIZ' && (Array.isArray(vocabSubsections) || Array.isArray(vocabPos))
+  // An EMPTY selection means "nothing chosen", NOT "choose everything". The builder always
+  // sends both arrays, so a present-but-empty one used to count as a selection and reach
+  // the pool generators with an empty filter — which they read as "no filter" and answered
+  // with the entire deck: 1,120 questions for a 20-question quiz (measured on production).
+  // Requiring real content sends the empty case to the counted generators below instead.
+  const vocabSel = type === 'VOCABULARY_QUIZ'
+    && ((Array.isArray(vocabSubsections) && vocabSubsections.length > 0)
+        || (Array.isArray(vocabPos) && vocabPos.length > 0))
     ? {
         subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [],
         pos: Array.isArray(vocabPos) ? vocabPos : [],

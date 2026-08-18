@@ -14,6 +14,9 @@ import { logError } from '@/lib/logger'
 import { realignMorphologyVocabCap, realignCourseMorphologyCaps } from '@/lib/morph-cap-realign'
 import { VOCAB_LESSONS, lessonSubsectionKey } from '@/lib/vocab-lesson-map'
 
+// Bulk edits touch every assignment in a series, each a serialized write.
+export const maxDuration = 300
+
 // A Hebrew quiz in a bulk rebuild must regenerate as Hebrew. The BGVB lesson machinery
 // (title §-keys, week→lesson, vocabThruLesson caps) is Greek-only, so Hebrew rows rebuild
 // from their STORED vocabSelection / morphConfig instead — the same recipes the

@@ -203,7 +203,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
     setGenerateError('')
     setGeneratedCount(null)
     try {
-      const res = await fetch(`/api/assignments/${assignmentId}/generate`, {
+      // The server refuses with 409 when students have already answered, rather than
+      // silently detaching their work; `force` is only sent once the instructor has been
+      // shown the count and said yes.
+      const send = (force?: boolean) => fetch(`/api/assignments/${assignmentId}/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -215,9 +218,20 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           quizStylePct,
           // Regenerate from the chosen frequency sections.
           vocabSubsections,
+          ...(force ? { force: true } : {}),
         }),
       })
-      const data = await res.json().catch(() => ({}))
+      let res = await send()
+      let data = await res.json().catch(() => ({}))
+      if (res.status === 409 && data.error === 'studentWorkExists') {
+        const n = (data.responses ?? 0) + (data.attempts ?? 0)
+        if (!confirm(t('as.regenWarn', { n }))) {
+          setGenerateError(t('as.regenBlocked'))
+          return
+        }
+        res = await send(true)
+        data = await res.json().catch(() => ({}))
+      }
       if (!res.ok) {
         setGenerateError(data.error ?? 'Could not generate questions.')
         return
