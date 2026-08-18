@@ -1,3 +1,4 @@
+import { createHash } from 'crypto'
 import { prisma } from '@/lib/db'
 import {
   generateHebrewMorphologyQuestions, generateMorphQuestionsFromConfig,
@@ -25,6 +26,37 @@ import { isHebrewLevel } from '@/lib/constants'
  * Never touches a quiz with student work (answers must keep matching their questions),
  * and never fails the caller — the schedule edit itself must always succeed.
  */
+/** Stable fingerprint of a resolved Hebrew cap, stored in morphConfig so a re-align can
+    tell "the schedule moved but this quiz's coverage didn't" and leave the questions be. */
+function hebrewCapSig(cap: string | Set<string> | null): string {
+  if (cap == null) return 'none'
+  if (typeof cap === 'string') return `band:${cap}`
+  return 'set:' + createHash('sha1').update(Array.from(cap).sort().join(',')).digest('hex').slice(0, 16)
+}
+
+/**
+ * Re-align every morphology quiz in a course after a VOCAB quiz's date moved — that move
+ * changes what "taught by then" means for any date-resolved ('auto') cap. The per-quiz
+ * coverage fingerprint keeps this cheap: quizzes whose covered vocabulary didn't actually
+ * change are skipped untouched, so a whole-series shift that preserves relative order
+ * regenerates nothing. Greek lesson caps don't depend on vocab-quiz dates and no-op here.
+ * Best-effort per quiz — one failure neither stops the sweep nor the edit that caused it.
+ */
+export async function realignCourseMorphologyCaps(
+  courseId: string,
+  log: (scope: string, err: unknown) => void,
+  excludeIds: string[] = [],
+): Promise<void> {
+  const morphs = await prisma.assignment.findMany({
+    where: { courseId, type: 'MORPHOLOGY_QUIZ', id: { notIn: excludeIds } },
+    select: { id: true, weekNumber: true },
+  })
+  for (const m of morphs) {
+    try { await realignMorphologyVocabCap(m.id, m.weekNumber) }
+    catch (err) { log('morph-cap-realign course sweep', err) }
+  }
+}
+
 export async function realignMorphologyVocabCap(assignmentId: string, prevWeekNumber: number):
   Promise<{ realigned: boolean; reason?: string }> {
   const r = await prisma.assignment.findUnique({
@@ -40,7 +72,7 @@ export async function realignMorphologyVocabCap(assignmentId: string, prevWeekNu
   if (r._count.responses > 0 || r._count.attempts > 0) return { realigned: false, reason: 'has student work' }
 
   const cfg = r.morphConfig as
-    { fields?: string[]; parseFilter?: HebrewMorphParseFilter; vocabThruBand?: string | null; numQuestions?: number }
+    { fields?: string[]; parseFilter?: HebrewMorphParseFilter; vocabThruBand?: string | null; numQuestions?: number; capSig?: string }
   // The recipe's requested count, not the stored pool size: a vocab cap can thin the pool,
   // and reading the thinned size back would ratchet the quiz smaller on every later move.
   const count = cfg.numQuestions ?? (r._count.questions || 20)
@@ -48,12 +80,17 @@ export async function realignMorphologyVocabCap(assignmentId: string, prevWeekNu
   if (isHebrewLevel(String(r.level))) {
     if (cfg.vocabThruBand !== 'auto') return { realigned: false, reason: 'cap not on auto' }
     const cap = await resolveHebrewVocabCap(r.courseId, r.dueDate, r.weekNumber, 'auto')
+    const sig = hebrewCapSig(cap)
+    // Same coverage as last time → the existing questions are still right; don't churn them.
+    if (cfg.capSig === sig && r._count.questions > 0) return { realigned: false, reason: 'coverage unchanged' }
     const qs = generateHebrewMorphologyQuestions(
       (r.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
       count, cfg.fields, cfg.parseFilter, cap)
     await prisma.$transaction([
       prisma.question.deleteMany({ where: { assignmentId: r.id } }),
       prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
+      prisma.assignment.update({ where: { id: r.id },
+        data: { morphConfig: JSON.parse(JSON.stringify({ ...cfg, capSig: sig })) } }),
     ])
     return { realigned: true }
   }

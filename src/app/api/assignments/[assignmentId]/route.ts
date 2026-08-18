@@ -9,7 +9,7 @@ import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-as
 import { normalizeWeights } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { requireStudentAccess } from '@/lib/subscription'
-import { realignMorphologyVocabCap } from '@/lib/morph-cap-realign'
+import { realignMorphologyVocabCap, realignCourseMorphologyCaps } from '@/lib/morph-cap-realign'
 
 // GET /api/assignments/[assignmentId] — fetch a single assignment (students can read published ones)
 export async function GET(
@@ -174,6 +174,13 @@ export async function PATCH(
     } catch (err) {
       logError('api/assignments/[assignmentId] realign', err)
     }
+  }
+
+  // Moving a VOCAB quiz's date changes what "taught by then" means for every sibling
+  // morphology quiz whose cap follows the schedule — sweep the course (coverage-unchanged
+  // quizzes are skipped, so a small nudge that crosses no morphology due date is free).
+  if (before?.type === 'VOCABULARY_QUIZ' && before.dueDate.getTime() !== updated.dueDate.getTime()) {
+    await realignCourseMorphologyCaps(updated.courseId, logError)
   }
 
   return NextResponse.json({ assignment: updated, vocabRealigned })

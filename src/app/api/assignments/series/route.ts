@@ -11,7 +11,7 @@ import type { MorphologySubtype } from '@/lib/quiz-fields'
 import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
 import { logError } from '@/lib/logger'
-import { realignMorphologyVocabCap } from '@/lib/morph-cap-realign'
+import { realignMorphologyVocabCap, realignCourseMorphologyCaps } from '@/lib/morph-cap-realign'
 import { VOCAB_LESSONS, lessonSubsectionKey } from '@/lib/vocab-lesson-map'
 
 // A Hebrew quiz in a bulk rebuild must regenerate as Hebrew. The BGVB lesson machinery
@@ -43,7 +43,7 @@ async function authorise(assignmentIds: string[], userId: string) {
         OR: [{ instructorId: userId }, { coInstructors: { some: { userId } } }],
       },
     },
-    select: { id: true, dueDate: true, title: true, weekNumber: true },
+    select: { id: true, dueDate: true, title: true, weekNumber: true, type: true, courseId: true },
   })
   if (assignments.length !== assignmentIds.length) {
     return { error: 'Some assignments are not yours to edit.' as const }
@@ -77,13 +77,22 @@ export async function PATCH(req: NextRequest) {
       })
       updated++
     }
-    // A date shift moves morphology quizzes relative to the vocab schedule, so any
-    // schedule-following ('auto') vocab cap is re-resolved under the new dates. Greek
-    // caps are week-based, so this no-ops for them; quizzes with student work are left
-    // alone. Best-effort — the shift itself has already succeeded.
+    // A date shift moves quizzes relative to the vocab schedule, so any schedule-following
+    // ('auto') vocab cap is re-resolved under the new dates. Greek caps are week-based, so
+    // this no-ops for them; quizzes with student work are left alone. Best-effort — the
+    // shift itself has already succeeded.
     for (const a of auth.assignments) {
       try { await realignMorphologyVocabCap(a.id, a.weekNumber) }
       catch (err) { logError('api/assignments/series shift realign', err) }
+    }
+    // If VOCAB quizzes were among the shifted set, sibling morphology quizzes not in the
+    // set may now cover different vocabulary — sweep those courses too. The per-quiz
+    // coverage fingerprint makes a whole-series shift (vocab + morph together, relative
+    // order kept) regenerate nothing.
+    const vocabCourses = Array.from(new Set(auth.assignments.filter(a => a.type === 'VOCABULARY_QUIZ').map(a => a.courseId)))
+    const shiftedIds = auth.assignments.map(a => a.id)
+    for (const courseId of vocabCourses) {
+      await realignCourseMorphologyCaps(courseId, logError, shiftedIds)
     }
     return NextResponse.json({ updated })
   }
