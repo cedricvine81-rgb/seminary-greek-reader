@@ -159,6 +159,9 @@ export async function POST(req: NextRequest) {
               ? Number(vocabThruLesson) : null,
             morphConfig: JSON.parse(JSON.stringify({
               fields: body.fields ?? [],
+              // Requested count, kept apart from the stored pool size (a vocab cap can thin
+              // the pool below it) so regeneration doesn't ratchet the quiz down.
+              numQuestions: Number(numQuestions ?? 10),
               ...(body.parseFilter ? { parseFilter: body.parseFilter } : {}),
               ...(vocabThruBand ? { vocabThruBand } : {}),
             })) }

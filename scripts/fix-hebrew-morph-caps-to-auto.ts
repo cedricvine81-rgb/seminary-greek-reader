@@ -30,7 +30,7 @@ async function main() {
     await prisma.$transaction([
       prisma.question.deleteMany({ where: { assignmentId: r.id } }),
       prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
-      prisma.assignment.update({ where: { id: r.id }, data: { morphConfig: { ...cfg, vocabThruBand: 'auto' } } }),
+      prisma.assignment.update({ where: { id: r.id }, data: { morphConfig: JSON.parse(JSON.stringify({ ...cfg, vocabThruBand: 'auto' })) } }),
     ])
   }
   console.log(APPLY ? 'done' : 'dry run — rerun with --apply')

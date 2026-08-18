@@ -10,6 +10,8 @@ import { glossResolver } from '@/lib/vocab-gloss-server'
 import type { MorphologySubtype } from '@/lib/quiz-fields'
 import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
+import { logError } from '@/lib/logger'
+import { realignMorphologyVocabCap } from '@/lib/morph-cap-realign'
 import { VOCAB_LESSONS, lessonSubsectionKey } from '@/lib/vocab-lesson-map'
 
 // A Hebrew quiz in a bulk rebuild must regenerate as Hebrew. The BGVB lesson machinery
@@ -41,7 +43,7 @@ async function authorise(assignmentIds: string[], userId: string) {
         OR: [{ instructorId: userId }, { coInstructors: { some: { userId } } }],
       },
     },
-    select: { id: true, dueDate: true, title: true },
+    select: { id: true, dueDate: true, title: true, weekNumber: true },
   })
   if (assignments.length !== assignmentIds.length) {
     return { error: 'Some assignments are not yours to edit.' as const }
@@ -74,6 +76,14 @@ export async function PATCH(req: NextRequest) {
         data: { dueDate: new Date(a.dueDate.getTime() + days * 24 * 60 * 60 * 1000) },
       })
       updated++
+    }
+    // A date shift moves morphology quizzes relative to the vocab schedule, so any
+    // schedule-following ('auto') vocab cap is re-resolved under the new dates. Greek
+    // caps are week-based, so this no-ops for them; quizzes with student work are left
+    // alone. Best-effort — the shift itself has already succeeded.
+    for (const a of auth.assignments) {
+      try { await realignMorphologyVocabCap(a.id, a.weekNumber) }
+      catch (err) { logError('api/assignments/series shift realign', err) }
     }
     return NextResponse.json({ updated })
   }

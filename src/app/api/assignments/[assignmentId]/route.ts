@@ -9,6 +9,7 @@ import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-as
 import { normalizeWeights } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { requireStudentAccess } from '@/lib/subscription'
+import { realignMorphologyVocabCap } from '@/lib/morph-cap-realign'
 
 // GET /api/assignments/[assignmentId] — fetch a single assignment (students can read published ones)
 export async function GET(
@@ -143,6 +144,15 @@ export async function PATCH(
     }
   }
 
+  // A morphology quiz whose schedule slot moves needs its vocabulary cap re-resolved —
+  // the cap was baked into its questions at generation time. Capture the old slot first.
+  const scheduleTouched = data.dueDate !== undefined || data.weekNumber !== undefined
+  const before = scheduleTouched
+    ? await prisma.assignment.findUnique({
+        where: { id: params.assignmentId },
+        select: { type: true, dueDate: true, weekNumber: true } })
+    : null
+
   const updated = await prisma.assignment.update({
     where: { id: params.assignmentId },
     data,
@@ -153,7 +163,20 @@ export async function PATCH(
     await ensureCourseNotesFoldersForAssignment(updated.id)
   }
 
-  return NextResponse.json({ assignment: updated })
+  // Regenerate a schedule-following morphology quiz's questions under its new slot
+  // (skipped for hand-set caps, uncapped quizzes, or any quiz with student work).
+  // Best-effort: the schedule edit itself has already succeeded and must stay succeeded.
+  let vocabRealigned = false
+  if (before?.type === 'MORPHOLOGY_QUIZ' &&
+      (before.dueDate.getTime() !== updated.dueDate.getTime() || before.weekNumber !== updated.weekNumber)) {
+    try {
+      vocabRealigned = (await realignMorphologyVocabCap(updated.id, before.weekNumber)).realigned
+    } catch (err) {
+      logError('api/assignments/[assignmentId] realign', err)
+    }
+  }
+
+  return NextResponse.json({ assignment: updated, vocabRealigned })
 
   } catch (err) {
     logError('api/assignments/[assignmentId]', err)

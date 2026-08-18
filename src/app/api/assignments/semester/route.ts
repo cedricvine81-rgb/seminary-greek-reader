@@ -255,7 +255,10 @@ export async function POST(req: NextRequest) {
               // storing one would make a later regeneration filter on nothing.
               vocabThruLesson: hebrew ? null : testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson ?? null,
               // The full recipe, so the quiz can be regenerated faithfully later.
+              // numQuestions is the REQUESTED count — the stored pool can be thinner when a
+              // vocab cap thins it, so the actual question count can't stand in for it.
               morphConfig: JSON.parse(JSON.stringify({ fields: testConfig.fields ?? [],
+                numQuestions: qCount,
                 ...(testConfig.parseFilter ? { parseFilter: testConfig.parseFilter } : {}),
                 ...(testConfig.vocabThruBand ? { vocabThruBand: testConfig.vocabThruBand } : {}),
                 ...(testConfig.declensions?.length ? { declensions: testConfig.declensions } : {}) })) }
