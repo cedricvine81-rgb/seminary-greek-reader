@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { prisma } from '@/lib/db'
 import { hashPassword, verifyPassword, signToken, setAuthCookie, clearAuthCookie, getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
@@ -114,6 +115,9 @@ export async function POST(req: NextRequest) {
 
       const token = signToken({ sub: user.id, email: user.email, role: user.role as Role })
       setAuthCookie(token)
+      // A fresh sign-in starts a fresh session: drop any instructor-preview flag left by a
+      // previous account in this browser, so a student never inherits preview mode.
+      cookies().delete('instructor_preview')
       return NextResponse.json({ user: { id: user.id, email, role: user.role }, token })
     }
 
@@ -150,6 +154,9 @@ export async function POST(req: NextRequest) {
 
       const token = signToken({ sub: user.id, email: user.email, role: user.role as Role })
       setAuthCookie(token)
+      // A fresh sign-in starts a fresh session: drop any instructor-preview flag left by a
+      // previous account in this browser, so a student never inherits preview mode.
+      cookies().delete('instructor_preview')
       return NextResponse.json({
         user: { id: user.id, email, role: user.role },
         token,

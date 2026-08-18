@@ -40,7 +40,10 @@ export default async function StudentCoursesPage() {
   const hasInstitution = Boolean(student?.institution)
   const notEnrolled = { enrollments: { none: { userId: payload.sub } } }
 
-  const preview = isPreviewMode()
+  // Role-gated, like the assignment page: the instructor_preview cookie survives switching
+  // accounts in the same browser, and without the role check a real STUDENT who signs in
+  // after an instructor previewed gets "Enrollment disabled in preview mode" on every course.
+  const preview = isPreviewMode() && payload.role === 'INSTRUCTOR'
 
   const [approvedEnrollments, pendingEnrollments, openCourses, institutionCourses] = await Promise.all([
     // Approved enrollments
