@@ -40,7 +40,11 @@ export async function POST(req: NextRequest) {
       maxRetakes: true,
       isPublished: true,
       provideDefinition: true,
-      questions: { select: { id: true, prompt: true, points: true } },
+      // Everything gradeResponse needs, so grading a 25-question quiz is ONE query
+      // instead of 25 — it used to re-fetch each question (with a join) in the loop.
+      questions: { select: { id: true, prompt: true, points: true, type: true,
+                             correctAnswer: true, assignmentId: true } },
+      course: { select: { language: true } },
     },
   })
   if (!assignment) return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
@@ -79,7 +83,8 @@ export async function POST(req: NextRequest) {
   for (const r of responses) {
     const question = questionMap[r.questionId]
     if (!question) continue // skip unknown question IDs
-    const graded = await gradeResponse(r.questionId, r.answer, assignment.provideDefinition)
+    const graded = await gradeResponse(r.questionId, r.answer, assignment.provideDefinition,
+      { ...question, assignment: { course: { language: assignment.course?.language ?? 'en' } } })
     earnedPoints += graded.score
     breakdown.push({
       questionId: r.questionId,
@@ -95,29 +100,32 @@ export async function POST(req: NextRequest) {
 
   // Determine if this is the new best attempt
   const bestPrevious = previousAttempts.find(a => a.isBest)
-  const isNewBest = !bestPrevious || earnedPoints >= bestPrevious.earnedPoints
+  // Compared as a PERCENTAGE, not raw points: a re-sampling pool shows a different number
+  // of questions each attempt, so 12/20 (60%) used to beat 10/10 (100%) and overwrite it.
+  const isNewBest = !bestPrevious || percentage >= bestPrevious.percentage
 
   // Persist results atomically — response records + attempt record in one transaction
   // so a mid-flight crash never leaves partial data.
   await prisma.$transaction(async tx => {
     if (isNewBest) {
       await tx.response.deleteMany({ where: { userId: payload.sub, assignmentId } })
-      // Create one at a time so we can capture the new ids and feed them into
-      // the breakdown — the client uses responseId to anchor appeals.
-      for (const b of breakdown) {
-        const created = await tx.response.create({
-          data: {
-            userId: payload.sub,
-            assignmentId,
-            questionId: b.questionId,
-            answer: b.yourAnswer,
-            isCorrect: b.isCorrect,
-            score: b.points,
-          },
-          select: { id: true },
-        })
-        b.responseId = created.id
-      }
+      // One insert, returning the new ids, instead of a create per question: the loop
+      // put ~25 round trips inside the transaction, and with the default interactive
+      // timeout a long quiz — or a class submitting at once — could exceed it and roll
+      // the whole submission back. The client uses responseId to anchor appeals.
+      const created = await tx.response.createManyAndReturn({
+        data: breakdown.map(b => ({
+          userId: payload.sub,
+          assignmentId,
+          questionId: b.questionId,
+          answer: b.yourAnswer,
+          isCorrect: b.isCorrect,
+          score: b.points,
+        })),
+        select: { id: true, questionId: true },
+      })
+      const newIdByQuestion = new Map(created.map(r => [r.questionId, r.id]))
+      for (const b of breakdown) b.responseId = newIdByQuestion.get(b.questionId)
       if (bestPrevious) {
         await tx.quizAttempt.updateMany({
           where: { userId: payload.sub, assignmentId },
@@ -148,7 +156,7 @@ export async function POST(req: NextRequest) {
         isBest: isNewBest,
       },
     })
-  })
+  }, { timeout: 30_000 })   // explicit budget; the default is short enough to lose a submission
 
   // Bust Router Cache so instructor gradebook and student assignment list reflect the new score
   revalidatePath(`/instructor/courses/${assignment.courseId}`)

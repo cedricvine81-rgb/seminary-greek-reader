@@ -5,6 +5,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { StudentGradebook } from '@/components/student/StudentGradebook'
+import { normalizeCategoryWeights } from '@/lib/grade-weights'
 import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Grades' }
@@ -24,7 +25,11 @@ export default async function StudentScoresPage() {
     where: { userId: payload.sub, status: 'APPROVED' },
     include: {
       course: {
-        select: { id: true, name: true },
+        // The category weights come along so the student's Overall is computed the same way
+        // the instructor's gradebook computes it. Without them this page fell back to a flat
+        // average of every assignment, so the two surfaces quoted different final grades for
+        // the same work — and the student's was the one they complained about.
+        select: { id: true, name: true, gradeCategoryWeights: true },
       },
     },
   })
@@ -38,6 +43,11 @@ export default async function StudentScoresPage() {
   }
 
   const courseIds = enrollments.map(e => e.courseId)
+  // Category weights per course, so each course's Overall is computed the same way the
+  // instructor's gradebook computes it.
+  const weightsByCourse = Object.fromEntries(
+    enrollments.map(e => [e.course.id, normalizeCategoryWeights(e.course.gradeCategoryWeights)]),
+  )
 
   // All published assignments with their questions
   const assignments = await prisma.assignment.findMany({
@@ -98,6 +108,7 @@ export default async function StudentScoresPage() {
       return {
         id: a.id,
         title: a.title,
+        courseId: a.course.id,
         courseTitle: a.course.name,
         weekNumber: a.weekNumber,
         type: a.type,
@@ -127,6 +138,7 @@ export default async function StudentScoresPage() {
     return {
       id: a.id,
       title: a.title,
+      courseId: a.course.id,
       courseTitle: a.course.name,
       weekNumber: a.weekNumber,
       type: a.type,
@@ -191,10 +203,30 @@ export default async function StudentScoresPage() {
           {rows.length === 0 ? (
             <p className="text-sm text-gray-400 italic">{t('assign.noAssignments')}</p>
           ) : (
-            <StudentGradebook
-              studentName={studentName}
-              rows={rows.map(r => ({ id: r.id, title: r.title, weekNumber: r.weekNumber, type: r.type, pct: r.pct }))}
-            />
+            /* One table PER COURSE. Overall is a weighted average of the category
+               averages, and those weights belong to a course — merging every enrolled
+               course into a single table made them meaningless, which is why this page
+               fell back to a flat mean and disagreed with the instructor's gradebook
+               about the same student's final grade. */
+            <div className="space-y-6">
+              {courseIds
+                .map(cid => ({ cid, courseRows: rows.filter(r => r.courseId === cid) }))
+                .filter(g => g.courseRows.length > 0)
+                .map(({ cid, courseRows }) => (
+                  <div key={cid} className="space-y-2">
+                    {courseIds.length > 1 && (
+                      <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        {courseRows[0].courseTitle}
+                      </h3>
+                    )}
+                    <StudentGradebook
+                      studentName={studentName}
+                      weights={weightsByCourse[cid]}
+                      rows={courseRows.map(r => ({ id: r.id, title: r.title, weekNumber: r.weekNumber, type: r.type, pct: r.pct }))}
+                    />
+                  </div>
+                ))}
+            </div>
           )}
         </div>
 

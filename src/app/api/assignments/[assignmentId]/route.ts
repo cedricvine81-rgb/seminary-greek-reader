@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
+import { Prisma } from '@prisma/client'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
 import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
-import { normalizeWeights } from '@/lib/exam-grading'
+import { normalizeWeights, examTotal } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { requireStudentAccess } from '@/lib/subscription'
 import { realignMorphologyVocabCap, realignCourseMorphologyCaps } from '@/lib/morph-cap-realign'
@@ -163,6 +164,30 @@ export async function PATCH(
     await ensureCourseNotesFoldersForAssignment(updated.id)
   }
 
+  // Exam sub-score weights changed: every already-graded exam total was computed from the
+  // OLD weights and cached on the session, which is what the gradebook reads. Without this
+  // the gradebook keeps the old totals while the grading screen (which recomputes live from
+  // the stored sub-scores) shows the new ones, and the two only agree again for students
+  // whose page someone happens to reopen and touch.
+  let regraded = 0
+  if ('gradeWeights' in body) {
+    try {
+      const weights = normalizeWeights(gradeWeights)
+      const sessions = await prisma.exegesisSession.findMany({
+        where: { assignmentId: params.assignmentId, passageGrades: { not: Prisma.DbNull } },
+        select: { id: true, passageGrades: true, grade: true },
+      })
+      for (const sess of sessions) {
+        const total = examTotal(sess.passageGrades as Parameters<typeof examTotal>[0], weights)
+        if (total === sess.grade) continue
+        await prisma.exegesisSession.update({ where: { id: sess.id }, data: { grade: total } })
+        regraded++
+      }
+    } catch (err) {
+      logError('api/assignments/[assignmentId] reweight', err)
+    }
+  }
+
   // Regenerate a schedule-following morphology quiz's questions under its new slot
   // (skipped for hand-set caps, uncapped quizzes, or any quiz with student work).
   // Best-effort: the schedule edit itself has already succeeded and must stay succeeded.
@@ -183,7 +208,7 @@ export async function PATCH(
     await realignCourseMorphologyCaps(updated.courseId, logError)
   }
 
-  return NextResponse.json({ assignment: updated, vocabRealigned })
+  return NextResponse.json({ assignment: updated, vocabRealigned, regraded })
 
   } catch (err) {
     logError('api/assignments/[assignmentId]', err)

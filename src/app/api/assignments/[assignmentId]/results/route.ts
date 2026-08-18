@@ -276,6 +276,11 @@ export async function DELETE(
           submittedAnnotations: Prisma.DbNull,
           grade: null,
           gradeNote: null,
+          // The per-passage sub-scores go too. Clearing only `grade` left them behind, and
+          // the grading screen re-hydrates from them — so a reopened exam showed a full
+          // total that the gradebook (reading `grade`) recorded as ungraded, and the first
+          // keystroke anywhere resurrected the old mark.
+          passageGrades: Prisma.DbNull,
           // Grant this student a per-session override so the passed exam deadline no
           // longer locks/auto-submits their work until they resubmit.
           reopenedAt: new Date(),

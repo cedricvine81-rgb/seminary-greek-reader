@@ -12,8 +12,13 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 // assignment columns grouped by type → per-group Avg → Overall.
 // Labels come from the shared assign.typePlural.* namespace rather than a local copy — this
 // list, GRADE_CATEGORIES and ASSIGNMENT_TYPES had already drifted apart.
+// Must match CourseGradebook's list: Course Notes and Group Presentations were missing
+// here, so work in those categories was invisible to the student and — once the Overall
+// became weighted — their weight would have been dropped from the student's total while
+// still counting in the instructor's.
 const GROUPS = [
-  'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM', 'CONSTRUCT_SEARCH',
+  'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
 ] as const
 
 export interface GradebookRow {

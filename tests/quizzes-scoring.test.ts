@@ -38,6 +38,13 @@ jest.mock('@/lib/db', () => ({
     $transaction: async (fn: (tx: unknown) => unknown) => fn({
       response: {
         deleteMany: async () => ({}),
+        // The route inserts the whole attempt in one createManyAndReturn (it used to be a
+        // create per question inside the transaction). Echo back an id per row, as Postgres
+        // does, so the breakdown still gets its responseIds.
+        createManyAndReturn: async (args: { data: { questionId: string }[] }) => {
+          txResponseCreate(args)
+          return args.data.map((d, i) => ({ id: `r${i + 1}`, questionId: d.questionId }))
+        },
         create: (...a: unknown[]) => txResponseCreate(...a),
         findMany: async () => [],
       },

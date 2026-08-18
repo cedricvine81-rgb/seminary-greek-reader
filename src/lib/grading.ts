@@ -43,13 +43,28 @@ export async function getLemmaSynonyms(lemma: string, locale = 'en'): Promise<st
   return raw.split(',').map(s => s.trim()).filter(Boolean)
 }
 
+/** The shape gradeResponse needs. Supply it to skip the per-question lookup. */
+export interface GradableQuestion {
+  id: string
+  type: string
+  prompt: string
+  points: number
+  correctAnswer: string
+  assignmentId: string
+  assignment?: { course?: { language: string | null } | null } | null
+}
+
 export async function gradeResponse(
   questionId: string,
   studentAnswer: string,
   /** Pass this from the caller when you already have the assignment loaded — avoids an extra DB query per question. */
-  provideDefinitionOverride?: boolean
+  provideDefinitionOverride?: boolean,
+  /** The question itself, when the caller already holds it. Grading a whole quiz used to
+   *  re-fetch every question one at a time (with a join), which is what made submission a
+   *  long serialized chain on a single pooled connection. */
+  preloaded?: GradableQuestion,
 ): Promise<{ isCorrect: boolean; score: number; correctAnswer: string }> {
-  const question = await prisma.question.findUnique({
+  const question = preloaded ?? await prisma.question.findUnique({
     where: { id: questionId },
     // The course's language decides which synonym list marks this answer.
     include: { assignment: { select: { course: { select: { language: true } } } } },

@@ -4,6 +4,7 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { StudentProgressTable } from '@/components/instructor/StudentProgressTable'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getCourseReport } from '@/lib/reports'
 
 export const metadata: Metadata = { title: 'Students' }
 
@@ -12,34 +13,27 @@ export default async function InstructorStudentsPage() {
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
+  // Built from getCourseReport, which already computes these figures correctly and
+  // counts only APPROVED enrolments. This page used to hardcode `completedAssignments: 0`
+  // and `averageScore: null` — so every student read "0 of 25, no average" all semester —
+  // and it took `totalAssignments` from whichever course the student happened to appear in
+  // first, which is the wrong denominator for anyone enrolled in two. It also listed
+  // pending and denied requests as if they were students.
   const courses = await prisma.course.findMany({
     where: { instructorId: payload.sub },
-    include: {
-      enrollments: { include: { user: true } },
-      _count: { select: { assignments: true } },
-    },
+    select: { id: true },
   })
+  const reports = await Promise.all(courses.map(c => getCourseReport(c.id)))
 
-  const studentMap = new Map<string, { userId: string; name: string; email: string; completedAssignments: number; totalAssignments: number; averageScore: number | null }>()
-
-  for (const course of courses) {
-    for (const enrollment of course.enrollments) {
-      if (!studentMap.has(enrollment.userId)) {
-        studentMap.set(enrollment.userId, {
-          userId: enrollment.userId,
-          name: `${enrollment.user.firstName} ${enrollment.user.surname}`,
-          email: enrollment.user.email,
-          completedAssignments: 0,
-          totalAssignments: course._count.assignments,
-          averageScore: null,
-        })
-      }
-    }
-  }
+  // A student in two of this instructor's courses gets one row per course, since the
+  // completed/total counts and the average are per course and cannot be summed.
+  const students = reports.flatMap(r =>
+    (r?.studentStats ?? []).map(st => ({ ...st, courseName: r!.courseName })),
+  )
 
   return (
     <DashboardShell role="INSTRUCTOR" pageTitle="Students">
-      <StudentProgressTable students={Array.from(studentMap.values())} />
+      <StudentProgressTable students={students} />
     </DashboardShell>
   )
 }
