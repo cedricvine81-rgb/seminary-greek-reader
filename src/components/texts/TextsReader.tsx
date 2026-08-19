@@ -111,6 +111,8 @@ const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'S
 const ES_PROSE_WORKS: Record<string, string> = {
   antiquities: 'josephus/antiquities',
   'jewish-war': 'josephus/jewish-war',
+  'against-apion': 'josephus/against-apion',
+  life: 'josephus/life',
 }
 
 // Both ids mean "the Spanish we made ourselves" and both must carry the same credit line. They
