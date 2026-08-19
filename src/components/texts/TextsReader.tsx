@@ -14,7 +14,8 @@ import { loadJastrow, lookupAramaic, strippedLabel, type JastrowData } from '@/l
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 import { getTextSummary } from '@/lib/texts-summaries'
 import { useTc } from '@/lib/i18n/ContentProvider'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { effectiveReadingLang } from '@/lib/reading-language'
 import { noteBookFor as sharedNoteBookFor } from '@/lib/note-book'
 import { themesCiting, type ThemeBacklink } from '@/lib/theme-backlinks'
 import { findProseWork } from '@/lib/prose-texts'
@@ -243,6 +244,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // showing nothing.
   const tc = useTc()
   const t = useT()
+  const locale = useLocale()
   const SUMMARY_HEADING_SLUG: Record<string, string> = {
     'Authorship': 'authorship', 'Historical Context': 'context', 'Contents': 'contents',
     'Theological Significance': 'significance', 'Relationship to New Testament': 'nt',
@@ -1070,8 +1072,27 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       .catch(() => { if (fetchTokenRef.current === token) setLocateSections([]) })
   }
 
+  /**
+   * Which parallel column a work should OPEN with. Our own Spanish leads for a reader who reads
+   * in Spanish, matching the Bible reader — which has always opened on the Spanish edition
+   * rather than showing English first (see effectiveReadingLang). Works with no Spanish of ours
+   * are unaffected, and an explicit reading-language choice still wins over the interface
+   * language, so "I read in English" survives a Spanish interface.
+   *
+   * Read from the cookie at the moment of opening rather than through the hook: the hook resolves
+   * in an effect, which lands a render too late for the ?work= open on first paint.
+   */
+  function initialTranslationFor(w: CatalogWork): string | null {
+    const options = translationsFor(w, t)
+    if (effectiveReadingLang(locale) === 'es') {
+      const ours = options.find(o => OUR_SPANISH_IDS.has(o.id))
+      if (ours) return ours.id
+    }
+    return options[0]?.id ?? null
+  }
+
   function openWork(w: CatalogWork) {
-    setWork(w); setTranslationId(translationsFor(w, t)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
+    setWork(w); setTranslationId(initialTranslationFor(w)); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
     setLocateBook(1); setLocateChapter(1)
     setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
@@ -1103,7 +1124,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     // in the English column shows a page that doesn't contain the words that were clicked.
     const options = translationsFor(w, t)
     const wanted = target.lang === 'es' ? options.find(o => OUR_SPANISH_IDS.has(o.id))?.id : undefined
-    setWork(w); setTranslationId(wanted ?? options[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
+    setWork(w); setTranslationId(wanted ?? initialTranslationFor(w)); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
