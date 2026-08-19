@@ -5,6 +5,7 @@ import { Search } from 'lucide-react'
 import { registerWordSearch, type WordSearchPayload } from '@/lib/word-search-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
+import type { BgLang } from '@/lib/backgrounds-search-types'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 import { useT } from '@/lib/i18n/LocaleProvider'
@@ -65,6 +66,10 @@ export function WordSearchProvider() {
   const w = menu.surface
   const isGreek = menu.kind === 'greek'
   const isHebrew = menu.kind === 'hebrew'
+  // Which facet of the library index a non-Greek word should be searched against. Only English
+  // and our own Spanish exist; a word from any other translation column falls back to English,
+  // as it always has.
+  const bgFacet: BgLang = menu.transLang === 'es' ? 'es' : 'en'
   const transKey = TRANS_LABEL_KEY[menu.transLang ?? 'en']
   const transLabel = transKey ? t(transKey) : t('ws.thisTranslation')
   // Book name for the "this book" scope, derived from the reference (e.g. "Matthew 5:44" → "Matthew").
@@ -145,13 +150,16 @@ export function WordSearchProvider() {
           // isn't in a Bible book, so a translation scope would find nothing).
           <>
             <button type="button" className={btn}
-              onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `bg:${menu.bgCollection}` }) }}>
+              onClick={() => { setMenu(null); openBackgroundsSearch(w, bgFacet, menu.bgCollection) }}>
               {t('ws.thisCollection')}{menu.bgCollectionLabel ? <span className="text-gray-400"> · {menu.bgCollectionLabel}</span> : null}
             </button>
             <button type="button" className={btn}
-              onClick={() => { setMenu(null); openBackgroundsSearch(w, 'en') }}>
+              onClick={() => { setMenu(null); openBackgroundsSearch(w, bgFacet) }}>
               {t('ws.allLibraryTexts')} <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
+            {bgFacet === 'es' && (
+              <p className="px-0.5 text-[10px] leading-snug text-gray-400">{t('ws.spanishOursNote')}</p>
+            )}
           </>
         ) : (
           <>
@@ -166,9 +174,12 @@ export function WordSearchProvider() {
               {t('ws.wholeBible')} <span className="text-gray-400">· {transLabel}</span>
             </button>
             <button type="button" className={btn}
-              onClick={() => { setMenu(null); openBackgroundsSearch(w, 'en') }}>
+              onClick={() => { setMenu(null); openBackgroundsSearch(w, bgFacet) }}>
               {t('ws.allLibraryTexts')} <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
+            {bgFacet === 'es' && (
+              <p className="px-0.5 text-[10px] leading-snug text-gray-400">{t('ws.spanishOursNote')}</p>
+            )}
           </>
         )}
       </div>

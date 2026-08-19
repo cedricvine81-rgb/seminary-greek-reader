@@ -4,14 +4,15 @@ import { searchBackgrounds, detectLang, type BgLang } from '@/lib/backgrounds-se
 
 // Full-text search over the embedded background-source texts (Philo, Josephus, the
 // Septuagint, Apocrypha, Pseudepigrapha, the Testaments). `lang` picks the facet
-// (en = English translations/prose, grc = Septuagint Greek); if omitted it's auto-detected
-// from the query's script.
+// (en = English translations/prose, grc = Septuagint Greek, es = our own Spanish); if omitted
+// it's auto-detected from the query's script — which can only ever separate Greek from Latin
+// script, so a Spanish search must ask for lang=es explicitly.
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
   const q = searchParams.get('q')?.trim()
   if (!q || q.length < 2) return NextResponse.json({ error: 'Query too short' }, { status: 400 })
   const langParam = searchParams.get('lang')
-  const lang: BgLang = langParam === 'en' || langParam === 'grc' ? langParam : detectLang(q)
+  const lang: BgLang = langParam === 'en' || langParam === 'grc' || langParam === 'es' ? langParam : detectLang(q)
   // Optional collection scope (a TEXT_CATEGORIES id, e.g. 'josephus', 'pseudepigrapha').
   const category = searchParams.get('category') || null
   // Optional single-work scope (a TEXT_CATEGORIES work id, e.g. 'antiquities') — used by the

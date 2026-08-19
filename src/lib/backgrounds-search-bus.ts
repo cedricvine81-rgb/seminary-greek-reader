@@ -5,6 +5,7 @@ import { openMasterSearch } from '@/lib/master-search-bus'
 // context + sort controls), not a separate modal. This shim keeps the existing call sites — the
 // right-click "Background texts / All library texts" and the Texts-tab search box — working by
 // routing to Master Search with a background scope (the /search scope list has bg:all / bggrc:all).
-export function openBackgroundsSearch(query: string, lang: BgLang): void {
-  openMasterSearch({ query, scope: lang === 'grc' ? 'bggrc:all' : 'bg:all' })
+export function openBackgroundsSearch(query: string, lang: BgLang, category?: string | null): void {
+  const prefix = lang === 'grc' ? 'bggrc' : lang === 'es' ? 'bges' : 'bg'
+  openMasterSearch({ query, scope: `${prefix}:${category || 'all'}` })
 }

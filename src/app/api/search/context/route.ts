@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     // Background texts: refs are opaque "source|osis|work|book|chapter|verse" keys; the index
     // knows each one's neighbours. Return the same keys so the client can match them back.
     if (mode === 'bg') {
-      const lang = body.lang === 'grc' ? 'grc' : 'en'
+      const lang = body.lang === 'grc' ? 'grc' : body.lang === 'es' ? 'es' : 'en'
       const context = await getBackgroundContext(lang, refsRaw, radius)
       return NextResponse.json({ context })
     }

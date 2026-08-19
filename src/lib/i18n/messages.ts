@@ -1360,6 +1360,9 @@ const en: Catalogue = {
   'ws.thisBook': 'This book',
   'ws.wholeBible': 'Whole Bible',
   'ws.allLibraryTexts': 'All library texts',
+  // Shown when the word came from one of our own Spanish columns: the Spanish facet of the
+  // library index covers only the works we translated, so a miss is not evidence of absence.
+  'ws.spanishOursNote': 'Searching our own Spanish — the Apocrypha and Josephus. The rest of the library has no Spanish.',
   'ws.thisTranslation': 'this translation',
   'ws.copiedWhat': 'copied {what}',
   // ── Annotations on the Grammar chapters (drag to highlight, write a margin note) ──
@@ -1871,6 +1874,7 @@ const en: Catalogue = {
   'search.scope.hebrewOT': 'Hebrew — Old Testament',
   'search.scope.bgAllEn': 'All Background Texts: English',
   'search.scope.bgAllGrc': 'All Background Texts: Greek',
+  'search.scope.bgAllEs': 'All Background Texts: Spanish (our translation)',
   // Names of the translations that can be searched. These name a LANGUAGE in the reader's own
   // language ("Spanish" → "español"), not the edition, which is why they are translated while
   // the works in the Texts library are not.
@@ -3951,6 +3955,7 @@ const es: Catalogue = {
   'ws.thisBook': 'Este libro',
   'ws.wholeBible': 'Toda la Biblia',
   'ws.allLibraryTexts': 'Todos los textos de la biblioteca',
+  'ws.spanishOursNote': 'Se busca en nuestra propia traducción al español: los apócrifos y Josefo. El resto de la biblioteca no tiene español.',
   'ws.thisTranslation': 'esta traducción',
   'ws.copiedWhat': 'se copió: {what}',
   // ── Anotaciones en los capítulos de gramática ──
@@ -4457,6 +4462,7 @@ const es: Catalogue = {
   'search.scope.hebrewOT': 'Hebreo — Antiguo Testamento',
   'search.scope.bgAllEn': 'Todos los textos de trasfondo: inglés',
   'search.scope.bgAllGrc': 'Todos los textos de trasfondo: griego',
+  'search.scope.bgAllEs': 'Todos los textos de trasfondo: español (traducción propia)',
   'search.trans.enWeb': 'Inglés (WEB)',
   'search.trans.enBsb': 'Inglés (BSB)',
   'search.trans.es': 'Español',

@@ -23,12 +23,13 @@ import { TextSizeSlider } from '@/components/reader/TextSizeControls'
 import { usePref } from '@/lib/use-pref'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { openWordSearch } from '@/lib/word-search-bus'
-import { openMasterSearch } from '@/lib/master-search-bus'
-import type { BgHit } from '@/lib/backgrounds-search-types'
+import type { BgHit, BgLang } from '@/lib/backgrounds-search-types'
+import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { DEUTERO_ES_BOOKS, ES_PROSE_WORKS, ES_ENGLISH_PROSE_WORKS, OUR_SPANISH_IDS } from '@/lib/spanish-texts'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { TransWords } from '@/components/highlights/TransWords'
 import { GreekWords } from '@/components/highlights/GreekWords'
@@ -91,44 +92,6 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
       + 'Only Ode 12, the Prayer of Manasseh, is not a quotation, and it is the one carrying English here.',
   },
 }
-
-/**
- * Deuterocanonical books carrying our own Spanish, made from the LXX Greek this reader shows.
- * Listed rather than probed because the menu has to be built before any chapter is fetched;
- * add a book here when its first chapter lands in public/data/deutero-es/.
- */
-const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd', '3Macc', '4Macc',
-  // The Greek-recension books and the two collections no Spanish Bible carries at all.
-  'EsthGr', 'DanLXX', 'PsSol', 'Odes'])
-
-/**
- * Works OUTSIDE the LXX that carry our own Spanish, made from the Greek this reader shows.
- * Keyed by catalog work id; the value is the folder under public/data/es/. The LXX books above
- * are keyed by osisId + chapter, but a prose work is addressed by book + section, so it needs
- * its own path — hence two registries rather than one.
- *
- * Registering a work here is what puts "Español (traducción propia)" in its translation menu.
- * Books with no file yet simply leave the column blank, exactly as a Brenton gap does.
- */
-const ES_PROSE_WORKS: Record<string, string> = {
-  antiquities: 'josephus/antiquities',
-  'jewish-war': 'josephus/jewish-war',
-  'against-apion': 'josephus/against-apion',
-  life: 'josephus/life',
-}
-
-// English-only prose works that also have our Spanish. These are addressed by chapter+verse (not
-// by section like Josephus, not by osisId like the LXX), so they need their own registry and their
-// own loader. 2 Esdras is the only Apocrypha work with no Greek at all — 4 Ezra survives in Latin
-// — so its Spanish is made from the English the reader shows, one remove further from the source
-// than everything else here. The per-chapter file says so, and the interface says so.
-const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
-  '2esdras': 'apocrypha/2esdras',
-}
-
-// Both ids mean "the Spanish we made ourselves" and both must carry the same credit line. They
-// stay distinct because they load by different keys, not because they are different translations.
-const OUR_SPANISH_IDS = new Set(['deutero-es', 'es'])
 
 // Books where Rahlfs prints the Old Greek and not Theodotion — the recension behind every
 // printed Bible a student is likely to own. See reader.oldGreekNote.
@@ -465,8 +428,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // interface. Only the non-default names (Latin, Aramaic) pass through as written.
   const primaryLabel = work?.primaryLabel ?? t('texts.greekCol')
   const primaryIsGreek = primaryLabel === 'Greek'
-  const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
   const availableTranslations = translationsFor(work, t)
+  // Whether a second column exists at all. For lxx works that means "any translation is on
+  // offer", not "a published English exists": LXX Daniel has no English here at all (Brenton's
+  // Daniel is Theodotion, a different text), so ours is its only second column, and keying this
+  // off work.english left the menu offering a Spanish that could never render.
+  const hasEnglish = work ? (work.source === 'lxx' ? availableTranslations.length > 0 : true) : false
   const showEnglish = translationId !== null
   // Greek-hidden (English-only): an lxx work with its translation showing, or a greek-prose
   // work whose mode is 'english'.
@@ -507,6 +474,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // Beta-Code (QWERTY→Greek) transliteration only makes sense when the primary column really
   // is Greek — a Latin work (Quintilian) searches its text as typed.
   const greekTyping = searchLang === 'grc' && greekSearchable && primaryIsGreek
+  // The LANGUAGE actually rendered in the translation column. Everything downstream that has to
+  // name it — the word spans' `lang`, the right-click menu's search facet, this reader's own
+  // search box — used to assume English, so a reader with the Spanish column open searched (and
+  // right-clicked into) an English text they weren't looking at, and found nothing.
+  const transLang = translationId && OUR_SPANISH_IDS.has(translationId) ? 'es' : 'en'
+  // The library-index facet that matches what's on screen (see backgrounds-search-<lang>.json.gz).
+  const searchFacet: BgLang = searchLang === 'grc' ? 'grc' : transLang
 
   // Unique words present in the loaded text, per script, for predictive suggestions. Greek is
   // tokenized from the parsed tokens where available (else whitespace-split); English from the
@@ -578,7 +552,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     setWorkSearching(true)
     setWorkSearchTerm(q0)
     try {
-      const r = await fetch(`/api/search/backgrounds?q=${encodeURIComponent(q0)}&work=${encodeURIComponent(work.id)}&lang=${searchLang}`)
+      const r = await fetch(`/api/search/backgrounds?q=${encodeURIComponent(q0)}&work=${encodeURIComponent(work.id)}&lang=${searchFacet}`)
       const d = await r.json()
       // One work = at most one group; take its hits (empty array, not null, so the panel
       // can say "nothing in this work" rather than staying invisible).
@@ -1124,7 +1098,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
       : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === target.source)
     if (!w) return
-    setWork(w); setTranslationId(translationsFor(w, t)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
+    // Open in the column the hand-off asked for — our Spanish when the hit came from a Spanish
+    // search — else the work's first (published) translation, as before. Landing a Spanish hit
+    // in the English column shows a page that doesn't contain the words that were clicked.
+    const options = translationsFor(w, t)
+    const wanted = target.lang === 'es' ? options.find(o => OUR_SPANISH_IDS.has(o.id))?.id : undefined
+    setWork(w); setTranslationId(wanted ?? options[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
@@ -1490,7 +1469,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                       <p className="text-xs text-gray-500">{t('texts.workNoHits', { q: workSearchTerm })}</p>
                       <button
                         type="button"
-                        onClick={() => { setWorkHits(null); openMasterSearch({ query: workSearchTerm, scope: bgCollection ? `bg:${bgCollection.id}` : searchLang === 'grc' ? 'bggrc:all' : 'bg:all' }) }}
+                        onClick={() => { setWorkHits(null); openBackgroundsSearch(workSearchTerm, searchFacet, bgCollection?.id) }}
                         className="inline-flex items-center gap-1.5 rounded-lg border border-brand-300 bg-brand-50 px-2.5 py-1 text-xs text-brand-800 hover:bg-brand-100"
                       >
                         <Search size={12} />
@@ -1833,7 +1812,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               </span>
                             ) : (
                               <span style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num, layer)}>
-                                {<TransWords text={row.english ?? ''} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
+                                {<TransWords text={row.english ?? ''} lang={transLang} reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights,
                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, layer),
                                         recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
@@ -1859,13 +1838,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               )}
                               <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.ref ?? row.num}</sup>
                               {greekProse
-                                ? (<TransWords text={row.english ?? ''} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
+                                ? (<TransWords text={row.english ?? ''} lang={transLang} reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
                                          remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />)
                                 : row.english
-                                ? (<TransWords text={row.english} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
+                                ? (<TransWords text={row.english} lang={transLang} reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),

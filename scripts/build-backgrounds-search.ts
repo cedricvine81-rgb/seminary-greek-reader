@@ -5,6 +5,12 @@
 //
 //   public/data/backgrounds-search-en.json.gz   — English (prose works + Brenton)
 //   public/data/backgrounds-search-grc.json.gz  — Greek (Septuagint)
+//   public/data/backgrounds-search-es.json.gz   — OUR OWN Spanish (see src/lib/spanish-texts.ts)
+//
+// The `es` facet covers only the works we translated ourselves — the Apocrypha collection and
+// Josephus. It exists so a reader who has the Spanish column open can right-click a Spanish word
+// and actually find it; searching that word against the `en` facet returns nothing, which reads
+// like the text is missing.
 //
 // Each is a JSON array of compact entries { g, s, o?, w?, b?, c, v, t } — enough for the
 // query lib (src/lib/backgrounds-search.ts) to make a snippet and an OpenInTextsTarget
@@ -19,6 +25,7 @@ import path from 'node:path'
 import zlib from 'node:zlib'
 import { TEXT_CATEGORIES, type CatalogWork } from '../src/lib/texts-catalog'
 import { findProseWork } from '../src/lib/prose-texts'
+import { DEUTERO_ES_BOOKS, ES_PROSE_WORKS, ES_ENGLISH_PROSE_WORKS } from '../src/lib/spanish-texts'
 
 const DATA = path.join(process.cwd(), 'public', 'data')
 
@@ -28,6 +35,7 @@ interface Entry { g: string; s: string; o?: string; w?: string; b?: number; c: n
 
 const en: Entry[] = []
 const grc: Entry[] = []
+const es: Entry[] = []
 
 function readJson(rel: string): any | null {
   try { return JSON.parse(fs.readFileSync(path.join(DATA, rel), 'utf8')) } catch { return null }
@@ -39,8 +47,15 @@ function indexProse(work: CatalogWork) {
   if (!prose) return
   const doc = readJson(prose.dataUrl.replace(/^\/data\//, ''))
   if (!doc?.chapters) return
+  // Our Spanish for an English-only prose work sits one file per chapter, keyed by verse.
+  const esDir = ES_ENGLISH_PROSE_WORKS[work.id]
   for (const ch of doc.chapters) {
+    const esCh: Record<string, string> = esDir
+      ? (readJson(path.join('es', esDir, `${ch.number}.json`))?.verses ?? {})
+      : {}
     for (const vs of ch.verses) {
+      const esText = esCh[String(vs.number)]
+      if (esText) es.push({ g: work.id, s: work.source, c: ch.number, v: vs.number, t: esText })
       if (vs.text) en.push({ g: work.id, s: work.source, c: ch.number, v: vs.number, t: vs.text })
       // The grc facet is labelled Greek and folds Greek diacritics, so a Hebrew-script work
       // (the Talmud Bavli's Aramaic) is excluded rather than filed under it. Its text is read
@@ -57,6 +72,15 @@ function indexLxx(work: CatalogWork) {
     const chap = readJson(path.join('lxx', `${osisId}_${c}.json`))
     if (chap?.verses) for (const vs of chap.verses) {
       if (vs.text) grc.push({ g: work.id, s: 'lxx', o: osisId, c, v: vs.verse, t: vs.text })
+    }
+    // Our Spanish, keyed by the same verse ids as the Greek — walked in the Greek's own order
+    // so the es facet stays in document order (getBackgroundContext reads neighbours by index).
+    if (DEUTERO_ES_BOOKS.has(osisId)) {
+      const esCh: Record<string, string> = readJson(path.join('deutero-es', `${osisId}_${c}.json`))?.verses ?? {}
+      if (chap?.verses) for (const vs of chap.verses) {
+        const t = esCh[String(vs.verse)]
+        if (t) es.push({ g: work.id, s: 'lxx', o: osisId, c, v: vs.verse, t })
+      }
     }
   }
   if (work.english === 'brenton') {
@@ -75,10 +99,18 @@ function indexJosephus(work: CatalogWork) {
   for (let b = 1; b <= nBooks; b++) {
     const book = readJson(path.join('josephus', workDir, `${b}.json`))
     if (!book?.chapters) continue
+    // Our Spanish is keyed by Niese §, so it lines up section-for-section with the Greek —
+    // unlike Whiston's English, which is attached once per Whiston section (its first §).
+    const esDir = ES_PROSE_WORKS[work.id]
+    const esBook: Record<string, string> = esDir
+      ? (readJson(path.join('es', esDir, `${b}.json`))?.sections ?? {})
+      : {}
     for (const ch of book.chapters) {
       for (const sec of ch.sections) {
         if (sec.text) en.push({ g: work.id, s: 'josephus', w: workDir, b, c: ch.number, v: sec.number, t: sec.text })
         if (sec.greek) grc.push({ g: work.id, s: 'josephus', w: workDir, b, c: ch.number, v: sec.number, t: sec.greek })
+        const esText = esBook[String(sec.number)]
+        if (esText) es.push({ g: work.id, s: 'josephus', w: workDir, b, c: ch.number, v: sec.number, t: esText })
       }
     }
   }
@@ -101,3 +133,4 @@ function write(name: string, entries: Entry[]) {
 
 write('backgrounds-search-en.json.gz', en)
 write('backgrounds-search-grc.json.gz', grc)
+write('backgrounds-search-es.json.gz', es)

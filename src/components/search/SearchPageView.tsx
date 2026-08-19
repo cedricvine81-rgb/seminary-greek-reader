@@ -30,6 +30,7 @@ import { parseSearchTerms, scoreRelevance } from '@/lib/search-query'
 import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
 import { betaCodeToGreek } from '@/lib/greek-translit'
 import { latinToHebrew, HEBREW_LEGEND } from '@/lib/hebrew-translit'
+import { hasOurSpanish } from '@/lib/spanish-texts'
 
 // The full-page "Master Search" (/search). One input searches any biblical text (Greek NT/LXX,
 // or a translation) or any background collection, optionally scoped to books. Matches show in
@@ -57,6 +58,10 @@ function defaultTransLang(locale: string): string {
   return TRANS_LANGS.has(locale) ? locale : 'en'
 }
 const COLLECTIONS = TEXT_CATEGORIES.filter(c => !c.comingSoon && c.works.length > 0)
+// Collections with any of our own Spanish (the Apocrypha and Josephus today). They get their own
+// scope entries because the facet cannot be guessed from the query: Spanish and English are both
+// Latin script, so `bg:` auto-detection would silently search the English of the same works.
+const ES_COLLECTIONS = COLLECTIONS.filter(c => c.works.some(w => hasOurSpanish(w.id, w.osisId)))
 
 // LXX books with no Protestant-canon counterpart — shown only for the Greek Septuagint scope,
 // not for translation scopes (whose indexes are the 66-book canon).
@@ -68,14 +73,16 @@ type Scope =
   | { kind: 'greek'; corpus: 'GNT' | 'LXX' }
   | { kind: 'hebrew' }
   | { kind: 'trans'; lang: string }
-  | { kind: 'bg'; category: string | null; lang?: 'grc' }
+  | { kind: 'bg'; category: string | null; lang?: 'grc' | 'es' }
 
 function parseScope(v: string): Scope {
   if (v.startsWith('greek:')) return { kind: 'greek', corpus: v.slice(6) as 'GNT' | 'LXX' }
   if (v.startsWith('hebrew:')) return { kind: 'hebrew' }
   if (v.startsWith('trans:')) return { kind: 'trans', lang: v.slice(6) }
-  // bggrc: forces the Greek (Septuagint) facet of the background corpus; bg: auto-detects.
+  // bggrc: forces the Greek (Septuagint) facet of the background corpus, bges: our own Spanish;
+  // bg: auto-detects, which can only tell Greek from Latin script — Spanish must be asked for.
   if (v.startsWith('bggrc:')) { const c = v.slice(6); return { kind: 'bg', category: c === 'all' ? null : c, lang: 'grc' } }
+  if (v.startsWith('bges:')) { const c = v.slice(5); return { kind: 'bg', category: c === 'all' ? null : c, lang: 'es' } }
   const cat = v.slice(3)
   return { kind: 'bg', category: cat === 'all' ? null : cat }
 }
@@ -140,7 +147,8 @@ function bgCtxKey(t: OpenInTextsTarget): string {
 async function fetchLaneCount(val: string, q: string, lemma = false): Promise<number> {
   const s = parseScope(val)
   if (s.kind === 'bg') {
-    const lang: BgLang = GREEK_RE.test(q) ? 'grc' : 'en'
+    // An explicit facet (bggrc:/bges:) wins; bg: still auto-detects by script.
+    const lang: BgLang = s.lang ?? (GREEK_RE.test(q) ? 'grc' : 'en')
     const r = await fetch(`/api/search/backgrounds?q=${encodeURIComponent(q)}&lang=${lang}`)
     if (!r.ok) return 0
     const d: BgResult = await r.json()
@@ -351,13 +359,17 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     : t('search.booksN', { count: books.length, n: books.length })
   const booksKey = books.join(',')
 
+  // The backgrounds lane counts whichever FACET is in scope — otherwise a Spanish (or Greek)
+  // background search sits under a tab reporting the English count, which reads as "0 results"
+  // above a screen full of them.
+  const bgLane = scope.kind === 'bg' && scope.lang ? `bg${scope.lang === 'es' ? 'es' : 'grc'}:all` : 'bg:all'
   const laneList = useMemo(() => [
     { val: `trans:${transLang}`, label: t(TRANSLATIONS.find(tr => tr.lang === transLang)?.key ?? 'search.trans.generic') },
     { val: 'greek:GNT', label: t('search.lane.greekNT') },
     { val: 'greek:LXX', label: t('search.lane.greekLXX') },
-    { val: 'bg:all', label: t('search.lane.backgrounds') },
-  ], [transLang, t])
-  const activeLane = scope.kind === 'bg' ? 'bg:all'
+    { val: bgLane, label: t('search.lane.backgrounds') },
+  ], [transLang, bgLane, t])
+  const activeLane = scope.kind === 'bg' ? bgLane
     : scope.kind === 'greek' ? `greek:${scope.corpus}`
     : scope.kind === 'hebrew' ? 'hebrew:MT'
     : `trans:${transLang}`
@@ -571,7 +583,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     if (HEBREW_RE.test(lastWord) || scope.kind === 'hebrew') langParam = '&hebrew=1'
     else if (GREEK_RE.test(lastWord)) langParam = ''
     else if (scope.kind === 'trans') langParam = `&lang=${scope.lang}`
-    else if (scope.kind === 'bg' && scope.lang !== 'grc') langParam = '&lang=en'
+    else if (scope.kind === 'bg' && scope.lang !== 'grc') langParam = `&lang=${scope.lang === 'es' ? 'es' : 'en'}`
     const ctrl = new AbortController()
     const timer = setTimeout(() => {
       fetch(`/api/suggest?q=${encodeURIComponent(lastWord)}${langParam}`, { signal: ctrl.signal })
@@ -754,7 +766,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
   function openBackground(target: OpenInTextsTarget) {
     pushRecent(query)
-    const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined }
+    const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined,
+      // Open in the column that was searched (see OpenInTextsTarget.lang).
+      ...(bg?.lang === 'es' ? { lang: 'es' as const } : {}) }
     // Texts is its own page now — open the hit there directly.
     router.push(`/texts?open=${encodeURIComponent(JSON.stringify(withTerm))}`)
   }
@@ -1129,7 +1143,11 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 <optgroup label={t('search.scope.backgrounds')}>
                   <option value="bg:all">{t('search.scope.bgAllEn')}{optCount('bg:all')}</option>
                   <option value="bggrc:all">{t('search.scope.bgAllGrc')}</option>
+                  <option value="bges:all">{t('search.scope.bgAllEs')}</option>
                   {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
+                  {ES_COLLECTIONS.map(c => (
+                    <option key={`es-${c.id}`} value={`bges:${c.id}`}>{c.label} — {t('texts.spanishOurs')}</option>
+                  ))}
                 </optgroup>
               </select>
             </label>

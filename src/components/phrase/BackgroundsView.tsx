@@ -37,6 +37,10 @@ export interface OpenInTextsTarget {
   // A term to highlight (in red) in the opened text — set when the reader is opened from a
   // background-sources search, so the reader can point out the word that was searched for.
   highlight?: string
+  // Which parallel column the reader should open with. Set when the hand-off came from a search
+  // over our own Spanish, so a Spanish hit doesn't open showing the published English — the
+  // reader would land on a page that doesn't contain the words they clicked.
+  lang?: 'es'
 }
 
 type BgFontSize = PhraseFontSize
