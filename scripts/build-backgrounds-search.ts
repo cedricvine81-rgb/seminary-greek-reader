@@ -12,7 +12,7 @@
 // and actually find it; searching that word against the `en` facet returns nothing, which reads
 // like the text is missing.
 //
-// Each is a JSON array of compact entries { g, s, o?, w?, b?, c, v, t } — enough for the
+// Each file is { entries: [ { g, s, o?, w?, b?, c, v, t, x? } ], trans?: string[] } — enough for the
 // query lib (src/lib/backgrounds-search.ts) to make a snippet and an OpenInTextsTarget
 // ({ source, osisId?, workDir?, book?, chapter, verse } — see BackgroundsView.tsx). The
 // display name/label is looked up from the catalog at query time, so it isn't stored here.
@@ -30,8 +30,15 @@ import { DEUTERO_ES_BOOKS, ES_PROSE_WORKS, ES_ENGLISH_PROSE_WORKS } from '../src
 const DATA = path.join(process.cwd(), 'public', 'data')
 
 // g = group id (catalog work id), s = OpenInTextsTarget.source, o = osisId (lxx),
-// w = workDir (josephus), b = book, c = chapter, v = verse, t = searchable text.
-interface Entry { g: string; s: string; o?: string; w?: string; b?: number; c: number; v: number; t: string }
+// w = workDir (josephus), b = book, c = chapter, v = verse, t = searchable text,
+// x = index into the file's `trans` table: this entry's aligned translation, for Greek entries
+//     whose work has an English alongside (Josephus/Whiston, Greco-Roman/Perseus).
+//
+// `x` is baked here rather than looked up at query time on purpose. The query lib used to load
+// the ENTIRE English index (119,640 entries, ~204 MB of heap, ~0.8 s) on every Greek search just
+// to attach a translation to at most 300 hits — so one Greek search cost both facets, ~395 MB and
+// ~3 s on a cold serverless instance. The alignment is fixed at build time, so it belongs here.
+interface Entry { g: string; s: string; o?: string; w?: string; b?: number; c: number; v: number; t: string; x?: number }
 
 const en: Entry[] = []
 const grc: Entry[] = []
@@ -124,13 +131,59 @@ for (const cat of TEXT_CATEGORIES) {
   }
 }
 
-function write(name: string, entries: Entry[]) {
-  const gz = zlib.gzipSync(Buffer.from(JSON.stringify(entries), 'utf8'))
+// ── Bake each Greek entry's aligned English into a string table ──────────────────────────────
+// Same rule the query lib applied at runtime: an exact same-position match in the English index,
+// and for Josephus a fallback to the CONTAINING Whiston section (Whiston's English is attached
+// only to each translator-section's first §, so most §§ have no exact match of their own).
+function entryKey(e: Entry): string {
+  return `${e.s}|${e.o ?? ''}|${e.w ?? ''}|${e.b ?? ''}|${e.c}|${e.v}`
+}
+
+function bakeTranslations(): string[] {
+  const pos = new Map<string, number>()
+  en.forEach((e, i) => pos.set(entryKey(e), i))
+  // Sorted English section-start §§ per Josephus (work, book, chapter).
+  const josSections = new Map<string, number[]>()
+  for (const e of en) {
+    if (e.s !== 'josephus') continue
+    const k = `${e.w}|${e.b}|${e.c}`
+    const arr = josSections.get(k)
+    if (arr) arr.push(e.v)
+    else josSections.set(k, [e.v])
+  }
+  for (const arr of Array.from(josSections.values())) arr.sort((a: number, b: number) => a - b)
+
+  const table: string[] = []
+  const seen = new Map<string, number>()
+  for (const e of grc) {
+    let i = pos.get(entryKey(e))
+    if (i === undefined && e.s === 'josephus') {
+      const arr = josSections.get(`${e.w}|${e.b}|${e.c}`)
+      if (arr) {
+        let sec: number | null = null
+        for (const v of arr) { if (v <= e.v) sec = v; else break }
+        if (sec !== null) i = pos.get(entryKey({ ...e, v: sec }))
+      }
+    }
+    if (i === undefined) continue
+    const text = en[i].t
+    let ref = seen.get(text)
+    if (ref === undefined) { ref = table.length; table.push(text); seen.set(text, ref) }
+    e.x = ref
+  }
+  console.log(`baked translations: ${grc.filter(e => e.x !== undefined).length}/${grc.length} Greek entries, ${table.length} distinct strings`)
+  return table
+}
+
+const grcTrans = bakeTranslations()
+
+function write(name: string, entries: Entry[], trans?: string[]) {
+  const gz = zlib.gzipSync(Buffer.from(JSON.stringify(trans ? { entries, trans } : { entries }), 'utf8'))
   fs.writeFileSync(path.join(DATA, name), gz)
   const bySrc = entries.reduce<Record<string, number>>((a, e) => { a[e.g] = (a[e.g] ?? 0) + 1; return a }, {})
   console.log(`${name}: ${entries.length} entries, ${(gz.length / 1e6).toFixed(2)} MB gz, ${Object.keys(bySrc).length} works`)
 }
 
 write('backgrounds-search-en.json.gz', en)
-write('backgrounds-search-grc.json.gz', grc)
+write('backgrounds-search-grc.json.gz', grc, grcTrans)
 write('backgrounds-search-es.json.gz', es)

@@ -118,6 +118,24 @@ const nextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         ],
       },
+      {
+        // The corpus under public/data is build-time content: chapters, lexicons, morphology,
+        // search indexes. Next serves public/ with `max-age=0`, so every page load revalidated
+        // every file it touches — a reader opening one chapter conditionally re-requests the
+        // lexicon, the syntax trees, the gloss table and the rest, and gets a stack of 304s for
+        // its trouble. That is a round trip per file per page load, and at any scale it is the
+        // largest source of edge requests in the app.
+        //
+        // An hour of freshness is the trade: within a browsing session there are no revalidation
+        // requests at all, and a corpus fix published today reaches a reader on their next load
+        // after the hour (stale-while-revalidate hands them the cached copy immediately and
+        // refreshes in the background, so they never wait for it). Nothing here is user data —
+        // uploads live in Supabase Storage and are not served from this path.
+        source: '/data/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=3600, stale-while-revalidate=86400' },
+        ],
+      },
     ]
   },
 }

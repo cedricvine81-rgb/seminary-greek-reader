@@ -17,9 +17,10 @@ import type { BgLang, BgHit, BgGroup, BgResult } from '@/lib/backgrounds-search-
 export type { BgLang, BgHit, BgGroup, BgResult }
 
 // Stored entry: g = group id (catalog work id), s = target source, o/w/b = osisId/workDir/
-// book, c/v = chapter/verse, t = text. (Mirrors build-backgrounds-search.ts.)
-interface Entry { g: string; s: string; o?: string; w?: string; b?: number; c: number; v: number; t: string }
-interface Loaded { entries: Entry[]; normalized: string[] }
+// book, c/v = chapter/verse, t = text, x = index into `trans` (a Greek entry's aligned English,
+// baked at build time). Mirrors build-backgrounds-search.ts.
+interface Entry { g: string; s: string; o?: string; w?: string; b?: number; c: number; v: number; t: string; x?: number }
+interface Loaded { entries: Entry[]; normalized: string[]; trans: string[] }
 
 const _cache = new Map<BgLang, Loaded | null>()
 
@@ -59,8 +60,12 @@ async function load(lang: BgLang): Promise<Loaded | null> {
   const raw = await readIndexRaw(lang)
   if (raw) {
     try {
-      const entries: Entry[] = JSON.parse(raw)
-      loaded = { entries, normalized: entries.map(e => normalize(e.t)) }
+      // { entries, trans? } since translations were baked in; tolerate the bare array a previous
+      // deployment's file may still be, so a stale asset degrades to "no translations shown"
+      // rather than throwing the whole search away.
+      const doc: Entry[] | { entries: Entry[]; trans?: string[] } = JSON.parse(raw)
+      const entries = Array.isArray(doc) ? doc : doc.entries
+      loaded = { entries, normalized: entries.map(e => normalize(e.t)), trans: Array.isArray(doc) ? [] : doc.trans ?? [] }
     } catch { loaded = null }
   }
   _cache.set(lang, loaded)
@@ -87,16 +92,14 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
   const terms = parseSearchTerms(query)
   if (!data || query.trim().length < 2 || terms.length === 0) return { lang, total: 0, truncated: false, groups: [] }
 
-  // For a Greek search, look up each hit's aligned English (same entryKey in the `en` index) so
-  // the result can show its translation. Only Josephus/Greco-Roman have a matching English entry;
-  // English-only works simply have none (left undefined). Cheap map lookups; index is cached.
+  // A Greek hit's aligned English comes from the file's own `trans` table (entry.x), baked by the
+  // builder — including the Josephus rule that Whiston's English sits only on each translator
+  // section's first §, so most §§ borrow the containing section's text.
   //
-  // Josephus needs one extra step: its Greek is indexed per Niese §, but Whiston's English exists
-  // only at each translator-section's FIRST § (e.g. Ant 15.1 has Greek §§1–10 but English at §§1
-  // and 5 only). An exact same-§ lookup therefore missed for most hits and Josephus results
-  // showed no translation at all — so on a miss, borrow the English of the CONTAINING Whiston
-  // section: the greatest English § ≤ the hit's § within the same work/book/chapter.
-  const enPos = lang === 'grc' ? await positions('en') : null
+  // This used to load the whole `en` index on every Greek search — 119,640 entries, ~204 MB of
+  // heap, ~0.8 s — to decorate at most 300 hits, so one Greek search paid for both facets: ~395 MB
+  // and ~3 s on a cold instance. The alignment cannot change between builds, so it is build-time
+  // work, not per-request work.
 
   const byGroup = new Map<string, BgHit[]>()
   let total = 0
@@ -111,14 +114,7 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
     const e = data.entries[i]
     const meta = _meta.get(e.g) ?? { name: e.g, chapters: 1, order: 999 }
     const hit: BgHit = { ref: labelFor(e, meta.name, meta.chapters), text: e.t, target: targetFor(e) }
-    if (enPos) {
-      let ei = enPos.pos.get(entryKey(e))
-      if (ei === undefined && e.s === 'josephus') {
-        const sec = josephusContainingSection(enPos.loaded, e)
-        if (sec !== null) ei = enPos.pos.get(entryKey({ ...e, v: sec }))
-      }
-      if (ei !== undefined) hit.trans = enPos.loaded.entries[ei].t
-    }
+    if (e.x !== undefined) hit.trans = data.trans[e.x]
     const arr = byGroup.get(e.g)
     if (arr) arr.push(hit)
     else byGroup.set(e.g, [hit])
@@ -140,28 +136,6 @@ export interface BgCtxVerse { chapter: number; verse: number; text: string }
 function entryKey(e: { s: string; o?: string; w?: string; b?: number; c: number; v: number }): string {
   return `${e.s}|${e.o ?? ''}|${e.w ?? ''}|${e.b ?? ''}|${e.c}|${e.v}`
 }
-// Sorted English (Whiston) section-start §§ per Josephus (work, book, chapter), built lazily
-// from the `en` index — see the Josephus note above searchBackgrounds' enPos.
-let _josEnSections: Map<string, number[]> | null = null
-function josephusContainingSection(enLoaded: Loaded, e: Entry): number | null {
-  if (!_josEnSections) {
-    _josEnSections = new Map()
-    for (const en of enLoaded.entries) {
-      if (en.s !== 'josephus') continue
-      const k = `${en.w}|${en.b}|${en.c}`
-      const arr = _josEnSections.get(k)
-      if (arr) arr.push(en.v)
-      else _josEnSections.set(k, [en.v])
-    }
-    for (const arr of Array.from(_josEnSections.values())) arr.sort((a, b) => a - b)
-  }
-  const arr = _josEnSections.get(`${e.w}|${e.b}|${e.c}`)
-  if (!arr) return null
-  let sec: number | null = null
-  for (const v of arr) { if (v <= e.v) sec = v; else break }
-  return sec
-}
-
 const _posCache = new Map<BgLang, Map<string, number>>()
 async function positions(lang: BgLang): Promise<{ loaded: Loaded; pos: Map<string, number> } | null> {
   const loaded = await load(lang)
