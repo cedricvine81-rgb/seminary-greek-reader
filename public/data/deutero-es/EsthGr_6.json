@@ -1,0 +1,21 @@
+{
+ "_source": "Traducción propia del griego de la Septuaginta (Rahlfs, dominio público) que esta aplicación ya muestra. Texto griego de Ester, con las Adiciones A–F en su lugar.",
+ "_why": "Las traducciones españolas de dominio público (Reina 1569, Valera 1602, Scío 1793, Torres Amat 1825) se hicieron desde la Vulgata. Su Ester sigue el hebreo y relega las Adiciones griegas al final del libro, con numeración propia, así que no alinea versículo por versículo con el griego que el estudiante tiene al lado. Por eso se traduce desde el griego propio de la app.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y el Señor apartó el sueño del rey aquella noche, y mandó a su secretario traer los libros memoriales de los días y leérselos.",
+  "2": "Y halló lo escrito acerca de Mardoqueo, cómo había avisado al rey acerca de los dos eunucos del rey cuando estaban de guardia y buscaron poner las manos sobre Artajerjes.",
+  "3": "Y dijo el rey: «¿Qué honra o qué favor hicimos a Mardoqueo?» Y dijeron los servidores del rey: «No le has hecho nada.»",
+  "4": "Y, mientras el rey se informaba de la lealtad de Mardoqueo, he aquí que Amán estaba en el patio. Y dijo el rey: «¿Quién está en el patio?» Y Amán había entrado para decir al rey que colgara a Mardoqueo en el madero que había preparado.",
+  "5": "Y dijeron los servidores del rey: «He aquí que Amán está en el patio.» Y dijo el rey: «Llamadlo.»",
+  "6": "Y dijo el rey a Amán: «¿Qué haré al hombre a quien yo quiero honrar?» Y dijo Amán para sí: «¿A quién quiere honrar el rey sino a mí?»",
+  "7": "Y dijo al rey: «Al hombre a quien el rey quiere honrar,",
+  "8": "traigan los siervos del rey una vestidura de lino fino de la que el rey se viste, y un caballo en el que el rey monta;",
+  "9": "y désela a uno de los amigos ilustres del rey, y vista él al hombre a quien el rey ama y súbalo al caballo y pregone por la plaza de la ciudad diciendo: Así será a todo hombre a quien el rey honra.»",
+  "10": "Y dijo el rey a Amán: «Como has dicho, así hazlo con Mardoqueo el judío, el que sirve en la corte, y que no falte nada de las palabras que has dicho.»",
+  "11": "Y tomó Amán la vestidura y el caballo, y vistió a Mardoqueo y lo subió al caballo, y anduvo por la plaza de la ciudad y pregonaba diciendo: «Así será a todo hombre a quien el rey quiere honrar.»",
+  "12": "Y Mardoqueo volvió a la corte, y Amán volvió a su casa afligido, con la cabeza cubierta.",
+  "13": "Y contó Amán lo que le había ocurrido a Zeres su mujer y a sus amigos, y le dijeron sus amigos y su mujer: «Si Mardoqueo es del linaje de los judíos, has comenzado a ser humillado delante de él; caerás sin remedio y no podrás vengarte de él, porque el Dios vivo está con él.»",
+  "14": "Y, mientras aún hablaban, llegan los eunucos apremiando a Amán para el convite que había preparado Ester."
+ }
+}

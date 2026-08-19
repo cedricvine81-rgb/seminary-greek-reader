@@ -1,0 +1,17 @@
+{
+ "_source": "Traducción propia del griego de la Septuaginta (Rahlfs, dominio público) que esta aplicación ya muestra. Texto griego de Ester, con las Adiciones A–F en su lugar.",
+ "_why": "Las traducciones españolas de dominio público (Reina 1569, Valera 1602, Scío 1793, Torres Amat 1825) se hicieron desde la Vulgata. Su Ester sigue el hebreo y relega las Adiciones griegas al final del libro, con numeración propia, así que no alinea versículo por versículo con el griego que el estudiante tiene al lado. Por eso se traduce desde el griego propio de la app.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y entró el rey con Amán a beber con la reina.",
+  "2": "Y dijo el rey a Ester el segundo día, durante el convite: «¿Qué hay, reina Ester? ¿Y cuál es tu demanda y cuál tu petición? Y te será dado hasta la mitad de mi reino.»",
+  "3": "Y ella respondió y dijo: «Si he hallado gracia delante del rey, séame concedida mi vida por mi demanda, y mi pueblo por mi petición;",
+  "4": "pues hemos sido vendidos, yo y mi pueblo, a la destrucción y al saqueo y a la esclavitud, nosotros y nuestros hijos, para siervos y siervas; y me he callado, pues el calumniador no es digno de la corte del rey.»",
+  "5": "Y dijo el rey: «¿Quién es ese que se ha atrevido a hacer tal cosa?»",
+  "6": "Y dijo Ester: «Un hombre enemigo: Amán, este malvado.» Y Amán se turbó ante el rey y la reina.",
+  "7": "Y el rey se levantó del banquete hacia el jardín, y Amán suplicaba a la reina, porque se veía en desgracia.",
+  "8": "Y volvió el rey del jardín, y Amán había caído sobre el lecho suplicando a la reina. Y dijo el rey: «¿Así que además fuerzas a mi mujer en mi propia casa?» Y Amán, al oírlo, mudó de semblante.",
+  "9": "Y dijo Bugatán, uno de los eunucos, al rey: «He aquí que Amán ha preparado también un madero para Mardoqueo, el que habló en favor del rey, y está levantado en casa de Amán un madero de cincuenta codos.» Y dijo el rey: «Que sea crucificado en él.»",
+  "10": "Y fue colgado Amán en el madero que había preparado para Mardoqueo, y entonces se aplacó el rey de su ira."
+ }
+}

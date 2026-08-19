@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia del griego de la Septuaginta (Rahlfs, dominio público) que esta aplicación ya muestra.",
+ "_why": "Las Odas son una colección propia de la Septuaginta y no figuran como libro en ninguna Biblia española; sus cánticos, cuando aparecen, están traducidos desde el hebreo o desde la Vulgata en los libros de donde proceden, con otra letra y otra numeración. Por eso se traduce desde el griego propio de la app.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "0": "Oración de Simeón.",
+  "29": "Ahora, Señor, despides a tu siervo en paz, conforme a tu palabra,",
+  "30": "porque han visto mis ojos tu salvación,",
+  "31": "la que has preparado ante el rostro de todos los pueblos:",
+  "32": "luz para revelación de las naciones y gloria de tu pueblo Israel."
+ }
+}

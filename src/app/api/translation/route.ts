@@ -93,7 +93,14 @@ export async function GET(req: NextRequest) {
   // after ch. 30 — in a parallel reader a column that drifts from the Greek beside it is worse
   // than no column. So these are translated from the app's own LXX Greek and served from disk,
   // the same choice made for Theon (scripts/theon-english.json).
-  if (lang === 'es' && !OSIS_TO_BOOK[osisId]) {
+  //
+  // Greek Esther and LXX Daniel DO have a Protestant book number (17 and 27), so the guard used to
+  // be `!OSIS_TO_BOOK[osisId]` and they fell through to a 66-book Spanish Bible. That column is the
+  // HEBREW Esther and the Theodotion-numbered Daniel: it omits the Greek Additions, numbers the
+  // rest differently, and so drifts from the Greek beside it — the exact failure this whole path
+  // exists to avoid. So the local file wins whenever we have one; a book we have not translated
+  // has no file and still falls through.
+  if (lang === 'es') {
     const local = await readDeuteroEs(osisId, chapter)
     if (local) return NextResponse.json({ verses: local, ourTranslation: true })
   }

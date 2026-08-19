@@ -97,7 +97,9 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
  * Listed rather than probed because the menu has to be built before any chapter is fetched;
  * add a book here when its first chapter lands in public/data/deutero-es/.
  */
-const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd', '3Macc', '4Macc'])
+const DEUTERO_ES_BOOKS = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd', '3Macc', '4Macc',
+  // The Greek-recension books and the two collections no Spanish Bible carries at all.
+  'EsthGr', 'DanLXX', 'PsSol', 'Odes'])
 
 /**
  * Works OUTSIDE the LXX that carry our own Spanish, made from the Greek this reader shows.
