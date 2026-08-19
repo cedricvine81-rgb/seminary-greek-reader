@@ -37,6 +37,22 @@ const LANG_TO_TRANSLATION: Record<string, string> = {
 const _cache = new Map<string, Record<string, string>>()
 
 /**
+ * Edge cache for the answers that cannot change without a deployment or an upstream edit. Like
+ * /api/reader this route is public and keyed entirely on the query string, and the in-memory
+ * _cache above only helps a single warm instance — the header is what stops every reader on
+ * every chapter from invoking the function at all.
+ *
+ * Applied ONLY where the answer is determinate: our own Spanish (a file in this deployment), a
+ * fetched chapter, and the two genuine "no translation exists" cases — a book with no Protestant
+ * number, and a language we do not carry. It is deliberately NOT applied when an upstream fetch
+ * fails, because those paths also answer `{ verses: {} }`: caching a bolls.life or getbible.net
+ * outage would pin an empty translation column at the edge for a day, and a reader would have no
+ * way to shake it loose.
+ */
+const CACHE = 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800'
+const cached = (body: unknown) => NextResponse.json(body, { headers: { 'Cache-Control': CACHE } })
+
+/**
  * Our own Spanish of a deuterocanonical chapter, or null when it isn't translated yet.
  *
  * Read through the same static-asset path the corpus uses on Vercel rather than fs, so it is
@@ -102,16 +118,17 @@ export async function GET(req: NextRequest) {
   // has no file and still falls through.
   if (lang === 'es') {
     const local = await readDeuteroEs(osisId, chapter)
-    if (local) return NextResponse.json({ verses: local, ourTranslation: true })
+    if (local) return cached({ verses: local, ourTranslation: true })
   }
 
   const bookNr = OSIS_TO_BOOK[osisId]
-  if (!bookNr) return NextResponse.json({ verses: {} })
+  // Determinate: a book with no Protestant number will never acquire one.
+  if (!bookNr) return cached({ verses: {} })
 
   // ── Berean Standard Bible via bolls.life ────────────────────────────────────
   if (lang === 'bsb') {
     const cacheKey = `bsb.${bookNr}.${chapter}`
-    if (_cache.has(cacheKey)) return NextResponse.json({ verses: _cache.get(cacheKey) })
+    if (_cache.has(cacheKey)) return cached({ verses: _cache.get(cacheKey) })
     try {
       const res = await fetch(`https://bolls.life/get-text/BSB/${bookNr}/${chapter}/`, { next: { revalidate: 86400 } })
       if (!res.ok) return NextResponse.json({ verses: {} })
@@ -121,19 +138,20 @@ export async function GET(req: NextRequest) {
         verses[`${osisId}.${chapter}.${v.verse}`] = v.text.trim()
       }
       _cache.set(cacheKey, verses)
-      return NextResponse.json({ verses })
+      return cached({ verses })
     } catch {
-      return NextResponse.json({ verses: {} })
+      return NextResponse.json({ verses: {} })   // transient — see CACHE
     }
   }
 
   // ── Other translations via getbible.net ─────────────────────────────────────
   const translation = LANG_TO_TRANSLATION[lang]
-  if (!translation) return NextResponse.json({ verses: {} })
+  // Determinate: we carry no edition for this language.
+  if (!translation) return cached({ verses: {} })
 
   const cacheKey = `${translation}.${bookNr}.${chapter}`
   if (_cache.has(cacheKey)) {
-    return NextResponse.json({ verses: _cache.get(cacheKey) })
+    return cached({ verses: _cache.get(cacheKey) })
   }
 
   try {
@@ -153,9 +171,9 @@ export async function GET(req: NextRequest) {
     }
 
     _cache.set(cacheKey, verses)
-    return NextResponse.json({ verses })
+    return cached({ verses })
   } catch {
-    return NextResponse.json({ verses: {} })
+    return NextResponse.json({ verses: {} })   // transient — see CACHE
   }
 
   } catch (err) {
