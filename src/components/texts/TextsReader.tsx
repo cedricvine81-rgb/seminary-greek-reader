@@ -117,6 +117,15 @@ const ES_PROSE_WORKS: Record<string, string> = {
   life: 'josephus/life',
 }
 
+// English-only prose works that also have our Spanish. These are addressed by chapter+verse (not
+// by section like Josephus, not by osisId like the LXX), so they need their own registry and their
+// own loader. 2 Esdras is the only Apocrypha work with no Greek at all — 4 Ezra survives in Latin
+// — so its Spanish is made from the English the reader shows, one remove further from the source
+// than everything else here. The per-chapter file says so, and the interface says so.
+const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
+  '2esdras': 'apocrypha/2esdras',
+}
+
 // Both ids mean "the Spanish we made ourselves" and both must carry the same credit line. They
 // stay distinct because they load by different keys, not because they are different translations.
 const OUR_SPANISH_IDS = new Set(['deutero-es', 'es'])
@@ -152,6 +161,13 @@ function translationsFor(w: CatalogWork | null, t: (k: string, v?: Record<string
     out.push({ id: 'source', label: en ? t('texts.englishBy', { who: en })
       : w.secondaryLabel ?? t('texts.englishCol') })
     if (ES_PROSE_WORKS[w.id]) out.push({ id: 'es', label: t('texts.spanishOurs') })
+    return out
+  }
+  // English-only prose that has our Spanish: same one-menu shape, but the first column is the
+  // published English rather than the original, because there is no original to show.
+  if (ES_ENGLISH_PROSE_WORKS[w.id]) {
+    out.push({ id: 'source', label: w.secondaryLabel ?? t('texts.englishCol') })
+    out.push({ id: 'es', label: t('texts.spanishOurs') })
   }
   return out
 }
@@ -707,6 +723,17 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     return deuteroEsCache.current[key]
   }
 
+  async function loadEnglishProseEs(workId: string, chapter: number): Promise<Record<string, string>> {
+    const dir = ES_ENGLISH_PROSE_WORKS[workId]
+    if (!dir) return {}
+    const key = `enprose-es.${workId}.${chapter}`
+    if (deuteroEsCache.current[key]) return deuteroEsCache.current[key]
+    const r = await fetch(`/data/es/${dir}/${chapter}.json`)
+    const d = r.ok ? await r.json() as { verses?: Record<string, string> } : {}
+    deuteroEsCache.current[key] = d.verses ?? {}
+    return deuteroEsCache.current[key]
+  }
+
   async function loadBrenton(osisId: string): Promise<Record<string, string>> {
     if (brentonCache.current[osisId]) return brentonCache.current[osisId]
     const r = await fetch(`/data/brenton/${osisId}.json`)
@@ -788,8 +815,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const d = await fetchWorkJson(findProseWork(w.source)!.dataUrl) as { chapters?: { number: number; verses?: { number: number; ref?: string; text: string; greek?: string; heading?: string }[] }[] } | null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
     const morph = await loadProseMorph(w)
+    const enEs = translationIdRef.current === 'es' ? await loadEnglishProseEs(w.id, item.chapter!) : null
     return (ch?.verses ?? []).map((v: { number: number; ref?: string; text: string; greek?: string; heading?: string }) =>
-      ({ num: v.number, ref: v.ref, english: v.text, greek: v.greek, heading: v.heading, morph: morph?.[`${item.chapter}.${v.number}`] }))
+      ({ num: v.number, ref: v.ref, english: enEs ? (enEs[String(v.number)] ?? v.text) : v.text, greek: v.greek, heading: v.heading, morph: morph?.[`${item.chapter}.${v.number}`] }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
