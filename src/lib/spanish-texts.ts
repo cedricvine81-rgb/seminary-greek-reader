@@ -70,6 +70,8 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Likewise at two removes: 2 Baruch survives whole only in Syriac (Cod. Ambrosianus), itself a
   // translation of a lost Greek. Charles's English is what the reader shows and what this renders.
   '2baruch': 'pseudepigrapha/2baruch',
+  // And 2 Enoch, which survives only in Old Church Slavonic (longer recension) — no Greek either.
+  '2enoch': 'pseudepigrapha/2enoch',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
