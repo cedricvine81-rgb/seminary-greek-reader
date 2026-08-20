@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Si alguien prospera más que ustedes, no se entristezcan; antes bien, oren por él, para que prospere cumplidamente. Porque quizá así les convenga a ustedes;",
+  "2": "y si es exaltado más aún, no lo envidien, recordando que toda carne morirá. Y ofrezcan himno al Señor, que da lo bueno y lo conveniente a todos los hombres.",
+  "3": "Indaga los juicios del Señor, y así te dejará en paz, y descansará tu propósito.",
+  "4": "Y si alguien se enriquece por malos caminos, como Esaú, el hermano de mi padre, no le tengan celos; porque esperen el límite que el Señor pone.",
+  "5": "Porque o se lo quita entre males, o lo perdona si se arrepienten, o al impenitente le reserva el castigo eterno.",
+  "6": "Porque el pobre y sin envidia, dando gracias al Señor en todo, es más rico que todos, porque no tiene la mala inquietud de los hombres.",
+  "7": "Quiten, pues, el odio de sus almas, y ámense unos a otros con rectitud de corazón."
+ }
+}

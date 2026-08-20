@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ahora escúchenme, hijos, y anden en sencillez de corazón, porque en ella he visto todo lo que agrada al Señor.",
+  "2": "El sencillo no codicia el oro, no defrauda al prójimo, no anhela manjares variados, no quiere vestido distinguido,",
+  "3": "no se propone vivir largos años, sino que solo espera la voluntad de Dios;",
+  "4": "y los espíritus del error nada pueden contra él. Porque no ha sabido admitir la belleza de una mujer, para no manchar su mente con perversidad.",
+  "5": "Ni entrarán celos en sus designios; ni la envidia le consume el alma, ni piensa en ganancias con avidez;",
+  "6": "porque anda en rectitud de vida, y todo lo mira con sencillez, sin admitir con los ojos las maldades del extravío del mundo, para no ver torcido ninguno de los mandamientos del Señor."
+ }
+}

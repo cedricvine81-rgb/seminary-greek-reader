@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "Aquí empieza la parte más singular del libro y la razón por la que se lo cita tanto: las hijas no reciben bienes, sino tres cordones celestiales, y con ellos el don de hablar lenguas angélicas (caps. 48-50). χορδή se traduce «cordón» y σπάρτον «cuerda»: el griego alterna los dos términos para la misma cosa. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ellos trajeron los bienes para repartirlos entre los siete varones;",
+  "2": "porque de los bienes no dio nada a las hijas. Y ellas, entristecidas, dijeron al padre: Señor padre nuestro, ¿acaso no somos también nosotras hijas tuyas? ¿Por qué no nos diste parte de lo que tienes?",
+  "3": "Y dijo Job a las hijas: No se turben, hijas mías, porque no me he olvidado de ustedes.",
+  "4": "Ya les he reservado una herencia mejor que la de sus siete hermanos.",
+  "5": "Entonces, llamando a su hija llamada Hémera, le dice: Toma el anillo, ve al cuarto secreto y trae los tres cofrecillos de oro, para que les dé la herencia.",
+  "6": "Y ella, yendo, los trajo.",
+  "7": "Y abrió y sacó los tres cordones multicolores, tales que ningún hombre podría describir su aspecto,",
+  "8": "puesto que no son de la tierra, sino que son del cielo, despidiendo chispas de fuego como rayos del sol.",
+  "9": "Y dio un cordón a cada una, diciendo: Tómenlos alrededor del pecho, para que les vaya bien todos los días de su vida."
+ }
+}

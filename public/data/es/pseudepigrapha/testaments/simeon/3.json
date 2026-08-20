@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ahora, hijos, guárdense de los espíritus del error y de la envidia.",
+  "2": "Porque la envidia domina toda la mente del hombre y no lo deja ni comer, ni beber, ni hacer nada bueno;",
+  "3": "siempre le sugiere matar a aquel a quien envidia. Y el envidiado siempre florece, mientras que el envidioso se marchita.",
+  "4": "Dos años enteros afligí mi alma con ayuno, en el temor del Señor; y supe que la liberación de la envidia viene por el temor de Dios.",
+  "5": "Si alguien se refugia en el Señor, el espíritu malo huye de él, y su mente se aligera;",
+  "6": "y en adelante se compadece del envidiado, y no condena a los que lo aman, y así cesa la envidia."
+ }
+}

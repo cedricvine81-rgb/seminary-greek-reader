@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "Los vv. 3-5 retoman la imagen del boxeador de 4:10: dos luchadores, y el que está debajo gana por aguantar. El griego del v. 4 no marca quién es el sujeto de cada verbo; se traduce como lo entiende el argumento (aguanta el de abajo, se rinde el de arriba). v. 5: «los golpes» traduce una palabra corrupta en el manuscrito (τὰ πλευτρικα). Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y yo, volviéndome de nuevo a Satanás, que estaba detrás de mi mujer, le dije: Ven al frente, deja de esconderte. ¿Acaso el león muestra su fuerza dentro de la jaula? ¿Acaso el ave revuela estando en la cesta? Sal y pelea conmigo.",
+  "2": "Entonces salió de detrás de mi mujer y, puesto en pie, lloró diciendo: Mira, Job, me rindo y me retiro ante ti, que eres de carne, siendo yo espíritu. Tú estás en la llaga; yo estoy en gran turbación.",
+  "3": "Porque has venido a ser como un atleta frente a otro atleta, y el uno derribó al otro; y el de arriba amordazó al de abajo, llenándole la boca de arena,",
+  "4": "y le quebrantó todos los miembros, estando debajo; y como el de abajo aguantó con firmeza, el de arriba se dio por vencido y al final gritó con fuerza.",
+  "5": "Así también tú, Job: estabas debajo y en la llaga, pero venciste los golpes que traje contra ti.",
+  "6": "Entonces Satanás, avergonzado, se apartó de mí por tres años.",
+  "7": "Ahora, pues, hijos míos, tengan también ustedes paciencia en todo lo que les suceda, porque la paciencia es mejor que todo."
+ }
+}

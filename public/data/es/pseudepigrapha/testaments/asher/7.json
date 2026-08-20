@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 3: «Dios haciendo el papel de hombre» traduce θεὸς εἰς ἄνδρα ὑποκρινόμενος, donde ὑποκρίνομαι es lo que hace un actor al representar un personaje. Junto con «viniendo como hombre, comiendo y bebiendo con los hombres», es uno de los pasajes discutidos de la obra: se traduce tal como el griego está, sin decidir aquí si es del texto judío original o interpolación cristiana posterior. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "No sean, hijos, como Sodoma, que desconoció a los ángeles del Señor y pereció para siempre.",
+  "2": "Porque sé que pecarán, y serán entregados en manos de sus enemigos; y su tierra quedará desolada, y ustedes serán dispersados a los cuatro ángulos de la tierra, y estarán en la dispersión, despreciados como agua inútil,",
+  "3": "hasta que el Altísimo visite la tierra; y él mismo, viniendo como hombre, comiendo y bebiendo con los hombres, y quebrantando en calma la cabeza del dragón por medio del agua. Este salvará a Israel y a todas las naciones: Dios haciendo el papel de hombre.",
+  "4": "Digan, pues, esto a sus hijos, para que no le desobedezcan.",
+  "5": "Porque leí en las tablas de los cielos que de cierto le desobedecerán, y que ciertamente obrarán impíamente contra él, no atendiendo a la ley de Dios sino a mandamientos de hombres.",
+  "6": "Por eso serán dispersados como Gad y como Dan, mis hermanos, que desconocerán sus tierras, su tribu y su lengua.",
+  "7": "Pero el Señor los reunirá en fe, por la esperanza de su entrañable compasión, por causa de Abraham, Isaac y Jacob."
+ }
+}

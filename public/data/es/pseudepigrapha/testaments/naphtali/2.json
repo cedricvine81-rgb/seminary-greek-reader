@@ -1,0 +1,17 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "τάξις, «el orden», es la palabra clave de este testamento y de los capítulos 3 y 8: se traduce siempre «orden» para que el estudiante la siga. v. 7: el griego del cierre está corrompido; se traduce el sentido que pide el argumento (que no hay dos personas iguales). v. 8: en la lista anatómica, κάλαμος es la «caña» de la garganta —la tráquea—; la fisiología antigua se conserva sin modernizar, como en los Testamentos de Simeón y Zabulón. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y como yo era ligero de pies como un ciervo, mi padre Jacob me destinó a toda misión y a todo mensaje; y también como a ciervo me bendijo.",
+  "2": "Porque así como el alfarero conoce la vasija, cuánto cabe en ella, y para ella trae el barro, así también el Señor hace el cuerpo a semejanza del espíritu, y pone el espíritu conforme a la capacidad del cuerpo,",
+  "3": "y no hay entre lo uno y lo otro diferencia ni de un tercio de un cabello; porque toda la creación del Altísimo es por peso, por medida y por regla.",
+  "4": "Y así como el alfarero conoce el uso de cada vasija y para qué basta, así también el Señor conoce el cuerpo: hasta dónde persistirá en el bien y cuándo empieza en el mal.",
+  "5": "Porque no hay criatura ni pensamiento que el Señor no conozca; pues a todo hombre lo creó a su imagen.",
+  "6": "Como es su fuerza, así también su obra; y como es su mente, así también su obra; y como es su elección, así también su acción; como su corazón, así también su boca; como su ojo, así también su sueño; como su alma, así también su palabra, sea en la ley del Señor, sea en la ley de Beliar.",
+  "7": "Y así como está separada la luz de las tinieblas, y la vista del oído, así está separado un hombre de otro hombre y una mujer de otra mujer; y no se puede decir que en dos personas haya una misma cosa ni cosas iguales.",
+  "8": "Porque todo lo hizo Dios hermoso, en orden: los cinco sentidos en la cabeza, y el cuello unido a la cabeza, y los cabellos para adorno; luego el corazón para la inteligencia, el vientre para separar lo del estómago, la caña para la respiración, el hígado para la ira, la hiel para la amargura, el bazo para la risa, los riñones para la astucia, los lomos para el vigor, las costillas para cubierta, la cadera para la fuerza, y así lo demás.",
+  "9": "Así, pues, hijos míos, estén en orden para el bien, en el temor de Dios, y no hagan nada desordenado, ni con desprecio ni fuera de su tiempo.",
+  "10": "Porque si le dices al ojo que oiga, no puede; así tampoco podrán ustedes hacer obras de luz en las tinieblas."
+ }
+}

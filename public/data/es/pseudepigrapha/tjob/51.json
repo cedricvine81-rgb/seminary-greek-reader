@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "El narrador se identifica aquí: Nereo, hermano de Job, que dice haber tomado nota de los himnos. v. 4: la frase «sea esto para salvación» está corrupta en el manuscrito (σωτήριον ταυτα εἰν) y se traduce por el sentido. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y después de que las tres cesaron de cantar himnos,",
+  "2": "estando presente el Señor, y yo, Nereo, hermano de Job, y estando presente también el Espíritu Santo,",
+  "3": "yo estaba sentado cerca de Job, sobre mi lecho; y oí las grandezas, mientras la una se las iba apuntando a la otra.",
+  "4": "Y escribí el libro entero, con muchísimas anotaciones de los himnos de las tres hijas de mi hermano; sea esto para salvación, porque estas son las grandezas de Dios."
+ }
+}

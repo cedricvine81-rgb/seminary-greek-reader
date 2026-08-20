@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Cuando, pues, entré en Egipto, y me reconoció José, mi hermano, me dice: ¿Qué le dijeron a mi padre cuando me vendieron?",
+  "2": "Y le dije: Que empaparon tu túnica en sangre, y la enviaron diciendo: Reconoce si es esta la túnica de tu hijo.",
+  "3": "Y me dice: Sí, hermano; porque cuando me tomaron los ismaelitas, uno de ellos me quitó la túnica y me dio un taparrabos, y azotándome me mandó correr.",
+  "4": "Y mientras iba a esconder mi vestido, le salió al encuentro un león y lo mató.",
+  "5": "Y así sus compañeros, atemorizados, me vendieron a los otros de su grupo."
+ }
+}

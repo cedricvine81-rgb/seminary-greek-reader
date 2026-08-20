@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: El Libro de Enoc en la traducción de R. H. Charles (1917), de dominio público.",
+ "_why": "1 Enoc no se conserva completo en griego ni en su lengua original: el texto íntegro solo existe en ETIÓPICO (ge'ez), y de ahí procede el inglés que el lector muestra. Por eso, y a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas —traducidos en esta aplicación desde el griego—, esta versión española está hecha desde el inglés, es decir, a dos pasos del original. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de la traducción inglesa. No es una edición publicada.",
+ "_note": "La lista de los siete arcángeles. Los nombres van en su forma española corriente donde la tienen (Miguel, Rafael, Gabriel, Uriel) y transliterados donde no (Raguel, Saraquel, Remiel). Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y estos son los nombres de los santos ángeles que velan.",
+  "2": "Uriel, uno de los santos ángeles, que está sobre el mundo y sobre el Tártaro.",
+  "3": "Rafael, uno de los santos ángeles, que está sobre los espíritus de los hombres.",
+  "4": "Raguel, uno de los santos ángeles, que toma venganza del mundo de las lumbreras.",
+  "5": "Miguel, uno de los santos ángeles, a saber, el que está puesto sobre la mejor parte de los hombres y sobre el caos.",
+  "6": "Saraquel, uno de los santos ángeles, que está puesto sobre los espíritus que pecan en el espíritu.",
+  "7": "Gabriel, uno de los santos ángeles, que está sobre el Paraíso, las serpientes y los Querubines.",
+  "8": "Remiel, uno de los santos ángeles, a quien Dios puso sobre los que resucitan."
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "vv. 5 y 7 hablan de Dios manifestado en la tierra como hombre y comiendo con los hombres: se traducen tal como el griego está, sin decidir aquí si son del texto judío original o interpolación cristiana posterior —cuestión discutida—. Lo mismo vale para 7:2 («Dios y hombre»). Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Miren que se lo he dicho todo de antemano, para quedar yo libre de culpa respecto del pecado de sus almas.",
+  "2": "Y si quitan de ustedes la envidia y toda dureza de cerviz, mis huesos florecerán como rosa en Israel, y mi carne como lirio en Jacob; y mi olor será como el olor del Líbano, y de mí se multiplicarán cedros santos para siempre, y sus ramas se extenderán a lo lejos.",
+  "3": "Entonces perecerá la descendencia de Canaán, y no quedará resto de Amalec; y perecerán todos los capadocios, y todos los heteos serán exterminados.",
+  "4": "Entonces desaparecerá la tierra de Cam y todo su pueblo perecerá. Entonces toda la tierra descansará de la turbación, y todo lo que hay bajo el cielo, de la guerra.",
+  "5": "Entonces Sem será glorificado, porque el Señor Dios, el grande de Israel, se manifestará sobre la tierra como hombre, y salvará en sí mismo a Adán.",
+  "6": "Entonces todos los espíritus del error serán entregados para ser pisoteados, y los hombres reinarán sobre los espíritus malignos.",
+  "7": "Entonces me levantaré con alegría y bendeciré al Altísimo por sus maravillas, porque Dios, tomando cuerpo y comiendo con los hombres, salvó a los hombres."
+ }
+}

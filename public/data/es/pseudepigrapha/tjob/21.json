@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "GOTCHA del texto: aquí Job lleva cuarenta y ocho años en el muladar, y en 26:1 dice diecisiete; la discrepancia es del manuscrito y se conserva sin armonizar. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y estuve cuarenta y ocho años en el muladar, fuera de la ciudad, en las llagas, hasta ver,",
+  "2": "hijos míos, con mis propios ojos, a mi primera mujer acarreando agua a la casa de un hombre principal, como una criada, hasta conseguir pan y traérmelo.",
+  "3": "Y yo, traspasado de dolor, decía: ¡Oh, la arrogancia de los príncipes de esta ciudad! ¿Cómo tratan a mi esposa como a una esclava?",
+  "4": "Y después de esto recobraba un pensamiento paciente."
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Las medidas y armas van tal como el griego las da: «sesenta libras» traduce λίτραι, «doce codos» πήχεις. Los nombres de reyes y lugares siguen las formas griegas del texto adaptadas a la ortografía española. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y cuando vinieron los dos reyes de los cananeos, armados de coraza, contra los rebaños, y mucha gente con ellos, yo, corriendo solo contra el rey Sur, lo sujeté y, golpeándolo en las canilleras, lo derribé, y así lo maté.",
+  "2": "Y al otro rey, Tafué, que estaba sentado sobre su caballo, lo maté, y así dispersé a todo su pueblo.",
+  "3": "A Acor, rey, hombre de la raza de los gigantes, que disparaba flechas hacia adelante y hacia atrás desde el caballo, lo ataqué: arrojé una piedra de sesenta libras, acerté al caballo y lo maté.",
+  "4": "Y habiendo peleado con Acor dos horas, lo maté; y partiendo en dos su escudo, le corté los pies.",
+  "5": "Y mientras yo le quitaba la coraza, he aquí que ocho hombres, compañeros suyos, comenzaron a pelear contra mí.",
+  "6": "Enrollando, pues, mi manto en la mano, los hondeé con piedras y maté a cuatro de ellos; y los demás huyeron.",
+  "7": "Y Jacob, nuestro padre, mató a Beelisá, rey de todos aquellos reyes, un gigante de doce codos de estatura.",
+  "8": "Y cayó temblor sobre ellos, y dejaron de guerrear contra nosotros.",
+  "9": "Por eso mi padre estaba sin cuidado en las guerras, cuando yo estaba entre mis hermanos.",
+  "10": "Porque vio en visión acerca de mí que un ángel de poder me seguía en todo, para que no fuera vencido."
+ }
+}

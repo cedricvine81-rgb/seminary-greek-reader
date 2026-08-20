@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: El Libro de Enoc en la traducción de R. H. Charles (1917), de dominio público.",
+ "_why": "1 Enoc no se conserva completo en griego ni en su lengua original: el texto íntegro solo existe en ETIÓPICO (ge'ez), y de ahí procede el inglés que el lector muestra. Por eso, y a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas —traducidos en esta aplicación desde el griego—, esta versión española está hecha desde el inglés, es decir, a dos pasos del original. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de la traducción inglesa. No es una edición publicada.",
+ "_note": "v. 9 es el texto que cita la carta de Judas 14-15 («He aquí que viene el Señor con sus santas decenas de millares…»), la única cita explícita de un pseudoepígrafo en el Nuevo Testamento: por eso se traduce pegado al inglés de Charles y no armonizado con la redacción de Judas en las biblias españolas, para que el estudiante pueda comparar las dos. Los corchetes [ ] marcan lo que Charles señala como interpolación, y los paréntesis ( ), sus añadidos aclaratorios; ambos se conservan. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Palabras de la bendición de Enoc, con la cual bendijo a los escogidos y justos que vivirán en el día de la tribulación, cuando sean quitados todos los malvados e impíos.",
+  "2": "Y tomó su parábola y dijo: Enoc, varón justo, cuyos ojos fueron abiertos por Dios, vio la visión del Santo en los cielos, la cual me mostraron los ángeles; y de ellos oí todo, y de ellos entendí lo que veía; pero no para esta generación, sino para una lejana que ha de venir.",
+  "3": "Acerca de los escogidos hablé, y tomé mi parábola acerca de ellos: El Santo y Grande saldrá de su morada,",
+  "4": "y el Dios eterno pisará la tierra, sobre el monte Sinaí, [y aparecerá desde su campamento] y aparecerá en la fuerza de su poder desde el cielo de los cielos.",
+  "5": "Y todos serán heridos de temor, y los Vigilantes temblarán, y un gran temor y estremecimiento se apoderará de ellos hasta los confines de la tierra.",
+  "6": "Y los altos montes serán sacudidos, y las altas colinas serán abatidas, y se derretirán como cera ante la llama.",
+  "7": "Y la tierra será enteramente desgarrada, y todo lo que hay sobre la tierra perecerá, y habrá un juicio sobre todos los hombres.",
+  "8": "Pero con los justos hará paz, y protegerá a los escogidos, y sobre ellos habrá misericordia. Y todos serán de Dios, y prosperarán, y todos serán benditos. Y a todos los ayudará, y les aparecerá la luz, y hará paz con ellos.",
+  "9": "Y he aquí que viene con diez mil de sus santos, para ejecutar juicio sobre todos, y para destruir a todos los impíos, y para convencer a toda carne de todas las obras de su impiedad que impíamente cometieron, y de todas las palabras duras que los pecadores impíos hablaron contra él."
+ }
+}

@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 3: la palabra traducida «resurrección» es ἀνάστημα, no el habitual ἀνάστασις; el sentido es el mismo «levantarse», pero conviene saberlo al cotejar con la columna griega. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ahora he sabido por el libro de Enoc que setenta semanas andarán extraviados, y profanarán el sacerdocio y mancharán los sacrificios,",
+  "2": "y harán desaparecer la ley y despreciarán las palabras de los profetas; con perversidad perseguirán a los hombres justos, aborrecerán a los piadosos y detestarán las palabras de los veraces,",
+  "3": "y a un varón que renueva la ley con el poder del Altísimo lo llamarán impostor, y al fin, según creen, lo matarán, sin conocer su resurrección, cargando con malicia sobre sus cabezas la sangre inocente.",
+  "4": "Por causa de él sus santuarios quedarán desiertos, mancillados hasta el suelo;",
+  "5": "y no habrá lugar limpio para ustedes, sino que entre las naciones serán maldición y dispersión, hasta que él de nuevo los visite y, compadecido, los reciba en fe y en agua."
+ }
+}

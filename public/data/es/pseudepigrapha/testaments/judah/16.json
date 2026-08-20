@@ -1,0 +1,8 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "El griego de este capítulo no está dividido en versículos en la fuente: se transmite en un solo bloque con la numeración intercalada («1. … 2. …»). El español la conserva para que las dos columnas se lean en paralelo. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "1. Guarden, pues, hijos míos, la medida del vino. Porque hay en él cuatro espíritus malos: el del deseo, el del ardor, el del desenfreno y el de la ganancia vergonzosa. 2. Si beben vino con alegría, en el temor de Dios y con pudor, vivirán. Porque si beben sin pudor, y se aparta el temor de Dios, viene después la embriaguez, y se cuela la desvergüenza. 3. Pero mejor no beban en absoluto, para que no pequen con palabras de ultraje, de riña, de calumnia y de transgresión de los mandamientos de Dios, y perezcan antes de su tiempo. 4. Además, el vino revela a los extraños los secretos de Dios y de los hombres, como también yo revelé a la cananea Besue los mandamientos de Dios y los secretos de Jacob, mi padre, los que Dios había dicho que no se revelaran. Y el vino es también causa de guerra y de turbación."
+ }
+}

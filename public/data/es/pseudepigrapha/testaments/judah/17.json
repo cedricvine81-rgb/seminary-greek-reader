@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Les mando, pues, hijos míos, que no amen el dinero ni se queden mirando la belleza de las mujeres; porque también yo, por el dinero y por la hermosura, me extravié hacia Besue la cananea.",
+  "2": "Porque yo sé que por estas dos cosas mi linaje caerá en maldad;",
+  "3": "porque hasta a los hombres sabios de entre mis hijos los harán cambiar, y harán que se empequeñezca el reino de Judá, el que me dio el Señor por mi obediencia a mi padre.",
+  "4": "Porque nunca contrarié la palabra de Jacob, mi padre, sino que hacía todo cuanto él decía.",
+  "5": "Y Abraham, el padre de mi padre, me bendijo para que reinara en Israel; e Isaac me bendijo del mismo modo.",
+  "6": "Y yo sé que de mí se establecerá el reino."
+ }
+}

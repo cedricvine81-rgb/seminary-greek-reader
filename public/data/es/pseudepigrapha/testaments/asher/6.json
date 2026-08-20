@@ -1,0 +1,8 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "El griego de este capítulo no está dividido en versículos en la fuente: se transmite en un solo bloque con la numeración intercalada («1. … 2. …»). El español la conserva para que las dos columnas se lean en paralelo. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "1. Atiendan, pues, hijos, también ustedes a los mandamientos del Señor, siguiendo la verdad con una sola cara, 2. porque los de dos caras son castigados doblemente. Aborrezcan a los espíritus del error, que combaten contra el hombre. 3. Guarden la ley del Señor, y no tengan por bueno el mal; sino miren a lo que de veras es bueno, y consérvenlo en todos los mandamientos del Señor, volviéndose a él y reposando en él, 4. porque los fines de los hombres muestran su justicia, cuando conocen a los ángeles del Señor y a los de Satanás. 5. Porque si el alma se va turbada, es atormentada por el espíritu malo al que sirvió en deseos y obras malas; 6. pero si se va tranquila, con alegría, es que conoció al ángel de la paz, y él la consolará en la vida."
+ }
+}

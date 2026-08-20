@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 6: se traduce el griego tal como está aquí («καὶ ἔσται ἐξ ὑμῶν εἰς ἡγεμονίαν», en sentido positivo). Otros testigos traen la negación —«y ninguno de ustedes llegará al mando»—, que es como lo vierte Charles en la columna inglesa; la diferencia es del texto griego, no de esta traducción. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Por eso José era hermoso de figura y bello de rostro, porque nada malo habitaba en él; pues es por la turbación del espíritu que el rostro delata al hombre.",
+  "2": "Y ahora, hijos míos, hagan buenos sus corazones delante del Señor y enderecen sus caminos delante de los hombres, y hallarán gracia delante de Dios y de los hombres.",
+  "3": "Y guárdense de fornicar, porque la fornicación es la madre de todos los males: aparta de Dios y acerca a Beliar.",
+  "4": "Porque he visto en el escrito de Enoc que los hijos de ustedes, junto con ustedes, se corromperán en fornicación, y contra Leví cometerán injusticia con la espada.",
+  "5": "Pero no podrán contra Leví, porque él peleará la guerra del Señor y vencerá todo el campamento de ustedes;",
+  "6": "y quedarán muy pocos, repartidos entre Leví y Judá, y habrá de entre ustedes quien llegue al mando, como también profetizó mi padre Jacob en sus bendiciones."
+ }
+}

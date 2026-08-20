@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 5: el griego transmitido trae σωρῷ («montón»), evidente error por σορῷ («ataúd»), que es lo que se traduce; la misma palabra aparece correctamente escrita en Testamento de Rubén 7:2. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ahora, hijos míos, todo lo han oído; escojan, pues, para ustedes o las tinieblas o la luz, o la ley del Señor o las obras de Beliar.",
+  "2": "Y nosotros respondimos a nuestro padre, diciendo: Delante del Señor andaremos, conforme a su ley.",
+  "3": "Y dijo nuestro padre: Testigo es el Señor, y testigos son sus ángeles, y testigo soy yo, y testigos son ustedes, acerca de la palabra de su boca. Y dijimos: Testigos.",
+  "4": "Y así acabó Leví de dar mandatos a sus hijos, y extendió sus pies, y fue reunido con sus padres, habiendo vivido ciento treinta y siete años.",
+  "5": "Y lo pusieron en un ataúd; y después lo sepultaron en Hebrón, junto a Abraham, Isaac y Jacob."
+ }
+}

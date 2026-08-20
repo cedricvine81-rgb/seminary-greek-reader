@@ -1,0 +1,19 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "v. 11: la frase griega («llevando la corona de la cancelación») es oscura en el manuscrito; el gesto que describe es el de cancelar la deuda leyendo el pagaré en voz alta ante el deudor. Se traduce literalmente en vez de sustituirla por una paráfrasis. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Había también algunos forasteros que, viendo mi buena disposición, desearon también ellos servir en aquel ministerio.",
+  "2": "Y había otros que a veces estaban sin recursos, y no pudiendo gastar nada, venían rogando y diciendo: Te rogamos: ¿podríamos también nosotros cumplir este ministerio? Pero nada poseemos.",
+  "3": "Ten misericordia de nosotros y préstanos oro, para que vayamos a ciudades lejanas a comerciar y podamos hacer el ministerio a los pobres;",
+  "4": "y después de esto te devolveremos lo tuyo.",
+  "5": "Y yo, al oír esto, me alegraba de que en todo caso recibieran de mí para la administración de los pobres.",
+  "6": "Y aceptando de buena gana el documento, les daba cuanto querían,",
+  "7": "sin tomar de ellos prenda alguna, sino solo el escrito.",
+  "8": "Y así comerciaban con lo mío.",
+  "9": "Y a veces, al comerciar, les iba bien y daban a los pobres;",
+  "10": "y a veces, en cambio, eran despojados, y venían y me rogaban diciendo: Te rogamos, ten paciencia con nosotros; veamos cómo podemos devolvértelo.",
+  "11": "Y yo, sin dilación, les presentaba el pagaré y lo leía en voz alta, llevando la corona de la cancelación, y decía: Cuanto les presté con ocasión de los pobres, nada recibiré de ustedes.",
+  "12": "Y no aceptaba nada de mi deudor."
+ }
+}

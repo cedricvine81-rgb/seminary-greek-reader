@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Guarden, pues, hijos míos, toda la ley del Señor, porque hay esperanza para todos los que enderezan su camino.",
+  "2": "Y les dijo: Yo muero hoy, a los ciento diecinueve años, ante los ojos de ustedes.",
+  "3": "Que nadie me entierre con vestidura costosa, ni me abra el vientre, porque eso lo hacen los que reinan; y llévenme con ustedes a Hebrón.",
+  "4": "Y dicho esto, Judá durmió; y sus hijos hicieron conforme a todo lo que les mandó, y lo sepultaron en Hebrón con sus padres."
+ }
+}

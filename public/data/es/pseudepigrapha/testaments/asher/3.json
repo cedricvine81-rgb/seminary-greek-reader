@@ -1,0 +1,9 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Ustedes, pues, hijos míos, no sean como ellos, de dos caras, de bondad y de maldad; sino péguense solo a la bondad, porque Dios reposa en ella y los hombres la anhelan;",
+  "2": "huyan de la maldad, destruyendo al diablo con sus buenas obras; porque los de dos caras no sirven a Dios, sino a sus deseos, para agradar a Beliar y a los hombres semejantes a ellos."
+ }
+}

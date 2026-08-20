@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Por eso, hijos míos, huyan de la maldad de Beliar, porque da una espada a los que la obedecen.",
+  "2": "Y la espada es madre de siete males. Primero la mente concibe por medio de Beliar; y el primero es la envidia; el segundo, la ruina; el tercero, la aflicción; el cuarto, el cautiverio; el quinto, la indigencia; el sexto, la turbación; el séptimo, la desolación.",
+  "3": "Por eso también Caín fue entregado por Dios a siete castigos; porque cada cien años el Señor le traía una plaga.",
+  "4": "Doscientos años sufre, y en el año novecientos es destruido en el diluvio, por causa de Abel, su hermano justo. En los setecientos años era juzgado Caín, y Lamec en los setenta veces siete;",
+  "5": "porque hasta el fin del mundo los que se parezcan a Caín en la envidia y en el odio al hermano serán juzgados con el mismo castigo."
+ }
+}

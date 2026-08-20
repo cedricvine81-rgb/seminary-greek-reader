@@ -1,0 +1,22 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "ἁπλότης es la palabra clave de todo el testamento: se traduce siempre «sencillez» (y ἀκακία, «inocencia»), para que el estudiante la reconozca en cada aparición. Las mandrágoras del v. 2 son los μῆλα («manzanas») del v. 5: el griego alterna los dos términos y la traducción también. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Copia de las palabras de Isacar. Llamando a sus hijos, les dijo: Escuchen, hijos, a Isacar, su padre; presten oído a mis palabras, amados del Señor.",
+  "2": "Yo nací quinto hijo de Jacob, por el precio de las mandrágoras.",
+  "3": "Porque Jacob trajo mandrágoras del campo, y Raquel, saliéndole al encuentro, las tomó.",
+  "4": "Y Rubén lloraba, y al oír su voz salió Lía, mi madre.",
+  "5": "Eran estas unas manzanas de buen olor que producía la tierra de Aram, en un alto, al pie de un barranco de aguas.",
+  "6": "Y dijo Raquel: No te las daré, porque serán para mí en lugar de hijos.",
+  "7": "Y eran dos manzanas. Y dijo Lía: Bástete lo que tienes, pues me quitaste el marido de mi virginidad; ¿también esto has de tomar?",
+  "8": "Y ella dijo: Mira, sea Jacob tuyo esta noche, a cambio de las mandrágoras de tu hijo.",
+  "9": "Y le dijo Lía: No te jactes ni te gloríes, porque mío es Jacob, y yo soy la mujer de su juventud.",
+  "10": "Y Raquel dijo: ¿Cómo así? Si a mí me fue desposado primero, y por mí sirvió a nuestro padre catorce años.",
+  "11": "¿Qué te haré? Porque se han multiplicado el engaño y la astucia de los hombres, y el engaño avanza sobre la tierra. Si no fuera así, tú no estarías viendo el rostro de Jacob;",
+  "12": "porque tú no eres su mujer, sino que con engaño fuiste introducida en mi lugar.",
+  "13": "Y me engañó mi padre, y cambiándome aquella noche, no me dejó ver; porque si yo hubiera estado allí, no habría sucedido esto.",
+  "14": "Y dijo Raquel: Toma una mandrágora, y a cambio de esa una te lo alquilo por una noche.",
+  "15": "Y Jacob conoció a Lía, y ella, concibiéndome, me dio a luz; y por causa del precio fui llamado Isacar."
+ }
+}

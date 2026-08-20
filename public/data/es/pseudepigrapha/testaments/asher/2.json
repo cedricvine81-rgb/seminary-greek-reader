@@ -1,0 +1,17 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 9: el cerdo y la liebre son los animales «a medias limpios» de Levítico 11: el cerdo tiene la pezuña hendida pero no rumia, y la liebre rumia pero no tiene la pezuña hendida. De ahí la imagen del hombre de dos caras. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Hay, pues, un alma que llama al bien mejor que al mal, y el fin del asunto la lleva a la maldad.",
+  "2": "Hay un hombre que no tiene compasión del que le sirve en el mal; también esto es de dos caras, pero el conjunto es malo.",
+  "3": "Y hay un hombre que ama al que obra el mal; igualmente está en maldad, porque hasta acepta morir en el mal por causa de él. Y de este es claro que es de dos caras; pero el conjunto es una mala obra.",
+  "4": "Y aunque es amor, es maldad, porque encubre el mal; de nombre es como bueno, pero el fin de la obra viene a ser malo.",
+  "5": "Otro roba, comete injusticia, arrebata, defrauda, y tiene compasión de los pobres: también esto es de dos caras, pero el conjunto es malo.",
+  "6": "Defraudando al prójimo irrita a Dios, y jura en falso por el Altísimo, y tiene compasión del pobre; desprecia e irrita al Señor que dio la ley, y da descanso al necesitado;",
+  "7": "mancha el alma y hace lucir el cuerpo; mata a muchos y se compadece de unos pocos: también esto es de dos caras.",
+  "8": "Otro comete adulterio y fornica, y se abstiene de manjares; y ayunando obra el mal, y con su poder y su riqueza arrastra a muchos, y desde su desmedida maldad da mandamientos. También esto es de dos caras, pero el conjunto es malo.",
+  "9": "Los tales son como los cerdos y las liebres, que a medias son limpios, pero en verdad son inmundos.",
+  "10": "Porque así lo dijo Dios en las tablas de los cielos."
+ }
+}

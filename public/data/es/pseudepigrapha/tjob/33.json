@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "La respuesta de Job al estribillo: su trono está «a la derecha del Padre», no en este mundo. Es el pasaje central de la obra y también uno de los que se discuten como posible retoque cristiano; se traduce tal como el griego está, sin adjudicar la cuestión. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y alargando Eliú el llanto, y respondiéndole los reyes sus compañeros, de modo que se produjo una gran turbación,",
+  "2": "cuando cesó el clamor, les dijo Job: Callen; ahora les mostraré mi trono, y la gloria y la hermosura que hay entre los santos.",
+  "3": "Mi trono está en el mundo de arriba, y su gloria y su hermosura están a la derecha del Padre.",
+  "4": "Todo el mundo pasará, y toda su gloria se corromperá, y los que se aferran a él quedarán en su ruina.",
+  "5": "Pero mi trono está en la tierra santa, y su gloria está en el siglo del que no cambia.",
+  "6": "Los ríos se secarán, y la soberbia de sus olas baja a las profundidades del abismo;",
+  "7": "pero los ríos de mi tierra, en la que está mi trono, no se secan ni desaparecerán, sino que serán para siempre.",
+  "8": "Estos reyes pasarán, y los príncipes pasan, y su gloria y su jactancia serán como un espejo.",
+  "9": "Pero mía es la realeza por los siglos de los siglos, y su gloria y su hermosura están en los carros del Padre."
+ }
+}

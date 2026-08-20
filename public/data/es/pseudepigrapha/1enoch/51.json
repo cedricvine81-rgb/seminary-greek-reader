@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: El Libro de Enoc en la traducción de R. H. Charles (1917), de dominio público.",
+ "_why": "1 Enoc no se conserva completo en griego ni en su lengua original: el texto íntegro solo existe en ETIÓPICO (ge'ez), y de ahí procede el inglés que el lector muestra. Por eso, y a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas —traducidos en esta aplicación desde el griego—, esta versión española está hecha desde el inglés, es decir, a dos pasos del original. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de la traducción inglesa. No es una edición publicada.",
+ "_note": "v. 1: la tierra, el Seol y el infierno devuelven a sus muertos; Charles distingue los tres términos y la traducción los mantiene distintos. El versículo trae en la fuente un «5.» suelto en medio, resto de la numeración de Charles, que aquí se omite por no corresponder a ningún versículo. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y en aquellos días también la tierra devolverá lo que le ha sido confiado, y el Seol devolverá lo que ha recibido, y el infierno devolverá lo que debe. Porque en aquellos días se levantará el Elegido,",
+  "2": "y escogerá de entre ellos a los justos y santos, porque se ha acercado el día en que han de ser salvos.",
+  "3": "Y el Elegido en aquellos días se sentará en mi trono, y su boca derramará todos los secretos de la sabiduría y del consejo, porque el Señor de los Espíritus se los ha dado y lo ha glorificado.",
+  "4": "Y en aquellos días los montes saltarán como carneros, y las colinas brincarán como corderos saciados de leche, y los rostros de [todos] los ángeles en el cielo se iluminarán de gozo.",
+  "5": "Y la tierra se regocijará, y los justos habitarán sobre ella, y los escogidos caminarán sobre ella."
+ }
+}

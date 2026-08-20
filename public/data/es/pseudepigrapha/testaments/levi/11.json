@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Las etimologías de los nombres son las que da el propio texto griego (Gersam, Caat, Merari), no las del hebreo. v. 7: el griego dice llanamente que Merari «murió», lo cual choca con 12:3, donde tiene hijos; Charles lo suaviza en «estuvo a punto de morir». Se traduce lo que el griego dice. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Cuando tomé mujer, tenía veintiocho años, y su nombre era Melca.",
+  "2": "Y concibió y dio a luz, y le puso por nombre Gersam, porque en nuestra tierra éramos forasteros; pues Gersam se escribe «residencia de forastero».",
+  "3": "Y vi acerca de él que no estaría en el primer rango.",
+  "4": "Y Caat nació en el año treinta y cinco, hacia la salida del sol.",
+  "5": "Y vi en visión que estaba en medio, en lo alto, de toda la asamblea.",
+  "6": "Por eso le puse por nombre Caat, que es «principio de grandeza» y «reunión».",
+  "7": "Y en tercer lugar me dio a Merari, en el año cuarenta de mi vida. Y como su madre tuvo un parto difícil, lo llamó Merari, que es «amargura mía»; porque también él murió.",
+  "8": "Y Jocabed nació en el año sesenta y cuatro, en Egipto; porque yo era entonces ilustre en medio de mis hermanos."
+ }
+}

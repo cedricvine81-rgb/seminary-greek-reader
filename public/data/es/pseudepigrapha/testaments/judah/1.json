@@ -1,0 +1,8 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "El griego de este capítulo no está dividido en versículos en la fuente: se transmite en un solo bloque con la numeración intercalada («1. … 2. …»). El español la conserva para que las dos columnas se lean en paralelo. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "1. Copia de las palabras de Judá: cuanto habló a sus hijos antes de morir. 2. Reunidos, vinieron a él, y él les dijo: 3. Yo fui el cuarto hijo de mi padre, y mi madre me llamó Judá, diciendo: Doy gracias al Señor, porque me ha dado también un cuarto hijo. 4. Era yo ágil y diligente en mi juventud, y obedecía a mi padre en toda palabra; 5. y bendecía a mi madre y a la hermana de mi madre. 6. Y sucedió que, cuando llegué a ser hombre, mi padre Jacob hizo votos por mí, diciendo: Serás rey y prosperarás en todo."
+ }
+}

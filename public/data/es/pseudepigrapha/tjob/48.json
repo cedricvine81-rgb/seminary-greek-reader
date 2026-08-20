@@ -1,0 +1,10 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "Los capítulos 48-50 —las hijas hablando la lengua de los ángeles, de los principados y de los querubines, y el Espíritu dejando los himnos grabados en la vestidura— son el pasaje que suele citarse a propósito de 1 Corintios 13:1, «si hablo en lenguas de hombres y de ángeles». Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Así, levantándose la una, la llamada Hémera, se ciñó su cuerda como dijo el padre,",
+  "2": "y recibió otro corazón, para no pensar ya en las cosas de la tierra;",
+  "3": "y habló en la lengua de los ángeles, elevando un himno a Dios conforme a la himnodia de los ángeles; y los himnos que pronunció los dejó el Espíritu grabados en su propia vestidura."
+ }
+}

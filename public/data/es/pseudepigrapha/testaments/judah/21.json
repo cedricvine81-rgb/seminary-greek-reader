@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 7: κήτη son los grandes monstruos marinos de la Biblia griega (el «gran pez» de Jonás); se traduce así y no «ballenas», que estrecha la imagen. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ahora, hijos, amen a Leví, para que permanezcan; y no se alcen contra él, para que no sean exterminados.",
+  "2": "Porque a mí me dio el Señor el reino, y a él el sacerdocio, y sometió el reino al sacerdocio.",
+  "3": "A mí me dio lo que hay sobre la tierra; a él, lo que hay en los cielos.",
+  "4": "Como el cielo aventaja a la tierra, así el sacerdocio de Dios aventaja al reino sobre la tierra.",
+  "5": "Porque también a él lo escogió el Señor, más que a ti, para acercarse a él, y comer de su mesa y de las primicias, delicias de los hijos de Israel;",
+  "6": "y tú serás para ellos como el mar. Porque así como en él justos e injustos son sacudidos por la tempestad —unos cayendo cautivos, otros enriqueciéndose—, así también en ti todo el género humano: unos corren peligro y caen cautivos, y otros se enriquecerán arrebatando.",
+  "7": "Porque los que reinen serán como monstruos marinos, tragándose a los hombres como a peces; esclavizarán a hijas e hijos libres; arrebatarán casas, campos, rebaños y bienes;",
+  "8": "y con las carnes de muchos, injustamente, cebarán a cuervos y a ibis; y avanzarán en el mal, ensoberbeciéndose en su codicia.",
+  "9": "Y habrá falsos profetas como tempestades, y perseguirán a todos los justos."
+ }
+}

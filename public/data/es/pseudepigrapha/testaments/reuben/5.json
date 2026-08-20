@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Capítulo traducido tal como el griego está, sin suavizarlo: la caracterización de las mujeres en vv. 1-5 es la del texto antiguo. En v. 7 el griego mezcla los géneros (κἀκεῖνοι… ἐπιθυμοῦσαι, masculino con participio femenino); se traduce con las mujeres como sujeto, que es lo que pide el sentido. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Malas son las mujeres, hijos míos, porque, no teniendo autoridad ni fuerza sobre el hombre, se valen de ardides para atraerlo hacia ellas;",
+  "2": "y a quien no logran vencer por la fuerza, lo vencen por el engaño.",
+  "3": "Porque también acerca de ellas me habló el ángel de Dios y me enseñó que las mujeres son vencidas por el espíritu de la fornicación más que el hombre, y que en el corazón traman contra los hombres; y por medio del atavío extravían primero sus mentes, y por la mirada les siembran el veneno, y luego con el acto los llevan cautivos.",
+  "4": "Porque una mujer no puede forzar a un hombre.",
+  "5": "Huyan, pues, de la fornicación, hijos míos, y manden a sus mujeres y a sus hijas que no adornen sus cabezas ni sus rostros, porque toda mujer que en esto se vale de ardides está reservada para el castigo eterno.",
+  "6": "Porque así hechizaron a los Vigilantes antes del diluvio; y aquellos, viéndolas continuamente, se llenaron de deseo unos por otras, y concibieron el acto en su mente, y se transformaban en hombres, y se les aparecían cuando ellas estaban unidas con sus maridos;",
+  "7": "y ellas, deseando en su mente aquellas apariciones, dieron a luz gigantes. Porque los Vigilantes se les aparecían llegando hasta el cielo."
+ }
+}

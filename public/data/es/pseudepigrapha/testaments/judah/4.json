@@ -1,0 +1,8 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "El griego de este capítulo no está dividido en versículos en la fuente: se transmite en un solo bloque con la numeración intercalada («1. … 2. …»). El español la conserva para que las dos columnas se lean en paralelo. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "1. Y hacia el sur tuvimos una guerra mayor que la de Siquem; y formando en línea de batalla con mis hermanos, perseguí a mil hombres, y maté de ellos a doscientos, y a cuatro reyes. 2. Y subí contra ellos por la muralla, y maté a otros dos reyes; 3. y así liberamos Hebrón, y recobramos todos los cautivos que los reyes tenían."
+ }
+}

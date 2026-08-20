@@ -1,0 +1,17 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Vocabulario fijado para todo el testamento: πορνεία = «fornicación», πνεύματα τῆς πλάνης = «espíritus del error», νεωτερισμός = «desenfreno juvenil», διάνοια = «la mente», Βελίαρ = «Beliar», Ἐγγρήγοροι = «los Vigilantes». v. 7: el griego queda inconcluso (falta la apódosis tras «si Jacob… no hubiera orado»); se conserva el corte con puntos suspensivos en vez de completar la frase. λαγόνες = «los ijares». Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Copia del testamento de Rubén: cuanto mandó a sus hijos antes de morir, en el año ciento veinticinco de su vida.",
+  "2": "Dos años después de la muerte de José, estando él enfermo, se reunieron para visitarlo sus hijos y los hijos de sus hijos.",
+  "3": "Y les dijo: Hijitos míos, yo muero y voy por el camino de mis padres.",
+  "4": "Y al ver allí a Judá, a Gad y a Aser, sus hermanos, les dijo: Levántenme, hermanos, para que diga a mis hermanos y a mis hijos cuanto tengo escondido en mi corazón; porque desde ahora ya me voy apagando.",
+  "5": "Y levantándose, los besó y, llorando, dijo: Escuchen, hermanos míos; presten oído a Rubén, su padre, en cuanto les mando.",
+  "6": "Y miren que hoy pongo por testigo contra ustedes al Dios del cielo: que no anden en la ignorancia de la juventud ni en la fornicación, en la que yo me derramé y manché el lecho de mi padre Jacob.",
+  "7": "Porque les digo que me hirió con una gran plaga en los ijares durante siete meses; y si Jacob, nuestro padre, no hubiera orado por mí al Señor…, porque el Señor quería quitarme la vida.",
+  "8": "Pues tenía treinta años cuando cometí la maldad delante del Señor, y siete meses estuve enfermo hasta la muerte;",
+  "9": "y por propia elección de mi alma me arrepentí siete años delante del Señor.",
+  "10": "No bebí vino ni sidra, y carne no entró en mi boca; y no probé pan apetitoso alguno, haciendo duelo por mi pecado, porque era grande. Y que nunca suceda otro tanto en Israel."
+ }
+}

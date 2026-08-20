@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 1: ἀρχιμάγειρος significa literalmente «jefe de los cocineros», pero es el término con que la Septuaginta traduce el cargo de Potifar en Génesis 39:1; se traduce «jefe de la guardia», como en las biblias españolas. La mujer de Potifar no tiene nombre en Génesis; aquí se la llama Menfia (3:6). Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y así Potifar, el jefe de la guardia del faraón, me confió su casa.",
+  "2": "Y luché contra una mujer desvergonzada que me urgía a pecar con ella; pero el Dios de Israel, mi padre, me guardó de la llama ardiente.",
+  "3": "Fui encarcelado, golpeado y escarnecido; y el Señor me hizo hallar compasión ante el carcelero.",
+  "4": "Porque no abandona a los que le temen, ni en tinieblas, ni en cadenas, ni en aflicciones, ni en necesidades;",
+  "5": "porque Dios no se avergüenza como un hombre, ni se acobarda como hijo de hombre, ni desfallece como nacido de la tierra, ni rechaza a nadie;",
+  "6": "sino que en todo lugar asiste, y de diversos modos consuela, apartándose por un poco para probar el propósito del alma.",
+  "7": "En diez pruebas me mostró aprobado, y en todas ellas tuve paciencia; porque gran remedio es la paciencia, y muchos bienes da la constancia."
+ }
+}

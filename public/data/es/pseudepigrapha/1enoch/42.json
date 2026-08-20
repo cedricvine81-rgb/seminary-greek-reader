@@ -1,0 +1,10 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: El Libro de Enoc en la traducción de R. H. Charles (1917), de dominio público.",
+ "_why": "1 Enoc no se conserva completo en griego ni en su lengua original: el texto íntegro solo existe en ETIÓPICO (ge'ez), y de ahí procede el inglés que el lector muestra. Por eso, y a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas —traducidos en esta aplicación desde el griego—, esta versión española está hecha desde el inglés, es decir, a dos pasos del original. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de la traducción inglesa. No es una edición publicada.",
+ "_note": "El poema de la Sabiduría que no halla dónde morar y vuelve al cielo es uno de los pasajes más citados de la obra, junto a Eclesiástico 24 y Baruc 3, en el estudio del prólogo de Juan. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "La Sabiduría no halló lugar donde morar; entonces le fue asignada una morada en los cielos.",
+  "2": "La Sabiduría salió para hacer su morada entre los hijos de los hombres, y no halló morada; la Sabiduría volvió a su lugar y tomó asiento entre los ángeles.",
+  "3": "Y la injusticia salió de sus cámaras: a quienes no buscaba, los halló, y habitó con ellos, como lluvia en un desierto y rocío en tierra sedienta."
+ }
+}

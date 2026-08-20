@@ -124,7 +124,11 @@ function translationsFor(w: CatalogWork | null, t: (k: string, v?: Record<string
     const en = PROSE_ENGLISH_LABELS[w.id]
     out.push({ id: 'source', label: en ? t('texts.englishBy', { who: en })
       : w.secondaryLabel ?? t('texts.englishCol') })
-    if (ES_PROSE_WORKS[w.id]) out.push({ id: 'es', label: t('texts.spanishOurs') })
+    // ES_ENGLISH_PROSE_WORKS as well as ES_PROSE_WORKS: a work is in one or the other by how it
+    // is ADDRESSED (book+§ vs chapter+verse), not by whether it has a Greek column. The
+    // Testaments of the Twelve Patriarchs and the Testament of Job carry verse-level Greek and
+    // are still chapter+verse works, so they load by the chapter route while landing here.
+    if (ES_PROSE_WORKS[w.id] || ES_ENGLISH_PROSE_WORKS[w.id]) out.push({ id: 'es', label: t('texts.spanishOurs') })
     return out
   }
   // English-only prose that has our Spanish: same one-menu shape, but the first column is the

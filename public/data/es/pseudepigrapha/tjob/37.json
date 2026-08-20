@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "v. 5: la pregunta de Baldad está estropeada en el manuscrito (πῶς οὖν ἀδικος ἠ κρίνων), con una laguna señalada por el propio transcriptor; se traduce el sentido que exige el contexto. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y de nuevo dijo: ¿En quién esperas tú?",
+  "2": "Y yo dije: En el Dios vivo.",
+  "3": "Y de nuevo me dijo: ¿Quién te quitó tus bienes o te trajo estas llagas?",
+  "4": "Y yo dije: Dios.",
+  "5": "Y de nuevo, respondiendo, me dijo: Si esperas en Dios, ¿cómo es entonces que te juzga injustamente, trayéndote estas llagas o quitándote tus bienes?",
+  "6": "Si dio y quitó, mejor le habría sido no dar nada en absoluto. Nunca un rey deshonra a su propio soldado que le hace bien la guardia. ¿O quién alcanzará jamás las profundidades del Señor y de su sabiduría? ¿O quién se atreve a atribuir al Señor injusticia?",
+  "7": "Respóndeme a esto, Job.",
+  "8": "Y de nuevo te digo: si estás en tu juicio, muestra, si tienes entendimiento, por qué vemos al sol salir por el oriente y ponerse por el occidente, y de nuevo, al levantarnos por la mañana, lo hallamos saliendo por ese mismo oriente. Instrúyeme en esto, si tú eres el siervo de Dios."
+ }
+}

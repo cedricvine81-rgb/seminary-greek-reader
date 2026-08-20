@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Vocabulario fijado para todo el testamento, que es una diatriba contra dos vicios: θυμός = «la ira» (μακροθυμία, su contrario, = «la paciencia») y ψεῦδος = «la mentira» (frente a ἀλήθεια, «la verdad»). Aquí aparece Σατανᾶς, «Satanás», junto a Βελίαρ, «Beliar»: el griego usa los dos nombres y la traducción los mantiene distintos. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Copia de las palabras de Dan, las que dijo a sus hijos en los últimos de sus días, en el año ciento veinticinco de su vida.",
+  "2": "Llamando a su parentela, dijo: Escuchen, hijos de Dan, mis palabras; atiendan a los dichos de la boca de su padre.",
+  "3": "He probado en mi corazón y en toda mi vida que la verdad, con el obrar justo, es buena y agradable a Dios; y que la mentira y la ira son malas, porque enseñan al hombre toda maldad.",
+  "4": "Hoy les confieso, hijos míos, que en mi corazón me alegré por la muerte de José, hombre veraz y bueno,",
+  "5": "y me gozaba en la venta de José, porque su padre lo amaba más que a nosotros.",
+  "6": "Porque el espíritu de los celos y de la jactancia me decía: También tú eres hijo suyo.",
+  "7": "Y uno de los espíritus de Beliar colaboraba conmigo, diciendo: Toma esta espada, y con ella mata a José, y te amará tu padre cuando él haya muerto.",
+  "8": "Este es el espíritu de la ira, que me persuadía de que, como el leopardo chupa al cabrito, así chupara yo a José.",
+  "9": "Pero el Dios de Jacob, nuestro padre, no lo puso en mis manos para que yo lo hallara solo, ni permitió que cometiera esta iniquidad, para que no fueran destruidos dos cetros en Israel."
+ }
+}

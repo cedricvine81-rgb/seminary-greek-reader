@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 2 y 14:2 llaman «salvador del mundo» a aquel contra quien actuarán los sacerdotes, y 16:3 habla de matarlo sin conocer «su resurrección»: se traducen tal como el griego está, sin decidir aquí si son del texto judío original o interpolación cristiana posterior —cuestión discutida en todo este testamento—. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Ahora, pues, guarden cuanto les mando, hijos, porque cuanto oí de mis padres se lo he anunciado.",
+  "2": "Yo quedo libre de culpa por toda la impiedad y la transgresión de ustedes, la que cometerán en la consumación de los siglos contra el salvador del mundo, obrando impíamente, extraviando a Israel y atrayendo sobre él grandes males de parte del Señor.",
+  "3": "Y obrarán inicuamente junto con Israel, de modo que Jerusalén no soporte la presencia de su maldad, sino que se rasgue el velo del templo, para que no cubra la vergüenza de ustedes.",
+  "4": "Y serán dispersados cautivos entre las naciones, y serán objeto de oprobio y de pisoteo;",
+  "5": "porque la casa que el Señor escoja se llamará Jerusalén, tal como lo contiene el libro de Enoc el justo."
+ }
+}

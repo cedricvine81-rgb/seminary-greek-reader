@@ -1,0 +1,10 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ahora, hijitos míos, obedezcan a Leví, y en Judá serán redimidos; y no se levanten contra estas dos tribus, porque de ellas les nacerá la salvación de Dios.",
+  "2": "Porque el Señor levantará de Leví como sumo sacerdote, y de Judá como rey, a Dios y hombre. Así salvará a todas las naciones y al linaje de Israel.",
+  "3": "Por eso les mando todas estas cosas, para que también ustedes se las manden a sus hijos, a fin de que las guarden por sus generaciones."
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "v. 9: el griego dice «pudimos» donde el sentido pide «no pudimos»; falta la negación en el manuscrito y la traducción la suple. El nombre de la mujer de Job aparece escrito de tres maneras distintas en el propio manuscrito —Σιγιδος (25:1), Σιτωδος (39:1), Σίτιδος (40:4)—; en español se unifica como «Sitidos». Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y diciéndoles yo esto, vino mi mujer Sitidos con vestidos hechos harapos,",
+  "2": "habiendo huido de la servidumbre del amo a quien servía, porque se le impedía salir, no fuera que los reyes la vieran y se la llevaran.",
+  "3": "Y cuando llegó, se echó a sus pies y, llorando, decía:",
+  "4": "Acuérdate de mí, Elifaz, y tus dos amigos, de cómo era yo con ustedes, y de cómo me vestía.",
+  "5": "Y ahora vean mi porte y lo que llevo puesto.",
+  "6": "Entonces, llorando con gran llanto, quedando en doble abatimiento, callaron;",
+  "7": "hasta que Elifaz, tomando su manto de púrpura, lo rasgó y con él cubrió a mi mujer.",
+  "8": "Y ella les rogaba, diciendo: Les suplico: manden a sus soldados que caven los escombros de la casa que cayó sobre mis hijos, para poner a salvo sus huesos como memoria;",
+  "9": "porque nosotros no pudimos, por los gastos. Que veamos al menos sus huesos.",
+  "10": "¿Acaso soy yo una fiera, o tengo entrañas de bestia, para que mis diez hijos hayan muerto y a ninguno de ellos haya dado sepultura?",
+  "11": "Y ellos se fueron a cavar, pero yo se lo impedí, diciendo: No se fatiguen en vano;",
+  "12": "porque no hallarán a mis hijos, ya que fueron llevados al cielo por su Creador, el Rey.",
+  "13": "Entonces, respondiendo de nuevo, me dijeron: ¿Quién no dirá otra vez que estás fuera de ti y deliras, al decir: «Mis hijos fueron llevados al cielo»? Muéstranos, pues, la verdad."
+ }
+}

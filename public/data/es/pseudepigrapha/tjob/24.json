@@ -1,0 +1,17 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "Los vv. 8-10 están estropeados en el manuscrito: la sintaxis se rompe y en el v. 10 falta la respuesta de ella (el griego pasa directamente al «y así, levantándose»). Se traduce lo que hay, supliendo lo mínimo para que la frase cierre en español. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y en cuanto se acercó mi mujer, gritando con llanto me dice: ¡Job, Job! ¿Hasta cuándo estarás sentado en el muladar, fuera de la ciudad, pensando «un poco más» y aguardando la esperanza de tu salvación?",
+  "2": "Y yo, vagabunda y sirvienta, yendo de lugar en lugar; porque ha perecido de la tierra tu memoria, y mis hijos y las hijas de mi vientre, por los cuales me fatigué en vano con trabajos.",
+  "3": "Y tú mismo estás sentado en la podredumbre de los gusanos, pasando la noche a la intemperie;",
+  "4": "y yo otra vez, la desdichada, trabajando de día con dolor, y de noche también, hasta conseguir pan y traértelo.",
+  "5": "Porque ya apenas recibo mi propio alimento y lo reparto entre tú y yo,",
+  "6": "pensando en mi corazón que no basta que estés tú en dolores, sino que ni siquiera te sacias de pan;",
+  "7": "de modo que me atreví a salir sin vergüenza a la plaza,",
+  "8": "aunque me traspasa el corazón que no baste con hacerlo así: Da el dinero y recibirás.",
+  "9": "y que yo tuviera que mostrarle nuestra pobreza y oír de él: Si no tienes dinero, mujer, da el cabello de tu cabeza y toma tres panes; quizá vivan tres días.",
+  "10": "Y yo, desfallecida, le dije: Sea. Y así, levantándose con unas tijeras, me cortó el cabello sin honra, en la plaza, estando presente la multitud y admirándose."
+ }
+}

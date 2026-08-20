@@ -1,0 +1,17 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "La mujer de Job no tiene nombre en el libro bíblico; en esta obra se llama Sitidos (el manuscrito P escribe Σιγιδος). Los vv. 1-8 son el lamento de los que la ven en la plaza —el griego no marca dónde termina ese coro y dónde vuelve a hablar ella—, y en los vv. 9-10 habla ya Sitidos misma dirigiéndose a Job. Su «di una palabra contra el Señor y muere» es la frase de Job 2:9. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "¿Quién no quedó pasmado de que esta sea Sitidos, la mujer de Job,",
+  "2": "la que tenía catorce cortinas cubriendo su aposento, y una puerta dentro de otras puertas, de modo que apenas alguien era juzgado digno de ser llevado ante ella?",
+  "3": "¡Y ahora cambia su cabello por unos panes!",
+  "4": "Aquella cuyos camellos, cargados de bienes, los llevaban a las regiones para los pobres: ¡que ahora da su cabello a cambio de panes!",
+  "5": "Miren: la que tenía siete mesas fijas en su casa, en las que comían los pobres y todo forastero: ¡que ahora vende su cabello por panes!",
+  "6": "Miren quién tenía el aguamanil de los pies de oro y de plata, y ahora camina a pie por el suelo, y hasta cambia su cabello por panes.",
+  "7": "Miren que esta es la que tenía el vestido de lino tejido con oro, y ahora lleva harapos y cambia su cabello por panes.",
+  "8": "Miren a la que tenía los lechos de oro y de plata, y ahora vende su cabello por panes.",
+  "9": "En una palabra, Job, Job: siendo muchas las cosas que podrían decirse, te lo diré en breve:",
+  "10": "por la debilidad de mi corazón se han quebrantado mis huesos. Levántate tú, toma los panes, sáciate, y di una palabra contra el Señor y muere; y yo también quedaré libre del abatimiento que me viene del dolor de tu cuerpo."
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 2: el griego transmitido dice que el padre hace duelo ἐν λάκκῳ, «en la cisterna», que es la palabra usada para el pozo en que echaron a José; otros testigos leen ἐν σάκκῳ, «en saco», que es como lo vierte Charles. Se traduce lo que este griego trae. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y veinticuatro días después vinieron los ismaelitas; y al oír que Jacob, mi padre, hacía duelo por mí, me dijeron:",
+  "2": "¿Por qué dijiste que eras esclavo? Pues mira, hemos sabido que eres hijo de un hombre grande en Canaán; y tu padre hace duelo junto a la cisterna.",
+  "3": "Y de nuevo quise llorar, y me contuve, para no avergonzar a mis hermanos. Y dije: Yo no sé nada; soy esclavo.",
+  "4": "Entonces deciden venderme, para que no me hallaran en sus manos.",
+  "5": "Porque temían a Jacob, no fuera que hiciera sobre ellos una venganza peligrosa. Porque se había oído que era grande ante el Señor y ante los hombres.",
+  "6": "Entonces les dice el corredor: Líbrenme del juicio de Petefrí.",
+  "7": "Acercándose, pues, me reclaman diciendo: Fue comprado por nosotros con dinero. Y aquel nos dejó ir."
+ }
+}

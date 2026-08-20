@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 8 —el cordero de Dios, salvador del mundo, entregado por los inicuos, muerto por los impíos «en sangre de alianza»— es, junto con Testamento de José 19, el pasaje más discutido de toda la obra: se traduce tal como el griego está, sin decidir aquí si es del texto judío original o interpolación cristiana posterior. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ustedes, pues, hijos míos, amen al Señor, el Dios del cielo, y guarden sus mandamientos, imitando al hombre bueno y santo, José.",
+  "2": "Y esté su mente puesta en el bien, como saben que estuvo la mía. El que tiene la mente buena todo lo ve rectamente.",
+  "3": "Teman al Señor y amen al prójimo; y aunque los espíritus de Beliar los reclamen para toda maldad de aflicción, ninguna maldad de aflicción los dominará, como tampoco dominó a José, mi hermano.",
+  "4": "¿Cuántos hombres quisieron matarlo, y Dios lo protegió? Porque el que teme a Dios y ama a su prójimo no puede ser herido por el espíritu aéreo de Beliar, protegido como está por el temor de Dios;",
+  "5": "ni puede ser dominado por asechanza de hombres ni de fieras, socorrido por el amor del Señor, el que tiene hacia el prójimo.",
+  "6": "Porque yo rogué a nuestro padre Jacob que orara por nuestros hermanos, para que el Señor no les imputara nada de lo malo que hubieran maquinado contra él.",
+  "7": "Y así clamaba Jacob: ¡Oh hijo José, has vencido las entrañas de Jacob, tu padre! Y abrazándolo, lo besó por dos horas, diciendo:",
+  "8": "Se cumplirá en ti la profecía del cielo acerca del cordero de Dios y salvador del mundo: que el que no tiene tacha será entregado por los inicuos, y el que no tiene pecado morirá por los impíos, en sangre de alianza, para salvación de las naciones y de Israel, y destruirá a Beliar y a los que le sirven."
+ }
+}

@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Este capítulo se ha leído tradicionalmente como una descripción de Pablo —benjaminita, «amado del Señor», que ilumina a las naciones y cuya obra y palabra quedan escritas en libros santos—, y por eso se cuenta también entre los pasajes discutidos. Se traduce tal como el griego está. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ya no seré llamado lobo rapaz por las rapiñas de ustedes, sino obrero del Señor, que reparte alimento a los que hacen el bien.",
+  "2": "Y se levantará de mi descendencia, en los últimos tiempos, un amado del Señor, que oirá en la tierra su voz, alumbrando con conocimiento nuevo a todas las naciones, entrando en Israel con luz de conocimiento para salvación; y arrebatando de él como lobo, y dando a la asamblea de las naciones.",
+  "3": "Y hasta la consumación de los siglos estará en las asambleas de las naciones y entre sus gobernantes, como una melodía en la boca de todos;",
+  "4": "y en libros santos quedará escrito, tanto su obra como su palabra; y será escogido de Dios para siempre;",
+  "5": "y por causa de él me instruyó Jacob, mi padre, diciendo: Él llenará lo que falta a tu tribu."
+ }
+}

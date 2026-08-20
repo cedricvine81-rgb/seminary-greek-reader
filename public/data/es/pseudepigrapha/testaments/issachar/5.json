@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 8: πειρατήρια son las partidas armadas que hacen incursiones —«bandas de asalto»—, no «tentaciones», que es el otro sentido de la palabra. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Guarden, pues, la ley de Dios, hijos míos, y adquieran la sencillez, y anden en inocencia, sin andar escudriñando los mandamientos del Señor ni las obras del prójimo;",
+  "2": "sino amen al Señor y al prójimo; tengan compasión del pobre y del débil.",
+  "3": "Inclinen sus espaldas a labrar la tierra, y trabajen en las labores del campo en cada cultivo, ofreciendo dones al Señor con acción de gracias;",
+  "4": "porque en las primicias de los frutos de la tierra el Señor los bendijo, como bendijo a todos los santos, desde Abel hasta ahora.",
+  "5": "Porque no te ha sido dada otra porción que la del fruto graso de la tierra, cuyos frutos vienen con trabajo;",
+  "6": "porque nuestro padre Jacob me bendijo con bendiciones de la tierra y de las primicias de los frutos.",
+  "7": "Y Leví y Judá fueron honrados por el Señor entre los hijos de Jacob. Porque el Señor les repartió la suerte, y al uno le dio el sacerdocio, y al otro el reino.",
+  "8": "A ellos, pues, obedezcan, y anden en la sencillez de su padre; porque también a Gad le fue dado destruir las bandas de asalto que vengan sobre Israel."
+ }
+}

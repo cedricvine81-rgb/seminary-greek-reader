@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y de nuevo, en otra ocasión, me dice: Si no quieres cometer adulterio, yo mataré al egipcio, y así te tomaré por marido conforme a la ley.",
+  "2": "Yo, pues, al oír esto, rasgué mi vestido y dije: Mujer, respeta al Señor, y no cometas esta acción malvada, para que no seas exterminada; porque yo mismo denunciaré a todos el propósito de tu impiedad.",
+  "3": "Temiendo entonces, ella me rogó que a nadie denunciara su maldad.",
+  "4": "Y se retiró, halagándome con regalos, y enviándome cuanto deleita a los hijos de los hombres."
+ }
+}

@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 4: el griego repite la misma frase dos veces («me metió en la cárcel de su casa… me envió a la cárcel de su casa»); es un error de copia del texto transmitido y se conserva tal cual, sin corregirlo en el español. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Les digo, hijos, que era como la hora sexta cuando ella salió de mi lado; y yo, doblando la rodilla ante el Señor todo el día, y uniendo toda la noche, me levanté hacia el alba llorando y pidiendo ser librado de la egipcia.",
+  "2": "Al fin, pues, me agarra de la ropa, arrastrándome por fuerza a la unión.",
+  "3": "Así que cuando vi que, enloquecida, retenía por fuerza mis ropas, huí desnudo.",
+  "4": "Y ella me calumnió ante su marido; y el egipcio me metió en la cárcel de su casa; y al día siguiente, después de azotarme, el egipcio me envió a la cárcel de su casa.",
+  "5": "Y cuando yo estaba en cadenas, la egipcia enfermó de tristeza, y escuchaba cómo yo cantaba himnos al Señor estando en casa de tinieblas, y con voz alegre, gozándome, glorificaba a mi Dios, solo porque con aquel pretexto me había librado de la egipcia."
+ }
+}

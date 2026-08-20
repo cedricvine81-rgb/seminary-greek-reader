@@ -1,0 +1,19 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "El lamento de Eliú repite doce veces el estribillo «¿Dónde está ahora la gloria de tu trono?»: la repetición es del griego y se conserva íntegra, porque de ella depende la respuesta de Job en el capítulo 33. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Escuchen, pues, el llanto de Eliú, que muestra a sus siervos la riqueza de Job:",
+  "2": "Tú eres el que destinó las siete mil ovejas al vestido de los pobres. ¿Dónde está, pues, la gloria de tu trono? Tú eres el que destinó los tres mil camellos al transporte de bienes para los necesitados. ¿Dónde está, pues, la gloria de tu trono?",
+  "3": "Tú eres el que destinó las mil vacas para arar a los necesitados. ¿Dónde está, pues, tu gloria?",
+  "4": "Tú eres el que tenía los lechos de oro, y ahora está sentado en un muladar. ¿Dónde está ahora la gloria de tu trono?",
+  "5": "Tú eres el que tenía el trono de piedras preciosas, y ahora está sentado en el camino. ¿Dónde está ahora la gloria de tu trono?",
+  "6": "Porque ¿quién como tú en medio de tus hijos? Pues eras como un manzano fragante en flor. ¿Dónde está ahora tu gloria?",
+  "7": "Tú eres el que asentó las sesenta mesas fijas para los pobres. ¿Dónde está ahora la gloria de tu trono?",
+  "8": "Tú eres el que tenía los incensarios de la fragante asamblea, y ahora estás en el hedor.",
+  "9": "Tú eres el que tenía las lámparas de oro sobre candeleros de plata, y ahora esperas la luz de la luna. ¿Dónde está, pues, la gloria de tu trono?",
+  "10": "Tú eres el que tenía el ungüento del incienso, y ahora estás en la indigencia. ¿Dónde está, pues, la gloria de tu trono?",
+  "11": "Tú eres el que se reía de los injustos y de los pecadores, y ahora has venido a ser objeto de burla. ¿Dónde está ahora tu gloria?",
+  "12": "Tú eres Job, el que tenía la gran gloria. ¿Dónde está ahora la gloria de tu trono?"
+ }
+}

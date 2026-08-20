@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "v. 4 es la confesión de Job 1:21, citada aquí en la forma de la Septuaginta. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y cuando vino el último mensajero y me declaró la muerte de mis hijos, me turbé con gran turbación,",
+  "2": "y rasgué mis vestidos, diciendo al que traía la noticia: ¿Y cómo, pues, te salvaste tú?",
+  "3": "Y entonces yo, comprendiendo lo sucedido, clamé diciendo:",
+  "4": "El Señor dio, el Señor quitó; como al Señor le pareció, así sucedió; sea bendito el nombre del Señor."
+ }
+}

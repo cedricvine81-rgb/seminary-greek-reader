@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ahora, hijos míos, yo muero, y en verdad les digo: si no se guardan del espíritu de la mentira y de la ira, y no aman la verdad y la paciencia, perecerán.",
+  "2": "Ceguera hay en la ira, hijos míos, y no hay hombre airado que vea rostro alguno en verdad;",
+  "3": "porque aunque sea su padre o su madre, los mira como a enemigos; si es su hermano, no lo reconoce; si es un profeta del Señor, lo desoye; si es un justo, no lo ve; al amigo no lo conoce.",
+  "4": "Porque el espíritu de la ira lo envuelve en las redes del error, y le ciega los ojos naturales, y por la mentira le oscurece la mente, y le da su propia manera de ver.",
+  "5": "¿Y con qué le envuelve los ojos? Con el odio del corazón; y le da un corazón propio contra su hermano, para la envidia."
+ }
+}

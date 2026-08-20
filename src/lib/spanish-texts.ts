@@ -43,6 +43,28 @@ export const ES_PROSE_WORKS: Record<string, string> = {
  */
 export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   '2esdras': 'apocrypha/2esdras',
+  // Pseudepigrapha. The ones that survive IN GREEK are translated from that Greek, one remove
+  // from the source like everything else here — they land in this registry rather than
+  // ES_PROSE_WORKS only because they are addressed by chapter + verse, not book + section.
+  // A work whose original is Ethiopic/Slavonic/Syriac has no Greek to work from and its files
+  // say so, chapter by chapter, exactly as 2 Esdras does.
+  //
+  // Registered a work at a time, as its chapters land: an untranslated verse falls back to the
+  // English silently, so a half-registered work would read as finished.
+  'tp-reuben': 'pseudepigrapha/testaments/reuben',
+  'tp-simeon': 'pseudepigrapha/testaments/simeon',
+  'tp-levi': 'pseudepigrapha/testaments/levi',
+  'tp-judah': 'pseudepigrapha/testaments/judah',
+  'tp-issachar': 'pseudepigrapha/testaments/issachar',
+  'tp-zebulun': 'pseudepigrapha/testaments/zebulun',
+  'tp-dan': 'pseudepigrapha/testaments/dan',
+  'tp-naphtali': 'pseudepigrapha/testaments/naphtali',
+  'tp-gad': 'pseudepigrapha/testaments/gad',
+  'tp-asher': 'pseudepigrapha/testaments/asher',
+  'tp-joseph': 'pseudepigrapha/testaments/joseph',
+  'tp-benjamin': 'pseudepigrapha/testaments/benjamin',
+  'tjob-greek': 'pseudepigrapha/tjob',
+  'aristeas': 'pseudepigrapha/aristeas',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit

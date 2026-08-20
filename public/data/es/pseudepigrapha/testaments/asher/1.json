@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Este testamento se sostiene sobre un par de palabras que no tienen equivalente fijo en español: διπρόσωπος (literalmente «de dos caras») y μονοπρόσωπος («de una sola cara»). Se traducen así en todo el texto, y no «hipócrita» / «sincero», porque el argumento es geométrico: cada cosa tiene dos caras y hay que juzgarla por el conjunto, que es la fórmula que se repite en cada ejemplo del capítulo 2. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Copia del testamento de Aser: lo que habló a sus hijos en el año ciento veinte de su vida.",
+  "2": "Estando aún sano, les dijo: Escuchen, hijos de Aser, a su padre, y les mostraré todo lo que es recto delante de Dios.",
+  "3": "Dos caminos dio Dios a los hijos de los hombres, y dos designios, y dos maneras de obrar, y dos lugares, y dos fines.",
+  "4": "Por eso todas las cosas van de dos en dos, la una frente a la otra.",
+  "5": "Dos son los caminos: el del bien y el del mal; y en ellos están los dos designios, en nuestro pecho, que los distinguen.",
+  "6": "Si, pues, el alma quiere el bien, toda su obra está en justicia; y si peca, enseguida se arrepiente.",
+  "7": "Porque pensando lo justo y desechando la maldad, echa por tierra enseguida el mal y arranca de raíz el pecado.",
+  "8": "Pero si el designio se inclina al mal, toda su obra está en maldad; y rechazando el bien, toma el mal, y dominado por Beliar, aunque haga algo bueno, lo vuelve maldad.",
+  "9": "Porque cuando empieza como quien hace el bien, el fin de su obra lo empuja a hacer el mal, porque el tesoro del diablo está lleno del veneno de un espíritu malo."
+ }
+}

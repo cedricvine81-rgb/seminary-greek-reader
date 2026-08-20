@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "v. 5: el manuscrito trae aquí una glosa del propio copista («es decir, de la murmuración»), que se conserva en la traducción en lugar de fundirla en la frase. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Tenía seis salmos y una cítara de diez cuerdas;",
+  "2": "y me levantaba cada día, después de que las viudas eran alimentadas, y tomaba la cítara y les tañía, y ellas cantaban himnos.",
+  "3": "Y con el salterio les traía a la memoria a Dios, para que glorificaran al Señor.",
+  "4": "Y si alguna vez murmuraban mis criadas, tomaba el salterio y tañía el salario de la recompensa,",
+  "5": "y las hacía cesar del desaliento por medio del salmo, es decir, de la murmuración."
+ }
+}

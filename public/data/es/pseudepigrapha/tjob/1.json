@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "Los nombres de las hijas son las formas GRIEGAS que trae el manuscrito, no las hebreas: Hémera, Casia y Cuerno de Amaltea corresponden a las de Job 42:14 en la Septuaginta (en las biblias hechas desde el hebreo: Jemimá, Cesia y Keren-hapuc). Los siete hijos no se nombran en el libro bíblico. v. 5: ὑπομονή, «la paciencia» —el término con que Santiago 5:11 recuerda a Job—, es la palabra clave de toda la obra y se traduce siempre así. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Libro de las palabras de Job, el que es llamado Jobab.",
+  "2": "Porque el día en que cayó enfermo y estaba arreglando su hacienda, llamó a sus siete hijos y a sus tres hijas,",
+  "3": "cuyos nombres son estos: Tersi, Coros, Hión, Nice, Foros, Fife, Fruón, Hémera, Casia y Cuerno de Amaltea.",
+  "4": "Y llamando a sus hijos, dijo: Rodéenme, hijos míos, rodéenme, para que les muestre lo que el Señor hizo conmigo y todo lo que me sucedió.",
+  "5": "Porque yo soy su padre Job, el que llegó a estar en toda paciencia; y ustedes son linaje escogido y honrado, de la descendencia de Jacob, el padre de su madre.",
+  "6": "Porque yo soy de los hijos de Esaú, hermano de Jacob, y su madre es Dina, de la cual los engendré; porque mi primera mujer murió con otros diez hijos en muerte amarga. Escúchenme, pues, hijos, y les declararé lo que me ha sucedido."
+ }
+}

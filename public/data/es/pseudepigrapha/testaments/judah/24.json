@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Capítulo mesiánico: «estrella de Jacob» (Núm 24:17), «sol de la justicia», «retoño», «vara de justicia». Se traduce tal como el griego está, sin decidir aquí qué es del texto judío original y qué interpolación cristiana posterior; v. 2, «bendición del Padre santo», es una de las frases discutidas. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y después de esto se les levantará una estrella de Jacob en paz, y se alzará un hombre de mi descendencia, como el sol de la justicia, que caminará con los hijos de los hombres en mansedumbre y justicia, y no se hallará en él pecado alguno.",
+  "2": "Y se abrirán sobre él los cielos para derramar el espíritu, bendición del Padre santo; y él derramará espíritu de gracia sobre ustedes;",
+  "3": "y serán para él hijos en verdad, y andarán en sus preceptos, los primeros y los últimos.",
+  "4": "Este es el retoño del Dios altísimo, y esta es la fuente para vida de toda carne.",
+  "5": "Entonces resplandecerá el cetro de mi reino, y de la raíz de ustedes saldrá un tronco.",
+  "6": "Y en él subirá una vara de justicia para las naciones, para juzgar y salvar a todos los que invocan al Señor."
+ }
+}

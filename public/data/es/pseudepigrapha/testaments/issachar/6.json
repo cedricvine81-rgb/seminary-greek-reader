@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Sé, hijos míos, que en los últimos tiempos sus hijos abandonarán la sencillez y se pegarán a la avidez; y dejando la inocencia, se acercarán a la maldad; y abandonando los mandamientos del Señor, se pegarán a Beliar;",
+  "2": "y dejando la labranza, seguirán sus malos designios, y serán dispersados entre las naciones, y servirán a sus enemigos.",
+  "3": "Digan, pues, también ustedes estas cosas a sus hijos, para que, si pecan, se vuelvan pronto al Señor;",
+  "4": "porque es misericordioso, y los librará para hacerlos volver a su tierra."
+ }
+}

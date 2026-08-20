@@ -1,0 +1,21 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Fisiología antigua conservada, no modernizada: ἥπατα = «el hígado» (asiento de la ira, vv. 4, 7, y 4:1), σπλάγχνα = «las entrañas» (asiento de la compasión). φθόνος = «envidia» y ζῆλος = «celos» se mantienen distintos en todo el testamento. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Escuchen, hijos, escuchen a Simeón, su padre, cuanto tengo en mi corazón.",
+  "2": "Yo nací de Jacob, mi padre, como segundo hijo, y Lía, mi madre, me llamó Simeón, porque el Señor escuchó su súplica.",
+  "3": "Me hice muy fuerte; no me acobardé ante ninguna empresa ni temí ante cosa alguna.",
+  "4": "Porque mi corazón era duro, mi hígado inconmovible y mis entrañas sin compasión;",
+  "5": "pues también el valor es dado por el Altísimo a los hombres, en las almas y en los cuerpos.",
+  "6": "Y en aquel tiempo tuve celos de José, porque nuestro padre lo amaba;",
+  "7": "y fijé contra él mi hígado para matarlo, porque el príncipe del error, enviando el espíritu de los celos, cegó mi mente, para que no lo mirara como a un hermano y no tuviera miramiento con Jacob, mi padre.",
+  "8": "Pero su Dios y el Dios de sus padres, enviando a su ángel, lo libró de mis manos.",
+  "9": "Porque cuando yo fui a Siquem a llevar ungüento para los rebaños, y Rubén a Dotán, donde estaba lo que necesitábamos y todo el depósito, Judá, nuestro hermano, lo vendió a los ismaelitas.",
+  "10": "Y al llegar Rubén se afligió, porque quería devolverlo sano y salvo al padre.",
+  "11": "Yo, en cambio, me enojé con Judá, porque lo había dejado ir vivo; y estuve cinco meses enojado con él.",
+  "12": "Pero Dios me trabó los pies y me quitó el uso de las manos, porque mi mano derecha quedó medio seca durante siete días.",
+  "13": "Y supe, hijos, que esto me había sucedido por causa de José; y arrepentido lloré, y rogué al Señor que me restableciera la mano y que yo me apartara de toda mancha, de toda envidia y de toda insensatez.",
+  "14": "Porque supe que había maquinado una cosa mala delante del Señor y de Jacob mi padre, contra José mi hermano, por haberle tenido envidia."
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Hijos míos, la avaricia lleva a los ídolos, porque en el extravío, por causa del dinero, llaman dioses a los que no lo son; y hace que quien la tiene caiga en desvarío.",
+  "2": "Por el dinero yo perdí a mis hijos; y si no fuera por la penitencia de mi carne, la humillación de mi alma y las oraciones de Jacob, mi padre, habría muerto sin hijos.",
+  "3": "Pero el Dios de mis padres, compasivo y misericordioso, me perdonó, porque lo hice por ignorancia.",
+  "4": "Porque me cegó el príncipe del error, y no supe lo que hacía, como hombre y como carne corrompida en pecados; y reconocí mi propia debilidad, yo que me creía invencible."
+ }
+}

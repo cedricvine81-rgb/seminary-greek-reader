@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "«Corredor» traduce μετάβολος, el comerciante intermediario a quien los ismaelitas dejan a José en depósito; el episodio no está en Génesis. «Indocolpitas» es la forma del griego (Ἰνδοκολπῖται). Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y ustedes, pues, tengan en su obrar el temor de Dios, y honren a sus hermanos. Porque todo el que cumple la ley del Señor será amado por él.",
+  "2": "Y llegando a los indocolpitas con los ismaelitas, me preguntaban; y yo dije que era esclavo de ellos, nacido en casa, para no avergonzar a mis hermanos.",
+  "3": "Y me dice el mayor de ellos: Tú no eres esclavo, porque hasta tu aspecto lo declara. Y me amenazaba de muerte. Pero yo decía que era esclavo de ellos.",
+  "4": "Y cuando llegamos a Egipto, disputaban por mí, sobre cuál de ellos daría oro y me tomaría.",
+  "5": "Por eso a todos les pareció que yo quedara en Egipto con el corredor de su mercancía, hasta que volvieran trayendo mercancía.",
+  "6": "Y el Señor me dio gracia a los ojos del corredor, y me confió su casa.",
+  "7": "Y el Señor lo bendijo por mi mano, y lo multiplicó en plata y oro;",
+  "8": "y estuve con él tres meses y cinco días."
+ }
+}

@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "¿Vieron, hijos, el fin del hombre bueno? Imiten con mente buena su compasión entrañable, para que también ustedes lleven coronas de gloria.",
+  "2": "El hombre bueno no tiene el ojo tenebroso, porque se compadece de todos, aunque sean pecadores,",
+  "3": "aunque tramen males contra él. Así, el que hace el bien vence al mal, protegido por el bien; y a los justos los ama como a su propia alma.",
+  "4": "Si alguien es honrado, no lo envidia; si alguien es rico, no le tiene celos; si alguien es valiente, lo alaba; al casto lo alaba con confianza; del pobre se compadece; con el débil padece; a Dios lo alaba;",
+  "5": "al que tiene temor de Dios lo defiende; con el que ama a Dios colabora; al que desprecia al Altísimo lo corrige y lo hace volver; y al que tiene la gracia de un espíritu bueno lo ama como a su propia alma."
+ }
+}

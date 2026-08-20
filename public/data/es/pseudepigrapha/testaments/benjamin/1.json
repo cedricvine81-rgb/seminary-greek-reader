@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 6: la etimología es la del propio griego, «hijo de días» (compárese con el hebreo «hijo de la mano derecha», Génesis 35:18). GOTCHA del texto: aquí dice que vivió ciento veinte años y en 12:2, ciento veinticinco; la discrepancia es del griego y se conserva. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Copia de las palabras de Benjamín, las que dispuso para sus hijos, habiendo vivido ciento veinte años.",
+  "2": "Y besándolos, dijo: Como Isaac le nació a Abraham en su año centésimo, así también yo a Jacob.",
+  "3": "Y puesto que Raquel murió al darme a luz, no tuve leche; así que mamé de Bilhá, su sierva.",
+  "4": "Porque Raquel, después de dar a luz a José, estuvo estéril doce años; y oró al Señor con ayuno de doce días; y concibiendo, me dio a luz.",
+  "5": "Porque nuestro padre amaba muchísimo a Raquel, y deseaba ver dos hijos de ella.",
+  "6": "Por eso fui llamado hijo de días, que es Benjamín."
+ }
+}

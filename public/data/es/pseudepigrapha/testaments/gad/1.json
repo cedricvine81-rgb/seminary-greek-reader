@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "μῖσος = «el odio» y ἀγάπη = «el amor» son las dos palabras que estructuran todo el testamento; se traducen siempre así. En 2:3 las «treinta monedas de oro» son χρυσοῖ: el griego dice oro, no plata (compárese con Génesis 37:28 y con Mateo 26:15). Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Copia del testamento de Gad: lo que él habló a sus hijos en el año ciento veintisiete de su vida, diciendo:",
+  "2": "Séptimo hijo fui de Jacob, y era valiente con los rebaños.",
+  "3": "Yo guardaba de noche el rebaño; y cuando venía el león, o el lobo, o el leopardo, o el oso, o cualquier fiera contra el rebaño, lo perseguía, y agarrándolo del pie con mi mano y haciéndolo girar lo aturdía, y lo arrojaba a dos estadios, y así lo mataba.",
+  "4": "José, pues, pastoreaba con nosotros unos treinta días; y siendo delicado, enfermó por el calor;",
+  "5": "y volvió a Hebrón, a su padre; y este lo recostó junto a sí, porque lo amaba.",
+  "6": "Y dijo José a nuestro padre que los hijos de Zelfa y de Bilhá degollaban las mejores reses y se las comían, contra el parecer de Judá y de Rubén.",
+  "7": "Porque vio que yo arranqué un cordero de la boca del oso, y que maté al oso, y degollé al cordero —doliéndome de él, porque no podía vivir—, y nos lo comimos; y se lo dijo a nuestro padre.",
+  "8": "Y yo le guardaba rencor a José por este asunto, hasta el día en que fue vendido a Egipto.",
+  "9": "Y el espíritu del odio estaba en mí, y no quería ver a José ni con los ojos ni con el oído. Y él nos reprendía cara a cara, porque comíamos las reses sin Judá; y todo cuanto le decía a nuestro padre, este se lo creía."
+ }
+}

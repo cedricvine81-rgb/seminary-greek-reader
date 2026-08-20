@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: El Libro de Enoc en la traducción de R. H. Charles (1917), de dominio público.",
+ "_why": "1 Enoc no se conserva completo en griego ni en su lengua original: el texto íntegro solo existe en ETIÓPICO (ge'ez), y de ahí procede el inglés que el lector muestra. Por eso, y a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas —traducidos en esta aplicación desde el griego—, esta versión española está hecha desde el inglés, es decir, a dos pasos del original. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de la traducción inglesa. No es una edición publicada.",
+ "_note": "⚠ DEFECTO DE LA FUENTE en este capítulo: varios versículos de la columna inglesa traen pegados, con restos de código de tabla («{| class=\"wikitable\"», «||», «|}»), DOS lecturas distintas —la del etíope y la del griego—, que en el original de Charles van en columnas paralelas. El español traduce solo la lectura ETÍOPE, que es el texto base de la obra, sin el código ni la columna griega duplicada. El valle maldito junto a Jerusalén es la Gehena. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Entonces dije: ¿Con qué fin está esta tierra bendita, que está enteramente llena de árboles, y este valle maldito entre ellos?",
+  "2": "Entonces Uriel, uno de los santos ángeles que estaba conmigo, respondió y dijo: Este valle maldito es para los que son malditos para siempre. Aquí se reunirán todos los malditos que profieren con sus labios palabras indecorosas contra el Señor y hablan cosas duras de su gloria. Aquí serán reunidos, y aquí estará su lugar de juicio.",
+  "3": "En los últimos días habrá sobre ellos el espectáculo del juicio justo en presencia de los justos para siempre; aquí los misericordiosos bendecirán al Señor de la gloria, el Rey Eterno.",
+  "4": "En los días del juicio sobre los primeros, lo bendecirán por la misericordia conforme a la cual les ha asignado su suerte.",
+  "5": "Entonces bendije al Señor de la Gloria y proclamé su gloria y lo alabé gloriosamente."
+ }
+}

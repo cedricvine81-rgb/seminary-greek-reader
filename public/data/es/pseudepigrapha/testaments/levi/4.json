@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 1 y v. 4 hablan de la pasión del Altísimo, del despojo del Hades y de unos hijos que ponen las manos sobre él para colgarlo del madero (ἀποσκολοπίσαι). Se traducen tal como el griego está, sin decidir aquí si son del texto judío original o interpolación cristiana posterior. En v. 4 el griego transmitido trae «υἱοὶ αὐτοῦ» (nominativo plural), que no concuerda; se traduce «de su Hijo», que es lo que pide la sintaxis y lo que traen los demás testigos. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Ahora, pues, sepan que el Señor hará juicio sobre los hijos de los hombres: porque, al partirse las rocas y apagarse el sol, y secarse las aguas y acobardarse el fuego, y estremecerse toda la creación, y derretirse los espíritus invisibles, y ser despojado el Hades por la pasión del Altísimo, los hombres, incrédulos, persistirán en sus injusticias; por eso serán juzgados con castigo.",
+  "2": "Escuchó, pues, el Altísimo tu oración, para apartarte de la injusticia y para que llegaras a ser para él hijo, servidor y ministro de su rostro.",
+  "3": "Luz de conocimiento, luminosa, harás brillar en Jacob, y como el sol serás para toda la descendencia de Israel.",
+  "4": "Y te será dada bendición a ti y a toda tu descendencia, hasta que el Señor visite a todas las naciones en las entrañas de misericordia de su Hijo, para siempre. Pero tus hijos pondrán las manos sobre él para colgarlo del madero.",
+  "5": "Y por eso te han sido dados consejo y entendimiento, para instruir a tus hijos acerca de él;",
+  "6": "porque el que lo bendiga será bendito, y los que lo maldigan perecerán."
+ }
+}

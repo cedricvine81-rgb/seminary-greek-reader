@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "σωφροσύνη se traduce «castidad» en todo este testamento, no «templanza» como en 4 Macabeos, porque aquí el sentido es siempre el dominio de sí frente a la mujer de Potifar; junto a ella van ἁγνεία = «pureza», μακροθυμία = «paciencia» y ὑπομονή = «constancia». Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Copia del testamento de José. Cuando estaba a punto de morir, llamó a sus hijos y a sus hermanos, y les dijo:",
+  "2": "Hijos míos y hermanos, escuchen a José, el amado de Israel; presten oído, hijos, a su padre.",
+  "3": "Yo vi en mi vida la envidia y la muerte, y no me extravié de la verdad del Señor.",
+  "4": "Estos hermanos míos me odiaron, y el Señor me amó; ellos querían matarme, y el Dios de mis padres me guardó; a una cisterna me bajaron, y el Altísimo me sacó;",
+  "5": "fui vendido como esclavo, y el Señor me hizo libre; fui llevado al cautiverio, y su mano fuerte me socorrió; me vi apretado por el hambre, y el Señor mismo me alimentó;",
+  "6": "estaba solo, y Dios me consoló; estaba enfermo, y el Altísimo me visitó; estaba en la cárcel, y el Salvador me dio gracia; en cadenas, y me soltó;",
+  "7": "en calumnias, y abogó por mí; en palabras amargas de los egipcios, y me libró; en envidias con engaños, y me exaltó."
+ }
+}

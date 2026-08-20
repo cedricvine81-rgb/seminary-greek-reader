@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "Todo el capítulo es de los discutidos: el unigénito, el templo, el madero, el velo rasgado, el espíritu derramado sobre las naciones, la subida del Hades. Se traduce como el griego está. v. 1 está corrupto en la fuente («ἀνανεώσησθε ἐν γυναιξὶ στρίνους»); se traduce el sentido que los editores le dan. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Sospecho también que habrá entre ustedes obras no buenas, por las palabras de Enoc el justo. Porque cometerán la fornicación de Sodoma, y perecerán hasta quedar unos pocos, y renovarán con mujeres los desenfrenos; y el reino del Señor no estará entre ustedes, porque él mismo lo tomará enseguida.",
+  "2": "Sin embargo, en la porción de ustedes estará el templo de Dios, y será glorioso entre ustedes. Porque él lo tomará, y allí se reunirán las doce tribus y todas las naciones, hasta que el Altísimo envíe su salvación en la visita de un unigénito.",
+  "3": "Y entrará en el primer templo, y allí el Señor será ultrajado y despreciado, y sobre un madero será levantado.",
+  "4": "Y el velo del templo será rasgado, y descenderá el espíritu de Dios sobre las naciones, como fuego derramado.",
+  "5": "Y subiendo del Hades, irá subiendo de la tierra al cielo. Y supe cuán humilde será en la tierra, y cuán glorioso en el cielo."
+ }
+}

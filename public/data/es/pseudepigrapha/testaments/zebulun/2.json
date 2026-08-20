@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "La familia de σπλάγχνα («entrañas») recorre todo este testamento y es su tema: se traduce siempre con «entrañas», «compadecerse» y «compasión entrañable», para que el estudiante la siga de capítulo en capítulo. Como en el Testamento de Simeón, la fisiología antigua se conserva: el hígado (v. 4) es asiento de la emoción. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Porque vinieron Simeón y Gad contra José para matarlo; y José, cayendo sobre su rostro, les decía:",
+  "2": "Tengan compasión de mí, hermanos míos; apiádense de las entrañas de Jacob, nuestro padre. No pongan sobre mí sus manos para derramar sangre inocente, porque no he pecado contra ustedes.",
+  "3": "Y si he pecado, corríjanme con corrección; pero no levanten su mano contra mí, por Jacob, nuestro padre.",
+  "4": "Y mientras decía estas palabras, yo me llené de lástima, y comencé a llorar, y se me deshizo el hígado dentro, y todo el sostén de mis entrañas se aflojó sobre mi alma.",
+  "5": "Y lloraba también José, y yo con él, y me retumbaba el corazón, y las junturas de mi cuerpo se descoyuntaron, y no podía tenerme en pie.",
+  "6": "Y al verme llorar con él, y ver que aquellos venían a matarlo, se refugió detrás de mí, rogándoles.",
+  "7": "Y levantándose Rubén, dijo: Hermanos, no lo matemos, sino arrojémoslo a una de estas cisternas secas que cavaron nuestros padres y no hallaron agua.",
+  "8": "Porque para esto había impedido el Señor que subiera agua en ellas: para que se lograra la salvación de José.",
+  "9": "Y el Señor lo hizo así, hasta que lo vendieron a los ismaelitas."
+ }
+}

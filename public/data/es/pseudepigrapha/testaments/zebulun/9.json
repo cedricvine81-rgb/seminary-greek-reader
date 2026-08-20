@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 8: «verán a Dios en figura de hombre» se traduce tal como el griego está, sin decidir aquí si es del texto judío original o interpolación cristiana posterior. El cierre —«Jerusalén es su nombre»— está corrupto en el griego transmitido y se deja como está; otros testigos lo traen como una frase aparte sobre la ciudad elegida. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Miren las aguas: mientras van juntas, arrastran piedras, maderos y arena;",
+  "2": "pero si se dividen en muchas, la tierra las absorbe y quedan en nada.",
+  "3": "Así serán también ustedes, si se dividen.",
+  "4": "No se partan en dos cabezas, porque todo lo que hizo el Señor tiene una sola cabeza. Dio dos hombros, dos manos, dos pies, pero todos los miembros obedecen a la única cabeza.",
+  "5": "Supe por el escrito de mis padres que en los últimos días se apartarán del Señor, y se dividirán en Israel, y seguirán a dos reyes, y cometerán toda abominación, y hasta adorarán a todo ídolo;",
+  "6": "y sus enemigos los llevarán cautivos, y habitarán entre las naciones en toda clase de enfermedades, aflicciones y dolor de alma.",
+  "7": "Y después de esto se acordarán del Señor, y se arrepentirán, y él los hará volver, porque es misericordioso y entrañable, y no toma en cuenta la maldad a los hijos de los hombres, porque son carne y los espíritus del error los engañan en todas sus obras.",
+  "8": "Y después de esto se levantará para ustedes el Señor mismo, luz de justicia, y sanidad y compasión entrañable en sus alas. Él redimirá de Beliar todo cautiverio de los hijos de los hombres, y todo espíritu del error será pisoteado; y hará volver a todas las naciones para provocarlo a celo; y verán a Dios en figura de hombre, aquel a quien el Señor escoja: Jerusalén es su nombre.",
+  "9": "Y de nuevo, con la maldad de sus palabras, lo irritarán, y serán rechazados hasta el tiempo de la consumación."
+ }
+}

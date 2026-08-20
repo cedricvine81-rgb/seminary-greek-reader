@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado: el manuscrito P (siglo XI), el testigo griego más antiguo del Testamento de Job, transcrito por la Online Critical Pseudepigrapha (dominio público). El inglés que acompaña al texto es también propio de esta aplicación, no una edición publicada.",
+ "_why": "El Testamento de Job se conserva en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. La numeración de capítulos y versículos sigue la división de M. R. James, que es la que se cita en los estudios. No es una edición publicada.",
+ "_note": "v. 6 y 40:14 remiten a unos «Paralipómenos» —escritos complementarios que la obra da por conocidos— hoy perdidos. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Y Elifaz y los demás, después de esto, se sentaron junto a mí, replicándome y hablando con arrogancia contra mí,",
+  "2": "de modo que a los veintisiete días se levantaron y se fueron a su propia región.",
+  "3": "Y Eliú los conjuró, diciendo: Espérenme, hasta que le muestre también esto: que ustedes han pasado tantos días soportando a Job, que se jacta de ser justo.",
+  "4": "Porque yo no lo soportaré. Porque desde el principio también yo lloré por él, acordándome de su antigua dicha; y él se ha encumbrado de golpe en su propia altura, y miren cómo ha hablado con grandeza y desmesura, diciendo que tiene su trono en los cielos.",
+  "5": "Escúchenme, pues, y les daré a conocer cuál es en verdad su parte, que no es la que él dice. Entonces Eliú, inspirado por Satanás, me dijo palabras insolentes,",
+  "6": "las cuales están escritas en los Paralipómenos de Elifaz."
+ }
+}

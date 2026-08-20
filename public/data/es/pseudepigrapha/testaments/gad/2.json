@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el griego que esta aplicación muestra al lado (texto tradicional de los Testamentos de los Doce Patriarcas, de dominio público). El inglés que acompaña al texto es el de R. H. Charles (1917) y no es la base de esta versión: se usó solo para cotejar nombres propios.",
+ "_why": "Los Testamentos se conservan en griego, de modo que esta versión española está hecha directamente desde ese griego —a un solo paso del original—, igual que las demás traducciones propias de esta aplicación. No es una edición publicada.",
+ "_note": "v. 1: el griego dice literalmente «no había en mí hígado de misericordia» (ἥπατα); como en los Testamentos de Simeón y Zabulón, el hígado es asiento del sentimiento. Aquí se traduce «entrañas de compasión» porque en español «hígado» no dice eso; en 5:9-11, donde el hígado es a la vez la víscera enferma y la sede del rencor, sí se traduce «hígado», que es donde está el juego. Traducción hecha para esta aplicación; no es una edición publicada. Se marca como tal en la interfaz.",
+ "verses": {
+  "1": "Confieso ahora mi pecado, hijos: que muchas veces quise matarlo, porque lo odiaba hasta el alma, y en modo alguno había en mí entrañas de compasión para con él.",
+  "2": "Y por causa de los sueños añadí odio, y quería borrarlo de la tierra de los vivientes, como el ternero lame la hierba verde de la tierra.",
+  "3": "Por eso yo y Judá lo vendimos a los ismaelitas por treinta monedas de oro, y escondiendo diez, mostramos las veinte a nuestros hermanos.",
+  "4": "Y así, con la codicia, quedé conforme con su muerte.",
+  "5": "Y el Dios de mis padres lo libró de mis manos, para que yo no cometiera iniquidad en Israel."
+ }
+}
