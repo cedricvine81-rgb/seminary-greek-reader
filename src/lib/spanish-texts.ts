@@ -65,6 +65,8 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'tp-benjamin': 'pseudepigrapha/testaments/benjamin',
   'tjob-greek': 'pseudepigrapha/tjob',
   'aristeas': 'pseudepigrapha/aristeas',
+  // English-only (Ethiopic original), so at two removes — every chapter file says so in its `_why`.
+  '1enoch': 'pseudepigrapha/1enoch',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
