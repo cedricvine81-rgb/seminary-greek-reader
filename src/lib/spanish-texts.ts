@@ -72,6 +72,9 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   '2baruch': 'pseudepigrapha/2baruch',
   // And 2 Enoch, which survives only in Old Church Slavonic (longer recension) — no Greek either.
   '2enoch': 'pseudepigrapha/2enoch',
+  // Latin palimpsest only (itself from a lost Greek), so likewise at two removes. One "verse" per
+  // chapter, because Charles prints each chapter as continuous prose and cites it that way.
+  'assumption-moses': 'pseudepigrapha/assumption-moses',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
