@@ -1,0 +1,17 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "«Y las novenas aguas negras que has visto: esta es toda la maldad que hubo en los días de Manasés, hijo de Ezequías.",
+  "2": "Porque obró mucha impiedad, y mató a los justos, y torció el juicio, y derramó la sangre de los inocentes, y contaminó violentamente a mujeres casadas, y derribó los altares, y destruyó sus ofrendas, y echó fuera a sus sacerdotes para que no ministraran en el santuario.",
+  "3": "E hizo una imagen con cinco caras: cuatro de ellas miraban a los cuatro vientos, y la quinta en la cima de la imagen, como adversaria del celo del Poderoso.",
+  "4": "Y entonces salió ira de la presencia del Poderoso con el fin de que Sion fuera desarraigada, como también aconteció en tus días.",
+  "5": "Pero también contra las dos tribus y media salió un decreto de que fueran igualmente llevadas cautivas, como ahora has visto.",
+  "6": "Y a tal grado creció la impiedad de Manasés, que quitó del santuario la alabanza del Altísimo.",
+  "7": "Por esta causa Manasés fue llamado en aquel tiempo “el impío”, y finalmente su morada estuvo en el fuego.",
+  "8": "Porque aunque su oración fue oída ante el Altísimo, finalmente, cuando fue echado en el caballo de bronce y el caballo de bronce fue derretido, esto le sirvió de señal para la hora.",
+  "9": "Porque no había vivido perfectamente, pues no era digno; sino para que desde entonces supiera por quién finalmente había de ser atormentado.",
+  "10": "Porque el que puede beneficiar también puede atormentar."
+ }
+}

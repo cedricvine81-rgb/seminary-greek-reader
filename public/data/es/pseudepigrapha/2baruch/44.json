@@ -1,0 +1,22 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Y yo, Baruc, fui de allí y vine a mi pueblo, y llamé a mi hijo primogénito, y a [los Gedalías] mis amigos, y a siete de los ancianos del pueblo, y les dije:",
+  "2": "«He aquí que yo voy a mis padres, según el camino de toda la tierra.",
+  "3": "Pero ustedes no se aparten del camino de la ley, sino guarden y amonesten al pueblo que queda, no sea que se aparten de los mandamientos del Poderoso.",
+  "4": "Porque ven que Aquel a quien servimos es justo, y nuestro Creador no hace acepción de personas.",
+  "5": "Y vean lo que ha acontecido a Sion, y lo que ha sucedido a Jerusalén.",
+  "6": "Porque por ello será conocido el juicio del Poderoso, y sus caminos, que, aunque inescrutables, son rectos.",
+  "7": "Porque si soportan y perseveran en su temor, y no olvidan su ley, los tiempos cambiarán sobre ustedes para bien, y verán la consolación de Sion.",
+  "8": "Porque todo lo que ahora es, nada es; pero lo que ha de ser es muy grande. Porque todo lo que es corruptible pasará,",
+  "9": "y todo lo que muere partirá; y todo el tiempo presente será olvidado, ni habrá memoria alguna del tiempo presente, que está contaminado de males.",
+  "10": "Porque lo que ahora corre, corre hacia la vanidad; y lo que prospera caerá pronto y será humillado.",
+  "11": "Porque lo que ha de ser será el objeto del deseo, y en lo que viene después esperaremos; porque es un tiempo que no pasa,",
+  "12": "y llega la hora que permanece para siempre. Y viene el mundo nuevo, que no vuelve a la corrupción a los que parten a su bienaventuranza, y no tiene misericordia de los que parten al tormento, y no lleva a perdición a los que viven en él.",
+  "13": "Porque estos son los que heredarán aquel tiempo del cual se ha hablado, y de ellos es la heredad del tiempo prometido.",
+  "14": "Estos son los que han adquirido para sí tesoros de sabiduría, y con ellos se hallan depósitos de entendimiento; y de la misericordia no se han apartado, y la verdad de la ley han preservado.",
+  "15": "Porque a ellos les será dado el mundo venidero; pero la morada de los demás, que son muchos, será en el fuego»."
+ }
+}

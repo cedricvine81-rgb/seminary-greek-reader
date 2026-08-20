@@ -1,0 +1,19 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "«Y las cuartas aguas claras que has visto son el advenimiento de Moisés y de Aarón y de María, y de Josué hijo de Nun, y de Caleb, y de todos los semejantes a ellos.",
+  "2": "Porque en aquel tiempo la lámpara de la ley eterna brilló sobre todos los que estaban sentados en tinieblas, la cual anunció a los que creen la promesa de su galardón, y a los que niegan, el tormento del fuego que les está reservado.",
+  "3": "Pero también los cielos fueron entonces sacudidos de su lugar, y los que estaban debajo del trono del Poderoso fueron perturbados, cuando él tomaba a Moisés para sí.",
+  "4": "Porque le mostró muchas amonestaciones junto con los principios de la ley y la consumación de los tiempos, como también a ti; y asimismo el modelo de Sion y sus medidas, conforme al cual había de hacerse el santuario del tiempo presente.",
+  "5": "Pero entonces también le mostró las medidas del fuego, y las profundidades del abismo, y el peso de los vientos, y el número de las gotas de lluvia;",
+  "6": "y la represión de la ira, y la multitud de la longanimidad, y la verdad del juicio;",
+  "7": "y la raíz de la sabiduría, y las riquezas del entendimiento, y la fuente del conocimiento;",
+  "8": "y la altura del aire, y la grandeza del Paraíso, y la consumación de los siglos, y el comienzo del día del juicio;",
+  "9": "y el número de las ofrendas, y las tierras que aún no han venido;",
+  "10": "y la boca de la Gehena, y la estación de la venganza, y el lugar de la fe, y la región de la esperanza;",
+  "11": "y la semejanza del tormento futuro, y la multitud de ángeles innumerables, y las huestes llameantes, y el esplendor de los relámpagos, y la voz de los truenos, y los órdenes de los jefes de los ángeles, y los tesoros de la luz, y los cambios de los tiempos, y las investigaciones de la ley.",
+  "12": "Estas son las cuartas aguas claras que has visto."
+ }
+}

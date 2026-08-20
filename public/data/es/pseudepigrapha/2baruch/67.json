@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "«Y las undécimas aguas negras que has visto: esta es la calamidad que ahora está aconteciendo a Sion.",
+  "2": "¿Piensas que no hay angustia para los ángeles en la presencia del Poderoso, de que Sion haya sido así entregada, y de que ¡he aquí! las naciones se jacten en sus corazones y se reúnan delante de sus ídolos y digan: “Ha sido hollada la que muchas veces holló, y ha sido reducida a servidumbre la que redujo a otros”?",
+  "3": "¿Piensas que en estas cosas se regocija el Altísimo, o que su nombre es glorificado?",
+  "4": "[¿Pero cómo servirá esto para su justo juicio?]",
+  "5": "Sin embargo, después de estas cosas los dispersos entre las naciones serán alcanzados por la tribulación, y en vergüenza morarán en todo lugar.",
+  "6": "Porque en la medida en que Sion es entregada y Jerusalén asolada, prosperarán los ídolos en las ciudades de las naciones; y el vapor del humo del incienso de la justicia que es por la ley se ha extinguido en Sion, y en la región de Sion, en todo lugar, ¡he aquí! está el humo de la impiedad.",
+  "7": "Pero se levantará el rey de Babilonia, el que ahora ha destruido a Sion, y se jactará sobre el pueblo, y hablará grandes cosas en su corazón en presencia del Altísimo.",
+  "8": "Pero él también caerá al fin. Estas son las aguas negras."
+ }
+}

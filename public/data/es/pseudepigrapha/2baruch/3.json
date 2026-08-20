@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Y dije: «Oh SEÑOR, Señor mío, ¿acaso he venido al mundo para esto, para ver los males de mi madre? No así, Señor mío.",
+  "2": "Si he hallado gracia ante tus ojos, toma primero mi espíritu, para que vaya a mis padres y no contemple la destrucción de mi madre.",
+  "3": "Porque dos cosas me constriñen con fuerza: que no puedo resistirte, y que mi alma, además, no puede contemplar los males de mi madre.",
+  "4": "Pero una cosa diré en tu presencia, oh Señor.",
+  "5": "¿Qué habrá, entonces, después de estas cosas? Porque si destruyes tu ciudad y entregas tu tierra a los que nos aborrecen, ¿cómo será recordado otra vez el nombre de Israel?",
+  "6": "¿O cómo hablará alguno de tus alabanzas? ¿O a quién le será explicado lo que está en tu ley? ¿O volverá el mundo a su naturaleza de antaño, y retornará el siglo al silencio primordial? ¿Y será quitada la multitud de las almas, y no será nombrada de nuevo la naturaleza del hombre? ¿Y dónde queda todo aquello que dijiste acerca de nosotros?»."
+ }
+}

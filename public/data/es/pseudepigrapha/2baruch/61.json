@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Y las sextas aguas claras que viste: este es el tiempo en que nacieron David y Salomón.",
+  "2": "Y hubo en aquel tiempo la edificación de Sion, y la dedicación del santuario, y el derramamiento de mucha sangre de las naciones que entonces pecaron, y muchas ofrendas que fueron ofrecidas entonces en la dedicación del santuario.",
+  "3": "Y paz y tranquilidad existieron en aquel tiempo,",
+  "4": "y la sabiduría fue oída en la asamblea, y las riquezas del entendimiento fueron magnificadas en las congregaciones,",
+  "5": "y las fiestas santas fueron cumplidas en bienaventuranza y en mucho gozo.",
+  "6": "Y el juicio de los gobernantes fue visto entonces sin engaño, y la justicia de los preceptos del Poderoso fue cumplida con verdad.",
+  "7": "Y la tierra fue entonces amada por el Señor; y porque sus habitantes no pecaron, fue glorificada más que todas las tierras, y la ciudad de Sion gobernó entonces sobre todas las tierras y regiones.",
+  "8": "Estas son las aguas claras que has visto."
+ }
+}

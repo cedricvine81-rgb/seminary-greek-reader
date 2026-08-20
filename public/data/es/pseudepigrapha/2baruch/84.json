@@ -1,0 +1,18 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "¡He aquí! les he dado a conocer, pues, estas cosas mientras vivo; porque lo he dicho para que aprendan las cosas que son excelentes, pues el Poderoso me ha mandado instruirlos; y pondré delante de ustedes algunos de los mandamientos de su juicio antes de morir.",
+  "2": "Recuerden que antiguamente Moisés ciertamente llamó al cielo y a la tierra por testigos contra ustedes, y dijo: «Si transgreden la ley, serán dispersados; pero si la guardan, serán guardados».",
+  "3": "Y otras cosas también solía decirles cuando ustedes, las doce tribus, estaban juntas en el desierto.",
+  "4": "Y después de su muerte las echaron de ustedes; por esta causa vino sobre ustedes lo que había sido predicho.",
+  "5": "Y ahora bien, Moisés solía decírselo antes de que les aconteciera, y ¡he aquí! les ha acontecido; porque han abandonado la ley.",
+  "6": "¡He aquí! yo también les digo, después de que han sufrido, que si obedecen aquellas cosas que les han sido dichas, recibirán del Poderoso todo lo que ha sido guardado y reservado para ustedes.",
+  "7": "Además, sea esta epístola por testimonio entre mí y ustedes, para que recuerden los mandamientos del Poderoso, y para que también haya para mí una defensa en la presencia de Aquel que me envió.",
+  "8": "Y recuerden la ley y a Sion, y la tierra santa y a sus hermanos, y el pacto de sus padres; y no olviden las fiestas ni los sábados.",
+  "9": "Y entreguen esta epístola y las tradiciones de la ley a sus hijos después de ustedes, como también sus padres se las entregaron a ustedes.",
+  "10": "Y en todo tiempo pidan perseverantemente y oren diligentemente con todo su corazón, para que el Poderoso se reconcilie con ustedes, y para que no tome en cuenta la multitud de sus pecados, sino que recuerde la rectitud de sus padres.",
+  "11": "Porque si él no nos juzga conforme a la multitud de sus misericordias, ¡ay de todos nosotros los que nacemos!"
+ }
+}

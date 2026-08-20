@@ -1,0 +1,22 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Sepan, además, que en tiempos pasados y en las generaciones antiguas aquellos padres nuestros tuvieron ayudadores: varones justos y santos profetas.",
+  "2": "Más aún, estábamos en nuestra propia tierra; y ellos nos ayudaban cuando pecábamos, e intercedían por nosotros ante Aquel que nos hizo, porque confiaban en sus obras; y el Poderoso oía su oración y nos perdonaba.",
+  "3": "Pero ahora los justos han sido recogidos, y los profetas se han dormido, y nosotros también hemos salido de la tierra, y Sion nos ha sido quitada; y no tenemos ahora nada, salvo al Poderoso y su Ley.",
+  "4": "Si, pues, dirigimos y disponemos nuestros corazones, recibiremos todo lo que perdimos, y cosas muchas veces mejores que las que perdimos.",
+  "5": "Porque lo que hemos perdido estaba sujeto a corrupción, y lo que recibiremos no será corruptible.",
+  "6": "Además, también he escrito así a nuestros hermanos en Babilonia, para que a ellos también les atestigüe estas mismas cosas.",
+  "7": "Y estén siempre delante de sus ojos todas aquellas cosas antedichas, porque todavía estamos en el espíritu y el poder de nuestra libertad.",
+  "8": "Otra vez, además, el Altísimo es también longánimo con nosotros aquí; y nos ha mostrado lo que ha de ser, y no nos ha ocultado lo que acontecerá al fin.",
+  "9": "Antes, pues, de que el juicio exija lo suyo, y la verdad lo que le es debido, preparemos nuestra alma, para que entremos en posesión y no seamos poseídos; y para que esperemos y no seamos avergonzados; y para que reposemos con nuestros padres y no seamos atormentados con nuestros enemigos.",
+  "10": "Porque la juventud del mundo ha pasado, y la fuerza de la creación está ya agotada, y el advenimiento de los tiempos es muy corto; sí, ya han pasado. Y el cántaro está cerca de la cisterna, y la nave del puerto, y el curso del viaje de la ciudad, y la vida de su consumación.",
+  "11": "Y otra vez, preparen sus almas, para que cuando naveguen y suban de la nave tengan reposo, y no sean condenados cuando partan.",
+  "12": "Porque ¡he aquí! cuando el Altísimo haga acontecer todas estas cosas, no habrá allí de nuevo lugar de arrepentimiento, ni límite para los tiempos, ni duración para las horas, ni cambio de caminos, ni lugar para la oración, ni envío de peticiones, ni recepción de conocimiento, ni dádiva de amor, ni lugar de arrepentimiento para el alma, ni súplica por las ofensas, ni intercesión de los padres, ni oración de los profetas, ni auxilio de los justos.",
+  "13": "Allí está la sentencia de corrupción, el camino del fuego, y la senda que lleva a la Gehena.",
+  "14": "Por esta causa hay una sola Ley de Uno solo, un solo siglo y un fin para todos los que están en él.",
+  "15": "Entonces él preservará a aquellos a quienes pueda perdonar, y al mismo tiempo destruirá a los que están contaminados con pecados.]"
+ }
+}

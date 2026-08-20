@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Sin embargo, todo el que entienda será entonces sabio.",
+  "2": "Porque la medida y el cómputo de aquel tiempo son dos partes: una semana de siete semanas».",
+  "3": "Y respondí y dije: «Bueno es para un hombre venir y contemplar, pero mejor es que no venga, no sea que caiga.",
+  "4": "[Pero diré también esto:",
+  "5": "¿despreciará el que es incorruptible las cosas que son corruptibles, y todo lo que acontece en el caso de las cosas corruptibles, de modo que mire solamente a las cosas que no son corruptibles?]",
+  "6": "Pero si, oh Señor, ciertamente han de acontecer aquellas cosas que me has predicho, muéstrame también esto, si en verdad he hallado gracia ante tus ojos:",
+  "7": "¿es en un solo lugar, o en una de las partes de la tierra, donde han de acontecer aquellas cosas, o las experimentará toda la tierra?»."
+ }
+}

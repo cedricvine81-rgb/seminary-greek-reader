@@ -1,0 +1,29 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "[Porque el Altísimo ciertamente apresurará sus tiempos, y ciertamente traerá sus horas.",
+  "2": "Y ciertamente juzgará a los que están en su mundo, y visitará en verdad todas las cosas por medio de todas sus obras ocultas.",
+  "3": "Y ciertamente examinará los pensamientos secretos, y lo que está guardado en las cámaras secretas de todos los miembros del hombre, y los hará manifiestos en presencia de todos, con reprensión.",
+  "4": "Que ninguna, pues, de estas cosas presentes suba a sus corazones, sino que, sobre todo, estemos expectantes, porque vendrá lo que nos ha sido prometido.",
+  "5": "Y no miremos ahora a los deleites de las naciones en el presente, sino recordemos lo que nos ha sido prometido para el fin.",
+  "6": "Porque los fines de los tiempos y de las estaciones, y todo lo que está con ellos, ciertamente pasarán juntamente.",
+  "7": "La consumación, además, del siglo mostrará entonces el gran poder de su gobernante, cuando todas las cosas vengan a juicio.",
+  "8": "Preparen, pues, sus corazones para aquello que antes creyeron, no sea que vengan a estar en servidumbre en ambos mundos, de modo que sean llevados cautivos aquí y sean atormentados allá.",
+  "9": "Porque en cuanto a lo que existe ahora, o lo que ha pasado, o lo que ha de venir, en todas estas cosas ni el mal es plenamente mal, ni tampoco el bien plenamente bien.",
+  "10": "Porque todas las saludes de este tiempo se están tornando en enfermedades,",
+  "11": "y todo poder de este tiempo se está tornando en debilidad, y toda la fuerza de este tiempo se está tornando en impotencia,",
+  "12": "y toda energía de la juventud se está tornando en vejez y consumación; y toda hermosura de la gracia de este tiempo se está tornando marchita y aborrecible,",
+  "13": "y todo dominio soberbio del presente se está tornando en humillación y vergüenza,",
+  "14": "y toda alabanza de la gloria de este tiempo se está tornando en la vergüenza del silencio; y todo esplendor vano e insolencia de este tiempo se está tornando en ruina sin voz.",
+  "15": "Y todo deleite y gozo de este tiempo se está tornando en gusanos y corrupción,",
+  "16": "y todo clamor de la soberbia de este tiempo se está tornando en polvo y quietud.",
+  "17": "Y toda posesión de riquezas de este tiempo se está tornando solamente en Seol,",
+  "18": "y toda la rapiña de la pasión de este tiempo se está tornando en muerte involuntaria; y toda pasión de las concupiscencias de este tiempo se está tornando en un juicio de tormento.",
+  "19": "Y todo artificio y astucia de este tiempo se está tornando en una prueba de la verdad,",
+  "20": "y toda dulzura de ungüentos de este tiempo se está tornando en juicio y condenación,",
+  "21": "y todo amor de la mentira se está tornando en oprobio por medio de la verdad.",
+  "22": "[Puesto que, pues, todas estas cosas se hacen ahora, ¿piensa alguno que no serán vengadas? Pero la consumación de todas las cosas vendrá a la verdad.]"
+ }
+}

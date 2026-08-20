@@ -1,0 +1,22 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Y él respondió y me dijo: «En doce partes está dividido aquel tiempo, y cada una de ellas está reservada para lo que le está señalado.",
+  "2": "En la primera parte habrá el comienzo de las conmociones.",
+  "3": "Y en la segunda parte, matanzas de los grandes.",
+  "4": "Y en la tercera parte, la caída de muchos por la muerte.",
+  "5": "Y en la cuarta parte, el envío de la espada.",
+  "6": "Y en la quinta parte, hambre y la retención de la lluvia.",
+  "7": "Y en la sexta parte, terremotos y terrores.",
+  "8": "[Falta.]",
+  "9": "Y en la octava parte, una multitud de espectros y ataques de los Shedim.",
+  "10": "Y en la novena parte, la caída de fuego.",
+  "11": "Y en la décima parte, rapiña y mucha opresión.",
+  "12": "Y en la undécima parte, maldad e impureza.",
+  "13": "Y en la duodécima parte, confusión por la mezcla de todas aquellas cosas antedichas.",
+  "14": "Porque estas partes de aquel tiempo están reservadas, y serán mezcladas unas con otras y se servirán unas a otras.",
+  "15": "Porque algunas dejarán fuera algo de lo suyo y recibirán en su lugar de otras, y algunas completarán lo suyo y lo de otras, de modo que los que estén sobre la tierra en aquellos días no entiendan que esta es la consumación de los tiempos."
+ }
+}

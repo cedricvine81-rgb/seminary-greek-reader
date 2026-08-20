@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Además, yo, Baruc, digo esto contra ti, Babilonia: «Si tú hubieras prosperado y Sion hubiera morado en su gloria, aun así habría sido grande nuestro dolor de que tú fueras igual a Sion.",
+  "2": "Pero ahora, ¡he aquí!, el dolor es infinito y la lamentación sin medida, porque ¡he aquí! tú eres prosperada y Sion está desolada.",
+  "3": "¿Quién será juez respecto de estas cosas? ¿O a quién nos quejaremos por lo que nos ha acontecido? Oh Señor, ¿cómo lo has soportado?",
+  "4": "Nuestros padres fueron a su descanso sin dolor, y ¡he aquí! los justos duermen en la tierra en tranquilidad;",
+  "5": "porque no conocieron esta angustia.",
+  "6": "¡Ojalá tuvieras oídos, oh tierra, y ojalá tuvieras corazón, oh polvo!, para que fueras y anunciaras en el Seol, y dijeras a los muertos:",
+  "7": "“Bienaventurados son ustedes más que nosotros, los que vivimos”»."
+ }
+}

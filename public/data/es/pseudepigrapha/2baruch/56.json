@@ -1,0 +1,23 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "«Sin embargo, porque has rogado al Altísimo que te revele la interpretación de la visión que has visto, he sido enviado para decírtela.",
+  "2": "Y el Poderoso ciertamente te ha dado a conocer los métodos de los tiempos que han pasado y de los que están destinados a pasar en su mundo, desde el principio de su creación hasta su consumación: de aquellas cosas que son engaño y de las que son en verdad.",
+  "3": "Porque en cuanto a que viste una gran nube que subía del mar, y fue y cubrió la tierra, esta es la duración del mundo (αἰών) que el Poderoso hizo cuando tomó consejo para hacer el mundo.",
+  "4": "Y aconteció que, cuando la palabra hubo salido de su presencia, la duración del mundo vino a ser en pequeño grado, y fue establecida conforme a la multitud de la inteligencia de Aquel que la envió.",
+  "5": "Y en cuanto a que antes viste en la cima de la nube aguas negras que descendieron primero sobre la tierra, esta es la transgresión con la cual transgredió Adán, el primer hombre.",
+  "6": "Porque cuando él transgredió, vino a ser la muerte prematura, y fue nombrado el dolor, y fue preparada la angustia, y fue creado el sufrimiento, y fue consumada la fatiga, y la enfermedad comenzó a establecerse, y el Seol siguió exigiendo que fuera renovado con sangre, y fue traída la generación de los hijos, y fue producida la pasión de los padres, y la grandeza de la humanidad fue humillada, y la bondad languideció.",
+  "7": "¿Qué, pues, puede ser más negro o más oscuro que estas cosas?",
+  "8": "Este es el comienzo de las aguas negras que has visto.",
+  "9": "Y de estas aguas negras se derivaron de nuevo negras, y fue producida la oscuridad de las tinieblas.",
+  "10": "Porque él vino a ser un peligro para su propia alma, y aun para los ángeles.",
+  "11": "Porque, además, en aquel tiempo en que fue creado, ellos gozaban de libertad.",
+  "12": "Y cuando él vino a ser un peligro, algunos de ellos descendieron y se mezclaron con las mujeres.",
+  "13": "Y entonces los que hicieron así fueron atormentados en cadenas.",
+  "14": "Pero el resto de la multitud de los ángeles, de los cuales no hay número, se contuvieron.",
+  "15": "Y los que moraban sobre la tierra perecieron juntamente con ellos por las aguas del diluvio.",
+  "16": "Estas son las primeras aguas negras."
+ }
+}

@@ -67,6 +67,9 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'aristeas': 'pseudepigrapha/aristeas',
   // English-only (Ethiopic original), so at two removes — every chapter file says so in its `_why`.
   '1enoch': 'pseudepigrapha/1enoch',
+  // Likewise at two removes: 2 Baruch survives whole only in Syriac (Cod. Ambrosianus), itself a
+  // translation of a lost Greek. Charles's English is what the reader shows and what this renders.
+  '2baruch': 'pseudepigrapha/2baruch',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit

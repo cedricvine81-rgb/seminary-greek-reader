@@ -1,0 +1,26 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Y respondí y dije: «¡He aquí! me has mostrado el método de los tiempos, y lo que será después de estas cosas, y me has dicho que la retribución de la cual has hablado vendrá sobre las naciones. [Frg. gr., 1a: Y respondí y dije: “He aquí, me has mostrado los métodos de los tiempos, y lo que ha de ser”.]",
+  "2": "Y ahora sé que los que han pecado son muchos, y han vivido en prosperidad y han partido del mundo; pero pocas naciones quedarán en aquellos tiempos, a quienes serán dichas aquellas palabras que tú dijiste. [Frg. gr., 2a: Y ahora sé que los que han pecado son muchos, y han vivido…, y han partido del mundo, pero que pocas naciones quedarán en aquellos tiempos, a quienes… las palabras que tú dijiste.]",
+  "3": "Porque ¿qué provecho hay en esto? ¿O qué cosa peor que la que hemos visto acontecernos hemos de esperar ver? [Frg. gr., 3a: ¿Y qué provecho hay en esto, o qué cosa peor que estas?]",
+  "4": "Pero de nuevo hablaré en tu presencia:",
+  "5": "¿De qué les aprovechó a los que tuvieron conocimiento delante de ti, y no anduvieron en vanidad como el resto de las naciones, y no dijeron a los muertos: “Danos vida”, sino que siempre te temieron y no abandonaron tus caminos?",
+  "6": "Y ¡he aquí! han sido arrebatados, y por causa de ellos no has tenido misericordia de Sion.",
+  "7": "Y si otros hicieron mal, se le debía a Sion que, por causa de las obras de los que obraron buenas obras, ella fuera perdonada y no fuera abrumada por causa de las obras de los que obraron injusticia.",
+  "8": "Pero ¿quién, oh SEÑOR, Señor mío, comprenderá tu juicio? ¿O quién escudriñará la hondura de tu camino? ¿O quién ponderará el peso de tu senda?",
+  "9": "¿O quién podrá pensar tu incomprensible consejo? ¿O quién de los nacidos ha hallado jamás el principio o el fin de tu sabiduría?",
+  "10": "Porque todos hemos sido hechos como un soplo.",
+  "11": "Porque así como el soplo asciende involuntariamente y de nuevo muere, así es con la naturaleza de los hombres, que no parten según su propia voluntad y no saben lo que les acontecerá al fin.",
+  "12": "Porque los justos esperan con razón el fin, y sin temor parten de esta habitación, porque tienen contigo un tesoro de obras guardadas en depósitos.",
+  "13": "Por esta causa también estos dejan sin temor este mundo, y confiando con gozo esperan recibir el mundo que tú les has prometido.",
+  "14": "Pero en cuanto a nosotros, ¡ay de nosotros!, que ahora también somos tratados con vergüenza, y para aquel tiempo solo esperamos males.",
+  "15": "Pero tú sabes con exactitud lo que has hecho por medio de tus siervos; porque nosotros no somos capaces de entender lo que es bueno como tú lo entiendes, Creador nuestro.",
+  "16": "Pero de nuevo hablaré en tu presencia, oh SEÑOR, Señor mío.",
+  "17": "Cuando antiguamente no había mundo con sus habitantes, tú lo ideaste y hablaste con una palabra, y al instante las obras de la creación estuvieron delante de ti.",
+  "18": "Y dijiste que harías para tu mundo al hombre como administrador de tus obras, para que se supiera que él de ninguna manera fue hecho a causa del mundo, sino el mundo a causa de él.",
+  "19": "Y ahora veo que, en cuanto al mundo que fue hecho a causa de nosotros, ¡he aquí! permanece; pero nosotros, a causa de quienes fue hecho, partimos»."
+ }
+}

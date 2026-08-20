@@ -1,0 +1,33 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis siríaco de Baruc (2 Baruc) en la traducción de R. H. Charles (1896), de dominio público.",
+ "_why": "2 Baruc no se conserva en su lengua original. El texto completo sobrevive únicamente en SIRÍACO, en un solo manuscrito (el Códice Ambrosiano, siglo VI), y ese siríaco es a su vez traducción de un griego perdido, que la mayoría de los especialistas considera traducción de un hebreo anterior. El inglés que el lector muestra es la versión de Charles hecha desde ese siríaco. Por eso esta versión española está hecha desde el inglés, es decir, a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, traducidos en esta aplicación desde el griego. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del texto antiguo, sino de una traducción de él.",
+ "_note": "Los encabezados de sección que la edición inglesa intercala en el cuerpo del texto (p. ej. «4:2-7. The heavenly Jerusalem») son aparato editorial, no texto de Baruc, y no se reproducen aquí. En los capítulos 12-14 el inglés yuxtapone al texto siríaco las lecturas paralelas del fragmento griego de Oxirrinco, marcadas 1a, 2a, etc.; se conservan aquí entre corchetes y rotuladas, para que no se confundan con el texto principal. En 27:8 el manuscrito no conserva la séptima parte: la laguna se marca «[Falta.]», como en el inglés. En 70:7 el inglés está defectuoso (falta el verbo principal); el suplemento va entre corchetes: «[suscitará]». La numeración de versículos sigue la del inglés que el lector muestra.",
+ "verses": {
+  "1": "Y yo, Baruc, fui allá y vine al pueblo, y los reuní desde el mayor hasta el menor, y les dije:",
+  "2": "«Oigan, hijos de Israel; miren cuántos son ustedes los que quedan de las doce tribus de Israel.",
+  "3": "Porque a ustedes y a sus padres el Señor les dio una ley más excelente que a todos los pueblos.",
+  "4": "Y porque sus hermanos transgredieron los mandamientos del Altísimo, él no perdonó a los primeros, y a los últimos también los entregó en cautiverio; y no dejó residuo de ellos.",
+  "5": "Pero ¡he aquí! ustedes están aquí conmigo.",
+  "6": "Si, pues, dirigen bien sus caminos, ustedes tampoco partirán como partieron sus hermanos, sino que ellos vendrán a ustedes.",
+  "7": "Porque misericordioso es Aquel a quien adoran, y bondadoso es Aquel en quien esperan, y es verdadero, de modo que hará bien y no mal.",
+  "8": "¿No han visto aquí lo que ha acontecido a Sion?",
+  "9": "¿O piensan acaso que el lugar había pecado, y que por esta causa fue derribado? ¿O que la tierra había obrado necedad, y que por eso fue entregada?",
+  "10": "¿Y no saben que a causa de ustedes, que pecaron, fue derribado lo que no pecó; y que a causa de los que obraron impíamente, fue entregado a sus enemigos lo que no obró necedad?».",
+  "11": "Y todo el pueblo respondió y me dijo: «En cuanto podemos recordar las cosas buenas que el Poderoso nos ha hecho, las recordamos; y aquellas que no recordamos, él en su misericordia las conoce.",
+  "12": "Sin embargo, haz esto por nosotros, tu pueblo: escribe también a nuestros hermanos en Babilonia una epístola de doctrina y un rollo de esperanza, para que los confirmes también a ellos antes de que partas de nosotros.",
+  "13": "Porque los pastores de Israel han perecido, y las lámparas que daban luz están apagadas, y las fuentes han retenido su corriente, de la cual solíamos beber.",
+  "14": "Y hemos quedado en la oscuridad, y entre los árboles del bosque, y en la sed del desierto».",
+  "15": "Y respondí y les dije: «Pastores y lámparas y fuentes vienen de la ley; y aunque nosotros partamos, la ley permanece.",
+  "16": "Si, pues, tienen respeto a la ley y están atentos a la sabiduría, no faltará una lámpara, ni fallará un pastor, ni se secará una fuente.",
+  "17": "Sin embargo, como me han dicho, escribiré también a sus hermanos en Babilonia, y enviaré por medio de hombres; y escribiré de igual manera a las nueve tribus y media, y enviaré por medio de un ave».",
+  "18": "Y aconteció el día veintiuno del mes octavo que yo, Baruc, vine y me senté bajo el roble, a la sombra de las ramas; y ningún hombre estaba conmigo, sino que estaba solo.",
+  "19": "Y escribí estas dos epístolas: una la envié por medio de un águila a las nueve tribus y media, y la otra la envié a los que estaban en Babilonia por medio de tres hombres.",
+  "20": "Y llamé al águila y le hablé estas palabras:",
+  "21": "«El Altísimo te ha hecho para que fueras más alta que todas las aves.",
+  "22": "Y ahora ve y no te demores en lugar alguno, ni entres en nido, ni te poses sobre árbol alguno, hasta que hayas pasado la anchura de las muchas aguas del río Éufrates, y hayas ido al pueblo que allí habita, y les hayas echado esta epístola.",
+  "23": "Recuerda, además, que en el tiempo del diluvio Noé recibió de una paloma el fruto del olivo, cuando la envió fuera del arca.",
+  "24": "Sí, también los cuervos sirvieron a Elías, trayéndole comida, como les había sido mandado.",
+  "25": "También Salomón, en el tiempo de su reino, a dondequiera que deseaba enviar o buscar algo, mandaba a un ave que fuera allá, y ella le obedecía como él se lo mandaba.",
+  "26": "Y ahora no te canses, y no te desvíes ni a la derecha ni a la izquierda, sino vuela y ve por camino directo, para que guardes el mandato del Poderoso, conforme a lo que te he dicho»."
+ }
+}
