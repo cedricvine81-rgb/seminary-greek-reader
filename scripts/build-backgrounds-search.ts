@@ -3,9 +3,18 @@
 // Testaments) so they can be searched together — the counterpart to the canonical-Bible
 // indexes built by build-translation-index.mjs. Two facets are written:
 //
-//   public/data/backgrounds-search-en.json.gz   — English (prose works + Brenton)
-//   public/data/backgrounds-search-grc.json.gz  — Greek (Septuagint)
-//   public/data/backgrounds-search-es.json.gz   — OUR OWN Spanish (see src/lib/spanish-texts.ts)
+//   public/data/backgrounds-search/<lang>/<category>.json.gz
+//
+// Sharded by catalogue collection, because the index is held in a serverless instance's memory
+// and those instances are recycled while the app is quiet — so at low traffic a search usually
+// pays to load the whole thing. Measured in production: 1–3 s per search. Almost every search is
+// already scoped (the Texts search box passes work=, the word menu passes category=), so a shard
+// is all it needs: Apocrypha is 0.32 MB against the English facet's 20.5 MB, Josephus 1.37 MB.
+// Only the all-collections scope loads every shard, and the shards sum to the same total, so
+// nothing is paid for that case.
+//
+// Facets: en (prose works + Brenton), grc (Septuagint + Greek prose), es (OUR OWN Spanish,
+// see src/lib/spanish-texts.ts).
 //
 // The `es` facet covers only the works we translated ourselves — the Apocrypha collection and
 // Josephus. It exists so a reader who has the Spanish column open can right-click a Spanish word
@@ -177,13 +186,59 @@ function bakeTranslations(): string[] {
 
 const grcTrans = bakeTranslations()
 
-function write(name: string, entries: Entry[], trans?: string[]) {
-  const gz = zlib.gzipSync(Buffer.from(JSON.stringify(trans ? { entries, trans } : { entries }), 'utf8'))
-  fs.writeFileSync(path.join(DATA, name), gz)
-  const bySrc = entries.reduce<Record<string, number>>((a, e) => { a[e.g] = (a[e.g] ?? 0) + 1; return a }, {})
-  console.log(`${name}: ${entries.length} entries, ${(gz.length / 1e6).toFixed(2)} MB gz, ${Object.keys(bySrc).length} works`)
+// Work id -> catalogue category, for splitting the flat arrays into shards.
+const CATEGORY_OF = new Map<string, string>()
+for (const cat of TEXT_CATEGORIES) for (const w of cat.works) CATEGORY_OF.set(w.id, cat.id)
+
+/**
+ * Write one facet as per-collection shards. Entries keep the order they were built in, which is
+ * catalogue order — the query lib reads a hit's neighbours by array index, so document order is
+ * load-bearing, and concatenating the shards back in catalogue order must reproduce the original
+ * array exactly.
+ *
+ * Each shard carries its own `trans` table holding only the strings its own entries reference,
+ * with `x` remapped into it: an index into a table the shard does not ship would be meaningless.
+ */
+function writeFacet(lang: string, entries: Entry[], trans: string[] = []) {
+  const dir = path.join(DATA, 'backgrounds-search', lang)
+  fs.rmSync(dir, { recursive: true, force: true })
+  fs.mkdirSync(dir, { recursive: true })
+
+  const byCategory = new Map<string, Entry[]>()
+  for (const e of entries) {
+    const cat = CATEGORY_OF.get(e.g)
+    if (!cat) continue                     // a work not in the catalogue is unreachable anyway
+    const arr = byCategory.get(cat)
+    if (arr) arr.push(e)
+    else byCategory.set(cat, [e])
+  }
+
+  let total = 0
+  const parts: string[] = []
+  for (const [cat, rows] of Array.from(byCategory.entries())) {
+    const table: string[] = []
+    const remap = new Map<number, number>()
+    const shaped = rows.map(e => {
+      if (e.x === undefined) return e
+      let i = remap.get(e.x)
+      if (i === undefined) { i = table.length; table.push(trans[e.x]); remap.set(e.x, i) }
+      return { ...e, x: i }
+    })
+    const gz = zlib.gzipSync(Buffer.from(JSON.stringify(table.length ? { entries: shaped, trans: table } : { entries: shaped }), 'utf8'))
+    fs.writeFileSync(path.join(dir, `${cat}.json.gz`), gz)
+    total += gz.length
+    parts.push(`${cat} ${(gz.length / 1e6).toFixed(2)}MB`)
+  }
+  console.log(`backgrounds-search/${lang}/: ${entries.length} entries in ${byCategory.size} shards, ${(total / 1e6).toFixed(2)} MB gz`)
+  console.log(`   ${parts.join(' · ')}`)
 }
 
-write('backgrounds-search-en.json.gz', en)
-write('backgrounds-search-grc.json.gz', grc, grcTrans)
-write('backgrounds-search-es.json.gz', es)
+writeFacet('en', en)
+writeFacet('grc', grc, grcTrans)
+writeFacet('es', es)
+
+// The monolithic files are replaced by the shards above.
+for (const lang of ['en', 'grc', 'es']) {
+  const old = path.join(DATA, `backgrounds-search-${lang}.json.gz`)
+  if (fs.existsSync(old)) { fs.rmSync(old); console.log(`removed ${path.basename(old)}`) }
+}

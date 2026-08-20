@@ -27,7 +27,9 @@ const nextConfig = {
         // Translation search indexes are fetched from this deployment's static assets in
         // production (src/lib/translation-search.ts), so keep them out of the bundle too.
         'public/data/search-index-*.json.gz',
-        // Same for the background-sources search indexes (src/lib/backgrounds-search.ts).
+        // Same for the background-sources search indexes (src/lib/backgrounds-search.ts),
+        // now sharded per collection under backgrounds-search/<lang>/<category>.json.gz.
+        'public/data/backgrounds-search/**',
         'public/data/backgrounds-search-*.json.gz',
         // The Texts/Backgrounds prose corpora (Greco-Roman, Josephus, Philo, church
         // fathers, targums, variants, …) are ALL fetched client-side as static assets

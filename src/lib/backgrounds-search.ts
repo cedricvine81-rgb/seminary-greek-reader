@@ -22,7 +22,11 @@ export type { BgLang, BgHit, BgGroup, BgResult }
 interface Entry { g: string; s: string; o?: string; w?: string; b?: number; c: number; v: number; t: string; x?: number }
 interface Loaded { entries: Entry[]; normalized: string[]; trans: string[] }
 
-const _cache = new Map<BgLang, Loaded | null>()
+// Keyed by facet + shard: "grc|josephus", or "en|*" for every collection at once. A scoped
+// search must not be able to pick up a cache entry built for a different scope.
+const _cache = new Map<string, Loaded | null>()
+const ALL = '*'
+const shardKey = (lang: BgLang, cat: string | null) => `${lang}|${cat ?? ALL}`
 
 // Catalog metadata for building display labels/targets at query time (keeps it out of the index).
 const _meta = new Map<string, { name: string; chapters: number; order: number }>()
@@ -36,6 +40,26 @@ const _categoryOf = new Map<string, string>()
   }
 })()
 
+// How a stored entry addresses its work, mapped back to a collection: lxx entries carry an
+// osisId, Josephus a workDir, embedded prose its own source id. The context endpoint receives
+// only these keys, so this is how it knows which shard to open instead of all of them.
+const _categoryByAddress = new Map<string, string>()
+;(() => {
+  for (const cat of TEXT_CATEGORIES) for (const w of cat.works) {
+    if (w.osisId) _categoryByAddress.set(`lxx|${w.osisId}`, cat.id)
+    if (w.work) _categoryByAddress.set(`josephus|${w.work}`, cat.id)
+    _categoryByAddress.set(`src|${w.source}`, cat.id)
+  }
+})()
+
+/** The collection a context ref belongs to, or null when it cannot be placed. */
+function categoryForRefKey(key: string): string | null {
+  const [src, osis, workDir] = key.split('|')
+  if (src === 'lxx') return _categoryByAddress.get(`lxx|${osis}`) ?? null
+  if (src === 'josephus') return _categoryByAddress.get(`josephus|${workDir}`) ?? null
+  return _categoryByAddress.get(`src|${src}`) ?? null
+}
+
 /**
  * Which facets this INSTANCE has in memory, for /admin/health. Deliberately does not touch
  * load() — asking the question must not answer it by warming a 200 MB index. A serverless
@@ -45,14 +69,21 @@ const _categoryOf = new Map<string, string>()
 export function indexStatus(): { lang: string; attempted: boolean; loaded: boolean; entries: number; trans: number }[] {
   const langs: BgLang[] = ['en', 'grc', 'es']
   return langs.map(lang => {
-    const attempted = _cache.has(lang)
-    const l = _cache.get(lang) ?? null
-    return { lang, attempted, loaded: l != null, entries: l?.entries.length ?? 0, trans: l?.trans.length ?? 0 }
+    // Any shard of this facet counts as warm — that is what the next search of that scope avoids.
+    const mine = Array.from(_cache.entries()).filter(([k]) => k.startsWith(`${lang}|`))
+    const loaded = mine.filter(([, v]) => v != null).map(([, v]) => v!)
+    return {
+      lang,
+      attempted: mine.length > 0,
+      loaded: loaded.length > 0,
+      entries: loaded.reduce((n, l) => n + l.entries.length, 0),
+      trans: loaded.reduce((n, l) => n + l.trans.length, 0),
+    }
   })
 }
 
-async function readIndexRaw(lang: BgLang): Promise<string | null> {
-  const rel = `backgrounds-search-${lang}.json.gz`
+async function readIndexRaw(lang: BgLang, category: string): Promise<string | null> {
+  const rel = `backgrounds-search/${lang}/${category}.json.gz`
   const host = process.env.VERCEL_ENV === 'production'
     ? process.env.VERCEL_PROJECT_PRODUCTION_URL
     : process.env.VERCEL_URL
@@ -69,21 +100,58 @@ async function readIndexRaw(lang: BgLang): Promise<string | null> {
   } catch { return null }
 }
 
-async function load(lang: BgLang): Promise<Loaded | null> {
-  if (_cache.has(lang)) return _cache.get(lang)!
-  let loaded: Loaded | null = null
-  const raw = await readIndexRaw(lang)
-  if (raw) {
-    try {
-      // { entries, trans? } since translations were baked in; tolerate the bare array a previous
-      // deployment's file may still be, so a stale asset degrades to "no translations shown"
-      // rather than throwing the whole search away.
-      const doc: Entry[] | { entries: Entry[]; trans?: string[] } = JSON.parse(raw)
-      const entries = Array.isArray(doc) ? doc : doc.entries
-      loaded = { entries, normalized: entries.map(e => normalize(e.t)), trans: Array.isArray(doc) ? [] : doc.trans ?? [] }
-    } catch { loaded = null }
+/** Catalogue order — the order the builder wrote the shards in, and the order they must be
+ *  concatenated in so an all-collections scan sees exactly the array it saw before sharding. */
+const CATEGORY_ORDER: string[] = TEXT_CATEGORIES.map(c => c.id)
+
+async function readShard(lang: BgLang, category: string): Promise<Loaded | null> {
+  const raw = await readIndexRaw(lang, category)
+  if (!raw) return null
+  try {
+    // { entries, trans? } — trans holds this shard's own aligned translations, with each entry's
+    // `x` already remapped into it by the builder.
+    const doc: Entry[] | { entries: Entry[]; trans?: string[] } = JSON.parse(raw)
+    const entries = Array.isArray(doc) ? doc : doc.entries
+    return { entries, normalized: entries.map(e => normalize(e.t)), trans: Array.isArray(doc) ? [] : doc.trans ?? [] }
+  } catch { return null }
+}
+
+/**
+ * Load one collection's shard, or every shard when `category` is null.
+ *
+ * Sharding exists because this index sits in a serverless instance's memory and those instances
+ * are recycled while the app is quiet, so at low traffic a search usually pays to load the lot.
+ * Nearly every search is already scoped, and a scoped search now reads a slice: Apocrypha is
+ * 0.32 MB against the English facet's 20.5 MB.
+ *
+ * The all-collections case concatenates in catalogue order, which is the order the builder wrote
+ * them, so the scan sees the same array in the same order as before — the hit ordering and the
+ * 300-result cut-off are unchanged. Each shard's `trans` indices are local to that shard, so they
+ * are offset as the tables are joined; getting that wrong would silently attach the wrong
+ * translation to a Greek hit.
+ */
+async function load(lang: BgLang, category: string | null = null): Promise<Loaded | null> {
+  const key = shardKey(lang, category)
+  if (_cache.has(key)) return _cache.get(key)!
+
+  let loaded: Loaded | null
+  if (category) {
+    loaded = await readShard(lang, category)
+  } else {
+    const shards = await Promise.all(CATEGORY_ORDER.map(c => readShard(lang, c)))
+    const entries: Entry[] = []
+    const normalized: string[] = []
+    const trans: string[] = []
+    for (const sh of shards) {
+      if (!sh) continue
+      const offset = trans.length
+      for (const e of sh.entries) entries.push(e.x === undefined ? e : { ...e, x: e.x + offset })
+      for (const n of sh.normalized) normalized.push(n)
+      for (const t of sh.trans) trans.push(t)
+    }
+    loaded = entries.length ? { entries, normalized, trans } : null
   }
-  _cache.set(lang, loaded)
+  _cache.set(key, loaded)
   return loaded
 }
 
@@ -102,7 +170,11 @@ function labelFor(e: Entry, name: string, chapters: number): string {
  * carrying an OpenInTextsTarget so the caller can open the hit in the Texts reader.
  */
 export async function searchBackgrounds(query: string, lang: BgLang, limit = 300, category?: string | null, work?: string | null): Promise<BgResult> {
-  const data = await load(lang)
+  // Load only the collection the scope needs. A work scope implies its collection; with neither,
+  // every shard is loaded. The category/work filters below still run — this decides what is READ,
+  // not what matches, so a scoped result is identical to the same scope over the whole index.
+  const shard = category ?? (work ? _categoryOf.get(work) ?? null : null)
+  const data = await load(lang, shard)
   // Phrase/boolean: "quoted" = exact phrase, bare words = AND (see search-query.ts).
   const terms = parseSearchTerms(query)
   if (!data || query.trim().length < 2 || terms.length === 0) return { lang, total: 0, truncated: false, groups: [] }
@@ -151,15 +223,18 @@ export interface BgCtxVerse { chapter: number; verse: number; text: string }
 function entryKey(e: { s: string; o?: string; w?: string; b?: number; c: number; v: number }): string {
   return `${e.s}|${e.o ?? ''}|${e.w ?? ''}|${e.b ?? ''}|${e.c}|${e.v}`
 }
-const _posCache = new Map<BgLang, Map<string, number>>()
-async function positions(lang: BgLang): Promise<{ loaded: Loaded; pos: Map<string, number> } | null> {
-  const loaded = await load(lang)
+// Keyed like _cache: positions are indices INTO a particular shard's array, so a map built for
+// one scope is meaningless for another.
+const _posCache = new Map<string, Map<string, number>>()
+async function positions(lang: BgLang, category: string | null = null): Promise<{ loaded: Loaded; pos: Map<string, number> } | null> {
+  const loaded = await load(lang, category)
   if (!loaded) return null
-  let pos = _posCache.get(lang)
+  const key = shardKey(lang, category)
+  let pos = _posCache.get(key)
   if (!pos) {
     pos = new Map()
     for (let i = 0; i < loaded.entries.length; i++) pos.set(entryKey(loaded.entries[i]), i)
-    _posCache.set(lang, pos)
+    _posCache.set(key, pos)
   }
   return { loaded, pos }
 }
@@ -167,7 +242,11 @@ async function positions(lang: BgLang): Promise<{ loaded: Loaded; pos: Map<strin
 /** Given entry keys ("source|osis|work|book|chapter|verse") return each one's ±radius neighbouring
  *  sections within the same work, so a background hit can be read in context. */
 export async function getBackgroundContext(lang: BgLang, refKeys: string[], radius: number): Promise<Record<string, BgCtxVerse[]>> {
-  const p = await positions(lang)
+  // Results on screen usually come from one collection, so open that shard rather than the lot.
+  // Mixed or unplaceable refs fall back to everything, which is what happened before sharding.
+  const cats = new Set(refKeys.map(categoryForRefKey))
+  const only = cats.size === 1 ? Array.from(cats)[0] : null
+  const p = await positions(lang, only)
   if (!p) return {}
   const { loaded, pos } = p
   const r = Math.max(1, Math.min(3, radius))

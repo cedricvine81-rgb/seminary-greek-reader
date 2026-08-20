@@ -33,8 +33,12 @@ const WARM_URL = '/api/reader?corpus=GNT&book=John&chapter=3'
 // Searches get their own row. They behave nothing like a chapter read — the first one after a
 // quiet period builds the library index and takes a second or two — so averaging them in made a
 // perfectly healthy set of chapter reads report a 1.7-second worst case.
+// One scoped and one unscoped, deliberately. Nearly every search a student makes carries a scope
+// — the Texts search box passes the work it is reading, the word menu passes the collection — and
+// since the index was sharded per collection those read a slice. "All library texts" still reads
+// everything. So "typical" reflects what students do and "slowest" the worst case.
 const SEARCH_URLS = [
-  '/api/search/backgrounds?q=sacerdote&lang=es',
+  '/api/search/backgrounds?q=sacerdote&lang=es&category=apocrypha',
   '/api/search/backgrounds?q=priest&lang=en',
 ]
 
@@ -89,7 +93,7 @@ export function HealthProbe() {
       setPhases([
         { label: 'Opening new chapters', note: 'six different passages, none of them seen before', samples: cold },
         { label: 'Re-opening the same chapter', note: 'the same passage six times, as a second student would', samples: warm },
-        { label: 'Searching the library', note: 'held per server, so a quiet app usually pays for loading it again', samples: search },
+        { label: 'Searching the library', note: 'one search within a collection, one across the whole library', samples: search },
       ])
       setRanAt(new Date().toLocaleTimeString())
     } finally {
