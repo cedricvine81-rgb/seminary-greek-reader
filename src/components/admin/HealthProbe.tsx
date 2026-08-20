@@ -18,7 +18,7 @@ import { summariseProbe, type Phase, type Sample } from '@/lib/probe-summary'
  */
 
 // Total requests per run, hard-capped so this can never become a traffic amplifier.
-const BUDGET = 14   // 6 chapter reads + 6 repeats + 2 searches
+const BUDGET = 15   // 6 chapter reads + 1 warm-up + 6 repeats + 2 searches
 const CONCURRENCY = 4
 
 const COLD_URLS = [
@@ -63,6 +63,24 @@ async function timeOne(url: string): Promise<Sample> {
   }
 }
 
+/**
+ * One at a time, waiting for each to finish.
+ *
+ * The repeat phase MUST run this way. It used to reuse the concurrent pool, and on a real network
+ * all six requests for the same chapter left before any response came back — so not one of them
+ * could be answered from a cache the others had yet to fill. It measured six parallel misses and
+ * reported that caching had stopped working. On localhost the round trip is short enough that the
+ * first reply lands before the rest go out, which is exactly why the flaw stayed hidden.
+ *
+ * A second student opens a passage AFTER the first, not at the same instant. Sequential is what
+ * models that, and it is the only ordering from which a cache hit can be observed at all.
+ */
+async function runSequential(urls: string[]): Promise<Sample[]> {
+  const out: Sample[] = []
+  for (const u of urls) out.push(await timeOne(u))
+  return out
+}
+
 async function runPool(urls: string[]): Promise<Sample[]> {
   const out: Sample[] = []
   let next = 0
@@ -87,8 +105,13 @@ export function HealthProbe() {
     setRunning(true)
     setPhases(null)
     try {
+      // Distinct passages in parallel — different students opening different things.
       const cold = await runPool(COLD_URLS)
-      const warm = await runPool(Array.from({ length: 6 }, () => WARM_URL))
+      // One unmeasured request stands in for the first student, so the phase below measures what
+      // everyone AFTER them experiences. Without it the first repeat is always a miss and drags
+      // the median toward the uncached figure.
+      await timeOne(WARM_URL)
+      const warm = await runSequential(Array.from({ length: 6 }, () => WARM_URL))
       const search = await runPool(SEARCH_URLS)
       setPhases([
         { label: 'Opening new chapters', note: 'six different passages, none of them seen before', samples: cold },
