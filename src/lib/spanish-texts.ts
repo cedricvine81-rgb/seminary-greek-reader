@@ -75,6 +75,9 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Latin palimpsest only (itself from a lost Greek), so likewise at two removes. One "verse" per
   // chapter, because Charles prints each chapter as continuous prose and cites it that way.
   'assumption-moses': 'pseudepigrapha/assumption-moses',
+  // Greek survives for this one, but the reader shows Craigie's English, so the Spanish comes off
+  // the English like the rest here. Recension B only; A is a separate work id and a separate file.
+  'testament-of-abraham-b': 'pseudepigrapha/testament-of-abraham-b',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
