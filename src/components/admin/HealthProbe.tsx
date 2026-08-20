@@ -89,7 +89,7 @@ export function HealthProbe() {
       setPhases([
         { label: 'Opening new chapters', note: 'six different passages, none of them seen before', samples: cold },
         { label: 'Re-opening the same chapter', note: 'the same passage six times, as a second student would', samples: warm },
-        { label: 'Searching the library', note: 'the first search after a quiet spell loads the word list, so it is slower', samples: search },
+        { label: 'Searching the library', note: 'held per server, so a quiet app usually pays for loading it again', samples: search },
       ])
       setRanAt(new Date().toLocaleTimeString())
     } finally {
@@ -111,7 +111,7 @@ export function HealthProbe() {
         </button>
         <p className="text-xs text-gray-500">
           {BUDGET} requests from this browser. Measures how fast the app answers right now — not how much it can take.
-          Two of them are searches, which warm the library index on whichever instance answers, so a second run reads faster.
+          Two of them are searches, which load the library word list on whichever server answers.
         </p>
       </div>
 

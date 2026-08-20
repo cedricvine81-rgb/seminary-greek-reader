@@ -103,8 +103,13 @@ export function summariseProbe(phases: Phase[], budget: number): ProbeSummary {
       : { tone: 'good', text: 'Responses are quick. Re-opening was not dramatically faster, but at these speeds there is nothing to gain — the app is answering well within what anyone notices.' }
 
   // Name a slow search rather than letting the chapter verdict speak for it.
+  // Do NOT call this a first-search warm-up. Measured in production across repeated runs minutes
+  // apart, it stayed slow every time — and locally, where one process serves everything, repeat
+  // searches take ~10 ms. The index is held per serverless instance, and while the app is quiet
+  // those instances are recycled between visits, so a search usually lands on a cold one. It is
+  // the common case at low traffic, not a rare first hit, and it eases as usage grows.
   const aside = search && search.p50 > SEARCH_SLOW
-    ? `Searching took about ${(search.p50 / 1000).toFixed(1)} seconds this time. That is the library word list loading, which happens on the first search after a quiet spell; searches are quick once it is in memory. It affects search only, not reading.`
+    ? `Searching took about ${(search.p50 / 1000).toFixed(1)} seconds. The word list it needs is held by whichever server answers, and while the app is quiet those servers are replaced between visits — so most searches pay this, not just the first one of the day. It slows searching only, never reading, and it eases as more people use the app and the servers stay busy.`
     : undefined
 
   return { rows, scale, verdict, aside }

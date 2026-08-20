@@ -98,7 +98,10 @@ describe('summariseProbe — verdict', () => {
     expect(verdict.text).toMatch(/^Chapters/)
     expect(aside).toBeDefined()
     expect(aside).toMatch(/1\.0 seconds/)
-    expect(aside).toMatch(/search only, not reading/)
+    expect(aside).toMatch(/never reading/)
+    // Measured in production: it stays slow across runs minutes apart, so the copy must not
+    // promise it goes away after the first search.
+    expect(aside).not.toMatch(/first search after|quick once/i)
   })
 
   it('says nothing extra when searching is quick', () => {
