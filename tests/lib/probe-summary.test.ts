@@ -1,4 +1,4 @@
-import { summariseProbe, INSTANT, SLOW, percentile, type Phase } from '@/lib/probe-summary'
+import { summariseProbe, INSTANT, SLOW, SEARCH_SLOW, percentile, type Phase } from '@/lib/probe-summary'
 
 // Both bugs this file exists to prevent shipped past tsc and past a clean production build:
 // a ratio test that cried wolf on a healthy system, and a row/stat lookup that threw once a
@@ -88,6 +88,22 @@ describe('summariseProbe — verdict', () => {
     // A slow first search must not, on its own, make the verdict negative.
     const v = run([4, 4], [3, 3], [2100, 2200]).verdict
     expect(v.tone).toBe('good')
+  })
+
+  // The verdict reasons only about chapters, so it must not SPEAK for the search it ignored:
+  // shipped as "Everything came back in a few milliseconds" above a 3.3-second search.
+  it('never claims everything was instant while a search was slow', () => {
+    const { verdict, aside } = run([5, 6], [2, 3], [972, 3282])
+    expect(verdict.text).not.toMatch(/everything/i)
+    expect(verdict.text).toMatch(/^Chapters/)
+    expect(aside).toBeDefined()
+    expect(aside).toMatch(/1\.0 seconds/)
+    expect(aside).toMatch(/search only, not reading/)
+  })
+
+  it('says nothing extra when searching is quick', () => {
+    expect(run([5, 6], [2, 3], [80, 120]).aside).toBeUndefined()
+    expect(run([5, 6], [2, 3], [SEARCH_SLOW, SEARCH_SLOW]).aside).toBeUndefined()
   })
 
   it('treats the thresholds as the boundaries they claim to be', () => {

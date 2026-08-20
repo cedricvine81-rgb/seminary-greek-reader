@@ -118,7 +118,7 @@ export function HealthProbe() {
       {ranAt && <p className="text-xs text-gray-400">Last run {ranAt}</p>}
 
       {phases && (() => {
-        const { rows, scale, verdict } = summariseProbe(phases, BUDGET)
+        const { rows, scale, verdict, aside } = summariseProbe(phases, BUDGET)
         const TONE = { good: 'text-green-700', watch: 'text-amber-700', bad: 'text-red-700' }
         return (
           <div className="space-y-4">
@@ -144,7 +144,10 @@ export function HealthProbe() {
                 </div>
               ))}
             </div>
-            <p className={`text-sm leading-relaxed ${TONE[verdict.tone]}`}>{verdict.text}</p>
+            <div className="space-y-1.5">
+              <p className={`text-sm leading-relaxed ${TONE[verdict.tone]}`}>{verdict.text}</p>
+              {aside && <p className="text-sm leading-relaxed text-gray-500">{aside}</p>}
+            </div>
           </div>
         )
       })()}

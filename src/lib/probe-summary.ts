@@ -27,12 +27,21 @@ export interface ProbeSummary {
   /** Widest single request, for scaling the bars. Never zero. */
   scale: number
   verdict: { tone: Tone; text: string }
+  /**
+   * A second sentence about any phase the verdict does not judge. Searching is excluded from the
+   * caching comparison on purpose, but staying silent about it let the summary announce that
+   * everything was instant while a search had just taken three seconds. A health check must not
+   * describe a measurement it is ignoring as though it had passed.
+   */
+  aside?: string
 }
 
 /** At or under this many ms, a reader perceives no wait at all. */
 export const INSTANT = 50
 /** Above this AND with no speed-up, caching is genuinely suspect. */
 export const SLOW = 200
+/** A search slower than this is worth naming — it is the library index loading. */
+export const SEARCH_SLOW = 500
 
 export function percentile(sortedAsc: number[], p: number): number {
   if (sortedAsc.length === 0) return 0
@@ -76,6 +85,7 @@ export function summariseProbe(phases: Phase[], budget: number): ProbeSummary {
 
   const fresh = rows[0]
   const repeat = rows[1]
+  const search = rows[2]
   if (!fresh || !repeat) {
     return { rows, scale, verdict: { tone: 'good', text: 'Not enough measurements to draw a conclusion.' } }
   }
@@ -85,12 +95,17 @@ export function summariseProbe(phases: Phase[], budget: number): ProbeSummary {
     failed > 0
       ? { tone: 'bad', text: `${failed} of ${budget} requests failed. That is worth investigating — check Errors.` }
       : repeat.p50 <= INSTANT && fresh.p50 <= INSTANT
-      ? { tone: 'good', text: 'Everything came back in a few milliseconds — far faster than anyone can perceive. Nothing to do.' }
+      ? { tone: 'good', text: 'Chapters came back in a few milliseconds — far faster than anyone can perceive. Nothing to do.' }
       : speedup >= 3
       ? { tone: 'good', text: `Opening the same chapter again was about ${Math.round(speedup)}x faster. Caching is doing its job — the second student to open a passage gets it almost instantly.` }
       : repeat.p50 > SLOW
       ? { tone: 'watch', text: `Re-opening the same chapter took about ${Math.round(repeat.p50)} ms and was no faster than opening a new one. That combination usually means caching has stopped working — worth raising with your developer.` }
       : { tone: 'good', text: 'Responses are quick. Re-opening was not dramatically faster, but at these speeds there is nothing to gain — the app is answering well within what anyone notices.' }
 
-  return { rows, scale, verdict }
+  // Name a slow search rather than letting the chapter verdict speak for it.
+  const aside = search && search.p50 > SEARCH_SLOW
+    ? `Searching took about ${(search.p50 / 1000).toFixed(1)} seconds this time. That is the library word list loading, which happens on the first search after a quiet spell; searches are quick once it is in memory. It affects search only, not reading.`
+    : undefined
+
+  return { rows, scale, verdict, aside }
 }
