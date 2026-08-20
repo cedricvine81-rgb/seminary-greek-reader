@@ -17,7 +17,7 @@ import { Activity, Loader2 } from 'lucide-react'
  */
 
 // Total requests per run, hard-capped so this can never become a traffic amplifier.
-const BUDGET = 14
+const BUDGET = 14   // 6 chapter reads + 6 repeats + 2 searches
 const CONCURRENCY = 4
 
 interface Sample { ms: number; ok: boolean; fromCache: boolean; edge: string | null }
@@ -30,10 +30,15 @@ const COLD_URLS = [
   '/api/reader?corpus=GNT&book=Matt&chapter=5',
   '/api/translation?book=John&chapter=1&lang=en',
   '/api/translation?book=Rom&chapter=8&lang=en',
+]
+const WARM_URL = '/api/reader?corpus=GNT&book=John&chapter=3'
+// Searches get their own row. They behave nothing like a chapter read — the first one after a
+// quiet period builds the library index and takes a second or two — so averaging them in made a
+// perfectly healthy set of chapter reads report a 1.7-second worst case.
+const SEARCH_URLS = [
   '/api/search/backgrounds?q=sacerdote&lang=es',
   '/api/search/backgrounds?q=priest&lang=en',
 ]
-const WARM_URL = '/api/reader?corpus=GNT&book=John&chapter=3'
 
 function pct(sorted: number[], p: number): number {
   if (sorted.length === 0) return 0
@@ -85,11 +90,13 @@ export function HealthProbe() {
     setRunning(true)
     setPhases(null)
     try {
-      const cold = await runPool(COLD_URLS.slice(0, BUDGET - 6))
+      const cold = await runPool(COLD_URLS)
       const warm = await runPool(Array.from({ length: 6 }, () => WARM_URL))
+      const search = await runPool(SEARCH_URLS)
       setPhases([
-        { label: 'Opening new chapters', note: 'eight different passages, none of them seen before', samples: cold },
+        { label: 'Opening new chapters', note: 'six different passages, none of them seen before', samples: cold },
         { label: 'Re-opening the same chapter', note: 'the same passage six times, as a second student would', samples: warm },
+        { label: 'Searching the library', note: 'the first search after a quiet spell loads the word list, so it is slower', samples: search },
       ])
       setRanAt(new Date().toLocaleTimeString())
     } finally {
@@ -128,20 +135,28 @@ export function HealthProbe() {
             edgeHits: ph.samples.filter(s => s.edge === 'HIT').length,
           }
         }
-        const [fresh, repeat] = phases.map(stat)
-        const scale = Math.max(fresh.p95, repeat.p95, 1)
-        const failed = fresh.failed + repeat.failed
+        const [fresh, repeat, search] = phases.map(stat)
+        const scale = Math.max(fresh.p95, repeat.p95, search.p95, 1)
+        const failed = fresh.failed + repeat.failed + search.failed
         const speedup = repeat.p50 > 0 ? fresh.p50 / repeat.p50 : 0
 
-        // The verdict is the point of the two phases. Written from the measurement, because a
-        // reader should not have to know what "p95" means to learn whether anything is wrong.
+        // The verdict, written from the measurement. Order matters, and the first two guards are
+        // here because of a false alarm: with a 4 ms baseline the ratio test compared 4 ms to
+        // 3 ms, found no 3x speed-up, and reported that caching had broken — when in fact
+        // everything was already being served instantly and there was nothing left to speed up.
+        // A ratio is only meaningful once there is a delay worth removing, so absolute speed is
+        // checked first. Dividing two tiny numbers measures noise.
+        const INSTANT = 50    // ms — at or under this, the reader perceives no wait at all
+        const SLOW = 200      // ms — above this AND with no speed-up, caching is genuinely suspect
         const verdict = failed > 0
           ? { tone: 'bad' as const, text: `${failed} of ${BUDGET} requests failed. That is worth investigating — check Errors.` }
-          : fresh.p95 > 3000
-          ? { tone: 'watch' as const, text: 'Pages took over three seconds to arrive. Usually the first visit after a quiet spell; run it again and see whether it settles.' }
+          : repeat.p50 <= INSTANT && fresh.p50 <= INSTANT
+          ? { tone: 'good' as const, text: `Everything came back in a few milliseconds — far faster than anyone can perceive. Nothing to do.` }
           : speedup >= 3
-          ? { tone: 'good' as const, text: `Opening the same chapter again was about ${Math.round(speedup)}× faster. Caching is doing its job — the second student to open a passage gets it almost instantly.` }
-          : { tone: 'watch' as const, text: 'Re-opening the same chapter was no faster than a new one. That normally means caching has stopped working — worth raising with your developer.' }
+          ? { tone: 'good' as const, text: `Opening the same chapter again was about ${Math.round(speedup)}x faster. Caching is doing its job — the second student to open a passage gets it almost instantly.` }
+          : repeat.p50 > SLOW
+          ? { tone: 'watch' as const, text: `Re-opening the same chapter took about ${Math.round(repeat.p50)} ms and was no faster than opening a new one. That combination usually means caching has stopped working — worth raising with your developer.` }
+          : { tone: 'good' as const, text: 'Responses are quick. Re-opening was not dramatically faster, but at these speeds there is nothing to gain — the app is answering well within what anyone notices.' }
 
         const TONE = { good: 'text-green-700', watch: 'text-amber-700', bad: 'text-red-700' }
 
