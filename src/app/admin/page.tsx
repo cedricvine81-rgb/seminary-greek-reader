@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/Card'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import Link from 'next/link'
-import { Users, BookOpen, Building2, Settings, UserCheck } from 'lucide-react'
+import { Users, BookOpen, Building2, Settings, UserCheck, Activity } from 'lucide-react'
 
 export default async function AdminDashboard() {
   const token = getTokenFromCookies()
@@ -99,6 +99,20 @@ export default async function AdminDashboard() {
                 <div>
                   <p className="text-base font-semibold text-gray-900">Notifications</p>
                   <p className="text-sm text-gray-500">New-instructor emails</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/admin/health">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-sky-50">
+                  <Activity size={22} className="text-sky-600" />
+                </div>
+                <div>
+                  <p className="text-base font-semibold text-gray-900">System health</p>
+                  <p className="text-sm text-gray-500">Capacity, indexes, response times</p>
                 </div>
               </div>
             </Card>

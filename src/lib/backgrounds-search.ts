@@ -36,6 +36,21 @@ const _categoryOf = new Map<string, string>()
   }
 })()
 
+/**
+ * Which facets this INSTANCE has in memory, for /admin/health. Deliberately does not touch
+ * load() — asking the question must not answer it by warming a 200 MB index. A serverless
+ * deployment has many instances, so this describes the one that served the request, which is
+ * exactly the point: it shows what a cold start would still have to pay for.
+ */
+export function indexStatus(): { lang: string; attempted: boolean; loaded: boolean; entries: number; trans: number }[] {
+  const langs: BgLang[] = ['en', 'grc', 'es']
+  return langs.map(lang => {
+    const attempted = _cache.has(lang)
+    const l = _cache.get(lang) ?? null
+    return { lang, attempted, loaded: l != null, entries: l?.entries.length ?? 0, trans: l?.trans.length ?? 0 }
+  })
+}
+
 async function readIndexRaw(lang: BgLang): Promise<string | null> {
   const rel = `backgrounds-search-${lang}.json.gz`
   const host = process.env.VERCEL_ENV === 'production'
