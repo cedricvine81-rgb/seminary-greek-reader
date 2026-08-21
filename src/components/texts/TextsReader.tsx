@@ -491,6 +491,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // search box — used to assume English, so a reader with the Spanish column open searched (and
   // right-clicked into) an English text they weren't looking at, and found nothing.
   const transLang = translationId && OUR_SPANISH_IDS.has(translationId) ? 'es' : 'en'
+  // The highlight layer for the translation column. It has to name the EDITION, not just the
+  // language, wherever two surfaces can show DIFFERENT English for the same verse: /texts shows
+  // the Septuagint's own Brenton, while the Reader's English column is the World English Bible,
+  // and both used to write 'en' — so a highlight made in one landed at the wrong offsets in the
+  // other. A prose work keeps 'en' because it has exactly one English, so the language names it
+  // unambiguously. Spanish stays 'es' on purpose: for the deuterocanon the Reader serves OUR
+  // Spanish too (readDeuteroEs wins before Reina-Valera in /api/translation), so the two surfaces
+  // are showing the same string and should share the layer.
+  const transLayer = transLang !== 'en' ? transLang
+    : (work?.source === 'lxx' && work.english) ? work.english : 'en'
   // The library-index facet that matches what's on screen (see backgrounds-search-<lang>.json.gz).
   const searchFacet: BgLang = searchLang === 'grc' ? 'grc' : transLang
 
@@ -1745,10 +1755,17 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                       {filteredRows.map(row => {
                         // Layer per column. A verse's Greek and its translation are different
                         // strings, so a highlight's offsets are only meaningful against one of
-                        // them: the Greek column always highlights on 'grc', the English column
-                        // always on 'en'. Sharing one layer across both (as lxx works used to)
-                        // paints the Greek offsets over the English text.
-                        const layer = isGreek ? 'grc' : 'en'
+                        // them: the Greek column highlights on 'grc', the translation column on
+                        // the LANGUAGE IT IS ACTUALLY SHOWING. Sharing one layer across both (as
+                        // lxx works used to) paints the Greek offsets over the English text — and
+                        // hard-coding 'en' here did the same thing one language over, filing a
+                        // highlight drawn on our Spanish as English so that it reappeared over the
+                        // English at Spanish offsets. `transLang` is the same value already used
+                        // for the word spans' `lang`, the right-click search facet and the search
+                        // box, for exactly this reason; the highlight layer was the one place it
+                        // had not been applied. English keeps writing 'en', so nothing stored
+                        // needs migrating.
+                        const layer = isGreek ? 'grc' : transLayer
                         const verseHighlights = highlights.forVerse(noteBook, section.chapter, row.num, layer)
                         // Hebrew-script prose (Bavli, Tosefta) renders its Aramaic in the ORIGINAL
                         // column and anchors it on 'grc' like any other original text, so it must
@@ -1758,8 +1775,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                         const greekHighlights = greekProse || hebrewProse
                           ? highlights.forVerse(noteBook, section.chapter, row.num, 'grc')
                           : verseHighlights
-                        const englishHighlights = layer === 'en' ? verseHighlights
-                          : highlights.forVerse(noteBook, section.chapter, row.num, 'en')
+                        const englishHighlights = layer === transLayer ? verseHighlights
+                          : highlights.forVerse(noteBook, section.chapter, row.num, transLayer)
                         return (
                         <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}>
                         {/* Editorial section heading (works whose source is unbroken prose —
@@ -1888,7 +1905,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                           {englishColShown && (
                             <p className={`font-reading leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
                               {...translatable}
-                              {...verseAnchorProps(noteBook, section.chapter, row.num, 'en')}>
+                              {...verseAnchorProps(noteBook, section.chapter, row.num, transLayer)}>
                               {isAuthenticated && greekHidden && (
                                 <span className="font-sans align-middle mr-0.5">
                                   <VerseNoteButton book={noteBook} chapter={section.chapter} verse={row.num} noted={notedKeys.has(row.num)}
@@ -1899,13 +1916,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               {greekProse
                                 ? (<TransWords text={row.english ?? ''} lang={transLang} reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
-                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
+                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, transLayer),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
                                          remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />)
                                 : row.english
                                 ? (<TransWords text={row.english} lang={transLang} reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
-                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
+                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, transLayer),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
                                          remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />)
                                 : !sectionUntranslated
