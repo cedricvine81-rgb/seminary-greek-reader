@@ -77,6 +77,22 @@ def is_greek_block(el):
 ACROSTIC = 'ΙΗΣΟΥΣΧΡΕΙΣΤΟΣΘΕΟΥΥΙΟΣΣΩΤΗΡ'   # 27 letters; ΣΤΑΥΡΟΣ follows in the Greek only
 
 
+def is_acrostic_header(el):
+    """True for the block that merely SPELLS OUT the acrostic, e.g.
+
+        ΙΗσΟΥσΧΡΕΙ σΤΟσΘΕοΥΥΙΟσΣωΤΗΡ
+
+    The edition prints it as a heading above Sib. Or. 8's acrostic to show what the initial
+    letters make ("Jesus Christ, Son of God, Saviour"). It is not a verse, but it sat in its own
+    <p> and so was counted as book 8 line 221, pushing every line after it up by one and putting
+    the whole back half of the book out of step with Geffcken. Matched on the bare letters, since
+    the scan's case and spacing are erratic (σ for Σ, ο for Ο, ω for Ω).
+    """
+    txt = ''.join(el.itertext())
+    letters = ''.join(c for c in bare(txt) if c.isalpha())
+    return letters == bare(ACROSTIC)
+
+
 def bare(text):
     """Accent- and breathing-stripped lower-case, for matching regardless of the
     precomposed form the edition happens to use (ώ is U+1F7D here, not U+03CE)."""
@@ -115,8 +131,13 @@ def book_lines(div):
 
     The edition sets verse lines as newline-separated text inside <p>, with <lb n="N"/>
     milestones every fifth line. So: walk the div in document order, collect text with its
-    newlines, and use each milestone to (re)anchor the running line number — which both
-    numbers the lines and self-corrects any drift.
+    newlines, and use each milestone to (re)anchor the running line number.
+
+    It does NOT "self-correct any drift", which this docstring used to claim and which hid a
+    real bug for as long as it stood: a milestone can only pull the counter back if the
+    monotonicity guard at the end of this function lets it, and that guard refuses any decrease.
+    Drift therefore became permanent. Both halves are fixed below — blank segments no longer
+    consume numbers, and every override the guard performs is now printed.
     """
     parts = []   # 'text' chunks and ('anchor', n) markers, in document order
 
@@ -130,6 +151,13 @@ def book_lines(div):
             n = el.get('n')
             if n and n.isdigit():
                 parts.append(('anchor', int(n)))
+            elif n and re.fullmatch(r'\d+[a-z]', n):
+                # SUPPLEMENTARY LINE. Geffcken numbers an inserted verse "28a" — four exist in
+                # the corpus (4.28a, 14.269a, 14.270a, 14.298a). An integer line number cannot
+                # express one, and treating it as an unnumbered line made it consume the next
+                # integer, so every line after it in that book was off by one. It now takes its
+                # BASE number with the full label in `ref`, and advances nothing.
+                parts.append(('sub', n))
             else:
                 parts.append('\n')
         elif tag == 'gap':
@@ -144,6 +172,8 @@ def book_lines(div):
     latin = []
     for child in div:
         tag = child.tag.replace(TEI, '')
+        if tag in ('p', 'lg') and is_acrostic_header(child):
+            continue                          # a heading, not a verse line — see above
         if tag in ('p', 'lg') and not is_greek_block(child):
             # The edition's Latin: Augustine's verse rendering of the Book 8 acrostic
             # (City of God 18.23). Kept aside — it must not drive the Greek line counter,
@@ -153,31 +183,47 @@ def book_lines(div):
         walk(child)
 
     # Flatten into lines, applying anchors.
-    lines, buf, pending = [], '', None
+    #
+    # ONLY A LINE WITH CONTENT MAY CONSUME A LINE NUMBER. `walk` drops <note> and <head>
+    # subtrees but still keeps their TAILS, and those tails are the XML's own indentation
+    # newlines — as are the tails of <pb/> page breaks. Counting every '\n' therefore burned a
+    # number per blank segment, and Geffcken sets his apparatus criticus inside the same <p> as
+    # the verse, so each book lost 4-8 numbers at its first big footnote block and every line
+    # after it was mis-numbered (book 4's line 11 came out as 16). The blank segments are
+    # discarded a few lines below anyway; they must not advance `pending` on the way.
+    lines, buf, pending, sub = [], '', None, None
     for p in parts:
         if isinstance(p, tuple):
-            pending = p[1]
+            if p[0] == 'anchor':
+                pending = p[1]
+            else:
+                sub = p[1]
             continue
         for ch in p:
             if ch == '\n':
-                lines.append((pending, buf))
+                if buf.strip():
+                    if sub is not None:
+                        lines.append((int(re.match(r'(\d+)', sub).group(1)), buf, sub))
+                        sub = None
+                    else:
+                        lines.append((pending, buf, None))
+                        if pending is not None:
+                            pending += 1
                 buf = ''
-                if pending is not None:
-                    pending += 1
             else:
                 buf += ch
     if buf.strip():
-        lines.append((pending, buf))
+        lines.append((pending, buf, sub))
 
     # Number: anchored lines keep their number; unanchored ones count back/forward from
     # the nearest anchor so lines before the first milestone (1-4) are numbered too.
     out = []
-    for i, (n, t) in enumerate(lines):
+    for i, (n, t, sfx) in enumerate(lines):
         t = re.sub(r'\s+', ' ', t).strip()
         if t:
-            out.append([n, t])
+            out.append([n, t, sfx])
     # backfill from the first anchored line
-    first_anchor = next((i for i, (n, _) in enumerate(out) if n is not None), None)
+    first_anchor = next((i for i, r in enumerate(out) if r[0] is not None), None)
     if first_anchor is not None:
         base = out[first_anchor][0]
         for i in range(first_anchor - 1, -1, -1):
@@ -188,18 +234,47 @@ def book_lines(div):
         if row[0] is None:
             run = (run + 1) if run is not None else 1
             row[0] = run
-        else:
+        elif row[2] is None:
             run = row[0]
-    out = [(n, t) for n, t in out if t and GREEK_CH.search(t)]
+    out = [(n, t, sfx) for n, t, sfx in out if t and GREEK_CH.search(t)]
+
+    # TRANSPOSED MILESTONES IN THE SOURCE. Book 5 marks its lines 516 and 517 in the wrong
+    # order — the XML reads <lb n="515"/>, <lb n="517"/>, <lb n="516"/>, <lb n="518"/> — so
+    # document order and the edition's numbering disagree over one pair. The NUMBERS are the
+    # ground truth (they are Geffcken's, and his printed book 5 runs 515, 516, 517, 518), so the
+    # lines are restored to numeric order rather than forced monotonic, which is what the
+    # collision guard below used to do: it renumbered 516 as 518 and pushed every later line in
+    # the book up by one. Only whole, already-numbered lines move, and only when every number is
+    # distinct — so this cannot silently reorder anything else.
+    nums = [n for n, _, sfx in out if sfx is None]
+    if nums != sorted(nums) and len(set(nums)) == len(nums):
+        moved = [n for n, sn in zip(nums, sorted(nums)) if n != sn]
+        print(f"      transposed milestones in the source, restored to numeric order: {moved}")
+        out.sort(key=lambda r: (r[0], r[2] or ''))
+
     # A line number must identify one line; if the edition's milestones still leave a
     # collision, keep the first and let later lines run on from it.
-    seen, fixed, last = set(), [], 0
-    for n, t in out:
+    #
+    # EVERY OVERRIDE HERE IS REPORTED, because this guard is how the old numbering bug became
+    # permanent rather than self-correcting. Blank segments used to consume line numbers, so by
+    # the next milestone the counter had run ahead; the milestone tried to pull it back, this
+    # guard refused the decrease and forced last + 1, and the inflation was locked in for the
+    # rest of the book. A silent override means the count and the edition disagree — which is
+    # exactly what must never pass unnoticed again.
+    seen, fixed, last, overrides = set(), [], 0, []
+    for n, t, sfx in out:
+        if sfx is not None:                 # supplementary line: shares its base's number
+            fixed.append((n, t, sfx))
+            continue
         if n in seen or n <= last:
+            overrides.append((n, last + 1))
             n = last + 1
         seen.add(n)
         last = n
-        fixed.append((n, t))
+        fixed.append((n, t, None))
+    if overrides:
+        print(f"      ⚠ {len(overrides)} milestone override(s): "
+              f"{['%s->%s' % o for o in overrides[:6]]}")
     return fixed, latin
 
 
@@ -249,12 +324,15 @@ def main():
             report.append((b, 0, 0))
             continue
         lines, latin = book_lines(div)
-        verses = [{'number': n, 'text': '', 'greek': t} for n, t in lines]
+        # `ref` carries the edition's own label and is what the reader shows and cites
+        # (TextsReader: `row.ref ?? row.num`), so a supplementary line reads "4:28a".
+        verses = [dict({'number': n, 'text': '', 'greek': t},
+                       **({'ref': f'{b}:{sfx}'} if sfx else {})) for n, t, sfx in lines]
         if latin:
             attach_latin(verses, latin)
         chapters.append({'number': int(b),
                          'verses': verses})
-        report.append((b, len(lines), max((n for n, _ in lines), default=0)))
+        report.append((b, len(lines), max((n for n, _, _ in lines), default=0)))
 
     doc = {'work': 'Sibylline Oracles (Greek)', 'attribution': ATTRIB, 'greek': True,
            'chapters': chapters}
