@@ -2549,6 +2549,12 @@ const en: Catalogue = {
   // The Themes page's own furniture. The method note is long, and deliberately so — it is the
   // sentence that stops a student quoting a six-word summary as if it were the source.
   'texts.summary': 'Summary',
+  // Sibylline Oracles only: the Greek and Terry's English are separate works because their
+  // LINE numbering does not correspond (see text). Their BOOK numbering does, exactly, so
+  // this opens the sibling work at the same book — the honest unit of correspondence.
+  'texts.readAlongside': 'Read alongside',
+  'texts.readAlongsideTip': 'Open {work} at book {book}. The two are separate works because '
+    + 'their line numbers do not correspond — only the book numbering matches.',
   'texts.aiDraftedCaveat': 'AI-drafted overview reflecting general scholarship — not verified '
     + 'against sources; please double-check before relying on it.',
   'themes.pickerLabel': 'Theme',
@@ -5080,6 +5086,9 @@ const es: Catalogue = {
   'tools.construct': 'Búsqueda de construcciones',
 
   'texts.summary': 'Resumen',
+  'texts.readAlongside': 'Leer en paralelo',
+  'texts.readAlongsideTip': 'Abre {work} en el libro {book}. Son obras distintas porque sus '
+    + 'números de línea no se corresponden; solo coincide la numeración de los libros.',
   'texts.aiDraftedCaveat': 'Panorama redactado por IA que refleja el estado general de la '
     + 'investigación; no está verificado contra fuentes. Conviene comprobarlo antes de apoyarse en él.',
   'themes.pickerLabel': 'Tema',

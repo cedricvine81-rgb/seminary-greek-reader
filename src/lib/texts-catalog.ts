@@ -43,6 +43,14 @@ export interface CatalogWork {
   // Name of the FIRST ("original") column when it is not Greek — 'Latin' for Quintilian.
   // Defaults to 'Greek'; also turns off the Greek Beta-Code search transliteration.
   primaryLabel?: string
+  // A sibling work to offer "read alongside" — the id of a work covering the SAME text whose
+  // chapters correspond one-to-one, so opening it at the reader's current chapter lands on the
+  // matching passage. Used by the two Sibyllines, which are separate works precisely because
+  // their LINE numbering does not correspond (Terry's blank verse runs ~1.17 lines to the Greek's
+  // hexameter, unevenly, so no line-level pairing is recoverable) while their BOOK numbering
+  // matches exactly, 1-8 and 11-14 on both sides. Point it only at a work whose chapter numbers
+  // genuinely align; it makes no attempt to translate a position beyond the chapter.
+  alongside?: string
   // josephus
   work?: string                 // directory under public/data/josephus/
   books?: number[]              // chapter count per book (index → book number - 1)
@@ -229,8 +237,8 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: 'tjob-greek', name: 'Testament of Job', source: 'tjob-greek', chapters: 53, greek: true },
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
       { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1, greek: true },
-      { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14] },
-      { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], greek: true, greekOnly: true, secondaryLabel: 'Latin' },
+      { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], alongside: 'sibylline-greek' },
+      { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], greek: true, greekOnly: true, secondaryLabel: 'Latin', alongside: 'sibylline' },
       { id: 'pseudo-philo', name: 'Pseudo-Philo (Biblical Antiquities / L.A.B.)', source: 'pseudo-philo', chapters: 65 },
       { id: 'testament-of-solomon', name: 'Testament of Solomon', source: 'testament-of-solomon', chapters: 130 },
       { id: 'testament-of-abraham-a', name: 'Testament of Abraham (Recension A)', source: 'testament-of-abraham-a', chapters: 20 },

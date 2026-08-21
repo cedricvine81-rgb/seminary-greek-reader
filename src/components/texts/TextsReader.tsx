@@ -2,7 +2,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { MachineTranslationHint } from '@/components/texts/MachineTranslationHint'
 import { translatable, greekText } from '@/lib/i18n/machine-translation'
-import { Search, ChevronDown, MoreVertical, X} from 'lucide-react'
+import { Search, ChevronDown, MoreVertical, X, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { betaCodeToGreek } from '@/lib/greek-translit'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
@@ -285,6 +285,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [locateOpen, setLocateOpen] = useState(false)
   const [locateBook, setLocateBook] = useState(1)
   const [locateChapter, setLocateChapter] = useState<number | null>(null)
+  // The chapter the reader is actually looking at, for the "read alongside" link. Derived
+  // by writePositionToUrl, which already works this out from the scroll position for the
+  // URL — mirroring it here avoids a second, subtly different notion of "where am I".
+  const [currentChapter, setCurrentChapter] = useState<number | null>(null)
   const [locateVerseNums, setLocateVerseNums] = useState<{ num: number; ref?: string }[] | null>(null)
   // Josephus is navigated by pure Niese §: the sections run continuously through a whole
   // book (ch1 = §§1–51, ch2 = §§52–71, …), so a § alone locates the passage and there is no
@@ -582,6 +586,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     setSearch('')                       // stop the find-on-page filter hiding the target
     setLocateBook(tg.book ?? 1)
     setLocateChapter(tg.chapter)
+    setCurrentChapter(tg.chapter)
     void openAt(work, tg.book, tg.chapter, tg.verse)
     if (work.source === 'josephus') loadLocateSections(work, tg.book ?? 1)
     else loadLocateVerses(work, tg.book, tg.chapter)
@@ -927,6 +932,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const chapter = parseInt(chapStr, 10)
     const book = bookStr ? parseInt(bookStr, 10) : undefined
     if (!Number.isFinite(chapter)) return
+    setCurrentChapter(chapter)
     const target: OpenInTextsTarget = w.source === 'lxx'
       ? { source: 'lxx', osisId: w.osisId, chapter, verse }
       : w.source === 'josephus'
@@ -1099,7 +1105,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   function openWork(w: CatalogWork) {
     setWork(w); setTranslationId(initialTranslationFor(w)); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
-    setLocateBook(1); setLocateChapter(1)
+    setLocateBook(1); setLocateChapter(1); setCurrentChapter(1)
     setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
     if (w.source === 'josephus') loadLocateSections(w, 1)
@@ -1131,7 +1137,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const options = translationsFor(w, t)
     const wanted = target.lang === 'es' ? options.find(o => OUR_SPANISH_IDS.has(o.id))?.id : undefined
     setWork(w); setTranslationId(wanted ?? initialTranslationFor(w)); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
-    setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
+    setLocateBook(target.book ?? 1); setLocateChapter(target.chapter); setCurrentChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
     if (w.source === 'josephus') loadLocateSections(w, target.book ?? 1)
@@ -1144,7 +1150,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // refines the scroll position within the already-loaded chapter.
   function selectLocateBook(book: number) {
     if (!work) return
-    setLocateBook(book); setLocateChapter(1)
+    setLocateBook(book); setLocateChapter(1); setCurrentChapter(1)
     void openAt(work, book, 1)
     // The Book column only exists for Josephus, which now goes straight to a whole-book § list.
     if (work.source === 'josephus') loadLocateSections(work, book)
@@ -1153,7 +1159,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   function selectLocateChapter(chapter: number) {
     if (!work) return
-    setLocateChapter(chapter)
+    setLocateChapter(chapter); setCurrentChapter(chapter)
     const book = work.source === 'josephus' ? locateBook : undefined
     void openAt(work, book, chapter)
     loadLocateVerses(work, book, chapter)
@@ -1440,6 +1446,32 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     </div>
                   )}
                 </div>
+              )
+            })()}
+
+            {/* "Read alongside" — open the sibling work at the SAME BOOK.
+                Offered only for a work with `alongside` set, which today is the pair of
+                Sibyllines. They are separate works because their LINE numbering does not
+                correspond, so this deliberately carries the book across and nothing finer:
+                verse 1, not the reader's current line, because that line has no counterpart.
+                The tooltip says as much, so the coarseness reads as a fact about the texts
+                rather than a limitation of the control. */}
+            {(() => {
+              if (!work.alongside || !currentChapter) return null
+              const sib = findWork(work.alongside)?.work
+              if (!sib) return null
+              const target = { source: sib.source, chapter: currentChapter, verse: 1 }
+              const href = `/texts?work=${encodeURIComponent(sib.id)}&open=${encodeURIComponent(JSON.stringify(target))}`
+              const sibName = localizedWorkName(sib, locale)
+              return (
+                <a
+                  href={href}
+                  title={t('texts.readAlongsideTip', { work: sibName, book: String(currentChapter) })}
+                  className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-brand-700 transition-colors"
+                >
+                  <BookOpen size={13} />
+                  {t('texts.readAlongside')}
+                </a>
               )
             })()}
 
