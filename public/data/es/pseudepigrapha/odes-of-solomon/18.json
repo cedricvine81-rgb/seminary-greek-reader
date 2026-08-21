@@ -1,0 +1,26 @@
+{
+  "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: las Odas de Salomón en la traducción de J. Rendel Harris, recogida en «The Forgotten Books of Eden» (1926), de dominio público.",
+  "_why": "Las Odas de Salomón no se conservan en su lengua original de manera completa: el texto que existe es SIRÍACO, en dos manuscritos —el que J. Rendel Harris identificó en 1909, que dio a conocer el libro al mundo moderno, y otro hallado después—, y a él se añaden cinco odas citadas en COPTO dentro de la Pistis Sophia (1, 5, 6, 22 y 25), un pasaje en LATÍN que cita Lactancio (oda 19) y, hallada ya después del trabajo de Harris, la oda 11 en GRIEGO en el papiro Bodmer XI. Se discute si el original fue griego o siríaco. El texto que el lector muestra aquí es el inglés que Harris hizo desde el siríaco, y de ese inglés procede esta versión española: está, pues, a dos pasos del texto conservado, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+  "_note": "Cuarenta y dos himnos cristianos primitivos —de finales del siglo I o del II—, la colección de poesía cristiana más antigua que se conserva fuera del Nuevo Testamento. No son de Salomón: el nombre es el de la tradición sapiencial bajo la cual se transmitieron, como los Salmos de Salomón. Hablan casi siempre en primera persona, y esa voz pasa sin aviso del creyente al Mesías y del Mesías al creyente —a veces dentro de una misma oda—, de modo que conviene leerlas sin decidir demasiado pronto quién habla. Sus imágenes preferidas son el agua viva, la corona, el vestido de luz, la leche del pecho de Dios y la carta sellada, y su parentesco con el evangelio de Juan es el motivo por el que se estudian tanto. Cada oda cierra con «Aleluya». Tres advertencias sobre el estado del texto: la ODA 2 está PERDIDA por entero —el manuscrito la salta, y lo único que se imprime es la nota del propio Harris—; la ODA 3 empieza en el versículo 2, porque su comienzo se perdió; y la ODA 1 se conserva sólo porque la Pistis Sophia la cita en copto. Los paréntesis y los corchetes son de Harris y se conservan como suyos. Oda de petición y de polémica. La primera mitad pide que Dios no retire su palabra **«por causa de los que están faltos»** —es decir, que la infidelidad de otros no prive al que reza—, y formula la petición en dos líneas de una sencillez memorable: **«no sea vencida la lumbrera por las tinieblas, ni huya la verdad de la falsedad»** (compárese Juan 1:5). La segunda mitad describe a los adversarios, y lo hace con dos imágenes: **la ignorancia apareció «como un ciego, y como la espuma del mar»** —lo que no ve y lo que no tiene sustancia—, y los que la tomaron por algo grande se volvieron ellos mismos vanos, porque uno acaba pareciéndose a lo que adora. Frente a ellos están los que «han conocido y meditado», que no fueron corrompidos en su imaginación **«porque tales estaban en la mente del Señor»**. Los versículos 11 y 13, de una línea cada uno, no están truncados: son los ecos deliberados del 10 y del 12, y así se imprimen.",
+  "verses": {
+    "1": "Mi corazón fue levantado en el amor del Altísimo y fue ensanchado, para que yo lo alabase por causa de su nombre.",
+    "2": "Mis miembros fueron fortalecidos para que no cayesen de su fuerza.",
+    "3": "Las enfermedades se apartaron de mi cuerpo, y él se mantuvo firme para el Señor por su voluntad. Porque su reino es verdadero.",
+    "4": "¡Oh Señor, por causa de los que están faltos, no apartes de mí tu palabra!",
+    "5": "¡Ni por causa de las obras de ellos retengas de mí tu perfección!",
+    "6": "No sea vencida la lumbrera por las tinieblas, ni huya la verdad de la falsedad.",
+    "7": "Tú me pondrás para la victoria; nuestra Salvación es tu diestra. Y recibirás a los hombres de todas partes.",
+    "8": "Y preservarás a todo el que esté retenido en males.",
+    "9": "Tú eres mi Dios. Falsedad y muerte no hay en tu boca;",
+    "10": "porque tu voluntad es perfección; y la vanidad no la conoces,",
+    "11": "ni ella te conoce a ti.",
+    "12": "Y el error no lo conoces,",
+    "13": "ni él te conoce a ti.",
+    "14": "Y la ignorancia apareció como un ciego, y como la espuma del mar;",
+    "15": "y supusieron de aquella cosa vana que era algo grande;",
+    "16": "y también ellos vinieron a semejanza de ella y se hicieron vanos; y han entendido los que han conocido y meditado;",
+    "17": "y no han sido corrompidos en su imaginación, porque tales estaban en la mente del Señor;",
+    "18": "y se burlaron de los que andaban en el error;",
+    "19": "y hablaron verdad por la inspiración que el Altísimo sopló en ellos. Alabanza y gran hermosura a su nombre. Aleluya."
+  }
+}

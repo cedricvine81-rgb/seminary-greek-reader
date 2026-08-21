@@ -1,0 +1,26 @@
+{
+  "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: las Odas de Salomón en la traducción de J. Rendel Harris, recogida en «The Forgotten Books of Eden» (1926), de dominio público.",
+  "_why": "Las Odas de Salomón no se conservan en su lengua original de manera completa: el texto que existe es SIRÍACO, en dos manuscritos —el que J. Rendel Harris identificó en 1909, que dio a conocer el libro al mundo moderno, y otro hallado después—, y a él se añaden cinco odas citadas en COPTO dentro de la Pistis Sophia (1, 5, 6, 22 y 25), un pasaje en LATÍN que cita Lactancio (oda 19) y, hallada ya después del trabajo de Harris, la oda 11 en GRIEGO en el papiro Bodmer XI. Se discute si el original fue griego o siríaco. El texto que el lector muestra aquí es el inglés que Harris hizo desde el siríaco, y de ese inglés procede esta versión española: está, pues, a dos pasos del texto conservado, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+  "_note": "Cuarenta y dos himnos cristianos primitivos —de finales del siglo I o del II—, la colección de poesía cristiana más antigua que se conserva fuera del Nuevo Testamento. No son de Salomón: el nombre es el de la tradición sapiencial bajo la cual se transmitieron, como los Salmos de Salomón. Hablan casi siempre en primera persona, y esa voz pasa sin aviso del creyente al Mesías y del Mesías al creyente —a veces dentro de una misma oda—, de modo que conviene leerlas sin decidir demasiado pronto quién habla. Sus imágenes preferidas son el agua viva, la corona, el vestido de luz, la leche del pecho de Dios y la carta sellada, y su parentesco con el evangelio de Juan es el motivo por el que se estudian tanto. Cada oda cierra con «Aleluya». Tres advertencias sobre el estado del texto: la ODA 2 está PERDIDA por entero —el manuscrito la salta, y lo único que se imprime es la nota del propio Harris—; la ODA 3 empieza en el versículo 2, porque su comienzo se perdió; y la ODA 1 se conserva sólo porque la Pistis Sophia la cita en copto. Los paréntesis y los corchetes son de Harris y se conservan como suyos. **El oficio del poeta y el himno de la creación.** Empieza con dos comparaciones de trabajo —el labrador tiene su arado, el piloto el gobierno de la nave— para decir en qué consiste el suyo: **«mi obra es el Salmo del Señor; mi oficio y mi ocupación están en sus alabanzas»**. Componer himnos es un oficio como cualquier otro, y ésa es la definición que la colección da de sí misma. De ahí pasa a la creación (vv. 10-19), contada en el orden del Génesis y con una observación que no es bíblica sino de quien ha mirado el cielo: las cosas creadas **«corren en sus cursos… y no saben estar quietas ni ociosas»**. El sol es «la cámara del tesoro de la luz» y la noche el tesoro de la oscuridad, y **la alternancia de ambos «habla la hermosura de Dios»** —el argumento del salmo 19:2, que el día y la noche se pasan la palabra. Nota de texto: el número del versículo 18 se había perdido en el impreso inglés, leído como las letras «IS» y dejado suelto dentro del 17, de modo que la frase «no hay nada que esté sin el Señor, porque él era antes que cosa alguna viniese a ser» no podía citarse ni buscarse; aquí está restituida a su versículo.",
+  "verses": {
+    "1": "Como la obra del labrador es la reja del arado, y la obra del piloto es el gobierno de la nave,",
+    "2": "así también mi obra es el Salmo del Señor; mi oficio y mi ocupación están en sus alabanzas;",
+    "3": "porque su amor ha alimentado mi corazón, y hasta mis labios derramó sus frutos.",
+    "4": "Porque mi amor es el Señor, y por eso le cantaré;",
+    "5": "porque soy hecho fuerte en su alabanza, y tengo fe en él.",
+    "6": "Abriré mi boca y su espíritu proferirá en mí la gloria del Señor y su hermosura; la obra de sus manos y la operación de sus dedos;",
+    "7": "la multitud de sus misericordias y la fuerza de su palabra.",
+    "8": "Porque la palabra del Señor escudriña todas las cosas, tanto lo invisible como lo que revela su pensamiento;",
+    "9": "porque el ojo ve sus obras, y el oído oye su pensamiento.",
+    "10": "Él extendió la tierra y asentó las aguas en el mar;",
+    "11": "midió los cielos y fijó las estrellas; y estableció la creación y la puso en pie;",
+    "12": "y reposó de sus obras;",
+    "13": "y las cosas creadas corren en sus cursos, y hacen sus obras;",
+    "14": "y no saben estar quietas ni ociosas; y sus huestes celestiales están sujetas a su palabra.",
+    "15": "La cámara del tesoro de la luz es el sol, y el tesoro de la oscuridad es la noche;",
+    "16": "y él hizo el sol para el día, para que sea brillante; pero la noche trae tinieblas sobre la faz de la tierra;",
+    "17": "y sus alternancias, la una a la otra, hablan la hermosura de Dios;",
+    "18": "y no hay nada que esté sin el Señor, porque él era antes que cosa alguna viniese a ser;",
+    "19": "y los mundos fueron hechos por su palabra, y por el pensamiento de su corazón. Gloria y honra a su nombre. Aleluya."
+  }
+}

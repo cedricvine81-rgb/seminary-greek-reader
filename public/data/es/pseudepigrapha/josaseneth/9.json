@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: José y Asenat, en la traducción de E. W. Brooks, «Joseph and Asenath: The Confession and Prayer of Asenath, Daughter of Pentephres the Priest» (Londres, SPCK; Nueva York, Macmillan, 1918), de dominio público.",
+ "_why": "La obra sí se conserva en griego, pero las ediciones críticas modernas de ese griego no son de dominio público. Lo que el lector ve en esta aplicación —y lo único que aquí se traduce— es el inglés de Brooks, hecho por él desde los manuscritos griegos. Esta versión castellana está, por tanto, a dos removes del original, como se indica en cada capítulo.",
+ "_note": "Brooks imprime prosa continua bajo capítulos en números romanos y no numera versículos: la división en versículos es editorial y se explica en la atribución del texto inglés. Brooks marca con medios corchetes las palabras suplidas desde las versiones antiguas (latina, siria, armenia, eslava); esos medios corchetes no pudieron recuperarse del facsímil y no se reproducen ni en el inglés ni aquí.\n\nEl registro castellano sigue deliberadamente el inglés arcaizante de Brooks (thee, thou, saith), de ahí el uso de «vosotros» y de las formas verbales antiguas.",
+ "verses": {
+  "2": "Y se gozó Asenat sobre la bendición de José con gozo grande en gran manera.",
+  "3": "Entonces se dio prisa y subió sola a su piso alto, y cayó sobre su lecho con flaqueza, por cuanto había en ella gozo y tristeza y gran temor; y continuo sudor se derramó sobre ella cuando oyó estas palabras de José, y cuando él le habló en el nombre del Dios Altísimo. Entonces lloró con grande y amargo llanto, y se volvió en penitencia de sus dioses, a los cuales solía adorar, y de los ídolos, a los cuales desechó, y esperó a que viniese la tarde.",
+  "4": "Mas José comió y bebió; y dijo a sus criados que uncieran los caballos a sus carros, y que recorriesen toda la tierra. Y dijo Pentefrés a José: «Alójese mi señor aquí hoy, y por la mañana irás tu camino».",
+  "5": "Y dijo José: «No, sino que me iré hoy, por cuanto este es el día en que Dios comenzó a hacer todas sus criaturas, y al octavo día volveré también a vosotros y me alojaré aquí»."
+ }
+}

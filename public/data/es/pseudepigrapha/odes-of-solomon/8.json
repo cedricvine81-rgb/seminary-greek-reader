@@ -1,0 +1,33 @@
+{
+  "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: las Odas de Salomón en la traducción de J. Rendel Harris, recogida en «The Forgotten Books of Eden» (1926), de dominio público.",
+  "_why": "Las Odas de Salomón no se conservan en su lengua original de manera completa: el texto que existe es SIRÍACO, en dos manuscritos —el que J. Rendel Harris identificó en 1909, que dio a conocer el libro al mundo moderno, y otro hallado después—, y a él se añaden cinco odas citadas en COPTO dentro de la Pistis Sophia (1, 5, 6, 22 y 25), un pasaje en LATÍN que cita Lactancio (oda 19) y, hallada ya después del trabajo de Harris, la oda 11 en GRIEGO en el papiro Bodmer XI. Se discute si el original fue griego o siríaco. El texto que el lector muestra aquí es el inglés que Harris hizo desde el siríaco, y de ese inglés procede esta versión española: está, pues, a dos pasos del texto conservado, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+  "_note": "Cuarenta y dos himnos cristianos primitivos —de finales del siglo I o del II—, la colección de poesía cristiana más antigua que se conserva fuera del Nuevo Testamento. No son de Salomón: el nombre es el de la tradición sapiencial bajo la cual se transmitieron, como los Salmos de Salomón. Hablan casi siempre en primera persona, y esa voz pasa sin aviso del creyente al Mesías y del Mesías al creyente —a veces dentro de una misma oda—, de modo que conviene leerlas sin decidir demasiado pronto quién habla. Sus imágenes preferidas son el agua viva, la corona, el vestido de luz, la leche del pecho de Dios y la carta sellada, y su parentesco con el evangelio de Juan es el motivo por el que se estudian tanto. Cada oda cierra con «Aleluya». Tres advertencias sobre el estado del texto: la ODA 2 está PERDIDA por entero —el manuscrito la salta, y lo único que se imprime es la nota del propio Harris—; la ODA 3 empieza en el versículo 2, porque su comienzo se perdió; y la ODA 1 se conserva sólo porque la Pistis Sophia la cita en copto. Los paréntesis y los corchetes son de Harris y se conservan como suyos. **La oda en que Dios habla como madre.** Empieza como una exhortación del que canta —abrid los corazones, levantaos los que fuisteis abatidos, hablad los que estabais en silencio—, pero **en el versículo 10 la voz cambia sin aviso y el que habla pasa a ser el Señor**, y sigue hablando él hasta el 22. Lo que dice es lo más audaz de la colección: conoció a los suyos antes que existieran y **puso su sello sobre sus rostros**; formó sus miembros; y —el versículo 17— **«mis propios pechos preparé para ellos, para que bebiesen mi santa leche y viviesen por ella»**. La imagen materna de Dios vuelve en la oda 19, donde se desarrolla del todo; aquí basta notar que el poeta no la siente como una metáfora atrevida sino como la manera natural de decir que la vida viene de él. El versículo 8 tiene una de esas frases que se quedan: **«la paz os fue preparada antes que fuese vuestra guerra»**. Nota de texto: el versículo 18 estaba estropeado en el impreso inglés —la «I» inicial de «I took pleasure» se había pegado al número, produciendo un versículo fantasma «181» que quedaba al final de la oda—; se ha restituido a su lugar entre el 17 y el 19, que es donde el sentido lo pide y donde está en las ediciones.",
+  "verses": {
+    "1": "Abrid, abrid vuestros corazones al regocijo del Señor,",
+    "2": "y multiplíquese vuestro amor desde el corazón y hasta los labios,",
+    "3": "para dar fruto al Señor [fruto], fruto santo, y para hablar con vigilancia en su luz.",
+    "4": "Levantaos, y poneos derechos, vosotros que en otro tiempo fuisteis abatidos;",
+    "5": "hablad, vosotros que estabais en silencio, porque vuestra boca ha sido abierta.",
+    "6": "Vosotros, pues, que fuisteis despreciados, sed de aquí en adelante ensalzados, porque vuestra justicia ha sido exaltada.",
+    "7": "Porque la diestra del Señor está con vosotros, y él es vuestro ayudador;",
+    "8": "y la paz os fue preparada antes que fuese vuestra guerra.",
+    "9": "Oíd la palabra de verdad, y recibid el conocimiento del Altísimo.",
+    "10": "Vuestra carne no ha conocido lo que os estoy diciendo, ni vuestros corazones han conocido lo que os estoy mostrando.",
+    "11": "Guardad mi secreto, vosotros que sois guardados por él;",
+    "12": "guardad mi fe, vosotros que sois guardados por ella.",
+    "13": "Y entended mi conocimiento, vosotros que me conocéis en verdad.",
+    "14": "Amadme con afecto, vosotros que amáis;",
+    "15": "porque yo no aparto mi rostro de los que son míos,",
+    "16": "porque los conozco, y antes que viniesen a ser tomé conocimiento de ellos, y sobre sus rostros puse mi sello.",
+    "17": "Formé sus miembros; mis propios pechos preparé para ellos, para que bebiesen mi santa leche y viviesen por ella.",
+    "18": "Me complací en ellos y no me avergüenzo de ellos;",
+    "19": "porque hechura mía son, y la fuerza de mis pensamientos.",
+    "20": "¿Quién, pues, se levantará contra la obra de mis manos, o quién hay que no les esté sujeto?",
+    "21": "Yo quise y formé mente y corazón; y son míos, y por mi propia diestra puse a mis escogidos;",
+    "22": "y mi justicia va delante de ellos, y no serán privados de mi nombre, porque está con ellos.",
+    "23": "Pedid, y abundad, y permaneced en el amor del Señor,",
+    "24": "y vosotros, amados, en el Amado; los que son guardados, en Aquel que vive;",
+    "25": "y los que son salvados en Aquel que fue salvado.",
+    "26": "Y seréis hallados incorruptibles por todos los siglos, para el nombre de vuestro Padre. Aleluya."
+  }
+}

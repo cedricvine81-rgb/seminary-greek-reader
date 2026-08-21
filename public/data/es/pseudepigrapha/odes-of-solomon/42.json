@@ -1,0 +1,33 @@
+{
+  "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: las Odas de Salomón en la traducción de J. Rendel Harris, recogida en «The Forgotten Books of Eden» (1926), de dominio público.",
+  "_why": "Las Odas de Salomón no se conservan en su lengua original de manera completa: el texto que existe es SIRÍACO, en dos manuscritos —el que J. Rendel Harris identificó en 1909, que dio a conocer el libro al mundo moderno, y otro hallado después—, y a él se añaden cinco odas citadas en COPTO dentro de la Pistis Sophia (1, 5, 6, 22 y 25), un pasaje en LATÍN que cita Lactancio (oda 19) y, hallada ya después del trabajo de Harris, la oda 11 en GRIEGO en el papiro Bodmer XI. Se discute si el original fue griego o siríaco. El texto que el lector muestra aquí es el inglés que Harris hizo desde el siríaco, y de ese inglés procede esta versión española: está, pues, a dos pasos del texto conservado, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+  "_note": "Cuarenta y dos himnos cristianos primitivos —de finales del siglo I o del II—, la colección de poesía cristiana más antigua que se conserva fuera del Nuevo Testamento. No son de Salomón: el nombre es el de la tradición sapiencial bajo la cual se transmitieron, como los Salmos de Salomón. Hablan casi siempre en primera persona, y esa voz pasa sin aviso del creyente al Mesías y del Mesías al creyente —a veces dentro de una misma oda—, de modo que conviene leerlas sin decidir demasiado pronto quién habla. Sus imágenes preferidas son el agua viva, la corona, el vestido de luz, la leche del pecho de Dios y la carta sellada, y su parentesco con el evangelio de Juan es el motivo por el que se estudian tanto. Cada oda cierra con «Aleluya». Tres advertencias sobre el estado del texto: la ODA 2 está PERDIDA por entero —el manuscrito la salta, y lo único que se imprime es la nota del propio Harris—; la ODA 3 empieza en el versículo 2, porque su comienzo se perdió; y la ODA 1 se conserva sólo porque la Pistis Sophia la cita en copto. Los paréntesis y los corchetes son de Harris y se conservan como suyos. **La última oda, y el descenso al Seol contado desde dentro** —el relato más antiguo que se conserva de lo que la tradición llamará el descenso a los infiernos, anterior al Evangelio de Nicodemo y a toda la iconografía posterior. Empieza repitiendo palabra por palabra los tres versículos de la oda 27, la oración con los brazos en cruz, y aquí se explicita lo que allí quedaba insinuado: **«el árbol extendido que fue erigido en el camino del Justo»**. Sigue la resurrección, dicha en presente y sin aparato: **«todos mis perseguidores han muerto… y me levanté y estoy con ellos; y hablaré por sus bocas»**. Después el yugo, que resulta ser nupcial —«como el brazo del novio sobre la novia, así fue mi yugo sobre los que me conocen»—, una de las suavizaciones más felices de Mateo 11:29-30. Y entonces baja. **«El Seol me vio y fue hecho miserable; la Muerte me arrojó fuera»**: el infierno no lo retiene, lo vomita, y lo suelta porque «no fueron capaces de soportar mi rostro». Allí abajo hace lo que hacía arriba —**«hice una congregación de hombres vivos entre sus hombres muertos, y hablé con ellos con labios vivos»**—, y los muertos corren hacia él y le gritan la oración más conmovedora del libro: **«Hijo de Dios, ten piedad de nosotros… sácanos de las ataduras de la oscuridad… porque vemos que nuestra muerte no te ha tocado. Seamos también nosotros redimidos contigo, porque tú eres nuestro Redentor.»** Él los oye, **les sella su nombre en la cabeza** —el sello de las odas 4, 8 y 23— y la colección entera termina con seis palabras: «porque son hombres libres y son míos».",
+  "verses": {
+    "1": "Extendí mis manos y me acerqué a mi Señor;",
+    "2": "porque la extensión de mis manos es su señal;",
+    "3": "mi expansión es el árbol extendido que fue erigido en el camino del Justo.",
+    "4": "Y llegué a no ser nada para los que no se asieron de mí; y estaré con los que me aman.",
+    "5": "Todos mis perseguidores han muerto; y me buscaron los que esperaban en mí, porque yo estaba vivo;",
+    "6": "y me levanté y estoy con ellos; y hablaré por sus bocas.",
+    "7": "Porque han despreciado a los que los perseguían;",
+    "8": "y alcé sobre ellos el yugo de mi amor.",
+    "9": "Como el brazo del novio sobre la novia,",
+    "10": "así fue mi yugo sobre los que me conocen;",
+    "11": "y como el lecho que está tendido en la casa del novio y de la novia,",
+    "12": "así es mi amor sobre los que creen en mí.",
+    "13": "Y no fui rechazado, aunque así fui tenido.",
+    "14": "No perecí, aunque lo tramaron contra mí.",
+    "15": "El Seol me vio y fue hecho miserable;",
+    "16": "la Muerte me arrojó fuera, y a muchos conmigo.",
+    "17": "Tuve hiel y amargura, y descendí con él hasta lo más hondo de su profundidad;",
+    "18": "y los pies y la cabeza los soltó, porque no fueron capaces de soportar mi rostro;",
+    "19": "e hice una congregación de hombres vivos entre sus hombres muertos, y hablé con ellos con labios vivos,",
+    "20": "porque mi palabra no será vana;",
+    "21": "y los que habían muerto corrieron hacia mí; y clamaron y dijeron: «Hijo de Dios, ten piedad de nosotros, y haz con nosotros conforme a tu bondad,",
+    "22": "y sácanos de las ataduras de la oscuridad; y ábrenos la puerta por la cual saldremos a ti.",
+    "23": "Porque vemos que nuestra muerte no te ha tocado.",
+    "24": "Seamos también nosotros redimidos contigo, porque tú eres nuestro Redentor.»",
+    "25": "Y oí su voz; y mi nombre sellé sobre sus cabezas,",
+    "26": "porque son hombres libres y son míos. Aleluya."
+  }
+}
