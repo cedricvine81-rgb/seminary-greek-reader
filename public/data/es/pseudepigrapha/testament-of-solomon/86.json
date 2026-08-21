@@ -1,0 +1,8 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Testamento de Salomón en la traducción de F. C. Conybeare, The Jewish Quarterly Review 11 (1898), de dominio público.",
+ "_why": "El Testamento de Salomón SÍ se conserva en griego, pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Conybeare hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "La numeración por secciones 1-130 es la del propio Conybeare, y es la que se cita en su traducción; las ediciones modernas usan en cambio los capítulos y versículos de McCown, y las dos numeraciones NO se corresponden, de modo que una referencia tomada de un estudio moderno no se resolverá aquí sin convertirla primero. El conjuro es oscuro: nadie ha explicado qué son los «once padres» ni por qué Salomón habría de ser más hermoso que ellos. Además, la frase final está estropeada en el inglés de Conybeare, que imprime «I at retreat» en vez de «I at once retreat» como en todos los demás decanos; aquí se traduce «y me retiro», que es lo que la fórmula pide.",
+ "verses": {
+  "1": "El decimoquinto dijo: «Me llamo Roeled. Causo frío y helada y dolor de estómago. Baste que yo oiga las palabras: “Iax, no te quedes, no te calientes, porque Salomón es más hermoso que once padres”, y me retiro»."
+ }
+}

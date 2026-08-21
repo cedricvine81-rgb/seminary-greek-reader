@@ -80,6 +80,10 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // A is the long one (20 chapters), B the short one (14), and they differ in order and content.
   'testament-of-abraham-a': 'pseudepigrapha/testament-of-abraham-a',
   'testament-of-abraham-b': 'pseudepigrapha/testament-of-abraham-b',
+  // Also Greek-bearing, but the reader shows Conybeare's English, so the Spanish comes off that.
+  // Addressed by Conybeare's own section numbers 1-130, NOT by McCown's chapter and verse -- the
+  // two numberings do not correspond, so a citation from a modern study needs converting first.
+  'testament-of-solomon': 'pseudepigrapha/testament-of-solomon',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit

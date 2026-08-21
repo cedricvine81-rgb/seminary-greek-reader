@@ -1185,80 +1185,32 @@
     {
      "number": 2,
      "text": "שבתאי, shabtai, i.e. Saturn, transcribed Σέβεται in a Greek Papyrus Bibl. Nat. li. 2501, underlies our text. See Schwab sub voce."
-    },
-    {
-     "number": 3,
-     "text": "This work is a translation and has a separate copyright status to the applicable copyright protections of the original content."
-    },
-    {
-     "number": 4,
-     "text": "Retrieved from \"https://en.wikisource.org/w/index.php?title=The_Testament_of_Solomon&oldid=15448992\""
-    },
-    {
-     "number": 5,
-     "text": "Categories: Proofread texts 1898 works Works by unknown authors Works originally in Ancient Greek Works originally in Modern Greek PD-old Hidden categories: Pages with translator Headers applying DefaultSort key"
-    },
-    {
-     "number": 6,
-     "text": "This page was last edited on 14 October 2025, at 03:20."
-    },
-    {
-     "number": 7,
-     "text": "Text is available under the Creative Commons Attribution-ShareAlike License; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy."
-    },
-    {
-     "number": 8,
-     "text": "Privacy policy"
-    },
-    {
-     "number": 9,
-     "text": "About Wikisource"
-    },
-    {
-     "number": 10,
-     "text": "Disclaimers"
-    },
-    {
-     "number": 11,
-     "text": "Code of Conduct"
-    },
-    {
-     "number": 12,
-     "text": "Developers"
-    },
-    {
-     "number": 13,
-     "text": "Statistics"
-    },
-    {
-     "number": 14,
-     "text": "Cookie statement"
-    },
-    {
-     "number": 15,
-     "text": "Mobile view"
-    },
-    {
-     "number": 16,
-     "text": "Search"
-    },
-    {
-     "number": 17,
-     "text": "Search"
-    },
-    {
-     "number": 18,
-     "text": "The Testament of Solomon"
-    },
-    {
-     "number": 19,
-     "text": "1 language"
-    },
-    {
-     "number": 20,
-     "text": "Add topic"
     }
    ]
   }
- ]
+ ],
+ "_pageChromeRemoved": {
+  "section": 130,
+  "versesDropped": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20
+  ],
+  "why": "Wikisource page navigation and licence boilerplate scraped in as verses"
+ }
 }
