@@ -99,6 +99,10 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // No Greek survives for it, so this is at three removes from the lost original. Same Charles
   // line-head numbering, five numbers swallowed -- see the chapter 5 note.
   'lae': 'pseudepigrapha/lae',
+  // Survives whole only in Ethiopic (Greek in fragments), so the Spanish is off Charles's English
+  // at two removes. Three verse numbers were swallowed, and here the proof is visible: the "8.",
+  // "18." and "40." sit inline inside 4:7, 8:17 and 11:39, so those verses are FUSED, not missing.
+  'ascension-of-isaiah': 'pseudepigrapha/ascension-of-isaiah',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
