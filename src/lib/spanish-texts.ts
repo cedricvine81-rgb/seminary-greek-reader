@@ -103,6 +103,17 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // at two removes. Three verse numbers were swallowed, and here the proof is visible: the "8.",
   // "18." and "40." sit inline inside 4:7, 8:17 and 11:39, so those verses are FUSED, not missing.
   'ascension-of-isaiah': 'pseudepigrapha/ascension-of-isaiah',
+  // Pseudo-Philo, Liber Antiquitatum Biblicarum. No Greek survives: the book comes down in a
+  // LATIN version made from a lost Greek that itself rendered a Hebrew original, so this is at
+  // two removes from the surviving text and four from the original. The reader shows M. R.
+  // James's 1917 English and the Spanish comes off that. 65 chapters, 575 verses, no gaps and
+  // nothing to repair -- but the Latin is damaged in places and those defects are FLAGGED IN
+  // THE CHAPTER NOTES, NOT MENDED: a lost leaf at 37:1, meaningless roman numerals at 14:3,
+  // missing words at 44:8, an unrecoverable word at 56:1, and fused verse numbers printed
+  // inline inside 13:2, 58:3 and 62:10 -- those chapters therefore have FEWER verse keys than
+  // their last verse number, exactly as the English does. The book breaks off mid-sentence at
+  // 65:5; that is the manuscript, not an omission.
+  'pseudo-philo': 'pseudepigrapha/pseudo-philo',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
