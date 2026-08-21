@@ -76,7 +76,9 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // chapter, because Charles prints each chapter as continuous prose and cites it that way.
   'assumption-moses': 'pseudepigrapha/assumption-moses',
   // Greek survives for this one, but the reader shows Craigie's English, so the Spanish comes off
-  // the English like the rest here. Recension B only; A is a separate work id and a separate file.
+  // the English like the rest here. The two recensions are separate work ids with separate files:
+  // A is the long one (20 chapters), B the short one (14), and they differ in order and content.
+  'testament-of-abraham-a': 'pseudepigrapha/testament-of-abraham-a',
   'testament-of-abraham-b': 'pseudepigrapha/testament-of-abraham-b',
 }
 
