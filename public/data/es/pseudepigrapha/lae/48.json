@@ -1,0 +1,14 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: los Libros de Adán y Eva (la Vida de Adán y Eva latina) en la traducción de R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "Esta obra NO se conserva en griego: lo que hay es el latín, que a su vez procede de un original griego perdido. El texto que el lector muestra aquí es el inglés que Charles hizo desde ese latín, y de ese inglés procede esta versión española. Es decir, está a dos pasos del texto conservado y a tres del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Esta es la Vida de Adán y Eva LATINA; su hermana griega se lee aparte en esta misma aplicación con el nombre de Apocalipsis de Moisés, y las dos cuentan la misma historia de manera muy distinta: lo que aquí ocupa el centro —la penitencia en el Jordán y en el Tigris, y la negativa del diablo a adorar a Adán— no está en la griega. Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar y acabar a mitad de oración. Como en el Apocalipsis de Moisés, la transcripción perdió casi todos los signos de interrogación del inglés; en español se han restituido, porque la lengua exige el signo de apertura «¿». «Se sentará en el trono de aquel que ha sido su suplantador»: es la misma promesa que el Apocalipsis de Moisés 39:2 pone en boca de Dios —Adán ocupará el trono del diablo—, y cierra el pleito de los capítulos 12 a 16, donde el diablo se negó a adorarlo.",
+ "verses": {
+  "1": "Entonces Set vio la mano de Dios extendida, que sostenía a Adán, y él lo entregó a",
+  "2": "Miguel, diciendo: Esté a tu cargo hasta el día del Juicio, en castigo, hasta los últimos años, cuando yo convertiré su tristeza en gozo.",
+  "3": "Entonces se sentará en el trono de aquel que ha sido su suplantador.",
+  "4": "Y el Señor dijo otra vez a los ángeles Miguel y Uriel: Traedme tres lienzos de biso y extendedlos sobre Adán, y otros lienzos sobre Abel su hijo, y sepultad a Adán y a Abel su hijo.",
+  "5": "Y todas las «potestades» de los ángeles marcharon delante de Adán, y el sueño de los muertos fue",
+  "6": "consagrado. Y los ángeles Miguel y Uriel sepultaron a Adán y a Abel en las partes del Paraíso, delante de los ojos de Set y de su madre",
+  "7": "[y de nadie más], y Miguel y Uriel dijeron: Así como habéis visto, de la misma manera sepultad a vuestros muertos."
+ }
+}

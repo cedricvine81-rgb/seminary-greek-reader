@@ -94,6 +94,11 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // swallowed numbers -- see the chapter 13 note. Five verses are empty in the English (18:2, 18:5,
   // 27:1, 29:1, 32:1) and are deliberately left empty in Spanish so the columns correspond.
   'apocmoses': 'pseudepigrapha/apocmoses',
+  // The LATIN Life of Adam and Eve -- sister of the Greek one above, telling the same story very
+  // differently (the Jordan/Tigris penance and the devil's refusal to worship Adam are only here).
+  // No Greek survives for it, so this is at three removes from the lost original. Same Charles
+  // line-head numbering, five numbers swallowed -- see the chapter 5 note.
+  'lae': 'pseudepigrapha/lae',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit

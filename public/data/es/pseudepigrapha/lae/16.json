@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: los Libros de Adán y Eva (la Vida de Adán y Eva latina) en la traducción de R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "Esta obra NO se conserva en griego: lo que hay es el latín, que a su vez procede de un original griego perdido. El texto que el lector muestra aquí es el inglés que Charles hizo desde ese latín, y de ese inglés procede esta versión española. Es decir, está a dos pasos del texto conservado y a tres del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Esta es la Vida de Adán y Eva LATINA; su hermana griega se lee aparte en esta misma aplicación con el nombre de Apocalipsis de Moisés, y las dos cuentan la misma historia de manera muy distinta: lo que aquí ocupa el centro —la penitencia en el Jordán y en el Tigris, y la negativa del diablo a adorar a Adán— no está en la griega. Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar y acabar a mitad de oración. Como en el Apocalipsis de Moisés, la transcripción perdió casi todos los signos de interrogación del inglés; en español se han restituido, porque la lengua exige el signo de apertura «¿».",
+ "verses": {
+  "1": "Y Dios el Señor se airó conmigo y nos desterró, a mí y a mis ángeles, de nuestra gloria; y por",
+  "2": "causa tuya fuimos expulsados de nuestras moradas a este mundo y arrojados sobre la tierra. Y",
+  "3": "en seguida quedamos vencidos por el dolor, puesto que habíamos sido despojados de tan gran gloria. Y nos",
+  "4": "afligimos cuando te vimos a ti en tal gozo y deleite. Y con engaño defraudé a tu mujer e hice que fueses expulsado, por (obra) de ella, de tu gozo y de tu deleite, así como yo he sido echado de mi gloria."
+ }
+}

@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: los Libros de Adán y Eva (la Vida de Adán y Eva latina) en la traducción de R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "Esta obra NO se conserva en griego: lo que hay es el latín, que a su vez procede de un original griego perdido. El texto que el lector muestra aquí es el inglés que Charles hizo desde ese latín, y de ese inglés procede esta versión española. Es decir, está a dos pasos del texto conservado y a tres del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Esta es la Vida de Adán y Eva LATINA; su hermana griega se lee aparte en esta misma aplicación con el nombre de Apocalipsis de Moisés, y las dos cuentan la misma historia de manera muy distinta: lo que aquí ocupa el centro —la penitencia en el Jordán y en el Tigris, y la negativa del diablo a adorar a Adán— no está en la griega. Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar y acabar a mitad de oración. Como en el Apocalipsis de Moisés, la transcripción perdió casi todos los signos de interrogación del inglés; en español se han restituido, porque la lengua exige el signo de apertura «¿». El sueño de Eva con la sangre de Abel es el mismo que abre el Apocalipsis de Moisés (2:2), donde se cuenta con casi las mismas palabras: es de los pocos pasajes en que las dos versiones coinciden de cerca.",
+ "verses": {
+  "1": "Y Adán llevó a Eva y al niño, y los condujo",
+  "2": "al Oriente. Y el Señor Dios envió diversas semillas por medio de Miguel el arcángel, y las dio a Adán, y le mostró cómo trabajar y labrar la tierra, para que tuviesen fruto con el cual pudiesen vivir ellos y todas sus generaciones.",
+  "3": "Porque después de esto Eva concibió y dio a luz un hijo, cuyo nombre fue Abel; y Caín y Abel solían estar juntos.",
+  "4": "Y Eva dijo a Adán: Señor mío, mientras dormía, vi una visión, como si fuese la sangre de nuestro hijo Abel en la mano de Caín, que se la tragaba en su boca. Por eso tengo tristeza.",
+  "5": "Y Adán dijo: ¡Ay, si Caín matase a Abel! Pero separémoslos el uno del otro mutuamente, y hagamos para cada uno de ellos moradas separadas."
+ }
+}
