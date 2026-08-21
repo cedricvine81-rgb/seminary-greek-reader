@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, ArrowUpRight, MoreVertical, Blocks, Map as MapIcon} from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
+import { textCategoryLabel } from '@/lib/i18n/text-names'
 import { FONT_SIZES, FONT_SIZE_MAP, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { TextSizeSlider } from '@/components/reader/TextSizeControls'
 import { usePref } from '@/lib/use-pref'
@@ -1144,9 +1145,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                   <option value="bg:all">{t('search.scope.bgAllEn')}{optCount('bg:all')}</option>
                   <option value="bggrc:all">{t('search.scope.bgAllGrc')}</option>
                   <option value="bges:all">{t('search.scope.bgAllEs')}</option>
-                  {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
+                  {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{textCategoryLabel(c.id, locale, c.label)}</option>)}
                   {ES_COLLECTIONS.map(c => (
-                    <option key={`es-${c.id}`} value={`bges:${c.id}`}>{c.label} — {t('texts.spanishOurs')}</option>
+                    <option key={`es-${c.id}`} value={`bges:${c.id}`}>{textCategoryLabel(c.id, locale, c.label)} — {t('texts.spanishOurs')}</option>
                   ))}
                 </optgroup>
               </select>

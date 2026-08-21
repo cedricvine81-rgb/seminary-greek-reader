@@ -11,7 +11,9 @@ import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { loadJastrow, lookupAramaic, strippedLabel, type JastrowData } from '@/lib/jastrow'
-import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
+import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, type CatalogWork } from '@/lib/texts-catalog'
+import { textCategoryLabel, textAuthorLabel } from '@/lib/i18n/text-names'
+import { localizedWorkTitle, localizedWorkName } from '@/lib/i18n/text-catalog-labels'
 import { getTextSummary } from '@/lib/texts-summaries'
 import { useTc } from '@/lib/i18n/ContentProvider'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
@@ -1258,7 +1260,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         className={`inline-flex items-center gap-1 rounded border px-2.5 py-1 text-xs font-medium transition-colors ${
           menuOpen ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
       >
-        Texts
+        {t('nav.texts')}
         <ChevronDown size={13} className={`text-gray-400 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
       </button>
 
@@ -1278,7 +1280,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     : isActive ? 'text-brand-700 font-medium hover:bg-brand-50'
                     : 'text-gray-700 hover:bg-gray-50'}`}
                 >
-                  <span>{cat.label}{cat.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">{t('texts.comingSoon')}</span>}</span>
+                  <span>{textCategoryLabel(cat.id, locale, cat.label)}{cat.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">{t('texts.comingSoon')}</span>}</span>
                   {!cat.comingSoon && <ChevronDown size={13} className="-rotate-90 text-gray-300" />}
                 </button>
               )
@@ -1297,7 +1299,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     onClick={() => setMenuAuthor(null)}
                     className="w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
                   >
-                    <ChevronDown size={13} className="rotate-90 text-gray-400" /> {cat.label} › {menuAuthor}
+                    <ChevronDown size={13} className="rotate-90 text-gray-400" /> {textCategoryLabel(cat.id, locale, cat.label)} › {textAuthorLabel(menuAuthor, locale)}
                   </button>
                   {g?.works.map(w => (
                     <button
@@ -1307,7 +1309,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                       className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
                         work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                     >
-                      {workTitleWithoutAuthor(w)}
+                      {localizedWorkTitle(w, locale)}
                     </button>
                   ))}
                 </>
@@ -1321,7 +1323,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                   onClick={() => setMenuCat(null)}
                   className="w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
                 >
-                  <ChevronDown size={13} className="rotate-90 text-gray-400" /> {cat.label}
+                  <ChevronDown size={13} className="rotate-90 text-gray-400" /> {textCategoryLabel(cat.id, locale, cat.label)}
                 </button>
                 {groups.map(g => g.author ? (
                   <button
@@ -1331,7 +1333,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left transition-colors ${
                       work && g.works.some(w => w.id === work.id) ? 'text-brand-700 font-medium hover:bg-brand-50' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
-                    <span>{g.author}</span>
+                    <span>{textAuthorLabel(g.author!, locale)}</span>
                     <ChevronDown size={13} className="-rotate-90 text-gray-300" />
                   </button>
                 ) : (
@@ -1342,7 +1344,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
                       work?.id === g.works[0].id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
-                    {g.works[0].name}
+                    {localizedWorkName(g.works[0], locale)}
                   </button>
                 ))}
               </>
@@ -1372,7 +1374,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 onClick={() => setLocateOpen(o => !o)}
                 className={`inline-flex items-center gap-1 rounded px-1 text-sm font-semibold transition-colors ${locateOpen ? 'text-brand-800' : 'text-gray-800 hover:text-brand-700'}`}
               >
-                {work.name}
+                {localizedWorkName(work, locale)}
                 <ChevronDown size={14} className={`text-gray-400 transition-transform ${locateOpen ? 'rotate-180' : ''}`} />
               </button>
 

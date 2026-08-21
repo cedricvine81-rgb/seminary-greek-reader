@@ -69,7 +69,7 @@ export interface AuthorGroup {
 }
 
 /** A work's menu sub-heading: an explicit `group`, else the "Author, Title" name prefix. */
-function authorOf(w: CatalogWork): string | null {
+export function authorOf(w: CatalogWork): string | null {
   if (w.group) return w.group
   const i = w.name.indexOf(', ')
   return i > 0 ? w.name.slice(0, i) : null

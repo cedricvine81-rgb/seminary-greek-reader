@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Library, ChevronLeft } from 'lucide-react'
-import { useT } from '@/lib/i18n/LocaleProvider'
-import { TEXT_CATEGORIES, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { TEXT_CATEGORIES, groupWorksByAuthor, type CatalogWork } from '@/lib/texts-catalog'
+import { textCategoryLabel, textAuthorLabel } from '@/lib/i18n/text-names'
+import { localizedWorkTitle, localizedWorkName } from '@/lib/i18n/text-catalog-labels'
 
 // The header "Texts" destination with a hover mega-menu (desktop): hovering the item opens the
 // category list; hovering a category flies its AUTHORS out to the left; hovering a multi-work
@@ -19,6 +21,7 @@ import { TEXT_CATEGORIES, groupWorksByAuthor, workTitleWithoutAuthor, type Catal
 // the author row's measured position so it never runs off the screen edge.
 export function TextsNavMenu() {
   const t = useT()
+  const locale = useLocale()
   const [open, setOpen] = useState(false)      // category list shown
   const [cat, setCat] = useState<string | null>(null)          // category whose authors show
   const [sub, setSub] = useState<{ author: string; works: CatalogWork[]; top: number; left: number; rowTop: number; rowBottom: number } | null>(null)
@@ -127,7 +130,7 @@ export function TextsNavMenu() {
                     c.comingSoon ? 'text-gray-300'
                     : `cursor-default ${cat === c.id ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}`}
                 >
-                  <span className="flex-1">{c.label}{c.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
+                  <span className="flex-1">{textCategoryLabel(c.id, locale, c.label)}{c.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">{t('texts.comingSoon')}</span>}</span>
                   {!c.comingSoon && <ChevronLeft size={14} className="text-gray-300" />}
                 </div>
 
@@ -145,7 +148,7 @@ export function TextsNavMenu() {
                         <div key={g.author} onMouseEnter={e => openBooks(g.author!, g.works, e.currentTarget)}>
                           <div className={`flex items-center gap-2 px-3 py-1.5 text-sm cursor-default ${
                             sub?.author === g.author ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}>
-                            <span className="flex-1">{g.author}</span>
+                            <span className="flex-1">{textAuthorLabel(g.author!, locale)}</span>
                             <ChevronLeft size={14} className="text-gray-300" />
                           </div>
                         </div>
@@ -157,7 +160,7 @@ export function TextsNavMenu() {
                         <Link key={g.works[0].id} href={`/texts?work=${encodeURIComponent(g.works[0].id)}`} onClick={close}
                           onMouseEnter={() => setSub(null)}
                           className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors">
-                          {g.works[0].name}
+                          {localizedWorkName(g.works[0], locale)}
                         </Link>
                       ))}
                     </div>
@@ -182,7 +185,7 @@ export function TextsNavMenu() {
             {sub.works.map(w => (
               <Link key={w.id} href={`/texts?work=${encodeURIComponent(w.id)}`} onClick={close}
                 className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors">
-                {workTitleWithoutAuthor(w)}
+                {localizedWorkTitle(w, locale)}
               </Link>
             ))}
           </div>

@@ -24,7 +24,8 @@
     "audit:quizzes": "tsx scripts/audit-quizzes.ts",
     "i18n:literals": "node scripts/i18n-literals.mjs",
     "smoke": "node scripts/smoke.mjs",
-    "seed:test-accounts": "node --env-file=.env.local scripts/seed-test-accounts.mjs"
+    "seed:test-accounts": "node --env-file=.env.local scripts/seed-test-accounts.mjs",
+    "i18n:texts": "tsx --tsconfig tsconfig.i18n.json scripts/check-text-names.ts"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.6.4",
