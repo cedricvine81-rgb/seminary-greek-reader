@@ -1,0 +1,9 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis griego de Baruc (3 Baruc) en la traducción de H. M. Hughes, publicada en R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "3 Baruc SÍ se conserva en griego (y en eslavo), pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Hughes hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar a mitad de oración y terminar a mitad de otra. Se conservan tal cual para que las citas coincidan con la columna inglesa. Por la misma razón, y como en el inglés de Hughes, los diálogos van sin comillas: ponerlas obligaría a abrirlas y cerrarlas a caballo entre versículos.",
+ "verses": {
+  "1": "Y en aquella misma hora Miguel partió, y las puertas fueron cerradas. Y hubo un sonido como de",
+  "2": "trueno. Y pregunté al ángel: ¿Qué es el sonido? Y él me dijo: Miguel está ahora mismo presentando a Dios los méritos de los hombres."
+ }
+}

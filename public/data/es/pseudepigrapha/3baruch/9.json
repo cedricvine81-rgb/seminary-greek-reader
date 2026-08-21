@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis griego de Baruc (3 Baruc) en la traducción de H. M. Hughes, publicada en R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "3 Baruc SÍ se conserva en griego (y en eslavo), pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Hughes hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar a mitad de oración y terminar a mitad de otra. Se conservan tal cual para que las citas coincidan con la columna inglesa. Por la misma razón, y como en el inglés de Hughes, los diálogos van sin comillas: ponerlas obligaría a abrirlas y cerrarlas a caballo entre versículos. El «versículo 0» está FUERA DE SITIO, como en los capítulos 4 y 13: pertenece entre el 6 y el 7, y se lee de corrido así: «Escucha, / Baruc: esto que ves había sido escrito / por Dios, hermosa como ninguna otra». Se deja donde el inglés lo pone para que las citas coincidan en ambas columnas. La luna castigada por no haberse escondido en la transgresión de Adán es la explicación que este libro da de las fases lunares.",
+ "verses": {
+  "0": "Baruc: Esto que ves había sido escrito",
+  "1": "Y habiéndose ellos retirado, cayó también la noche, y al mismo tiempo vino el carro de la luna, junto con las estrellas.",
+  "2": "Y yo, Baruc, dije: Señor, muéstramelo también a mí, te lo suplico: cómo",
+  "3": "sale, adónde se va, y en qué forma se mueve. Y el ángel dijo: Espera, y lo verás también en breve. Y a la mañana siguiente lo vi también, en forma de mujer, y sentada sobre un carro de ruedas. Y había delante de él bueyes y corderos en el carro, y una multitud de",
+  "4": "ángeles del mismo modo. Y dije: Señor, ¿qué son los bueyes y los corderos? Y él me dijo:",
+  "5": "También ellos son ángeles. Y otra vez pregunté: ¿Por qué es que unas veces crece, y otras",
+  "6": "veces mengua? Y (él me dijo:) Escucha,",
+  "7": "por Dios, hermosa como ninguna otra. Y en la transgresión del primer Adán, ella estuvo cerca de Samael cuando este tomó la serpiente por vestidura. Y no se escondió, sino que creció, y Dios se",
+  "8": "airó con ella, y la afligió, y acortó sus días. Y dije: ¿Y cómo es que no brilla también siempre, sino solo de noche? Y el ángel dijo: Escucha: como en presencia de un rey los cortesanos no pueden hablar libremente, así la luna y las estrellas no pueden brillar en presencia del sol; porque las estrellas están siempre suspendidas, pero el sol las cubre, y la luna, aunque no está dañada, es consumida por el calor del sol."
+ }
+}

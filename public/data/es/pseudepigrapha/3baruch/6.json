@@ -1,0 +1,21 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis griego de Baruc (3 Baruc) en la traducción de H. M. Hughes, publicada en R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "3 Baruc SÍ se conserva en griego (y en eslavo), pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Hughes hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar a mitad de oración y terminar a mitad de otra. Se conservan tal cual para que las citas coincidan con la columna inglesa. Por la misma razón, y como en el inglés de Hughes, los diálogos van sin comillas: ponerlas obligaría a abrirlas y cerrarlas a caballo entre versículos. Faltan aquí los números 4 y 10, y en ninguno de los dos casos falta texto: el 4 se ve suelto al final del versículo 3 («Este es el 4 / guardián de la tierra»), y en el otro hueco la frase sigue de corrido («su nombre se llama / Fénix»). Véase la nota del capítulo 1. El ave que vuela delante del sol recibiendo sus rayos para que no abrasen la tierra es el Fénix, y esta es una de las descripciones antiguas más extensas que se conservan de él.",
+ "verses": {
+  "1": "Y él me tomó y me llevó adonde sale el sol,",
+  "2": "y me mostró un carro de cuatro caballos, debajo del cual ardía un fuego, y en el carro estaba sentado un hombre que llevaba una corona de fuego, (y) el carro (era) tirado por cuarenta ángeles. Y he aquí un ave que giraba delante del sol, a unos nueve",
+  "3": "codos de distancia. Y dije al ángel: ¿Qué es esta ave? Y él me dijo: Este es el 4",
+  "5": "guardián de la tierra. Y dije: Señor, ¿cómo es él el guardián de la tierra? Enséñame. Y el ángel me dijo: Esta ave vuela al lado del sol, y extendiendo sus alas recibe sus ígneos",
+  "6": "rayos. Porque si no los recibiese, el género humano no sería preservado, ni ninguna otra",
+  "7": "criatura viviente. Pero Dios destinó a ello a esta ave. Y él extendió sus alas, y vi en su ala derecha letras muy grandes, tan grandes como el espacio de una era, del tamaño de unos cuatro",
+  "8": "mil modios; y las letras eran de oro. Y el ángel me dijo: Léelas. Y yo leí,",
+  "9": "y decían así: Ni la tierra ni el cielo me engendran, sino alas de fuego me engendran. Y dije: Señor, ¿qué es esta ave, y cuál es su nombre? Y el ángel me dijo: Su nombre se llama",
+  "11": "Fénix. (Y yo dije:) ¿Y qué come? Y él me dijo: El maná del cielo y",
+  "12": "el rocío de la tierra. Y dije: ¿Excreta el ave? Y él me dijo: Excreta un gusano, y el excremento del gusano es la canela, que usan los reyes y los príncipes. Pero espera y",
+  "13": "verás la gloria de Dios. Y mientras él conversaba conmigo, hubo como un trueno, y se estremeció el lugar en que estábamos. Y pregunté al ángel: Señor mío, ¿qué es este sonido? Y el ángel me dijo: Ahora mismo los ángeles están abriendo las trescientas sesenta y cinco puertas",
+  "14": "del cielo, y la luz está siendo separada de las tinieblas. Y vino una voz que decía: Dador",
+  "15": "de luz, da resplandor al mundo. Y cuando oí el ruido del ave, dije: Señor, ¿qué es este",
+  "16": "ruido? Y él dijo: Esta es el ave que despierta del sueño a los gallos sobre la tierra. Porque así como los hombres lo hacen con la boca, así también el gallo hace señal a los del mundo, en su propia habla. Porque el sol es aparejado por los ángeles, y el gallo canta."
+ }
+}

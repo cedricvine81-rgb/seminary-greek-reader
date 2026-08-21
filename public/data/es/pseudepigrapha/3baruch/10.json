@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis griego de Baruc (3 Baruc) en la traducción de H. M. Hughes, publicada en R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "3 Baruc SÍ se conserva en griego (y en eslavo), pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Hughes hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar a mitad de oración y terminar a mitad de otra. Se conservan tal cual para que las citas coincidan con la columna inglesa. Por la misma razón, y como en el inglés de Hughes, los diálogos van sin comillas: ponerlas obligaría a abrirlas y cerrarlas a caballo entre versículos. Falta el número 2, y no falta texto: el numeral se ve suelto al final del versículo 1 («a un cuarto 2 / cielo»). Véase la nota del capítulo 1.",
+ "verses": {
+  "1": "Y cuando hube aprendido todas estas cosas del arcángel, me tomó y me llevó a un cuarto 2",
+  "3": "cielo. Y vi una llanura monótona, y en medio de ella un estanque de agua. Y había en él multitudes de aves de toda clase, pero no como las de aquí, en la tierra. Y vi una grulla tan grande como",
+  "4": "grandes bueyes; y todas las aves eran grandes más allá de las del mundo. Y pregunté al ángel: ¿Qué",
+  "5": "es la llanura, y qué el estanque, y qué las multitudes de aves en torno a él? Y el ángel dijo: Escucha, Baruc: la llanura que contiene en sí el estanque y otras maravillas es el lugar adonde vienen las",
+  "6": "almas de los justos, cuando conversan, viviendo juntas en coros. Pero el agua es",
+  "7": "la que reciben las nubes, y llueven sobre la tierra, y los frutos crecen. Y dije otra vez al ángel del Señor: Pero ¿(qué) son estas aves? Y él me dijo: Son las que",
+  "8": "continuamente cantan alabanza al Señor. Y dije: Señor, ¿y cómo dicen los hombres que el agua que",
+  "9": "desciende en lluvia viene del mar? Y el ángel dijo: El agua que desciende en lluvia, también esta viene del mar, y de las aguas sobre la tierra; pero la que aviva los frutos es (solo) de",
+  "10": "esta última fuente. Sabe, pues, de aquí en adelante que de esta fuente es lo que se llama el rocío del cielo. El quinto cielo."
+ }
+}

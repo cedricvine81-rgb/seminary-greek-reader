@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis griego de Baruc (3 Baruc) en la traducción de H. M. Hughes, publicada en R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "3 Baruc SÍ se conserva en griego (y en eslavo), pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Hughes hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar a mitad de oración y terminar a mitad de otra. Se conservan tal cual para que las citas coincidan con la columna inglesa. Por la misma razón, y como en el inglés de Hughes, los diálogos van sin comillas: ponerlas obligaría a abrirlas y cerrarlas a caballo entre versículos. La mujer que da a luz sin que la releven del trabajo y sigue haciendo ladrillos con la criatura en el delantal es de las escenas más citadas de este libro; la misma imagen aparece en la tradición rabínica sobre la torre. El capítulo no tiene huecos de numeración.",
+ "verses": {
+  "1": "Y el ángel del Señor me tomó y me llevó a un segundo cielo. Y me mostró allí",
+  "2": "también una puerta como la primera, y dijo: Entremos por ella. Y entramos, llevados en alas,",
+  "3": "una distancia de unos sesenta días de camino. Y me mostró también allí una llanura, y estaba llena de",
+  "4": "hombres cuya apariencia era como la de perros, y cuyos pies eran como los de los ciervos. Y pregunté",
+  "5": "al ángel: Te ruego, Señor, dime quiénes son estos. Y él dijo: Estos son los que dieron consejo de edificar la torre, porque los que ves obligaron a multitudes de hombres y de mujeres a hacer ladrillos; entre las cuales, a una mujer que hacía ladrillos no se le permitía ser relevada en la hora del parto, sino que daba a luz mientras hacía ladrillos, y llevaba a su hijo en el delantal, y",
+  "6": "seguía haciendo ladrillos. Y el Señor se les apareció y confundió su lengua, cuando",
+  "7": "habían edificado la torre hasta la altura de cuatrocientos sesenta y tres codos. Y tomaron una barrena, y buscaron horadar el cielo, diciendo: Veamos (si) el cielo está hecho de barro, o de",
+  "8": "bronce, o de hierro. Cuando Dios vio esto, no se lo permitió, sino que los hirió con ceguera y confusión de lengua, y los dejó como tú los ves. El tercer cielo."
+ }
+}

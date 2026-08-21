@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis griego de Baruc (3 Baruc) en la traducción de H. M. Hughes, publicada en R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "3 Baruc SÍ se conserva en griego (y en eslavo), pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Hughes hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar a mitad de oración y terminar a mitad de otra. Se conservan tal cual para que las citas coincidan con la columna inglesa. Por la misma razón, y como en el inglés de Hughes, los diálogos van sin comillas: ponerlas obligaría a abrirlas y cerrarlas a caballo entre versículos. Los corchetes del versículo 4 son de Charles: dentro va, palabra por palabra, la respuesta del señor a los siervos fieles en la parábola de los talentos, Mateo 25:21 y 23. Es una de las razones por las que se considera que la obra fue retocada por manos cristianas.",
+ "verses": {
+  "1": "Y en aquella misma hora Miguel descendió, y la puerta fue abierta; y trajo aceite.",
+  "2": "Y en cuanto a los ángeles que trajeron las canastas que estaban llenas, se las llenó de aceite, diciendo: Llevadlo, recompensad a nuestros amigos cien veces más, y a los que laboriosamente obraron buenas obras.",
+  "3": "Porque los que sembraron virtuosamente, también virtuosamente siegan. Y dijo también a los que traían las canastas a medio llenar: Venid acá también vosotros; llevaos la recompensa conforme a lo que trajisteis, y",
+  "4": "entregadla a los hijos de los hombres. [Entonces dijo también a los que trajeron las llenas y a los que trajeron las canastas a medio llenar: Id y bendecid a nuestros amigos, y decidles que así dice el Señor: Sobre poco fuisteis fieles, sobre mucho os pondré; entrad en el gozo de vuestro Señor.]"
+ }
+}

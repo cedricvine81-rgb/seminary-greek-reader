@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis griego de Baruc (3 Baruc) en la traducción de H. M. Hughes, publicada en R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "3 Baruc SÍ se conserva en griego (y en eslavo), pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Hughes hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar a mitad de oración y terminar a mitad de otra. Se conservan tal cual para que las citas coincidan con la columna inglesa. Por la misma razón, y como en el inglés de Hughes, los diálogos van sin comillas: ponerlas obligaría a abrirlas y cerrarlas a caballo entre versículos. Falta el número 2, y no falta texto: la frase sigue de corrido («y verás / la gloria de Dios»). Véase la nota del capítulo 1. Que Miguel «tiene las llaves del Reino de los Cielos» es notable: en Mateo 16:19 esas llaves se le dan a Pedro. Aquí el arcángel es además el que sube a Dios las oraciones y los méritos de los hombres, oficio que este libro le atribuye en los capítulos 11 a 16 seguidos.",
+ "verses": {
+  "1": "Y el ángel me tomó y me llevó de allí a un quinto cielo. Y la puerta estaba cerrada. Y dije: Señor, ¿no está abierta esta entrada para que podamos entrar? Y el ángel me dijo: No podemos entrar hasta que venga Miguel, el que tiene las llaves del Reino de los Cielos; pero espera y verás",
+  "3": "la gloria de Dios. Y hubo un gran sonido, como de trueno. Y dije: Señor, ¿qué es este sonido?",
+  "4": "Y él me dijo: Ahora mismo Miguel, el comandante de los ángeles, desciende a recibir las",
+  "5": "oraciones de los hombres. Y he aquí que vino una voz: Ábranse las puertas. Y las abrieron, y",
+  "6": "hubo un estruendo como de trueno. Y vino Miguel, y el ángel que estaba conmigo vino cara a",
+  "7": "cara con él y dijo: Salve, comandante mío, y de todo nuestro orden. Y el comandante Miguel dijo: Salve también tú, hermano nuestro, e intérprete de las revelaciones a los que pasan la vida",
+  "8": "virtuosamente. Y habiéndose saludado así uno a otro, se detuvieron. Y vi al comandante Miguel, que tenía un vaso grandísimo; su hondura era tan grande como la distancia del cielo a la",
+  "9": "tierra, y su anchura tan grande como la distancia del norte al sur. Y dije: Señor, ¿qué es eso que tiene Miguel el arcángel? Y él me dijo: Aquí es donde entran los méritos de los justos, y las buenas obras que hacen, que son escoltadas ante el Dios celestial."
+ }
+}

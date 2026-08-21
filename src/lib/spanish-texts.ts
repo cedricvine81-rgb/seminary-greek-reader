@@ -84,6 +84,11 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Addressed by Conybeare's own section numbers 1-130, NOT by McCown's chapter and verse -- the
   // two numberings do not correspond, so a citation from a modern study needs converting first.
   'testament-of-solomon': 'pseudepigrapha/testament-of-solomon',
+  // Greek survives, but the reader shows Hughes's English (Charles 1913), so the Spanish comes off
+  // that. Charles sets his verse numbers at the head of a LINE, not a sentence, so verses open
+  // mid-clause -- and nine of those numbers were swallowed by the transcription. No text is
+  // missing; see the chapter 1 note, which explains why the numbering is left exactly as it stands.
+  '3baruch': 'pseudepigrapha/3baruch',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
