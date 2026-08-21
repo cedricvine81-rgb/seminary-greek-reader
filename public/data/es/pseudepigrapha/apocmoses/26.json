@@ -1,0 +1,11 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis de Moisés en la traducción de R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "El Apocalipsis de Moisés SÍ se conserva en griego —es, de hecho, la Vida de Adán y Eva griega—, pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Charles hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar y acabar a mitad de oración. Se conservan tal cual para que las citas coincidan con la columna inglesa. Además, la transcripción de la que procede nuestro ejemplar perdió casi todos los signos de interrogación y muchas comillas del inglés; en español se han restituido, porque la lengua exige el signo de apertura «¿» y sin él las preguntas no se leen. El final del versículo 4 es Génesis 3:15 palabra por palabra, con «hasta el día del Juicio» añadido.",
+ "verses": {
+  "1": "Pero él se volvió a la serpiente [con gran ira] y dijo: Puesto que has hecho esto, y te has vuelto vaso ingrato hasta engañar a los corazones inocentes, maldita eres entre todas las bestias.",
+  "2": "Serás privada del alimento del cual comías, y comerás polvo todos los días de",
+  "3": "tu vida; sobre tu pecho y tu vientre andarás, y serás despojada de manos y pies. No te quedará oreja ni ala, ni un solo miembro de todos aquellos con los que los enredaste en",
+  "4": "tu malicia y los hiciste ser echados del paraíso; y pondré enemistad entre ti y su simiente: él te herirá la cabeza y tú le herirás el calcañar, hasta el día del Juicio."
+ }
+}

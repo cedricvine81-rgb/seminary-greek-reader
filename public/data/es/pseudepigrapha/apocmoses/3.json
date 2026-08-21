@@ -1,0 +1,10 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis de Moisés en la traducción de R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "El Apocalipsis de Moisés SÍ se conserva en griego —es, de hecho, la Vida de Adán y Eva griega—, pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Charles hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar y acabar a mitad de oración. Se conservan tal cual para que las citas coincidan con la columna inglesa. Además, la transcripción de la que procede nuestro ejemplar perdió casi todos los signos de interrogación y muchas comillas del inglés; en español se han restituido, porque la lengua exige el signo de apertura «¿» y sin él las preguntas no se leen. La «I» suelta del versículo 1 —«hallaron a Abel asesinado I por mano de Caín»— no es palabra: es una marca de la edición impresa que la transcripción confundió con texto. Se conserva a la vista en vez de borrarla, para que el lector sepa que está ahí y no la tome por parte de la frase.",
+ "verses": {
+  "1": "Y fueron ambos y hallaron a Abel asesinado I por mano de Caín su hermano. Y Dios",
+  "2": "dice a Miguel el arcángel: Di a Adán: «No reveles el secreto que sabes a Caín tu hijo, porque es hijo de ira. Pero no te aflijas, porque yo te daré otro hijo en su lugar; él te mostrará todo lo que has de hacer. Tú no le digas nada». Así habló el arcángel",
+  "3": "a Adán. Pero él guardó la palabra en su corazón, y con él también Eva, aunque se afligían por Abel su hijo."
+ }
+}

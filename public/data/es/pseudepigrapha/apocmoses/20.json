@@ -1,0 +1,12 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis de Moisés en la traducción de R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "El Apocalipsis de Moisés SÍ se conserva en griego —es, de hecho, la Vida de Adán y Eva griega—, pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Charles hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar y acabar a mitad de oración. Se conservan tal cual para que las citas coincidan con la columna inglesa. Además, la transcripción de la que procede nuestro ejemplar perdió casi todos los signos de interrogación y muchas comillas del inglés; en español se han restituido, porque la lengua exige el signo de apertura «¿» y sin él las preguntas no se leen. «Desnuda de la justicia con que había sido vestida»: la desnudez de Génesis 3:7 se entiende aquí como la pérdida de un vestido de gloria, no como falta de ropa. Es una de las lecturas antiguas más influyentes del relato.",
+ "verses": {
+  "1": "Y en aquella misma hora se abrieron mis ojos, y al punto supe que estaba desnuda de la justicia",
+  "2": "con que había sido vestida; y lloré y le dije: ¿Por qué me has",
+  "3": "hecho esto, en que me has privado de la gloria con que estaba vestida? Pero lloré también por el juramento que había jurado. Y él descendió del árbol y desapareció.",
+  "4": "Y comencé a buscar, en mi desnudez, en mi parte, hojas para cubrir mi vergüenza, pero no hallé ninguna, porque, tan pronto como hube comido, las hojas cayeron de todos los árboles de mi parte, salvo de la higuera",
+  "5": "solamente. Pero tomé hojas de ella y me hice un ceñidor, y era de la misma planta de la cual había comido."
+ }
+}

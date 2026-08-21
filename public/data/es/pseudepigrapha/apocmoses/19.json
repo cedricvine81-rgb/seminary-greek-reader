@@ -1,0 +1,10 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis de Moisés en la traducción de R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "El Apocalipsis de Moisés SÍ se conserva en griego —es, de hecho, la Vida de Adán y Eva griega—, pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Charles hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar y acabar a mitad de oración. Se conservan tal cual para que las citas coincidan con la columna inglesa. Además, la transcripción de la que procede nuestro ejemplar perdió casi todos los signos de interrogación y muchas comillas del inglés; en español se han restituido, porque la lengua exige el signo de apertura «¿» y sin él las preguntas no se leen. «El veneno de su maldad, que es la concupiscencia, la raíz y el principio de todo pecado»: aquí el libro define la caída como deseo, no como desobediencia sin más. La frase se cita constantemente en los estudios sobre el pecado original.",
+ "verses": {
+  "1": "Y yo le abrí, y él anduvo un poco, luego se volvió y me dijo: He cambiado de",
+  "2": "parecer, y no te daré de comer hasta que me jures que darás también a tu marido. (Y) yo dije: ¿Qué clase de juramento te he de jurar? Pero lo que sé, te lo digo: ¡Por el trono del",
+  "3": "Amo, y por los Querubines y el Árbol de la Vida! Daré también a mi marido de comer. Y cuando hubo recibido de mí el juramento, fue y derramó sobre el fruto el veneno de su maldad, que es la concupiscencia, la raíz y el principio de todo pecado; y dobló la rama hasta la tierra, y yo tomé del fruto y comí."
+ }
+}

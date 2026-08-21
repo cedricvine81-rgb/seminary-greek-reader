@@ -89,6 +89,11 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // mid-clause -- and nine of those numbers were swallowed by the transcription. No text is
   // missing; see the chapter 1 note, which explains why the numbering is left exactly as it stands.
   '3baruch': 'pseudepigrapha/3baruch',
+  // The Greek Life of Adam and Eve. Greek survives, but the reader shows Charles's English, so the
+  // Spanish comes off that. Same Charles line-head verse numbering as 3 Baruch, with the same
+  // swallowed numbers -- see the chapter 13 note. Five verses are empty in the English (18:2, 18:5,
+  // 27:1, 29:1, 32:1) and are deliberately left empty in Spanish so the columns correspond.
+  'apocmoses': 'pseudepigrapha/apocmoses',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit

@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Apocalipsis de Moisés en la traducción de R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), de dominio público.",
+ "_why": "El Apocalipsis de Moisés SÍ se conserva en griego —es, de hecho, la Vida de Adán y Eva griega—, pero el texto que el lector muestra aquí no es ese griego, sino el inglés de Charles hecho desde él; y de ese inglés procede esta versión española. Es decir, está a dos pasos del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "Los números de versículo son los de la edición impresa de Charles, que los coloca al principio de una LÍNEA y no de una frase; por eso un versículo puede empezar y acabar a mitad de oración. Se conservan tal cual para que las citas coincidan con la columna inglesa. Además, la transcripción de la que procede nuestro ejemplar perdió casi todos los signos de interrogación y muchas comillas del inglés; en español se han restituido, porque la lengua exige el signo de apertura «¿» y sin él las preguntas no se leen. Los versículos 2 y 5 están VACÍOS: así vienen en el ejemplar inglés de esta aplicación, sin texto alguno, y así se dejan en español para que las dos columnas se correspondan. No parece faltar nada: el 4 termina «No comeréis de» y el 6 empieza «él», de modo que la frase sigue de corrido por encima del hueco. Los otros tres versículos vacíos de la obra están en 27:1, 29:1 y 32:1.",
+ "verses": {
+  "1": "Entonces la serpiente me dice: ¡Viva Dios! Pero me duelo por vosotros, porque no querría que estuvieseis en la ignorancia. Levántate, (ven) acá, escúchame y come, y advierte el valor de aquel árbol.",
+  "2": "",
+  "3": "Pero yo le dije: Temo que Dios se aíre conmigo, como nos dijo. Y él me dice: No temas, porque tan pronto como comas de él, también vosotros seréis como Dios, en que conoceréis el bien y el mal.",
+  "4": "Pero Dios se dio cuenta de esto, de que seríais como él, y por eso os tuvo envidia y dijo: No comeréis de",
+  "5": "",
+  "6": "él. Antes bien, presta atención a la planta y verás su gran gloria. Pero yo temía tomar del fruto. Y él me dice: Ven acá, y yo te lo daré. Sígueme."
+ }
+}
