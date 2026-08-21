@@ -1,0 +1,29 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: Pseudo-Filón, Liber Antiquitatum Biblicarum, en la traducción de M. R. James, «The Biblical Antiquities of Philo» (SPCK, 1917), de dominio público.",
+ "_why": "Esta obra no se conserva en griego: lo que hay es una versión LATINA, hecha de un griego perdido que a su vez venía de un original hebreo. El texto que el lector muestra aquí es el inglés que M. R. James hizo desde ese latín, y de ese inglés procede esta versión española: está, pues, a dos pasos del texto conservado y a cuatro del original, a diferencia de los Testamentos de los Doce Patriarcas, del Testamento de Job y de la Carta de Aristeas, que en esta aplicación se tradujeron directamente del griego. Se advierte aquí porque el estudiante debe saber qué tiene delante.",
+ "_note": "La obra se atribuyó durante siglos a Filón de Alejandría, de donde el nombre «Pseudo-Filón»; recuenta la historia bíblica desde Adán hasta la muerte de Saúl, añadiendo mucho que no está en la Escritura. Los paréntesis con «o», «lit.» o «sc.» son notas del propio James sobre el latín, y se conservan como suyas. En los nombres propios se sigue esta regla: los que la Biblia española tiene se dan en su forma española (Noé, Sem, Cam, Jafet, Caín, Set, Enoc, Matusalén, Lamec), y los muchos que son propios de este libro y no aparecen en ninguna otra parte se dejan tal como James los imprime, porque su rareza es justamente el dato. El libro empieza como una genealogía de Génesis 5, pero le añade DECENAS DE NOMBRES que no están en la Escritura —los hermanos y hermanas de los patriarcas, con nombre propio cada uno— y hasta una hermana de Caín y Abel llamada Noaba. Esa es la manera de trabajar de toda la obra: rellenar los silencios del texto bíblico. Los números de años difieren a veces de los del Génesis y no se armonizan.",
+ "verses": {
+  "1": "El principio del mundo. Adán engendró tres hijos y una hija: Caín, Noaba, Abel y Set.",
+  "2": "Y vivió Adán, después de engendrar a Set, 700 años, y engendró 12 hijos y 8 hijas.",
+  "3": "Y estos son los nombres de los varones: Eliseel, Suris, Elamiel, Brabal, Naat, Zarama, Zasam, Maatal y Anat.",
+  "4": "Y estas son sus hijas: Fua, Iectas, Arebica, Sifa, Tecia, Saba, Asin.",
+  "5": "Y vivió Set 105 años y engendró a Enós. Y vivió Set, después de engendrar a Enós, 707 años, y engendró 3 hijos y 2 hijas.",
+  "6": "Y estos son los nombres de sus hijos: Elidia, Fonna y Mata; y de sus hijas, Malida y Tila.",
+  "7": "Y vivió Enós 180 años y engendró a Cainán. Y vivió Enós, después de engendrar a Cainán, 715 años, y engendró 2 hijos y una hija.",
+  "8": "Y estos son los nombres de sus hijos: Fo y Taal; y de la hija, Catennat.",
+  "9": "Y vivió Cainán 520 años y engendró a Malalec. Y vivió Cainán, después de engendrar a Malalec, 730 años, y engendró 3 hijos y 2 hijas.",
+  "10": "Y estos son los nombres de los varones: Atac, Socer, Lofa; y los nombres de las hijas, Ana y Leua.",
+  "11": "Y vivió Malalec 165 años y engendró a Jaret. Y vivió Malalec, después de engendrar a Jaret, 730 años, y engendró 7 hijos y 5 hijas.",
+  "12": "Y estos son los nombres de los varones: Leta, Mata, Cetar, Melie, Suriel, Lodo, Otim. Y estos son los nombres de las hijas: Ada y Noa, Iebal, Mada, Sella.",
+  "13": "Y vivió Jaret 172 años y engendró a Enoc. Y vivió Jaret, después de engendrar a Enoc, 800 años, y engendró 4 hijos y 2 hijas.",
+  "14": "Y estos son los nombres de los varones: Lead, Anac, Soboac y Iectar; y de las hijas, Tetzeco, Lesse.",
+  "15": "Y vivió Enoc 165 años y engendró a Matusalén. Y vivió Enoc, después de engendrar a Matusalén, 200 años, y engendró 5 hijos y 3 hijas.",
+  "16": "Pero Enoc agradó a Dios en aquel tiempo y no fue hallado, porque Dios lo trasladó.",
+  "17": "Ahora bien, los nombres de sus hijos son: Anaz, Zeum, Acaún, Feledi, Elit; y de las hijas, Teiz, Lefit, Leat.",
+  "18": "Y vivió Matusalén 187 años y engendró a Lamec. Y vivió Matusalén, después de engendrar a Lamec, 782 años, y engendró 2 hijos y 2 hijas.",
+  "19": "Y estos son los nombres de los varones: Inab y Rafo; y de las hijas, Aluma y Amuga.",
+  "20": "Y vivió Lamec 182 años y engendró un hijo, y lo llamó, conforme a su nacimiento, Noé, diciendo: Este niño nos dará reposo a nosotros y a la tierra, de aquellos que están en ella, sobre los cuales (o: en el día en que) se hará visitación por causa de la iniquidad de sus malas obras.",
+  "21": "Y vivió Lamec, después de engendrar a Noé, 585 años.",
+  "22": "Y vivió Noé 300 años y engendró 3 hijos: Sem, Cam y Jafet."
+ }
+}
