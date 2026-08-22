@@ -178,6 +178,18 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Brooks marks words supplied from the versions with half-brackets. They could not be recovered
   // from the scan and are reproduced in neither language — said in the attribution and in `_note`.
   josaseneth: 'pseudepigrapha/josaseneth',
+  // PHILO. Yonge's 1854-55 English is what the reader shows and what this renders, so the Spanish
+  // is at two removes: Philo survives in Greek and the app displays that Greek beside it, but the
+  // Greek is a separate digital edition (First1KGreek) and is NOT what was translated. Where
+  // Yonge paraphrases or compresses, the Spanish follows him.
+  //
+  // Section numbers are Cohn-Wendland's — the standard way Philo is cited — and are untouched, so
+  // an academic citation still resolves. A Philo "chapter" is a BOOK of the treatise, so
+  // single-book works live at .../1.json.
+  //
+  // 36 treatises, ~4.65M characters of English: this is by far the largest corpus in the project
+  // and lands one treatise at a time. Register each ONLY when every section of every book exists.
+  'philo-contemplative': 'philo/contemplative',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
