@@ -278,7 +278,7 @@ def main():
     if write:
         doc = json.loads(OUT.read_text(encoding='utf-8'))
         doc['chapters'][0]['verses'] = [{'number': n, 'text': sections[n]} for n in range(1, 271)]
-        OUT.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+        OUT.write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
         print(f'wrote {OUT}')
 
 

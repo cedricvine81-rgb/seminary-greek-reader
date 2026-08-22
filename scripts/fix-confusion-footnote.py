@@ -49,7 +49,7 @@ def main():
     print(f'  after : ...{verse["text"][max(0, i - 40):i + 30]!r}...')
 
     if write:
-        OUT.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+        OUT.write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
         print(f'wrote {OUT}')
 
 

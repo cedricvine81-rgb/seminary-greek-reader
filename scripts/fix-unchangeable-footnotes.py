@@ -85,7 +85,7 @@ def main():
         print(f'  §{sec:<4} [{n}]  ...{ctx.strip()!r}')
 
     if write:
-        OUT.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+        OUT.write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
         print(f'wrote {OUT}')
 
 
