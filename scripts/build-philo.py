@@ -116,6 +116,12 @@ def page_to_text(raw: bytes) -> str:
         if idx != -1:
             h = h[:idx]
             break
+    # The source hard-wraps its HTML, so a literal newline is a display line break, NOT a
+    # paragraph boundary. Flatten those first, so that after the next line a '\n' means one
+    # thing only: a real <p>/<br>/<div>/<hr>. Without this the marker-less fallback below
+    # emitted one "verse" per display line, cut mid-sentence (world, fragments, providence I).
+    # The marker path is unaffected: it collapses \s+ within each section either way.
+    h = h.replace('\r', ' ').replace('\n', ' ')
     h = re.sub(r'(?i)<(p|br|div|hr)\b[^>]*>', '\n', h)   # keep paragraph boundaries
     t = html.unescape(re.sub(r'<[^>]+>', ' ', h))
     t = t.replace('\xf9', '—')            # this source's stand-in byte for an em-dash
