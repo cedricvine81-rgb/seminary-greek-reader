@@ -190,6 +190,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // 36 treatises, ~4.65M characters of English: this is by far the largest corpus in the project
   // and lands one treatise at a time. Register each ONLY when every section of every book exists.
   'philo-contemplative': 'philo/contemplative',
+  'philo-good-person': 'philo/good-person',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
