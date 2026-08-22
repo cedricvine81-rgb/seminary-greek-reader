@@ -26,11 +26,12 @@ import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
+import { verseAnchorProps } from '@/components/highlights/render'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
-import { wordAtPoint, EDGE_PUNCT } from '@/lib/word-at-point'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { FONT_SIZE_MAP, FONT_SIZES, type PhraseFontSize } from './PhraseExplorer'
@@ -67,6 +68,11 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
   const [rows, setRows] = useState<VRow[]>([])
   const [loading, setLoading] = useState(true)
   const [tgAttrib, setTgAttrib] = useState('')
+  // The Targum column is a DIFFERENT text from the WEB beside it, so its highlights must be
+  // stored under the Targum work's own noteBook. Using `osis` for both would make two
+  // unrelated strings share one (book, chapter, verse, layer) key and paint each other's
+  // offsets — the same collision the Brenton/WEB split fixed for the Septuagint.
+  const [tgBook, setTgBook] = useState<string | null>(null)
   // Curated Samaritan Pentateuch readings — OUR OWN transcriptions from the public-domain
   // von Gall edition (see docs/sp-permission-request.md for why the full text is blocked).
   const [spNotes, setSpNotes] = useState<Record<string, SpNote>>({})
@@ -96,18 +102,12 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
   }, [isAuthenticated, osis, chapter])
   useEffect(() => { void loadNoted() }, [loadNoted])
   useEffect(() => onNotesChanged(() => void loadNoted()), [loadNoted])
-  // Right-click on the English columns (Targum / WEB): search the word under the cursor,
-  // or the selection when one exists.
-  const onEnglishContextMenu = useCallback((verse: number) => (e: React.MouseEvent<HTMLParagraphElement>) => {
-    const sel = window.getSelection()
-    let word = sel && !sel.isCollapsed ? sel.toString().trim() : ''
-    if (!word) word = wordAtPoint(e.clientX, e.clientY)
-    word = word.replace(EDGE_PUNCT, '').trim()
-    if (!word) return
-    e.preventDefault()
-    openWordSearch({ x: e.clientX, y: e.clientY, surface: word, reference: `${name} ${chapter}:${verse}`, kind: 'translation', transLang: 'en', book: osis })
-  }, [name, chapter, osis])
-
+  // Fetch this chapter's saved highlights. Without this `forVerse` only ever sees marks made
+  // in THIS session: useHighlights renders from a per-chapter map that nothing was filling, so
+  // a highlight made here vanished on reload even though it was stored and showed correctly in
+  // the Reader. The Targum column is keyed by its own noteBook, so it needs its own load.
+  useEffect(() => { void highlights.loadFor(osis, chapter) }, [highlights.loadFor, osis, chapter])
+  useEffect(() => { if (tgBook) void highlights.loadFor(tgBook, chapter) }, [highlights.loadFor, tgBook, chapter])
   useEffect(() => { onAttribution?.([ATTRIBUTION, tgAttrib, spAttrib].filter(Boolean).join(' ')) }, [onAttribution, tgAttrib, spAttrib])
 
   useEffect(() => {
@@ -147,6 +147,7 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
       for (const v of lxx.verses ?? []) if (v.verse >= verseStart && v.verse <= verseEnd) row(v.verse).lxxV = v
       const tgCh = (tg.chapters ?? []).find(c => c.number === chapter)
       if (tg.attribution) setTgAttrib(tg.attribution)
+      setTgBook(targum?.work.noteBook ?? null)
       for (const vv of tgCh?.verses ?? []) if (vv.number >= verseStart && vv.number <= verseEnd) row(vv.number).tg = vv.text
       for (const [k, text] of Object.entries(en.verses ?? {})) {
         const vn = parseInt(k.split('.').pop() ?? '', 10)
@@ -236,8 +237,45 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
                         }} />
                     : <span className="font-sans text-xs text-gray-300 italic">{t('var.ot.noLXX')}</span>}
                 </div>
-                {hasTg && <p className="font-reading text-sm leading-relaxed text-gray-700" onContextMenu={r.tg ? onEnglishContextMenu(r.verse) : undefined}>{r.tg ?? <span className="text-xs text-gray-300 italic">—</span>}</p>}
-                <p className="font-reading text-sm leading-relaxed text-gray-700" onContextMenu={r.en ? onEnglishContextMenu(r.verse) : undefined}>{r.en ?? <span className="text-xs text-gray-300 italic">—</span>}</p>
+                {/* Targum and WEB columns. Both carry the same drag-highlight anchor and the
+                    same per-word right-click menu as every other reading pane — they used to
+                    be inert <p>s, so two of this view's four columns could not be highlighted
+                    at all while the MT and LXX beside them could. `forwardContextMenuToNearest
+                    TransWord` keeps the old behaviour of right-clicking the gaps between words. */}
+                {hasTg && (
+                  <p className="font-reading text-sm leading-relaxed text-gray-700"
+                    onContextMenu={r.tg ? forwardContextMenuToNearestTransWord : undefined}>
+                    {r.tg && tgBook
+                      ? <span {...verseAnchorProps(tgBook, chapter, r.verse, 'en')}>
+                          <TransWords text={r.tg} lang="en" book={osis}
+                            reference={`${name} ${chapter}:${r.verse}`}
+                            hl={isAuthenticated ? {
+                              isAuthenticated,
+                              verseHighlights: highlights.forVerse(tgBook, chapter, r.verse, 'en'),
+                              create: (st, en, c) => void highlights.create(tgBook, chapter, r.verse, st, en, c, 'en'),
+                              recolor: (id, c) => void highlights.recolor(id, tgBook, chapter, c),
+                              remove: id => void highlights.remove(id, tgBook, chapter),
+                            } : undefined} />
+                        </span>
+                      : <span className="text-xs text-gray-300 italic">—</span>}
+                  </p>
+                )}
+                <p className="font-reading text-sm leading-relaxed text-gray-700"
+                  onContextMenu={r.en ? forwardContextMenuToNearestTransWord : undefined}>
+                  {r.en
+                    ? <span {...verseAnchorProps(osis, chapter, r.verse, 'en')}>
+                        <TransWords text={r.en} lang="en" book={osis}
+                          reference={`${name} ${chapter}:${r.verse}`}
+                          hl={isAuthenticated ? {
+                            isAuthenticated,
+                            verseHighlights: highlights.forVerse(osis, chapter, r.verse, 'en'),
+                            create: (st, en2, c) => void highlights.create(osis, chapter, r.verse, st, en2, c, 'en'),
+                            recolor: (id, c) => void highlights.recolor(id, osis, chapter, c),
+                            remove: id => void highlights.remove(id, osis, chapter),
+                          } : undefined} />
+                      </span>
+                    : <span className="text-xs text-gray-300 italic">—</span>}
+                </p>
               </div>
               {(() => {
                 const sn = spNotes[`${chapter}:${r.verse}`]

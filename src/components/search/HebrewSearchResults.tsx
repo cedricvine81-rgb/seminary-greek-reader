@@ -8,6 +8,10 @@ import { SEARCH_MARK } from '@/lib/highlight-terms'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { buildHebrewInfo } from '@/components/reader/HebrewWord'
 import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
+import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { ParsingDock } from './ParsingDock'
 import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -31,7 +35,7 @@ export type HebrewHit = { osisId: string; chapter: number; verse: number; text: 
 
 type MtVerse = { id: string; words?: VerseWord[] }
 
-export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transLang, embedded = false }: {
+export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transLang, embedded = false, isAuthenticated = false }: {
   hits: HebrewHit[]
   bookName: Map<string, string>
   onOpen: (h: HebrewHit, transLang: string) => void
@@ -39,7 +43,14 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
   // Parallel-translation column language ('none' = Hebrew only); owned by SearchPageView.
   transLang: string
   embedded?: boolean
+  isAuthenticated?: boolean
 }) {
+  // Highlighting, as the Greek results panel already had it. Offsets are into the hit's own
+  // `text`, which is character-for-character the Reader's canonical `words.join(' ')` string
+  // (verified across a sample of 200 verses — the index keeps maqqef where the Reader joins
+  // with a space, and both are one character), so a mark made here lands on the same words in
+  // the Reader and vice versa.
+  const highlights = useHighlights(isAuthenticated)
   const [, bump] = useState(0)
   const [selKey, setSelKey] = useState<string | null>(null)
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
@@ -94,26 +105,45 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
   function hebrewVerse(h: HebrewHit) {
     const verseId = `${h.osisId}.${h.chapter}.${h.verse}`
     const parts = h.text.split(/(\s+|־)/)
+    const verseHl = isAuthenticated ? highlights.forVerse(h.osisId, h.chapter, h.verse, HEBREW_LAYER) : []
     let wi = -1
+    let pos = 0
     return parts.map((part, pi) => {
+      const start = pos
+      pos += part.length
+      const end = start + part.length
       if (part === '') return null
-      if (/^(?:\s+|־)$/.test(part)) return <span key={pi}>{part}</span>   // separator (space or maqqef)
+      if (/^(?:\s+|־)$/.test(part)) {
+        // Paint a separator that sits INSIDE a highlight so a run reads as one stroke.
+        const sp = highlightAt(start, end, verseHl)
+        return <span key={pi} className={sp ? highlightMarkClass(sp.color) : undefined}>{part}</span>
+      }
       wi += 1
       const idx = wi
       const key = `${verseId}.${idx}`
       const matched = h.matchWords?.length ? h.matchWords.includes(part) : isMatch(part)
       const pick = () => void selectWord(h, idx, part, key)
+      const mark = highlightAt(start, end, verseHl)
       return (
         <span key={pi} onMouseEnter={pick} onClick={pick}
           onContextMenu={e => {
             e.preventDefault()
             // Hebrew has no Greek corpus to scope to; the menu still offers the word
-            // search and the copy row.
+            // search, the highlight row and the copy row.
             openWordSearch({ x: e.clientX, y: e.clientY, surface: part,
               reference: `${bookName.get(h.osisId) ?? h.osisId} ${h.chapter}:${h.verse}`,
-              kind: 'translation', transLang: 'he', book: h.osisId })
+              kind: 'translation', transLang: 'he', book: h.osisId,
+              highlight: isAuthenticated ? {
+                activeColor: mark?.color ?? null,
+                onPick: c => mark
+                  ? void highlights.recolor(mark.id, h.osisId, h.chapter, c)
+                  : void highlights.create(h.osisId, h.chapter, h.verse, start, end, c, HEBREW_LAYER),
+                onRemove: () => { if (mark) void highlights.remove(mark.id, h.osisId, h.chapter) },
+              } : undefined })
           }}
-          className={`cursor-pointer rounded transition-colors hover:bg-brand-100 ${selKey === key ? 'bg-brand-100' : ''}${matched ? ` ${SEARCH_MARK}` : ''}`}>
+          {...(mark ? { 'data-highlight-id': mark.id } : {})}
+          className={`cursor-pointer rounded transition-colors hover:bg-brand-100 ${selKey === key ? 'bg-brand-100' : ''}${
+            mark ? ` ${highlightMarkClass(mark.color)}` : matched ? ` ${SEARCH_MARK}` : ''}`}>
           {part}
         </span>
       )
@@ -175,7 +205,14 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
                       ? <span className="text-gray-400 italic">(superscription)</span>
                       : trMap[vid]
                         ? <TransWords text={trMap[vid]} lang={transLang} book={h.osisId}
-                            reference={`${bookName.get(h.osisId) ?? h.osisId} ${h.chapter}:${h.verse}`} />
+                            reference={`${bookName.get(h.osisId) ?? h.osisId} ${h.chapter}:${h.verse}`}
+                            hl={isAuthenticated ? {
+                              isAuthenticated,
+                              verseHighlights: highlights.forVerse(h.osisId, h.chapter, h.verse, transLang),
+                              create: (st, en, c) => void highlights.create(h.osisId, h.chapter, h.verse, st, en, c, transLang),
+                              recolor: (id, c) => void highlights.recolor(id, h.osisId, h.chapter, c),
+                              remove: id => void highlights.remove(id, h.osisId, h.chapter),
+                            } : undefined} />
                         : <span className="text-gray-300 italic">…</span>}
                   </p>
                 )}
