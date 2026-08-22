@@ -44,15 +44,8 @@ TARGETS = [('world', 'book44', 1), ('fragments', 'book45', 1), ('providence', 'b
 
 
 def paragraphs(page):
-    t = bp.page_to_text((bp.CACHE / f'{page}.html').read_bytes())
-    out = []
-    for para in t.split('\n'):
-        para = re.sub(r'\s+', ' ', para).strip()
-        para = re.sub(r'^[IVXLCDM]{1,6}\.\s+', '', para)
-        if len(para) < 60:
-            continue
-        out.append(para)
-    return out
+    """Delegate to build-philo.py's own fallback so the two can never drift apart."""
+    return [text for _book, _n, text in bp.parse_page((bp.CACHE / f'{page}.html').read_bytes(), 1)]
 
 
 def main():
@@ -70,7 +63,7 @@ def main():
         # Already repaired? The tell-tale is a median section far shorter than a sentence.
         med_before = sorted(len(v['text']) for v in chapter['verses'])[before // 2]
         med_after = sorted(len(p) for p in paras)[len(paras) // 2]
-        if med_before > 300:
+        if med_before > 300 and len(paras) == before:
             print(f'{slug} bk{book_no}: already repaired (median {med_before}) — skipped')
             continue
 

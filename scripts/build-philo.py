@@ -144,13 +144,23 @@ def parse_page(raw: bytes, page_book):
     out = []
     if not markers:
         book = page_book if page_book is not None else 1
-        n = 0
-        for para in t.split('\n'):
-            para = re.sub(r'\s+', ' ', para).strip()
-            para = re.sub(r'^[IVXLCDM]{1,6}\.\s+', '', para)   # drop a leading Roman header
-            if len(para) < 60:            # skip stray title/heading fragments
-                continue
-            n += 1
+        raw = [q for q in (re.sub(r'^[IVXLCDM]{1,6}\.\s+', '', re.sub(r'\s+', ' ', p).strip())
+                           for p in t.split('\n')) if q]
+        # Page furniture ('APPENDICES', 'FRAGMENTS', 'From Eusebius P.E. ...') is the run of
+        # short lines before the first substantial paragraph. Only those are dropped: a short
+        # line later in the page is real content -- a verse line of a quotation, or one of the
+        # florilegium headings in the Fragments ('About anarchy.').
+        first = next((i for i, q in enumerate(raw) if len(q) >= 60), 0)
+        paras = []
+        for q in raw[first:]:
+            # A paragraph continues the previous one when that one broke off mid-sentence, or
+            # when this one opens lowercase -- both happen where a block quotation interrupts
+            # a sentence, which is why 'for the verse-' used to end a section on its own.
+            if paras and (not re.search(r'[.!?:;]["\u201d\')]?$', paras[-1]) or q[:1].islower()):
+                paras[-1] += ' ' + q
+            else:
+                paras.append(q)
+        for n, para in enumerate(paras, 1):
             out.append((book, n, para))
         return out
     for i, m in enumerate(markers):
