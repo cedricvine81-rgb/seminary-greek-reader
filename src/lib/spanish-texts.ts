@@ -192,6 +192,8 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'philo-contemplative': 'philo/contemplative',
   'philo-good-person': 'philo/good-person',
   'philo-creation': 'philo/creation',
+  'philo-giants': 'philo/giants',
+  'philo-hypothetica': 'philo/hypothetica',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
