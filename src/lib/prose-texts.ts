@@ -186,12 +186,16 @@ const PHILO_WORKS: ProseWork[] = PHILO.map(p => ({
 // Works for which scripts/build-philo-greek.py attached the parallel Greek (First1KGreek,
 // CC BY-SA 4.0). On Joseph, On Providence, the Questions on Genesis, the Hypothetica, the
 // Fragments and On the World are English-only — their Greek survives only in fragments or an
-// Armenian version, or (On Joseph) is versified on a scheme our English does not share.
+// Armenian version. On Joseph joined this set once its sections were repaired: Yonge's page
+// stops numbering at (63), so our English carried 63 units against the Greek's 270 and the
+// builder refused to pair them by number. scripts/fix-joseph-sections.py restored all 270,
+// and the Greek now attaches 270/270.
 const PHILO_GREEK = new Set([
   'creation', 'alleg-interp', 'cherubim', 'sacrifices', 'worse', 'posterity', 'giants',
   'unchangeable', 'husbandry', 'planter', 'drunkenness', 'sobriety', 'confusion', 'migration',
-  'heir', 'congress', 'flight', 'names', 'dreams', 'abraham', 'moses', 'decalogue', 'spec-laws',
-  'virtues', 'rewards', 'good-person', 'contemplative', 'eternity', 'flaccus', 'embassy',
+  'heir', 'congress', 'flight', 'names', 'dreams', 'abraham', 'joseph', 'moses', 'decalogue',
+  'spec-laws', 'virtues', 'rewards', 'good-person', 'contemplative', 'eternity', 'flaccus',
+  'embassy',
 ])
 
 // Ids/names the catalog needs to list Philo's works under one Texts category.
