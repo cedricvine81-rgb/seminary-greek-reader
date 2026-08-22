@@ -200,6 +200,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'philo-planter': 'philo/planter',
   'philo-unchangeable': 'philo/unchangeable',
   'philo-decalogue': 'philo/decalogue',
+  'philo-husbandry': 'philo/husbandry',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
