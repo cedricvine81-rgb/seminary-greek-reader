@@ -1,0 +1,30 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Levítico, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "⚠ NUMERACIÓN HEBREA: este capítulo corresponde a Levítico 6:8-30 de las Biblias en español, es decir, va corrido siete números (véase la nota del cap. 5). El v. 2 explica para qué sirve el holocausto: «para hacer expiación por los PENSAMIENTOS del corazón» —los pecados que no llegan a obra, cosa que el hebreo no dice y que la tradición rabínica sostiene. El v. 5 fija la hora de poner la leña: «de mañana en mañana, a las cuatro horas del día». El v. 13 aclara cuándo ofrece el sumo sacerdote su minjá: «en el día en que lo ungen, para que tome posesión de la herencia del sumo sacerdocio», y en dos mitades, mañana y tarde. Y el v. 21 añade el motivo de romper la vasija de barro: «no sea que se cueza en ella cosa común».",
+ "verses": {
+  "1": "Y el Señor habló con Moisés, diciendo:",
+  "2": "Manda a Aarón y a sus hijos, diciendo: Esta es la ley del holocausto, el cual se ofrece para hacer expiación por los pensamientos del corazón. Es holocausto, que se hace a la manera del holocausto del monte Sinaí, y permanece sobre el lugar de la quema en el altar toda la noche hasta la mañana; porque el fuego del altar arderá en él.",
+  "3": "Y el sacerdote se vestirá de vestiduras de lino, y pondrá calzoncillos de lino sobre su carne; y apartará las cenizas que hace el fuego al consumir el holocausto sobre el altar, y las pondrá al lado del altar.",
+  "4": "Y se quitará sus vestiduras y se pondrá otras, y sacará las cenizas fuera del campamento a un lugar limpio.",
+  "5": "Pero el fuego sobre el altar arderá en él sin apagarse, y el sacerdote pondrá leña sobre él de mañana en mañana, a las cuatro horas del día; y pondrá en orden sobre él el holocausto, y quemará sobre él la grosura de las oblaciones consagradas.",
+  "6": "El fuego arderá continuamente sobre el altar; nunca se apagará.",
+  "7": "Y esta es la ley de la minjá, la cual ofrecerán los sacerdotes hijos de Aarón en presencia del Señor, delante del altar.",
+  "8": "Y apartará de ella su puñado de la flor de harina de la minjá, de lo mejor de ella, con todo el incienso que está sobre la minjá, y lo quemará en el altar para ser recibido con agrado, como memorial de alabanza delante del Señor.",
+  "9": "Y lo que quede de ella lo comerán Aarón y sus hijos; sin levadura lo comerán, en el lugar santo; en el atrio del tabernáculo de la ordenanza lo comerán.",
+  "10": "Su porción del resto de la minjá de mis oblaciones, la que les es dada, no se cocerá con levadura; es cosa santísima, como la ofrenda por el pecado y como la ofrenda por la culpa.",
+  "11": "Todo varón de los hijos de Aarón podrá comer de ella. Estatuto perpetuo es para sus generaciones acerca de las oblaciones del Señor: todo el que las toque ha de ser santificado.",
+  "12": "Y el Señor habló con Moisés, diciendo:",
+  "13": "Esta es la oblación de Aarón y de sus hijos, la que han de ofrecer delante del Señor en el día en que lo ungen, para que tome posesión de la herencia del sumo sacerdocio: la décima parte de tres seahs de flor de harina como minjá, la mitad por la mañana y la mitad al atardecer.",
+  "14": "La harás en sartén, amasada con aceite de oliva la ofrecerás; en pedazos partidos ofrecerás la minjá, para ser recibida con agrado delante del Señor.",
+  "15": "Y el sumo sacerdote que está ungido con aceite —y también cuando alguno de sus hijos constituidos sacerdotes sea consagrado en su lugar— hará esto: estatuto perpetuo es delante del Señor; todo será puesto en orden y quemado.",
+  "16": "Porque toda minjá del sacerdote será puesta en orden y consumida por entero; no se comerá.",
+  "17": "Y el Señor habló con Moisés, diciendo:",
+  "18": "Habla con Aarón y con sus hijos, diciendo: Esta es la ley de la ofrenda por el pecado, la cual ha de ser degollada en el lugar donde se degüella el holocausto; será degollada como ofrenda por el pecado delante del Señor; es cosa santísima.",
+  "19": "El sacerdote que hace la expiación con la sangre podrá comer de ella en el lugar santo; se comerá en el atrio del tabernáculo de la ordenanza;",
+  "20": "todo el que toque su carne ha de ser santificado. Y si alguno deja caer de su sangre sobre una vestidura, la vestidura salpicada será lavada en el lugar santo.",
+  "21": "Y toda vasija de barro en que se cueza su carne será quebrada, no sea que se cueza en ella cosa común; y si se cuece en vasija de bronce, será fregada con tierra de alfarero y lavada con aguas.",
+  "22": "Todo varón de los sacerdotes podrá comer de ella; es cosa santísima.",
+  "23": "Pero ninguna ofrenda por el pecado cuya sangre se lleva al tabernáculo de la ordenanza para hacer expiación en el santuario podrá comerse; ha de ser quemada con fuego."
+ }
+}
