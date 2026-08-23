@@ -1,0 +1,29 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El oráculo del «fin de los días» (vv. 2-4), el pasaje más citado del libro. El targum lo concreta paso a paso: no «el monte de la casa del Señor», sino «el monte de la casa del santuario del Señor»; no «la casa del Dios de Jacob», sino «la casa de la Shekiná del Dios de Jacob»; y no «andaremos por sus sendas», sino «andaremos en la enseñanza de su ley». Es la tendencia constante de esta versión: donde el hebreo dice Dios sin más, el targum precisa qué de Dios —su santuario, su Shekiná, su Palabra, su ley—, para que nadie confunda a Dios con un lugar ni con una imagen. En los vv. 9, 11 y 17 el «hombre» y el «varón» del hebreo se convierten en dos clases sociales, «el hombre común» y «los grandes», con lo cual el juicio deja de ser genérico y se vuelve social. El v. 6 explica la idolatría de Judá por contagio: adivinan por las nubes «como los filisteos». El v. 1 lleva mayúsculas de rótulo en el inglés y se conservan.",
+ "verses": {
+  "1": "Palabra de profecía que Isaías, hijo de Amoz, profetizó acerca de los hombres de Judá y de los habitantes de Jerusalén.",
+  "2": "Y sucederá en el fin de los días que el monte de la casa del santuario del Señor será establecido en la cumbre de los montes, y será exaltado sobre las colinas; y todos los reinos se volverán para adorar sobre él.",
+  "3": "Y muchos pueblos irán y dirán: Vengan, subamos al monte de la casa del santuario del Señor, a la casa de la Shekiná del Dios de Jacob; y Él nos enseñará de sus caminos, los que son rectos delante de Él, y andaremos en la enseñanza de su ley; porque de Sion saldrá la ley, y de Jerusalén la enseñanza de la palabra del Señor.",
+  "4": "Y Él juzgará entre los reinos, y reprenderá a muchos pueblos: y batirán sus espadas en rejas de arado, y sus lanzas en hoces; no alzará nación contra nación arma alguna, ni aprenderán más la guerra.",
+  "5": "Los de la casa de Jacob dirán: Vengan, andemos en la enseñanza de la ley del Señor.",
+  "6": "Porque han abandonado al Terrible, al Fuerte que los redimió, los de la casa de Jacob, por eso su tierra está llena de ídolos, como desde el principio; y se han puesto a adivinar por las nubes, como los filisteos; y andan en las leyes de las naciones.",
+  "7": "También su tierra está llena de plata y de oro, y no hay fin de sus tesoros; su tierra está llena asimismo de caballos, y no hay fin de sus carros.",
+  "8": "También su tierra está llena de ídolos; se postran ante la obra de sus propias manos, ante lo que han formado sus propios dedos.",
+  "9": "El hombre común será humillado, y la fuerza de los grandes se debilitará; y Tú no los perdonarás.",
+  "10": "Entrarán en la peña para huir en huida, y para esconderse en el polvo, por el temor del Señor y por el resplandor de su gloria.",
+  "11": "Las miradas altivas del hombre común serán humilladas, y la fuerza de los grandes se debilitará, y solo el Señor será fuerte en aquel tiempo.",
+  "12": "Porque el día vendrá de parte del Señor de los ejércitos sobre todos los soberbios, y sobre los de ánimo altivo, y sobre todos los poderosos; sí, serán humillados.",
+  "13": "Y sobre todos los reyes de las naciones, los fuertes y los poderosos; y sobre todos los príncipes de las provincias;",
+  "14": "y sobre todos los montes altos, y sobre todas las colinas que se levantan;",
+  "15": "y sobre todos los que habitan en torre alta; y sobre todos los que habitan dentro de murallas fortificadas;",
+  "16": "y sobre todos los que habitan en las islas del mar; y sobre todos los que habitan en hermosos palacios.",
+  "17": "La soberbia del hombre común será humillada, y la fuerza de los grandes se debilitará, y solo el Señor será fuerte en aquel tiempo.",
+  "18": "Y los ídolos desaparecerán del todo.",
+  "19": "Y se meterán en las cuevas de las peñas, y en las cavernas de la tierra, por el temor del Señor y por el resplandor de su gloria, cuando Él se revele para destruir a los malvados de la tierra.",
+  "20": "En aquel tiempo los hijos de los hombres aborrecerán los ídolos de su plata y los ídolos de su oro, que se hicieron para postrarse ante ídolos y ante imágenes,",
+  "21": "para meterse en las cuevas de las peñas y en los agujeros de las rocas, por el temor del Señor y por el resplandor de su gloria, cuando Él se revele para destruir a los malvados de la tierra.",
+  "22": "Dejen de hacerse siervos del hombre, porque él obra terror; el aliento del espíritu de vida está en sus narices, pues hoy vive, pero mañana ya no está, y es tenido por nada."
+ }
+}

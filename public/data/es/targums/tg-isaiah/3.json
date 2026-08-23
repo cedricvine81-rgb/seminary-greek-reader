@@ -1,0 +1,33 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El desplome del orden público en Jerusalén, y luego el juicio sobre las mujeres de Sion. Dos retoques targúmicos que vale la pena ver. En el v. 12 el hebreo dice que a Israel lo oprimen «niños» y que «mujeres» lo gobiernan; el targum lo cambia por saqueadores «como quienes rebuscan la viña» y por «usureros», es decir, sustituye una imagen que sonaba a insulto por una acusación económica concreta —la misma que reaparece en el v. 14, «el despojo del pobre está en sus casas». En el v. 24 la sentencia final («por haber fornicado en su hermosura») es adición del targum: explica el castigo, cosa que el hebreo no hace. La lista de adornos de los vv. 18-23 traduce términos hebreos oscuros cuyo sentido exacto se discute todavía; el español sigue la conjetura de Pauli sin corregirla. El v. 15 termina en el inglés con una comilla suelta que no abre nada: es defecto del impreso y se conserva tal cual.",
+ "verses": {
+  "1": "Porque he aquí, el Señor del mundo, el Señor de los ejércitos, quita de Jerusalén y de Judá el sostén y el apoyo, todo sostén de pan y todo sostén de agua.",
+  "2": "El valiente, y el hombre de guerra, el juez, y el profeta, y el escriba, y el adivino, y el anciano,",
+  "3": "el capitán de cincuenta, y el hombre honorable, y el consejero, y el que manda, y el que obedece, y el sabio de consejo.",
+  "4": "Y les pondré niños de pecho por gobernadores, y los débiles se enseñorearán de ellos.",
+  "5": "Las naciones harán guerra, hombre contra hombre, y cada uno contra su prójimo; los muchachos mandarán sobre el anciano, y el vil sobre el honorable.",
+  "6": "Porque un hombre echará mano de su hermano, de la familia de la casa de su padre, diciendo: Tú tienes ropa, sé tú gobernante sobre nosotros, y esta ruina quede bajo tu gobierno.",
+  "7": "Él responderá en aquel tiempo, diciendo: No soy persona apropiada para hacerme jefe, y en mi casa no tengo nada que pueda comer, ni nada con que pueda vestirme; no me pongan por jefe sobre todo este pueblo.",
+  "8": "Porque los habitantes de Jerusalén han tropezado, por eso los hombres de Judá irán al cautiverio; ciertamente el hablar de su boca y la paga de sus obras están al descubierto delante del Señor, y han provocado a ira su gloria.",
+  "9": "El semblante de sus rostros en el juicio da testimonio contra ellos, y declaran sus pecados como los sodomitas, y no se contienen. ¡Ay de ellos! porque han hecho que el mal venga sobre ellos.",
+  "10": "Digan al justo que le irá bien, porque los frutos de su obra les serán recompensados.",
+  "11": "¡Ay del malvado, cuyas obras son malas! porque la paga de sus manos le será devuelta.",
+  "12": "En cuanto a mi pueblo, sus opresores lo saquean como quienes rebuscan la viña; y como usureros se enseñorean de él. Pueblo mío, los que te llaman bienaventurado te hacen errar, y el camino de tu senda han torcido.",
+  "13": "El Señor está pronto para juzgar, y para revelarse a fin de tomar venganza en el juicio de las naciones.",
+  "14": "El Señor entrará en juicio con los ancianos de su pueblo y con sus opresores; porque ustedes han robado a mi pueblo, el despojo del pobre está en sus casas.",
+  "15": "¿Qué quieren decir con empobrecer a mi pueblo y moler los rostros de los pobres? Están pereciendo en sus pleitos, dice el Señor, el Dios de los ejércitos.'",
+  "16": "Y dijo el Señor: Porque las hijas de Sion son altivas, y andan con el cuello estirado, y caminan con los ojos pintados, con el cabello recogido, y con los pies provocan la lascivia,",
+  "17": "el Señor humillará la gloria de las hijas de Sion, y el Señor les quitará su dignidad.",
+  "18": "En aquel día quitará el Señor el adorno de sus sandalias, y sus redecillas y sus cofias;",
+  "19": "los collares, y los brazaletes de las manos, y los mantos largos;",
+  "20": "las coronas, las ajorcas de los pies, el rizador, y los zarcillos, y el atavío;",
+  "21": "y los anillos, y las joyas;",
+  "22": "las túnicas, y los mantos, y las tocas, y los ceñidores;",
+  "23": "los espejos, y el lino fino, y las coronas, y los velos.",
+  "24": "Y sucederá que en el lugar donde despedían olores suaves habrá podredumbre; y en el lugar donde se ceñían los cintos habrá señales de golpes; y en lugar de trenzas rizadas, calvicie; y en lugar de andar con soberbia, se ceñirán cilicio; esta venganza se tomará de ellas porque han fornicado en su hermosura.",
+  "25": "Tus hombres hermosos caerán a espada, y tus héroes en la guerra.",
+  "26": "Y las puertas de su ciudad quedarán desoladas y llegarán a su fin; y la tierra será asolada y destruida."
+ }
+}
