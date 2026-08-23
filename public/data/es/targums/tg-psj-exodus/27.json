@@ -1,0 +1,27 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Éxodo, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El altar de bronce y el atrio. La única glosa de peso es la del v. 5, que explica para qué sirve la rejilla puesta a media altura del altar: para que, si cae del altar algún fragmento o alguna brasa, caiga sobre la rejilla y NO TOQUE EL SUELO, y los sacerdotes puedan recogerlo de allí y volverlo a poner sobre el altar. Es una precisión de pureza ritual, no de arquitectura. El v. 8 aclara además que el altar es hueco y se rellena de tierra, resolviendo la aparente contradicción con Éxodo 20:21. ⚠ FALTA EL VERSÍCULO 15, ausente también del impreso de Etheridge de 1862: allí, donde el hebreo repite la medida de quince codos para el segundo lado de la entrada, Etheridge trae la cláusula una sola vez.",
+ "verses": {
+  "1": "Y harás el Altar de maderas de sita: cinco codos de largo y cinco codos de ancho; cuadrado será el altar, y su altura de tres codos.",
+  "2": "Y harás sus cuernos en sus cuatro esquinas: los cuernos serán de lo mismo, y subirán hacia arriba, y lo recubrirás de bronce.",
+  "3": "Y harás sus calderos para recoger sus cenizas, y sus paletas, y sus tazones, y sus incensarios; todos sus utensilios los harás de bronce.",
+  "4": "Y le harás una rejilla de obra de red de bronce, y sobre la red cuatro anillos de bronce en sus cuatro esquinas.",
+  "5": "Y la pondrás debajo del cerco del altar, por abajo, de modo que la red llegue hasta la mitad del altar; para que, si cae del altar algún fragmento o alguna brasa encendida, caiga sobre la rejilla y no toque el suelo, y los sacerdotes puedan tomarlo de la rejilla y volver a ponerlo sobre el altar.",
+  "6": "Y harás varas de maderas de sitin, y las recubrirás de bronce;",
+  "7": "y meterás las varas por los anillos, y las varas estarán a los dos lados del altar cuando se lleve el altar;",
+  "8": "hueco, de tablas rellenas de tierra lo harás; conforme a lo que se te mostró en el monte, así lo harán.",
+  "9": "Y harás el atrio del tabernáculo. Para el lado sur habrá cortinas de lino fino torcido; cien codos de largo para un lado.",
+  "10": "Y sus columnas, veinte, y sus basas, veinte, de bronce; los corchetes de las columnas y sus varillas, de plata.",
+  "11": "Y así para el lado norte, a lo largo: las cortinas de cien codos de largo, y sus columnas veinte, y sus basas veinte, de bronce; los corchetes de las columnas y sus varillas, de plata.",
+  "12": "Y para el ancho del atrio al lado occidental, las cortinas serán de cincuenta codos; sus columnas diez y sus basas diez.",
+  "13": "Y para el ancho del lado oriental, al oriente, cincuenta codos;",
+  "14": "y quince codos las cortinas de un lado, sus columnas tres y sus basas tres.",
+  "16": "Y para la puerta del atrio habrá un velo de veinte codos de jacinto, y púrpura, y carmesí, y lino fino torcido, de obra de recamador; sus columnas cuatro y sus basas cuatro.",
+  "17": "Todas las columnas del atrio alrededor estarán unidas con varillas de plata; sus corchetes de plata y sus basas de bronce.",
+  "18": "El largo del atrio, cien codos; y el ancho, cincuenta al occidente y cincuenta al oriente; y la altura, cinco codos, de lino fino torcido; y sus basas de bronce.",
+  "19": "Todos los utensilios del tabernáculo para todo su servicio, y todas las estacas del atrio alrededor, de bronce.",
+  "20": "Y mandarás a los hijos de Israel que traigan aceite puro de olivas, machacado, para el alumbrado, para que las lámparas ardan continuamente.",
+  "21": "En el tabernáculo del pacto, fuera del velo que está delante del testimonio, Aarón y sus hijos las dispondrán desde la tarde hasta la mañana delante del Señor: estatuto perpetuo para las generaciones de ustedes, casa de Israel."
+ }
+}
