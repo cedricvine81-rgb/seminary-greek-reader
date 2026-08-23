@@ -225,6 +225,28 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'philo-qg': 'philo/qg',
   'philo-alleg-interp': 'philo/alleg-interp',
   'philo-moses': 'philo/moses',
+  // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
+  // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
+  // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
+  // surviving text. Every chapter file says so in its `_why`. Where Pauli paraphrases or reads
+  // the Aramaic in a way now disputed, the Spanish follows him; nothing is corrected against the
+  // Aramaic or completed from the Hebrew.
+  //
+  // ⚠ THE VERSIFICATION IS THE HEBREW ONE, not the one Spanish Bibles use. Chapter 8 runs to 23
+  // verses (Isa 9:1 of a Spanish Bible is 8:23 here) and chapter 9 to 20, so the great messianic
+  // verse cited as 9:6 is 9:5 here. Likewise ch 63 ends with what Spanish Bibles print as 64:1,
+  // so chapter 64 has 11 verses and is offset by one throughout. The chapter notes say so at
+  // both places; the numbering is the corpus's and is left untouched, since it is how the targum
+  // is cited.
+  //
+  // 66 chapters, 1,291 verses, no gaps. Pauli's own defects are MIRRORED, not mended, and each is
+  // named in its chapter note: an "[ANOTHER PARAPHRASE — …]" bracket at 49:25 that the print never
+  // closes; stray quotation marks, apostrophes and question marks at 3:15, 10:20, 17:11, 25:9,
+  // 26:14, 27:9, 30:13, 30:30, 31:4, 37:24, 41:2, 42:2, 43:28, 51:1, 62:12, 65:12 and 66:5; and a
+  // sentence left grammatically incomplete at 19:11. Two one-letter typos that cannot be
+  // represented in Spanish ("Thy" for "They" at 22:5, "bades" for "Hades" at 57:9) are translated
+  // by their obvious sense and flagged in the note instead.
+  'tg-isaiah': 'targums/tg-isaiah',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
