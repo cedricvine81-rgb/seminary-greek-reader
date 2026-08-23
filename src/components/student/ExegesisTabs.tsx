@@ -309,7 +309,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
       {/* Shared passage box + tabs, kept on ONE row at every width: the passage box holds a
           fixed width and the tab bar sits parallel to it (scrolling horizontally if narrow),
           rather than wrapping to a second row — saves vertical space. */}
-      <div className="flex-none flex items-center flex-nowrap gap-2 mb-2">
+      <div className="flex-none flex items-center flex-nowrap gap-2 mb-2 print:hidden">
         <div className="flex items-center min-w-0 flex-1 lg:flex-none">
           <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium shrink-0">{t('study.passage')}</span>
           {/* Relative wrapper so the grey ghost-text can overlay the input exactly. */}

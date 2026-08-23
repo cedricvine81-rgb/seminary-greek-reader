@@ -14,6 +14,7 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { DiagramCanvas, type DiagramData } from './DiagramCanvas'
 import { usePref } from '@/lib/use-pref'
+import { Printer } from 'lucide-react'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
 // Exported for the DiagramCanvas, which renders the same word nodes as draggable chips.
@@ -344,9 +345,9 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   const [, setTransVer] = useState(0)
   const bump = () => setTransVer(v => v + 1)
 
-  // Left pane view: the Macula phrase tree, or the drag-and-drop diagram canvas.
-  // Remembered on this device — instructors tend to live in one mode or the other.
-  const [viewMode, setViewMode] = usePref<'tree' | 'diagram'>('phrase-view-mode', ['tree', 'diagram'], 'tree')
+  // Left pane view: the drag-and-drop diagram canvas (default), or the Macula phrase
+  // tree. Remembered on this device — instructors tend to live in one mode or the other.
+  const [viewMode, setViewMode] = usePref<'tree' | 'diagram'>('phrase-view-mode', ['tree', 'diagram'], 'diagram')
 
   // Saved diagrams for the current chapter, keyed "verseStart-verseEnd". null while the
   // signed-in fetch is in flight — the canvases wait for it, or they'd seed the default
@@ -545,7 +546,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
           mode — a shared passage box drives all tabs, and settings (text size, sources
           & copyright) live in that page's shared tools menu instead of here. */}
       {controlledPassage === undefined && (
-        <div className="flex items-center flex-wrap gap-3">
+        <div className="flex items-center flex-wrap gap-3 print:hidden">
           <div className="flex items-center">
             <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">{t('exeg.passage')}</span>
             <PassageAutocomplete
@@ -563,21 +564,35 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
         </div>
       )}
 
-      {/* Header row: view toggle (tree ⇄ diagram) top-left; (Greek edition + translation)
+      {/* Header row: view toggle (diagram ⇄ tree) top-left; (Greek edition + translation)
           dropdowns right-aligned (lg+ — on mobile they stack below). */}
       {!message && shown.length > 0 && (
-        <div className="flex items-center justify-between gap-3">
-          <div className="inline-flex shrink-0 rounded-lg border border-gray-200 p-0.5">
-            {(['tree', 'diagram'] as const).map(m => (
+        <div className="flex items-center justify-between gap-3 print:hidden">
+          <div className="flex items-center gap-2">
+            <div className="inline-flex shrink-0 rounded-lg border border-gray-200 p-0.5">
+              {(['diagram', 'tree'] as const).map(m => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setViewMode(m)}
+                  className={`px-2.5 py-1 rounded-md text-[13px] font-medium transition-colors ${viewMode === m ? 'bg-brand-100 text-brand-800' : 'text-gray-500 hover:bg-gray-100'}`}
+                >
+                  {m === 'tree' ? t('tab.phrasing') : t('phr.diagram')}
+                </button>
+              ))}
+            </div>
+            {/* Print / save as PDF — the diagrams themselves (chrome is print-hidden). */}
+            {viewMode === 'diagram' && (
               <button
-                key={m}
                 type="button"
-                onClick={() => setViewMode(m)}
-                className={`px-2.5 py-1 rounded-md text-[13px] font-medium transition-colors ${viewMode === m ? 'bg-brand-100 text-brand-800' : 'text-gray-500 hover:bg-gray-100'}`}
+                title={t('phr.printPdf')}
+                aria-label={t('phr.printPdf')}
+                onClick={() => window.print()}
+                className="p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
               >
-                {m === 'tree' ? t('tab.phrasing') : t('phr.diagram')}
+                <Printer size={16} />
               </button>
-            ))}
+            )}
           </div>
           <div className="hidden lg:grid grid-cols-2 gap-4 w-[31rem]">
             <OptionSelect value={effEd} onChange={setGreekEd} options={cur?.hebrew ? HEBREW_EDITIONS : GREEK_EDITIONS} />
@@ -587,11 +602,11 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
       )}
       {/* Signed-out users still get the canvas — saved on this device only. */}
       {!message && shown.length > 0 && viewMode === 'diagram' && !isAuthenticated && (
-        <p className="text-xs text-gray-400 -mt-2">{t('phr.savedLocally')}</p>
+        <p className="text-xs text-gray-400 -mt-2 print:hidden">{t('phr.savedLocally')}</p>
       )}
       {/* On mobile the dropdowns stack above the cards. */}
       {!message && shown.length > 0 && (
-        <div className="grid grid-cols-2 gap-2 lg:hidden">
+        <div className="grid grid-cols-2 gap-2 lg:hidden print:hidden">
           <OptionSelect value={effEd} onChange={setGreekEd} options={cur?.hebrew ? HEBREW_EDITIONS : GREEK_EDITIONS} />
           <OptionSelect value={transLang} onChange={setTransLang} options={LANGS.filter(l => !cur?.hebrew || l.code !== 'bsb').map(l => ({ code: l.code, label: t(l.labelKey) }))} />
         </div>
@@ -630,8 +645,9 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                   )}
                 </div>
                 {/* Greek + translation columns and the parsing box grouped together, so the
-                    box sits directly beneath the text (not below the taller phrase tree). */}
-                <div className="space-y-3">
+                    box sits directly beneath the text (not below the taller phrase tree).
+                    Print-hidden: printing this tab yields just the reference + diagram. */}
+                <div className="space-y-3 print:hidden">
                   <div className="grid gap-4 lg:grid-cols-2">
                     <div className="text-gray-800 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
                       <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{greekLabel(effEd, cur?.hebrew)}</span>
