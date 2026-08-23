@@ -1,0 +1,23 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Génesis, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Abraham y Abimelec. El targum se ocupa aquí de dos cosas. La primera, exculpar a Abimelec con vocabulario jurídico: en el v. 4 no pregunta «¿matarás también al justo?», sino «¿ha de morir el hijo de un pueblo que no ha pecado, y a quien es justo absolver en el juicio?», y en el v. 6 Dios responde que fue Él mismo quien lo retuvo de pecar. La segunda, explicar por qué Abraham mintió: el v. 13 no dice «cuando Dios me hizo peregrinar», sino «cuando quisieron desviarme al CULTO DE LOS ÍDOLOS» —el destierro de Abraham deja de ser un vagar y se vuelve una huida de la idolatría, en línea con el horno de Nimrod de 11:28. El v. 15 va entre llaves porque es un añadido del propio Etheridge, y se conserva como tal.",
+ "verses": {
+  "1": "Y partió Abraham de allí a la tierra del sur, y habitó entre Requem y Chagra, y tuvo su morada en Gerar.",
+  "2": "Y dijo Abraham acerca de Sara su mujer: Es mi hermana. Y Abimelec, rey de Gerar, envió y tomó a Sara.",
+  "3": "Y vino una palabra de delante del Señor a Abimelec en un sueño de la noche, y le dijo: He aquí que mueres, por causa de la mujer que has llevado, siendo ella mujer de un hombre.",
+  "4": "Pero Abimelec no se había acercado a mancillarla; y dijo: Señor, ¿ha de morir el hijo de un pueblo que no ha pecado, y a quien es justo absolver en el juicio?",
+  "5": "¿No me dijo él: Es mi hermana? ¿y no dijo también ella: Es mi hermano? Con rectitud de mi corazón y con inocencia de mis manos he hecho esto.",
+  "6": "Y la Palabra del Señor le dijo en sueños: También delante de mí está manifiesto que con rectitud de tu corazón hiciste esto, y por eso yo mismo te retuve de pecar delante de mí; por eso no te permití acercarte a ella.",
+  "7": "Y ahora, que vuelva la mujer del hombre, porque él es profeta; él orará por ti, y vivirás; pero si no la dejas volver, sabe que muriendo morirás, tú y todos los tuyos.",
+  "8": "Y se levantó Abimelec por la mañana, y llamó a todos sus siervos, y contó todas estas palabras delante de ellos; y los hombres temieron en gran manera.",
+  "9": "Y llamó Abimelec a Abraham, y le dijo: ¿Qué nos has hecho? ¿Y en qué he pecado yo contra ti, para que hayas traído sobre mí y sobre mi reino un gran pecado? Has hecho conmigo obras que no son rectas.",
+  "10": "Y dijo Abimelec a Abraham: ¿Qué has visto, para que hicieras esto?",
+  "11": "Y dijo Abraham: Porque dije en mi corazón: No hay temor del Señor en este lugar, y me matarán por causa de mi mujer.",
+  "12": "Pero en verdad ella es mi hermana, hija del hermano de mi padre, aunque no de la parentela de mi madre; y llegó a ser mi mujer.",
+  "13": "Y sucedió que, cuando quisieron desviarme al culto de los ídolos y salí de la casa de mi padre, le dije: Esta es la bondad que harás conmigo: en todo lugar al que lleguemos, di de mí: Es mi hermano.",
+  "14": "Y tomó Abimelec ovejas, y le restituyó a Sara su mujer.",
+  "15": "{Y dijo Abimelec: He aquí, mi tierra está delante de ti; habita donde bien te parezca.}",
+  "16": "Y a Sara le dijo: He aquí que he dado mil siclos de plata a tu hermano; he aquí que te son velo de los ojos, por cuanto estuviste oculta de tu marido una noche y yo te habría visto: porque, aunque diera todo lo que tengo, no bastaría (ni sería proporcionado). Y las palabras fueron debatidas. Y supo Abraham que Abimelec no se había acercado a Sara su mujer."
+ }
+}

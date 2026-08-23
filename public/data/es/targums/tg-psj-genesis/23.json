@@ -1,0 +1,27 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Génesis, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "La muerte de Sara y la compra de Macpela, el primer pedazo de tierra que un patriarca posee en Canaán. El targum sigue el hebreo de cerca —es un contrato, y los contratos no se parafrasean— y solo añade dos toques. En el v. 2 explica la ausencia de Abraham: venía «del monte del culto», es decir, de la Aqedá del capítulo anterior, y llegó para encontrarla ya muerta, lo que enlaza esta muerte con la noticia de Satanás en 22:20. Y en el v. 16 detalla la moneda: plata «buena, corriente en toda mesa de cambio y recibida en toda transacción» —lenguaje de notario, que subraya que la compra fue irreprochable y la propiedad indiscutible. El v. 18 empieza en el inglés con una raya, y se conserva.",
+ "verses": {
+  "1": "Y fueron los días de la vida de Sara ciento veintisiete años, los años de la vida de Sara.",
+  "2": "Y murió Sara en Quiriat-arba, que es Hebrón. Y vino Abraham del monte del culto, y halló que estaba muerta; y se sentó a hacer duelo por Sara y a llorarla.",
+  "3": "Y se levantó Abraham de delante del rostro de su difunta, y habló con los hijos de Het, diciendo:",
+  "4": "Forastero y morador soy entre ustedes; les ruego que me vendan la heredad de un sepulcro entre ustedes, y allí sepultaré a mi difunta.",
+  "5": "Y respondieron los hijos de Het a Abraham, diciéndole:",
+  "6": "Escúchanos, señor nuestro. Grande delante del Señor eres tú entre nosotros; en el mejor de nuestros sepulcros sepulta a tu difunta: no hay entre nosotros hombre que te niegue su sepulcro para que sepultes a tu difunta.",
+  "7": "Y se levantó Abraham y se inclinó ante el pueblo de la tierra, los hijos de Het.",
+  "8": "Y habló con ellos diciendo: Si es con el consentimiento de su ánimo que yo sepulte a mi difunta de delante de mi rostro, escúchenme, e intercedan por mí ante Efrón bar Zohar,",
+  "9": "para que me venda su cueva doble, la que está construida al lado de su campo; por el precio completo en plata que me la dé entre ustedes, por heredad de sepultura.",
+  "10": "Pero Efrón el heteo respondió a Abraham en presencia de los hijos de Het, de todos los que entraban por la puerta de su ciudad, diciendo:",
+  "11": "Señor mío, escúchame: el campo te lo doy, y la cueva que hay en él, a ti te la doy; como don delante de los hijos de mi pueblo te la doy; ve, sepulta a tu difunta.",
+  "12": "Y se inclinó Abraham delante de los hijos de Het.",
+  "13": "Y habló con Efrón delante del pueblo de la tierra, diciendo: Sin embargo, si quieres hacerme un favor, escúchame: yo te daré en plata el precio del campo; tómalo de mí, y allí sepultaré a mi difunta. Y",
+  "14": "respondió Efrón a Abraham, diciéndole:",
+  "15": "Señor mío, escúchame: la tierra, en cuanto a su precio, valdría cuatrocientos siclos de plata; entre tú y yo, ¿qué es eso? Sepulta a tu difunta.",
+  "16": "Y escuchó Abraham a Efrón, y pesó Abraham para Efrón la plata que él había nombrado delante de los hijos de Het: cuatrocientos siclos de plata, buena, corriente en toda mesa de cambio y recibida en toda transacción.",
+  "17": "Y quedó confirmada la compra del campo de Efrón, en el cual (estaba) la cueva doble que está frente a Mamre: el campo, y la cueva que hay en él, y todos los árboles que había en el campo, en todos sus términos alrededor,",
+  "18": "—a favor de Abraham, por posesión comprada, en presencia de los hijos de Het, (esto es) de todos los que entraban por la puerta de la ciudad.",
+  "19": "Y después de esto sepultó Abraham a Sara su mujer en la cueva del campo de Kapheilta, que está frente a Mamre, esto es, Hebrón, en la tierra de Canaán.",
+  "20": "Y el campo y la cueva que hay en él quedaron confirmados a Abraham por heredad de sepultura, de parte de los hijos de Het."
+ }
+}
