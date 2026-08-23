@@ -1,0 +1,24 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Levítico, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El sacrificio de paz, llamado aquí «víctimas consagradas». El targum añade poco: la imposición de la mano DERECHA con firmeza (vv. 2, 8, 13), el degollador como oficio distinto del sacerdote, y en el v. 9 la precisión anatómica de cortar la cola entera «junto al espinazo». El v. 17 cierra con la doble prohibición perpetua de la grosura y la sangre.",
+ "verses": {
+  "1": "Y si su oblación es de las víctimas consagradas, si la ofrece de tu ganado vacuno, sea macho o hembra, la ofrecerá sin defecto.",
+  "2": "Y pondrá su mano derecha con firmeza sobre la cabeza de su oblación, y el degollador la matará a la puerta del tabernáculo de la ordenanza; y los sacerdotes hijos de Aarón rociarán la sangre sobre el altar alrededor.",
+  "3": "Y de la víctima consagrada, su oblación delante del Señor, ofrecerá la cobertura de grosura que cubre las entrañas, y toda la grosura que está sobre las entrañas,",
+  "4": "y los dos riñones, y la grosura que está sobre ellos, esto es, sobre los ijares; y el lóbulo que está sobre el hígado, junto con los riñones, lo quitará.",
+  "5": "Y los hijos de Aarón lo ofrecerán sobre el altar con el sacrificio que está sobre la leña que está sobre el fuego: oblación para ser recibida con agrado delante del Señor.",
+  "6": "Y si su oblación de ofrenda consagrada delante del Señor es del rebaño, sea macho o hembra, su oblación será sin defecto.",
+  "7": "Si presenta un cordero como su oblación, lo traerá delante del Señor;",
+  "8": "y pondrá su mano derecha con firmeza sobre la cabeza de su oblación, y el degollador lo matará delante del tabernáculo de la ordenanza; y los hijos de Aarón rociarán su sangre sobre el altar alrededor.",
+  "9": "Y de la ofrenda de su oblación consagrada ofrecerá lo mejor de su grosura, y quitará la cola entera, junto al espinazo, y la cobertura de grosura que cubre las entrañas, y toda la grosura que está sobre las entrañas,",
+  "10": "y los dos riñones, y la grosura que está sobre ellos, sobre los ijares, y el lóbulo que está sobre el hígado, junto con los riñones, lo quitará.",
+  "11": "Y el sacerdote lo sacrificará en el altar: es alimento de oblación delante del Señor.",
+  "12": "Y si su oblación es de las cabras jóvenes, la traerá delante del Señor,",
+  "13": "y pondrá su mano derecha sobre su cabeza, y el degollador la matará delante del tabernáculo de la ordenanza; y los hijos de Aarón rociarán su sangre sobre el altar alrededor.",
+  "14": "Y de su oblación delante del Señor ofrecerá la cobertura de grosura que cubre las entrañas, y toda la grosura que está sobre las entrañas,",
+  "15": "y los dos riñones, y la grosura que está sobre ellos y sobre los ijares, y el lóbulo que está sobre el hígado, junto con los riñones, lo quitará.",
+  "16": "Y el sacerdote los sacrificará en el altar: alimento de oblación para ser recibida con agrado. Toda la grosura se ofrecerá delante del Señor.",
+  "17": "Estatuto perpetuo es para todas sus generaciones que ni la grosura ni la sangre se coman en ninguna de sus moradas, sino que sobre el altar sean sacrificadas al Nombre del Señor."
+ }
+}

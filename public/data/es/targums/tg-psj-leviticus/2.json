@@ -1,0 +1,23 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Levítico, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "La ofrenda vegetal (minjá). El v. 13 explica por qué la sal es «la sal del pacto»: porque «los VEINTICUATRO DONES DE LOS SACERDOTES están señalados con un pacto de sal» —las veinticuatro prestaciones sacerdotales que la Misná enumera (compárese Números 18:19). El v. 12 precisa qué se puede traer leudado en las primicias y qué no se puede quemar sobre el altar; y el v. 14 identifica los granos tostados de la ofrenda de primicias como espigas de trigo tostadas al fuego y harina de cebada. Los términos técnicos —minjá, memorial de alabanza— van como Etheridge los transcribe.",
+ "verses": {
+  "1": "Y cuando un hombre quiera ofrecer la oblación de minjá delante del Señor, su oblación será de flor de harina, y derramará aceite sobre ella, y pondrá incienso encima;",
+  "2": "y la traerá a los sacerdotes hijos de Aarón; y él tomará de allí su puñado lleno de la harina y de lo mejor del aceite, con todo el incienso; y el sacerdote quemará en el altar el buen memorial: oblación para ser aceptada con gracia delante del Señor.",
+  "3": "Y lo que quede de la minjá será de Aarón y de sus hijos: cosa santísima entre las oblaciones del Señor.",
+  "4": "Y cuando ofrezcas la oblación de una minjá de lo cocido en horno, serán tortas de flor de harina, sin levadura y amasadas con aceite, y hojaldres sin levadura untados con aceite.",
+  "5": "Y si tu oblación de minjá es de la sartén, será de flor de harina amasada con aceite, sin levadura será.",
+  "6": "La partirás en pedazos y derramarás aceite sobre ella. Es minjá.",
+  "7": "Y si tu oblación es minjá de la parrilla, se hará de flor de harina tostada con aceite.",
+  "8": "Y la minjá que se haya hecho con la harina y el aceite la traerás delante del Señor, y el hombre que la trae la presentará al sacerdote, y el sacerdote la llevará al altar.",
+  "9": "Y el sacerdote apartará de la minjá un memorial de alabanza, y lo quemará en el altar: oblación para ser aceptada con gracia delante del Señor.",
+  "10": "Y lo que quede de la minjá será para Aarón y sus hijos; es cosa santísima entre las oblaciones del Señor.",
+  "11": "Pero ninguna minjá que ofrezcas al Señor la harás con levadura; porque ni levadura ni miel podrás ofrecer como oblación delante del Señor.",
+  "12": "Cuando ofrezcas una oblación de primicias delante del Señor, el pan de las primicias lo podrás traer leudado, y los dátiles en la temporada de las primicias, y el fruto con su miel lo podrás traer, y el sacerdote los podrá comer; pero no los quemarán en el altar como oblación para ser recibida con agrado.",
+  "13": "Y toda oblación de tu minjá la sazonarás con sal; no retendrás de tu minjá la sal del pacto de tu Dios, porque los veinticuatro dones de los sacerdotes están señalados con un pacto de sal; por eso ofrecerás sal con todas tus oblaciones.",
+  "14": "Y si presentas una minjá de primicias delante del Señor, ofrecerás espigas de trigo tostadas al fuego, harina tostada y sémola de cebada, como minjá de tus primicias.",
+  "15": "Y pondrás sobre ella aceite de oliva, y le pondrás incienso encima; es minjá.",
+  "16": "Y el sacerdote quemará su memorial de alabanza, de la harina y de lo mejor del aceite, con todo el incienso: oblación delante del Señor."
+ }
+}
