@@ -1,0 +1,31 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Génesis, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El diluvio. El targum fecha lo que el hebreo deja sin fechar y explica lo que deja sin explicar. En el v. 10 los siete días de espera son los del DUELO POR MATUSALÉN, muerto justo antes —de ahí que la cronología del capítulo 5 lo haga morir el año mismo del diluvio—, y son además un último plazo de arrepentimiento que nadie aprovecha. En el v. 11 se aclara la cuenta de los meses: el «segundo mes» es Marjesván, porque hasta entonces el año empezaba en Tishri, y allí aparecen otra vez los gigantes del capítulo anterior, agolpados y aterrados. Y en el v. 16 no es Dios quien cierra la puerta del arca, sino «la PALABRA del Señor», que la cubre —el targum no deja que Dios manipule una puerta. El v. 4 es también característico: los siete días se ofrecen expresamente por si se convierten. El v. 22 empieza en el inglés con una raya, y se conserva.",
+ "verses": {
+  "1": "Y dijo el Señor a Noé: Entra tú y todos los de tu casa en el arca, porque a ti te he visto justo delante de mí en esta generación.",
+  "2": "De todo ganado limpio toma siete y siete, macho y hembra; y del ganado que no es limpio, dos (y dos), macho y hembra.",
+  "3": "Pero de las aves del cielo, siete y siete, macho y hembra, para conservar de ellas simiente sobre la tierra.",
+  "4": "Porque he aquí que les doy un espacio de siete días; si se convierten, les será perdonado; pero si no se convierten, pasado aún un tiempo de siete días haré descender lluvia sobre la tierra cuarenta días y cuarenta noches, y destruiré todos los cuerpos de hombre y de bestia sobre la tierra.",
+  "5": "Y lo hizo Noé conforme a todo lo que el Señor le había mandado.",
+  "6": "Y era Noé hijo de seiscientos años cuando el diluvio de las aguas vino sobre la tierra.",
+  "7": "Y entró Noé, con sus hijos, y su mujer, y las mujeres de sus hijos con él, en el arca, de delante de las aguas del diluvio.",
+  "8": "De todo ganado limpio, y del ganado inmundo, de las aves, y de todo lo que se arrastra sobre la tierra,",
+  "9": "de dos en dos entraron a Noé en el arca, macho y hembra, como el Señor había mandado a Noé.",
+  "10": "Y sucedió que, al tiempo de siete días después de concluido el duelo por Matusalén, miró el Señor, y he aquí que los hijos de los hombres no se habían vuelto. Y las aguas del diluvio cayeron con furia desde los cielos sobre la tierra.",
+  "11": "En el año seiscientos de la vida de Noé, en el segundo mes, que es el mes de Marjesván —porque hasta entonces los meses se contaban desde Tishri, que era el comienzo del año al acabarse el mundo—, en el día diecisiete del mes, en aquel día fueron rotas todas las fuentes del gran abismo. Y los gigantes se juntaron allí con sus hijos y los perturbaron; y después se abrieron las ventanas del cielo.",
+  "12": "Y cayó la lluvia sobre la tierra cuarenta días y cuarenta noches.",
+  "13": "En aquel mismo día entraron Noé, y Sem, y Cam, y Jafet, hijos de Noé, y la mujer de Noé, y las tres mujeres de sus hijos con él, en el arca:",
+  "14": "ellos, y todo animal según su especie, y todo ganado según su especie, y todo reptil que se arrastra sobre la tierra según su especie, y toda ave según su especie, toda ave que vuela.",
+  "15": "Y entraron a Noé en el arca de dos en dos, de toda carne en que había aliento de vida.",
+  "16": "Y los que entraron, macho y hembra de toda carne entraron a él, como el Señor le había mandado; y la Palabra del Señor cubrió la puerta del arca por la parte de fuera.",
+  "17": "Y hubo diluvio cuarenta días sobre la tierra, y se multiplicaron las aguas y levantaron el arca, y fue alzada de la tierra.",
+  "18": "Y las aguas se hicieron poderosas y crecieron mucho sobre la tierra, y el arca iba flotando sobre la faz de las aguas.",
+  "19": "Y las aguas prevalecieron grandemente sobre la tierra, y quedaron cubiertos todos los montes altos que había debajo de los cielos:",
+  "20": "quince codos más alto prevalecieron las aguas, y fueron cubiertos los montes.",
+  "21": "Y expiró toda carne que se mueve sobre la tierra: de las aves, y del ganado, y de las bestias salvajes, y de todo lo que se mueve sobre la tierra, y todos los hijos de los hombres;",
+  "22": "—todo aquello en cuyas narices había aliento de vida, de todo lo que había en lo seco, murió.",
+  "23": "Y todos los cuerpos de hombres y de bestias sobre la faz de la tierra, desde el hombre hasta el ganado, hasta el reptil y hasta el ave que vuela por el aire del cielo, perecieron de la tierra; y quedó solamente Noé, y los que con él estaban en el arca.",
+  "24": "Y prevalecieron las aguas sobre la tierra ciento cincuenta días."
+ }
+}
