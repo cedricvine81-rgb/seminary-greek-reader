@@ -247,6 +247,36 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // represented in Spanish ("Thy" for "They" at 22:5, "bades" for "Hades" at 57:9) are translated
   // by their obvious sense and flagged in the note instead.
   'tg-isaiah': 'targums/tg-isaiah',
+  // TARGUM PSEUDO-JONATHAN ON THE PENTATEUCH. Same two-removes situation as Isaiah, with a
+  // different translator: the reader shows J. W. Etheridge's 1862 English ("The Targums of
+  // Onkelos and Jonathan Ben Uzziel on the Pentateuch"), and the Spanish comes off that English.
+  // Every chapter file says so in its `_why`; the phrase to grep for is DOS PASOS.
+  //
+  // 5,817 verses across five books: Genesis 1,519 · Exodus 1,200 · Numbers 1,284 · Deuteronomy
+  // 956 · Leviticus 858.
+  //
+  // ⚠ THE VERSIFICATION IS THE HEBREW ONE wherever it differs from Spanish Bibles, and it differs
+  // in five places: Lev 5 runs to 26 verses (its 20-26 are a Spanish Bible's 6:1-7, so ch 6 is
+  // offset by seven); Num 17 has 28 verses (a Spanish Bible's 16:36-50 is 17:1-15 here); Num 30
+  // and Deut 13 and 23 are each offset by one; Deut 5 folds commandments six to ten into vv.
+  // 17-18; and Deut 28 has 69 verses, the last being what Spanish Bibles print as 29:1. The
+  // chapter notes say so at each place. Do not "fix" it — it is how the targum is cited.
+  //
+  // ⚠ THE HOLES ARE ETHERIDGE'S OWN OMISSIONS, verified against the printed 1862 edition, and are
+  // deliberately left open with the numbering intact: Gen 5:5-7, 6:15, 10:23, 24:28, 26:30,
+  // 39:18, 41:49, 44:30-31 · Exod 4:8, 7:5, 12:43-44, 25:28, 27:15, 37:23, 39:27-29 · Lev 13:52 ·
+  // Num 2:12, 3:2, 36:8-9. At Num 36 Etheridge says so in his own text. Likewise Lev 24:4 is his
+  // ". . ." lacuna and the 54 `_` verses in Num 7 are his own abridgement of the twelve identical
+  // princely offerings — both reproduced exactly, both explained in the chapter note.
+  //
+  // Etheridge's other defects are MIRRORED, not mended, and each is named in its chapter note:
+  // stray elision marks, unclosed parentheses, and misplaced points. One-letter typos that cannot
+  // be represented in Spanish are translated by their obvious sense and flagged instead.
+  'tg-psj-genesis': 'targums/tg-psj-genesis',
+  'tg-psj-exodus': 'targums/tg-psj-exodus',
+  'tg-psj-leviticus': 'targums/tg-psj-leviticus',
+  'tg-psj-numbers': 'targums/tg-psj-numbers',
+  'tg-psj-deuteronomy': 'targums/tg-psj-deuteronomy',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
