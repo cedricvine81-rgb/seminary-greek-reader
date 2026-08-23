@@ -1,0 +1,27 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El rey justo y el reino de la justicia. El targum recorta aquí lo que en el hebreo era una promesa política: el rey del v. 1 no recibe ningún nombre —a diferencia de 9:5, 11:1 o 16:5, aquí no se dice «el Mesías»—, y el peso pasa enseguida a LOS JUSTOS, que serán engrandecidos. En el v. 2 el famoso «cada uno será como escondedero contra el viento» se invierte: no son los príncipes los que amparan, sino los justos, hasta ahora escondidos por causa de los malvados, que vuelven y cuya ENSEÑANZA se recibe como agua en tierra seca. En el v. 6 el necio del hebreo desaparece y su lugar lo ocupa una acusación precisa: quieren hacer cesar «las palabras de la ley, que son como agua para el sediento». Y el v. 14, donde el hebreo habla de un palacio abandonado, lo lee del TEMPLO —«porque la casa del santuario será asolada»—, con lo cual el capítulo entero se convierte en un lamento por la destrucción y una espera del refrigerio que ha de venir «de delante de aquel cuya Shekiná está en los cielos altísimos» (v. 15).",
+ "verses": {
+  "1": "He aquí que un rey reinará en verdad, y los justos serán engrandecidos para ejecutar justa venganza sobre los pueblos.",
+  "2": "Y los justos que estaban escondidos a causa de los malvados, como los que se esconden a causa de una tormenta, volverán y serán engrandecidos, y su enseñanza será recibida prontamente, como las aguas que corren en tierra seca, como la sombra de una gran peña en tierra reseca.",
+  "3": "Y los ojos de los justos no se cerrarán, y los oídos de los que reciben instrucción oirán.",
+  "4": "Aun el corazón de los precipitados entenderá conocimiento, y la lengua de los que estaban trabados estará pronta para hablar con claridad.",
+  "5": "Y el malvado no será llamado más justo, ni el que transgrede contra su PALABRA será llamado poderoso.",
+  "6": "Porque el malvado hablará maldad, y en su corazón meditan violencia, para practicar la falsedad y para hablar rebelión contra el Señor, para fatigar el alma de los justos, que anhelan la instrucción como el hambriento el pan; y las palabras de la ley, que son como agua para el sediento, se proponen hacerlas cesar.",
+  "7": "Y los malvados, cuyas obras son malas, toman consejo con los pecadores para destruir al pobre con palabras mentirosas, y las palabras del menesteroso en el juicio.",
+  "8": "Pero los justos aconsejan la verdad, y en su verdad serán establecidos.",
+  "9": "Provincias que habitan a sus anchas: levántense, oigan mi voz. Ciudades que habitan seguras, escuchen mi palabra.",
+  "10": "Los que habitan a sus anchas serán agitados por días y por años, porque se acabó el grano y no hay fruto que recoger.",
+  "11": "Los que habitan a sus anchas serán quebrantados, los que habitan seguros temblarán; desnúdense, descúbranse, y cíñanse cilicio a los lomos.",
+  "12": "Se golpean el pecho por los campos deleitosos, por las vides cargadas de fruto.",
+  "13": "Sobre la tierra de mi pueblo subirán espinos y cardos, sí, en todas las casas de alegría de la ciudad fortificada.",
+  "14": "Porque la casa del santuario será asolada; la ciudad bulliciosa quedará desolada, aquella en que adoran: la casa de nuestra fortaleza y escondite será registrada, excavada, desolada y devastada por un tiempo. El lugar que era casa de gozo y de alegría para los reyes ha venido a ser ahora despojo de ejércitos.",
+  "15": "Todas estas cosas vendrán sobre nosotros hasta que nos venga refrigerio de delante de aquel cuya Shekiná está en los cielos altísimos. El desierto se convertirá en campo fértil, y el campo fértil será poblado de muchas ciudades.",
+  "16": "Entonces los que hacen justicia habitarán en el desierto, y los que hacen rectitud morarán en el campo fértil.",
+  "17": "Y los que hacen rectitud estarán en paz, y los que se adornan de justicia estarán en quietud, y estarán seguros para siempre.",
+  "18": "Y mi pueblo habitará en sus moradas en paz, y en su tierra en seguridad, y en sus ciudades a sus anchas.",
+  "19": "Y descenderá granizo y matará a los ejércitos de las naciones, y sus campamentos quedarán desolados y llegarán a su fin.",
+  "20": "Bienaventurados ustedes, justos, que se labran a sí mismos buenas obras: porque son como los que siembran junto a lugares regados, echando los bueyes a trillar el grano y los asnos a recogerlo."
+ }
+}
