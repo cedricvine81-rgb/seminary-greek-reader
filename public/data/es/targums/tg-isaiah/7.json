@@ -1,0 +1,32 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "La crisis siro-efraimita y la señal del Emanuel. El v. 14 es el versículo por el que muchos abren este targum, y conviene verlo con exactitud: el arameo dice ʿulemtá, «una MUJER JOVEN», que es como Pauli traduce, sin el «virgen» de la Septuaginta ni ninguna lectura mesiánica; el niño tampoco se identifica con nadie. Este targum, tan dispuesto a hablar del Mesías donde le parece (4:2; 9:5; 11:1), aquí no lo hace, y ese silencio es un dato de peso en la discusión sobre Isaías 7:14 dentro del judaísmo antiguo. Otros retoques: en el v. 3 los discípulos del profeta «que no han pecado» son adición targúmica; en el v. 9 no se trata de creer sin más, sino de creer «las palabras del profeta», que es la manera habitual del targum de anclar la fe en la profecía y en la ley; y en el v. 22 la abundancia prometida se reserva expresamente a «todos los justos». El v. 19 dice «casas de alabanza» donde el hebreo tiene un término oscuro: se conserva la conjetura de Pauli.",
+ "verses": {
+  "1": "Y aconteció en los días de Acaz, hijo de Jotam, hijo de Uzías, rey de la tribu de la casa de Judá, que Rezín rey de Siria y Peka hijo de Remalías, rey de Israel, subieron contra Jerusalén para hacerle guerra, pero no pudo pelear contra ella.",
+  "2": "Y se dio aviso a la casa de David, diciendo: Siria se ha unido con el rey de Israel para venir contra él. Y se conmovió su corazón y el corazón de su pueblo, como se mueven los árboles del bosque con el viento.",
+  "3": "Entonces dijo el Señor a Isaías: Sal ahora al encuentro de Acaz, tú y el resto de tus discípulos, los que no han pecado y los que se han apartado del pecado, al extremo del acueducto del estanque de arriba, en el camino del campo donde tienden los bataneros,",
+  "4": "y dile: Ten cuidado y estate quieto; no temas, ni se turbe tu corazón por esos dos reyes, que son como tizones humeantes, por el ardor de la ira de Rezín con Siria y del hijo de Remalías.",
+  "5": "Porque Siria, Efraín y el hijo de Remalías han tomado consejo malo contra ti, diciendo:",
+  "6": "Subamos a la tierra de la casa de Judá, y unámonos, y hagámoslos provechosos para nosotros. Pondremos en ella un rey, el que nos parezca bien.",
+  "7": "Así dice el Señor Dios: No subsistirá, ni acontecerá.",
+  "8": "Porque la cabeza de Siria es Damasco, y la cabeza de Damasco es Rezín; y al cabo de sesenta y cinco años la casa de Israel dejará de ser reino.",
+  "9": "Y la cabeza de Efraín es Samaria, y la cabeza de Samaria es el hijo de Remalías. Si no creen las palabras del profeta, ciertamente no quedarán establecidos.",
+  "10": "Y volvió el profeta del Señor a hablar a Acaz, diciendo:",
+  "11": "Pide para ti una señal de delante de la presencia del Señor, para que se te haga un milagro en la tierra, o se te muestre una señal en el cielo.",
+  "12": "Pero Acaz dijo: No pediré, ni tentaré al Señor.",
+  "13": "Y él dijo: Oigan ahora, casa de David: ¿les parece poco ser molestos a los profetas, que rechacen también las palabras de mi Dios?",
+  "14": "Por tanto el Señor mismo les dará una señal: He aquí que una mujer joven concebirá y dará a luz un hijo, y llamará su nombre Emanuel.",
+  "15": "Manteca y miel come el niño antes de saber desechar lo malo y escoger lo bueno;",
+  "16": "pero antes que el niño sepa desechar lo malo y escoger lo bueno, la tierra por la cual estás en aprieto quedará desolada, a causa de esos dos reyes.",
+  "17": "El Señor traerá sobre ti, y sobre tu pueblo, y sobre la casa de tu padre, días como no han venido desde el día en que la casa de Efraín se separó de la casa de Judá: al rey de Asiria.",
+  "18": "Y sucederá en aquel tiempo que el Señor llamará a un pueblo, a tropas de ejércitos, hombres fuertes, tan numerosos como moscas, y los traerá de los confines de la tierra de Egipto; y a ejércitos poderosos, fuertes como abejas, y los traerá de los extremos de la tierra de Asiria.",
+  "19": "Y vendrán todos ellos y habitarán en las calles de las ciudades, y en las hendiduras de las peñas, y en todos los desiertos llenos de zarzales, y en todas las casas de alabanza.",
+  "20": "En aquel tiempo el Señor los matará como se mata con espada afilada, con mazas y con sierras, por medio de los de allende el río y del rey de Asiria; al rey y a su ejército, y aun también a sus gobernantes, a todos juntos destruirá.",
+  "21": "Y sucederá en aquel tiempo que un hombre criará una vaca joven y dos ovejas.",
+  "22": "Y sucederá que, por la abundancia de la bondad de la grosura, se comerá aceite; porque con aceite y miel serán alimentados todos los justos que queden en medio de la tierra.",
+  "23": "Y sucederá en aquel tiempo que todo lugar donde había mil vides por mil piezas de plata, quedará para zarzas y espinos.",
+  "24": "Con flechas y con arcos vendrán allá los hombres; porque toda la tierra se volverá zarzas y espinos.",
+  "25": "Y a todas las colinas de la casa de Judá que se cavaban con azada, no llegará allí el temor de las zarzas y los espinos; sino que serán lugar donde se echen los bueyes, y lugar donde habiten los rebaños y las ovejas."
+ }
+}
