@@ -1,0 +1,16 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Lamento por Moab, y de los capítulos que menos retoca el targum: es casi todo geografía —Dibón, Nebo, Medeba, Hesbón, Eleale, Luhit, Horonaim—, y donde el hebreo tiene nombres de lugar, aquí siguen siendo nombres de lugar. Dos rastros de la mano targúmica: el título vuelve a desplegar el «oráculo» en la copa de maldición (véase la nota del capítulo 13), y el v. 9 convierte la amenaza vaga del hebreo —«traeré leones sobre los que escapen de Moab»— en «un rey con su ejército», que es la manera habitual de esta versión de sustituir la metáfora por el agente histórico. Los nombres van como Pauli los transcribió del arameo, con sus apóstrofos y todo.",
+ "verses": {
+  "1": "Carga de la copa de maldición que se ha de dar a beber a Moab. Porque de noche fue destruida Leheyat de Moab, y ellos dormían. Sí, de noche fue sometida la ciudad fortificada de Moab, y ellos estaban en profundo sueño.",
+  "2": "Subieron a las casas en Dibón, a los lugares altos, a llorar. Sobre Nebo y sobre Medeba aúllan los moabitas: en toda cabeza hay calvicie, toda barba está rapada.",
+  "3": "En sus calles se ceñirán de cilicio: sobre sus terrados y en sus plazas todos ellos aullarán, gritando y llorando.",
+  "4": "Y los habitantes de Hesbón y de Eleale gritarán a voz en cuello; hasta Jahaza se oye su voz: por eso aúllan los armados de Moab, y gritan a voz en cuello por sus vidas.",
+  "5": "Los moabitas pensarán huir a Zoar, hasta Eglat Tiltum' Rabb'ta; por la subida de Luhit subirán llorando; porque en la bajada de Horonaim proclamarán el clamor de los quebrantados en la batalla.",
+  "6": "Porque las aguas de Nimrim quedarán desoladas; porque la hierba se secó; el pasto faltó, no hay verdura alguna.",
+  "7": "Por tanto, el resto de sus riquezas será saqueado; y su territorio, el que está junto al mar occidental, les será quitado.",
+  "8": "Porque el clamor rodea la frontera de Moab; hasta Eglaim llega su aullido, y hasta Beer-elim su griterío.",
+  "9": "Porque las aguas de Dimón se llenarán de sangre: porque pondré sobre Dimón una asamblea de ejércitos. Contra los que escapen de Moab subirá un rey con su ejército; sí, para saquear lo que quede de su tierra."
+ }
+}

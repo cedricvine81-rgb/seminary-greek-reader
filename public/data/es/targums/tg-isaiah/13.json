@@ -1,0 +1,29 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El primero de los oráculos contra las naciones. El hebreo lo encabeza con la palabra massá, «carga» u «oráculo»; el targum la desarrolla en una imagen entera —«la carga de la COPA DE MALDICIÓN que se ha de dar a beber a Babilonia» (v. 1)—, y la retoma en el v. 5, donde el Señor viene con «los vasos de la copa de maldición» delante de sí. Es el modo targúmico de convertir un tecnicismo profético en imagen visible. El v. 12 hace el cambio de sentido más fuerte: el hebreo dice que el hombre escaseará más que el oro fino de Ofir; el targum lo lee al revés, como afecto de Dios —«amaré a los que me temen más que al oro»—, y añade «a los que guardan la ley». El bestiario de los vv. 21-22, que traduce nombres hebreos de animales cuyo sentido sigue discutiéndose, se conserva tal como Pauli lo entendió. El v. 1 lleva mayúsculas de rótulo en el inglés.",
+ "verses": {
+  "1": "Carga de la copa de maldición que se ha de dar a beber a Babilonia, la que profetizó Isaías, hijo de Amoz.",
+  "2": "Contra la ciudad fortificada que habita segura, levanten bandera, alcen la voz hacia ellos, agiten la mano, para que entren por las puertas de los nobles.",
+  "3": "He dado orden a los que yo tengo preparados, he convocado también a mis valientes, para que venguen mi ira sobre ellos, ellos que son mi fuerza y mi alabanza.",
+  "4": "Hay estruendo de multitud en los montes, como de un gran pueblo: voz de asamblea tumultuosa de reyes, de naciones que se reúnen; el Señor de los ejércitos pasa revista a los ejércitos para la batalla.",
+  "5": "Vienen de tierra lejana, de los confines de la tierra: el Señor, y delante de Él los vasos de la copa de maldición, para destruir a todos los malvados de la tierra.",
+  "6": "Aúllen, porque cercano está el día, presto a venir de delante del Señor; como despojo de delante del Todopoderoso vendrá.",
+  "7": "Por tanto se debilitarán todas las manos, y se derretirá el corazón de todo hombre.",
+  "8": "Quedarán consternados; angustias y dolores se apoderarán de ellos; temblarán como tiembla la mujer que da a luz; se mirarán atónitos unos a otros; sus rostros serán como llamas de fuego.",
+  "9": "He aquí, viene el día de delante de la presencia del Señor, cruel con furor y con ira ardiente, para asolar la tierra: y destruirá de ella a los pecadores.",
+  "10": "Porque las estrellas del cielo y sus constelaciones no darán su luz: el sol se oscurecerá al salir, y la luna no hará resplandecer su luz.",
+  "11": "Y visitaré a los habitantes del mundo con el castigo por el mal, y a los malvados por su iniquidad: y pondré fin a la grandeza de los malvados, y humillaré la fuerza de los poderosos.",
+  "12": "Y amaré a los que me temen más que al oro, del cual se glorían los hijos de los hombres; y a los que guardan la ley, más que al oro fino de Ofir.",
+  "13": "Por tanto haré temblar los cielos, y la tierra se moverá de su lugar, delante de la presencia del Señor de los ejércitos, y en el día del ardor de su ira.",
+  "14": "Y será como corza perseguida, y como ovejas sin quien las recoja: cada uno se volverá a su propio pueblo, y huirá cada cual a su propia tierra.",
+  "15": "Todo el que sea hallado en ella será muerto, y todo el que entre en las ciudades fortificadas caerá a espada.",
+  "16": "Y sus niños serán estrellados delante de sus ojos; sus casas serán saqueadas, y sus mujeres violadas.",
+  "17": "He aquí, traigo contra ellos a los medos, a quienes no mueve la plata; y en cuanto al oro, no se deleitan en él.",
+  "18": "Y sus arcos atravesarán a los jóvenes; y no se compadecerán del hijo del vientre; sus ojos no perdonarán a los niños.",
+  "19": "Y Babilonia, la que en otro tiempo fue el gozo de los reyes, la hermosura de la excelencia de los caldeos, vendrá a ser como cuando el Señor trastornó a Sodoma y a Gomorra.",
+  "20": "Nunca más será habitada, ni se morará en ella de generación en generación: ni plantará allí su tienda el árabe, ni habitarán allí los pastores.",
+  "21": "Sino que las martas se albergarán allí; y sus casas se llenarán de búhos; y allí habitarán los avestruces; y los demonios se solazarán allí.",
+  "22": "Los gatos monteses chillarán en sus palacios, y los dragones en el lugar de las moradas de sus deleites. Y cercano está el tiempo de la destrucción de Babilonia, y sus días no se prolongarán."
+ }
+}
