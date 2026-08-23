@@ -205,6 +205,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'philo-eternity': 'philo/eternity',
   'philo-sacrifices': 'philo/sacrifices',
   'philo-rewards': 'philo/rewards',
+  'philo-spec-laws': 'philo/spec-laws',
   'philo-confusion': 'philo/confusion',
   'philo-posterity': 'philo/posterity',
   'philo-flight': 'philo/flight',
