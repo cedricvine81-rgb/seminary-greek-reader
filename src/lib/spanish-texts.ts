@@ -223,6 +223,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'philo-dreams': 'philo/dreams',
   'philo-qg': 'philo/qg',
   'philo-alleg-interp': 'philo/alleg-interp',
+  'philo-moses': 'philo/moses',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
