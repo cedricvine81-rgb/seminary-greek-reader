@@ -50,7 +50,7 @@ const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'vari
 // hook, and the two render sites below resolve it with t().
 const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
   { id: 'workspace',   label: 'tab.syntax',      Icon: PencilLine },
-  { id: 'phrasing',    label: 'tab.phrasing',    Icon: ListTree },
+  { id: 'phrasing',    label: 'tab.diagramming', Icon: ListTree },
   { id: 'synopsis',    label: 'tab.synopsis',    Icon: Columns3 },
   { id: 'variants',    label: 'tab.variants',    Icon: Rows3 },
   { id: 'backgrounds', label: 'tab.backgrounds', Icon: Scroll },

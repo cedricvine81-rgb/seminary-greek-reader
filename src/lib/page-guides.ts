@@ -333,10 +333,14 @@ export const PAGE_GUIDES: PageGuide[] = [
           heading: 'Using it',
           body: 'This is the view for "where does the wayyiqtol chain break, and what is fronted?" — the questions Hebrew narrative turns on. A clause label at the top of each box gives the constituent order (V-S-O and its variations), so word-order departures are visible at a glance.',
         },
+        {
+          heading: 'Drawing your own diagram',
+          body: 'Switch the toggle at the top left to Diagram and each sentence becomes a canvas: drag the Hebrew words wherever your analysis puts them, and use the line tool to mark the connections. Your layout is saved as you work and comes back next time you open the passage.',
+        },
       ],
     },
-    title: 'Exegesis · Phrasing',
-    lede: 'See the passage laid out by clause and phrase rather than as a run of words.',
+    title: 'Exegesis · Diagramming',
+    lede: 'See the passage laid out by clause and phrase — or diagram it yourself.',
     sections: [
       {
         heading: 'What you are looking at',
@@ -345,6 +349,10 @@ export const PAGE_GUIDES: PageGuide[] = [
       {
         heading: 'Using it',
         body: 'This is the view to reach for when the question is "what is the main verb, and what hangs off it?" It is also the fastest way to see that a phrase you assumed modified one thing actually modifies another.',
+      },
+      {
+        heading: 'Drawing your own diagram',
+        body: 'Switch the toggle at the top left to Diagram and each sentence becomes a canvas: drag the Greek words wherever your analysis puts them, and use the line tool to mark the phrasing. Your layout is saved as you work and comes back next time you open the passage.',
       },
     ],
   },

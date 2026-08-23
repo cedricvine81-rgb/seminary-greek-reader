@@ -217,7 +217,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     { href: '/vocab', label: 'Vocab', icon: BookMarked },
     { href: '/grammar', label: 'Grammar', icon: Table2 },
     { href: '/exegesis', label: 'Syntax', icon: PencilLine },
-    { href: '/exegesis?tab=phrasing', label: 'Phrasing', icon: ListTree },
+    { href: '/exegesis?tab=phrasing', label: 'Diagramming', icon: ListTree },
     { href: '/texts', label: 'Texts', icon: Library },
     { href: '/notes', label: 'Notes', icon: StickyNote },
   ]

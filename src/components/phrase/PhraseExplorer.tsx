@@ -12,16 +12,20 @@ import { highlightMarkClass } from '@/lib/highlight-colors'
 import { formatParsing } from '@/lib/morph-formatting'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { DiagramCanvas, type DiagramData } from './DiagramCanvas'
+import { usePref } from '@/lib/use-pref'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
-type WordNodeT = { t: 'w'; id: string; w: string; gloss?: string; lemma?: string; morph?: string; role?: string; cls?: string; strongs?: string; parsing?: string }
+// Exported for the DiagramCanvas, which renders the same word nodes as draggable chips.
+export type WordNodeT = { t: 'w'; id: string; w: string; gloss?: string; lemma?: string; morph?: string; role?: string; cls?: string; strongs?: string; parsing?: string }
 type TreeNode =
   | { t: 'g'; cls?: string; role?: string; rule?: string; c: TreeNode[] }
   | WordNodeT
 
 // Lets the recursively-rendered words report clicks + know if they're selected,
-// without threading callbacks through every tree level.
-const WordCtx = createContext<{ selectedId: string | null; onWord: (n: WordNodeT) => void }>({ selectedId: null, onWord: () => {} })
+// without threading callbacks through every tree level. Exported so the DiagramCanvas's
+// chips drive the same parsing pane.
+export const WordCtx = createContext<{ selectedId: string | null; onWord: (n: WordNodeT) => void }>({ selectedId: null, onWord: () => {} })
 
 // Highlighting for the running Greek column: the highlighter instance + auth flag, so a
 // GreekColWord (given its verse + character offsets) can render its mark and set/clear it.
@@ -340,6 +344,59 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   const [, setTransVer] = useState(0)
   const bump = () => setTransVer(v => v + 1)
 
+  // Left pane view: the Macula phrase tree, or the drag-and-drop diagram canvas.
+  // Remembered on this device — instructors tend to live in one mode or the other.
+  const [viewMode, setViewMode] = usePref<'tree' | 'diagram'>('phrase-view-mode', ['tree', 'diagram'], 'tree')
+
+  // Saved diagrams for the current chapter, keyed "verseStart-verseEnd". null while the
+  // signed-in fetch is in flight — the canvases wait for it, or they'd seed the default
+  // layout and then ignore the saved one (a canvas reads its initialData only on mount).
+  const [diagrams, setDiagrams] = useState<Record<string, DiagramData> | null>(null)
+  useEffect(() => {
+    if (!cur) return
+    if (!isAuthenticated) { setDiagrams({}); return }
+    setDiagrams(null)
+    let alive = true
+    fetch(`/api/diagrams?book=${cur.osis}&chapter=${cur.chapter}`)
+      .then(r => r.json())
+      .then((d: { diagrams?: { verseStart: number; verseEnd: number; data: DiagramData }[] }) => {
+        if (!alive) return
+        const m: Record<string, DiagramData> = {}
+        for (const g of d.diagrams ?? []) m[`${g.verseStart}-${g.verseEnd}`] = g.data
+        setDiagrams(m)
+      })
+      .catch(() => { if (alive) setDiagrams({}) })
+    return () => { alive = false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cur, isAuthenticated])
+  // Signed-out diagrams live in localStorage under the same anchor.
+  const localKey = (s: Sentence) => `phrase-diagram:${cur?.osis}.${s.chapter}.${s.startVerse}-${s.endVerse}`
+  const readLocal = (s: Sentence): DiagramData | null => {
+    if (typeof window === 'undefined') return null
+    try { const raw = localStorage.getItem(localKey(s)); return raw ? JSON.parse(raw) as DiagramData : null } catch { return null }
+  }
+  async function saveDiagram(s: Sentence, data: DiagramData | null) {
+    const k = `${s.startVerse}-${s.endVerse}`
+    // Keep the in-memory map current so a remount (mode flip, tab switch) restores it.
+    setDiagrams(d => {
+      const next = { ...(d ?? {}) }
+      if (data) next[k] = data; else delete next[k]
+      return next
+    })
+    if (isAuthenticated && cur) {
+      if (data) {
+        await fetch('/api/diagrams', {
+          method: 'PUT', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ book: cur.osis, chapter: s.chapter, verseStart: s.startVerse, verseEnd: s.endVerse, data }),
+        })
+      } else {
+        await fetch(`/api/diagrams?book=${cur.osis}&chapter=${s.chapter}&verseStart=${s.startVerse}&verseEnd=${s.endVerse}`, { method: 'DELETE' })
+      }
+    } else {
+      try { if (data) localStorage.setItem(localKey(s), JSON.stringify(data)); else localStorage.removeItem(localKey(s)) } catch { /* private mode */ }
+    }
+  }
+
   // Text size — the settings/sources panel that used to live here is now hoisted into
   // the shared exegesis tools menu (when coordinated); fontSize becomes controlled then.
   const isFontSizeControlled = onFontSize !== undefined
@@ -506,14 +563,31 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
         </div>
       )}
 
-      {/* Column header: (Greek edition + translation) dropdowns, right-aligned (lg+). */}
+      {/* Header row: view toggle (tree ⇄ diagram) top-left; (Greek edition + translation)
+          dropdowns right-aligned (lg+ — on mobile they stack below). */}
       {!message && shown.length > 0 && (
-        <div className="hidden lg:flex justify-end">
-          <div className="grid grid-cols-2 gap-4 w-[31rem]">
+        <div className="flex items-center justify-between gap-3">
+          <div className="inline-flex shrink-0 rounded-lg border border-gray-200 p-0.5">
+            {(['tree', 'diagram'] as const).map(m => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => setViewMode(m)}
+                className={`px-2.5 py-1 rounded-md text-[13px] font-medium transition-colors ${viewMode === m ? 'bg-brand-100 text-brand-800' : 'text-gray-500 hover:bg-gray-100'}`}
+              >
+                {m === 'tree' ? t('tab.phrasing') : t('phr.diagram')}
+              </button>
+            ))}
+          </div>
+          <div className="hidden lg:grid grid-cols-2 gap-4 w-[31rem]">
             <OptionSelect value={effEd} onChange={setGreekEd} options={cur?.hebrew ? HEBREW_EDITIONS : GREEK_EDITIONS} />
             <OptionSelect value={transLang} onChange={setTransLang} options={LANGS.filter(l => !cur?.hebrew || l.code !== 'bsb').map(l => ({ code: l.code, label: t(l.labelKey) }))} />
           </div>
         </div>
+      )}
+      {/* Signed-out users still get the canvas — saved on this device only. */}
+      {!message && shown.length > 0 && viewMode === 'diagram' && !isAuthenticated && (
+        <p className="text-xs text-gray-400 -mt-2">{t('phr.savedLocally')}</p>
       )}
       {/* On mobile the dropdowns stack above the cards. */}
       {!message && shown.length > 0 && (
@@ -538,8 +612,22 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                 )}
               </p>
               <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_31rem] lg:items-start">
-                <div className="min-w-0" dir={cur?.hebrew ? 'rtl' : undefined}>
-                  <NodeView node={s.tree} depth={0} />
+                <div className="min-w-0" dir={cur?.hebrew && viewMode === 'tree' ? 'rtl' : undefined}>
+                  {viewMode === 'diagram' ? (
+                    diagrams === null ? (
+                      <p className="text-sm text-gray-400 italic">{t('reader.loading')}</p>
+                    ) : (
+                      <DiagramCanvas
+                        key={`${cur?.osis}.${s.chapter}.${s.startVerse}-${s.endVerse}`}
+                        words={treeWords(s.tree)}
+                        rtl={cur?.hebrew}
+                        initialData={diagrams[`${s.startVerse}-${s.endVerse}`] ?? (isAuthenticated ? null : readLocal(s))}
+                        onSave={d => saveDiagram(s, d)}
+                      />
+                    )
+                  ) : (
+                    <NodeView node={s.tree} depth={0} />
+                  )}
                 </div>
                 {/* Greek + translation columns and the parsing box grouped together, so the
                     box sits directly beneath the text (not below the taller phrase tree). */}

@@ -90,6 +90,7 @@ model User {
   noteSubmissions      NoteSubmission[]
   constructSubmissions ConstructSubmission[]
   highlights           Highlight[]
+  phraseDiagrams       PhraseDiagram[]
   blockAnnotations     BlockAnnotation[]
   groupMemberships     CourseGroupMember[]
   groupContributions   GroupContribution[]
@@ -1029,6 +1030,26 @@ model Highlight {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, book, chapter])
+}
+
+// A user's phrase diagram on the Diagramming tab: one per sentence card, anchored by the
+// sentence's verse range (the same ranges the Macula sentence data gives the tab). `data`
+// is the whole layout as JSON — chip positions keyed by word occurrence, plus the drawn
+// annotation lines. Upserted whole on every save.
+model PhraseDiagram {
+  id         String   @id @default(cuid())
+  userId     String
+  book       String
+  chapter    Int
+  verseStart Int
+  verseEnd   Int
+  data       Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, book, chapter, verseStart, verseEnd])
 }
 
 // A highlight or margin note on a block of the app's OWN prose — the Grammar chapters
