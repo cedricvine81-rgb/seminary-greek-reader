@@ -1,0 +1,20 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Bel y Nebo, los dioses de Babilonia, cargados en carretas camino del destierro. El targum añade en el v. 1 lo que el hebreo no dice: que sus imágenes son «a semejanza de serpientes y de bestias» —detalle etnográfico que subraya el ridículo. El v. 4 hace el cambio de siempre: donde el hebreo dice «hasta la vejez yo soy el mismo», aquí se lee «hasta la eternidad yo soy Él, y mi PALABRA (Memrá) permanecerá por las edades tras las edades», y se le añade el perdón de los pecados. Y en el v. 11 el «ave de rapiña del oriente» —Ciro, en el hebreo— se convierte en «los hijos de Abraham, mis escogidos», traídos aprisa como ave veloz desde tierra lejana: la profecía deja de hablar del conquistador y pasa a hablar de los repatriados. En el v. 12 se escucha «mi PALABRA», no al Señor sin más. El v. 1 se queda sin punto final en el inglés: se conserva así.",
+ "verses": {
+  "1": "Bel se ha postrado, Nebo ha sido derribado. Sus imágenes son a semejanza de serpientes y de bestias. Las cargas de sus ídolos serán pesadas para los que las llevan, porque están agotados",
+  "2": "Son cortados; sí, están del todo hechos pedazos, y no pudieron librar a los que los llevaban; y sus adoradores han ido al cautiverio.",
+  "3": "Escúchenme, casa de Jacob, y todo el remanente de la casa de Israel, ustedes que son amados sobre todas las naciones, sí, amados sobre todos los reinos.",
+  "4": "Hasta la eternidad yo soy Él, y mi PALABRA permanecerá por las edades tras las edades. Yo soy el que ha creado a todos los hombres, y yo los he esparcido entre las naciones; sí, yo perdonaré sus pecados, y yo indultaré.",
+  "5": "¿A quién me asemejarán, y me igualarán, y me compararán en verdad?",
+  "6": "He aquí que la gente saca oro de la bolsa y pesa plata en la balanza, y contrata a un orfebre; y él hace un dios: se postran, sí, le rinden reverencia.",
+  "7": "Lo llevan sobre el hombro, lo cargan y lo ponen en su lugar, y allí se queda; no le es posible moverse de su sitio; sí, uno le suplica, pero él no le responde ni lo salva de su angustia.",
+  "8": "Acuérdense de esto y sean fuertes; y téngalo presente, rebeldes.",
+  "9": "Acuérdense de las cosas pasadas, las de antaño; porque yo soy Dios, y no hay Dios alguno fuera de mí,",
+  "10": "el que anuncia el fin desde el principio, y desde los tiempos antiguos lo que aún no se ha hecho, diciendo: Mi consejo permanecerá, y haré todo lo que me plazca;",
+  "11": "el que ha prometido reunir la cautividad desde el oriente, traer abiertamente, como ave veloz, a los hijos de Abraham, mis escogidos, desde tierra lejana; sí, lo he prometido; sí, lo cumpliré; lo he dispuesto, sí, lo haré.",
+  "12": "Escuchen mi PALABRA, ustedes los de duro corazón, que están lejos de la justicia.",
+  "13": "Mi justicia está cerca, no está lejos, y mi salvación no se tardará: y pondré salvación en Sion, y mi gloria en Israel."
+ }
+}

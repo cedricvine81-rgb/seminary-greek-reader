@@ -1,0 +1,32 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El capítulo de Ciro, y el único lugar de la Biblia donde un rey pagano recibe el título de «ungido» del Señor —mashiaḥ, la misma palabra que el targum reserva en otras partes para el Mesías. Aquí no la esquiva: el v. 1 lo dice tal cual. Dos añadidos propios merecen atención. El v. 8, donde el hebreo pide que la tierra abra y brote salvación, dice aquí «ábrase la tierra, y VIVAN LOS MUERTOS, y revélese juntamente la justicia»: otra vez la resurrección insertada en el texto (compárese 26:19 y 38:16). Y el v. 7, donde el hebreo dice que Dios «crea el mal», el targum precisa «crea el CASTIGO por el mal» —no vaya a entenderse que Dios crea la maldad. De los vv. 22 al 25 la PALABRA (Memrá) lo domina todo: a ella se vuelve uno para salvarse, por ella jura Dios, en ella se alaba y en ella es justificada la simiente de Israel. El v. 23, «ante mí se doblará toda rodilla», es el versículo que Pablo cita en Filipenses 2:10 y Romanos 14:11.",
+ "verses": {
+  "1": "Así dice el Señor a su ungido, a Ciro, a quien sostengo firme por su mano derecha, para entregarle las naciones; y soltaré los lomos de los reyes, para abrir delante de él las puertas, y las puertas no se cerrarán:",
+  "2": "Mi PALABRA irá delante de ti; yo allanaré el camino en los llanos; haré pedazos las puertas de bronce y romperé los cerrojos de hierro.",
+  "3": "Y te daré los tesoros de las tinieblas, y las riquezas escondidas, para que sepas que yo, el Señor, que te llamé por tu nombre, soy el Dios de Israel.",
+  "4": "Por amor de Jacob mi siervo y de Israel mi escogido, sí, te he llamado por tu nombre; te he guiado, aunque tú no me has conocido para temerme.",
+  "5": "Yo soy el Señor, y ningún otro; no hay Dios fuera de mí: te he sostenido, aunque tú no me has conocido para temerme;",
+  "6": "para que sepan desde el nacimiento del sol y desde el occidente que yo soy el Señor, y no hay otro:",
+  "7": "el que prepara la luz y crea las tinieblas, el que hace la paz y crea el castigo por el mal. Yo, el Señor, hago todas estas cosas.",
+  "8": "Destilen los cielos desde arriba, y las nubes fluyan con bien; ábrase la tierra, y vivan los muertos, y revélese juntamente la justicia; yo, el Señor, los he creado.",
+  "9": "¡Ay del que piensa contender con las palabras de su Creador, y confía en que las imágenes de un alfarero, hechas del polvo de la tierra, le harán bien! ¿Es posible que el barro diga al que lo trabaja: Tú no me hiciste? ¿o tu obra: Él no tiene manos?",
+  "10": "¡Ay del que dice a su padre: ¿Qué engendras? y a su madre: ¿Qué has dado a luz?",
+  "11": "Así dice el Señor, el Santo de Israel, y el que lo formó: Ustedes me preguntan sobre lo que ha de suceder acerca de mi pueblo, ¿y me van a dar órdenes acerca de la obra de mi poder?",
+  "12": "Yo soy el que hice la tierra por mi PALABRA, y creé al hombre sobre ella; yo soy el que suspendí los cielos con mi poder, y puse el fundamento de todas sus huestes.",
+  "13": "Yo soy el que ciertamente lo sacará a la vista de todos, y enderezaré todos sus caminos: él edificará mi ciudad, y dejará ir a los cautivos de mi pueblo, no por precio ni por dinero, dice el Señor de los ejércitos.",
+  "14": "Así dice el Señor: La riqueza de Egipto, y la mercancía de Etiopía y de los hombres de Sabá, hombres de comercio, vendrán a ti, y tuyos serán: andarán conforme a tu mandato; pasarán en cadenas; y se inclinarán ante ti, y te suplicarán, diciendo: Ciertamente Dios está en ti, y no hay otro Dios fuera de Él.",
+  "15": "Verdaderamente, Tú eres el que hace morar su Shekiná en el cielo altísimo, oh Dios de Israel, el Salvador.",
+  "16": "Quedarán avergonzados y confundidos, todos ellos: los adoradores de imágenes andarán en confusión.",
+  "17": "Israel será salvado por la PALABRA del Señor con salvación eterna: no serán avergonzados ni confundidos jamás, sí, por las edades tras las edades.",
+  "18": "Porque así dice el Señor que creó los cielos; el que puso el cimiento de la tierra y la hizo, Él es Dios; Él la formó, no la creó en vano, sino que la formó para que se multiplicaran sobre ella los hijos de los hombres. Yo soy el Señor, y no hay otro.",
+  "19": "No he hablado en secreto, en un lugar oscuro de la tierra; no dije a la simiente de la casa de Jacob: Búsquenme con reverencia en vano; yo, el Señor, hablo la verdad, anunciando cosas rectas.",
+  "20": "Reúnanse y vengan; acérquense juntos, ustedes que han escapado de las naciones: nada saben los que llevan a cuestas sus imágenes de madera, y rezan a un dios que no salvará.",
+  "21": "Declaren y acérquense; sí, tomen consejo juntos: ¿quién anunció esto desde tiempos antiguos? ¿quién lo dijo desde entonces? ¿No he sido yo, el Señor? Y no hay Dios alguno fuera de mí; Dios justo y Salvador; no hay otro sino yo.",
+  "22": "Vuélvanse a mi PALABRA y sean salvos, todos los que están en los confines de la tierra; porque yo soy el Señor, y no hay otro.",
+  "23": "He jurado por mi PALABRA; la palabra ha salido en justicia de mi presencia, y no fallará: que ante mí se doblará toda rodilla, y jurará toda lengua.",
+  "24": "Ciertamente Él ha prometido traerme justicia y fortaleza por la PALABRA del Señor. En su PALABRA ofrecerán alabanza, y todas las naciones que se airan contra su pueblo quedarán avergonzadas.",
+  "25": "En la PALABRA del Señor será justificada y glorificada toda la simiente de Israel."
+ }
+}
