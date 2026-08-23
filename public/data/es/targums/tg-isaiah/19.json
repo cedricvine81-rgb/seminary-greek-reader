@@ -1,0 +1,32 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Oráculo sobre Egipto, y el capítulo termina con una de las promesas más sorprendentes de toda la Biblia: Egipto y Asiria, los dos grandes opresores, adorando al Señor junto con Israel. El targum no la suaviza, pero sí la retoca en el v. 25: donde el hebreo dice «bendito sea Egipto mi pueblo, y Asiria obra de mis manos, e Israel mi heredad» —repartiendo los títulos entre los tres—, aquí todo se refiere a ISRAEL: mi pueblo es el que saqué de Egipto, al que llevé cautivo a Asiria, y que vuelve a llamarse mi pueblo cuando se arrepiente. Es un buen ejemplo de cómo el targum recorta lo que le parece demasiado. En el v. 1 el Señor no cabalga sobre una nube ligera, sino que «se revela en la nube de su gloria». Y el v. 18 traduce el enigmático ʿir ha-heres del hebreo como «la ciudad de Bet-Semes, que ha de ser destruida». ATENCIÓN al v. 11: el inglés de Pauli está allí DEFECTUOSO —falta el verbo, de modo que la frase «cómo Faraón, Somos hijos de los sabios» queda colgando—; se reproduce tal cual, sin enmendarla, porque enmendar aquí sería inventar.",
+ "verses": {
+  "1": "Carga de la copa de maldición que se ha de dar a beber a los egipcios. He aquí que el Señor se revela en la nube de su gloria, para tomar venganza de los egipcios; y los ídolos de los egipcios serán quebrados delante de su rostro, y el corazón de los egipcios se derretirá dentro de ellos.",
+  "2": "Y provocaré a egipcios contra egipcios, y harán guerra cada uno contra su hermano y cada uno contra su prójimo: ciudad contra ciudad, reino contra reino.",
+  "3": "Y el espíritu de los egipcios se derretirá dentro de ellos, y destruiré a sus sabios: y consultarán a los ídolos, y a los encantadores, a los engañosos y a los adivinos.",
+  "4": "Y entregaré a los egipcios en mano de un señor cruel; y un rey feroz se enseñoreará de ellos, dice el Señor del mundo, el Señor de los ejércitos.",
+  "5": "Y las aguas del mar quedarán desoladas, y su río será devastado y secado.",
+  "6": "Y sus ríos quedarán asolados, y sus corrientes profundas serán secadas y devastadas: las cañas y los juncos no crecerán.",
+  "7": "Y la mayor parte del río se marchitará, y lo que está en su ribera, y todo lugar sembrado junto a sus ríos se marchitará, y se secará, y nada crecerá.",
+  "8": "Los pescadores quedarán desolados, y todos los que echan anzuelo en el arroyo, y los que extienden redes sobre la faz de las aguas serán destruidos.",
+  "9": "Quedarán confundidos los que trabajan el lino peinado y tejen redes con él.",
+  "10": "Y será pisoteado el lugar bien regado, donde han estado haciendo hoyos, estanques de agua cada cual para sí.",
+  "11": "Ciertamente los príncipes de Tanes se han vuelto necios; los sabios, los consejeros de Faraón, han aconsejado un consejo errado; cómo Faraón, Somos hijos de los sabios, y tú eres hijo de reyes antiguos.",
+  "12": "¿Dónde están tus sabios? Que te lo digan ahora, y que sepan lo que el Señor de los ejércitos ha determinado contra Egipto.",
+  "13": "Los príncipes de Tanes se han vuelto necios, los hombres de Menfis han errado; hicieron errar a los egipcios, los señores de las provincias.",
+  "14": "El Señor ha enviado entre ellos un espíritu de error, y han hecho errar a los egipcios en todas sus obras, como se tambalea el borracho y pisotea su vómito.",
+  "15": "Y los egipcios no tendrán rey que reine, ni príncipe, ni noble, ni gobernador, ni gobernante.",
+  "16": "En aquel tiempo los egipcios estarán débiles, tendrán miedo y temerán a causa del alzamiento del poder del Señor de los ejércitos, que Él levanta contra ellos.",
+  "17": "Y la tierra de la casa de Judá será espanto para Egipto; si alguno se la menciona, temblarán a causa del consejo del Señor de los ejércitos, que Él ha determinado contra ellos.",
+  "18": "En aquel tiempo habrá cinco ciudades en la tierra de Egipto que hablen la lengua de Canaán y juren por el nombre del Señor de los ejércitos. La ciudad de Bet-Semes, que ha de ser destruida, será llamada una de ellas.",
+  "19": "En aquel tiempo será preparado un altar delante del Señor en medio de la tierra de Egipto; y una columna junto a su frontera, delante del Señor.",
+  "20": "Y será por señal y por testimonio delante del Señor de los ejércitos en la tierra de Egipto, cuando oren delante del Señor a causa de sus opresores; y Él les enviará un Salvador y un Juez, y los librará.",
+  "21": "Y el poder del Señor será revelado para hacer bien a los egipcios, y los egipcios conocerán el temor del Señor en aquel tiempo, y adorarán con sacrificios santos y con ofrendas; sí, harán votos delante del Señor y los cumplirán.",
+  "22": "Y el Señor herirá a Egipto con un golpe, y los sanará, y volverán al culto del Señor, y Él oirá sus oraciones y los sanará.",
+  "23": "Y en aquel tiempo habrá una calzada de Egipto a Asiria; y los asirios pelearán contra los egipcios, y los egipcios contra los asirios, y los egipcios servirán a los asirios.",
+  "24": "Y en aquel tiempo Israel será tercero con los egipcios y con los asirios, bendición en medio de la tierra,",
+  "25": "a quien ha bendecido el Señor de los ejércitos, diciendo: Bendito sea mi pueblo, al que saqué de Egipto; y porque pecaron delante de mí, los llevé cautivos a Asiria; pero cuando se arrepienten, son llamados mi pueblo, e Israel mi heredad."
+ }
+}

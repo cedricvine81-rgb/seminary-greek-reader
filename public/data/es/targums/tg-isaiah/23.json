@@ -1,0 +1,25 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Oráculo sobre Tiro, la gran ciudad mercantil. El targum lo sigue de cerca —es un texto comercial y marítimo, sin metáforas divinas que reformular— y solo endereza la última línea: el v. 18, donde el hebreo dice que la ganancia de Tiro será para los que habitan delante del Señor, aquí se precisa «para los que SIRVEN delante del Señor», es decir, los sacerdotes, y se destina a comida suficiente y a vestiduras de gloria. El resto conserva incluso la imagen dura del v. 15, la ciudad como ramera olvidada que vuelve a cantar para que la recuerden. En el v. 15 el inglés se queda sin punto final: se conserva así.",
+ "verses": {
+  "1": "Carga de la copa de maldición que se ha de dar a beber a Tiro. ¡Aúllen, los que se embarcan en naves del mar!, porque sus puertos están destruidos, de modo que nadie puede entrar. Desde la tierra de Quitim les viene la nueva.",
+  "2": "Los habitantes de la isla están destruidos; los mercaderes que cruzan el mar solían abastecerte.",
+  "3": "Ella era el mercado abundante de muchas naciones; la cosecha del producto del río era su renta, y llegó a ser el mercado de las naciones.",
+  "4": "Los sidonios están confundidos, porque ha hablado el occidente, el que habita en la fortaleza del mar, diciendo: ¡Ojalá nunca hubiera tenido dolores de parto, ni hubiera concebido, ni hubiera criado jóvenes, ni hubiera educado con regalo a doncellas!",
+  "5": "Cuando oyeron del golpe con que fueron heridos los egipcios, los tirios temblaron al oírlo.",
+  "6": "Se han ido a una provincia del mar. ¡Aúllen, habitantes de la isla!",
+  "7": "¿Es esta la ciudad fuerte de ustedes, Tiro, la de los días antiguos? En otro tiempo le traían presentes de tierra lejana; ¡he aquí que ahora es llevada a peregrinar lejos!",
+  "8": "¿Quién tomó este consejo contra Tiro, contra la que daba consejo, cuyos mercaderes son príncipes y cuyos gobernantes son los nobles de la tierra?",
+  "9": "El Señor de los ejércitos es el consejero contra ella, para profanar la gloria de todo objeto de alegría y para envilecer a todos los nobles de la tierra.",
+  "10": "Sal de tu tierra, como las aguas de un río; huye a una provincia del mar: ya no hay fuerza.",
+  "11": "Su poder se ha levantado contra el mar, para hacer temblar el reino; el Señor ha dado la orden acerca de la ciudad mercante, para acabar con su fuerza.",
+  "12": "Y dijo: No serán fuertes nunca más, ustedes que hicieron violencia al pueblo que está en Sidón. Levántense, pasen a Quitim; y aun allí no tendrán reposo.",
+  "13": "He aquí la tierra de los caldeos, este es el pueblo que antes no existía; los asirios la fundaron en las islas; levantaron sus atalayas, destruyeron sus palacios, la convirtieron en montón de ruinas.",
+  "14": "Aúllen, ustedes que se embarcan en naves del mar, porque la costa de su fortaleza está destruida.",
+  "15": "Y sucederá en aquel tiempo que Tiro será puesta a un lado por setenta años, conforme a los días de un rey: al cabo de setenta años le sucederá a Tiro como en el cantar de la ramera",
+  "16": "Tu gloria ha cambiado: vaga por otro país, oh ciudad que has sido como ramera; estás condenada al olvido: tu arpa se ha vuelto luto, y tu canción lamentación; quizá te recuerden.",
+  "17": "Y sucederá que después de cumplidos los setenta años, Tiro será recordada delante del Señor; y volverá a su lugar, y su mercado será abundante para todos los reinos de las naciones que hay sobre la faz de la tierra.",
+  "18": "Y su mercancía y su ganancia serán santas delante del Señor; no se atesorarán ni se guardarán; porque serán para los que sirven delante del Señor; su ganancia será para comida suficiente y para vestiduras de gloria."
+ }
+}

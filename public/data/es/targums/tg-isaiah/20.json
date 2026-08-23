@@ -1,0 +1,13 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El signo del profeta desnudo. Es de los capítulos que el targum deja casi intactos, y por eso mismo sirve de contraste: cuando el texto es narrativo y no tiene antropomorfismos que suavizar ni metáforas que descifrar, esta versión traduce y sigue de largo. Un solo retoque, el del v. 2: el hebreo dice que el Señor «habló por medio de Isaías», y aquí «decretó por medio de Isaías», que es la manera targúmica de subrayar que la palabra profética es sentencia y no aviso.",
+ "verses": {
+  "1": "En el año en que Tartán marchó contra Asdod (cuando lo envió Sargón, rey de Asiria), y le hizo guerra a Asdod y la sometió;",
+  "2": "en aquel tiempo el Señor decretó por medio de Isaías, hijo de Amoz, diciendo: Ve y quita el cilicio que llevas en tus lomos, y descalza las sandalias de tus pies. Y él lo hizo así, andando desnudo y descalzo.",
+  "3": "Y dijo el Señor: Así como mi siervo Isaías ha andado desnudo y descalzo tres años por señal y prodigio sobre Egipto y sobre Cus,",
+  "4": "así llevará el rey de Asiria a los cautivos, y a la cautividad de Cus, jóvenes y viejos, desnudos y descalzos, y aun con las vergüenzas descubiertas, para afrenta de Egipto.",
+  "5": "Y tendrán miedo y quedarán confundidos a causa de Cus, el lugar de su confianza, y a causa de Egipto, su jactancia.",
+  "6": "En aquel tiempo dirá el habitante de esta isla: Así ha quedado el lugar de nuestra confianza, adonde esperábamos huir en busca de socorro para ser librados de delante del rey de Asiria; si hasta ahora no pudieron librarse a sí mismos, ¿cómo seremos librados nosotros?"
+ }
+}

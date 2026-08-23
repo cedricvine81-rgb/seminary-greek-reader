@@ -1,0 +1,30 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Primer capítulo del llamado «Apocalipsis de Isaías» (24-27), el juicio universal. El targum le da forma jurídica: la causa del desastre se nombra dos veces —«han transgredido la LEY» (vv. 1 y 5)— y en el v. 6 lo que devora la tierra no es una maldición sin sujeto, sino el PERJURIO. El v. 14 vuelve a poner la Palabra (Memrá) donde el hebreo tiene solo la majestad del Señor, y compara la alegría final con la del mar Rojo. El v. 16 es el más targúmico del capítulo: el enigmático razi-li del hebreo, «mi secreto», se despliega en dos revelaciones simétricas al profeta —el galardón de los justos y el castigo de los malvados—, con lo cual una exclamación oscura se convierte en doctrina. Y el v. 23, donde el hebreo dice que la luna se avergonzará y el sol se confundirá, aquí se refiere a los que ADORAN a la luna y al sol: la vergüenza pasa de los astros a sus adoradores, que es exactamente la clase de retoque que este targum hace para que nada suene a mitología.",
+ "verses": {
+  "1": "He aquí que el Señor asolará la tierra y la entregará al enemigo; y la confusión cubrirá los rostros de los príncipes, porque han transgredido la ley, y ha dispersado a sus habitantes.",
+  "2": "Y sucederá que como al pueblo, así al sacerdote; como al siervo, así a su señor; como a la sierva, así a su señora; como al que compra, así al que vende; como al que toma prestado, así al que presta; como al que da a usura, así al usurero.",
+  "3": "La tierra será del todo destruida, será del todo pisoteada; porque el Señor ha hablado esta palabra.",
+  "4": "La tierra hace duelo, queda desolada; el mundo queda asolado, queda desolado: la fuerza del pueblo de la tierra ha llegado a su fin.",
+  "5": "La tierra se ha hecho culpable bajo sus habitantes, porque han transgredido la ley, y han hecho cesar las fiestas, y han cambiado el pacto eterno.",
+  "6": "A causa del perjurio la tierra se ha vuelto desierto, y todos los que habitan en ella quedan desolados: por eso son destruidos los habitantes de la tierra, y los hombres que quedan son pocos.",
+  "7": "Todos los que beben vino hacen duelo, porque las vides están destrozadas; todos los de corazón alegre suspiran.",
+  "8": "Cesó el regocijo de los panderos; se acabó la asamblea tumultuosa de los poderosos, cesó la alegría del arpa.",
+  "9": "Ya no beberán vino con cánticos; la bebida fuerte será amarga a los que la beban.",
+  "10": "Su ciudad está derribada y desolada: todas sus casas están cerradas, de modo que nadie puede entrar.",
+  "11": "Claman por vino en las calles; toda alegría ha terminado: todo gozo ha sido quitado de la tierra.",
+  "12": "Desolación ha quedado en la ciudad, y hay tumulto en la destrucción de las puertas.",
+  "13": "Cuando así queden los justos solos en medio de la tierra, entre los reinos, como en el vareo de los olivos, como el rebusco después de la vendimia.",
+  "14": "Ellos alzarán su voz, alabarán a causa de la PALABRA del Señor: se alegrarán como se alegraron por las obras poderosas que se hicieron por ellos junto al mar.",
+  "15": "Cuando la luz venga a los justos, glorificarán al Señor: en las islas del mar loarán y bendecirán el nombre del Señor, el Dios de Israel.",
+  "16": "Desde la casa del santuario, sí, de allí saldrá alegría para todos los habitantes de la tierra, porque hemos oído la alabanza de los justos. Dijo el profeta: ¡Un secreto! Se me muestra el galardón de los justos; ¡un secreto! Se me revela el castigo de los malvados. ¡Ay de los opresores, porque serán oprimidos; y de los que saquean, porque he aquí, serán saqueados!",
+  "17": "El terror, la fosa y el lazo están sobre ti, habitante de la tierra.",
+  "18": "Y sucederá que el que huya de delante del terror caerá en medio de la fosa; y el que suba de en medio de la fosa quedará preso en el lazo: porque se hacen obras poderosas en los cielos, y por eso tiemblan los cimientos de la tierra.",
+  "19": "La tierra es terriblemente sacudida, la tierra se tambalea terriblemente de un lado a otro, la tierra es del todo quebrantada.",
+  "20": "La tierra es del todo derribada como un borracho, se bambolea como un lecho: y sus pecados pesan sobre ella; caerá, y no volverá a levantarse.",
+  "21": "Y sucederá en aquel tiempo que el Señor castigará a la hueste poderosa que mora en el poder, y a los reyes, hijos de los hombres, que moran sobre la tierra.",
+  "22": "Y serán reunidos del todo para la prisión, y quedarán encerrados en la mazmorra, y después de muchos días serán recordados.",
+  "23": "Y quedarán confundidos los que adoran a la luna, y se avergonzarán los que adoran al sol; porque el poder del Señor de los ejércitos será revelado en el monte Sion, y delante de los ancianos de su pueblo en gloria."
+ }
+}

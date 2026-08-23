@@ -1,0 +1,32 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Dos pasajes de este capítulo interesan especialmente. El v. 14: donde el hebreo dice que la iniquidad no será perdonada «hasta que mueran», el targum dice «hasta que mueran la SEGUNDA MUERTE» —la expresión que reaparece en Apocalipsis 20:6, 14 y 21:8, y que aquí muestra que era corriente en el judaísmo de la sinagoga. Y el v. 22: la llave que se pone en la mano de Eliaquim no es solo «la llave de la casa de David», sino «la llave de la CASA DEL SANTUARIO y el gobierno de la casa de David», que es el trasfondo de Apocalipsis 3:7. El resto sigue el hebreo de cerca; en el v. 5 se identifica a la ciudad del valle como aquella «contra la cual profetizaron los profetas», y en el v. 12 no es el Señor quien llama al llanto, sino «el profeta del Señor», una de las muchas mediaciones de esta versión. En el v. 5 el inglés de Pauli está defectuoso —dice «Thy search the houses» donde evidentemente ha de leerse «They»—; aquí se traduce el sentido obvio y se advierte, en lugar de reproducir un error de una sola letra que en español no se podría ni representar.",
+ "verses": {
+  "1": "Carga de la profecía acerca de la ciudad que habita en el valle, sobre la cual profetizaron los profetas. ¿Qué te pasa aquí, que todos ustedes se han subido a los terrados?",
+  "2": "A causa del tumulto de que está llena la ciudad celebrada, fortificada y alegre. Tus muertos no cayeron a espada, ni murieron en la batalla.",
+  "3": "Todos tus gobernantes han sido llevados fuera; de delante del arco entesado se fueron juntos al cautiverio: todos los que fueron hallados en ti han sido muertos; juntos huyeron lejos.",
+  "4": "Por eso dije: Apártense de mí, lloraré amargamente; no se empeñen en consolarme por la desolación de la congregación de mi pueblo.",
+  "5": "Porque es día de tumulto, y de ser pisoteados, y de matanza delante del Señor, el Dios de los ejércitos, contra la ciudad que habita en el valle, contra la cual profetizaron los profetas. Escudriñan las casas, rodean las torres que están en las cumbres de los montes.",
+  "6": "Y los elamitas han tomado las armas en el carro de un hombre, y con él van un par de jinetes, y en el muro cuelgan los escudos.",
+  "7": "Y sucederá que el más hermoso de tus valles se llenará de carros, y los jinetes se apostarán contra las puertas.",
+  "8": "Y él descubrirá la cubierta de Judá, y mirará en aquel tiempo las armas de la casa del tesoro del santuario.",
+  "9": "Y verán las brechas de la ciudad de David, porque son muchas; y juntarán al pueblo junto al estanque de abajo.",
+  "10": "Y contarán las casas de Jerusalén, y derribarán casas para fortificar el muro.",
+  "11": "Y harán un depósito entre los muros con el agua del estanque viejo; pero no han mirado al que lo hizo, ni tuvieron respeto al que lo formó desde antiguo.",
+  "12": "Y el profeta del Señor, el Dios, el Dios de los ejércitos, llamó en aquel día al llanto, y al luto, y a raparse la cabeza, y a ceñirse de cilicio;",
+  "13": "pero he aquí gozo y alegría; dicen: Matemos bueyes, degollemos ovejas, comamos carne, bebamos vino; comamos y bebamos, pues moriremos y no viviremos.",
+  "14": "Dijo el profeta: Con mis oídos oía cuando esto fue decretado de delante del Señor de los ejércitos, a saber: que esta iniquidad de ustedes no les será perdonada hasta que mueran la segunda muerte, dijo el Señor, el Dios, el Dios de los ejércitos.",
+  "15": "Así dijo el Señor, el Dios, el Dios de los ejércitos: Anda, ve a este gobernante, a Sebna, que está puesto sobre la casa,",
+  "16": "y le dirás: ¿Qué tienes tú aquí? ¿y a quién tienes tú aquí, que te has labrado aquí un lugar? ¡Se ha labrado en lo alto su lugar! ¡Ha puesto en la roca el sitio de su morada!",
+  "17": "He aquí que el Señor te arrojará con arrojamiento poderoso, y la confusión te cubrirá.",
+  "18": "Te quitará tu tiara, y los enemigos te cercarán como muro que rodea, y te llevarán cautivo a una tierra espaciosa; allí morirás, y allá volverán con deshonra los carros de tu gloria, porque no guardaste la honra de la casa de tu señor.",
+  "19": "Y te derribaré de tu puesto, y te despojaré de tu oficio.",
+  "20": "Y sucederá en aquel tiempo que engrandeceré a mi siervo Eliaquim, hijo de Hilcías.",
+  "21": "Y lo vestiré con tu manto, y con tu cinto lo ceñiré, y pondré tu gobierno en su mano, y será príncipe para los habitantes de Jerusalén y para la casa de Judá.",
+  "22": "Y pondré la llave de la casa del santuario y el gobierno de la casa de David en su mano; y él abrirá, y nadie cerrará; y cerrará, y nadie abrirá.",
+  "23": "Y lo constituiré jefe fiel de gobierno, oficial en lugar firme, y será trono de gloria para la casa de su padre.",
+  "24": "Todos los nobles de la casa de su padre descansarán sobre él, hijos e hijos de los hijos, desde los jóvenes hasta los pequeños, desde los sacerdotes vestidos del efod hasta los levitas que tañen las liras.",
+  "25": "En aquel tiempo, dice el Señor de los ejércitos, será quitado el jefe fiel de gobierno, que servía en lugar firme, y será cortado, y caerá; y se cumplirá la carga de profecía que fue acerca de él; porque así lo ha decretado la PALABRA del Señor."
+ }
+}
