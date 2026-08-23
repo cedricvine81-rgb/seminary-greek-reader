@@ -1,0 +1,25 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Éxodo, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Bezaleel y el sábado. El v. 3 traduce «espíritu de Dios» por «el ESPÍRITU DE SANTIDAD de delante del Señor», y el v. 6 añade que Dios puso el espíritu de sabiduría también en el corazón de todos los hábiles —el arte del santuario es carisma, no oficio. Los vv. 13-17 dan al sábado su forma rabínica: es señal «entre mi PALABRA (Memrá) y ustedes», la profanación se castiga con lapidación (v. 15), y el v. 16 traduce el «guardar el sábado» por «practicar los ejercicios deleitosos del sábado», el ʿoneg shabbat. Y el v. 18 dice de qué eran las tablas: PIEDRA DE ZAFIRO DEL TRONO DE GLORIA, de cuarenta seín de peso —el mismo material y el mismo peso que la vara de Moisés (4:20).",
+ "verses": {
+  "1": "Y el Señor habló con Moisés, diciendo:",
+  "2": "Mira, Moisés: he llamado por nombre al buen Bezaleel, bar Uri bar Hur, de la tribu de Judá,",
+  "3": "y lo he llenado del Espíritu de santidad de delante del Señor, en sabiduría, y en inteligencia, y en conocimiento, y en toda clase de obra;",
+  "4": "para pensar en sus pensamientos de modo que obre con perfección en oro, y en plata, y en bronce;",
+  "5": "y en el tallado de piedras preciosas para engastarlas, y en la talla de maderas, para hacer toda clase de obra.",
+  "6": "Y he aquí que he puesto con él a Aholiab bar Ahisamac, de la tribu de Dan; y en el corazón de todo hábil de corazón he añadido el Espíritu de sabiduría, para que hagan todo lo que te he mandado:",
+  "7": "el tabernáculo de la ordenanza, y el arca del testimonio, y el propiciatorio que está sobre ella, y todos los utensilios del tabernáculo;",
+  "8": "y la mesa y todos sus utensilios; y el altar del incienso aromático,",
+  "9": "y el altar del holocausto y todos sus utensilios; y la fuente y su base;",
+  "10": "y las vestiduras para el ministerio, las vestiduras santas de Aarón el sacerdote, y las vestiduras de sus hijos para el ministerio;",
+  "11": "y el aceite de la unción, y el incienso aromático para el santuario; todo lo que te he mandado, lo harán.",
+  "12": "Y el Señor habló con Moisés, diciendo:",
+  "13": "Y tú habla con los hijos de Israel, diciendo: Guardarán ciertamente el día de mis sábados; porque es señal entre mi Palabra y ustedes, para que sepan que yo soy el Señor que los santifica.",
+  "14": "Guardarán el sábado, porque es santo para ustedes; el que lo profane, muriendo morirá; el que haga obra en él, aquel hombre será destruido de su pueblo.",
+  "15": "Seis días harán obra, pero el séptimo día es sábado, el santo sábado delante del Señor. El que haga obra en sábado, muriendo morirá, apedreado con piedras.",
+  "16": "Guardarán, pues, los hijos de Israel el sábado, para practicar los ejercicios deleitosos del sábado; es para sus generaciones estatuto perpetuo;",
+  "17": "entre mi Palabra y los hijos de Israel es señal para siempre. Porque en seis días creó y perfeccionó el Señor los cielos y la tierra, y en el séptimo día reposó y tomó respiro.",
+  "18": "Y dio a Moisés, cuando hubo acabado de hablar con él en el monte Sinaí, las dos tablas del testimonio: tablas de piedra de zafiro del trono de gloria, de cuarenta seín de peso, inscritas por el dedo del Señor."
+ }
+}
