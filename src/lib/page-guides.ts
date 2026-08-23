@@ -335,7 +335,7 @@ export const PAGE_GUIDES: PageGuide[] = [
         },
         {
           heading: 'Drawing your own diagram',
-          body: 'Switch the toggle at the top left to Diagram and each sentence becomes a canvas: drag the Hebrew words wherever your analysis puts them, and use the line tool to mark the connections. Your layout is saved as you work and comes back next time you open the passage.',
+          body: 'Switch the toggle at the top left to Diagram and each sentence becomes a canvas: drag the Hebrew words wherever your analysis puts them, and use the line tool to mark the connections. Drag a box around several words (or shift-click them) to move them as a group, and click a drawn line to move it or reshape it by its endpoints. Your layout is saved as you work and comes back next time you open the passage.',
         },
       ],
     },
@@ -352,7 +352,7 @@ export const PAGE_GUIDES: PageGuide[] = [
       },
       {
         heading: 'Drawing your own diagram',
-        body: 'Switch the toggle at the top left to Diagram and each sentence becomes a canvas: drag the Greek words wherever your analysis puts them, and use the line tool to mark the phrasing. Your layout is saved as you work and comes back next time you open the passage.',
+        body: 'Switch the toggle at the top left to Diagram and each sentence becomes a canvas: drag the Greek words wherever your analysis puts them, and use the line tool to mark the phrasing. Drag a box around several words (or shift-click them) to move them as a group, and click a drawn line to move it or reshape it by its endpoints. Your layout is saved as you work and comes back next time you open the passage.',
       },
     ],
   },
