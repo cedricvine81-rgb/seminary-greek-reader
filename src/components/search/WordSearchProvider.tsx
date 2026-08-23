@@ -8,7 +8,10 @@ import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import type { BgLang } from '@/lib/backgrounds-search-types'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
+import { hasOurSpanish } from '@/lib/spanish-texts'
+import { textCategoryLabel } from '@/lib/i18n/text-names'
 
 // Mounted once in the root layout. Renders the shared "search this word" popover — the search
 // half of the Reader's right-click menu (no syntax) — and opens it via openWordSearch(). Every
@@ -16,6 +19,14 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 
 // Language NAMES translate; the BSB keeps the plain "English" label this menu has always
 // shown for it (the edition title belongs to the reading-language picker, not here).
+// Which collections our Spanish actually covers. DERIVED from the catalogue, never written by
+// hand: the note under the Spanish search options is a factual claim about coverage, and every
+// time a new collection was translated the hand-written list ("the Apocrypha and Josephus")
+// became a little more wrong without anything failing.
+const ES_COLLECTION_IDS = TEXT_CATEGORIES
+  .filter(c => c.works.some(w => hasOurSpanish(w.id, w.osisId)))
+  .map(c => ({ id: c.id, english: c.label }))
+
 const TRANS_LABEL_KEY: Record<string, string> = {
   en: 'lang.en', bsb: 'lang.en', es: 'lang.es', fr: 'lang.fr',
   pt: 'lang.pt', ru: 'lang.ru', ko: 'lang.ko', zh: 'lang.zh',
@@ -23,6 +34,8 @@ const TRANS_LABEL_KEY: Record<string, string> = {
 
 export function WordSearchProvider() {
   const t = useT()
+  const locale = useLocale()
+  const esCollections = ES_COLLECTION_IDS.map(c => textCategoryLabel(c.id, locale, c.english)).join(', ')
   const [menu, setMenu] = useState<WordSearchPayload | null>(null)
   const [scope, setScope] = useState<'GNT' | 'LXX'>('GNT')
   const [copied, setCopied] = useState<string | null>(null)
@@ -158,7 +171,7 @@ export function WordSearchProvider() {
               {t('ws.allLibraryTexts')} <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
             {bgFacet === 'es' && (
-              <p className="px-0.5 text-[10px] leading-snug text-gray-400">{t('ws.spanishOursNote')}</p>
+              <p className="px-0.5 text-[10px] leading-snug text-gray-400">{t('ws.spanishOursNote', { collections: esCollections })}</p>
             )}
           </>
         ) : (
@@ -178,7 +191,7 @@ export function WordSearchProvider() {
               {t('ws.allLibraryTexts')} <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
             {bgFacet === 'es' && (
-              <p className="px-0.5 text-[10px] leading-snug text-gray-400">{t('ws.spanishOursNote')}</p>
+              <p className="px-0.5 text-[10px] leading-snug text-gray-400">{t('ws.spanishOursNote', { collections: esCollections })}</p>
             )}
           </>
         )}

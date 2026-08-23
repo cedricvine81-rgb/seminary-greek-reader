@@ -1362,7 +1362,10 @@ const en: Catalogue = {
   'ws.allLibraryTexts': 'All library texts',
   // Shown when the word came from one of our own Spanish columns: the Spanish facet of the
   // library index covers only the works we translated, so a miss is not evidence of absence.
-  'ws.spanishOursNote': 'Searching our own Spanish — the Apocrypha and Josephus. The rest of the library has no Spanish.',
+  // {collections} is DERIVED from the catalogue in WordSearchProvider — do not hard-code the
+  // list back into this string, which is how it came to claim "the Apocrypha and Josephus"
+  // long after Philo, the Pseudepigrapha and the Targums had been translated too.
+  'ws.spanishOursNote': 'Searching our own Spanish — {collections}. The rest of the library has no Spanish.',
   'ws.thisTranslation': 'this translation',
   'ws.copiedWhat': 'copied {what}',
   // ── Annotations on the Grammar chapters (drag to highlight, write a margin note) ──
@@ -3962,7 +3965,7 @@ const es: Catalogue = {
   'ws.thisBook': 'Este libro',
   'ws.wholeBible': 'Toda la Biblia',
   'ws.allLibraryTexts': 'Todos los textos de la biblioteca',
-  'ws.spanishOursNote': 'Se busca en nuestra propia traducción al español: los apócrifos y Josefo. El resto de la biblioteca no tiene español.',
+  'ws.spanishOursNote': 'Se busca en nuestra propia traducción al español: {collections}. El resto de la biblioteca no tiene español.',
   'ws.thisTranslation': 'esta traducción',
   'ws.copiedWhat': 'se copió: {what}',
   // ── Anotaciones en los capítulos de gramática ──
