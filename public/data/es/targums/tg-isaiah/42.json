@@ -1,0 +1,32 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El primero de los «cantos del Siervo», y el targum lo abre nombrando al Siervo: «he aquí mi siervo, EL MESÍAS» (v. 1). Conviene compararlo con Mateo 12:18-21, que cita este mismo pasaje aplicándolo a Jesús: la identificación mesiánica del Siervo aquí es judía y anterior, y solo se discute quién es ese Mesías. Nótese también la manera de decirlo: no «he puesto mi espíritu sobre él» sin más, sino «en cuanto a mi Palabra (Memrá), pondré mi ESPÍRITU SANTO sobre él». En los vv. 3 y 7 el targum descifra las metáforas: la caña cascada son «los mansos», el pábilo humeante «los pobres», y los ojos ciegos que se abren son los de la casa de Israel, «CIEGOS PARA LA LEY» (compárese 35:5). En los vv. 18-19 el reproche se vuelve oferta: si los malvados se arrepienten, «serán llamados siervos del Señor». Y el v. 21, que en hebreo dice que el Señor quiso engrandecer la ley, aquí dice que se complace en JUSTIFICAR a Israel. En el v. 2 el inglés lleva una comilla de cierre que no abre nada: defecto del impreso, se conserva; los paréntesis de los vv. 18-19 son del propio Pauli.",
+ "verses": {
+  "1": "He aquí mi siervo, el Mesías, a quien yo traigo, mi escogido en quien se complace el alma: en cuanto a mi Palabra, pondré mi Espíritu Santo sobre él; él revelará mi juicio a las naciones.",
+  "2": "No gritará ni levantará clamor, ni hará oír su voz en la calle.”",
+  "3": "A los mansos, que son como caña cascada, no los quebrará; y a los pobres, que están junto a él como pábilo que apenas alumbra, no los apagará: sacará el juicio a verdad.",
+  "4": "No desfallecerá ni se cansará hasta que haya establecido el juicio en la tierra; y las islas esperarán su ley.",
+  "5": "Así dice el Dios de la eternidad, el que creó los cielos y los suspendió, el que fundó la tierra y dio aliento a sus habitantes, al pueblo que hay sobre ella, y espíritu a los que andan en ella:",
+  "6": "Yo, el Señor, te haré crecer en verdad, y te tomaré de la mano, y te guiaré, y te pondré por pacto del pueblo, por luz de las naciones;",
+  "7": "para abrir los ojos de la casa de Israel, que están ciegos para la ley; para hacer volver su cautividad de entre las naciones, donde están como presos; y para redimirlos de la servidumbre de los reinos, encerrados como los que están atados en tinieblas.",
+  "8": "Yo soy el Señor: ese es mi nombre; y mi gloria, en la cual me revelo a ustedes, no la daré a otro pueblo, ni mi alabanza a los adoradores de imágenes.",
+  "9": "He aquí que las cosas primeras se han cumplido, y cosas nuevas anuncio yo: se las hago saber antes que sucedan.",
+  "10": "Canten al Señor un cántico nuevo, proclamen su alabanza desde los confines de la tierra, los que descienden al mar y su plenitud; las islas y sus habitantes.",
+  "11": "Alábelo el desierto, y las ciudades que hay en él, las aldeas que habitan el desierto de los árabes; alábenlo los muertos, cuando salgan de sus largas moradas; desde las cumbres de los montes alcen su voz.",
+  "12": "Den gloria al Señor y anuncien su alabanza en las islas.",
+  "13": "El Señor será visto haciendo obras poderosas: se revelará con ira para hacer una obra poderosa por la palabra de su furor; se revelará a sus enemigos con su poder en un terremoto.",
+  "14": "Les he dado prórroga por largo tiempo, por si volvían a mi ley; pero no volvieron. Mi juicio se revelará sobre ellos como los dolores sobre la mujer que da a luz; serán destruidos y llegarán juntos a su fin.",
+  "15": "Asolaré montes y colinas, y secaré todas sus hierbas; y convertiré los ríos en islas, y secaré los estanques.",
+  "16": "Y guiaré a la casa de Israel, que son como ciegos, por un camino que no conocieron; por sendas que no han aprendido los guiaré; convertiré delante de ellos las tinieblas en luz, y lo escabroso en llanura. Estas cosas haré por ellos, y no los abandonaré.",
+  "17": "Serán vueltos atrás, quedarán avergonzados los que adoran imágenes, los que dicen a las imágenes fundidas: Ustedes son nuestros dioses.",
+  "18": "Malvados (que son como sordos), ¿no tienen oídos? ¡Oigan! Y pecadores (que son como ciegos), ¿no tienen ojos?",
+  "19": "¿No es así? Si los malvados y los pecadores, a quienes he enviado mis profetas, se arrepienten, serán llamados mis siervos; pero a los malvados se les pagará con venganza por sus pecados; y sin embargo, si se arrepienten, serán llamados los siervos del Señor.",
+  "20": "Ven muchas cosas, pero no las observan; tienen los oídos abiertos, pero no reciben instrucción.",
+  "21": "El Señor se complace en justificar a Israel; engrandecerá a los que obedecen su ley, sí, los fortalecerá.",
+  "22": "Pero este es un pueblo robado y saqueado, y todos sus jóvenes están cubiertos de confusión y encerrados en cárceles: son presa, y no hay quien los libre; despojo, y nadie dice: Restituye.",
+  "23": "¿Quién hay entre ustedes que escuche esto? ¿quién atenderá y considerará para el tiempo por venir?",
+  "24": "¿Quién entregó a Jacob por despojo y a Israel a los saqueadores? ¿No fue el Señor? Porque pecaron contra Él; y no quisieron andar en sus sendas rectas delante de Él, ni quisieron recibir la instrucción de su ley.",
+  "25": "Por eso derramó sobre ellos el furor de su ira, y trajo sobre ellos la fuerza de sus guerreros, y los mató en derredor, y ellos no lo supieron; y se enseñorearon de ellos, y no pusieron su temor en el corazón."
+ }
+}
