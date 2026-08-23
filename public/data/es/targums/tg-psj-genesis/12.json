@@ -1,0 +1,27 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Génesis, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "El llamamiento de Abram. El v. 3 hace algo muy propio de este targum: en lugar de dejar en general el «bendeciré a los que te bendigan y maldeciré a los que te maldigan», pone nombres —los que bendicen son LOS SACERDOTES que extienden las manos en la bendición sacerdotal, y el que maldice es BALAAM, que morirá a espada (Números 31:8)—, de modo que la promesa se lee ya con toda la historia posterior dentro. El v. 5 traduce «las almas que habían adquirido en Harán» como «las almas que habían HECHO PROSÉLITAS», lectura clásica que convierte a Abram y Sara en los primeros misioneros. Y el v. 11 explica cómo es que Abram descubre la hermosura de Sara justo entonces: al vadear el río tuvieron que descubrirse, «hasta ahora no había visto yo tu carne» —el targum ofrece un motivo de pudor conyugal donde el hebreo no da ninguno. En el v. 17 quien envía las plagas no es el Señor sino «la PALABRA (Memrá) del Señor», y en el v. 7 y el v. 8 Dios no «se aparece»: «se revela».",
+ "verses": {
+  "1": "Y dijo el Señor a Abram: Vete de tu tierra; apártate de tu parentela; sal de la casa de tu padre; ve a la tierra que yo te mostraré.",
+  "2": "Y haré de ti un pueblo grande, y te bendeciré, y engrandeceré tu nombre, y serás bendito.",
+  "3": "Y bendeciré a los sacerdotes que extiendan sus manos en oración y bendigan a tus hijos; y a Balaam, que los maldecirá, lo maldeciré, y lo matarán a filo de espada; y en ti serán benditas todas las generaciones de la tierra.",
+  "4": "Y fue Abram conforme a lo que el Señor le había hablado, y fue Lot con él. Y era Abram hijo de setenta y cinco años cuando salió de Harán.",
+  "5": "Y tomó Abram a Sara su mujer, y a Lot hijo de su hermano, y toda la hacienda que habían adquirido, y las almas que habían hecho prosélitas en Harán, y salieron para ir a la tierra de Canaán. Y llegaron a la tierra de Canaán.",
+  "6": "Y pasó Abram por la tierra hasta el lugar de Siquem, hasta la llanura que le había sido mostrada. Y los cananeos estaban entonces en la tierra, porque aún no había llegado el tiempo de que los hijos de Israel la poseyeran.",
+  "7": "Y se reveló el Señor a Abram, y dijo: A tus hijos daré esta tierra. Y edificó allí un altar delante del Señor, que se le había revelado.",
+  "8": "Y se pasó de allí a un monte que estaba al oriente de Betel, y extendió su tienda, quedando Betel al occidente y Hai al oriente; y edificó allí un altar delante del Señor, y oró en el Nombre del Señor.",
+  "9": "Y se trasladó Abram, yendo y trasladándose hacia el sur.",
+  "10": "Y hubo hambre en la tierra, y descendió Abram a Mizraim para morar allí, porque el hambre era fuerte en la tierra.",
+  "11": "Y sucedió que, al acercarse a entrar en el término de Mizraim, y habiendo llegado al río, y descubriéndose la carne para pasarlo, dijo Abram a Sara su mujer: He aquí que hasta ahora no había visto yo tu carne; pero ahora sé que eres mujer de hermoso aspecto.",
+  "12": "Sucederá, pues, que cuando te vean los mizraítas y contemplen tu hermosura, dirán: Esta es su mujer; y me matarán a mí, y a ti te conservarán la vida.",
+  "13": "Di, te ruego, que eres mi hermana, para que me vaya bien por causa tuya y se me conserve la vida gracias a ti.",
+  "14": "Y sucedió que, cuando Abram entró en Mizraim, los mizraítas vieron que la mujer era muy hermosa;",
+  "15": "y la vieron los príncipes de Faraón, y la alabaron delante de Faraón; y la mujer fue llevada a la casa real de Faraón.",
+  "16": "Y Faraón hizo bien a Abram por causa de ella; y tuvo ovejas, y bueyes, y asnos, y siervos, y siervas, y asnas, y camellos.",
+  "17": "Y la Palabra del Señor envió grandes plagas contra Faraón y contra los hombres de su casa, por causa de Sara, mujer de Abram.",
+  "18": "Y llamó Faraón a Abram, y dijo: ¿Qué es esto que me has hecho? ¿Por qué no me mostraste que era tu mujer?",
+  "19": "¿Por qué dijiste: Es mi hermana? Cuando quise tomarla por mujer, al instante fueron enviadas plagas contra mí, y no me llegué a ella. Y ahora, he aquí tu mujer: tómala y vete.",
+  "20": "Y Faraón dio órdenes acerca de él a unos hombres, y lo despidieron a él, y a su mujer, y a todo lo que tenía."
+ }
+}
