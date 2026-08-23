@@ -29,6 +29,14 @@ CROSSREFS = Path('public/data/backgrounds-crossrefs.json')
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Safari/605.1'
 PAULI = 'Text: C. W. H. Pauli’s translation of the Targum on Isaiah (“The Chaldee Paraphrase”, 1871), public domain. Source: Sefaria (sefaria.org).'
 ETHERIDGE = 'Text: J. W. Etheridge’s translation of Targum Pseudo-Jonathan (1862), public domain. Source: Sefaria (sefaria.org).'
+# ⚠ ONE VERSE IS NOT ETHERIDGE. The un-pinned /api/texts/ endpoint returns Sefaria's DEFAULT
+# text, and where the default version has a hole Sefaria fills it from another version and
+# returns versionTitle=None for the whole book. That happens once: Numbers 1:45, which comes
+# from "Sefaria Community Translation" (CC0), not from Etheridge — whose own segment there is
+# empty. It is written in Etheridge's idiom ("Beni Israel"), which is why it reads seamlessly.
+# No licence problem (CC0), but the attribution above is inaccurate for that one verse.
+# Pinning the version (&ven=...) would make the corpus purely Etheridge at the cost of turning
+# Num 1:45 into a 27th numbered hole. Left as-is pending a decision; do not "fix" silently.
 
 # slug, display name, noteBook, Sefaria index, citation abbreviation, attribution.
 TARGUMS = [
@@ -63,7 +71,15 @@ def clean(s: str) -> str:
     # What's left in angle brackets is Etheridge's Aramaic transliteration glosses
     # (e.g. "the Word <mymr'>") — keep them, in parentheses, rather than as stray tags.
     s = re.sub(r'<\s*([^<>]+?)\s*>', r'(\1)', s)
-    return re.sub(r'\s+', ' ', s).strip()
+    s = re.sub(r'\s+', ' ', s).strip()
+    # Sefaria's text drifts: at some point after this corpus was first built it acquired
+    # French-style spaces before punctuation ("What is that in thy hand ?"), which re-running
+    # the build would otherwise have introduced into 22 verses across four of the six works.
+    # Etheridge does not set punctuation that way and the committed corpus has none of it, so
+    # normalising here is what keeps a rebuild byte-identical instead of silently churning.
+    # The full stop is deliberately NOT in this class: Lev 24:4 is Etheridge's lacuna ". . ."
+    # and collapsing it to "..." would destroy the one thing that verse carries.
+    return re.sub(r'\s+([?!,;:])', r'\1', s)
 
 
 def build_work(slug, name, note_book, index, abbrev, attribution, no_cache):
@@ -74,6 +90,12 @@ def build_work(slug, name, note_book, index, abbrev, attribution, no_cache):
         out = []
         for vi, v in enumerate(verses, start=1):
             t = clean(v) if isinstance(v, str) else ''
+            # The verse NUMBER is the array index, so dropping an empty segment leaves a
+            # numbered hole rather than shifting everything up — which is right, because the
+            # numbering is how the targum is cited. But the hole is otherwise INVISIBLE, so
+            # report_gaps() below prints them: 26 such holes exist in Pseudo-Jonathan, and it
+            # took a page-by-page collation of the printed edition to establish they are not
+            # our bug. See the note above report_gaps().
             if t:
                 out.append({'number': vi, 'text': t})
         if out:
@@ -122,6 +144,53 @@ def validate(results):
         print(f'   MISS  {text:34s} -> {why}')
 
 
+# ── Gap report ────────────────────────────────────────────────────────────────────────────
+# Two kinds of hole exist in this corpus, and BOTH were invisible until they were looked for.
+# Neither is a bug in this script; both are in the source, and they are reported rather than
+# mended so that nobody re-diagnoses them from scratch.
+#
+# 1. NUMBERED HOLES — a verse Sefaria carries as an empty string. There are 26, all in
+#    Pseudo-Jonathan (Gen 5:5-7, 6:15, 10:23, 24:28, 26:30, 39:18, 41:49, 44:30-31; Exod 4:8,
+#    7:5, 12:43-44, 25:28, 27:15, 37:23, 39:27-29; Lev 13:52; Num 2:12, 3:2, 36:8-9). These
+#    were collated against Etheridge's PRINTED 1862 edition on archive.org
+#    (targumsonkelosa00ethegoog = Genesis+Exodus, cu31924074296975 = Lev/Num/Deut), reading
+#    only the "Targum of Palestine" half of each volume — the volumes print Onkelos first and
+#    Palestine second, and Onkelos IS complete, so searching a whole volume finds Onkelos and
+#    would corrupt this corpus with a different targum. Result: all 26 are absent from the
+#    printed Pseudo-Jonathan too. At Num 36:8-9 Etheridge says so himself, in the text:
+#    "(Verses 9 and 10 are wanting.)" At Gen 5:5 and Gen 39:18 he prints a bracketed reading
+#    from the JERUSALEM (Fragment) targum instead — a different targum, deliberately NOT
+#    folded in here. So there is nothing to backfill and the corpus is left alone.
+#
+# 2. CONTENT-FREE VERSES — segments that survive the `if t:` filter because their text is a
+#    placeholder rather than empty: 54 verses in Num 7 whose whole text is "_", and Lev 24:4
+#    (". . ."). Num 7 is Etheridge's own abridgement of the twelve identical princely
+#    offerings; his footnote reads "The oblation of each of the twelve princes was precisely
+#    the same. I have therefore omitted the details after the first... The Targumist abridges
+#    here, also." A further 19 verses carry an inline "_" marking the same kind of elision.
+#    These ARE served to readers as verses; treat the count as a regression signal.
+def report_gaps(results):
+    print('\nGaps (reported, never mended — see the note above report_gaps):')
+    for r in results:
+        holes, blank, marked = [], [], []
+        for c in r['doc']['chapters']:
+            nums = [int(v['number']) for v in c['verses']]
+            for n in sorted(set(range(min(nums), max(nums) + 1)) - set(nums)):
+                holes.append(f"{c['number']}:{n}")
+            for v in c['verses']:
+                if not re.search(r'[A-Za-z]{2,}', v['text']):
+                    blank.append(f"{c['number']}:{v['number']}")
+                elif '_' in v['text']:
+                    marked.append(f"{c['number']}:{v['number']}")
+        print(f"   {r['slug']:22s} numbered-holes={len(holes):3d}  content-free={len(blank):3d}  "
+              f"elision-marked={len(marked):3d}")
+        if holes:
+            print(f"      holes: {', '.join(holes)}")
+        if blank:
+            print(f"      content-free: {', '.join(blank[:8])}"
+                  + (f" … (+{len(blank) - 8} more)" if len(blank) > 8 else ''))
+
+
 def main():
     no_cache = '--no-cache' in sys.argv
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -131,6 +200,7 @@ def main():
         results.append(r)
         print(f'{slug:22s} chapters={r["chapters"]:3d} (max {r["maxch"]:3d}) verses={r["verses"]:5d}')
     validate(results)
+    report_gaps(results)
 
 
 if __name__ == '__main__':
