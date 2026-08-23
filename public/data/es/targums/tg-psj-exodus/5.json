@@ -1,0 +1,30 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Éxodo, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "La primera entrevista con Faraón. El v. 2 da a su desafío una forma que el hebreo no tiene: no dice solo «no conozco al Señor», sino «no he hallado escrito en EL LIBRO DE LOS ÁNGELES el nombre del Señor» —es decir, consultó sus listas de dioses y no lo encontró, y por eso no le teme. El targum convierte así la incredulidad de Faraón en un acto de erudición pagana fallida. El v. 3 precisa el motivo de la petición: «para que no nos sobrevengan muerte y matanza», que es como el targum entiende la plaga que amenaza a Israel si no sacrifica. Y el v. 21 pone en boca de los capataces una distinción jurídica fina: «nuestra aflicción está manifiesta delante del Señor, pero nuestro castigo viene de ustedes».",
+ "verses": {
+  "1": "Y después de esto entraron Moisés y Aarón a Faraón, y dijeron: Así dice el Señor, el Dios de Israel: Deja ir a mi pueblo, para que me celebren una fiesta en el desierto.",
+  "2": "Y dijo Faraón: El nombre del Señor no me es conocido, para que reciba su palabra de dejar ir a Israel. No he hallado escrito en el Libro de los Ángeles el nombre del Señor. De él no tengo miedo, ni dejaré ir a Israel.",
+  "3": "Y ellos dijeron: El Nombre del Dios de los hebreos es invocado sobre nosotros. Iremos, pues, camino de tres días al desierto, y ofreceremos los sacrificios de una fiesta delante del Señor Dios, para que no nos sobrevengan muerte y matanza.",
+  "4": "Y el rey de Mizraim dijo a Moisés y a Aarón: ¿Por qué hacen cesar al pueblo de sus labores? Vayan a su trabajo.",
+  "5": "Y dijo Faraón: He aquí que este pueblo de la tierra es numeroso, y ustedes lo quieren detener de su servicio.",
+  "6": "Y mandó Faraón aquel día a los capataces del pueblo y a sus exactores, diciendo:",
+  "7": "No darán más paja al pueblo para hacer ladrillos, como hasta ahora; vayan ellos y recojan paja para sí;",
+  "8": "pero les impondrán el mismo número de ladrillos que hacían hasta ahora, y no lo disminuirán; porque están ociosos, y por eso claman diciendo: Vamos a ofrecer el sacrificio de una fiesta delante de nuestro Dios.",
+  "9": "Hagan pesado el trabajo sobre esos hombres, para que se ocupen en él y no pongan sus esperanzas en palabras mentirosas.",
+  "10": "Y salieron los capataces y los exactores del pueblo, y dijeron al pueblo: Así dice Faraón: No les daré paja;",
+  "11": "vayan ustedes y tomen paja donde la puedan hallar; porque su trabajo no será disminuido en nada.",
+  "12": "Y se esparció el pueblo por toda la tierra de Mizraim para recoger rastrojo en lugar de paja.",
+  "13": "Y los capataces los apremiaban, diciendo: Cumplan su trabajo día por día, como lo hacían cuando se les daba la paja.",
+  "14": "Y los exactores que Faraón había puesto sobre ellos como capataces golpeaban a los hijos de Israel, diciendo: ¿Por qué no han cumplido su tarea de hacer el mismo número de ladrillos que hasta ahora, hoy como ayer?",
+  "15": "Y vinieron los capataces y clamaron delante de Faraón, diciendo: ¿Por qué has tratado así a tus siervos?",
+  "16": "No has dado paja a tus siervos, y (sin embargo) nos dicen: Hagan los ladrillos; y he aquí que golpean a tus siervos, y el trato culpable de tu pueblo es fuerte, ¡pero sube al cielo!",
+  "17": "Pero él dijo: Están ociosos, ociosos; por eso dicen: Vamos y ofrezcamos el sacrificio de una fiesta delante de nuestro Dios.",
+  "18": "Y ahora, vayan y trabajen; pero no se les dará paja, y sin embargo entregarán el número de los ladrillos.",
+  "19": "Y vieron los capataces de los hijos de Israel que estaban en mal, al decírseles: No han de retener la tarea de sus ladrillos de un día para otro.",
+  "20": "Y se encontraron con Moisés y Aarón, que estaban delante de ellos cuando salieron de la presencia de Faraón,",
+  "21": "y les dijeron: Nuestra aflicción está manifiesta delante del Señor, pero nuestro castigo viene de ustedes, que han hecho odioso nuestro olor delante de Faraón y de sus siervos; porque ustedes han dado ocasión de que se les ponga una espada en la mano para matarnos.",
+  "22": "Y volvió Moisés delante del Señor, y dijo: Señor, ¿por qué has hecho mal a este pueblo, y para qué me has enviado?",
+  "23": "Desde la hora en que entré a Faraón para hablar en tu nombre, este pueblo ha padecido mal, y librando no lo has librado."
+ }
+}
