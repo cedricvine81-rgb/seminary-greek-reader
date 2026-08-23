@@ -1,0 +1,22 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Dos versículos capitales. El v. 7, «qué hermosos son los pies del que trae buenas nuevas», termina aquí —como en 40:9— con la fórmula «SE HA REVELADO EL REINO DE TU DIOS», donde el hebreo dice «tu Dios reina». Pablo cita este versículo en Romanos 10:15, y los evangelios usan constantemente esa fórmula del reino: es lengua de sinagoga. Y el v. 13 abre el cuarto canto del Siervo nombrándolo: «he aquí que mi siervo EL MESÍAS prosperará» —la identificación es explícita, y es la puerta por la que hay que entrar al capítulo 53 (véase la nota de allí). Nótese también el v. 8, donde los centinelas ven «cuando el Señor haga volver su SHEKINÁ a Sion», y el v. 14, donde el targum invierte el sujeto: el desfigurado no es el siervo, sino la casa de Israel, «pobre entre las naciones», que lo esperó muchos días.",
+ "verses": {
+  "1": "Revélate, revélate, vístete de tu fuerza, Sion; vístete tus vestiduras hermosas, Jerusalén, ciudad de santidad: porque nunca más pasará por ti el incircunciso ni el contaminado.",
+  "2": "Sacúdete del polvo; levántate y siéntate en el trono de gloria, Jerusalén; las cadenas de tu cuello están rotas, congregación cautiva de Sion.",
+  "3": "Porque así dice el Señor: De balde fueron vendidos, y sin dinero serán redimidos.",
+  "4": "Porque así dice el Señor Dios: Mi pueblo descendió antaño a Egipto para peregrinar allí; y el asirio los oprimió sin causa.",
+  "5": "Por eso ahora estoy pronto a redimirlos, dice el Señor; porque mi pueblo fue vendido de balde; las naciones que se enseñorearon de ellos se jactaron, dice el Señor; y de continuo, todo el día, los provocan a ira a causa del culto de mi nombre.",
+  "6": "Por eso mi nombre será engrandecido entre las naciones; por eso en aquel tiempo sabrán que yo soy el que ha hablado, y mi PALABRA permanecerá.",
+  "7": "¡Qué hermosos son sobre los montes de la tierra de Israel los pies del que trae buenas nuevas, del que publica la paz, del que publica la salvación, del que dice a la congregación de Sion: Se ha revelado el reino de tu Dios!",
+  "8": "¡La voz de tus gobernantes! Alzan la voz, juntos ofrecen alabanza; porque con sus ojos ven las obras poderosas que el Señor hará cuando haga volver su Shekiná a Sion.",
+  "9": "Alégrense y prorrumpan en gritos juntamente, lugares desolados de Jerusalén, porque el Señor consolará a su pueblo; Jerusalén será redimida.",
+  "10": "El Señor ha revelado su santo brazo a los ojos de todas las naciones; y todos los que están en los confines de la tierra verán la salvación de nuestro Dios.",
+  "11": "Apártense, apártense, salgan de allí, no se acerquen a lo inmundo; salgan de en medio de ella: los que llevan los utensilios de la casa del santuario del Señor han sido escogidos.",
+  "12": "Porque no saldrán con precipitación de entre las naciones, ni serán llevados en fuga a su tierra: porque su guía es el Señor, y el que reunirá su cautividad es el Dios de Israel.",
+  "13": "He aquí que mi siervo el Mesías prosperará; será exaltado y ensalzado, y será muy fuerte.",
+  "14": "Así como la casa de Israel lo esperó ansiosamente muchos días (ella, que era pobre entre las naciones; su aspecto y su brillo peores que los de los hijos de los hombres),",
+  "15": "así él dispersará a muchas naciones; ante él los reyes callarán: se pondrán la mano sobre la boca, porque verán lo que no se les había contado, y considerarán lo que no habían oído."
+ }
+}
