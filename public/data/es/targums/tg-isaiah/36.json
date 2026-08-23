@@ -1,0 +1,29 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Comienza la sección narrativa (36-39), casi idéntica a 2 Reyes 18-20, y aquí el targum apenas interviene: es historia, y no hay metáforas que descifrar. La única intervención sistemática es la de siempre, y en un lugar que resulta llamativo: el Rabsaces, el general asirio, habla de «la PALABRA (Memrá) del Señor» (vv. 7, 10, 15) —o sea, la reverencia targúmica se aplica incluso en boca de un pagano que blasfema. Nótese también que en el v. 12 no se suaviza nada: el insulto crudo sobre los sitiados se traduce como está, mientras que el texto hebreo tiene aquí una de las lecturas marginales que la tradición mandaba sustituir al leer en público. En el v. 5 hay un paréntesis del propio Pauli, que se conserva.",
+ "verses": {
+  "1": "Aconteció en el año catorce del rey Ezequías que Senaquerib, rey de Asiria, subió contra todas las ciudades fortificadas de la casa de Judá y las tomó.",
+  "2": "Y el rey de Asiria envió al Rabsaces desde Laquis a Jerusalén, al rey Ezequías, con un gran ejército. Y él se detuvo junto al acueducto del estanque de arriba, en el camino del campo de los bataneros.",
+  "3": "Entonces salieron a él Eliaquim, hijo de Hilcías, que estaba puesto sobre la casa, y Sebna el escriba, y Joa, hijo de Asaf, que estaba puesto sobre los registros.",
+  "4": "Y les dijo el Rabsaces: Digan ahora a Ezequías: Así dice nuestro gran rey, el rey de Asiria: ¿Qué confianza es esta en que confías?",
+  "5": "Yo digo (¿acaso hablas solo palabras vacías?): Yo hago la guerra con consejo y con poder. Ahora bien, ¿en quién confías, que te has rebelado contra mí?",
+  "6": "He aquí que confías en el apoyo de esta caña quebrada, en Faraón, rey de Egipto; sobre la cual, si un hombre se apoya, se le entrará por la mano y se la traspasará: así es Faraón, rey de Egipto, para todos los que confían en él.",
+  "7": "Pero si me dicen: Confiamos en la PALABRA del Señor nuestro Dios, ¿no es él aquel cuyos lugares altos y cuyos altares quitó Ezequías, y dijo a los hombres de Judá y a los habitantes de Jerusalén: Adorarán delante de este altar?",
+  "8": "Ahora pues, comprométete con mi señor el rey de Asiria, y te daré dos mil caballos, si es que puedes por tu parte poner jinetes sobre ellos.",
+  "9": "¿Y cómo esperas hacer retroceder el rostro de uno solo de los menores príncipes, siervos de mi señor? Y con todo confías en Egipto para tener carros y jinetes.",
+  "10": "¿Acaso he subido yo ahora sin la PALABRA del Señor contra esta tierra para destruirla? El Señor me dijo: Sube contra esta tierra y destrúyela.",
+  "11": "Entonces dijeron Eliaquim, Sebna y Joa al Rabsaces: Te rogamos que hables a tus siervos en lengua aramea, porque la entendemos; y no nos hables en lengua judía a oídos del pueblo que está sobre el muro.",
+  "12": "Pero el Rabsaces dijo: ¿Acaso me ha enviado mi señor a tu señor y a ti para decir estas palabras? ¿No me ha enviado a los hombres que están sentados sobre el muro, para que coman su propio excremento y beban su propia orina en el asedio con ustedes?",
+  "13": "Entonces el Rabsaces se puso de pie y clamó a gran voz en lengua judía, y dijo: Oigan las palabras de nuestro gran rey, el rey de Asiria.",
+  "14": "Así dice el rey: No los haga errar Ezequías, porque no podrá librarlos.",
+  "15": "Ni les haga Ezequías confiar en la PALABRA del Señor, diciendo: Ciertamente el Señor nos librará; esta ciudad no será entregada en mano del rey de Asiria.",
+  "16": "No escuchen a Ezequías, porque así dice el rey de Asiria: Hagan paz conmigo, y salgan a mí: y coma cada uno del fruto de su higuera, y beba cada uno de las aguas de su cisterna,",
+  "17": "hasta que yo venga y los lleve a una tierra buena como la de ustedes, tierra de grano y de vino, tierra de campos y de viñas.",
+  "18": "Cuídense de que Ezequías no los haga errar, diciendo: El Señor nos librará. ¿Acaso alguno de los dioses de las naciones libró su tierra de la mano del rey de Asiria?",
+  "19": "¿Dónde están los dioses de Hamat y de Arfad? ¿dónde están los dioses de Sefarvaim? ¿acaso libraron a Samaria de mi mano?",
+  "20": "¿Quiénes son, de entre todos los dioses de estas tierras, los que libraron su tierra de mi mano, para que el Señor libre a Jerusalén de mi mano?",
+  "21": "Pero ellos callaron y no le respondieron palabra, porque el mandato del rey era: No le respondan.",
+  "22": "Entonces vinieron a Ezequías, rasgadas sus vestiduras, Eliaquim hijo de Hilcías, que estaba puesto sobre la casa, y Sebna el escriba, y Joa hijo de Asaf, que estaba puesto sobre los registros, y le contaron las palabras del Rabsaces."
+ }
+}

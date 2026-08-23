@@ -1,0 +1,15 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum de Isaías en la traducción de C. W. H. Pauli, «The Chaldee Paraphrase on the Prophet Isaiah» (Londres, 1871), de dominio público.",
+ "_why": "El Targum de Isaías está en ARAMEO: es la paráfrasis sinagogal de Isaías que la tradición atribuye a Jonatán ben Uzziel, discípulo de Hilel, aunque el texto tal como lo tenemos se fijó bastante después. Esta aplicación NO muestra ese arameo: muestra el inglés que C. W. H. Pauli publicó en 1871, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego. Donde Pauli parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "Ocho versículos que hacen de bisagra: la embajada de Babilonia cierra la primera mitad del libro y anuncia el destierro, y todo lo que sigue (40-66) habla desde ese destierro y del regreso. El targum no interviene aquí en nada sustancial —es narración— y traduce el episodio tal cual. Nótese, eso sí, la frase final de Ezequías en el v. 8, que en hebreo suena tan ambigua como aquí: acepta la sentencia y se consuela con que a él no le tocará.",
+ "verses": {
+  "1": "En aquel tiempo Merodac-baladán, hijo de Baladán, rey de Babilonia, envió cartas y presentes a Ezequías, cuando oyó que había estado enfermo y se había repuesto.",
+  "2": "Y Ezequías se alegró con ellos, y les mostró la casa de sus tesoros, la plata y el oro, y las especias y el ungüento precioso, y toda la casa de sus enseres, y todo lo que se hallaba en su tesorería: y no hubo nada en su casa ni en todo su dominio que Ezequías no les mostrara.",
+  "3": "Entonces vino el profeta Isaías al rey Ezequías, y le dijo: ¿Qué dijeron estos hombres? ¿y de dónde vinieron a ti? Y dijo Ezequías: De tierra lejana han venido a mí, de Babilonia.",
+  "4": "Y él dijo: ¿Qué han visto en tu casa? Y respondió Ezequías: Todo lo que hay en mi casa han visto; no hay nada en mis tesoros que no les haya mostrado.",
+  "5": "Entonces dijo Isaías a Ezequías: Oye la palabra del Señor de los ejércitos:",
+  "6": "He aquí vienen días en que todo lo que hay en tu casa será llevado, y lo que tus padres han atesorado hasta hoy; sí, será llevado a Babilonia, y nada quedará, dice el Señor.",
+  "7": "Y de tus hijos que saldrán de ti, los habrá en el palacio del rey de Babilonia.",
+  "8": "Entonces dijo Ezequías a Isaías: Justa es la palabra del Señor que has hablado. Y dijo: Porque habrá paz y verdad en mis días."
+ }
+}
