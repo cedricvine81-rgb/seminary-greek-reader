@@ -105,6 +105,10 @@ export async function POST(req: NextRequest) {
   if (type === 'CONSTRUCT_SEARCH' && !constructLink) {
     return NextResponse.json({ error: 'A construct search link is required — copy it from the Construct search page.' }, { status: 400 })
   }
+  // A diagramming exercise is its passage — without one there is nothing to diagram.
+  if (type === 'DIAGRAM' && !reference?.trim()) {
+    return NextResponse.json({ error: 'A passage reference is required.' }, { status: 400 })
+  }
   if (round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
     return NextResponse.json({ error: 'Round 2 deadline must be after the Round 1 deadline.' }, { status: 400 })
   }

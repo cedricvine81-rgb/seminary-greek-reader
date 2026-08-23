@@ -18,7 +18,7 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 // still counting in the instructor's.
 const GROUPS = [
   'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
-  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH', 'DIAGRAM',
 ] as const
 
 export interface GradebookRow {

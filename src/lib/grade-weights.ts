@@ -3,7 +3,7 @@
 // Translation Exercises 30%, Translation Exam 30%); the overall grade is the
 // weighted average of the per-category averages. Weights are stored on the Course.
 
-export type GradeCategory = 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES' | 'GROUP_PRESENTATION' | 'CONSTRUCT_SEARCH'
+export type GradeCategory = 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES' | 'GROUP_PRESENTATION' | 'CONSTRUCT_SEARCH' | 'DIAGRAM'
 
 // Types only. Labels live in the shared assign.type.* / assign.typePlural.* namespace, so a
 // caller picks the number it needs instead of de-pluralizing a plural — GradeWeightEditor used
@@ -11,7 +11,7 @@ export type GradeCategory = 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION
 // written into the app and produces nothing at all in Spanish.
 export const GRADE_CATEGORIES: GradeCategory[] = [
   'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
-  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH', 'DIAGRAM',
 ]
 
 export type CategoryWeights = Partial<Record<GradeCategory, number>>

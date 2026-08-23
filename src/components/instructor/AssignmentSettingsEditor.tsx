@@ -73,6 +73,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   // Construct searches have no questions either — their "settings" are the search link
   // and the shape of the find-list.
   const isConstruct = assignmentType === 'CONSTRUCT_SEARCH'
+  // Diagramming exercises have no questions either — their setting is the passage.
+  const isDiagram = assignmentType === 'DIAGRAM'
   const construct = normalizeConstructConfig(initial.constructConfig)
 
   const [title, setTitle] = useState(initial.title)
@@ -126,7 +128,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [constructAskComment, setConstructAskComment] = useState(construct.askComment)
 
   async function handleSave() {
-    if ((isTranslation || isExam) && !reference.trim()) {
+    if ((isTranslation || isExam || isDiagram) && !reference.trim()) {
       setError(t('inst.b.err.passageRequired'))
       return
     }
@@ -156,7 +158,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             ? toEndOfDayLocalISO((round1Deadline || round2Deadline)?.slice(0, 10) || dueDate)
             : toDueISO(dueDate, dueTime),
           instructions,
-          reference: (isTranslation || isExam) ? reference : undefined,
+          reference: (isTranslation || isExam || isDiagram) ? reference : undefined,
           // The construct link is validated and normalised server-side, then stored as the reference.
           constructUrl: isConstruct ? reference : undefined,
           constructCount: isConstruct ? constructCount : undefined,
@@ -247,7 +249,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
   return (
     <Card>
-      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : isNotes ? 'Notes Settings' : isGroup ? 'Presentation Settings' : isConstruct ? 'Search Settings' : 'Quiz Settings'}</CardTitle>
+      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : isNotes ? 'Notes Settings' : isGroup ? 'Presentation Settings' : isConstruct ? 'Search Settings' : isDiagram ? 'Exercise Settings' : 'Quiz Settings'}</CardTitle>
       <div className="mt-5 space-y-5">
 
         <div className="grid grid-cols-2 gap-4">
@@ -510,6 +512,16 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             </>
             )}
           </div>
+        ) : isDiagram ? (
+          <div className="rounded-xl border border-brand-200 bg-brand-50 p-4">
+            <Input
+              label={t('inst.b.dg.passage')}
+              value={reference}
+              onChange={e => setReference(e.target.value)}
+              placeholder={t('inst.b.dg.passageExample')}
+            />
+            <p className="text-xs text-brand-600 mt-1">{t('inst.b.dg.desc')}</p>
+          </div>
         ) : isConstruct ? (
           <ConstructSearchFields
             url={reference}
@@ -615,7 +627,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           </div>
         )}
 
-        {!isTranslation && !isNotes && !isGroup && !isConstruct && (
+        {!isTranslation && !isNotes && !isGroup && !isConstruct && !isDiagram && (
           <Select
             label={t('inst.b.retakes')}
             value={maxRetakes === null ? '' : String(maxRetakes)}

@@ -311,6 +311,11 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       setError(t('inst.b.err.constructLink'))
       return
     }
+    // A diagramming exercise is its passage.
+    if (form.type === 'DIAGRAM' && !form.reference?.trim()) {
+      setError(t('inst.b.err.passageRequired'))
+      return
+    }
     if (form.round1Deadline && form.round2Deadline && new Date(form.round2Deadline) <= new Date(form.round1Deadline)) {
       setError(t('inst.b.err.roundOrder'))
       return
@@ -424,6 +429,20 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-2">
           <p className="text-sm font-semibold text-brand-800">👥 {t('inst.b.group.heading')}</p>
           <p className="text-xs text-brand-700">{t('inst.b.group.desc')}</p>
+        </div>
+      )}
+
+      {form.type === 'DIAGRAM' && (
+        <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
+          <p className="text-sm font-semibold text-brand-800">{t('inst.b.dg.heading')}</p>
+          <p className="text-xs text-brand-700">{t('inst.b.dg.desc')}</p>
+          <Input
+            label={t('inst.b.dg.passage')}
+            required
+            value={form.reference ?? ''}
+            onChange={e => set('reference', e.target.value)}
+            placeholder={t('inst.b.dg.passageExample')}
+          />
         </div>
       )}
 

@@ -26,6 +26,8 @@ export async function completedAssignmentIds(userId: string): Promise<Set<string
     SELECT "assignmentId" FROM "GroupContribution"  WHERE "userId" = ${userId} AND "submittedAt" IS NOT NULL
     UNION
     SELECT "assignmentId" FROM "ConstructSubmission" WHERE "userId" = ${userId} AND "submittedAt" IS NOT NULL
+    UNION
+    SELECT "assignmentId" FROM "DiagramSubmission"   WHERE "userId" = ${userId} AND "submittedAt" IS NOT NULL
   `
   return new Set(rows.map(r => r.id))
 }

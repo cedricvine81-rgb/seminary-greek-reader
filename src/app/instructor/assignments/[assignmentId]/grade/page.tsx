@@ -6,6 +6,7 @@ import { AssignmentResultsGrid } from '@/components/instructor/AssignmentResults
 import { CourseNotesGrader } from '@/components/instructor/CourseNotesGrader'
 import { GroupPresentationGrader } from '@/components/instructor/GroupPresentationGrader'
 import { ConstructSearchGrader } from '@/components/instructor/ConstructSearchGrader'
+import { DiagramGrader } from '@/components/instructor/DiagramGrader'
 import { GrammarHomeworkGrader } from '@/components/instructor/GrammarHomeworkGrader'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
@@ -49,6 +50,8 @@ export default async function GradeAssignmentPage({ params }: { params: { assign
           ? <CourseNotesGrader assignmentId={assignment.id} />
           : assignment.type === 'CONSTRUCT_SEARCH'
           ? <ConstructSearchGrader assignmentId={assignment.id} />
+          : assignment.type === 'DIAGRAM'
+          ? <DiagramGrader assignmentId={assignment.id} />
           : assignment.type === 'GROUP_PRESENTATION'
           ? <GroupPresentationGrader assignmentId={assignment.id} />
           : (assignment.questions[0]?.options[0] ?? '').includes('"hw":1')

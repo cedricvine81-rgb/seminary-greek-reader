@@ -25,6 +25,7 @@ export const ASSIGNMENT_TYPE_VARIANT: Record<string, BadgeVariant> = {
   COURSE_NOTES: 'amber',
   GROUP_PRESENTATION: 'amber',
   CONSTRUCT_SEARCH: 'gray',
+  DIAGRAM: 'purple',
 }
 
 type T = (key: string, vars?: Record<string, string | number>) => string
@@ -39,7 +40,7 @@ export function assignmentTypeShort(type: string, t: T): string {
 /** What a single assignment can be. PASSAGE_VOCABULARY is generated, never authored. */
 export const SINGLE_ASSIGNMENT_TYPES: AssignmentType[] = [
   'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
-  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH', 'DIAGRAM',
 ]
 
 /** A repeated series is always a quiz — the other types have no weekly form. */

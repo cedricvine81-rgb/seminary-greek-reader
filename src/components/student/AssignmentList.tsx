@@ -32,6 +32,7 @@ const typeColors: Record<string, 'blue' | 'purple' | 'green'> = {
   COURSE_NOTES: 'blue',
   GROUP_PRESENTATION: 'purple',
   CONSTRUCT_SEARCH: 'green',
+  DIAGRAM: 'purple',
 }
 
 // Group presentations are worked on in a dedicated collaborative page, not the generic

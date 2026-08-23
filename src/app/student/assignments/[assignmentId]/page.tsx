@@ -11,6 +11,7 @@ import { TranslationExercise } from '@/components/student/TranslationExercise'
 import { ExegesisWorkspace } from '@/components/student/ExegesisWorkspace'
 import { ExamOpensNotice } from '@/components/student/ExamOpensNotice'
 import { ConstructSearchWorkspace } from '@/components/student/ConstructSearchWorkspace'
+import { DiagramWorkspace } from '@/components/student/DiagramWorkspace'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, isPreviewMode } from '@/lib/preview'
@@ -330,7 +331,14 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           <ConstructSearchWorkspace assignmentId={assignment.id} previewMode={previewMode} />
         )}
 
-        {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'CONSTRUCT_SEARCH' && (
+        {/* Diagramming exercises: the assigned passage's sentence canvases. Shown even when
+            closed — the workspace itself goes read-only, so a student can still review their
+            own submitted diagrams and their grade. */}
+        {assignment.type === 'DIAGRAM' && (
+          <DiagramWorkspace assignmentId={assignment.id} previewMode={previewMode} />
+        )}
+
+        {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'CONSTRUCT_SEARCH' && assignment.type !== 'DIAGRAM' && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}

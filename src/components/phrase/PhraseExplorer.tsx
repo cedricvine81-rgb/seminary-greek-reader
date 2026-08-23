@@ -19,7 +19,7 @@ import { Printer } from 'lucide-react'
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
 // Exported for the DiagramCanvas, which renders the same word nodes as draggable chips.
 export type WordNodeT = { t: 'w'; id: string; w: string; gloss?: string; lemma?: string; morph?: string; role?: string; cls?: string; strongs?: string; parsing?: string }
-type TreeNode =
+export type TreeNode =
   | { t: 'g'; cls?: string; role?: string; rule?: string; c: TreeNode[] }
   | WordNodeT
 
@@ -33,13 +33,14 @@ export const WordCtx = createContext<{ selectedId: string | null; onWord: (n: Wo
 type Highlighter = ReturnType<typeof useHighlights>
 const HlCtx = createContext<{ hl: Highlighter | null; isAuth: boolean }>({ hl: null, isAuth: false })
 
-interface Sentence { ref: string; chapter: number; startVerse: number; endVerse: number; tree: TreeNode }
+// Exported for the DIAGRAM assignment workspace/grader, which load the same sentence data.
+export interface Sentence { ref: string; chapter: number; startVerse: number; endVerse: number; tree: TreeNode }
 interface BookData { book: string; attribution: string; sentences: Sentence[] }
 
-type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number; corpus?: string }
+export type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number; corpus?: string }
 
 /** Parse a reference like "John 1:1-5" against the book list (mirrors the Reader/Exegesis parser). */
-function parseRef(ref: string, books: RefBook[]): { osisId: string; chapter: number; verseStart: number; verseEnd: number } | null {
+export function parseRef(ref: string, books: RefBook[]): { osisId: string; chapter: number; verseStart: number; verseEnd: number } | null {
   const q = ref.trim().replace(/[–—]/g, '-')
   const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?(?:\s*-\s*(\d+))?$/)
   if (!m) return null
@@ -216,7 +217,7 @@ function treeGreek(node: TreeNode): string {
 }
 
 /** Collect the word nodes (in order) so the Greek column can render clickable words. */
-function treeWords(node: TreeNode): WordNodeT[] {
+export function treeWords(node: TreeNode): WordNodeT[] {
   if (node.t === 'w') return [node]
   return node.c.flatMap(treeWords)
 }
@@ -622,8 +623,12 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
             <div key={i} className="rounded-xl border border-gray-200 p-4">
               <p className="text-xs font-semibold text-gray-400 mb-2 flex items-center gap-1.5">
                 {s.ref}
+                {/* On the diagram view the note is part of the workflow (analysis alongside
+                    the drawing), so the affordance is a visible labeled button; the tree
+                    view keeps the compact icon. Same per-verse note either way. */}
                 {isAuthenticated && cur && (
-                  <VerseNoteButton book={cur.osis} chapter={s.chapter} verse={s.startVerse} noted={notedVerses.has(s.startVerse)} onChanged={refreshNotes} />
+                  <VerseNoteButton book={cur.osis} chapter={s.chapter} verse={s.startVerse} noted={notedVerses.has(s.startVerse)} onChanged={refreshNotes}
+                    {...(viewMode === 'diagram' ? { variant: 'labeled' as const, label: t('phr.note') } : {})} />
                 )}
               </p>
               <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_31rem] lg:items-start">

@@ -14,7 +14,7 @@ interface Props {
 // the seventh copy of that enum's labels.
 const GROUPS = [
   'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
-  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH', 'DIAGRAM',
 ] as const
 
 function PctCell({ pct, muted = false }: { pct: number | null; muted?: boolean }) {
@@ -73,8 +73,10 @@ export async function CourseGradebook({ courseId }: Props) {
   const groupPresentationIds = assignments.filter(a => a.type === 'GROUP_PRESENTATION').map(a => a.id)
   // Construct searches are graded 0–100 on the student's find-list (ConstructSubmission.grade).
   const constructIds = assignments.filter(a => a.type === 'CONSTRUCT_SEARCH').map(a => a.id)
+  // Diagramming exercises are graded 0–100 on the student's canvases (DiagramSubmission.grade).
+  const diagramIds = assignments.filter(a => a.type === 'DIAGRAM').map(a => a.id)
 
-  const [realAttempts, realResponses, exegesisGrades, noteGrades, presentationGroups, constructGrades] = await Promise.all([
+  const [realAttempts, realResponses, exegesisGrades, noteGrades, presentationGroups, constructGrades, diagramGrades] = await Promise.all([
     prisma.quizAttempt.findMany({
       where: { assignmentId: { in: assignmentIds }, isBest: true },
       select: { userId: true, assignmentId: true, percentage: true },
@@ -114,6 +116,12 @@ export async function CourseGradebook({ courseId }: Props) {
           select: { userId: true, assignmentId: true, grade: true },
         })
       : Promise.resolve([]),
+    diagramIds.length > 0
+      ? prisma.diagramSubmission.findMany({
+          where: { assignmentId: { in: diagramIds }, grade: { not: null } },
+          select: { userId: true, assignmentId: true, grade: true },
+        })
+      : Promise.resolve([]),
   ])
 
   // Flatten group presentations to per-student grades. Each member gets their per-member
@@ -141,6 +149,10 @@ export async function CourseGradebook({ courseId }: Props) {
     }
     if (assignment.type === 'CONSTRUCT_SEARCH') {
       const sub = constructGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
+      return sub?.grade ?? null
+    }
+    if (assignment.type === 'DIAGRAM') {
+      const sub = diagramGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
       return sub?.grade ?? null
     }
     if (assignment.type === 'GROUP_PRESENTATION') {

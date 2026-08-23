@@ -16,8 +16,13 @@ import { emitNotesChanged } from '@/lib/notes-changed-bus'
  */
 interface FolderLite { id: string; name: string }
 
-export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
+export function VerseNoteButton({ book, chapter, verse, noted, onChanged, variant = 'icon', label }: {
   book: string; chapter: number; verse: number; noted: boolean; onChanged?: () => void
+  /** 'icon' = the small sticky-note glyph; 'labeled' = a visible pill button (used on the
+   *  Diagramming cards, where the note is part of the workflow rather than an aside). */
+  variant?: 'icon' | 'labeled'
+  /** Text for the labeled variant (passed in already translated). */
+  label?: string
 }) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -153,14 +158,25 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
 
   return (
     <span ref={wrapRef} className="relative inline-block align-middle" onMouseEnter={onEnter} onMouseLeave={onLeave}>
-      <button
-        type="button"
-        onClick={() => (open ? close() : openEditor())}
-        title={noted ? 'Edit note' : 'Add a note'}
-        className={`p-0.5 rounded transition-colors ${noted ? 'text-brand-600 hover:text-brand-700' : 'text-gray-300 hover:text-brand-500'}`}
-      >
-        <StickyNote size={14} fill={noted ? 'currentColor' : 'none'} />
-      </button>
+      {variant === 'labeled' ? (
+        <button
+          type="button"
+          onClick={() => (open ? close() : openEditor())}
+          title={noted ? 'Edit note' : 'Add a note'}
+          className={`inline-flex items-center gap-1.5 rounded-lg border px-2 py-0.5 text-xs font-medium transition-colors ${noted ? 'border-brand-200 bg-brand-50 text-brand-700 hover:bg-brand-100' : 'border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+        >
+          <StickyNote size={13} fill={noted ? 'currentColor' : 'none'} /> {label ?? 'Note'}
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => (open ? close() : openEditor())}
+          title={noted ? 'Edit note' : 'Add a note'}
+          className={`p-0.5 rounded transition-colors ${noted ? 'text-brand-600 hover:text-brand-700' : 'text-gray-300 hover:text-brand-500'}`}
+        >
+          <StickyNote size={14} fill={noted ? 'currentColor' : 'none'} />
+        </button>
+      )}
 
       {/* Read-only hover preview (desktop). Padding (not margin) bridges the gap to the
           icon so moving the pointer onto the bubble doesn't dismiss it. */}

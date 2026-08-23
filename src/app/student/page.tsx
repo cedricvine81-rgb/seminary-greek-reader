@@ -18,7 +18,7 @@ export default async function StudentPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, enrollments, completedIds, exegesisSessions, bestAttempts, constructSubmissions] = await Promise.all([
+  const [user, enrollments, completedIds, exegesisSessions, bestAttempts, constructSubmissions, diagramSubmissions] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({
       where: { userId: payload.sub, status: 'APPROVED' },
@@ -48,6 +48,11 @@ export default async function StudentPage() {
       where: { userId: payload.sub, grade: { not: null } },
       select: { assignmentId: true, grade: true },
     }),
+    // Diagramming exercises: same shape, its own table.
+    prisma.diagramSubmission.findMany({
+      where: { userId: payload.sub, grade: { not: null } },
+      select: { assignmentId: true, grade: true },
+    }),
   ])
 
   // Score for the per-course grade book: quiz/morph → best attempt %, translation
@@ -60,9 +65,13 @@ export default async function StudentPage() {
   const constructGradeByAssignment = new Map(
     constructSubmissions.filter(c => c.grade != null).map(c => [c.assignmentId, c.grade as number]),
   )
+  const diagramGradeByAssignment = new Map(
+    diagramSubmissions.filter(d => d.grade != null).map(d => [d.assignmentId, d.grade as number]),
+  )
   function scoreFor(a: { id: string; type: string }): number | null {
     if (a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM') return gradeByAssignment.get(a.id) ?? null
     if (a.type === 'CONSTRUCT_SEARCH') return constructGradeByAssignment.get(a.id) ?? null
+    if (a.type === 'DIAGRAM') return diagramGradeByAssignment.get(a.id) ?? null
     return bestPctByAssignment.get(a.id) ?? null
   }
 

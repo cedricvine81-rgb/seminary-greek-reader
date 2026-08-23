@@ -89,6 +89,7 @@ model User {
   verseNotes           VerseNote[]
   noteSubmissions      NoteSubmission[]
   constructSubmissions ConstructSubmission[]
+  diagramSubmissions   DiagramSubmission[]
   highlights           Highlight[]
   phraseDiagrams       PhraseDiagram[]
   blockAnnotations     BlockAnnotation[]
@@ -477,6 +478,9 @@ enum AssignmentType {
   // genitive absolutes in Mark and parse them". Added to the Postgres enum by hand first —
   // a value can be added to an enum but never removed.
   CONSTRUCT_SEARCH
+  // A diagramming exercise: the passage in `reference`, worked on the drag-and-drop diagram
+  // canvas (Exegesis -> Diagramming). Same hand-first rule for the Postgres enum.
+  DIAGRAM
 }
 
 model Assignment {
@@ -562,6 +566,7 @@ model Assignment {
   groupContributions   GroupContribution[]
   groupSubmissions     GroupSubmission[]
   constructSubmissions ConstructSubmission[]
+  diagramSubmissions   DiagramSubmission[]
 
   @@index([courseId])
 }
@@ -1036,6 +1041,29 @@ model Highlight {
 // sentence's verse range (the same ranges the Macula sentence data gives the tab). `data`
 // is the whole layout as JSON — chip positions keyed by word occurrence, plus the drawn
 // annotation lines. Upserted whole on every save.
+// A student's work on a DIAGRAM assignment: every sentence canvas of the assigned passage,
+// as one JSON object keyed "chapter:verseStart-verseEnd" (each value the same layout shape
+// the personal PhraseDiagram rows store). Draft until submittedAt is set; reopening is the
+// instructor's call. One row per student per assignment — the app upserts on that pair.
+model DiagramSubmission {
+  id           String    @id @default(cuid())
+  userId       String
+  assignmentId String
+  diagrams     Json      @default("{}")
+  notes        String    @default("")
+  submittedAt  DateTime?
+  grade        Int?
+  gradeNote    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, assignmentId])
+  @@index([assignmentId])
+}
+
 model PhraseDiagram {
   id         String   @id @default(cuid())
   userId     String

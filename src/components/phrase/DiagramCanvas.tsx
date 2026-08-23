@@ -1,7 +1,8 @@
 'use client'
 import { useContext, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
-import { Move, Slash, Type, Magnet, RotateCcw, X } from 'lucide-react'
+import { Move, Slash, Brackets, Type, Magnet, Languages, FlipHorizontal2, RotateCcw, X } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { usePref } from '@/lib/use-pref'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { hasHebrew } from '@/lib/script-detect'
 import { WordCtx, type WordNodeT } from './PhraseExplorer'
@@ -18,16 +19,18 @@ import { WordCtx, type WordNodeT } from './PhraseExplorer'
 // while the magnet toggle is on — the Reed-Kellogg baseline/divider/modifier angles).
 // Label mode: click to place a text label (function names, relations, supplied words);
 // in move mode labels drag, click-select, and double-click to re-edit.
-export type DiagramLine = { x1: number; y1: number; x2: number; y2: number; dash?: boolean; arrow?: boolean }
+// A "bracket" is stored as a line whose segment is the bracket's spine; ticks are drawn
+// perpendicular at both ends (like "]"), `flip` mirrors them (like "[").
+export type DiagramLine = { x1: number; y1: number; x2: number; y2: number; dash?: boolean; arrow?: boolean; shape?: 'bracket'; flip?: boolean }
 export type DiagramLabel = { x: number; y: number; text: string }
 export type DiagramData = { words: Record<string, { x: number; y: number }>; lines: DiagramLine[]; labels?: DiagramLabel[] }
 
 type Pos = { x: number; y: number }
-type Mode = 'move' | 'line' | 'label'
+type Mode = 'move' | 'line' | 'bracket' | 'label'
 
 // One in-flight pointer gesture on the canvas itself (chip/label drags live on their elements).
 type Interaction =
-  | { kind: 'draw'; x: number; y: number }
+  | { kind: 'draw'; x: number; y: number; shape?: 'bracket' }
   | { kind: 'marquee'; x: number; y: number; moved: boolean }
   | { kind: 'lineBody'; i: number; x: number; y: number; orig: DiagramLine; moved: boolean }
   | { kind: 'endpoint'; i: number; end: 1 | 2; moved: boolean }
@@ -47,13 +50,27 @@ function snap45(x1: number, y1: number, x2: number, y2: number): { x: number; y:
   return { x: x1 + Math.cos(ang) * len, y: y1 + Math.sin(ang) * len }
 }
 
-export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
+/** A bracket's path: the spine plus perpendicular ticks at both ends. Drawn top-to-bottom
+ *  the ticks point left ("]", as grouping brackets usually close); `flip` mirrors ("["). */
+function bracketPath(l: DiagramLine): string {
+  const dx = l.x2 - l.x1, dy = l.y2 - l.y1
+  const len = Math.hypot(dx, dy) || 1
+  const t = 10
+  let nx = -dy / len * t, ny = dx / len * t
+  if (l.flip) { nx = -nx; ny = -ny }
+  return `M ${l.x1 + nx},${l.y1 + ny} L ${l.x1},${l.y1} L ${l.x2},${l.y2} L ${l.x2 + nx},${l.y2 + ny}`
+}
+
+export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnly = false }: {
   words: WordNodeT[]
   rtl?: boolean
   /** Saved layout to restore, if the user has one for this sentence. */
   initialData?: DiagramData | null
   /** Persist the whole layout; null means "reset" (delete the saved diagram). */
-  onSave: (d: DiagramData | null) => Promise<void>
+  onSave?: (d: DiagramData | null) => Promise<void>
+  /** Render the layout without any editing — no toolbar, no drags, no drawing.
+   *  Used for submitted assignment work and the instructor's grading view. */
+  readOnly?: boolean
 }) {
   const t = useT()
   const uid = useId()
@@ -69,6 +86,9 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
   const [mode, setMode] = useState<Mode>('move')
   // Straighten (snap to 45° steps) — on by default: baselines and dividers come out clean.
   const [snap, setSnap] = useState(true)
+  // Show/hide the English glosses under the Greek — a shared device preference, so
+  // toggling it on one sentence card flips every card at once.
+  const [showGloss, setShowGloss] = usePref<'1' | '0'>('diagram-gloss', ['1', '0'], '1')
   const [selLine, setSelLine] = useState<number | null>(null)
   const [selLabel, setSelLabel] = useState<number | null>(null)
   const [selChips, setSelChips] = useState<Set<string>>(new Set())
@@ -96,6 +116,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
   useEffect(() => () => { if (statusTimer.current) clearTimeout(statusTimer.current) }, [])
 
   function persist(next: { positions: Record<string, Pos>; lines: DiagramLine[]; labels: DiagramLabel[] } | null) {
+    if (!onSave || readOnly) return
     void onSave(next ? { words: next.positions, lines: next.lines, labels: next.labels } : null).then(() => {
       setStatus('saved')
       if (statusTimer.current) clearTimeout(statusTimer.current)
@@ -125,7 +146,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
   } | null>(null)
 
   function onChipDown(e: React.PointerEvent<HTMLDivElement>, w: WordNodeT, key: string) {
-    if (mode !== 'move' || positions === null) return
+    if (readOnly || mode !== 'move' || positions === null) return
     e.preventDefault()
     if (e.shiftKey) {
       // Shift-click toggles membership in the group; no drag starts.
@@ -197,7 +218,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
     setSelLabel(null)
   }
   function onLabelDown(e: React.PointerEvent<HTMLDivElement>, i: number) {
-    if (mode !== 'move' || positions === null) return
+    if (readOnly || mode !== 'move' || positions === null) return
     e.preventDefault()
     labelDrag.current = { i, startX: e.clientX, startY: e.clientY, orig: labels[i], moved: false }
     e.currentTarget.setPointerCapture(e.pointerId)
@@ -237,11 +258,12 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
     canvasRef.current?.setPointerCapture(e.pointerId)
   }
   function onCanvasDown(e: React.PointerEvent<HTMLDivElement>) {
+    if (readOnly) return
     const p = canvasPoint(e)
     if (editLabel !== null) { commitLabelEdit(); return }
-    if (mode === 'line') {
+    if (mode === 'line' || mode === 'bracket') {
       e.preventDefault()
-      gesture.current = { kind: 'draw', ...p }
+      gesture.current = { kind: 'draw', ...p, ...(mode === 'bracket' ? { shape: 'bracket' as const } : {}) }
       captureOnCanvas(e)
       return
     }
@@ -260,7 +282,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
   }
   // A line's body: press to select and start moving the whole line.
   function onLineBodyDown(e: React.PointerEvent, i: number) {
-    if (mode !== 'move') return
+    if (readOnly || mode !== 'move') return
     e.stopPropagation()
     e.preventDefault()
     setSelLine(i)
@@ -284,7 +306,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
     const p = canvasPoint(e)
     if (g.kind === 'draw') {
       const end = snap ? snap45(g.x, g.y, p.x, p.y) : { x: p.x, y: p.y }
-      setPreview({ x1: g.x, y1: g.y, x2: end.x, y2: end.y })
+      setPreview({ x1: g.x, y1: g.y, x2: end.x, y2: end.y, shape: g.shape })
     } else if (g.kind === 'marquee') {
       if (!g.moved && Math.hypot(p.x - g.x, p.y - g.y) < 4) return
       g.moved = true
@@ -313,7 +335,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
       setPreview(null)
       if (Math.hypot(p.x - g.x, p.y - g.y) < 10) return   // a tap, not a line
       const end = snap ? snap45(g.x, g.y, p.x, p.y) : { x: p.x, y: p.y }
-      const next = [...lines, { x1: g.x, y1: g.y, x2: end.x, y2: end.y }]
+      const next = [...lines, { x1: g.x, y1: g.y, x2: end.x, y2: end.y, ...(g.shape ? { shape: g.shape } : {}) }]
       setLines(next)
       if (positions) persist({ positions, lines: next, labels })
     } else if (g.kind === 'marquee') {
@@ -338,7 +360,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
     setSelLine(null)
     if (positions) persist({ positions, lines: next, labels })
   }
-  function setLineStyle(i: number, patch: Partial<Pick<DiagramLine, 'dash' | 'arrow'>>) {
+  function setLineStyle(i: number, patch: Partial<Pick<DiagramLine, 'dash' | 'arrow' | 'flip'>>) {
     const next = lines.map((l, j) => j === i ? { ...l, ...patch } : l)
     setLines(next)
     if (positions) persist({ positions, lines: next, labels })
@@ -380,22 +402,28 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
   return (
     <div>
       {/* Tool strip: move ⇄ draw ⇄ label, straighten toggle, reset, save status. */}
+      {!readOnly && (
       <div className="flex items-center gap-1 mb-2 print:hidden">
         <button type="button" title={t('phr.move')} aria-label={t('phr.move')} aria-pressed={mode === 'move'}
           onClick={() => setModeSafe('move')} className={toolBtn(mode === 'move')}><Move size={16} /></button>
         <button type="button" title={t('phr.drawLines')} aria-label={t('phr.drawLines')} aria-pressed={mode === 'line'}
           onClick={() => setModeSafe('line')} className={toolBtn(mode === 'line')}><Slash size={16} /></button>
+        <button type="button" title={t('phr.bracketTool')} aria-label={t('phr.bracketTool')} aria-pressed={mode === 'bracket'}
+          onClick={() => setModeSafe('bracket')} className={toolBtn(mode === 'bracket')}><Brackets size={16} /></button>
         <button type="button" title={t('phr.addLabels')} aria-label={t('phr.addLabels')} aria-pressed={mode === 'label'}
           onClick={() => setModeSafe('label')} className={toolBtn(mode === 'label')}><Type size={16} /></button>
         <span className="w-px h-4 bg-gray-200 mx-1" />
         <button type="button" title={t('phr.straighten')} aria-label={t('phr.straighten')} aria-pressed={snap}
           onClick={() => setSnap(s => !s)} className={toolBtn(snap)}><Magnet size={15} /></button>
+        <button type="button" title={t('phr.toggleGloss')} aria-label={t('phr.toggleGloss')} aria-pressed={showGloss === '1'}
+          onClick={() => setShowGloss(showGloss === '1' ? '0' : '1')} className={toolBtn(showGloss === '1')}><Languages size={15} /></button>
         <button type="button" title={t('phr.resetLayout')} aria-label={t('phr.resetLayout')}
           onClick={reset} className={toolBtn(false)}><RotateCcw size={15} /></button>
         <span className={`ml-auto text-xs text-gray-400 transition-opacity ${status === 'saved' ? 'opacity-100' : 'opacity-0'}`}>
           {t('phr.saved')}
         </span>
       </div>
+      )}
 
       <div
         ref={canvasRef}
@@ -404,7 +432,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
         onPointerDown={onCanvasDown}
         onPointerMove={onCanvasMove}
         onPointerUp={onCanvasUp}
-        className={`relative w-full rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-brand-300 print:border-gray-300 ${mode === 'line' ? 'cursor-crosshair' : mode === 'label' ? 'cursor-text' : ''}`}
+        className={`relative w-full rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-brand-300 print:border-gray-300 ${mode === 'line' || mode === 'bracket' ? 'cursor-crosshair' : mode === 'label' ? 'cursor-text' : ''}`}
         style={{ height: canvasH, touchAction: 'none' }}
       >
         {/* Annotation lines under the chips. Hit-testing only in move mode. */}
@@ -425,16 +453,25 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
               <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke="transparent" strokeWidth={12}
                 style={mode === 'move' ? { pointerEvents: 'stroke', cursor: selLine === i ? 'move' : 'pointer' } : undefined}
                 onPointerDown={e => onLineBodyDown(e, i)} />
-              <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
-                className={selLine === i ? 'stroke-brand-600' : 'stroke-gray-500'} strokeWidth={2} strokeLinecap="round"
-                strokeDasharray={l.dash ? '6 4' : undefined}
-                markerEnd={l.arrow ? `url(#${selLine === i ? arrowBrand : arrowGray})` : undefined} />
+              {l.shape === 'bracket' ? (
+                <path d={bracketPath(l)} fill="none"
+                  className={selLine === i ? 'stroke-brand-600' : 'stroke-gray-500'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+                  strokeDasharray={l.dash ? '6 4' : undefined} />
+              ) : (
+                <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
+                  className={selLine === i ? 'stroke-brand-600' : 'stroke-gray-500'} strokeWidth={2} strokeLinecap="round"
+                  strokeDasharray={l.dash ? '6 4' : undefined}
+                  markerEnd={l.arrow ? `url(#${selLine === i ? arrowBrand : arrowGray})` : undefined} />
+              )}
             </g>
           ))}
-          {preview && (
+          {preview && (preview.shape === 'bracket' ? (
+            <path d={bracketPath(preview)} fill="none"
+              className="stroke-brand-400" strokeWidth={2} strokeDasharray="4 3" strokeLinecap="round" strokeLinejoin="round" />
+          ) : (
             <line x1={preview.x1} y1={preview.y1} x2={preview.x2} y2={preview.y2}
               className="stroke-brand-400" strokeWidth={2} strokeDasharray="4 3" strokeLinecap="round" />
-          )}
+          ))}
           {marquee && (
             <rect x={Math.min(marquee.x1, marquee.x2)} y={Math.min(marquee.y1, marquee.y2)}
               width={Math.abs(marquee.x2 - marquee.x1)} height={Math.abs(marquee.y2 - marquee.y1)}
@@ -466,11 +503,19 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
               className={`p-1 rounded-full ${sel.dash ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
               <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden><line x1="1" y1="7" x2="13" y2="7" stroke="currentColor" strokeWidth="2" strokeDasharray="3 2.5" strokeLinecap="round" /></svg>
             </button>
-            <button type="button" title={t('phr.arrowhead')} aria-label={t('phr.arrowhead')} aria-pressed={!!sel.arrow}
-              onClick={() => setLineStyle(selLine, { arrow: !sel.arrow })}
-              className={`p-1 rounded-full ${sel.arrow ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
-              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden><line x1="1" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><path d="M8,3.5 L13,7 L8,10.5 Z" fill="currentColor" /></svg>
-            </button>
+            {sel.shape === 'bracket' ? (
+              <button type="button" title={t('phr.flipBracket')} aria-label={t('phr.flipBracket')} aria-pressed={!!sel.flip}
+                onClick={() => setLineStyle(selLine, { flip: !sel.flip })}
+                className={`p-1 rounded-full ${sel.flip ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
+                <FlipHorizontal2 size={13} />
+              </button>
+            ) : (
+              <button type="button" title={t('phr.arrowhead')} aria-label={t('phr.arrowhead')} aria-pressed={!!sel.arrow}
+                onClick={() => setLineStyle(selLine, { arrow: !sel.arrow })}
+                className={`p-1 rounded-full ${sel.arrow ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
+                <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden><line x1="1" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><path d="M8,3.5 L13,7 L8,10.5 Z" fill="currentColor" /></svg>
+              </button>
+            )}
             <button type="button" title={t('phr.deleteLine')} aria-label={t('phr.deleteLine')}
               onClick={() => deleteLine(selLine)}
               className="p-1 rounded-full text-gray-500 hover:bg-red-50 hover:text-red-600">
@@ -500,7 +545,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
             onPointerMove={onLabelMove}
             onPointerUp={onLabelUp}
             onDoubleClick={() => mode === 'move' && startLabelEdit(i)}
-            className={`absolute select-none italic leading-tight text-gray-600 rounded px-0.5 ${mode === 'line' ? 'pointer-events-none' : 'cursor-grab active:cursor-grabbing'} ${selLabel === i ? 'ring-1 ring-brand-400 bg-brand-50' : ''}`}
+            className={`absolute select-none italic leading-tight text-gray-600 rounded px-0.5 ${readOnly ? '' : mode === 'line' || mode === 'bracket' ? 'pointer-events-none' : 'cursor-grab active:cursor-grabbing'} ${selLabel === i ? 'ring-1 ring-brand-400 bg-brand-50' : ''}`}
             style={{ left: l.x, top: l.y, touchAction: 'none', fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.55)' }}
           >
             {l.text}
@@ -539,11 +584,13 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave }: {
                   openWordSearch({ x: e.clientX, y: e.clientY, surface: w.w, lemma: w.lemma ?? null, reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, ...(hasHebrew(w.w) ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }) })
                 }}
                 title={[w.lemma && `lemma: ${w.lemma}`, w.morph && `morph: ${w.morph}`].filter(Boolean).join('\n')}
-                className={`${positions === null ? 'inline-flex me-2 mb-1' : 'absolute flex'} flex-col items-start select-none rounded border bg-white px-1.5 py-0.5 shadow-sm ${inGroup ? 'border-brand-500 ring-1 ring-brand-300' : 'border-gray-200'} ${mode === 'move' ? 'cursor-grab active:cursor-grabbing hover:border-brand-300' : 'pointer-events-none'}`}
+                className={`${positions === null ? 'inline-flex me-10 mb-8' : 'absolute flex'} flex-col items-start select-none rounded border bg-white px-1.5 py-0.5 shadow-sm ${inGroup ? 'border-brand-500 ring-1 ring-brand-300' : 'border-gray-200'} ${readOnly ? '' : mode === 'move' ? 'cursor-grab active:cursor-grabbing hover:border-brand-300' : 'pointer-events-none'}`}
                 style={p ? { left: p.x, top: p.y, touchAction: 'none' } : { touchAction: 'none' }}
               >
-                <span className={`${hasHebrew(w.w) ? 'font-hebrew' : 'font-greek'} text-gray-900 leading-tight`} style={{ fontSize: 'var(--phrase-fs, 1.45rem)' }}>{w.w}</span>
-                {w.gloss && <span className="text-gray-400 leading-tight" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.55)' }}>{w.gloss}</span>}
+                {/* Diagram chips run smaller than the tree's text — the canvas needs the
+                    room for lines and labels; the tab's text-size slider still scales them. */}
+                <span className={`${hasHebrew(w.w) ? 'font-hebrew' : 'font-greek'} text-gray-900 leading-tight`} style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.72)' }}>{w.w}</span>
+                {w.gloss && showGloss === '1' && <span className="text-gray-400 leading-tight" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.45)' }}>{w.gloss}</span>}
               </div>
             )
           })}

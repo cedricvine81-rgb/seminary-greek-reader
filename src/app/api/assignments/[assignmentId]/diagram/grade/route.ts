@@ -1,0 +1,64 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
+import { logError } from '@/lib/logger'
+import { getPayload } from '@/lib/auth'
+import { prisma } from '@/lib/db'
+import { isAuthorizedForAssignment } from '@/lib/course-auth'
+import { getDiagramGrading, gradeDiagramSubmission, reopenDiagramSubmission } from '@/lib/diagram-submissions'
+
+// Instructor grading view for a DIAGRAM assignment: every enrolled student's diagrams,
+// whether they handed them in, and their grade.
+export async function GET(_req: NextRequest, { params }: { params: { assignmentId: string } }) {
+  try {
+    const payload = getPayload()
+    if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+    return NextResponse.json(await getDiagramGrading(params.assignmentId))
+  } catch (err) {
+    if (err instanceof Error && err.message === 'Diagram assignment not found') {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+    logError('api/assignments/[id]/diagram/grade GET', err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
+}
+
+// The gradebook lives on the cached course page; without busting it a saved grade sits in
+// the database while the page keeps serving the old numbers (same fix as course-notes).
+async function bustGradebook(assignmentId: string) {
+  const a = await prisma.assignment.findUnique({ where: { id: assignmentId }, select: { courseId: true } })
+  if (a) revalidatePath(`/instructor/courses/${a.courseId}`)
+  revalidatePath('/student')
+}
+
+// POST { userId, grade?, gradeNote? } — save a grade; { userId, reopen: true } — hand a
+// submitted set of diagrams back to that one student.
+export async function POST(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+  try {
+    const payload = getPayload()
+    if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+
+    const b = await req.json()
+    const userId = String(b.userId ?? '')
+    if (!userId) return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
+
+    if (b.reopen === true) {
+      await reopenDiagramSubmission(params.assignmentId, userId)
+      return NextResponse.json({ ok: true })
+    }
+
+    const grade = b.grade == null || b.grade === '' ? null : Math.max(0, Math.min(100, Math.round(Number(b.grade))))
+    const gradeNote = typeof b.gradeNote === 'string' ? b.gradeNote : null
+    const saved = await gradeDiagramSubmission(params.assignmentId, userId, { grade, gradeNote })
+    await bustGradebook(params.assignmentId)
+    return NextResponse.json({ grade: saved.grade, gradeNote: saved.gradeNote })
+  } catch (err) {
+    logError('api/assignments/[id]/diagram/grade POST', err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
+}
