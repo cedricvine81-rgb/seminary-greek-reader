@@ -1,0 +1,29 @@
+{
+ "_source": "Traducción propia hecha desde el inglés que esta aplicación muestra: el Targum Pseudo-Jonatán sobre el Génesis, en la traducción de J. W. Etheridge, «The Targums of Onkelos and Jonathan Ben Uzziel on the Pentateuch» (Londres, 1862), de dominio público.",
+ "_why": "El Targum Pseudo-Jonatán está en ARAMEO: es la paráfrasis aramea del Pentateuco que la tradición atribuyó por error a Jonatán ben Uzziel —de ahí el «Pseudo»—, y que en realidad es una obra palestinense muy posterior, la más libre y más narrativa de todos los targumes. Esta aplicación NO muestra ese arameo: muestra el inglés que J. W. Etheridge publicó en 1862, y de ese inglés —no del arameo— procede esta versión española. Está, pues, a DOS PASOS del texto conservado, exactamente como la versión española de Filón, que se hizo desde el inglés de Yonge y no desde el griego, y como la del Targum de Isaías, hecha desde el inglés de Pauli. Donde Etheridge parafrasea, abrevia, interpreta o traduce de manera hoy discutible, el español lo sigue: no se corrige por el arameo ni se completa por el hebreo. Se advierte aquí porque el estudiante debe saber qué tiene delante: no es una traducción del targum, sino de la traducción inglesa del targum. Para citar el targum en un trabajo académico hay que ir al arameo.",
+ "_note": "José en casa de Potifar. El targum aprieta el motivo moral: en el v. 10 José no rehúsa solo por lealtad al amo, sino «no fuera que con ella fuese condenado en el día del gran juicio del mundo venidero»; y en el v. 11 se dice para qué había entrado en la casa —a revisar las tablillas de sus cuentas—, cerrando la puerta a toda sospecha. En el v. 1 se añade que Potifar lo compró «con la prenda de los árabes», enlazando con la venta de 37:28. Y en el v. 20 Potifar no lo mata porque consulta antes a los sacerdotes. La Palabra (Memrá) es su auxilio cuatro veces (vv. 2, 3, 21, 23), que es la manera del targum de decir «el Señor estaba con José». ⚠ DOS ADVERTENCIAS DE TEXTO. Falta el v. 18, ausente también del impreso de Etheridge de 1862 —allí, en su lugar, hay una nota entre corchetes con la lectura del TARGUM DE JERUSALÉN («Y fue cuando yo tronaba con mi voz»), que es otro targum y no se incorpora aquí. Y los vv. 1, 14 y 20 llevan marcas de laguna del propio texto inglés (unos puntos suspensivos y unos guiones bajos) que señalan palabras que la fuente no trae; se reproducen tal cual.",
+ "verses": {
+  "1": "Pero José fue llevado a Mizraim; y Potifar, … un hombre de Mizraim, jefe de Faraón, jefe de los verdugos, lo compró con la prenda de los árabes que lo habían llevado allá.",
+  "2": "Y la Palabra del Señor fue el Auxilio de José, y llegó a ser hombre próspero en casa de su amo mizraíta.",
+  "3": "Y vio su amo que la Palabra del Señor era su Auxilio, y que el Señor prosperaba en su mano todo lo que hacía;",
+  "4": "y halló José gracia a sus ojos, y le servía, y lo puso por mayordomo sobre su casa, y todo lo que tenía lo entregó en sus manos.",
+  "5": "Y sucedió que desde el tiempo en que lo puso por mayordomo sobre su casa y sobre todo lo que tenía, el Señor prosperó la casa del mizraíta por causa de la justicia de José, y la bendición del Señor estuvo sobre todo lo que tenía, en la casa y en el campo.",
+  "6": "Y dejó todo lo que tenía en mano de José, y no se ocupaba de nada de lo suyo, sino de su mujer, con la cual dormía. Y era José de hermosa forma y de bello aspecto.",
+  "7": "Y sucedió después de estas cosas que la mujer de su amo alzó sus ojos a José, y dijo: Acuéstate conmigo.",
+  "8": "Pero él rehusó acercarse a ella, y dijo a la mujer de su amo: He aquí que mi amo no se ocupa de lo que está conmigo en la casa, y todo lo que tiene lo entrega en mi mano;",
+  "9": "no hay en la casa nadie mayor que yo, ni me ha vedado cosa alguna sino a ti, porque eres su mujer: ¿y cómo podría yo hacer esta gran maldad y hacerme culpable delante del Señor?",
+  "10": "Y sucedió que, hablándole ella a José un día y otro, él no la escuchaba para acostarse con ella, no fuera que con ella fuese condenado en el día del gran juicio del mundo venidero.",
+  "11": "Y sucedió cierto día que él entró en la casa para revisar las tablillas de sus cuentas, y no había allí dentro ninguno de los hombres de la casa;",
+  "12": "y ella lo asió por su vestidura, diciendo: Acuéstate conmigo; y él dejó su vestidura en manos de ella y salió a la calle.",
+  "13": "Y cuando ella vio que él había dejado su vestidura en sus manos y había salido a la calle,",
+  "14": "llamó a los hombres de la casa y dijo: Vean esto, ___ lo que ha hecho el hombre hebreo que su amo nos ha traído para burlarse de nosotros. Vino a acostarse conmigo, y yo grité a gran voz.",
+  "15": "Y cuando él oyó que yo alzaba mi voz, dejó su vestidura conmigo y salió a la calle.",
+  "16": "Y ella dejó la vestidura allí hasta que su amo vino a su casa;",
+  "17": "y le habló conforme a estas palabras, diciendo: El siervo hebreo que nos trajiste vino a mí para burlarse de mí.",
+  "19": "Y cuando su amo oyó las palabras que su mujer le habló, diciendo: Conforme a estas cosas me hizo tu siervo, se encendió su ira.",
+  "20": "Y el amo de José tomó consejo de los sacerdotes, los cuales ____ no lo hicieron morir, sino que lo entregaron a la casa de los presos, donde estaban presos los presos del rey; y estuvo allí en la casa de los presos.",
+  "21": "Y la Palabra del Señor fue el Auxilio de José, y le extendió misericordia, y le dio gracia a los ojos del capitán de la cárcel.",
+  "22": "Y el capitán de la cárcel confió en manos de José a todos los presos que había en la casa, y todo lo que allí se hacía, él lo mandaba hacer.",
+  "23": "No le era necesario al capitán de la cárcel vigilar a José, según la costumbre con todos los presos, porque veía que no había falta en sus manos; porque la Palabra del Señor era su Auxilio, y lo que él hacía, el Señor lo prosperaba."
+ }
+}
