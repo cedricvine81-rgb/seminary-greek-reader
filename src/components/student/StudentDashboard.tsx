@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { getServerT } from '@/lib/i18n/server'
 import { Card } from '@/components/ui/Card'
 import { StudentCourseCard, type StudentCourse } from '@/components/student/StudentCourseCard'
+import { SelfStudyCards } from '@/components/student/SelfStudyCards'
 
 interface StudentDashboardProps {
   studentName: string
@@ -24,6 +25,9 @@ export function StudentDashboard({ studentName, courses, dueSoonCount }: Student
         </p>
       </div>
 
+      {/* Self-study leads for a student with no courses — it's their way in. */}
+      {courses.length === 0 && <SelfStudyCards />}
+
       {/* My Courses — each course expands into Assignments / Grade Book / Schedule */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
@@ -38,6 +42,10 @@ export function StudentDashboard({ studentName, courses, dueSoonCount }: Student
           courses.map(c => <StudentCourseCard key={c.id} course={c} studentName={studentName} />)
         )}
       </div>
+
+      {/* Self-study — the four instructor-free tracks, below the courses for enrolled
+          students (supplementary revision there, the main path above when there are none). */}
+      {courses.length > 0 && <SelfStudyCards />}
     </div>
   )
 }
