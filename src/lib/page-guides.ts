@@ -130,7 +130,7 @@ export const PAGE_GUIDES: PageGuide[] = [
     ],
     gestures: [
       { does: 'Tap a dotted-underlined term', gets: 'a plain-English definition of that grammatical term' },
-      { does: 'Tap adjacent words in a drill', gets: 'answers reveal individually — nothing is graded or recorded' },
+      { does: 'Tap adjacent words in a drill', gets: 'answers reveal individually — mark yourself right or wrong and the block keeps your score on this device' },
     ],
     related: [
       { label: 'Vocabulary — the words to go with the forms', href: '/vocab' },
@@ -335,7 +335,7 @@ export const PAGE_GUIDES: PageGuide[] = [
         },
         {
           heading: 'Drawing your own diagram',
-          body: 'Switch the toggle at the top left to Diagram and each sentence becomes a canvas: drag the Hebrew words wherever your analysis puts them, and use the line tool to mark the connections. Drag a box around several words (or shift-click them) to move them as a group, and click a drawn line to move it or reshape it by its endpoints. Your layout is saved as you work and comes back next time you open the passage.',
+          body: 'The Diagram view (the default — the toggle at the top left switches to the phrase tree) makes each sentence a canvas: drag the Hebrew words wherever your analysis puts them, and use the line, bracket, and label tools to mark the connections. Drag a box around several words to move them as a group, click a drawn line to move or reshape it, and undo any slip. Your layout is saved as you work — and the "How to" link opens a worked example.',
         },
       ],
     },
@@ -352,7 +352,7 @@ export const PAGE_GUIDES: PageGuide[] = [
       },
       {
         heading: 'Drawing your own diagram',
-        body: 'Switch the toggle at the top left to Diagram and each sentence becomes a canvas: drag the Greek words wherever your analysis puts them, and use the line tool to mark the phrasing. Drag a box around several words (or shift-click them) to move them as a group, and click a drawn line to move it or reshape it by its endpoints. Your layout is saved as you work and comes back next time you open the passage.',
+        body: 'The Diagram view (the default — the toggle at the top left switches to the phrase tree) makes each sentence a canvas: drag the Greek words wherever your analysis puts them, and use the line, bracket, and label tools to mark the phrasing. Drag a box around several words to move them as a group, click a drawn line to move or reshape it, and undo any slip. Your layout is saved as you work — and the "How to" link opens a worked example.',
       },
     ],
   },

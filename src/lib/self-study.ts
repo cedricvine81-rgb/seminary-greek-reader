@@ -9,7 +9,18 @@
 // Auto-graded practice steps (quizzes from the instructor pool generators, self-checked
 // exercises) are phase 3 — they append further steps to these same lessons.
 
-import { VOCAB_LESSONS, lessonSubsectionKey } from './vocab-lesson-map'
+// NO imports from the vocab world here: vocab-lesson-map pulls vocab-subsections, which
+// pulls the whole BGVB deck JSON — and this registry rides in the dashboard bundle. The
+// BGVB lesson facts we need are fully derivable: lesson n (1–16) covers the 20 consecutive
+// frequency ranks 20n-19..20n, printed as Section I A–H (lessons 1–8) then II A–H (9–16),
+// stored under the subsection key "1-A"…"2-H" (see src/lib/vocab-lesson-map.ts).
+const BGVB_LESSON_COUNT = 16
+function bgvbSection(lesson: number): { name: string; key: string } {
+  const roman = lesson <= 8 ? 'I' : 'II'
+  const num = lesson <= 8 ? 1 : 2
+  const letter = String.fromCharCode(65 + ((lesson - 1) % 8))
+  return { name: `Section ${roman}-${letter}`, key: `${num}-${letter}` }
+}
 
 export type SelfStudyTrackId = 'greek-beginning' | 'greek-intermediate' | 'hebrew-beginning' | 'hebrew-intermediate'
 
@@ -100,21 +111,21 @@ function greekBeginning(): SelfStudyLesson[] {
       // SHARED key with the Grammar page's course mode — ticks in both places.
       { key: c.id, kind: 'grammar', labelKey: c.labelKey, href: `/grammar?chapter=${c.id}&level=beginning&track=greek` },
     ]
-    const v = VOCAB_LESSONS[i]
-    if (v) {
+    const lesson = i + 1
+    if (lesson <= BGVB_LESSON_COUNT) {
+      const sec = bgvbSection(lesson)
       steps.push({
-        key: `ssv-gk-${v.lesson}`,
+        key: `ssv-gk-${lesson}`,
         kind: 'vocab',
-        label: `BGVB ${v.lesson} · ${v.section} (${v.rankMin}–${v.rankMax})`,
+        label: `BGVB ${lesson} · ${sec.name} (${lesson * 20 - 19}–${lesson * 20})`,
         href: '/vocab?track=greek',
       })
-      const sel = lessonSubsectionKey(v.lesson)
-      if (sel) steps.push({
-        key: `ssq-gb-${v.lesson}`,
+      steps.push({
+        key: `ssq-gb-${lesson}`,
         kind: 'quiz',
         labelKey: 'ss.vocabQuiz',
-        href: `/student/self-study/greek-beginning/quiz/${i + 1}`,
-        quiz: { deck: 'greek', selection: sel },
+        href: `/student/self-study/greek-beginning/quiz/${lesson}`,
+        quiz: { deck: 'greek', selection: sec.key },
       })
     }
     return { steps }

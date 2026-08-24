@@ -67,7 +67,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
             {t(`course.level.${assignment.level}`)}
           </Badge>
-          {assignment.type === 'TRANSLATION_EXERCISE' ? (
+          {(assignment.type === 'TRANSLATION_EXERCISE' || assignment.type === 'DIAGRAM') ? (
             assignment.reference && (
               <Badge variant="blue">{assignment.reference}</Badge>
             )
@@ -149,7 +149,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           }}
         />
 
-        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'GROUP_PRESENTATION' && assignment.type !== 'CONSTRUCT_SEARCH' && (
+        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'GROUP_PRESENTATION' && assignment.type !== 'CONSTRUCT_SEARCH' && assignment.type !== 'DIAGRAM' && (
           <QuizPreview
             questions={assignment.questions.map(q => ({
               id: q.id,
