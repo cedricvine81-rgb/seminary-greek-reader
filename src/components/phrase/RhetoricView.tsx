@@ -532,7 +532,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
         <div ref={highlightPaneRef} className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
           {/* Column 1 — the passage (steps aside while previewing an example) */}
           {!showPreview && (
-          <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
+          <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-3">
             <div className="flex items-center justify-between gap-2 mb-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{parsed!.name} {parsed!.chapter}</p>
               <select
@@ -605,7 +605,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
           )}
 
           {/* Column 2 — figures: in this passage, or the whole-NT browser */}
-          <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
+          <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-3">
             <div className="flex items-center justify-between gap-2 mb-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{ui(mode === 'browse' ? 'rhetoric.allFigures' : 'rhetoric.devicesPresent')}</p>
               <div className="flex rounded-lg border border-gray-200 overflow-hidden text-[10px] shrink-0">
@@ -682,7 +682,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
           </div>
 
           {/* Column 3 — explanation of the selected device (+Bengel), or the browsed device's examples */}
-          <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
+          <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">{ui(browseDevice ? 'rhetoric.figure' : 'rhetoric.explanation')}</p>
             {browseDevice ? (
               <div className="space-y-3">
