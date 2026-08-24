@@ -34,8 +34,9 @@ export interface SelfStudyStep {
   href: string
   /** Quiz steps only: which deck words the practice quiz draws from. The quiz page
    *  resolves this — the registry stays free of deck-data imports. A quiz step is
-   *  completed by PASSING the quiz (≥80%), never by the manual toggle. */
-  quiz?: { deck: 'greek' | 'hebrew'; selection: string }
+   *  completed by PASSING the quiz (≥80%), never by the manual toggle. `sample`
+   *  caps each attempt at that many randomly drawn words (review quizzes). */
+  quiz?: { deck: 'greek' | 'hebrew'; selection: string | string[]; sample?: number }
 }
 
 export interface SelfStudyLesson { steps: SelfStudyStep[] }
@@ -126,6 +127,21 @@ function greekBeginning(): SelfStudyLesson[] {
         labelKey: 'ss.vocabQuiz',
         href: `/student/self-study/greek-beginning/quiz/${lesson}`,
         quiz: { deck: 'greek', selection: sec.key },
+      })
+    } else {
+      // Lessons 17–20 introduce no new vocabulary set, so each carries a cumulative
+      // review quiz over ALL sixteen Beginning sections — a fresh 25-word random
+      // sample per attempt, same 80% bar.
+      steps.push({
+        key: `ssq-gb-rev-${lesson}`,
+        kind: 'quiz',
+        labelKey: 'ss.reviewQuiz',
+        href: `/student/self-study/greek-beginning/quiz/${lesson}`,
+        quiz: {
+          deck: 'greek',
+          selection: Array.from({ length: BGVB_LESSON_COUNT }, (_, n) => bgvbSection(n + 1).key),
+          sample: 25,
+        },
       })
     }
     return { steps }

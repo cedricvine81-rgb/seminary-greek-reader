@@ -48,14 +48,20 @@ export function PracticeVocabQuiz({ trackId, lessonNo }: { trackId: string; less
 
   const hebrew = step?.quiz?.deck === 'hebrew'
   const deck = hebrew ? HEBREW_DECK : GREEK_DECK
+  // Review quizzes span several selection keys and cap each attempt at a random sample.
+  const selections = step?.quiz ? (Array.isArray(step.quiz.selection) ? step.quiz.selection : [step.quiz.selection]) : []
+  const sample = step?.quiz?.sample
   const words = useMemo(
-    () => (step?.quiz ? deckWordsForSelection(deck, [step.quiz.selection], []) : []),
+    () => (step?.quiz ? deckWordsForSelection(deck, selections, []) : []),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [step?.quiz?.selection, hebrew],
+    [selections.join(','), hebrew],
   )
 
   const [round, setRound] = useState(0)
-  const questions = useMemo(() => buildQuestions(words, deck.words), [words, deck, round])
+  const questions = useMemo(
+    () => buildQuestions(sample && sample < words.length ? shuffled(words).slice(0, sample) : words, deck.words),
+    [words, deck, round, sample],
+  )
   const [idx, setIdx] = useState(0)
   const [chosen, setChosen] = useState<string | null>(null)
   const [correct, setCorrect] = useState(0)
@@ -102,8 +108,13 @@ export function PracticeVocabQuiz({ trackId, lessonNo }: { trackId: string; less
       </Link>
 
       <div>
-        <h1 className="text-lg font-bold text-gray-900">{t('ss.vocabQuiz')} · {t('ss.lessonN', { n: lessonNo })}</h1>
-        <p className="mt-0.5 text-sm text-gray-500">{t('ss.q.passNote', { pass: PASS_PCT })}{alreadyDone && <span className="ml-1 text-green-600 font-medium">{t('ss.q.alreadyPassed')}</span>}</p>
+        <h1 className="text-lg font-bold text-gray-900">{t(step.labelKey ?? 'ss.vocabQuiz')} · {t('ss.lessonN', { n: lessonNo })}</h1>
+        <p className="mt-0.5 text-sm text-gray-500">
+          {sample
+            ? t('ss.q.sampleNote', { n: Math.min(sample, words.length), total: words.length, pass: PASS_PCT })
+            : t('ss.q.passNote', { pass: PASS_PCT })}
+          {alreadyDone && <span className="ml-1 text-green-600 font-medium">{t('ss.q.alreadyPassed')}</span>}
+        </p>
       </div>
 
       {finished ? (
