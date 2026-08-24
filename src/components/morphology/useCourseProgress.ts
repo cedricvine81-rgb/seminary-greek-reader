@@ -39,6 +39,11 @@ function postChapter(chapterId: string, completed: boolean) {
   }).catch(() => { /* logged out or offline — localStorage already has it */ })
 }
 
+// Cross-instance sync: several components on one page may each call this hook (e.g. the
+// self-study track list behind an embedded quiz panel). A tick in one instance is
+// broadcast so every other instance updates without a reload.
+const SYNC_EVENT = 'morph-progress-changed'
+
 export function useCourseProgress() {
   // Start empty (matches the server-rendered HTML), hydrate in the effect.
   const [completed, setCompleted] = useState<Set<string>>(new Set())
@@ -60,7 +65,18 @@ export function useCourseProgress() {
         for (const id of local) if (!server.includes(id)) postChapter(id, true)
       })
 
-    return () => { cancelled = true }
+    const onSync = (e: Event) => {
+      const { chapterId, done } = (e as CustomEvent<{ chapterId: string; done: boolean }>).detail ?? {}
+      if (typeof chapterId !== 'string') return
+      setCompleted(prev => {
+        const next = new Set(prev)
+        if (done) next.add(chapterId)
+        else next.delete(chapterId)
+        return next
+      })
+    }
+    window.addEventListener(SYNC_EVENT, onSync)
+    return () => { cancelled = true; window.removeEventListener(SYNC_EVENT, onSync) }
   }, [])
 
   const setChapter = useCallback((chapterId: string, done: boolean) => {
@@ -72,6 +88,7 @@ export function useCourseProgress() {
       return next
     })
     postChapter(chapterId, done)
+    window.dispatchEvent(new CustomEvent(SYNC_EVENT, { detail: { chapterId, done } }))
   }, [])
 
   return { completed, setChapter }

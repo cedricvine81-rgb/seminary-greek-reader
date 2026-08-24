@@ -40,7 +40,12 @@ function buildQuestions(words: DeckWord[], pool: DeckWord[]): Q[] {
   })
 }
 
-export function PracticeVocabQuiz({ trackId, lessonNo }: { trackId: string; lessonNo: number }) {
+export function PracticeVocabQuiz({ trackId, lessonNo, embedded }: {
+  trackId: string
+  lessonNo: number
+  /** Rendered inside the track page's side panel: the panel supplies its own way back. */
+  embedded?: boolean
+}) {
   const t = useT()
   const def = selfStudyTrack(trackId)
   const step = def ? quizStepFor(def, lessonNo) : null
@@ -103,9 +108,11 @@ export function PracticeVocabQuiz({ trackId, lessonNo }: { trackId: string; less
 
   return (
     <div className="max-w-xl space-y-5">
-      <Link href={trackHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
-        <ArrowLeft size={14} /> {t('ss.q.backToTrack')}
-      </Link>
+      {!embedded && (
+        <Link href={trackHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
+          <ArrowLeft size={14} /> {t('ss.q.backToTrack')}
+        </Link>
+      )}
 
       <div>
         <h1 className="text-lg font-bold text-gray-900">{t(step.labelKey ?? 'ss.vocabQuiz')} · {t('ss.lessonN', { n: lessonNo })}</h1>
@@ -128,9 +135,11 @@ export function PracticeVocabQuiz({ trackId, lessonNo }: { trackId: string; less
             <button onClick={restart} className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
               <RotateCcw size={14} /> {t('ss.q.tryAgain')}
             </button>
-            <Link href={trackHref} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
-              {t('ss.q.backToTrack')}
-            </Link>
+            {!embedded && (
+              <Link href={trackHref} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
+                {t('ss.q.backToTrack')}
+              </Link>
+            )}
           </div>
         </div>
       ) : (

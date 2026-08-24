@@ -9,6 +9,8 @@
 // Auto-graded practice steps (quizzes from the instructor pool generators, self-checked
 // exercises) are phase 3 — they append further steps to these same lessons.
 
+import { GREEK_MORPH_QUIZZES, HEBREW_MORPH_QUIZZES, morphKeyFor } from './self-study-morph'
+
 // NO imports from the vocab world here: vocab-lesson-map pulls vocab-subsections, which
 // pulls the whole BGVB deck JSON — and this registry rides in the dashboard bundle. The
 // BGVB lesson facts we need are fully derivable: lesson n (1–16) covers the 20 consecutive
@@ -37,6 +39,10 @@ export interface SelfStudyStep {
    *  completed by PASSING the quiz (≥80%), never by the manual toggle. `sample`
    *  caps each attempt at that many randomly drawn words (review quizzes). */
   quiz?: { deck: 'greek' | 'hebrew'; selection: string | string[]; sample?: number }
+  /** Morphology (parsing) quiz steps — the recipe lives in self-study-morph.ts. */
+  morph?: boolean
+  /** Quiz and morph steps: the 1-based lesson number, for embedded players. */
+  lesson?: number
 }
 
 export interface SelfStudyLesson { steps: SelfStudyStep[] }
@@ -106,6 +112,20 @@ const HEBREW_CHAPTERS: { id: string; labelKey: string }[] = [
 // Glanz vocabulary bands (Hebrew) in study order — see scripts/build-glanz-bands.py.
 const GLANZ_BANDS = ['1A', '1B', '1C', '1D', '1E', '1F', '1G', '1H', '1I', '1J', '1K', '1L']
 
+/** The lesson's morphology-quiz step, if self-study-morph.ts defines one for it. */
+function morphStep(trackId: 'greek-beginning' | 'hebrew-beginning', lesson: number): SelfStudyStep | null {
+  const def = trackId === 'greek-beginning' ? GREEK_MORPH_QUIZZES[lesson] : HEBREW_MORPH_QUIZZES[lesson]
+  if (!def) return null
+  return {
+    key: morphKeyFor(trackId, lesson),
+    kind: 'quiz',
+    labelKey: def.labelKey,
+    href: `/student/self-study/${trackId}/morph/${lesson}`,
+    morph: true,
+    lesson,
+  }
+}
+
 function greekBeginning(): SelfStudyLesson[] {
   return GREEK_CHAPTERS.map((c, i) => {
     const steps: SelfStudyStep[] = [
@@ -127,6 +147,7 @@ function greekBeginning(): SelfStudyLesson[] {
         labelKey: 'ss.vocabQuiz',
         href: `/student/self-study/greek-beginning/quiz/${lesson}`,
         quiz: { deck: 'greek', selection: sec.key },
+        lesson,
       })
     } else {
       // Lessons 17–20 introduce no new vocabulary set, so each carries a cumulative
@@ -142,8 +163,11 @@ function greekBeginning(): SelfStudyLesson[] {
           selection: Array.from({ length: BGVB_LESSON_COUNT }, (_, n) => bgvbSection(n + 1).key),
           sample: 25,
         },
+        lesson,
       })
     }
+    const morph = morphStep('greek-beginning', lesson)
+    if (morph) steps.push(morph)
     return { steps }
   })
 }
@@ -175,7 +199,12 @@ function hebrew(chapters: { id: string; labelKey: string }[], withBands: boolean
         labelKey: 'ss.vocabQuiz',
         href: `/student/self-study/hebrew-beginning/quiz/${i + 1}`,
         quiz: { deck: 'hebrew', selection: band },
+        lesson: i + 1,
       })
+    }
+    if (withBands) {
+      const morph = morphStep('hebrew-beginning', i + 1)
+      if (morph) steps.push(morph)
     }
     return { steps }
   })
@@ -194,10 +223,11 @@ export function selfStudyTrack(id: string): SelfStudyTrackDef | null {
   return SELF_STUDY_TRACKS.find(x => x.id === id) ?? null
 }
 
-/** The quiz step of a track's lesson (1-indexed), if it has one. */
+/** The VOCABULARY quiz step of a track's lesson (1-indexed), if it has one. A lesson may
+ *  also carry a morphology quiz step (`morph`), which has no `quiz` recipe. */
 export function quizStepFor(def: SelfStudyTrackDef, lessonNo: number): SelfStudyStep | null {
   const lesson = def.lessons[lessonNo - 1]
-  return lesson?.steps.find(st => st.kind === 'quiz') ?? null
+  return lesson?.steps.find(st => !!st.quiz) ?? null
 }
 
 /** Steps done / total for a track, given the user's completed-item set. */
