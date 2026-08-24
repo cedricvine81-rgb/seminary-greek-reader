@@ -13,6 +13,7 @@ import { formatParsing } from '@/lib/morph-formatting'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { DiagramCanvas, type DiagramData } from './DiagramCanvas'
+import type { DiagramNoteSnapshot } from '@/components/notes/DiagramNoteView'
 import { usePref } from '@/lib/use-pref'
 import { Printer } from 'lucide-react'
 
@@ -377,6 +378,26 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
     if (typeof window === 'undefined') return null
     try { const raw = localStorage.getItem(localKey(s)); return raw ? JSON.parse(raw) as DiagramData : null } catch { return null }
   }
+  /** Self-contained snapshot of a sentence's current diagram, for attaching to the verse
+   *  note. Word text + glosses are baked in so the note renders without the phrase tree. */
+  function diagramSnapshot(s: Sentence): DiagramNoteSnapshot | null {
+    const k = `${s.startVerse}-${s.endVerse}`
+    const d = diagrams?.[k] ?? (isAuthenticated ? null : readLocal(s))
+    if (!d || Object.keys(d.words).length === 0) return null
+    const showGloss = typeof window !== 'undefined' && localStorage.getItem('diagram-gloss') !== '0'
+    const fs = parseFloat(FONT_SIZE_MAP[fontSize]) * 16 * 0.72
+    const words = treeWords(s.tree).map((w, i) => {
+      const p = d.words[`${w.id}#${i}`]
+      return p ? { x: p.x, y: p.y, t: w.w, ...(showGloss && w.gloss ? { g: w.gloss } : {}) } : null
+    }).filter((w): w is NonNullable<typeof w> => w !== null)
+    if (words.length === 0) return null
+    let w = 400, h = 240
+    for (const c of words) { w = Math.max(w, c.x + fs * 5); h = Math.max(h, c.y + fs * 2.4) }
+    for (const l of d.lines) { w = Math.max(w, l.x1 + 20, l.x2 + 20); h = Math.max(h, l.y1 + 20, l.y2 + 20) }
+    for (const l of d.labels ?? []) { w = Math.max(w, l.x + 120); h = Math.max(h, l.y + 40) }
+    return { v: 1, rtl: cur?.hebrew || undefined, fs, w: Math.round(w), h: Math.round(h + 16), words, lines: d.lines, labels: d.labels }
+  }
+
   async function saveDiagram(s: Sentence, data: DiagramData | null) {
     const k = `${s.startVerse}-${s.endVerse}`
     // Keep the in-memory map current so a remount (mode flip, tab switch) restores it.
@@ -628,7 +649,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                     view keeps the compact icon. Same per-verse note either way. */}
                 {isAuthenticated && cur && (
                   <VerseNoteButton book={cur.osis} chapter={s.chapter} verse={s.startVerse} noted={notedVerses.has(s.startVerse)} onChanged={refreshNotes}
-                    {...(viewMode === 'diagram' ? { variant: 'labeled' as const, label: t('phr.note') } : {})} />
+                    {...(viewMode === 'diagram' ? { variant: 'labeled' as const, label: t('phr.note'), diagram: () => diagramSnapshot(s) } : {})} />
                 )}
               </p>
               <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_31rem] lg:items-start">

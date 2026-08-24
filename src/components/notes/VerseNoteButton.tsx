@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { StickyNote, Loader2, Trash2, X, GripVertical } from 'lucide-react'
 import { NoteComposer } from './NoteComposer'
+import { DiagramNoteView, isDiagramSnapshot, type DiagramNoteSnapshot } from './DiagramNoteView'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useNoteFontScale } from '@/lib/note-prefs'
 import { toNoteHtml, isHtmlEmpty, sanitizeNoteHtml } from '@/lib/note-html'
 import { emitNotesChanged } from '@/lib/notes-changed-bus'
@@ -16,19 +18,29 @@ import { emitNotesChanged } from '@/lib/notes-changed-bus'
  */
 interface FolderLite { id: string; name: string }
 
-export function VerseNoteButton({ book, chapter, verse, noted, onChanged, variant = 'icon', label }: {
+export function VerseNoteButton({ book, chapter, verse, noted, onChanged, variant = 'icon', label, diagram }: {
   book: string; chapter: number; verse: number; noted: boolean; onChanged?: () => void
   /** 'icon' = the small sticky-note glyph; 'labeled' = a visible pill button (used on the
    *  Diagramming cards, where the note is part of the workflow rather than an aside). */
   variant?: 'icon' | 'labeled'
   /** Text for the labeled variant (passed in already translated). */
   label?: string
+  /** Snapshot builder for the verse's current phrase diagram (Diagramming cards only).
+   *  Called when the editor opens; the user chooses whether to attach it to the note. */
+  diagram?: () => DiagramNoteSnapshot | null
 }) {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [note, setNote] = useState<{ id: string; body: string; folderId: string | null } | null>(null)
+  const [note, setNote] = useState<{ id: string; body: string; folderId: string | null; diagram: unknown } | null>(null)
   const [body, setBody] = useState('')
+  // Diagram attachment: `candidate` is the canvas's current state (captured when the
+  // editor opens); `attach` is the user's choice; `removeExisting` detaches a previously
+  // saved snapshot when there is no candidate to replace it with.
+  const [candidate, setCandidate] = useState<DiagramNoteSnapshot | null>(null)
+  const [attach, setAttach] = useState(false)
+  const [removeExisting, setRemoveExisting] = useState(false)
   const [folderId, setFolderId] = useState<string | null>(null)
   const [folders, setFolders] = useState<FolderLite[]>([])
   const [fontScale, setFontScale] = useNoteFontScale()
@@ -85,16 +97,20 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged, varian
 
   const reference = `${book} ${chapter}:${verse}`
 
-  async function fetchNote(): Promise<{ id: string; body: string; folderId: string | null } | null> {
+  async function fetchNote(): Promise<{ id: string; body: string; folderId: string | null; diagram: unknown } | null> {
     const res = await fetch(`/api/notes?book=${encodeURIComponent(book)}&chapter=${chapter}&verse=${verse}`)
     const d = await res.json()
     const n = (d.notes || [])[0]
-    return n ? { id: n.id, body: n.body, folderId: n.folderId ?? null } : null
+    return n ? { id: n.id, body: n.body, folderId: n.folderId ?? null, diagram: n.diagram ?? null } : null
   }
 
   async function openEditor() {
     if (hoverTimer.current) { clearTimeout(hoverTimer.current); hoverTimer.current = null }
     setShowPreview(false)
+    const snap = diagram?.() ?? null
+    setCandidate(snap)
+    setAttach(!!snap)
+    setRemoveExisting(false)
     setOpen(true)
     // Load the user's folders so the note can be filed from here (cheap enough per open).
     fetch('/api/notes')
@@ -102,6 +118,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged, varian
       .then(d => setFolders((d.folders || []).map((f: { id: string; name: string }) => ({ id: f.id, name: f.name }))))
       .catch(() => { /* leave folder list empty */ })
     if (!noted) { setNote(null); setBody(''); setFolderId(null); return }
+
     setLoading(true)
     try {
       const n = await fetchNote()
@@ -135,12 +152,19 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged, varian
   async function save() {
     setSaving(true)
     try {
+      // What the saved note's diagram should become: a snapshot to (re)attach, null to
+      // detach, or undefined to leave whatever is stored untouched.
+      const diagramPayload: DiagramNoteSnapshot | null | undefined = candidate
+        ? (attach ? candidate : (note?.diagram ? null : undefined))
+        : (removeExisting ? null : undefined)
+      const keepsDiagram = diagramPayload !== null && (diagramPayload !== undefined || !!note?.diagram)
       if (note) {
-        if (isHtmlEmpty(body)) await fetch(`/api/notes?id=${note.id}`, { method: 'DELETE' })
-        else if (body !== note.body || folderId !== note.folderId)
-          await fetch(`/api/notes?id=${note.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body, folderId }) })
-      } else if (!isHtmlEmpty(body)) {
-        await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ book, chapter, verse, body, folderId }) })
+        // An empty body only deletes the note when no diagram remains on it.
+        if (isHtmlEmpty(body) && !keepsDiagram) await fetch(`/api/notes?id=${note.id}`, { method: 'DELETE' })
+        else if (body !== note.body || folderId !== note.folderId || diagramPayload !== undefined)
+          await fetch(`/api/notes?id=${note.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body, folderId, ...(diagramPayload !== undefined ? { diagram: diagramPayload } : {}) }) })
+      } else if (!isHtmlEmpty(body) || (diagramPayload && diagramPayload !== null)) {
+        await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ book, chapter, verse, body, folderId, ...(diagramPayload ? { diagram: diagramPayload } : {}) }) })
       }
       setPreviewBody(null) // note changed — invalidate the hover-preview cache
       onChanged?.()
@@ -232,6 +256,32 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged, varian
 
           {/* Body (scrolls if the panel is taller than the viewport) */}
           <div className="min-h-0 overflow-y-auto p-3">
+            {/* Attached phrase diagram: the canvas's current state when opened from a
+                Diagramming card (checkbox), or the note's stored snapshot (removable). */}
+            {(candidate || isDiagramSnapshot(note?.diagram)) && (
+              <div className="mb-2.5 space-y-1.5">
+                {(() => {
+                  const shown = candidate && attach ? candidate
+                    : !removeExisting && isDiagramSnapshot(note?.diagram) ? note!.diagram as DiagramNoteSnapshot
+                    : null
+                  return shown ? <DiagramNoteView snap={shown} /> : null
+                })()}
+                {candidate ? (
+                  <label className="flex cursor-pointer items-center gap-2 text-xs text-gray-600">
+                    <input type="checkbox" checked={attach} onChange={e => setAttach(e.target.checked)}
+                      className="h-3.5 w-3.5 rounded border-gray-300 text-brand-600 focus:ring-brand-500" />
+                    {t('phr.attachDiagram')}
+                  </label>
+                ) : (
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>{removeExisting ? t('phr.diagramWillBeRemoved') : t('phr.diagramAttached')}</span>
+                    <button type="button" onClick={() => setRemoveExisting(r => !r)} className="font-medium text-gray-400 hover:text-red-600">
+                      {removeExisting ? t('action.undo') : t('phr.removeDiagram')}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
             {loading ? (
               <p className="text-xs text-gray-400 p-2"><Loader2 size={12} className="inline animate-spin" /> Loading…</p>
             ) : (

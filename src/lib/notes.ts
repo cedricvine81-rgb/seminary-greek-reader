@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import { prisma } from './db'
 
 /* ───────────────────────── Folders ───────────────────────── */
@@ -61,7 +62,7 @@ async function assertFolder(userId: string, folderId: string | null | undefined)
 // thematic note with no verse, carrying an optional title, that still lives in a folder.
 export async function createNote(userId: string, data: {
   book?: string | null; chapter?: number | null; verse?: number | null; verseEnd?: number | null
-  title?: string | null; body: string; folderId?: string | null
+  title?: string | null; body: string; folderId?: string | null; diagram?: unknown
 }) {
   await assertFolder(userId, data.folderId)
   return prisma.verseNote.create({
@@ -70,11 +71,16 @@ export async function createNote(userId: string, data: {
       book: data.book ?? null, chapter: data.chapter ?? null, verse: data.verse ?? null,
       verseEnd: data.verseEnd ?? null, title: data.title?.trim() || null,
       body: data.body ?? '', folderId: data.folderId ?? null,
+      ...(data.diagram != null ? { diagram: data.diagram as Prisma.InputJsonValue } : {}),
     },
   })
 }
 
-export async function updateNote(userId: string, id: string, data: { title?: string | null; body?: string; folderId?: string | null }) {
+export async function updateNote(userId: string, id: string, data: {
+  title?: string | null; body?: string; folderId?: string | null
+  /** undefined = leave unchanged; null = detach; object = set/replace the snapshot. */
+  diagram?: unknown
+}) {
   const note = await prisma.verseNote.findUnique({ where: { id }, select: { userId: true } })
   if (!note || note.userId !== userId) throw new Error('Note not found')
   if (data.folderId !== undefined) await assertFolder(userId, data.folderId)
@@ -84,6 +90,7 @@ export async function updateNote(userId: string, id: string, data: { title?: str
       ...(data.title !== undefined ? { title: data.title?.trim() || null } : {}),
       ...(data.body !== undefined ? { body: data.body } : {}),
       ...(data.folderId !== undefined ? { folderId: data.folderId } : {}),
+      ...(data.diagram !== undefined ? { diagram: data.diagram === null ? Prisma.DbNull : data.diagram as Prisma.InputJsonValue } : {}),
     },
   })
 }

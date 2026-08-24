@@ -982,6 +982,10 @@ model VerseNote {
   // Optional heading, mainly for general notes so a list of them reads without a verse ref.
   title     String?
   body      String   @default("")
+  // Optional attached phrase diagram: a self-contained snapshot (word chips with positions,
+  // lines, labels) captured from the Diagramming canvas. Rendered read-only wherever the
+  // note is shown; the note stays an ordinary VerseNote (folders, anchors, sync all apply).
+  diagram   Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

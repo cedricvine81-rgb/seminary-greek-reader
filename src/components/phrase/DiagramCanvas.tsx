@@ -39,7 +39,7 @@ type Interaction =
 // word share an id (בְּ and רֵאשִׁית are both Gen.1.1.1), so the id alone is not unique.
 const wordKey = (w: WordNodeT, i: number) => `${w.id}#${i}`
 
-const MIN_CANVAS_H = 260
+const MIN_CANVAS_H = 400
 
 /** Snap a line's free end to the nearest 45° step around its anchored end. */
 function snap45(x1: number, y1: number, x2: number, y2: number): { x: number; y: number } {
@@ -79,7 +79,9 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
   const chipRefs = useRef<Map<string, HTMLDivElement>>(new Map())
   // null → chips render in a hidden flow layout first; the layout effect below measures
   // that flow and turns it into absolute positions (so the initial arrangement is exactly
-  // what the browser's own line-wrapping produced, LTR or RTL alike).
+  // what the browser's own line-wrapping produced, LTR or RTL alike). The flow is a COMPACT
+  // tray along the top of the canvas, in verse order — the student drags words down from it
+  // into place, so the canvas always keeps empty working space below the lowest chip.
   const [positions, setPositions] = useState<Record<string, Pos> | null>(null)
   const [lines, setLines] = useState<DiagramLine[]>(initialData?.lines ?? [])
   const [labels, setLabels] = useState<DiagramLabel[]>(initialData?.labels ?? [])
@@ -388,7 +390,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
   if (positions) {
     for (const [key, p] of Object.entries(positions)) {
       const el = chipRefs.current.get(key)
-      canvasH = Math.max(canvasH, p.y + (el?.offsetHeight ?? 40) + 48)
+      canvasH = Math.max(canvasH, p.y + (el?.offsetHeight ?? 40) + 140)
     }
     for (const l of lines) canvasH = Math.max(canvasH, Math.max(l.y1, l.y2) + 32)
     for (const l of labels) canvasH = Math.max(canvasH, l.y + 56)
@@ -584,7 +586,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
                   openWordSearch({ x: e.clientX, y: e.clientY, surface: w.w, lemma: w.lemma ?? null, reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, ...(hasHebrew(w.w) ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }) })
                 }}
                 title={[w.lemma && `lemma: ${w.lemma}`, w.morph && `morph: ${w.morph}`].filter(Boolean).join('\n')}
-                className={`${positions === null ? 'inline-flex me-10 mb-8' : 'absolute flex'} flex-col items-start select-none rounded border bg-white px-1.5 py-0.5 shadow-sm ${inGroup ? 'border-brand-500 ring-1 ring-brand-300' : 'border-gray-200'} ${readOnly ? '' : mode === 'move' ? 'cursor-grab active:cursor-grabbing hover:border-brand-300' : 'pointer-events-none'}`}
+                className={`${positions === null ? 'inline-flex me-3 mb-2' : 'absolute flex'} flex-col items-start select-none rounded border bg-white px-1.5 py-0.5 shadow-sm ${inGroup ? 'border-brand-500 ring-1 ring-brand-300' : 'border-gray-200'} ${readOnly ? '' : mode === 'move' ? 'cursor-grab active:cursor-grabbing hover:border-brand-300' : 'pointer-events-none'}`}
                 style={p ? { left: p.x, top: p.y, touchAction: 'none' } : { touchAction: 'none' }}
               >
                 {/* Diagram chips run smaller than the tree's text — the canvas needs the

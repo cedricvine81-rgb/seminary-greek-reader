@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const note = await createNote(payload.sub, {
       book: b.book, chapter: Number(b.chapter), verse: Number(b.verse),
       verseEnd: b.verseEnd ? Number(b.verseEnd) : null, title: b.title ?? null,
-      body: b.body ?? '', folderId: b.folderId ?? null,
+      body: b.body ?? '', folderId: b.folderId ?? null, diagram: b.diagram ?? undefined,
     })
     return NextResponse.json({ note }, { status: 201 })
   } catch (err) {
@@ -62,7 +62,7 @@ export async function PATCH(req: NextRequest) {
     const id = req.nextUrl.searchParams.get('id')
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
     const b = await req.json()
-    const note = await updateNote(payload.sub, id, { title: b.title, body: b.body, folderId: b.folderId })
+    const note = await updateNote(payload.sub, id, { title: b.title, body: b.body, folderId: b.folderId, diagram: b.diagram })
     return NextResponse.json({ note })
   } catch (err) {
     logError('api/notes PATCH', err)

@@ -5,6 +5,7 @@ import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/not
 import { NoteComposer } from '@/components/notes/NoteComposer'
 import { useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
 import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
+import { DiagramNoteView, isDiagramSnapshot } from '@/components/notes/DiagramNoteView'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
@@ -20,7 +21,7 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 
 
 // A note is either verse-anchored (book/chapter/verse set) or "general" (all null + optional title).
-interface NoteT { id: string; folderId: string | null; book: string | null; chapter: number | null; verse: number | null; verseEnd: number | null; title: string | null; body: string }
+interface NoteT { id: string; folderId: string | null; book: string | null; chapter: number | null; verse: number | null; verseEnd: number | null; title: string | null; body: string; diagram?: unknown }
 // assignmentId is non-null only for Course Notes folders provisioned by an instructor's
 // assignment — those can be renamed/recoloured but not deleted.
 interface FolderT { id: string; name: string; color: string; assignmentId: string | null; _count: { notes: number } }
@@ -853,6 +854,11 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
           {existing && <button onClick={async () => { discarded.current = true; await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged(); emitNotesChanged() }} className="text-gray-300 hover:text-red-600" title={t('notes.deleteNote')}><Trash2 size={13} /></button>}
         </span>
       </div>
+      {/* Attached phrase diagram (saved from the Diagramming tab) — shown read-only;
+          attach/detach happens in the note editor on the diagram card itself. */}
+      {isDiagramSnapshot(existing?.diagram) && (
+        <div className="mb-1.5"><DiagramNoteView snap={existing!.diagram as import('@/components/notes/DiagramNoteView').DiagramNoteSnapshot} /></div>
+      )}
       <NoteComposer initialHtml={toNoteHtml(draft)} onChange={setDraft} onBlur={() => void save(finalOnBlur)} autoFocus={isNew && !isGeneral} fontScale={fontScale} onFontScale={setFontScale} lineScale={lineSpacing} />
       {isNew && isGeneral && (
         <div className="flex items-center justify-end gap-2 mt-2">
