@@ -195,9 +195,9 @@ export const PARSING_CONTENT = (
         title="Finite-verb slots — pick one from each column"
         headers={['1 · Tense', '2 · Voice', '3 · Mood', '4 · Person', '5 · Number']}
         rows={[
-          [<strong><Tr id="parsing.g.present">Present</Tr></strong>, <strong><Tr id="parsing.g.active">Active</Tr></strong>, <><strong><Tr id="parsing.g.indicative">Indicative</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.states-fact">— states a fact</Tr></span></>, <><Tr id="parsing.g.person-1st">1st</Tr> <span className="text-xs text-gray-500"><Tr id="parsing.g.i-we">— I / we</Tr></span></>, <strong><Tr id="parsing.g.singular">Singular</Tr></strong>],
-          [<strong><Tr id="parsing.g.imperfect">Imperfect</Tr></strong>, <strong><Tr id="parsing.g.middle">Middle</Tr></strong>, <><strong><Tr id="parsing.g.subjunctive">Subjunctive</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.may-might">— may / might</Tr></span></>, <><Tr id="parsing.g.person-2nd">2nd</Tr> <span className="text-xs text-gray-500"><Tr id="parsing.g.you">— you</Tr></span></>, <strong><Tr id="parsing.g.plural">Plural</Tr></strong>],
-          [<strong><Tr id="parsing.g.future">Future</Tr></strong>, <strong><Tr id="parsing.g.passive">Passive</Tr></strong>, <><strong><Tr id="parsing.g.imperative">Imperative</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.command">— command</Tr></span></>, <><Tr id="parsing.g.person-3rd">3rd</Tr> <span className="text-xs text-gray-500"><Tr id="parsing.g.he-she-it-they">— he/she/it, they</Tr></span></>, ''],
+          [<strong><Tr id="parsing.g.present">Present</Tr></strong>, <strong><Tr id="parsing.g.active">Active</Tr></strong>, <><strong><Tr id="parsing.g.indicative">Indicative</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.states-fact">— states a fact</Tr></span></>, <><strong><Tr id="parsing.g.person-1st">1st</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.i-we">— I / we</Tr></span></>, <strong><Tr id="parsing.g.singular">Singular</Tr></strong>],
+          [<strong><Tr id="parsing.g.imperfect">Imperfect</Tr></strong>, <strong><Tr id="parsing.g.middle">Middle</Tr></strong>, <><strong><Tr id="parsing.g.subjunctive">Subjunctive</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.may-might">— may / might</Tr></span></>, <><strong><Tr id="parsing.g.person-2nd">2nd</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.you">— you</Tr></span></>, <strong><Tr id="parsing.g.plural">Plural</Tr></strong>],
+          [<strong><Tr id="parsing.g.future">Future</Tr></strong>, <strong><Tr id="parsing.g.passive">Passive</Tr></strong>, <><strong><Tr id="parsing.g.imperative">Imperative</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.command">— command</Tr></span></>, <><strong><Tr id="parsing.g.person-3rd">3rd</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.he-she-it-they">— he/she/it, they</Tr></span></>, ''],
           [<strong><Tr id="parsing.g.aorist">Aorist</Tr></strong>, '', <><strong><Tr id="parsing.g.optative">Optative</Tr></strong> <span className="text-xs text-gray-500"><Tr id="parsing.g.wish-rare">— wish (rare)</Tr></span></>, '', ''],
           [<strong><Tr id="parsing.g.perfect">Perfect</Tr></strong>, '', '', '', ''],
           [<strong><Tr id="parsing.g.pluperfect">Pluperfect</Tr></strong>, '', '', '', ''],
@@ -239,6 +239,32 @@ export const PARSING_CONTENT = (
         ],
       ]}
       note="“Participle” and “infinitive” occupy the mood slot in this scheme — say the word aloud where the mood would go."
+    />
+
+    {/* The same pick-one-per-column layout as the finite-verb table above, so the two
+        hybrid forms' options are all on the page (user request, 2026-08-24). */}
+    <ColsTable id="parsing.ct5"
+      title="Participle slots — pick one from each column"
+      headers={['1 · Tense', '2 · Voice', '3 · Mood', '4 · Case', '5 · Number', '6 · Gender']}
+      rows={[
+        [<strong><Tr id="parsing.g.present">Present</Tr></strong>, <strong><Tr id="parsing.g.active">Active</Tr></strong>, <span className="text-gray-500"><Tr id="parsing.g.participle-2">participle</Tr></span>, <strong><Tr id="parsing.g.nominative">Nominative</Tr></strong>, <strong><Tr id="parsing.g.singular">Singular</Tr></strong>, <strong><Tr id="parsing.g.masculine">Masculine</Tr></strong>],
+        [<strong><Tr id="parsing.g.future">Future</Tr></strong>, <strong><Tr id="parsing.g.middle">Middle</Tr></strong>, '', <strong><Tr id="parsing.g.genitive">Genitive</Tr></strong>, <strong><Tr id="parsing.g.plural">Plural</Tr></strong>, <strong><Tr id="parsing.g.feminine">Feminine</Tr></strong>],
+        [<strong><Tr id="parsing.g.aorist">Aorist</Tr></strong>, <strong><Tr id="parsing.g.passive">Passive</Tr></strong>, '', <strong><Tr id="parsing.g.dative">Dative</Tr></strong>, '', <strong><Tr id="parsing.g.neuter">Neuter</Tr></strong>],
+        [<strong><Tr id="parsing.g.perfect">Perfect</Tr></strong>, '', '', <strong><Tr id="parsing.g.accusative">Accusative</Tr></strong>, '', ''],
+      ]}
+      note="Only these four tenses form participles — no imperfect or pluperfect. A vocative participle exists but is rare."
+    />
+
+    <ColsTable id="parsing.ct6"
+      title="Infinitive slots — pick one from each column"
+      headers={['1 · Tense', '2 · Voice', '3 · Mood']}
+      rows={[
+        [<strong><Tr id="parsing.g.present">Present</Tr></strong>, <strong><Tr id="parsing.g.active">Active</Tr></strong>, <span className="text-gray-500"><Tr id="parsing.g.infinitive-lower">infinitive</Tr></span>],
+        [<strong><Tr id="parsing.g.future">Future</Tr></strong>, <strong><Tr id="parsing.g.middle">Middle</Tr></strong>, ''],
+        [<strong><Tr id="parsing.g.aorist">Aorist</Tr></strong>, <strong><Tr id="parsing.g.passive">Passive</Tr></strong>, ''],
+        [<strong><Tr id="parsing.g.perfect">Perfect</Tr></strong>, '', ''],
+      ]}
+      note="Then the lexical form, and the parse is done: “aorist passive infinitive of γράφω.”"
     />
 
     <InfoBox title={<Tr id="parsing.ib.one-rule">The one rule to carry forward</Tr>}>
