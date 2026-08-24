@@ -1,7 +1,7 @@
 'use client'
-import { useEffect, useState, type RefObject } from 'react'
+import { useEffect, useRef, useState, type RefObject } from 'react'
 import clsx from 'clsx'
-import { ChevronsDownUp, ChevronsUpDown } from 'lucide-react'
+import { ChevronsDownUp, ChevronsUpDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
 /* ─────────────────────────────────────────────
@@ -69,6 +69,10 @@ export interface SidebarItem {
   done?: boolean
 }
 
+const MIN_W = 180
+const MAX_W = 440
+const DEFAULT_W = 240
+
 export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection }: {
   groups: { heading: string; items: SidebarItem[] }[]
   activeId: string
@@ -78,6 +82,7 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
   /** Overrides the default behaviour (expand + scroll to the section's heading). */
   onSection?: (id: string) => void
 }) {
+  const t = useT()
   const jump = (id: string) => {
     if (onSection) { onSection(id); return }
     window.dispatchEvent(new CustomEvent('morph-expand-section', { detail: id }))
@@ -86,9 +91,74 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
   // chapter always shows its outline.
   const [outlineHidden, setOutlineHidden] = useState(false)
   useEffect(() => { setOutlineHidden(false) }, [activeId])
+
+  // Hide/show + drag-to-resize (user request, 2026-08-24): the divider on the sidebar's
+  // right edge drags its width (which is what widens or narrows the chapter pane), and the
+  // panel button collapses it to a slim rail. Both remembered per device.
+  const [width, setWidth] = useState(DEFAULT_W)
+  const [hidden, setHidden] = useState(false)
+  const widthRef = useRef(DEFAULT_W)
+  widthRef.current = width
+  useEffect(() => {
+    try {
+      const w = parseInt(localStorage.getItem('grammar-sidebar-w') ?? '', 10)
+      if (w >= MIN_W && w <= MAX_W) setWidth(w)
+      if (localStorage.getItem('grammar-sidebar-hidden') === '1') setHidden(true)
+    } catch { /* ignore */ }
+  }, [])
+  function saveHidden(h: boolean) {
+    setHidden(h)
+    try { localStorage.setItem('grammar-sidebar-hidden', h ? '1' : '0') } catch { /* ignore */ }
+  }
+  const drag = useRef<{ startX: number; startW: number } | null>(null)
+  function onHandleDown(e: React.PointerEvent<HTMLDivElement>) {
+    e.preventDefault()
+    drag.current = { startX: e.clientX, startW: widthRef.current }
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+  function onHandleMove(e: React.PointerEvent<HTMLDivElement>) {
+    const d = drag.current
+    if (!d) return
+    setWidth(Math.min(MAX_W, Math.max(MIN_W, d.startW + e.clientX - d.startX)))
+  }
+  function onHandleUp() {
+    if (!drag.current) return
+    drag.current = null
+    try { localStorage.setItem('grammar-sidebar-w', String(widthRef.current)) } catch { /* ignore */ }
+  }
+
+  if (hidden) {
+    return (
+      <nav className="hidden lg:block shrink-0 print:hidden">
+        <div className="sticky top-16">
+          <button
+            type="button"
+            title={t('morph.showSidebar')}
+            aria-label={t('morph.showSidebar')}
+            onClick={() => saveHidden(false)}
+            className="rounded-lg border border-gray-200 bg-surface p-1.5 text-gray-500 shadow-sm transition-colors hover:bg-gray-50 hover:text-brand-700"
+          >
+            <PanelLeftOpen size={16} />
+          </button>
+        </div>
+      </nav>
+    )
+  }
+
   return (
-    <nav className="hidden lg:block w-60 shrink-0 print:hidden">
-      <div className="sticky top-16 max-h-[calc(100vh-5rem)] overflow-y-auto pr-3 pb-6 border-r border-gray-100">
+    <nav className="relative hidden lg:block shrink-0 print:hidden" style={{ width }}>
+      <div className="sticky top-16 max-h-[calc(100vh-5rem)] overflow-y-auto pr-3 pb-6">
+        <div className="mb-2 flex justify-end pr-1">
+          <button
+            type="button"
+            title={t('morph.hideSidebar')}
+            aria-label={t('morph.hideSidebar')}
+            onClick={() => saveHidden(true)}
+            className="rounded-md p-1 text-gray-300 transition-colors hover:bg-gray-50 hover:text-gray-600"
+          >
+            <PanelLeftClose size={15} />
+          </button>
+        </div>
         {groups.map(g => (
           <div key={g.heading} className="mb-4">
             <p className="mb-1.5 px-2 text-xs font-semibold uppercase tracking-wide text-gray-400">{g.heading}</p>
@@ -137,6 +207,17 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
           </div>
         ))}
       </div>
+      {/* Drag handle: the divider between the chapter list and the content pane. */}
+      <div
+        role="separator"
+        aria-orientation="vertical"
+        title={t('morph.resizeSidebar')}
+        onPointerDown={onHandleDown}
+        onPointerMove={onHandleMove}
+        onPointerUp={onHandleUp}
+        className="absolute inset-y-0 right-0 w-1.5 cursor-col-resize rounded bg-gray-100 transition-colors hover:bg-brand-300 active:bg-brand-400"
+        style={{ touchAction: 'none' }}
+      />
     </nav>
   )
 }

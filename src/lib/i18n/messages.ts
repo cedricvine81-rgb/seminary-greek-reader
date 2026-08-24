@@ -1258,6 +1258,9 @@ const en: Catalogue = {
   'morph.openInReader': 'open in the Reader',
   'morph.hw.heading': 'Class and homework exercises — instructor controls',
   'morph.hw.menuTitle': 'Class & homework exercises',
+  'morph.hideSidebar': 'Hide the chapter list',
+  'morph.showSidebar': 'Show the chapter list',
+  'morph.resizeSidebar': 'Drag to resize the panes',
   // Short topic tags beside the Eight Minimums in the Grammar sidebar.
   'morph.min.1': '1st/2nd Decl.',
   'morph.min.2': '3rd Decl.',
@@ -4000,6 +4003,9 @@ const es: Catalogue = {
   'morph.openInReader': 'abrir en el Lector',
   'morph.hw.heading': 'Ejercicios de clase y tarea: controles del profesor',
   'morph.hw.menuTitle': 'Ejercicios de clase y tarea',
+  'morph.hideSidebar': 'Ocultar la lista de capítulos',
+  'morph.showSidebar': 'Mostrar la lista de capítulos',
+  'morph.resizeSidebar': 'Arrastra para ajustar los paneles',
   // Etiquetas breves junto a los Ocho Mínimos en la barra lateral de Gramática.
   'morph.min.1': '1.ª/2.ª decl.',
   'morph.min.2': '3.ª decl.',
