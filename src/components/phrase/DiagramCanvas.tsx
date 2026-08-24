@@ -41,6 +41,19 @@ const wordKey = (w: WordNodeT, i: number) => `${w.id}#${i}`
 
 const MIN_CANVAS_H = 400
 
+/** Wraps a toolbar button with a delayed hover bubble explaining the tool (usability
+ *  feedback: the icon strip needed explanation). Same pattern as the sidebar nav bubbles. */
+function ToolHint({ hint, children }: { hint: string; children: React.ReactNode }) {
+  return (
+    <span className="group relative inline-flex">
+      {children}
+      <span className="pointer-events-none absolute left-0 top-full z-40 mt-1.5 w-52 rounded-lg border border-gray-200 bg-popover p-2 text-xs font-normal leading-relaxed text-gray-600 shadow-lg opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-hover:delay-500">
+        {hint}
+      </span>
+    </span>
+  )
+}
+
 /** Snap a line's free end to the nearest 45° step around its anchored end. */
 function snap45(x1: number, y1: number, x2: number, y2: number): { x: number; y: number } {
   const len = Math.hypot(x2 - x1, y2 - y1)
@@ -61,9 +74,11 @@ function bracketPath(l: DiagramLine): string {
   return `M ${l.x1 + nx},${l.y1 + ny} L ${l.x1},${l.y1} L ${l.x2},${l.y2} L ${l.x2 + nx},${l.y2 + ny}`
 }
 
-export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnly = false }: {
+export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnly = false, minHeight = MIN_CANVAS_H }: {
   words: WordNodeT[]
   rtl?: boolean
+  /** Canvas floor height — the guide's demo canvases pass something smaller. */
+  minHeight?: number
   /** Saved layout to restore, if the user has one for this sentence. */
   initialData?: DiagramData | null
   /** Persist the whole layout; null means "reset" (delete the saved diagram). */
@@ -101,21 +116,35 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
   const statusTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Seed positions as a vertical verse-order column, overlaid with any saved positions.
+  // GOTCHA: the Exegesis tabs stay mounted, so this canvas can mount inside a `hidden`
+  // tab — where every chip measures 0×0 and the column seeded as an overlapping pile
+  // (user report, 2026-08-24). If the canvas has no layout yet, wait for it to become
+  // visible (a ResizeObserver fires when it first gets a size) and seed then.
   useLayoutEffect(() => {
     if (positions !== null) return
-    const cw = canvasRef.current?.clientWidth ?? 600
-    const seed: Record<string, Pos> = {}
-    let y = 16
-    words.forEach((w, i) => {
-      const el = chipRefs.current.get(wordKey(w, i))
-      const h = el?.offsetHeight ?? 40
-      const wdt = el?.offsetWidth ?? 48
-      seed[wordKey(w, i)] = { x: rtl ? Math.max(16, cw - wdt - 16) : 16, y }
-      y += h + 8
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const seedNow = () => {
+      const cw = canvas.clientWidth || 600
+      const seed: Record<string, Pos> = {}
+      let y = 16
+      words.forEach((w, i) => {
+        const el = chipRefs.current.get(wordKey(w, i))
+        const h = el && el.offsetHeight > 0 ? el.offsetHeight : 44
+        const wdt = el && el.offsetWidth > 0 ? el.offsetWidth : 48
+        seed[wordKey(w, i)] = { x: rtl ? Math.max(16, cw - wdt - 16) : 16, y }
+        y += h + 8
+      })
+      // Saved positions win; the seed fills in any word the saved layout doesn't know
+      // (it shouldn't happen for a stable sentence, but never strand a word off-canvas).
+      setPositions({ ...seed, ...(initialData?.words ?? {}) })
+    }
+    if (canvas.offsetParent !== null && canvas.clientWidth > 0) { seedNow(); return }
+    const ro = new ResizeObserver(() => {
+      if (canvas.offsetParent !== null && canvas.clientWidth > 0) { ro.disconnect(); seedNow() }
     })
-    // Saved positions win; the seed fills in any word the saved layout doesn't know
-    // (it shouldn't happen for a stable sentence, but never strand a word off-canvas).
-    setPositions({ ...seed, ...(initialData?.words ?? {}) })
+    ro.observe(canvas)
+    return () => ro.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [positions, words])
 
@@ -389,12 +418,14 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
     persist(null)
   }
 
-  // Canvas grows with the layout so nothing gets clipped below the fold.
-  let canvasH = MIN_CANVAS_H
+  // Canvas grows with the layout so nothing gets clipped below the fold; read-only
+  // renders (grader, guide demos) keep only a slim margin instead of working space.
+  const belowPad = readOnly ? 24 : 140
+  let canvasH = minHeight
   if (positions) {
     for (const [key, p] of Object.entries(positions)) {
       const el = chipRefs.current.get(key)
-      canvasH = Math.max(canvasH, p.y + (el?.offsetHeight ?? 40) + 140)
+      canvasH = Math.max(canvasH, p.y + (el?.offsetHeight ?? 40) + belowPad)
     }
     for (const l of lines) canvasH = Math.max(canvasH, Math.max(l.y1, l.y2) + 32)
     for (const l of labels) canvasH = Math.max(canvasH, l.y + 56)
@@ -410,21 +441,35 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
       {/* Tool strip: move ⇄ draw ⇄ label, straighten toggle, reset, save status. */}
       {!readOnly && (
       <div className="flex items-center gap-1 mb-2 print:hidden">
-        <button type="button" title={t('phr.move')} aria-label={t('phr.move')} aria-pressed={mode === 'move'}
-          onClick={() => setModeSafe('move')} className={toolBtn(mode === 'move')}><Move size={16} /></button>
-        <button type="button" title={t('phr.drawLines')} aria-label={t('phr.drawLines')} aria-pressed={mode === 'line'}
-          onClick={() => setModeSafe('line')} className={toolBtn(mode === 'line')}><Slash size={16} /></button>
-        <button type="button" title={t('phr.bracketTool')} aria-label={t('phr.bracketTool')} aria-pressed={mode === 'bracket'}
-          onClick={() => setModeSafe('bracket')} className={toolBtn(mode === 'bracket')}><Brackets size={16} /></button>
-        <button type="button" title={t('phr.addLabels')} aria-label={t('phr.addLabels')} aria-pressed={mode === 'label'}
-          onClick={() => setModeSafe('label')} className={toolBtn(mode === 'label')}><Type size={16} /></button>
+        <ToolHint hint={t('phr.hint.move')}>
+          <button type="button" aria-label={t('phr.move')} aria-pressed={mode === 'move'}
+            onClick={() => setModeSafe('move')} className={toolBtn(mode === 'move')}><Move size={16} /></button>
+        </ToolHint>
+        <ToolHint hint={t('phr.hint.line')}>
+          <button type="button" aria-label={t('phr.drawLines')} aria-pressed={mode === 'line'}
+            onClick={() => setModeSafe('line')} className={toolBtn(mode === 'line')}><Slash size={16} /></button>
+        </ToolHint>
+        <ToolHint hint={t('phr.hint.bracket')}>
+          <button type="button" aria-label={t('phr.bracketTool')} aria-pressed={mode === 'bracket'}
+            onClick={() => setModeSafe('bracket')} className={toolBtn(mode === 'bracket')}><Brackets size={16} /></button>
+        </ToolHint>
+        <ToolHint hint={t('phr.hint.label')}>
+          <button type="button" aria-label={t('phr.addLabels')} aria-pressed={mode === 'label'}
+            onClick={() => setModeSafe('label')} className={toolBtn(mode === 'label')}><Type size={16} /></button>
+        </ToolHint>
         <span className="w-px h-4 bg-gray-200 mx-1" />
-        <button type="button" title={t('phr.straighten')} aria-label={t('phr.straighten')} aria-pressed={snap}
-          onClick={() => setSnap(s => !s)} className={toolBtn(snap)}><Magnet size={15} /></button>
-        <button type="button" title={t('phr.toggleGloss')} aria-label={t('phr.toggleGloss')} aria-pressed={showGloss === '1'}
-          onClick={() => setShowGloss(showGloss === '1' ? '0' : '1')} className={toolBtn(showGloss === '1')}><Languages size={15} /></button>
-        <button type="button" title={t('phr.resetLayout')} aria-label={t('phr.resetLayout')}
-          onClick={reset} className={toolBtn(false)}><RotateCcw size={15} /></button>
+        <ToolHint hint={t('phr.hint.magnet')}>
+          <button type="button" aria-label={t('phr.straighten')} aria-pressed={snap}
+            onClick={() => setSnap(s => !s)} className={toolBtn(snap)}><Magnet size={15} /></button>
+        </ToolHint>
+        <ToolHint hint={t('phr.hint.gloss')}>
+          <button type="button" aria-label={t('phr.toggleGloss')} aria-pressed={showGloss === '1'}
+            onClick={() => setShowGloss(showGloss === '1' ? '0' : '1')} className={toolBtn(showGloss === '1')}><Languages size={15} /></button>
+        </ToolHint>
+        <ToolHint hint={t('phr.hint.reset')}>
+          <button type="button" aria-label={t('phr.resetLayout')}
+            onClick={reset} className={toolBtn(false)}><RotateCcw size={15} /></button>
+        </ToolHint>
         <span className={`ml-auto text-xs text-gray-400 transition-opacity ${status === 'saved' ? 'opacity-100' : 'opacity-0'}`}>
           {t('phr.saved')}
         </span>

@@ -15,7 +15,7 @@ import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebr
 import { DiagramCanvas, type DiagramData } from './DiagramCanvas'
 import type { DiagramNoteSnapshot } from '@/components/notes/DiagramNoteView'
 import { usePref } from '@/lib/use-pref'
-import { Printer } from 'lucide-react'
+import { Printer, HelpCircle } from 'lucide-react'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
 // Exported for the DiagramCanvas, which renders the same word nodes as draggable chips.
@@ -614,6 +614,17 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
               >
                 <Printer size={16} />
               </button>
+            )}
+            {/* How-to guide: worked example + the tools + why diagramming is worth it. */}
+            {viewMode === 'diagram' && (
+              <a
+                href="/exegesis/diagramming-guide"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-lg px-1.5 py-1 text-[13px] font-medium text-brand-600 hover:bg-brand-50 hover:text-brand-800 transition-colors"
+              >
+                <HelpCircle size={15} /> {t('phr.howTo')}
+              </a>
             )}
           </div>
           <div className="hidden lg:grid grid-cols-2 gap-4 w-[31rem]">
