@@ -11,6 +11,7 @@ import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
 import { HEBREW_DECK } from '@/lib/vocab-decks'
 import bgvbData from '@/data/bgvb-vocabulary.json'
 import hebrewData from '@/data/hebrew-vocabulary.json'
+import { SpeakGreek } from '@/components/audio/SpeakGreek'
 
 /**
  * Band labels via LITERAL t() keys, not `t(`vocab.band.${band}.short`)`. A template-literal key
@@ -649,7 +650,11 @@ function FlashcardPlayer({
               {/* Front — never moves */}
               {greekFirst ? (
                 <>
-                  <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-3xl text-gray-900 font-bold text-center leading-snug`}>{word.word}</p>
+                  <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-3xl text-gray-900 font-bold text-center leading-snug`}>
+                    {word.word}
+                    {/* Greek only: the button speaks Erasmian, which has no Hebrew counterpart. */}
+                    {!V.rtl && <SpeakGreek text={word.word} size={18} className="ml-2" />}
+                  </p>
                   {word.inflection && <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-sm text-gray-500`}>{word.inflection}</p>}
                 </>
               ) : (
@@ -668,7 +673,10 @@ function FlashcardPlayer({
                   </>
                 ) : (
                   <>
-                    <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-3xl text-gray-900 font-bold text-center`}>{word.word}</p>
+                    <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-3xl text-gray-900 font-bold text-center`}>
+                      {word.word}
+                      {!V.rtl && <SpeakGreek text={word.word} size={18} className="ml-2" />}
+                    </p>
                     {word.inflection && <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-sm text-gray-500`}>{word.inflection}</p>}
                   </>
                 )}
