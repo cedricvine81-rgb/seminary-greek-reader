@@ -15,7 +15,7 @@ import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebr
 import { DiagramCanvas, type DiagramData } from './DiagramCanvas'
 import type { DiagramNoteSnapshot } from '@/components/notes/DiagramNoteView'
 import { usePref } from '@/lib/use-pref'
-import { Printer, HelpCircle } from 'lucide-react'
+import { Printer, HelpCircle, X as XIcon } from 'lucide-react'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
 // Exported for the DiagramCanvas, which renders the same word nodes as draggable chips.
@@ -350,6 +350,13 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   // Left pane view: the drag-and-drop diagram canvas (default), or the Macula phrase
   // tree. Remembered on this device — instructors tend to live in one mode or the other.
   const [viewMode, setViewMode] = usePref<'tree' | 'diagram'>('phrase-view-mode', ['tree', 'diagram'], 'diagram')
+  // First-visit pointer at the how-to guide; dismissed once, stays dismissed per device.
+  const [hintDismissed, setHintDismissed] = useState(true)
+  useEffect(() => { try { setHintDismissed(localStorage.getItem('diagram-hint-dismissed') === '1') } catch { /* ignore */ } }, [])
+  function dismissHint() {
+    setHintDismissed(true)
+    try { localStorage.setItem('diagram-hint-dismissed', '1') } catch { /* ignore */ }
+  }
 
   // Saved diagrams for the current chapter, keyed "verseStart-verseEnd". null while the
   // signed-in fetch is in flight — the canvases wait for it, or they'd seed the default
@@ -636,6 +643,22 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
       {/* Signed-out users still get the canvas — saved on this device only. */}
       {!message && shown.length > 0 && viewMode === 'diagram' && !isAuthenticated && (
         <p className="text-xs text-gray-400 -mt-2 print:hidden">{t('phr.savedLocally')}</p>
+      )}
+      {/* First-visit pointer at the how-to guide (usability feedback). */}
+      {!message && shown.length > 0 && viewMode === 'diagram' && !hintDismissed && (
+        <div className="flex items-start gap-2 rounded-xl border border-brand-200 bg-brand-50/60 px-3.5 py-2.5 text-sm text-brand-800 print:hidden">
+          <HelpCircle size={16} className="mt-0.5 shrink-0 text-brand-600" />
+          <span className="min-w-0 flex-1">
+            {t('phr.hintBanner')}{' '}
+            <a href="/exegesis/diagramming-guide" target="_blank" rel="noopener noreferrer" className="font-medium underline hover:text-brand-900">
+              {t('phr.hintBannerLink')}
+            </a>
+          </span>
+          <button type="button" onClick={dismissHint} aria-label={t('phr.dismiss')} title={t('phr.dismiss')}
+            className="shrink-0 rounded p-0.5 text-brand-400 transition-colors hover:text-brand-700">
+            <XIcon size={15} />
+          </button>
+        </div>
       )}
       {/* On mobile the dropdowns stack above the cards. */}
       {!message && shown.length > 0 && (

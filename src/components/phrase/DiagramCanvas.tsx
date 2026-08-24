@@ -1,6 +1,6 @@
 'use client'
 import { useContext, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
-import { Move, Slash, Brackets, Type, Magnet, Languages, FlipHorizontal2, RotateCcw, X } from 'lucide-react'
+import { Move, Slash, Brackets, Type, Magnet, Languages, FlipHorizontal2, RotateCcw, X, Undo2, ListOrdered } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { usePref } from '@/lib/use-pref'
 import { openWordSearch } from '@/lib/word-search-bus'
@@ -114,6 +114,13 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
   const [marquee, setMarquee] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null)
   const [status, setStatus] = useState<'idle' | 'saved'>('idle')
   const statusTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Undo: snapshots pushed just before each mutation (drag, draw, delete, style, reset…).
+  const history = useRef<{ positions: Record<string, Pos> | null; lines: DiagramLine[]; labels: DiagramLabel[] }[]>([])
+  const [histLen, setHistLen] = useState(0)
+  // Alignment guides while dragging: faint lines when the grabbed chip lines up with another.
+  const [guides, setGuides] = useState<{ x: number | null; y: number | null }>({ x: null, y: null })
+  // Long-press = the touch stand-in for right-click (iPads fire no contextmenu).
+  const longPress = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Seed positions as a vertical verse-order column, overlaid with any saved positions.
   // GOTCHA: the Exegesis tabs stay mounted, so this canvas can mount inside a `hidden`
@@ -157,6 +164,49 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
       if (statusTimer.current) clearTimeout(statusTimer.current)
       statusTimer.current = setTimeout(() => setStatus('idle'), 1600)
     }).catch(() => {})
+  }
+
+  function pushHistory() {
+    if (readOnly) return
+    history.current.push({ positions: positions ? { ...positions } : null, lines: [...lines], labels: [...labels] })
+    if (history.current.length > 30) history.current.shift()
+    setHistLen(history.current.length)
+  }
+  function undo() {
+    const prev = history.current.pop()
+    if (!prev) return
+    setHistLen(history.current.length)
+    setPositions(prev.positions)
+    setLines(prev.lines)
+    setLabels(prev.labels)
+    clearSelections()
+    setEditLabel(null)
+    if (prev.positions) persist({ positions: prev.positions, lines: prev.lines, labels: prev.labels })
+  }
+
+  /** Line the words back up in verse order WITHOUT touching lines or labels — the gentle
+   *  sibling of Reset, for starting the word layout over mid-diagram. */
+  function restack() {
+    if (!positions) return
+    pushHistory()
+    const cw = canvasRef.current?.clientWidth || 600
+    const next: Record<string, Pos> = {}
+    let y = 16
+    words.forEach((w, i) => {
+      const el = chipRefs.current.get(wordKey(w, i))
+      const h = el && el.offsetHeight > 0 ? el.offsetHeight : 44
+      const wdt = el && el.offsetWidth > 0 ? el.offsetWidth : 48
+      next[wordKey(w, i)] = { x: rtl ? Math.max(16, cw - wdt - 16) : 16, y }
+      y += h + 8
+    })
+    setPositions(next)
+    clearSelections()
+    persist({ positions: next, lines, labels })
+  }
+
+  function openSearchFor(w: WordNodeT, x: number, y: number) {
+    const [b, ch, v] = w.id.split('.')
+    openWordSearch({ x, y, surface: w.w, lemma: w.lemma ?? null, reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, ...(hasHebrew(w.w) ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }) })
   }
 
   function clearSelections() {
@@ -210,20 +260,45 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
     }
     drag.current = { key, word: w, keys: Object.keys(origs), startX: e.clientX, startY: e.clientY, origs, dxMin, dxMax, dyMin, moved: false }
     e.currentTarget.setPointerCapture(e.pointerId)
+    // Touch: a still half-second press opens the word menu (no contextmenu on iPad).
+    if (e.pointerType === 'touch') {
+      const { clientX, clientY } = e
+      longPress.current = setTimeout(() => {
+        longPress.current = null
+        drag.current = null
+        openSearchFor(w, clientX, clientY)
+      }, 500)
+    }
   }
   function onChipMove(e: React.PointerEvent<HTMLDivElement>) {
     const d = drag.current
     if (!d || positions === null) return
     let dx = e.clientX - d.startX, dy = e.clientY - d.startY
     if (!d.moved && Math.abs(dx) < 3 && Math.abs(dy) < 3) return
+    if (!d.moved) { pushHistory(); if (longPress.current) { clearTimeout(longPress.current); longPress.current = null } }
     d.moved = true
     dx = Math.min(Math.max(dx, d.dxMin), d.dxMax)
     dy = Math.max(dy, d.dyMin)
+    // Alignment guides: when the grabbed chip's edges line up (±6px) with another chip's,
+    // snap to it and show a faint guide line.
+    const px = d.origs[d.key].x + dx, py = d.origs[d.key].y + dy
+    let gx: number | null = null, gy: number | null = null
+    for (const [k2, p2] of Object.entries(positions)) {
+      if (d.keys.includes(k2)) continue
+      if (gy === null && Math.abs(p2.y - py) <= 6) gy = p2.y
+      if (gx === null && Math.abs(p2.x - px) <= 6) gx = p2.x
+      if (gx !== null && gy !== null) break
+    }
+    if (gy !== null) dy = gy - d.origs[d.key].y
+    if (gx !== null) dx = gx - d.origs[d.key].x
+    setGuides({ x: gx, y: gy })
     const next = { ...positions }
     for (const k of d.keys) next[k] = { x: d.origs[k].x + dx, y: d.origs[k].y + dy }
     setPositions(next)
   }
   function onChipUp(e: React.PointerEvent<HTMLDivElement>) {
+    if (longPress.current) { clearTimeout(longPress.current); longPress.current = null }
+    setGuides({ x: null, y: null })
     const d = drag.current
     if (!d) return
     drag.current = null
@@ -263,6 +338,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
     if (!d) return
     const dx = e.clientX - d.startX, dy = e.clientY - d.startY
     if (!d.moved && Math.abs(dx) < 3 && Math.abs(dy) < 3) return
+    if (!d.moved) pushHistory()
     d.moved = true
     setLabels(ls => ls.map((l, j) => j === d.i ? { ...l, x: Math.max(0, d.orig.x + dx), y: Math.max(0, d.orig.y + dy) } : l))
   }
@@ -275,6 +351,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
     else { setSelLabel(d.i); setSelLine(null); setSelChips(new Set()) }
   }
   function deleteLabel(i: number) {
+    pushHistory()
     const next = labels.filter((_, j) => j !== i)
     setLabels(next)
     setSelLabel(null)
@@ -304,6 +381,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
     }
     if (mode === 'label') {
       e.preventDefault()
+      pushHistory()
       const next = [...labels, { x: p.x, y: p.y, text: '' }]
       setLabels(next)
       setEditLabel(next.length - 1)
@@ -347,10 +425,12 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
       g.moved = true
       setMarquee({ x1: g.x, y1: g.y, x2: p.x, y2: p.y })
     } else if (g.kind === 'lineBody') {
+      if (!g.moved) pushHistory()
       g.moved = true
       const dx = p.x - g.x, dy = p.y - g.y
       setLines(ls => ls.map((l, j) => j === g.i ? { ...l, x1: g.orig.x1 + dx, y1: g.orig.y1 + dy, x2: g.orig.x2 + dx, y2: g.orig.y2 + dy } : l))
     } else {
+      if (!g.moved) pushHistory()
       g.moved = true
       setLines(ls => ls.map((l, j) => {
         if (j !== g.i) return l
@@ -369,6 +449,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
     if (g.kind === 'draw') {
       setPreview(null)
       if (Math.hypot(p.x - g.x, p.y - g.y) < 10) return   // a tap, not a line
+      pushHistory()
       const end = snap ? snap45(g.x, g.y, p.x, p.y) : { x: p.x, y: p.y }
       const next = [...lines, { x1: g.x, y1: g.y, x2: end.x, y2: end.y, ...(g.shape ? { shape: g.shape } : {}) }]
       setLines(next)
@@ -390,18 +471,25 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
     }
   }
   function deleteLine(i: number) {
+    pushHistory()
     const next = lines.filter((_, j) => j !== i)
     setLines(next)
     setSelLine(null)
     if (positions) persist({ positions, lines: next, labels })
   }
   function setLineStyle(i: number, patch: Partial<Pick<DiagramLine, 'dash' | 'arrow' | 'flip'>>) {
+    pushHistory()
     const next = lines.map((l, j) => j === i ? { ...l, ...patch } : l)
     setLines(next)
     if (positions) persist({ positions, lines: next, labels })
   }
   function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     if (editLabel !== null) return   // the input owns the keyboard while editing
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') {
+      e.preventDefault()
+      undo()
+      return
+    }
     if (e.key === 'Delete' || e.key === 'Backspace') {
       if (selLine !== null) { e.preventDefault(); deleteLine(selLine) }
       else if (selLabel !== null) { e.preventDefault(); deleteLabel(selLabel) }
@@ -410,6 +498,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
   }
 
   function reset() {
+    pushHistory()
     setLines([])
     setLabels([])
     clearSelections()
@@ -466,6 +555,15 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
           <button type="button" aria-label={t('phr.toggleGloss')} aria-pressed={showGloss === '1'}
             onClick={() => setShowGloss(showGloss === '1' ? '0' : '1')} className={toolBtn(showGloss === '1')}><Languages size={15} /></button>
         </ToolHint>
+        <span className="w-px h-4 bg-gray-200 mx-1" />
+        <ToolHint hint={t('phr.hint.undo')}>
+          <button type="button" aria-label={t('action.undo')} disabled={histLen === 0}
+            onClick={undo} className={`${toolBtn(false)} disabled:opacity-30 disabled:hover:bg-transparent`}><Undo2 size={15} /></button>
+        </ToolHint>
+        <ToolHint hint={t('phr.hint.restack')}>
+          <button type="button" aria-label={t('phr.restack')}
+            onClick={restack} className={toolBtn(false)}><ListOrdered size={15} /></button>
+        </ToolHint>
         <ToolHint hint={t('phr.hint.reset')}>
           <button type="button" aria-label={t('phr.resetLayout')}
             onClick={reset} className={toolBtn(false)}><RotateCcw size={15} /></button>
@@ -501,7 +599,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
           {lines.map((l, i) => (
             <g key={i}>
               {/* Wide invisible twin so a thin line is actually clickable/draggable. */}
-              <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke="transparent" strokeWidth={12}
+              <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke="transparent" strokeWidth={16}
                 style={mode === 'move' ? { pointerEvents: 'stroke', cursor: selLine === i ? 'move' : 'pointer' } : undefined}
                 onPointerDown={e => onLineBodyDown(e, i)} />
               {l.shape === 'bracket' ? (
@@ -528,6 +626,13 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
               width={Math.abs(marquee.x2 - marquee.x1)} height={Math.abs(marquee.y2 - marquee.y1)}
               className="fill-brand-100/40 stroke-brand-400" strokeWidth={1} strokeDasharray="4 3" />
           )}
+          {/* Alignment guides while dragging a chip. */}
+          {guides.y !== null && (
+            <line x1={0} y1={guides.y} x2="100%" y2={guides.y} className="stroke-brand-300" strokeWidth={1} strokeDasharray="3 4" />
+          )}
+          {guides.x !== null && (
+            <line x1={guides.x} y1={0} x2={guides.x} y2="100%" className="stroke-brand-300" strokeWidth={1} strokeDasharray="3 4" />
+          )}
         </svg>
 
         {/* Endpoint handles for the selected line: drag to change direction and length.
@@ -537,9 +642,11 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
           <div
             key={end}
             onPointerDown={e => onEndpointDown(e, selLine!, end)}
-            className="absolute z-10 w-3 h-3 rounded-full bg-brand-600 border-2 border-white shadow cursor-move"
-            style={{ left: (end === 1 ? sel.x1 : sel.x2) - 6, top: (end === 1 ? sel.y1 : sel.y2) - 6, touchAction: 'none' }}
-          />
+            className="absolute z-10 flex h-7 w-7 cursor-move items-center justify-center"
+            style={{ left: (end === 1 ? sel.x1 : sel.x2) - 14, top: (end === 1 ? sel.y1 : sel.y2) - 14, touchAction: 'none' }}
+          >
+            <span className="h-3 w-3 rounded-full border-2 border-white bg-brand-600 shadow" />
+          </div>
         ))}
 
         {/* Style pill floating above the selected line's midpoint: dashed / arrowhead / delete. */}
@@ -629,13 +736,9 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
                 onPointerDown={e => { e.stopPropagation(); onChipDown(e, w, key) }}
                 onPointerMove={onChipMove}
                 onPointerUp={onChipUp}
-                onContextMenu={e => {
-                  e.preventDefault(); e.stopPropagation()
-                  const [b, ch, v] = w.id.split('.')
-                  openWordSearch({ x: e.clientX, y: e.clientY, surface: w.w, lemma: w.lemma ?? null, reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, ...(hasHebrew(w.w) ? { kind: 'hebrew' as const } : { kind: 'greek' as const, greekCorpus: 'GNT' as const }) })
-                }}
+                onContextMenu={e => { e.preventDefault(); e.stopPropagation(); openSearchFor(w, e.clientX, e.clientY) }}
                 title={[w.lemma && `lemma: ${w.lemma}`, w.morph && `morph: ${w.morph}`].filter(Boolean).join('\n')}
-                className={`${positions === null ? 'inline-flex me-3 mb-2' : 'absolute flex'} flex-col items-start select-none rounded border bg-white px-1.5 py-0.5 shadow-sm ${inGroup ? 'border-brand-500 ring-1 ring-brand-300' : 'border-gray-200'} ${readOnly ? '' : mode === 'move' ? 'cursor-grab active:cursor-grabbing hover:border-brand-300' : 'pointer-events-none'}`}
+                className={`${positions === null ? 'inline-flex me-3 mb-2' : 'absolute flex'} flex-col items-start select-none rounded border bg-white px-1.5 py-0.5 shadow-sm before:absolute before:-inset-2 before:content-[''] ${inGroup ? 'border-brand-500 ring-1 ring-brand-300' : 'border-gray-200'} ${readOnly ? '' : mode === 'move' ? 'cursor-grab active:cursor-grabbing hover:border-brand-300' : 'pointer-events-none'}`}
                 style={p ? { left: p.x, top: p.y, touchAction: 'none' } : { touchAction: 'none' }}
               >
                 {/* Diagram chips run smaller than the tree's text — the canvas needs the
