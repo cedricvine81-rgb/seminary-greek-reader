@@ -27,24 +27,32 @@ export function useSectionToc(
   useEffect(() => {
     const root = containerRef.current
     if (!root) { setSections([]); return }
-    const els = Array.from(root.querySelectorAll<HTMLHeadingElement>('h3[data-msec]'))
-    setSections(els.map((el, i) => {
-      if (!el.id) el.id = `msec-${i + 1}`
-      const no = chapterNo != null ? `${chapterNo}.${i + 1}` : String(i + 1)
-      // The visible in-page number (rendered by CSS from this attribute); headings that
-      // already carry their own numbered circle (n=…) keep it and skip the prefix.
-      el.setAttribute('data-secno', no)
-      // textContent includes a hand-numbered circle's digits — strip them for the label.
-      return { id: el.id, no, label: (el.textContent ?? '').replace(/^\s*\d+\s*/, '').trim() }
-    }))
-    // Children can re-mount after the fold state was applied (level/transliteration
-    // toggles, translated prose arriving) — have every heading re-assert its fold.
+    const discover = () => {
+      const els = Array.from(root.querySelectorAll<HTMLHeadingElement>('h3[data-msec]'))
+      setSections(els.map((el, i) => {
+        if (!el.id) el.id = `msec-${i + 1}`
+        const no = chapterNo != null ? `${chapterNo}.${i + 1}` : String(i + 1)
+        // The visible in-page number (rendered by CSS from this attribute); headings that
+        // already carry their own numbered circle (n=…) keep it and skip the prefix.
+        el.setAttribute('data-secno', no)
+        // textContent includes a hand-numbered circle's digits — strip them for the label.
+        return { id: el.id, no, label: (el.textContent ?? '').replace(/^\s*\d+\s*/, '').trim() }
+      }))
+    }
+    discover()
+    // Children can re-mount after the first pass — level/transliteration toggles,
+    // translated prose arriving, role-gated sections (the instructor homework panel)
+    // appearing after their fetch. Re-discover the outline AND have every heading
+    // re-assert its fold.
     let timer: ReturnType<typeof setTimeout> | undefined
     const obs = new MutationObserver(() => {
       clearTimeout(timer)
       // setTimeout, not rAF: rAF never fires in a hidden tab, and content routinely
       // finishes loading while the reader is on another tab.
-      timer = setTimeout(() => window.dispatchEvent(new Event('morph-fold-reassert')), 60)
+      timer = setTimeout(() => {
+        discover()
+        window.dispatchEvent(new Event('morph-fold-reassert'))
+      }, 60)
     })
     obs.observe(root, { childList: true, subtree: true })
     return () => { obs.disconnect(); clearTimeout(timer) }
@@ -74,6 +82,10 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
     if (onSection) { onSection(id); return }
     window.dispatchEvent(new CustomEvent('morph-expand-section', { detail: id }))
   }
+  // Clicking the OPEN chapter's title folds its outline away (and back); opening another
+  // chapter always shows its outline.
+  const [outlineHidden, setOutlineHidden] = useState(false)
+  useEffect(() => { setOutlineHidden(false) }, [activeId])
   return (
     <nav className="hidden lg:block w-60 shrink-0 print:hidden">
       <div className="sticky top-16 max-h-[calc(100vh-5rem)] overflow-y-auto pr-3 pb-6 border-r border-gray-100">
@@ -87,7 +99,7 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
                   <li key={item.id}>
                     <button
                       type="button"
-                      onClick={() => onSelect(item.id)}
+                      onClick={() => item.id === activeId ? setOutlineHidden(v => !v) : onSelect(item.id)}
                       className={clsx(
                         'flex w-full items-baseline gap-1.5 rounded-lg px-2 py-1 text-left text-sm transition-colors',
                         active ? 'bg-brand-50 font-semibold text-brand-800' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -102,7 +114,7 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
                       {item.done && <span className="shrink-0 text-xs text-green-600">✓</span>}
                     </button>
                     {/* The open chapter unfolds its own outline. */}
-                    {active && sections.length > 0 && (
+                    {active && sections.length > 0 && !outlineHidden && (
                       <ul className="mb-1 mt-0.5 space-y-0.5 border-l border-brand-100 pl-2" style={{ marginInlineStart: item.no != null ? '1.6rem' : '0.5rem' }}>
                         {sections.map(sec => (
                           <li key={sec.id}>
@@ -111,7 +123,7 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
                               onClick={() => jump(sec.id)}
                               className="flex w-full items-baseline gap-1.5 rounded px-1.5 py-0.5 text-left text-[13px] text-gray-500 transition-colors hover:bg-gray-50 hover:text-brand-700"
                             >
-                              <span className="shrink-0 text-[11px] tabular-nums text-gray-400">{sec.no}</span>
+                              {sec.no && <span className="shrink-0 text-[11px] tabular-nums text-gray-400">{sec.no}</span>}
                               <span className="min-w-0 flex-1">{sec.label}</span>
                             </button>
                           </li>

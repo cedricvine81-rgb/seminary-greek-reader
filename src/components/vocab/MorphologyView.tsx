@@ -391,7 +391,13 @@ export function MorphologyView({
   const contentRef = useRef<HTMLDivElement>(null)
   const chapterNo = chapterIndex >= 0 ? chapterIndex + 1 : null
   const domToc = useSectionToc(contentRef, chapterNo, [mainTab, level, locale, chapterContent, essId])
-  const essToc: TocSection[] = ESS_SECTIONS.map(s => ({ id: String(s.id), no: `E${s.id}`, label: s.label }))
+  // No E-numbers (instructor request) — instead each Minimum carries a short topic tag,
+  // "Min. 1 (1st/2nd Decl.)", so the list says what it teaches.
+  const essToc: TocSection[] = ESS_SECTIONS.map(s => ({
+    id: String(s.id),
+    no: '',
+    label: <>{s.label} <span className="text-gray-400">({t(`morph.min.${s.id}`)})</span></>,
+  }))
   const sidebarGroups: { heading: string; items: SidebarItem[] }[] = [
     { heading: t('morph.reference'), items: [{ id: 'essentials', label: t('morph.tab.essentials') }] },
     {

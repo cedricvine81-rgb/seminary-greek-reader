@@ -1388,7 +1388,9 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
   if (role === 'student') {
     if (entries.length === 0) return null
     return (
-      <div className="my-5 max-w-3xl rounded-xl border border-amber-200 bg-amber-50/60 px-4 py-3.5">
+      // data-no-fold: due dates must stay visible even when the chapter's last section is
+      // collapsed — the fold walk skips this block.
+      <div data-no-fold className="my-5 max-w-3xl rounded-xl border border-amber-200 bg-amber-50/60 px-4 py-3.5">
         <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-2">{t('morph.hw.studentHeading')}</p>
         <ul className="space-y-1.5">
           {entries.map(e => (
@@ -1434,6 +1436,11 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
   }
 
   return (
+    // Wrapped in its own SectionHeading (instructor request, 2026-08-24): the activation
+    // panel becomes one more entry in the chapter's sidebar outline — below "Try it" —
+    // and folds like any section instead of always standing open in the chapter.
+    <>
+    <SectionHeading>{t('morph.hw.menuTitle')}</SectionHeading>
     <div className="my-5 max-w-3xl rounded-xl border border-amber-300 bg-amber-50/70 px-4 py-3.5">
       <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-1">
         {t('morph.hw.heading')}
@@ -1608,6 +1615,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
       </div>
       {error && <p className="mt-2 text-xs text-red-600 bg-red-50 rounded-lg px-2 py-1.5">{error}</p>}
     </div>
+    </>
   )
 }
 
