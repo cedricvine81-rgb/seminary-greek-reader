@@ -355,12 +355,13 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
         <div className="flex items-center gap-1 shrink-0 lg:shrink lg:min-w-0">
           {/* Desktop: inline (horizontally scrolling) tab bar. */}
           <div className="hidden lg:flex items-center gap-1 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
-            {/* Icons only on genuinely wide screens: nine tabs plus the passage box fill the
-                row, and the translated labels (Segmentación, Разночтения…) set the budget —
-                measured, Spanish still clips at 1600px with icons on. Labels alone fit from
-                lg upward, so below 1750px the icon is dropped rather than the last tab. */}
-            {TAB_LIST.map(({ id, label, Icon }) => (
-              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}><Icon size={16} className="hidden min-[1750px]:block" /> {t(tabLabelKey(id, label))}</button>
+            {/* Labels only, at every desktop width: the row lives inside the page's
+                max-w-7xl, so a wider viewport gives it no more room — and with nine tabs
+                (Diagramming, Segmentación…) plus the passage box, the ~200px the icons
+                cost pushed the Notes tab off the end (user report, 2026-08-24). The icons
+                still appear in the mobile menu, where the grid has space for them. */}
+            {TAB_LIST.map(({ id, label }) => (
+              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}>{t(tabLabelKey(id, label))}</button>
             ))}
           </div>
 
