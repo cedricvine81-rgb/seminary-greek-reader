@@ -249,7 +249,7 @@ function GroupComposer({ courseId, group, onBack, onClose }: { courseId: string;
 
   return (
     <div className="space-y-4">
-      <button onClick={onBack} className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800"><ArrowLeft size={14} /> Back to groups</button>
+      <button onClick={onBack} className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors"><ArrowLeft size={14} /> Back to groups</button>
       <p className="text-xs text-gray-500">To all {group.members.length} member{group.members.length === 1 ? '' : 's'} of <span className="font-medium text-gray-700">{group.name}</span>.</p>
       <Input label={t('cg.subject')} value={subject} onChange={e => setSubject(e.target.value)} placeholder={t('cg.subjectExample')} maxLength={200} />
       <div>

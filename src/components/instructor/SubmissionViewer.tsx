@@ -449,7 +449,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
 
       {/* Back + meta */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <Link href={onBack} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors">
+        <Link href={onBack} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
           <ArrowLeft size={14} /> {t('sub.back')}
         </Link>
         <div className="flex items-center flex-wrap gap-4 text-sm text-gray-500">

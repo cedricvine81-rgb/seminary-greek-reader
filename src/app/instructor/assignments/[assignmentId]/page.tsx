@@ -57,7 +57,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
         {assignment.course && (
           <Link
             href={`/instructor/courses/${assignment.course.id}`}
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors"
           >
             <ArrowLeft size={14} /> Back to {assignment.course.name}
           </Link>

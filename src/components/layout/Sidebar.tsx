@@ -16,6 +16,8 @@ interface NavItem {
   label: string
   href: string
   icon: React.ReactNode
+  /** i18n key for the hover info bubble explaining what the page holds (optional). */
+  desc?: string
 }
 
 const instructorNav: NavItem[] = [
@@ -43,11 +45,11 @@ const adminNav: NavItem[] = [
 ]
 
 const studentNav: NavItem[] = [
-  { label: 'nav.dashboard',   href: '/student',                  icon: <LayoutDashboard size={16} /> },
-  { label: 'nav.calendar',    href: '/student/calendar',         icon: <Calendar size={16} /> },
-  { label: 'nav.assignments', href: '/student/assignments',      icon: <ClipboardList size={16} /> },
-  { label: 'nav.messages',    href: '/student/messages',         icon: <Mail size={16} /> },
-  { label: 'nav.materials',   href: '/student/materials',        icon: <BookMarked size={16} /> },
+  { label: 'nav.dashboard',   href: '/student',                  icon: <LayoutDashboard size={16} />, desc: 'nav.desc.dashboard' },
+  { label: 'nav.calendar',    href: '/student/calendar',         icon: <Calendar size={16} />,        desc: 'nav.desc.calendar' },
+  { label: 'nav.assignments', href: '/student/assignments',      icon: <ClipboardList size={16} />,   desc: 'nav.desc.assignments' },
+  { label: 'nav.messages',    href: '/student/messages',         icon: <Mail size={16} />,            desc: 'nav.desc.messages' },
+  { label: 'nav.materials',   href: '/student/materials',        icon: <BookMarked size={16} />,      desc: 'nav.desc.materials' },
 ]
 
 interface SidebarProps {
@@ -106,7 +108,7 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
               key={item.href}
               href={item.href}
               className={clsx(
-                'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                'group relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
                 active
                   ? 'bg-brand-50 text-brand-700'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -114,6 +116,13 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
             >
               {item.icon}
               <span className="flex-1">{t(item.label)}</span>
+              {/* Hover info bubble: what the page holds. Delayed fade-in so a pointer just
+                  passing through the nav doesn't flash five bubbles. */}
+              {item.desc && (
+                <span className="pointer-events-none absolute left-full top-1/2 z-50 ml-2 w-60 -translate-y-1/2 rounded-lg border border-gray-200 bg-popover p-2.5 text-xs font-normal leading-relaxed text-gray-600 shadow-lg opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-hover:delay-500">
+                  {t(item.desc)}
+                </span>
+              )}
               {isRequests && liveRequests > 0 && (
                 <span className="ml-auto flex items-center justify-center h-5 min-w-[1.25rem] rounded-full bg-amber-500 text-white text-xs font-bold px-1">
                   {liveRequests}

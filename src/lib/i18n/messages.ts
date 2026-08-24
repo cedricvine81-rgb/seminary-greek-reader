@@ -2654,6 +2654,12 @@ const en: Catalogue = {
   'nav.calendar': 'Calendar',
   'nav.courses': 'Courses',
   'nav.materials': 'Materials',
+  // Sidebar hover bubbles (student nav) — what each page holds.
+  'nav.desc.dashboard': 'Your courses at a glance — each one opens into its assignments, grade book, and schedule.',
+  'nav.desc.calendar': 'A month view of every due date across all your courses.',
+  'nav.desc.assignments': 'Every assignment from all your courses in one list — due, submitted, and graded.',
+  'nav.desc.messages': 'Messages from your instructors, and your replies.',
+  'nav.desc.materials': 'Files and resources your instructors have shared with each course.',
   'nav.notifications': 'Notifications',
   'nav.archive': 'Archive',
 
@@ -5225,6 +5231,12 @@ const es: Catalogue = {
   'nav.calendar': 'Calendario',
   'nav.courses': 'Cursos',
   'nav.materials': 'Materiales',
+  // Burbujas de ayuda de la barra lateral (menú del estudiante).
+  'nav.desc.dashboard': 'Tus cursos de un vistazo: cada uno se abre con sus tareas, su libro de notas y su calendario.',
+  'nav.desc.calendar': 'Una vista mensual de todas las fechas de entrega de tus cursos.',
+  'nav.desc.assignments': 'Todas las tareas de tus cursos en una sola lista: pendientes, entregadas y calificadas.',
+  'nav.desc.messages': 'Los mensajes de tus profesores y tus respuestas.',
+  'nav.desc.materials': 'Archivos y recursos que tus profesores han compartido con cada curso.',
   'nav.notifications': 'Notificaciones',
   'nav.archive': 'Archivo',
 

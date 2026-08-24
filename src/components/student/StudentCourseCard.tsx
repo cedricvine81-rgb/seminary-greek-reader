@@ -98,7 +98,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
             <button
               type="button"
               onClick={collapse}
-              className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors"
             >
               <ArrowLeft size={14} /> {t('course.backToDashboard')}
             </button>

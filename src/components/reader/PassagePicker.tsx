@@ -135,7 +135,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
         {step > 0 ? (
           <button type="button"
             onClick={() => { if (step === 2) { setChapter(null); setVerses(null) } else setBook(null) }}
-            className="flex items-center gap-1 text-sm font-medium text-brand-600 -ml-1 px-1 py-1">
+            className="flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors -ml-1 px-1 py-1">
             <ChevronLeft size={18} /> Back
           </button>
         ) : (

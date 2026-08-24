@@ -28,7 +28,7 @@ export function StudentDashboard({ studentName, courses, dueSoonCount }: Student
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold text-gray-900">{t('student.myCourses')}</h2>
-          <Link href="/student/courses" className="text-xs text-brand-600 hover:underline whitespace-nowrap">
+          <Link href="/student/courses" className="inline-flex items-center whitespace-nowrap rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-brand-700">
             {t('student.joinACourse')}
           </Link>
         </div>

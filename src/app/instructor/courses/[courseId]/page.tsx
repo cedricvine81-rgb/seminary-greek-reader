@@ -99,7 +99,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
           <div className="space-y-2">
             <Link
               href="/instructor"
-              className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors"
             >
               <ArrowLeft size={14} /> Back to dashboard
             </Link>

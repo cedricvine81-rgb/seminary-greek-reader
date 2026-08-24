@@ -538,7 +538,7 @@ function FlashcardPlayer({
       <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
         <p className="text-xl font-semibold text-gray-700">{t('vocab.noCardsMatch')}</p>
         <p className="text-gray-600 text-sm">{t('vocab.noCardsHint')}</p>
-        <button onClick={onGoBack} className="btn bg-surface border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm mt-2">← Back to settings</button>
+        <button onClick={onGoBack} className="btn bg-surface border border-brand-300 text-brand-700 hover:bg-brand-50 text-sm mt-2">← Back to settings</button>
       </div>
     )
   }
@@ -578,7 +578,7 @@ function FlashcardPlayer({
         )}
 
         <div className="flex gap-2 flex-wrap">
-          <button className="btn bg-surface border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={onGoBack}>← Return</button>
+          <button className="btn bg-surface border border-brand-300 text-brand-700 hover:bg-brand-50" onClick={onGoBack}>← Return</button>
           <button className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onRestart}>{t('vocab.reviewAgain')}</button>
           {missedWords.length > 0 && (
             <button className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onStudyMissed}>
@@ -601,6 +601,9 @@ function FlashcardPlayer({
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
+            <button onClick={onGoBack} className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
+              <ChevronRight size={16} className="rotate-180" /> {t('action.back')}
+            </button>
             <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
             <span className="text-sm text-gray-500">{idx + 1} / {sessionWords.length}</span>
           </div>
@@ -1024,7 +1027,7 @@ function ModeShell({ title, right, onGoBack, children }: { title: string; right?
   return (
     <div aria-label={title}>
       <div className="flex items-center justify-between mb-4">
-        <button onClick={onGoBack} className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800">
+        <button onClick={onGoBack} className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
           <ChevronRight size={16} className="rotate-180" /> Back
         </button>
         <span className="min-w-[6rem] text-right">{right}</span>

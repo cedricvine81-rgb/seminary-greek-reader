@@ -130,7 +130,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
         {/* Back to the student's assignment list — hidden for lockdown exams so it can't
             be used as an escape hatch mid-exam. */}
         {!(assignment.type === 'TRANSLATION_EXAM' && assignment.lockdown) && (
-          <Link href="/student/assignments" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors mb-3 print:hidden">
+          <Link href="/student/assignments" className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors mb-3 print:hidden">
             <ArrowLeft size={14} /> {t('assign.backToAssignments')}
           </Link>
         )}
