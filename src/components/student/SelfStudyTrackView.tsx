@@ -2,7 +2,7 @@
 import { useRef } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { ArrowLeft, ArrowRight, BookOpen, BookMarked, Check } from 'lucide-react'
+import { ArrowLeft, ArrowRight, BookOpen, BookMarked, Check, Award } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { selfStudyTrack, trackProgress, type SelfStudyLesson } from '@/lib/self-study'
@@ -72,26 +72,31 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
               <ul className="space-y-1.5">
                 {lesson.steps.map(step => {
                   const stepDone = completed.has(step.key)
+                  const isQuiz = step.kind === 'quiz'
                   return (
                     <li key={step.key} className="flex items-center gap-2.5">
+                      {/* Quiz steps are completed by PASSING the quiz — no manual toggle. */}
                       <button
                         type="button"
-                        onClick={() => setChapter(step.key, !stepDone)}
-                        title={stepDone ? t('ss.markUndone') : t('ss.markDone')}
+                        onClick={isQuiz ? undefined : () => setChapter(step.key, !stepDone)}
+                        disabled={isQuiz}
+                        title={isQuiz ? t('ss.quizAuto') : stepDone ? t('ss.markUndone') : t('ss.markDone')}
                         aria-pressed={stepDone}
                         className={clsx(
                           'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors',
-                          stepDone ? 'border-green-600 bg-green-600 text-white' : 'border-gray-300 text-transparent hover:border-brand-400',
+                          stepDone ? 'border-green-600 bg-green-600 text-white' : 'border-gray-300 text-transparent',
+                          !isQuiz && !stepDone && 'hover:border-brand-400',
+                          isQuiz && !stepDone && 'border-dashed cursor-default',
                         )}
                       >
                         <Check size={12} />
                       </button>
                       <span className={clsx(
                         'inline-flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
-                        step.kind === 'grammar' ? 'bg-brand-50 text-brand-700' : 'bg-amber-50 text-amber-700',
+                        step.kind === 'grammar' ? 'bg-brand-50 text-brand-700' : isQuiz ? 'bg-purple-50 text-purple-700' : 'bg-amber-50 text-amber-700',
                       )}>
-                        {step.kind === 'grammar' ? <BookOpen size={10} /> : <BookMarked size={10} />}
-                        {step.kind === 'grammar' ? t('ss.read') : t('ss.vocab')}
+                        {step.kind === 'grammar' ? <BookOpen size={10} /> : isQuiz ? <Award size={10} /> : <BookMarked size={10} />}
+                        {step.kind === 'grammar' ? t('ss.read') : isQuiz ? t('ss.quiz') : t('ss.vocab')}
                       </span>
                       <Link
                         href={step.href}

@@ -908,21 +908,84 @@ export function Practice({ id, title = 'Try it', intro, items, level = 'beginnin
   const t = useT()
   const cur = useContext(LevelContext)
   const tm = useTm()
+  // Self-grading (self-study feedback): after revealing an answer the student marks
+  // themselves right or wrong; the block keeps a running score. Marks persist per device
+  // (localStorage, keyed by the block id) — formative feedback, not a grade anyone sees.
+  const lsKey = id ? `morph-practice:${id}` : null
+  const [marks, setMarks] = useState<(boolean | null)[]>(() => items.map(() => null))
+  useEffect(() => {
+    if (!lsKey) return
+    try {
+      const raw = JSON.parse(localStorage.getItem(lsKey) ?? 'null')
+      if (Array.isArray(raw)) setMarks(items.map((_, i) => (typeof raw[i] === 'boolean' ? raw[i] : null)))
+    } catch { /* ignore */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lsKey])
+  function mark(i: number, right: boolean | null) {
+    setMarks(prev => {
+      const next = prev.map((m, j) => (j === i ? right : m))
+      if (lsKey) try { localStorage.setItem(lsKey, JSON.stringify(next)) } catch { /* ignore */ }
+      return next
+    })
+  }
+  const attempted = marks.filter(m => m !== null).length
+  const right = marks.filter(m => m === true).length
+
   if (id) title = tm(K.title(id), title)
   if (level !== 'both' && cur !== level) return null
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5">
-      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{title}</p>
+      <div className="mb-2 flex items-center gap-2">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</p>
+        {lsKey && attempted > 0 && (
+          <>
+            <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${right === attempted ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}`}>
+              {t('morph.practiceScore', { right, total: items.length })}
+            </span>
+            <button
+              type="button"
+              onClick={() => { setMarks(items.map(() => null)); if (lsKey) try { localStorage.removeItem(lsKey) } catch { /* ignore */ } }}
+              className="ml-auto text-[11px] font-medium text-gray-400 transition-colors hover:text-gray-600"
+            >
+              {t('morph.practiceReset')}
+            </button>
+          </>
+        )}
+      </div>
       {intro && <div className="text-sm text-gray-600 mb-3">{intro}</div>}
       <ol className="space-y-3 list-decimal list-inside">
         {items.map((it, i) => (
           <li key={i} className="text-sm text-gray-800">
             <span>{it.q}</span>
+            {marks[i] !== null && (
+              <span className={`ml-1.5 align-middle text-xs font-semibold ${marks[i] ? 'text-green-600' : 'text-red-500'}`}>{marks[i] ? '✓' : '✗'}</span>
+            )}
             <details className="mt-0.5 ml-5">
               <summary className="cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-xs font-medium text-brand-600 hover:text-brand-700">
                 {t('morph.showAnswer')}
               </summary>
               <div className="mt-1 text-sm text-gray-700 border-l-2 border-brand-200 pl-3">{it.a}</div>
+              {lsKey && (
+                <div className="mt-1.5 flex items-center gap-1.5">
+                  <span className="text-[11px] text-gray-400">{t('morph.didYouGetIt')}</span>
+                  <button
+                    type="button"
+                    onClick={() => mark(i, marks[i] === true ? null : true)}
+                    aria-pressed={marks[i] === true}
+                    className={`rounded-md border px-2 py-0.5 text-[11px] font-medium transition-colors ${marks[i] === true ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 text-gray-500 hover:border-green-400 hover:text-green-700'}`}
+                  >
+                    ✓ {t('morph.gotIt')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => mark(i, marks[i] === false ? null : false)}
+                    aria-pressed={marks[i] === false}
+                    className={`rounded-md border px-2 py-0.5 text-[11px] font-medium transition-colors ${marks[i] === false ? 'border-red-400 bg-red-50 text-red-600' : 'border-gray-200 text-gray-500 hover:border-red-400 hover:text-red-600'}`}
+                  >
+                    ✗ {t('morph.missedIt')}
+                  </button>
+                </div>
+              )}
             </details>
           </li>
         ))}

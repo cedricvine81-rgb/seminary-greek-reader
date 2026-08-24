@@ -9,18 +9,22 @@
 // Auto-graded practice steps (quizzes from the instructor pool generators, self-checked
 // exercises) are phase 3 — they append further steps to these same lessons.
 
-import { VOCAB_LESSONS } from './vocab-lesson-map'
+import { VOCAB_LESSONS, lessonSubsectionKey } from './vocab-lesson-map'
 
 export type SelfStudyTrackId = 'greek-beginning' | 'greek-intermediate' | 'hebrew-beginning' | 'hebrew-intermediate'
 
 export interface SelfStudyStep {
   /** Progress item key (MorphologyProgress.chapterId — [a-z0-9-], ≤40 chars). */
   key: string
-  kind: 'grammar' | 'vocab'
+  kind: 'grammar' | 'vocab' | 'quiz'
   /** i18n key for chapter names; `label` for composed vocabulary labels. */
   labelKey?: string
   label?: string
   href: string
+  /** Quiz steps only: which deck words the practice quiz draws from. The quiz page
+   *  resolves this — the registry stays free of deck-data imports. A quiz step is
+   *  completed by PASSING the quiz (≥80%), never by the manual toggle. */
+  quiz?: { deck: 'greek' | 'hebrew'; selection: string }
 }
 
 export interface SelfStudyLesson { steps: SelfStudyStep[] }
@@ -97,12 +101,22 @@ function greekBeginning(): SelfStudyLesson[] {
       { key: c.id, kind: 'grammar', labelKey: c.labelKey, href: `/grammar?chapter=${c.id}&level=beginning&track=greek` },
     ]
     const v = VOCAB_LESSONS[i]
-    if (v) steps.push({
-      key: `ssv-gk-${v.lesson}`,
-      kind: 'vocab',
-      label: `BGVB ${v.lesson} · ${v.section} (${v.rankMin}–${v.rankMax})`,
-      href: '/vocab?track=greek',
-    })
+    if (v) {
+      steps.push({
+        key: `ssv-gk-${v.lesson}`,
+        kind: 'vocab',
+        label: `BGVB ${v.lesson} · ${v.section} (${v.rankMin}–${v.rankMax})`,
+        href: '/vocab?track=greek',
+      })
+      const sel = lessonSubsectionKey(v.lesson)
+      if (sel) steps.push({
+        key: `ssq-gb-${v.lesson}`,
+        kind: 'quiz',
+        labelKey: 'ss.vocabQuiz',
+        href: `/student/self-study/greek-beginning/quiz/${i + 1}`,
+        quiz: { deck: 'greek', selection: sel },
+      })
+    }
     return { steps }
   })
 }
@@ -121,12 +135,21 @@ function hebrew(chapters: { id: string; labelKey: string }[], withBands: boolean
       { key: `hb-${c.id}`, kind: 'grammar', labelKey: c.labelKey, href: `/grammar?chapter=${c.id}&track=hebrew` },
     ]
     const band = withBands ? GLANZ_BANDS[i] : undefined
-    if (band) steps.push({
-      key: `ssv-hb-${band.toLowerCase()}`,
-      kind: 'vocab',
-      label: `Glanz ${band}`,
-      href: '/vocab?track=hebrew',
-    })
+    if (band) {
+      steps.push({
+        key: `ssv-hb-${band.toLowerCase()}`,
+        kind: 'vocab',
+        label: `Glanz ${band}`,
+        href: '/vocab?track=hebrew',
+      })
+      steps.push({
+        key: `ssq-hb-${band.toLowerCase()}`,
+        kind: 'quiz',
+        labelKey: 'ss.vocabQuiz',
+        href: `/student/self-study/hebrew-beginning/quiz/${i + 1}`,
+        quiz: { deck: 'hebrew', selection: band },
+      })
+    }
     return { steps }
   })
 }
@@ -142,6 +165,12 @@ export const SELF_STUDY_TRACKS: SelfStudyTrackDef[] = [
 
 export function selfStudyTrack(id: string): SelfStudyTrackDef | null {
   return SELF_STUDY_TRACKS.find(x => x.id === id) ?? null
+}
+
+/** The quiz step of a track's lesson (1-indexed), if it has one. */
+export function quizStepFor(def: SelfStudyTrackDef, lessonNo: number): SelfStudyStep | null {
+  const lesson = def.lessons[lessonNo - 1]
+  return lesson?.steps.find(st => st.kind === 'quiz') ?? null
 }
 
 /** Steps done / total for a track, given the user's completed-item set. */
