@@ -77,11 +77,10 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
   const { onWord } = useContext(WordCtx)
   const canvasRef = useRef<HTMLDivElement>(null)
   const chipRefs = useRef<Map<string, HTMLDivElement>>(new Map())
-  // null → chips render in a hidden flow layout first; the layout effect below measures
-  // that flow and turns it into absolute positions (so the initial arrangement is exactly
-  // what the browser's own line-wrapping produced, LTR or RTL alike). The flow is a COMPACT
-  // tray along the top of the canvas, in verse order — the student drags words down from it
-  // into place, so the canvas always keeps empty working space below the lowest chip.
+  // null → chips render hidden first so the layout effect below can measure their real
+  // sizes, then take absolute positions: a VERTICAL column down the start edge (left for
+  // Greek, right for Hebrew), one word per line in verse order — the student drags words
+  // out of the column into place, and the canvas keeps working space below the lowest chip.
   const [positions, setPositions] = useState<Record<string, Pos> | null>(null)
   const [lines, setLines] = useState<DiagramLine[]>(initialData?.lines ?? [])
   const [labels, setLabels] = useState<DiagramLabel[]>(initialData?.labels ?? [])
@@ -101,17 +100,22 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
   const [status, setStatus] = useState<'idle' | 'saved'>('idle')
   const statusTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Seed positions from the measured flow layout, overlaid with any saved positions.
+  // Seed positions as a vertical verse-order column, overlaid with any saved positions.
   useLayoutEffect(() => {
     if (positions !== null) return
-    const flow: Record<string, Pos> = {}
+    const cw = canvasRef.current?.clientWidth ?? 600
+    const seed: Record<string, Pos> = {}
+    let y = 16
     words.forEach((w, i) => {
       const el = chipRefs.current.get(wordKey(w, i))
-      if (el) flow[wordKey(w, i)] = { x: el.offsetLeft, y: el.offsetTop }
+      const h = el?.offsetHeight ?? 40
+      const wdt = el?.offsetWidth ?? 48
+      seed[wordKey(w, i)] = { x: rtl ? Math.max(16, cw - wdt - 16) : 16, y }
+      y += h + 8
     })
-    // Saved positions win; the flow fills in any word the saved layout doesn't know
+    // Saved positions win; the seed fills in any word the saved layout doesn't know
     // (it shouldn't happen for a stable sentence, but never strand a word off-canvas).
-    setPositions({ ...flow, ...(initialData?.words ?? {}) })
+    setPositions({ ...seed, ...(initialData?.words ?? {}) })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [positions, words])
 
