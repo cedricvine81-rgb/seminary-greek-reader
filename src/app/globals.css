@@ -689,6 +689,17 @@ body.exam-lockdown nav.fixed.bottom-0 {
   }
 }
 
+/* ── Self-study step side panel (vocabulary / quizzes) ───────────────────────────────────
+   Same split-view treatment as the search panel above: SelfStudyPanel sets data-study-panel
+   + --study-panel-w on <html> while open, so a vocabulary session or practice quiz opens
+   BESIDE the study plan instead of replacing it — losing the plan behind a full-page vocab
+   session was the reported complaint. */
+@media (min-width: 1024px) {
+  html[data-study-panel] #app-content {
+    padding-right: var(--study-panel-w, 560px);
+  }
+}
+
 /* ── Translation Workbench side panel (desktop): split view, not overlay ─────────────────
    While a Grammar-page translation/syntax exercise is open, TranslationWorkbench sets
    data-workbench-panel + --workbench-panel-w on <html>; the grammar page shifts left into

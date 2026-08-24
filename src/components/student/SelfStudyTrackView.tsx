@@ -1,12 +1,13 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import clsx from 'clsx'
-import { ArrowLeft, ArrowRight, BookOpen, BookMarked, Check, Award, ExternalLink, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, BookOpen, BookMarked, Check, Award } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { selfStudyTrack, trackProgress, type SelfStudyLesson, type SelfStudyStep } from '@/lib/self-study'
+import { SelfStudyPanel } from './SelfStudyPanel'
 import type { VocabLang } from '@/components/vocab/VocabBuilder'
 
 // One self-study track: its numbered lessons, each step a link into the material plus a
@@ -44,15 +45,8 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
   const def = selfStudyTrack(trackId)
   const { completed, setChapter } = useCourseProgress()
   const listRef = useRef<HTMLOListElement>(null)
+  // The panel owns its own Escape handling, resize and page-squeeze (SelfStudyPanel).
   const [panel, setPanel] = useState<SelfStudyStep | null>(null)
-
-  // Escape closes the panel, like the app's other overlays.
-  useEffect(() => {
-    if (!panel) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setPanel(null) }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [panel])
 
   if (!def) return null
   const { done, total } = trackProgress(def, completed)
@@ -153,39 +147,26 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
         })}
       </ol>
 
-      {/* Right-hand panel: vocab / quizzes open here so the plan stays put behind them. */}
+      {/* Right-hand dock: vocab / quizzes open BESIDE the plan (the page is squeezed, not
+          covered) exactly as the search and Grammar panes do elsewhere in the app. */}
       {panel && (
-        <div className="fixed inset-y-0 right-0 z-40 flex w-full flex-col border-l border-gray-200 bg-surface shadow-2xl sm:max-w-xl lg:max-w-2xl">
-          <div className="flex shrink-0 items-center gap-2 border-b border-gray-200 px-4 py-2.5">
-            <h2 className="min-w-0 flex-1 truncate text-sm font-semibold text-gray-900">
-              {panel.labelKey ? t(panel.labelKey) : panel.label}
-              {panel.lesson != null && <span className="ml-1.5 font-normal text-gray-400">· {t('ss.lessonN', { n: panel.lesson })}</span>}
-            </h2>
-            <Link
-              href={panel.href}
-              title={t('ss.openFullPage')}
-              className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-            >
-              <ExternalLink size={15} />
-            </Link>
-            <button
-              onClick={() => setPanel(null)}
-              title={t('action.close')}
-              className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-            >
-              <X size={16} />
-            </button>
-          </div>
-          <div className="min-h-0 flex-1 overflow-y-auto p-4">
-            {panel.morph && panel.lesson != null ? (
-              <PracticeMorphQuiz trackId={def.id} lessonNo={panel.lesson} embedded />
-            ) : panel.quiz && panel.lesson != null ? (
-              <PracticeVocabQuiz trackId={def.id} lessonNo={panel.lesson} embedded />
-            ) : (
-              <VocabBuilder lang={vocabLang} />
-            )}
-          </div>
-        </div>
+        <SelfStudyPanel
+          title={(panel.labelKey ? t(panel.labelKey) : panel.label) ?? ''}
+          subtitle={panel.lesson != null ? t('ss.lessonN', { n: panel.lesson }) : undefined}
+          fullHref={panel.href}
+          fullLabel={t('ss.fullPage')}
+          closeLabel={t('action.close')}
+          resizeLabel={t('ss.resizePanel')}
+          onClose={() => setPanel(null)}
+        >
+          {panel.morph && panel.lesson != null ? (
+            <PracticeMorphQuiz trackId={def.id} lessonNo={panel.lesson} embedded />
+          ) : panel.quiz && panel.lesson != null ? (
+            <PracticeVocabQuiz trackId={def.id} lessonNo={panel.lesson} embedded />
+          ) : (
+            <VocabBuilder lang={vocabLang} />
+          )}
+        </SelfStudyPanel>
       )}
     </div>
   )

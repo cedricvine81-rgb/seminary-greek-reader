@@ -7,6 +7,7 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { selfStudyTrack, quizStepFor } from '@/lib/self-study'
 import { GREEK_DECK, HEBREW_DECK, deckWordsForSelection, type DeckWord } from '@/lib/vocab-decks'
+import { pickDistractors } from '@/lib/gloss-distractors'
 
 // Auto-graded practice quiz over one self-study lesson's vocabulary. Multiple choice,
 // instant feedback, no instructor and no Assignment row: questions come straight from the
@@ -27,15 +28,14 @@ function shuffled<T>(arr: T[]): T[] {
 
 function buildQuestions(words: DeckWord[], pool: DeckWord[]): Q[] {
   return shuffled(words).map(word => {
-    const seen = new Set([word.gloss])
-    const distractors: string[] = []
-    // Same-POS glosses first — a preposition among three nouns answers itself.
-    for (const c of [...shuffled(pool.filter(w => w.pos === word.pos)), ...shuffled(pool)]) {
-      if (seen.has(c.gloss)) continue
-      seen.add(c.gloss)
-      distractors.push(c.gloss)
-      if (distractors.length === 3) break
-    }
+    // Same-POS glosses first — a preposition among three nouns answers itself — with the
+    // rest of the deck as the fallback. pickDistractors is the instructor quizzes' own
+    // chooser: it rejects any option the grader would also accept, so near-synonyms can
+    // never appear side by side (ἐκ "from out, from" beside ἀπό "(with gen.) from, away
+    // from" made both answers defensible).
+    const samePos = pool.filter(w => w.pos === word.pos && w !== word).map(w => w.gloss)
+    const rest = pool.filter(w => w.pos !== word.pos).map(w => w.gloss)
+    const distractors = pickDistractors(word.gloss, samePos, 3, rest)
     return { word, options: shuffled([word.gloss, ...distractors]), answer: word.gloss }
   })
 }
