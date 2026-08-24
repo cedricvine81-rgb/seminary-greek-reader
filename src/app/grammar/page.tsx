@@ -14,7 +14,7 @@ export default function MorphologyPage() {
   const hebrew = getServerTrack() === 'hebrew'
   return (
     <main className="min-h-[calc(100vh-3.5rem)]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6">
         {hebrew ? <HebrewGrammarView /> : <MorphologyView />}
       </div>
     </main>

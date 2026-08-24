@@ -30,6 +30,11 @@ export type MorphLevel = 'beginning' | 'intermediate'
 /** Current Beginning/Intermediate level, provided by MorphologyView. */
 export const LevelContext = createContext<MorphLevel>('beginning')
 
+/** Default fold state for chapter sections: the full /grammar page opens as a collapsed
+ *  outline (self-study feedback: the chapters read too long); the Reader's side panel
+ *  keeps everything expanded, since it deep-links straight into a chapter. */
+export const FoldDefaultContext = createContext<'expanded' | 'collapsed'>('expanded')
+
 /* ─── Transliteration toggle (Hebrew grammar) ──────────────────────────────
    Beginners cannot yet read pointed Hebrew at speed, and every standard
    first-year grammar prints a transliteration beside its examples for the
@@ -773,14 +778,76 @@ export function P({ id, children }: { id?: string; children: React.ReactNode }) 
 
 /** Numbered section heading inside a chapter. */
 export function SectionHeading({ n, id, children }: { n?: number; id?: string; children: React.ReactNode }) {
+  // Collapsible: the heading folds everything up to the next SectionHeading. The fold is
+  // DOM-driven (display:none on the following siblings) so the 40+ chapter files need no
+  // restructuring, translations stay mounted, and annotation anchors keep existing.
+  const ref = useRef<HTMLHeadingElement>(null)
+  const [collapsed, setCollapsed] = useState(false)
+  const collapsedRef = useRef(false)
+  const defaultFold = useContext(FoldDefaultContext)
+  const level = useContext(LevelContext)
+
+  function applyFold(c: boolean) {
+    const h = ref.current
+    if (!h) return
+    let el = h.nextElementSibling as HTMLElement | null
+    while (el && !el.hasAttribute('data-msec')) {
+      // data-no-fold marks trailing non-section elements (the annotation overlay).
+      if (!el.hasAttribute('data-no-fold')) el.style.display = c ? 'none' : ''
+      el = el.nextElementSibling as HTMLElement | null
+    }
+    collapsedRef.current = c
+    setCollapsed(c)
+    // Nudge the annotation layer to re-measure around the changed layout.
+    window.dispatchEvent(new Event('resize'))
+  }
+
+  // Mount: apply the surface's default. Level/language switches remount or reveal
+  // LevelOnly blocks between the headings, so re-assert the current fold over them.
+  useEffect(() => { if (defaultFold === 'collapsed') applyFold(true) }, [])  // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { applyFold(collapsedRef.current) }, [level])  // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Sidebar / header controls: fold or open every section, or open + scroll to one.
+  useEffect(() => {
+    const onAll = (e: Event) => applyFold((e as CustomEvent).detail === 'collapsed')
+    const onOne = (e: Event) => {
+      if (ref.current && ref.current.id === (e as CustomEvent).detail) {
+        applyFold(false)
+        ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+    // Content around a heading can re-render after the fold was applied (e.g. the Hebrew
+    // transliteration toggle hydrating) and come back visible — re-assert on demand.
+    const onReassert = () => applyFold(collapsedRef.current)
+    window.addEventListener('morph-fold-all', onAll)
+    window.addEventListener('morph-expand-section', onOne)
+    window.addEventListener('morph-fold-reassert', onReassert)
+    return () => {
+      window.removeEventListener('morph-fold-all', onAll)
+      window.removeEventListener('morph-expand-section', onOne)
+      window.removeEventListener('morph-fold-reassert', onReassert)
+    }
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <h3 className="mt-8 mb-3 flex items-center gap-2 text-lg font-semibold text-gray-900">
+    <h3
+      ref={ref}
+      data-msec
+      {...(id ? { id } : {})}
+      {...(n != null ? { 'data-hasn': '1' } : {})}
+      onClick={() => applyFold(!collapsedRef.current)}
+      className="mt-8 mb-3 flex items-center gap-2 text-lg font-semibold text-gray-900 cursor-pointer select-none group"
+    >
       {n != null && (
         <span className="w-5 h-5 rounded-full bg-brand-600 text-white text-[11px] font-bold flex items-center justify-center shrink-0">
           {n}
         </span>
       )}
       {id ? <Tr id={id}>{children}</Tr> : children}
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden
+        className={clsx('ml-1 shrink-0 text-gray-300 transition-transform group-hover:text-brand-500', collapsed ? '-rotate-90' : '')}>
+        <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
     </h3>
   )
 }

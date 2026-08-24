@@ -17,7 +17,8 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { Menu } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
-import { XlitContext, XLIT_STORAGE_KEY, MorphContentProvider } from '../shared'
+import { FoldDefaultContext, XlitContext, XLIT_STORAGE_KEY, MorphContentProvider } from '../shared'
+import { ChapterSidebar, FoldAllControls, useSectionToc } from '../ChapterSidebar'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
 import { HB_ALPHABET } from './alphabet'
@@ -131,6 +132,19 @@ export function HebrewGrammarView() {
   }
   const active = HEBREW_TABS.find(x => x.id === tab) ?? HEBREW_TABS[0]
 
+  // Numbered sidebar + section outline (same pattern as the Greek view).
+  const contentRef = useRef<HTMLDivElement>(null)
+  const chapterNo = HEBREW_TABS.findIndex(x => x.id === tab) + 1
+  const toc = useSectionToc(contentRef, chapterNo, [tab, locale, chapterContent, xlit])
+  const sidebarGroups = [{
+    heading: t('morph.chapters'),
+    items: HEBREW_TABS.map((x, i) => ({ id: x.id, label: t(x.labelKey), no: i + 1 })),
+  }]
+  function goToChapter(id: string) {
+    setTab(id)
+    window.scrollTo({ top: 0 })
+  }
+
   return (
     <MorphContentProvider value={chapterContent}>
     <XlitContext.Provider value={xlit}>
@@ -158,7 +172,7 @@ export function HebrewGrammarView() {
           <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-[70svh] overflow-y-auto bg-popover border border-gray-200 rounded-xl p-3 shadow-lg">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5 px-1">{t('morph.topics')}</p>
             <div className="flex flex-wrap gap-1.5">
-              {HEBREW_TABS.map(x => (
+              {HEBREW_TABS.map((x, i) => (
                 <button
                   key={x.id}
                   onClick={() => { setTab(x.id); setMenuOpen(false) }}
@@ -167,6 +181,7 @@ export function HebrewGrammarView() {
                     tab === x.id ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
                   )}
                 >
+                  <span className={tab === x.id ? 'opacity-70' : 'text-gray-400'}>{i + 1}. </span>
                   {t(x.labelKey)}
                 </button>
               ))}
@@ -175,41 +190,43 @@ export function HebrewGrammarView() {
         )}
       </div>
 
-      {/* Desktop: inline chapter tab bar. */}
-      <div className="hidden lg:block">
-        <div className="flex flex-wrap items-center gap-1.5 py-2 border-b border-gray-100 bg-surface">
-          {HEBREW_TABS.map(x => (
-            <button
-              key={x.id}
-              onClick={() => setTab(x.id)}
-              className={clsx(
-                'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap',
-                tab === x.id ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'
-              )}
-            >
-              {t(x.labelKey)}
-            </button>
-          ))}
-          <button
-            onClick={toggleXlit}
-            aria-pressed={xlit}
-            title={t('morph.hb.xlitHint')}
-            className={clsx(
-              'ms-auto shrink-0 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors',
-              xlit ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-200 text-gray-500 hover:text-gray-800',
-            )}
-          >
-            {t('morph.hb.xlit')}
-          </button>
+      {/* Desktop: numbered chapter sidebar (the 23-chip tab strip was the "too
+          complicated" landing the self-study feedback named). */}
+      <FoldDefaultContext.Provider value="collapsed">
+      <div className="lg:flex lg:gap-8">
+        <ChapterSidebar
+          groups={sidebarGroups}
+          activeId={tab}
+          onSelect={goToChapter}
+          sections={toc}
+        />
+        <div className="flex-1 min-w-0 overflow-y-auto">
+          <div className="py-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <h2 className="min-w-0 text-base font-semibold text-gray-900">
+                <span className="text-gray-400 font-normal">{t('morph.chapterNo', { n: chapterNo })}</span>
+                {t(active.labelKey)}
+              </h2>
+              <div className="flex flex-wrap items-center gap-2">
+                <FoldAllControls />
+                <button
+                  onClick={toggleXlit}
+                  aria-pressed={xlit}
+                  title={t('morph.hb.xlitHint')}
+                  className={clsx(
+                    'hidden lg:inline-flex shrink-0 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors',
+                    xlit ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-200 text-gray-500 hover:text-gray-800',
+                  )}
+                >
+                  {t('morph.hb.xlit')}
+                </button>
+              </div>
+            </div>
+            <div ref={contentRef}>{active.content}</div>
+          </div>
         </div>
       </div>
-
-      <div className="flex-1 overflow-y-auto">
-        <div className="py-4">
-          <h2 className="text-base font-semibold text-gray-900 mb-4">{t(active.labelKey)}</h2>
-          {active.content}
-        </div>
-      </div>
+      </FoldDefaultContext.Provider>
     </div>
     </XlitContext.Provider>
     </MorphContentProvider>

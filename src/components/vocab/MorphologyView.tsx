@@ -13,7 +13,8 @@ import { useState, useRef, useEffect } from 'react'
 import clsx from 'clsx'
 import { Menu, GraduationCap, ListChecks, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { ESS_EXPLANATIONS, TAB_EXPLANATIONS, type Explanation } from './morphology-explanations'
-import { LevelContext, MorphContentProvider, type MorphLevel } from '@/components/morphology/shared'
+import { FoldDefaultContext, LevelContext, MorphContentProvider, type MorphLevel } from '@/components/morphology/shared'
+import { ChapterSidebar, FoldAllControls, useSectionToc, type SidebarItem, type TocSection } from '@/components/morphology/ChapterSidebar'
 import { AnnotationLayer } from '@/components/annotations/AnnotationLayer'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
@@ -323,6 +324,7 @@ export function MorphologyView({
   // The open chapter's translated prose. Keyed by chapter, so moving between chapters fetches
   // only what is newly needed, and English fetches nothing.
   const locale = useLocale()
+  const t = useT()
   const [chapterContent, setChapterContent] = useState<ContentCatalogue>(NO_CONTENT)
   useEffect(() => {
     if (locale === 'en') { setChapterContent(NO_CONTENT); return }
@@ -384,6 +386,20 @@ export function MorphologyView({
   }
   const chapterIndex = COURSE_CHAPTERS.findIndex(c => c.id === mainTab)
 
+  // Numbered sidebar (desktop, full page): the chapters in course order, with the open
+  // chapter's section outline discovered from the rendered content.
+  const contentRef = useRef<HTMLDivElement>(null)
+  const chapterNo = chapterIndex >= 0 ? chapterIndex + 1 : null
+  const domToc = useSectionToc(contentRef, chapterNo, [mainTab, level, locale, chapterContent, essId])
+  const essToc: TocSection[] = ESS_SECTIONS.map(s => ({ id: String(s.id), no: `E${s.id}`, label: s.label }))
+  const sidebarGroups: { heading: string; items: SidebarItem[] }[] = [
+    { heading: t('morph.reference'), items: [{ id: 'essentials', label: t('morph.tab.essentials') }] },
+    {
+      heading: t('morph.chapters'),
+      items: COURSE_CHAPTERS.map((c, i) => ({ id: c.id, label: t(c.labelKey), no: i + 1, done: courseMode && completed.has(c.id) })),
+    },
+  ]
+
   // Mobile only: the topic tabs + Minimums sections collapse into a hamburger menu
   // (desktop keeps the inline bars). Close it on an outside click.
   const [menuOpen, setMenuOpen] = useState(false)
@@ -397,7 +413,6 @@ export function MorphologyView({
     return () => document.removeEventListener('mousedown', onDown)
   }, [menuOpen])
 
-  const t = useT()
   const activeEss = ESS_SECTIONS.find(s => s.id === essId)!
 
   return (
@@ -422,7 +437,7 @@ export function MorphologyView({
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5 px-1">{t('morph.topics')}</p>
               <div className="flex flex-wrap gap-1.5">
-                {MAIN_TABS.map(tab => (
+                {MAIN_TABS.map((tab, ti) => (
                   <button
                     key={tab.id}
                     onClick={() => { setMainTab(tab.id); if (tab.id !== 'essentials') setMenuOpen(false) }}
@@ -431,6 +446,7 @@ export function MorphologyView({
                       mainTab === tab.id ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
                     )}
                   >
+                    {tab.id !== 'essentials' && <span className={mainTab === tab.id ? 'opacity-70' : 'text-gray-400'}>{ti}. </span>}
                     {t(tab.labelKey)}
                     {courseMode && completed.has(tab.id) && (
                       <span className={clsx('ml-1', mainTab === tab.id ? 'text-white' : 'text-green-600')}>✓</span>
@@ -462,54 +478,29 @@ export function MorphologyView({
         )}
       </div>
 
-      {/* Desktop: inline topic tab bar. Never in the panel — 21 chips don't fit 620px. */}
-      <div className={embedded ? 'hidden' : 'hidden lg:block'}>
-        <div className="flex flex-wrap gap-1.5 py-2 border-b border-gray-100 bg-surface">
-          {MAIN_TABS.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setMainTab(tab.id)}
-              className={clsx(
-                'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap',
-                tab.id === 'essentials'
-                  ? 'bg-brand-600 text-white'
-                  : mainTab === tab.id
-                    ? 'text-gray-900 font-semibold'
-                    : 'text-gray-600 hover:text-gray-900'
-              )}
-            >
-              {t(tab.labelKey)}
-              {courseMode && completed.has(tab.id) && <span className="ml-1 text-green-600">✓</span>}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Content */}
+      {/* Content — desktop gets the numbered chapter sidebar (the old 21-chip tab strip
+          was the "too complicated" landing the self-study feedback named). */}
       <LevelContext.Provider value={level}>
-      <div className="flex-1 overflow-y-auto">
+      <FoldDefaultContext.Provider value={embedded ? 'expanded' : 'collapsed'}>
+      <div className={embedded ? '' : 'lg:flex lg:gap-8'}>
+      {!embedded && (
+        <ChapterSidebar
+          groups={sidebarGroups}
+          activeId={mainTab}
+          onSelect={id => goToChapter(id as MainTab)}
+          sections={mainTab === 'essentials' ? essToc : domToc}
+          onSection={mainTab === 'essentials' ? (id => setEssId(Number(id))) : undefined}
+        />
+      )}
+      <div className="flex-1 min-w-0 overflow-y-auto">
         {courseMode && <CourseHeader completed={completed} goTo={goToChapter} />}
         {mainTab === 'essentials' ? (
           <>
-            {/* Ess. 1–8 sub-navigation (desktop; mobile and the panel use the hamburger) */}
-            <div className={`${embedded ? 'hidden' : 'hidden lg:flex'} gap-1.5 flex-wrap py-3 border-b border-gray-100 bg-surface`}>
-              {ESS_SECTIONS.map(s => (
-                <button
-                  key={s.id}
-                  onClick={() => setEssId(s.id)}
-                  className={clsx(
-                    'px-2.5 py-1 rounded-lg text-sm font-medium transition-colors',
-                    essId === s.id ? 'text-gray-900 font-semibold underline underline-offset-4' : 'text-gray-600 hover:text-gray-900'
-                  )}
-                >
-                  {s.label}
-                </button>
-              ))}
-            </div>
             <div className="py-4">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                 <h2 className="min-w-0 text-base font-semibold text-gray-900">{activeEss.title}</h2>
                 <div className="flex flex-wrap items-center gap-2">
+                  <FoldAllControls />
                   <CourseToggle on={courseMode} onToggle={toggleCourse} />
                   <LevelToggle level={level} onChange={changeLevel} />
                 </div>
@@ -528,27 +519,32 @@ export function MorphologyView({
           <div className="py-4">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="min-w-0 text-base font-semibold text-gray-900">
-                {courseMode && chapterIndex >= 0 && (
+                {chapterIndex >= 0 && (
                   <span className="text-gray-400 font-normal">{t('morph.chapterNo', { n: chapterIndex + 1 })}</span>
                 )}
                 {(() => { const m = MAIN_TABS.find(x => x.id === mainTab); return m ? t(m.labelKey) : '' })()}
               </h2>
               <div className="flex flex-wrap items-center gap-2">
+                <FoldAllControls />
                 <CourseToggle on={courseMode} onToggle={toggleCourse} />
                 <LevelToggle level={level} onChange={changeLevel} />
               </div>
             </div>
+            <div ref={contentRef}>
             <AnnotationLayer page={mainTab}>
               <ExplanationCard explanation={TAB_EXPLANATIONS[mainTab]} level={level} />
               {REVISION_CONTENT[mainTab]}
             </AnnotationLayer>
+            </div>
             {courseMode && chapterIndex >= 0 && (
               <CourseNav index={chapterIndex} completed={completed} onComplete={setChapter} goTo={goToChapter} />
             )}
           </div>
         )}
       </div>
+      </div>
 
+      </FoldDefaultContext.Provider>
       </LevelContext.Provider>
     </div>
     </MorphContentProvider>

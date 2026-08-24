@@ -328,7 +328,7 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
           other language, one whose words have been edited away, and any note at all in a
           browser without the CSS Custom Highlight API. */}
       {enabled && markers.length > 0 && (
-        <div className="pointer-events-none absolute inset-y-0 right-0 print:hidden">
+        <div data-no-fold className="pointer-events-none absolute inset-y-0 right-0 print:hidden">
           {markers.map(m => (
             <button
               key={m.blockId}
