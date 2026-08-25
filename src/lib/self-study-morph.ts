@@ -72,11 +72,14 @@ export const GREEK_MORPH_QUIZZES: Record<number, GreekMorphQuizDef> = {
     fields: ['casus', 'gender', 'number'], vocabThruLesson: 3,
   },
   // The pronoun ladder mirrors the chapter sequence: personal → +demonstrative → all types.
+  // Pronouns parse by case/gender/number, like nouns — never by person (that's a verb
+  // category; the lexeme in the prompt already identifies ἐγώ vs σύ). Gender is a SOFT
+  // field: ἐγώ / σύ forms carry none and simply skip the gender select, while the αὐτός
+  // forms are asked for it (see parseEntriesToQuestions).
   5: {
     lang: 'greek', labelKey: 'ss.m.gk5',
     subtypes: [{ subtype: 'PRONOUN_PARSING', count: MORPH_QUIZ_QUESTIONS }],
-    // No gender: ἐγώ / σύ forms carry none, and a tested field must be on every form.
-    fields: ['person', 'casus', 'number'],
+    fields: ['casus', 'gender', 'number'],
     parseFilter: { pronounTypes: ['Personal'] }, vocabThruLesson: 5,
   },
   6: {
@@ -88,7 +91,7 @@ export const GREEK_MORPH_QUIZZES: Record<number, GreekMorphQuizDef> = {
   7: {
     lang: 'greek', labelKey: 'ss.m.gk7',
     subtypes: [{ subtype: 'PRONOUN_PARSING', count: MORPH_QUIZ_QUESTIONS }],
-    fields: ['casus', 'number', 'pronounType'],
+    fields: ['casus', 'gender', 'number', 'pronounType'],
     parseFilter: { pronounTypes: ['Personal', 'Demonstrative', 'Relative'] }, vocabThruLesson: 7,
   },
   8:  greekVerbs('ss.m.gk8',  8,  { moods: ['Indicative'] }),

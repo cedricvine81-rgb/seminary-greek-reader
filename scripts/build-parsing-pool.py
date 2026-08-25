@@ -12,8 +12,10 @@ Normalisation applied:
   • drops Optative (excluded by request)
   • participles keep tense+voice+case+number+gender and carry NO person
   • infinitives keep tense+voice only
-  • pronoun "type" comes from the tagger's part-of-speech class; pronoun "person" is
-    derived from the lemma (only personal / possessive / reflexive pronouns have one)
+  • pronoun "type" comes from the tagger's part-of-speech class; pronouns carry NO
+    person — the course parses every pronoun by case/gender/number (gender only where
+    the form is marked for it: ἐγώ/σύ/reflexive forms carry none in this corpus), the
+    same scheme as nouns and adjectives. Person is a VERB category here.
 
 Usage:  python3 scripts/build-parsing-pool.py [max_per_signature]
 """
@@ -44,23 +46,41 @@ PRONOUN_TYPE = {
     'Correlative Pronoun': 'Correlative', 'Possessive Pronoun': 'Possessive',
     'Reciprocal Pronoun': 'Reciprocal',
 }
-# Pronoun person is lexical, not tagged — derive it from the lemma.
-PRONOUN_PERSON = {
-    'ἐγώ': '1st', 'ἡμεῖς': '1st', 'κἀγώ': '1st', 'ἐμαυτοῦ': '1st', 'ἐμός': '1st', 'ἡμέτερος': '1st',
-    'σύ': '2nd', 'ὑμεῖς': '2nd', 'σεαυτοῦ': '2nd', 'σός': '2nd', 'ὑμέτερος': '2nd',
-    'αὐτός': '3rd', 'ἑαυτοῦ': '3rd', 'αὑτοῦ': '3rd',
-}
-PERSONED_TYPES = {'Personal', 'Possessive', 'Reflexive'}
-
-# Person-marked pronouns (ἐγώ, σύ, ἡμεῖς, ὑμεῖς, the reflexives) are tagged in a SHIFTED
-# layout — the tag "P-1GS" is split so that person lands in `casus`, case in `number` and
-# number in `gender` (e.g. ἐγώ → casus '1', number 'G', gender 'S'). Those forms genuinely
-# have no gender. Detect the layout by a numeric `casus` and re-read the fields.
+# Person-marked pronoun tags (ἐγώ, σύ, ἡμεῖς, ὑμεῖς, the reflexives) come in a SHIFTED
+# layout — the tag "P-1GS" is split so that the (unused) person digit lands in `casus`,
+# case in `number` and number in `gender` (e.g. ἐγώ → casus '1', number 'G', gender 'S').
+# ἐγώ/σύ genuinely have no gender; the reflexives DO in the source tags (F-3GSM), but the
+# corpus JSON keeps only three slots, so their trailing gender letter is already lost
+# upstream and they too come through as case+number. Detect the layout by a numeric
+# `casus` and re-read the fields. The person digit is discarded: pronouns are parsed by
+# case/gender/number in this course, never by person.
+SHIFTED = {'1', '2', '3'}
 CASE_LETTER = {'N': 'Nominative', 'G': 'Genitive', 'D': 'Dative', 'A': 'Accusative', 'V': 'Vocative'}
 NUM_LETTER  = {'S': 'Singular', 'P': 'Plural'}
 
 def norm_tense(t):  return re.sub(r'^2nd\s+', '', t or '') or None
 def clean(v, allowed): return v if v in allowed else None
+
+# ── Accentuation guard ────────────────────────────────────────────────────────────────
+# The corpus prints the Pericope Adulterae (John 7:53–8:11) without accents or breathings,
+# and a quiz form must show the diacritics students parse by (αυτου could be αὐτοῦ or
+# αὑτοῦ). True enclitics (μου, σοι, indefinite τις, φημι …) are legitimately unaccented
+# and must stay — so the guard is (a) skip the PA outright, and (b) skip any vowel-initial
+# surface with no diacritic at all (a Greek word starting with a vowel always carries at
+# least a breathing) plus unaccented interrogative τίς forms (the interrogative never
+# loses its accent; unaccented ones are transcription artifacts).
+import unicodedata
+PA_RE = re.compile(r'^John (?:7:53|8:(?:[1-9]|1[01]))$')
+VOWELS = set('αεηιουω')
+def has_diacritic(s):
+    return any(unicodedata.combining(c) for c in unicodedata.normalize('NFD', s))
+def accent_ok(surface, ref, ptype=None):
+    if PA_RE.match(ref or ''): return False
+    if has_diacritic(surface): return True
+    first = unicodedata.normalize('NFD', surface[:1]).lower()[:1]
+    if first in VOWELS: return False          # missing its obligatory breathing
+    if ptype == 'Interrogative': return False  # τίς interrogative always keeps its accent
+    return True
 
 def load_glosses():
     """lemma -> most common English gloss, from the Nestle-1904 phrase tree."""
@@ -128,23 +148,23 @@ def main():
                 elif pos in PRONOUN_TYPE:
                     ptype = PRONOUN_TYPE[pos]
                     raw_c, raw_n, raw_g = m.get('casus'), m.get('number'), m.get('gender')
-                    if raw_c in PERSON:                       # shifted layout: person/case/number
-                        person = PERSON[raw_c]
+                    if raw_c in SHIFTED:                      # shifted layout: (person)/case/number
                         pc, pn = CASE_LETTER.get(raw_n), NUM_LETTER.get(raw_g)
                         if not (pc and pn): continue          # garbled (some possessives)
-                        e = dict(base, partOfSpeech='Pronoun', person=person, casus=pc, number=pn,
-                                 pronounType=ptype)           # no gender: these forms have none
-                        sig = ('P', ptype, pc, pn, '', person)
+                        e = dict(base, partOfSpeech='Pronoun', casus=pc, number=pn,
+                                 pronounType=ptype)           # gender lost upstream (see above)
+                        # lemma keeps distinct-lexeme buckets apart now that person is gone
+                        sig = ('P', ptype, pc, pn, '', lemma)
                     else:                                     # normal case/number/gender layout
                         if not (casus and number and gender): continue
                         e = dict(base, partOfSpeech='Pronoun', casus=casus, number=number,
                                  gender=gender, pronounType=ptype)
-                        person = PRONOUN_PERSON.get(lemma) if ptype in PERSONED_TYPES else None
-                        if person: e['person'] = person
-                        sig = ('P', ptype, casus, number, gender, person or '')
+                        sig = ('P', ptype, casus, number, gender, '')
                 else:
                     continue
 
+                if not accent_ok(surface, ref, e.get('pronounType')):
+                    continue
                 stats[sig[0]] += 1
                 b = buckets[sig]
                 if surface not in b and len(b) < MAX_PER_SIG:
@@ -163,7 +183,8 @@ def main():
     payload = {
         '_generated': 'scripts/build-parsing-pool.py — do not edit by hand',
         '_note': 'NT forms from the tagged GNT corpus, normalised. Optative excluded; '
-                 'participles carry case/number/gender and no person.',
+                 'participles carry case/number/gender and no person; pronouns carry '
+                 'case/number(/gender where marked) and never person.',
         'verb': [trim(e) for e in groups['Verb']],
         'noun': [trim(e) for e in groups['Noun']],
         'adjective': [trim(e) for e in groups['Adjective']],

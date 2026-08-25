@@ -434,9 +434,18 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
   // a value the form doesn't have. This is what makes the verb subtype mood-aware:
   // ticking Case+Gender yields a participle-only quiz; ticking Person excludes participles
   // (they have none) and infinitives.
+  //
+  // EXCEPTION — pronoun gender is a SOFT field: within the one pronoun pool some forms
+  // are marked for gender and some are not (the corpus keeps none for ego/su/the
+  // reflexives), and the course still parses the marked ones by it. So testing gender
+  // must not silently drop the unmarked pronouns; those questions just skip the gender
+  // select (both quiz players only render non-null fields). Verbs keep the hard rule —
+  // there the field list deliberately selects the mood.
+  const soft = (e: GreekParseEntry, f: string) => f === 'gender' && e.partOfSpeech === 'Pronoun'
   const testable = fields?.length
     ? entries.filter(e => fields.every(f =>
-        f === 'partOfSpeech' || (e as unknown as Record<string, unknown>)[f] != null))
+        f === 'partOfSpeech' || soft(e, f)
+        || (e as unknown as Record<string, unknown>)[f] != null))
     : entries
   return shuffle(testable).slice(0, count).map((entry, idx) => {
     const full: Record<string, string | null> = {
@@ -459,8 +468,11 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
     } else {
       Object.assign(answer, full)
     }
-    // Points scale with how many fields are being tested
-    const testedCount = fields && fields.length > 0 ? fields.length : Object.values(full).filter(v => v).length - 1
+    // Points scale with how many fields this form is actually tested on (a soft field
+    // that the form does not carry earns and costs nothing).
+    const testedCount = fields && fields.length > 0
+      ? fields.filter(f => f !== 'partOfSpeech' && answer[f] != null).length
+      : Object.values(full).filter(v => v).length - 1
     return {
       position: idx + 1,
       type: 'MORPHOLOGY_IDENTIFY' as QuestionType,

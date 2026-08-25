@@ -62,11 +62,14 @@ export const SUBTYPE_FIELD_OPTIONS: Record<MorphologySubtype, MorphFieldOption[]
     { key: 'gender', label: 'Gender' },
     { key: 'number', label: 'Number' },
   ],
+  // Pronouns parse like nouns/adjectives: case, gender, number (+ the lexical type).
+  // Person is NOT a pronoun category in this course (and the pool carries none) — the
+  // lexeme (shown in the prompt) already says whether it is ego or su. Gender is
+  // skipped automatically on the forms that have none: a null field is never asked.
   PRONOUN_PARSING: [
     { key: 'casus',       label: 'Case'   },
     { key: 'gender',      label: 'Gender' },
     { key: 'number',      label: 'Number' },
-    { key: 'person',      label: 'Person' },
     { key: 'pronounType', label: 'Pronoun type' },
   ],
   MIXED: [

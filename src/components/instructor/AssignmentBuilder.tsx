@@ -1087,7 +1087,9 @@ function ParseFilterPicker({
         <FilterChipGroup compact={compact} label={groupLabel('voice', t, 'Voice')} options={VERB_VOICES} selected={filter.voices  ?? VERB_VOICES}  onChange={v => patch({ voices: v })}  />
         <FilterChipGroup compact={compact} label={groupLabel('mood', t, 'Mood')}   options={VERB_MOODS}  selected={filter.moods   ?? VERB_MOODS}   onChange={v => patch({ moods: v })}   />
       </>}
-      {((isVerb && hasNonPart) || isPronoun) && (
+      {/* Person is a verb category only — Greek pronouns carry none (parsed by
+          case/gender/number, like nouns), so the chip shows just for finite verbs. */}
+      {isVerb && hasNonPart && (
         <FilterChipGroup compact={compact} label={groupLabel('person', t, 'Person')} options={PERSONS} selected={filter.persons ?? PERSONS} onChange={v => patch({ persons: v })} />
       )}
       <FilterChipGroup compact={compact} label={groupLabel('number', t, 'Number')} options={NUMBERS} selected={filter.numbers ?? NUMBERS} onChange={v => patch({ numbers: v })} />
