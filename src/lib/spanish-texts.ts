@@ -233,6 +233,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'greco-epictetus-enchiridion': 'greco/epictetus-enchiridion',
   'greco-epictetus-discourses-1': 'greco/epictetus-discourses-1',
   'greco-epictetus-discourses-2': 'greco/epictetus-discourses-2',
+  'greco-epictetus-discourses-3': 'greco/epictetus-discourses-3',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
