@@ -225,6 +225,12 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'philo-qg': 'philo/qg',
   'philo-alleg-interp': 'philo/alleg-interp',
   'philo-moses': 'philo/moses',
+  // GRECO-ROMAN WORKS. Translated from the GREEK the reader shows (Perseus editions) — the
+  // public-domain English beside it (Long, Jowett, …) is consulted only for proper names,
+  // the same rule as Josephus. Chapter-addressed, so they live in this registry. Register
+  // each work ONLY when every chapter exists — a half-registered work falls back to the
+  // English silently and reads as finished.
+  'greco-epictetus-enchiridion': 'greco/epictetus-enchiridion',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
