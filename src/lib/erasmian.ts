@@ -209,3 +209,26 @@ export function erasmianRespellWord(word: string): string {
 export function erasmianRespell(text: string): string {
   return splitWords(text).map(erasmianRespellWord).filter(Boolean).join(' ')
 }
+
+// ── Where the pre-rendered audio lives ────────────────────────────────────────────────
+// Named here, not in the player or the build script, because the two must agree exactly:
+// a slug rule that drifts means the build writes files the app never asks for, and the app
+// silently falls back to the browser voice for every word — a failure that looks like
+// nothing at all.
+//
+// AAC in an .m4a container rather than MP3: the renderer is macOS's own `say` + `afconvert`,
+// which cannot encode MP3. Safari and Chrome both play AAC natively, which is what this
+// app's students use.
+export const AUDIO_EXT = 'm4a'
+
+/** Audio files are named by the word, stripped of accents and everything but Greek letters. */
+export function audioSlug(greek: string): string {
+  return greek.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/ς/g, 'σ').replace(/[^α-ω]/g, '')
+}
+
+/** The URL the player fetches for a word ('' when there is nothing sayable). */
+export function audioUrl(greek: string): string {
+  const slug = audioSlug(greek)
+  return slug ? `/audio/greek/${slug}.${AUDIO_EXT}` : ''
+}

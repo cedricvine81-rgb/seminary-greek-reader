@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { Volume2, Loader2 } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
-import { erasmianRespell } from '@/lib/erasmian'
+import { erasmianRespell, audioSlug, audioUrl } from '@/lib/erasmian'
 
 // "Say this word" — Erasmian, the pronunciation the course teaches.
 //
@@ -18,12 +18,6 @@ import { erasmianRespell } from '@/lib/erasmian'
 // Erasmian is the point: no TTS voice anywhere speaks it (Greek voices speak MODERN Greek,
 // which merges six spellings into "ee" and turns β into v), so a Greek-language voice would
 // actively contradict the chapter. An English voice reading our respelling does not.
-
-/** Audio files are named by the word, stripped of accents and non-letters. */
-export function audioSlug(greek: string): string {
-  return greek.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-    .replace(/ς/g, 'σ').replace(/[^α-ω]/g, '')
-}
 
 type Status = 'idle' | 'loading' | 'playing'
 
@@ -78,7 +72,7 @@ export function SpeakGreek({ text, className, size = 14, label }: {
     if (!slug || known.get(slug) === false) { speakFallback(); return }
 
     setStatus('loading')
-    const audio = new Audio(`/audio/greek/${slug}.mp3`)
+    const audio = new Audio(audioUrl(text))
     audioRef.current = audio
     // A missing file reports itself twice — the element's `error` event AND the rejected
     // play() promise — so the handover runs once or the word is spoken over itself.
