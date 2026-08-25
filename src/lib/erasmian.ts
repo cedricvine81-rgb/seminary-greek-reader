@@ -221,10 +221,16 @@ export function erasmianRespell(text: string): string {
 // app's students use.
 export const AUDIO_EXT = 'm4a'
 
-/** Audio files are named by the word, stripped of accents and everything but Greek letters. */
+/** Audio files are named by the word, stripped of accents and everything but Greek letters —
+ *  EXCEPT the rough breathing, which is kept as a leading "h". Accents only move stress, but
+ *  the breathing is a consonant: without it εἰς ("ays") and εἷς ("HAYS") collapsed onto one
+ *  filename and whichever rendered first spoke for both. Same rule as the transliterator:
+ *  the breathing counts on a vowel; initial ῥ writes the mark but is read plain r. */
 export function audioSlug(greek: string): string {
-  return greek.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-    .replace(/ς/g, 'σ').replace(/[^α-ω]/g, '')
+  const nfd = greek.normalize('NFD').toLowerCase()
+  const rough = new RegExp(`[αεηιουω]${ROUGH}`).test(nfd)
+  const letters = nfd.replace(/[̀-ͯ]/g, '').replace(/ς/g, 'σ').replace(/[^α-ω]/g, '')
+  return letters ? (rough ? 'h' : '') + letters : ''
 }
 
 /** The URL the player fetches for a word ('' when there is nothing sayable). */

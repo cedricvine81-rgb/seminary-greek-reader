@@ -1,4 +1,4 @@
-import { erasmianIPA, erasmianWordIPA, erasmianRespell } from '@/lib/erasmian'
+import { erasmianIPA, erasmianWordIPA, erasmianRespell, audioSlug } from '@/lib/erasmian'
 import bgvb from '@/data/bgvb-vocabulary.json'
 
 /**
@@ -91,6 +91,26 @@ describe('erasmian — the whole vocabulary deck', () => {
   it('never starts a syllable with ŋ (no English voice can say it)', () => {
     const bad = words.filter(w => /ˈŋ|^ŋ/.test(erasmianWordIPA(w)))
     expect(bad).toEqual([])
+  })
+
+  it('never files two different-sounding words under one audio slug', () => {
+    // The audit found εἰς ("ays") and εἷς ("HAYS") sharing a slug because the rough
+    // breathing was stripped — whichever rendered first spoke for both. The slug now
+    // keeps the breathing as a leading "h"; this sweep holds the whole inventory
+    // (the deck plus each letter quoted alone) to that rule.
+    const inventory = [...words, ...'αβγδεζηθικλμνξοπρστυφχψω']
+    const bySlug = new Map<string, Set<string>>()
+    for (const w of inventory) {
+      const slug = audioSlug(w)
+      if (!slug) continue
+      const sounds = bySlug.get(slug) ?? new Set<string>()
+      sounds.add(erasmianRespell(w).toLowerCase())
+      bySlug.set(slug, sounds)
+    }
+    const clashes = Array.from(bySlug.entries())
+      .filter(([, sounds]) => sounds.size > 1)
+      .map(([slug, sounds]) => `${slug}: ${Array.from(sounds).join(' vs ')}`)
+    expect(clashes).toEqual([])
   })
 
   it('emits only IPA symbols the speech engines accept', () => {
