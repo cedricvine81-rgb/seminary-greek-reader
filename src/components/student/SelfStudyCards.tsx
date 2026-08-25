@@ -8,17 +8,25 @@ import { SELF_STUDY_TRACKS, trackProgress } from '@/lib/self-study'
 // The dashboard's Self-study section: the four instructor-free tracks with live progress.
 // Complements courses — an enrolled student can use both; a student with no courses gets
 // a way in that isn't "wait for an instructor".
-export function SelfStudyCards() {
+export function SelfStudyCards({ heading = true }: {
+  /** The dedicated /student/self-study page is already titled, so it turns the block's own
+   *  heading off; on the dashboard it is one section among several and needs it. */
+  heading?: boolean
+} = {}) {
   const t = useT()
   const { completed } = useCourseProgress()
   return (
     <div className="space-y-3">
-      <div>
-        <h2 className="flex items-center gap-2 text-base font-semibold text-gray-900">
-          <GraduationCap size={17} className="text-brand-600" /> {t('ss.title')}
-        </h2>
-        <p className="mt-0.5 text-sm text-gray-500">{t('ss.subtitle')}</p>
-      </div>
+      {heading ? (
+        <div>
+          <h2 className="flex items-center gap-2 text-base font-semibold text-gray-900">
+            <GraduationCap size={17} className="text-brand-600" /> {t('ss.title')}
+          </h2>
+          <p className="mt-0.5 text-sm text-gray-500">{t('ss.subtitle')}</p>
+        </div>
+      ) : (
+        <p className="text-sm text-gray-500">{t('ss.subtitle')}</p>
+      )}
       <div className="grid gap-3 sm:grid-cols-2">
         {SELF_STUDY_TRACKS.map(def => {
           const { done, total } = trackProgress(def, completed)

@@ -9,6 +9,7 @@ import {
   ClipboardList, BarChart2, FileText,
   Settings, Bell,
   Users, BookOpen, Building2, Mail, ShieldAlert, Gavel, Bug, Activity,
+  GraduationCap,
 } from 'lucide-react'
 
 interface NavItem {
@@ -46,6 +47,9 @@ const adminNav: NavItem[] = [
 
 const studentNav: NavItem[] = [
   { label: 'nav.dashboard',   href: '/student',                  icon: <LayoutDashboard size={16} />, desc: 'nav.desc.dashboard' },
+  // Directly under Dashboard: self-study is a way INTO the app for students with no
+  // course, so it has to be visible without first scrolling the dashboard to find it.
+  { label: 'nav.selfStudy',   href: '/student/self-study',       icon: <GraduationCap size={16} />,   desc: 'nav.desc.selfStudy' },
   { label: 'nav.calendar',    href: '/student/calendar',         icon: <Calendar size={16} />,        desc: 'nav.desc.calendar' },
   { label: 'nav.assignments', href: '/student/assignments',      icon: <ClipboardList size={16} />,   desc: 'nav.desc.assignments' },
   { label: 'nav.messages',    href: '/student/messages',         icon: <Mail size={16} />,            desc: 'nav.desc.messages' },
