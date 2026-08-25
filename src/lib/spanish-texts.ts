@@ -239,6 +239,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plato-apology': 'greco/plato-apology',
   'plato-crito': 'greco/plato-crito',
   'plato-phaedo': 'greco/plato-phaedo',
+  'plato-symposium': 'greco/plato-symposium',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
