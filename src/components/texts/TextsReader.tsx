@@ -32,6 +32,7 @@ import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
 import { DEUTERO_ES_BOOKS, ES_PROSE_WORKS, ES_ENGLISH_PROSE_WORKS, OUR_SPANISH_IDS } from '@/lib/spanish-texts'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { TransWords } from '@/components/highlights/TransWords'
@@ -1972,6 +1973,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         {(isGreek || greekProse || hebrewProse) && !greekHidden && <ResizableParsingPane storageKey="texts" info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
 
+      {isAuthenticated && <TouchHighlighter containerRef={panelRef} onRange={highlightSelection.openForRange} />}
       {isAuthenticated && highlightSelection.popup && (
         <HighlightPopup
           state={highlightSelection.popup}

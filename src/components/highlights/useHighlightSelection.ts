@@ -21,6 +21,35 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
   // reopen it on every adjustment.
   const shownFor = useRef<string | null>(null)
 
+  /** Range → per-verse splits → palette. The shared tail of every path in: the mouse
+   *  drag-selection below, the settling touch selection, and TouchHighlighter's painted
+   *  range (the touch path that needs no native selection at all). */
+  function openForRange(range: Range): boolean {
+    const container = containerRef.current
+    if (!container || !container.contains(range.commonAncestorContainer)) return false
+    const anchors = Array.from(container.querySelectorAll<HTMLElement>('[data-hl-verse]'))
+      .filter(el => range.intersectsNode(el))
+    if (anchors.length === 0) return false
+
+    const splits: HighlightSplit[] = []
+    for (const el of anchors) {
+      const clipped = clipRangeToElement(range, el)
+      if (!clipped) continue
+      const start = offsetWithin(el, clipped.startContainer, clipped.startOffset)
+      const end = offsetWithin(el, clipped.endContainer, clipped.endOffset)
+      if (end <= start) continue
+      splits.push({ book: el.dataset.hlBook!, chapter: Number(el.dataset.hlChapter), verse: Number(el.dataset.hlVerse), start, end, layer: el.dataset.hlLayer ?? 'grc' })
+    }
+    if (splits.length === 0) return false
+
+    const rect = range.getBoundingClientRect()
+    const key = splits.map(s => `${s.book}${s.chapter}:${s.verse}:${s.start}-${s.end}`).join('|')
+    if (shownFor.current === key) return true
+    shownFor.current = key
+    setPopup({ kind: 'new', x: rect.left + rect.width / 2, y: rect.top, splits, text: range.toString() })
+    return true
+  }
+
   useEffect(() => {
     // Touch selection is not finished when the finger lifts — iOS leaves grab handles and the
     // reader drags them to adjust — so a coarse pointer also needs the settle timer below.
@@ -42,34 +71,12 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
       const sel = window.getSelection()
       if (!sel || sel.isCollapsed || sel.rangeCount === 0) return
       const range = sel.getRangeAt(0)
-      if (!container.contains(range.commonAncestorContainer)) return
-
-      const anchors = Array.from(container.querySelectorAll<HTMLElement>('[data-hl-verse]'))
-        .filter(el => range.intersectsNode(el))
-      if (anchors.length === 0) return
-
-      const splits: HighlightSplit[] = []
-      for (const el of anchors) {
-        const clipped = clipRangeToElement(range, el)
-        if (!clipped) continue
-        const start = offsetWithin(el, clipped.startContainer, clipped.startOffset)
-        const end = offsetWithin(el, clipped.endContainer, clipped.endOffset)
-        if (end <= start) continue
-        splits.push({ book: el.dataset.hlBook!, chapter: Number(el.dataset.hlChapter), verse: Number(el.dataset.hlVerse), start, end, layer: el.dataset.hlLayer ?? 'grc' })
-      }
-      if (splits.length === 0) return
-
-      const rect = range.getBoundingClientRect()
-      const key = splits.map(s => `${s.book}${s.chapter}:${s.verse}:${s.start}-${s.end}`).join('|')
-      if (shownFor.current === key) return
-      shownFor.current = key
-      const text = sel.toString()
+      const opened = openForRange(range)
       // On touch, drop the native selection once measured: iOS raises Copy / Look Up over any
       // live selection and that callout cannot be suppressed while one exists, so it would
       // cover this palette. The range is already captured and the highlight is painted from
       // it, so the reader still sees exactly what they picked.
-      if (coarse) window.getSelection()?.removeAllRanges()
-      setPopup({ kind: 'new', x: rect.left + rect.width / 2, y: rect.top, splits, text })
+      if (opened && coarse) window.getSelection()?.removeAllRanges()
     }
 
     // `pointerup` covers mouse, finger and Apple Pencil; the mouseup this used to rely on is
@@ -123,5 +130,5 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
 
   function close() { setPopup(null); shownFor.current = null; window.getSelection()?.removeAllRanges() }
 
-  return { popup, close }
+  return { popup, close, openForRange }
 }

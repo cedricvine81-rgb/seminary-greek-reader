@@ -11,6 +11,7 @@ import { TransWords } from '@/components/highlights/TransWords'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
@@ -908,6 +909,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
 
       {/* Drag-to-select highlight palette (signed-in users). Right-click highlighting is wired
           into the word-search popup above. */}
+      {isAuthenticated && <TouchHighlighter containerRef={highlightPaneRef} onRange={highlightSelection.openForRange} />}
       {isAuthenticated && highlightSelection.popup && (
         <HighlightPopup
           state={highlightSelection.popup}

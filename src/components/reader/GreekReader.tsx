@@ -45,6 +45,7 @@ import { normalizeFold } from '@/lib/highlight-terms'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
 import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
 import { highlightAt, verseAnchorProps } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
@@ -2255,6 +2256,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         />
       )}
 
+      {isAuthenticated && <TouchHighlighter containerRef={textPanelRef} onRange={highlightSelection.openForRange} />}
       {isAuthenticated && highlightSelection.popup && (
         <HighlightPopup
           state={highlightSelection.popup}

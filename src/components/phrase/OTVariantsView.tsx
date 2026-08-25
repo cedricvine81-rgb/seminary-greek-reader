@@ -32,6 +32,7 @@ import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { FONT_SIZE_MAP, FONT_SIZES, type PhraseFontSize } from './PhraseExplorer'
@@ -297,6 +298,7 @@ export function OTVariantsView({ osis, name, chapter, verseStart, verseEnd, isAu
     <div className="shrink-0 mt-2 px-1">
       <ResizableParsingPane storageKey="ot-variants" info={hoverInfo ?? info} bgClass="bg-gray-50" />
     </div>
+    {isAuthenticated && <TouchHighlighter containerRef={scrollRef} onRange={highlightSelection.openForRange} />}
     {isAuthenticated && highlightSelection.popup && (
       <HighlightPopup
         state={highlightSelection.popup}

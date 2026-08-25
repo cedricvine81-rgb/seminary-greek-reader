@@ -17,6 +17,7 @@ import { useHighlights } from '@/components/highlights/useHighlights'
 import { wordAtPoint, EDGE_PUNCT as CV_EDGE_PUNCT } from '@/lib/word-at-point'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
 import { translatable, fenceOriginalScripts } from '@/lib/i18n/machine-translation'
 import { MachineTranslationHint } from '@/components/texts/MachineTranslationHint'
 
@@ -368,6 +369,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
           sourceName={activeScan.source.name} onClose={() => setActiveScan(null)} />
       )}
 
+      {isAuthenticated && <TouchHighlighter containerRef={scrollRef} onRange={highlightSelection.openForRange} />}
       {isAuthenticated && highlightSelection.popup && (
         <HighlightPopup
           state={highlightSelection.popup}

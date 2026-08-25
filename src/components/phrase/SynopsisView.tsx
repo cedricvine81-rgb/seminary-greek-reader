@@ -16,6 +16,7 @@ import { openWordSearch } from '@/lib/word-search-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { TransWords } from '@/components/highlights/TransWords'
@@ -1042,6 +1043,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         </div>
       )}
 
+      {isAuthenticated && <TouchHighlighter containerRef={synPaneRef} onRange={highlightSelection.openForRange} />}
       {isAuthenticated && highlightSelection.popup && (
         <HighlightPopup
           state={highlightSelection.popup}

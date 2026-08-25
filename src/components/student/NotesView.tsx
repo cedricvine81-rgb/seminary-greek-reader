@@ -13,6 +13,7 @@ import { TransWords } from '@/components/highlights/TransWords'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { onNotesChanged, emitNotesChanged } from '@/lib/notes-changed-bus'
@@ -583,6 +584,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage, sta
       </div>
       )}
 
+      {isAuthenticated && <TouchHighlighter containerRef={passagePaneRef} onRange={highlightSelection.openForRange} />}
       {isAuthenticated && highlightSelection.popup && (
         <HighlightPopup
           state={highlightSelection.popup}
