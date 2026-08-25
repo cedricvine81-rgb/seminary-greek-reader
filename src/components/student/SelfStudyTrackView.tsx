@@ -177,6 +177,13 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
           covered) exactly as the search and Grammar panes do elsewhere in the app. */}
       {panel && (
         <SelfStudyPanel
+          // Keyed by step so opening a DIFFERENT step in an already-open panel gets a fresh
+          // view. Chapter and lesson are seeded into useState, which only runs on mount, so
+          // without this React reuses the instance and keeps the previous chapter: the
+          // header said "Nouns/Adj." while the body still showed "Ch. 5 · Pronouns". It
+          // also resets a half-finished quiz and the scroll position, which is what
+          // "open this step" should mean.
+          key={panel.key}
           title={(panel.labelKey ? t(panel.labelKey) : panel.label) ?? ''}
           subtitle={panel.lesson != null ? t('ss.lessonN', { n: panel.lesson }) : undefined}
           fullHref={panel.href}
