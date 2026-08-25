@@ -85,17 +85,30 @@ const HEBREW_TABS = [
   { id: 'syntax', labelKey: 'morph.hb.tab.syntax', content: HB_SYNTAX },
 ]
 
-export function HebrewGrammarView() {
+/**
+ * `embedded` renders the Hebrew Grammar inside a side panel (the self-study plan opens its
+ * READ steps this way) rather than as the full page: the chapter comes from a prop instead
+ * of the URL, the chapter sidebar gives way to the compact dropdown, and sections start
+ * expanded — there is no room for a sidebar beside the text at panel width. Mirrors the
+ * same prop on the Greek MorphologyView.
+ */
+export function HebrewGrammarView({ embedded = false, initialChapter }: {
+  embedded?: boolean
+  initialChapter?: string
+} = {}) {
   const t = useT()
-  const [tab, setTab] = useState(HEBREW_TABS[0].id)
+  const [tab, setTab] = useState(
+    initialChapter && HEBREW_TABS.some(x => x.id === initialChapter) ? initialChapter : HEBREW_TABS[0].id,
+  )
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
   // Deep link: /grammar?chapter=qal-perfect — same parameter the Greek view honours.
   useEffect(() => {
+    if (embedded) return   // the panel supplies the chapter as a prop; it owns no URL
     const c = new URLSearchParams(window.location.search).get('chapter')
     if (c && HEBREW_TABS.some(x => x.id === c)) setTab(c)
-  }, [])
+  }, [embedded])
 
   useEffect(() => {
     if (!menuOpen) return
@@ -150,7 +163,7 @@ export function HebrewGrammarView() {
     <XlitContext.Provider value={xlit}>
     <div className="flex flex-col min-h-0">
       {/* Mobile: chapters collapse into a hamburger, as in the Greek view. */}
-      <div ref={menuRef} className="lg:hidden relative">
+      <div ref={menuRef} className={clsx(embedded ? '' : 'lg:hidden', 'relative')}>
         <button
           onClick={() => setMenuOpen(o => !o)}
           className="w-full flex items-center justify-between gap-2 py-2 border-b border-gray-100 bg-surface text-left"
@@ -192,14 +205,16 @@ export function HebrewGrammarView() {
 
       {/* Desktop: numbered chapter sidebar (the 23-chip tab strip was the "too
           complicated" landing the self-study feedback named). */}
-      <FoldDefaultContext.Provider value="collapsed">
-      <div className="lg:flex lg:gap-8">
-        <ChapterSidebar
-          groups={sidebarGroups}
-          activeId={tab}
-          onSelect={goToChapter}
-          sections={toc}
-        />
+      <FoldDefaultContext.Provider value={embedded ? 'expanded' : 'collapsed'}>
+      <div className={embedded ? '' : 'lg:flex lg:gap-8'}>
+        {!embedded && (
+          <ChapterSidebar
+            groups={sidebarGroups}
+            activeId={tab}
+            onSelect={goToChapter}
+            sections={toc}
+          />
+        )}
         <div className="flex-1 min-w-0 overflow-y-auto">
           <div className="py-4">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">

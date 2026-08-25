@@ -9,6 +9,9 @@ import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { selfStudyTrack, trackProgress, type SelfStudyLesson, type SelfStudyStep } from '@/lib/self-study'
 import { SelfStudyPanel } from './SelfStudyPanel'
 import type { VocabLang } from '@/components/vocab/VocabBuilder'
+// Type-only: erased at build time, so these do NOT pull the grammar views into this bundle.
+import type { MainTab } from '@/components/vocab/MorphologyView'
+import type { MorphLevel } from '@/components/morphology/shared'
 
 // One self-study track: its numbered lessons, each step a link into the material plus a
 // self-marked completion toggle. Progress is the shared morphology-progress store
@@ -34,6 +37,27 @@ const PracticeMorphQuiz = dynamic(
   () => import('./PracticeMorphQuiz').then(m => m.PracticeMorphQuiz),
   { ssr: false, loading: () => <PanelLoading /> },
 )
+// The grammar chapters themselves — the same embedded views the Reader's Grammar panel
+// uses, so a READ step opens beside the plan instead of navigating away from it.
+const MorphologyView = dynamic(
+  () => import('@/components/vocab/MorphologyView').then(m => m.MorphologyView),
+  { ssr: false, loading: () => <PanelLoading /> },
+)
+const HebrewGrammarView = dynamic(
+  () => import('@/components/morphology/hebrew/HebrewGrammarView').then(m => m.HebrewGrammarView),
+  { ssr: false, loading: () => <PanelLoading /> },
+)
+
+/** A grammar step's href carries everything the embedded view needs. The chapter ids in
+ *  the registry ARE the view's tab ids (that is what makes the ticks shared), so the cast
+ *  is a restatement of a fact the registry already guarantees. */
+function grammarTarget(href: string): { chapter: MainTab; level: MorphLevel } {
+  const q = new URLSearchParams(href.split('?')[1] ?? '')
+  return {
+    chapter: (q.get('chapter') ?? 'essentials') as MainTab,
+    level: q.get('level') === 'intermediate' ? 'intermediate' : 'beginning',
+  }
+}
 
 function PanelLoading() {
   const t = useT()
@@ -105,7 +129,9 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
                 {lesson.steps.map(step => {
                   const stepDone = completed.has(step.key)
                   const isQuiz = step.kind === 'quiz'
-                  const inPanel = step.kind !== 'grammar'
+                  // Every step opens in the side panel — reading a chapter used to replace
+                  // the plan, exactly like the vocabulary sessions did.
+                  const inPanel = true
                   return (
                     <li key={step.key} className="flex items-center gap-2.5">
                       {/* Quiz steps are completed by PASSING the quiz — no manual toggle. */}
@@ -159,7 +185,15 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
           resizeLabel={t('ss.resizePanel')}
           onClose={() => setPanel(null)}
         >
-          {panel.morph && panel.lesson != null ? (
+          {panel.kind === 'grammar' ? (
+            def.hebrew
+              ? <HebrewGrammarView embedded initialChapter={grammarTarget(panel.href).chapter} />
+              : <MorphologyView
+                  embedded
+                  initialChapter={grammarTarget(panel.href).chapter}
+                  initialLevel={grammarTarget(panel.href).level}
+                />
+          ) : panel.morph && panel.lesson != null ? (
             <PracticeMorphQuiz trackId={def.id} lessonNo={panel.lesson} embedded />
           ) : panel.quiz && panel.lesson != null ? (
             <PracticeVocabQuiz trackId={def.id} lessonNo={panel.lesson} embedded />

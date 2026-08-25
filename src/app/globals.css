@@ -696,7 +696,7 @@ body.exam-lockdown nav.fixed.bottom-0 {
    session was the reported complaint. */
 @media (min-width: 1024px) {
   html[data-study-panel] #app-content {
-    padding-right: var(--study-panel-w, 560px);
+    padding-right: var(--study-panel-w, 640px);
   }
 }
 

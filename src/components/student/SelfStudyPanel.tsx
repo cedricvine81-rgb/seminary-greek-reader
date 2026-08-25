@@ -15,7 +15,9 @@ import { X, ArrowUpRight } from 'lucide-react'
 
 const WIDTH_KEY = 'studyPanel.width'
 const MIN_W = 380
-const DEFAULT_W = 560
+// Matches the Reader's Grammar panel: the widest thing this panel shows is a grammar
+// chapter's paradigm tables, and a narrower default made them scroll from the first open.
+const DEFAULT_W = 640
 
 function clampWidth(w: number): number {
   const max = Math.round(window.innerWidth * 0.65)
