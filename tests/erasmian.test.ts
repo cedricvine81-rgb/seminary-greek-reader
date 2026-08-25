@@ -53,14 +53,25 @@ describe('erasmian — phrases', () => {
  */
 describe('erasmian — respelling', () => {
   it.each([
-    ['βαπτίζω', 'bahp-TI-dzoh'],     // chapter: bap-TID-zoh
+    ['βαπτίζω', 'bahp-TIH-dzoh'],    // chapter: bap-TID-zoh
     ['ἡμεῖς', 'hay-MAYS'],           // chapter: hay-MACE
-    ['ἅγιος', 'HAH-gi-os'],          // chapter: HA-gi-os
+    ['ἅγιος', 'HAH-gih-os'],         // chapter: HA-gi-os
     ['ἀρχῇ', 'ahr-CHAY'],            // chapter: ar-CHAY
     ['λόγος', 'LO-gos'],             // chapter: LO-gos
     ['ἄγγελος', 'AHNG-geh-los'],
     ['ψυχή', 'psuu-CHAY'],
   ])('%s → %s', (greek, respelling) => {
+    expect(erasmianRespell(greek)).toBe(respelling)
+  })
+
+  // Reported from the flashcards: πίστις was being read with a LONG first iota, because an
+  // open "PI-" is read "pie" in English. Erasmian iota is always short.
+  it.each([
+    ['πίστις', 'PIH-stis'],
+    ['εἰμί', 'ay-MIH'],
+    ['ἴδιος', 'IH-dih-os'],
+    ['τίς', 'TIS'],                  // already closed by ς — unchanged
+  ])('keeps iota short: %s → %s', (greek, respelling) => {
     expect(erasmianRespell(greek)).toBe(respelling)
   })
 })

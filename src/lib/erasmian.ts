@@ -126,7 +126,11 @@ export function erasmianSyllables(word: string): ErasmianSyllable[] {
     nuclei.push({ nucleus, stressed, before: run })
     run = []
   }
-  if (!nuclei.length) return []
+  // A bare consonant — a letter quoted on its own, as the alphabet table does — has no
+  // nucleus at all. Speak it as itself ("β" → /b/) rather than returning silence.
+  if (!nuclei.length) {
+    return run.length ? [{ onset: run, nucleus: '', coda: [], stressed: false }] : []
+  }
 
   // Pass 2: distribute each run — all of the first is the opening onset; every later run
   // splits, its head closing the syllable before it.
@@ -170,6 +174,16 @@ const RESPELL_NUCLEUS: Record<string, string> = {
   'eɪ': 'ay', 'oʊ': 'oh', 'aɪ': 'eye', 'aʊ': 'ow', 'ɔɪ': 'oy', 'uː': 'oo',
   'juː': 'yoo', 'wɪ': 'wi',
 }
+/**
+ * Short vowels need a different spelling in an OPEN syllable, because English lengthens a
+ * bare final vowel: "PI-stis" is read "PIE-stis", "ay-MI" as "ay-MY". Erasmian iota is
+ * always the short i of "hit", so an open syllable spells it "ih", which English cannot
+ * read long. (ɑ, ɛ and ʊ already use digraphs — ah, eh, uu — that stay short either way.)
+ * Only the fallback voice is affected: the pre-rendered audio speaks the IPA, where the
+ * vowel was never ambiguous.
+ */
+const RESPELL_NUCLEUS_OPEN: Record<string, string> = { 'ɪ': 'ih' }
+
 const RESPELL_CONS: Record<string, string> = {
   'θ': 'th', 'x': 'ch', 'ŋ': 'ng', 'dz': 'dz', 'ps': 'ps', 'ks': 'x', 'z': 'z', 'h': 'h',
 }
@@ -182,9 +196,10 @@ const respellUnit = (u: string) => RESPELL_CONS[u] ?? u
 export function erasmianRespellWord(word: string): string {
   return erasmianSyllables(word)
     .map(s => {
-      const text = s.onset.map(respellUnit).join('')
-        + (RESPELL_NUCLEUS[s.nucleus] ?? s.nucleus)
-        + s.coda.map(respellUnit).join('')
+      const open = s.coda.length === 0
+      const nucleus = (open ? RESPELL_NUCLEUS_OPEN[s.nucleus] : undefined)
+        ?? RESPELL_NUCLEUS[s.nucleus] ?? s.nucleus
+      const text = s.onset.map(respellUnit).join('') + nucleus + s.coda.map(respellUnit).join('')
       return s.stressed ? text.toUpperCase() : text
     })
     .join('-')

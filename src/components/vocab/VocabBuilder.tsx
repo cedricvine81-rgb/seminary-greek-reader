@@ -683,14 +683,6 @@ function FlashcardPlayer({
                 {word.freq && <p className="text-xs text-gray-300 mt-0.5">{t('vocab.freqInCorpus', { n: word.freq.toLocaleString(), corpus: t(V.corpusKey) })}</p>}
               </div>
             </div>
-            <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
-              <span className="lg:hidden">{flipped ? `Tap for ${V.scriptName} only` : 'Tap to reveal'}</span>
-              <span className="hidden lg:inline">
-                {flipped
-                  ? <><span className="font-medium">↓</span> {V.scriptName} {t('vocab.hintOnly')} · <span className="font-medium">←</span> {t('vocab.hintBack')} · <span className="font-medium">→</span> {t('vocab.hintNext')}</>
-                  : <><span className="font-medium">↑</span> {t('vocab.hintReveal')} · <span className="font-medium">←</span> {t('vocab.hintBack')} · <span className="font-medium">→</span> {t('vocab.hintNext')}</>}
-              </span>
-            </p>
           </div>
         </div>
 
@@ -717,6 +709,20 @@ function FlashcardPlayer({
           </button>
         </div>
       </div>
+
+      {/* Controls sit BELOW the card, not inside it: the card is a fixed height with
+          overflow hidden (so the buttons beside it never shift), and a revealed card —
+          word, inflection, gloss, part of speech, frequency — filled that height and
+          clipped the hints right off the bottom. Outside the card they are always visible,
+          and they no longer swallow a click meant to flip. */}
+      <p className="mt-2 text-center text-xs leading-relaxed tracking-wide text-gray-400">
+        <span className="lg:hidden">{flipped ? `Tap for ${V.scriptName} only` : 'Tap to reveal'}</span>
+        <span className="hidden lg:inline">
+          {flipped
+            ? <><span className="font-medium">↓</span> {V.scriptName} {t('vocab.hintOnly')} · <span className="font-medium">←</span> {t('vocab.hintBack')} · <span className="font-medium">→</span> {t('vocab.hintNext')}</>
+            : <><span className="font-medium">↑</span> {t('vocab.hintReveal')} · <span className="font-medium">←</span> {t('vocab.hintBack')} · <span className="font-medium">→</span> {t('vocab.hintNext')}</>}
+        </span>
+      </p>
 
     </div>
   )

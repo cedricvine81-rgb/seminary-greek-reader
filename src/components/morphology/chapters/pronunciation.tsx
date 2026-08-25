@@ -55,7 +55,7 @@ export const PRONUNCIATION_CONTENT = (
         <p><Tr id="pronunciation.as.consonant-grid-dentals">The consonant grid (dentals τ δ θ · palatals κ γ χ · labials π β φ, plus sibilants and liquids) is worth absorbing now — it drives the consonant + σ mergers you'll meet in the Indicatives chapter.</Tr></p>
       </>}
     >
-      <MorphTable id="pronunciation.t1" tCols={[1, 2]} flush title="The Greek alphabet (Erasmian sounds)" headers={['Letter', 'Name', 'Sound', 'Transliteration']} firstColIsData
+      <MorphTable id="pronunciation.t1" tCols={[1, 2]} speakCols={[0]} flush title="The Greek alphabet (Erasmian sounds)" headers={['Letter', 'Name', 'Sound', 'Transliteration']} firstColIsData
         rows={[
           ['Α α', 'alpha', 'a as in “hat”', 'a'],
           ['Β β', 'beta', 'b', 'b'],
@@ -155,7 +155,7 @@ export const PRONUNCIATION_CONTENT = (
         <p><Tr id="pronunciation.as.breathings-distinguish-real">Breathings distinguish real words — the pairs you keep meeting: <Gk>ἐν</Gk> "in" vs. <Gk>ἕν</Gk> "one"; <Gk>εἰς</Gk> "into" vs. <Gk>εἷς</Gk> "one"; <Gk>ἥ</Gk> relative "who" vs. <Gk>ἡ</Gk> article; <Gk>αὕτη</Gk> "this woman" vs. <Gk>αὐτή</Gk> "she."</Tr></p>
       </>}
     >
-      <MorphTable id="pronunciation.t4" tCols={[0, 2]} flush title="Breathings" headers={['Breathing', 'Mark', 'Sound', 'Example']} firstColIsData
+      <MorphTable id="pronunciation.t4" tCols={[0, 2]} speakCols={[3]} flush title="Breathings" headers={['Breathing', 'Mark', 'Sound', 'Example']} firstColIsData
         rows={[
           ['Rough', '῾', 'h', 'ἅγιος (hagios)'],
           ['Smooth', '᾿', '(none)', 'ἄγγελος (angelos)'],
@@ -183,7 +183,7 @@ export const PRONUNCIATION_CONTENT = (
         <p><Tr id="pronunciation.as.why-long-exist">Why "long αι, ηι, ωι do not exist": the iota subscript <em>is</em> those combinations, written under the long vowel.</Tr></p>
       </>}
     >
-      <MorphTable id="pronunciation.t5" tCols={[1, 2]} flush title="The diphthongs" headers={['Diphthong', 'Sound', 'Example word']} firstColIsData
+      <MorphTable id="pronunciation.t5" tCols={[1, 2]} speakCols={[2]} flush title="The diphthongs" headers={['Diphthong', 'Sound', 'Example word']} firstColIsData
         rows={[
           ['αι', 'ai as in “aisle”', 'καί (and)'],
           ['ει', 'ei as in “veil”', 'εἰμί (I am)'],

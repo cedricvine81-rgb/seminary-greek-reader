@@ -24,6 +24,7 @@ import { openMasterSearch } from '@/lib/master-search-bus'
 import { encodeConstruct, type ConstructQuery } from '@/lib/construct-query'
 import { transliterate } from '@/lib/hebrew-xlit'
 import { formatHebrewParse, hebrewMorphRole } from '@/lib/hebrew-morph'
+import { SpeakGreek } from '@/components/audio/SpeakGreek'
 
 export type MorphLevel = 'beginning' | 'intermediate'
 
@@ -69,6 +70,28 @@ interface MorphTableProps {
   flush?: boolean
   /** Alternate row tint — for long vocabulary lists, keeps the eye on the row. */
   striped?: boolean
+  /** Column indexes whose Greek can be played aloud in Erasmian (see speakableGreek). */
+  speakCols?: number[]
+}
+
+/**
+ * The Greek worth speaking inside a table cell.
+ *
+ * Cells are written for the eye, not the ear: "Α α" pairs the capital with the lowercase,
+ * "καί (and)" carries its gloss, and paradigm cells hide the red-ending marker "λύ|ω". So
+ * strip the parenthetical gloss and the markers, drop anything that is not a Greek letter,
+ * and where a cell lists several forms speak the LAST — for "Α α" that is the lowercase
+ * letter, which is the one a student is learning to sound out.
+ */
+export function speakableGreek(cell: string): string {
+  const cleaned = cell
+    .replace(/\([^)]*\)/g, ' ')       // "(and)" — the gloss, not the Greek
+    .replace(/[|»~]/g, '')            // the red-ending / Hebrew-prefix markers
+    .replace(/[‒–—-]/g, ' ')          // endings-table leaders ("‒ος")
+  const tokens = cleaned.split(/\s+/)
+    .map(t => t.replace(/[^Ͱ-Ͽἀ-῿]/g, ''))
+    .filter(Boolean)
+  return tokens.length ? tokens[tokens.length - 1] : ''
 }
 
 /**
@@ -447,7 +470,7 @@ function XlitLine({ text }: { text: string }) {
   return <span dir="ltr" className="mt-0.5 block font-sans text-[11px] italic leading-tight text-gray-500">{transliterate(clean)}</span>
 }
 
-export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false }: MorphTableProps) {
+export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false, speakCols }: MorphTableProps) {
   const divSet = new Set(dividerRows)
   const tm = useTm()
   if (id) {
@@ -486,6 +509,9 @@ export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows
                   {row.map((cell, ci) => (
                     <td key={ci} dir={!isDivider && hCols?.includes(ci) ? 'rtl' : undefined} className={clsx('px-3 py-2', !isDivider && hCols?.includes(ci) && 'font-hebrew text-[22px] leading-relaxed', isDivider ? 'text-xs font-semibold text-brand-700 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-[15px] font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-[15px]', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-[15px]', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
                       {cell ? renderCell(cell) : ''}
+                      {!isDivider && speakCols?.includes(ci) && cell && speakableGreek(cell) && (
+                        <SpeakGreek text={speakableGreek(cell)} size={12} className="ml-1" />
+                      )}
                       {!isDivider && hCols?.includes(ci) && cell && <XlitLine text={cell} />}
                     </td>
                   ))}
@@ -673,9 +699,14 @@ export function HbEx({ he, en }: { he: React.ReactNode; en: React.ReactNode }) {
 
 /** An example line in an aside: Greek → English. */
 export function Ex({ grc, en }: { grc: React.ReactNode; en: React.ReactNode }) {
+  // Examples are the chapter's "read this aloud" moments, so every one whose Greek is a
+  // plain string can be heard. Composed examples (a node with markup) are skipped rather
+  // than guessed at — there is no safe way to know which part is the Greek.
+  const speakable = typeof grc === 'string' ? speakableGreek(grc) : ''
   return (
     <p className="text-sm leading-relaxed">
       <span className="normal-case text-gray-800">{grc}</span>
+      {speakable && <SpeakGreek text={speakable} size={12} className="ml-0.5" />}
       <span className="mx-1.5 text-gray-400">→</span>
       <span className="text-gray-600">{en}</span>
     </p>
