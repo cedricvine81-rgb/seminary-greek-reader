@@ -68,11 +68,14 @@ export function NativeMenuGuard() {
       if (Math.abs(e.clientX - lpStart.x) > 10 || Math.abs(e.clientY - lpStart.y) > 10) cancelLongPress()
     }
 
-    // The click iOS synthesises after a long press must not reach the page, or it lands as
-    // an outside-click and closes the menu the press just opened.
-    function onClickLP(e: MouseEvent) {
+    // The mouse events iOS synthesises after a long press must not reach the page. All
+    // THREE of them: the click would land as an outside-click, and the mousedown before it
+    // closed the word menus the moment the finger lifted — they dismissed on any outside
+    // mousedown, so the menu vanished before an option could be chosen (reported from an
+    // iPad). click is last in the synthetic sequence, so only it resets the flag.
+    function onMouseLP(e: MouseEvent) {
       if (!lpFired) return
-      lpFired = false
+      if (e.type === 'click') lpFired = false
       e.preventDefault()
       e.stopPropagation()
     }
@@ -103,7 +106,9 @@ export function NativeMenuGuard() {
     document.addEventListener('pointerup', cancelLongPress, true)
     document.addEventListener('pointercancel', cancelLongPress, true)
     document.addEventListener('scroll', cancelLongPress, true)
-    document.addEventListener('click', onClickLP, true)
+    document.addEventListener('mousedown', onMouseLP, true)
+    document.addEventListener('mouseup', onMouseLP, true)
+    document.addEventListener('click', onMouseLP, true)
     return () => {
       document.removeEventListener('pointerdown', onPointerDown, { capture: true })
       document.removeEventListener('contextmenu', onContextMenu, { capture: true })
@@ -112,7 +117,9 @@ export function NativeMenuGuard() {
       document.removeEventListener('pointerup', cancelLongPress, true)
       document.removeEventListener('pointercancel', cancelLongPress, true)
       document.removeEventListener('scroll', cancelLongPress, true)
-      document.removeEventListener('click', onClickLP, true)
+      document.removeEventListener('mousedown', onMouseLP, true)
+      document.removeEventListener('mouseup', onMouseLP, true)
+      document.removeEventListener('click', onMouseLP, true)
       clearTimeout(lpTimer)
     }
   }, [])

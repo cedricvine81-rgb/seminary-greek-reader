@@ -50,16 +50,17 @@ export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
-    function onOutside(e: MouseEvent | TouchEvent) {
+    function onOutside(e: PointerEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) onClose()
     }
     document.addEventListener('keydown', onKey)
-    document.addEventListener('mousedown', onOutside)
-    document.addEventListener('touchstart', onOutside)
+    // pointerdown, NOT mousedown+touchstart — see SyntaxMenu: on iPad, lifting the finger
+    // after the long-press synthesizes a mousedown at the word, which closed the menu the
+    // moment it appeared. Pointer events are never synthesized retroactively.
+    document.addEventListener('pointerdown', onOutside)
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.removeEventListener('mousedown', onOutside)
-      document.removeEventListener('touchstart', onOutside)
+      document.removeEventListener('pointerdown', onOutside)
     }
   }, [onClose])
 

@@ -98,7 +98,7 @@ describe('erasmian — the whole vocabulary deck', () => {
     // breathing was stripped — whichever rendered first spoke for both. The slug now
     // keeps the breathing as a leading "h"; this sweep holds the whole inventory
     // (the deck plus each letter quoted alone) to that rule.
-    const inventory = [...words, ...'αβγδεζηθικλμνξοπρστυφχψω']
+    const inventory = [...words, ...Array.from('αβγδεζηθικλμνξοπρστυφχψω')]
     const bySlug = new Map<string, Set<string>>()
     for (const w of inventory) {
       const slug = audioSlug(w)

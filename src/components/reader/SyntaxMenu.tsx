@@ -124,16 +124,21 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
-    function onOutside(e: MouseEvent | TouchEvent) {
+    function onOutside(e: PointerEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) onClose()
     }
     document.addEventListener('keydown', onKey)
-    document.addEventListener('mousedown', onOutside)
-    document.addEventListener('touchstart', onOutside)
+    // pointerdown, NOT mousedown+touchstart. On iPad the long-press opens this menu while
+    // the finger is still down; lifting the finger then makes Safari synthesize a mousedown
+    // at the word — outside the menu — which a mousedown listener read as "dismiss", so the
+    // menu vanished the instant the finger came off. Pointer events fire once per REAL
+    // interaction (at touch-start for touch, at button-press for mouse) and are never
+    // synthesized retroactively, so the lift is invisible here and the next genuine tap or
+    // click outside still closes the menu.
+    document.addEventListener('pointerdown', onOutside)
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.removeEventListener('mousedown', onOutside)
-      document.removeEventListener('touchstart', onOutside)
+      document.removeEventListener('pointerdown', onOutside)
     }
   }, [onClose])
 
