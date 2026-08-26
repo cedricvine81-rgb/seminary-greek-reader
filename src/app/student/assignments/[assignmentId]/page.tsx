@@ -178,7 +178,9 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
                 : assignment.reference && <Badge variant="gray">{assignment.reference}</Badge>}
             </div>
 
-            {assignment.instructions && assignment.type !== 'CONSTRUCT_SEARCH' && (
+            {/* Construct searches and activity logs render their own labelled version of
+                the instructions inside the workspace, so showing them here too duplicates. */}
+            {assignment.instructions && assignment.type !== 'CONSTRUCT_SEARCH' && assignment.type !== 'ACTIVITY_LOG' && (
               <div className="text-sm text-gray-600 bg-gray-50 rounded-lg p-4 space-y-2">
                 <p>{assignment.instructions}</p>
                 {/* Greek: the published textbook the instructions cite by name.

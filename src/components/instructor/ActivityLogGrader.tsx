@@ -70,7 +70,7 @@ export function ActivityLogGrader({ assignmentId }: { assignmentId: string }) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
         <span className="text-sm text-gray-600">
-          {t('al.progress', { done: data.config.requiredWeeks, total: data.config.weeks })}
+          {t('alg.threshold', { n: data.config.requiredWeeks, total: data.config.weeks })}
         </span>
         <Button size="sm" variant="secondary" onClick={applyAuto} disabled={busy}>
           {busy && <Loader2 size={14} className="mr-1 inline animate-spin" />}
@@ -144,7 +144,7 @@ function StudentRow({ row, config, assignmentId, onSaved }: {
               : 'bg-red-100 text-red-800'
           }`}
         >
-          {effective == null ? t('al.inProgress') : effective >= 50 ? t('al.pass') : t('al.fail')}
+          {t('alg.earned')}: {effective == null ? t('al.inProgress') : effective >= 50 ? t('al.pass') : t('al.fail')}
         </span>
 
         <span className="flex gap-1.5">

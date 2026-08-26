@@ -18,7 +18,7 @@ export default async function StudentPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, enrollments, completedIds, exegesisSessions, bestAttempts, constructSubmissions, diagramSubmissions, activityLogSubmissions] = await Promise.all([
+  const [user, enrollments, completedIds, exegesisSessions, bestAttempts, submissionGrades] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({
       where: { userId: payload.sub, status: 'APPROVED' },
@@ -43,21 +43,19 @@ export default async function StudentPage() {
       where: { userId: payload.sub, isBest: true },
       select: { assignmentId: true, percentage: true },
     }),
-    // Construct searches: the instructor's grade for the per-course grade book.
-    prisma.constructSubmission.findMany({
-      where: { userId: payload.sub, grade: { not: null } },
-      select: { assignmentId: true, grade: true },
-    }),
-    // Diagramming exercises: same shape, its own table.
-    prisma.diagramSubmission.findMany({
-      where: { userId: payload.sub, grade: { not: null } },
-      select: { assignmentId: true, grade: true },
-    }),
-    // Activity logs: Pass/Fail stored as 100/0, so it needs no special case downstream.
-    prisma.activityLogSubmission.findMany({
-      where: { userId: payload.sub, grade: { not: null } },
-      select: { assignmentId: true, grade: true },
-    }),
+    // The instructor-graded submission types, for the per-course grade book. These are
+    // three separate tables of identical shape, but they MUST stay one query: DATABASE_URL
+    // runs connection_limit=1 through pgbouncer, so every extra member of this Promise.all
+    // competes for the single connection. Three findMany calls here exhausted the pool and
+    // took the whole dashboard down with a 10s timeout — add a UNION arm, never a fourth
+    // findMany. (Same rule, and the same reason, as lib/assignment-completion.ts.)
+    prisma.$queryRaw<{ assignmentId: string; grade: number }[]>`
+      SELECT "assignmentId", "grade" FROM "ConstructSubmission"   WHERE "userId" = ${payload.sub} AND "grade" IS NOT NULL
+      UNION ALL
+      SELECT "assignmentId", "grade" FROM "DiagramSubmission"     WHERE "userId" = ${payload.sub} AND "grade" IS NOT NULL
+      UNION ALL
+      SELECT "assignmentId", "grade" FROM "ActivityLogSubmission" WHERE "userId" = ${payload.sub} AND "grade" IS NOT NULL
+    `,
   ])
 
   // Score for the per-course grade book: quiz/morph → best attempt %, translation
@@ -67,20 +65,14 @@ export default async function StudentPage() {
   const gradeByAssignment = new Map(
     exegesisSessions.filter(s => s.grade != null && s.assignmentId).map(s => [s.assignmentId as string, s.grade as number]),
   )
-  const constructGradeByAssignment = new Map(
-    constructSubmissions.filter(c => c.grade != null).map(c => [c.assignmentId, c.grade as number]),
-  )
-  const diagramGradeByAssignment = new Map(
-    diagramSubmissions.filter(d => d.grade != null).map(d => [d.assignmentId, d.grade as number]),
-  )
-  const activityLogGradeByAssignment = new Map(
-    activityLogSubmissions.filter(a => a.grade != null).map(a => [a.assignmentId, a.grade as number]),
-  )
+  // One map for all three: an assignment id belongs to exactly one of these tables, so
+  // there is nothing to disambiguate.
+  const submissionGradeByAssignment = new Map(submissionGrades.map(r => [r.assignmentId, r.grade]))
   function scoreFor(a: { id: string; type: string }): number | null {
     if (a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM') return gradeByAssignment.get(a.id) ?? null
-    if (a.type === 'CONSTRUCT_SEARCH') return constructGradeByAssignment.get(a.id) ?? null
-    if (a.type === 'DIAGRAM') return diagramGradeByAssignment.get(a.id) ?? null
-    if (a.type === 'ACTIVITY_LOG') return activityLogGradeByAssignment.get(a.id) ?? null
+    if (a.type === 'CONSTRUCT_SEARCH' || a.type === 'DIAGRAM' || a.type === 'ACTIVITY_LOG') {
+      return submissionGradeByAssignment.get(a.id) ?? null
+    }
     return bestPctByAssignment.get(a.id) ?? null
   }
 
