@@ -132,3 +132,47 @@ describe('findBook — the matcher both parsers share', () => {
     expect(find('Daniel (LXX)', 'en')).not.toBeNull()
   })
 })
+
+/**
+ * Staying in the corpus the reader is already showing.
+ *
+ * Four Old Testament books carry a different osisId in each edition — Josh/JoshB, Judg/JudgB,
+ * Esth/EsthGr, Dan/DanLXX — and the reader resolves against the active corpus first so a jump
+ * does not throw the reader into the other one.
+ *
+ * Daniel is the case that actually broke. Three of the four share a plain name across editions
+ * ("Joshua", "Judges") or fail to match either exactly, so an unfiltered lookup lands on the
+ * Septuagint by list order and looks fine. But the Septuagint's Daniel is named "Daniel (LXX)",
+ * which folds to "daniellxx" — so "Daniel 6" EXACT-matches the Hebrew book and nothing else,
+ * and a reader on the Septuagint was bounced to Hebrew on every jump.
+ *
+ * These assert the filtered lookup the reader performs, which is what makes that a non-issue.
+ */
+describe('parseReference — resolving within the corpus on screen', () => {
+  const within = (corpus: string, q: string) =>
+    parseReference(q, BOOKS.filter(b => b.corpus === corpus))?.book.osisId ?? null
+
+  it.each([
+    ['LXX', 'Daniel 6', 'DanLXX'],
+    ['MT',  'Daniel 6', 'Dan'],
+    ['LXX', 'Esther 5', 'EsthGr'],
+    ['MT',  'Esther 5', 'Esth'],
+    ['LXX', 'Joshua 1', 'JoshB'],
+    ['MT',  'Joshua 1', 'Josh'],
+    ['LXX', 'Judges 4', 'JudgB'],
+    ['MT',  'Judges 4', 'Judg'],
+  ])('%s + "%s" resolves to %s', (corpus, q, expected) => {
+    expect(within(corpus, q)).toBe(expected)
+  })
+
+  it('still finds the chapter, not just the book', () => {
+    expect(parseReference('Daniel 6', BOOKS.filter(b => b.corpus === 'LXX'))?.chapter).toBe(6)
+  })
+
+  // The fallback: a New Testament reference typed while the Septuagint is showing matches
+  // nothing in the LXX list, so the reader drops through to the full list and changes corpus.
+  it('returns nothing for a reference outside the active corpus, so the caller can fall back', () => {
+    expect(within('LXX', 'John 3:16')).toBeNull()
+    expect(parseReference('John 3:16', BOOKS)?.book.osisId).toBe('John')
+  })
+})

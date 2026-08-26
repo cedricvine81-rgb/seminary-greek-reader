@@ -1104,11 +1104,18 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     // reference into a corpus that hadn't finished loading yet (LXX is the larger fetch) would
     // find no matching book and silently fail.
     const books = await waitForBooksReady()
-    // When the reader is already showing Hebrew, resolve OT references against the MT book
-    // list first so an OT jump stays in Hebrew — even for books whose MT osisId differs from
-    // the LXX (Josh/Judg/Esth/Dan). A miss (e.g. an NT reference) falls back to the full list,
-    // which switches the view to the resolved book's own corpus.
-    const ref = (corpus === 'MT' ? parseReference(trimmed, books.filter(b => b.corpus === 'MT'), locale) : null)
+    // Resolve against the corpus the reader is ALREADY showing before trying the full list, so
+    // a jump stays where the reader is. This matters for the four Old Testament books whose two
+    // editions carry different osisIds — Josh/JoshB, Judg/JudgB, Esth/EsthGr, Dan/DanLXX.
+    //
+    // Daniel is the one that bites. The Septuagint's is named "Daniel (LXX)", which folds to
+    // "daniellxx", so "Daniel 6" exact-matches the Hebrew book and nothing else: a reader on the
+    // LXX bounced to Hebrew on every jump. This was written for the Hebrew direction only and
+    // left the Septuagint reading the wrong corpus.
+    //
+    // A genuine miss — an NT reference typed from either — falls through to the full list and
+    // switches the view to the resolved book's own corpus, which is what should happen.
+    const ref = parseReference(trimmed, books.filter(b => b.corpus === corpus), locale)
       ?? parseReference(trimmed, books, locale)
     if (!ref) return
     // A jump scrolls over several frames (and font reflow) — hold the scroll-driven URL
