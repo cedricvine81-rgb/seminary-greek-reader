@@ -166,7 +166,7 @@ const RESULT_TRANSLATIONS = [
 const SOURCE_ATTR = 'Method: the allusion devices and criteria of Dale C. Allison, Jr., The New Moses: '
   + 'A Matthean Typology (Minneapolis: Fortress Press, 1993), 19–23. '
   + 'Rankings weight shared vocabulary by its rarity in the Septuagint and flag words appearing in the same order; '
-  + 'they SUGGEST candidates — they do not establish allusions. Septuagint text: Rahlfs; apparatus: Craig A. Evans, '
+  + 'they SUGGEST candidates — they do not establish allusions. Septuagint text: Swete (CC BY-SA 4.0); apparatus: Craig A. Evans, '
   + 'Ancient Texts for New Testament Studies, with additions.'
 
 export function AllusionsView({ controlledPassage, isAuthenticated = false, onAttribution, onOpenInTexts }: {

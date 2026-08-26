@@ -164,7 +164,7 @@ function scrollPanelToVerse(panel: HTMLElement | null, el: HTMLElement): void {
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-// Books where Rahlfs prints the Old Greek and not Theodotion — the recension behind every
+// Books where Swete prints the Old Greek and not Theodotion — the recension behind every
 // printed Bible a student is likely to own. See reader.oldGreekNote.
 const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel'])
 
@@ -2131,14 +2131,26 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
 
               {/* Attribution */}
               <div className="border-t border-gray-100 pt-3 space-y-1">
+                {/* Credit the edition actually on screen. The NT is Nestle 1904 (default) or
+                    Tischendorf 8th; the LXX is Swete. The SBLGNT is the base of the SYNTAX
+                    datasets below, never of the text itself. */}
                 <p className="text-[10px] text-gray-400 leading-relaxed">
-                  {t('reader.creditGreek', { edition: t('reader.creditGreekEdition') })}
+                  {corpus === 'MT'
+                    ? t('reader.creditHebrew')
+                    : t('reader.creditGreek', {
+                        edition: corpus === 'LXX' ? t('reader.creditGreekLxx')
+                          : gntEdition === 'tischendorf' ? t('reader.creditGreekTischendorf')
+                          : t('reader.creditGreekEdition'),
+                      })}
                 </p>
-                <p className="text-[10px] text-gray-400 leading-relaxed">
-                  {t('reader.creditSyntax', {
-                    lowfat: 'Lowfat SBLGNT', macula: 'Macula-Greek SBLGNT', abs: 'ABS NT Syntax Database',
-                  })}
-                </p>
+                {/* The syntax treebanks are SBLGNT-based, so they apply to the NT only. */}
+                {corpus === 'GNT' && (
+                  <p className="text-[10px] text-gray-400 leading-relaxed">
+                    {t('reader.creditSyntax', {
+                      lowfat: 'Lowfat SBLGNT', macula: 'Macula-Greek SBLGNT', abs: 'ABS NT Syntax Database',
+                    })}
+                  </p>
+                )}
                 {ourTransChapters.size > 0 && (
                   <p className="text-[10px] text-amber-700 leading-relaxed">
                     {t('reader.creditOurTranslation')}

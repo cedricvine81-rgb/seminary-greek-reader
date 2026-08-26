@@ -97,7 +97,7 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
   },
 }
 
-// Books where Rahlfs prints the Old Greek and not Theodotion — the recension behind every
+// Books where Swete prints the Old Greek and not Theodotion — the recension behind every
 // printed Bible a student is likely to own. See reader.oldGreekNote.
 const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel'])
 
@@ -676,7 +676,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
   useEffect(() => {
     if (!work) { onAttribution?.(''); return }
-    const parts = work.source === 'lxx' ? ['Greek text: Rahlfs’ Septuagint (1935) and Nestle 1904, both public domain.'] : []
+    const parts = work.source === 'lxx' ? ['Greek text: Swete’s Septuagint (Cambridge, 1887–1912) via nathans/lxx-swete and First1KGreek (CC BY-SA 4.0); morphology machine-generated. Nestle 1904 is public domain.'] : []
     const ownEnglish = work.osisId ? ENGLISH_BY_WORK[work.osisId] : undefined
     if (work.english === 'brenton') parts.push(ownEnglish?.attribution
       ?? 'English: Brenton’s 1851 English Septuagint (public domain).')

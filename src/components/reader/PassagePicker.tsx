@@ -71,7 +71,7 @@ const COLOR_OF: Record<string, ColorKey> = {
 }
 
 const GROUPS: { headingKey: string; corpus: 'GNT' | 'LXX' | 'MT'; order: string[] }[] = [
-  { headingKey: 'books.ot', corpus: 'LXX', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'EsthGr', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'DanLXX', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
+  { headingKey: 'books.ot', corpus: 'LXX', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'EsthGr', 'Job', 'Ps', 'Prov', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'DanLXX', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
   { headingKey: 'books.deutero', corpus: 'LXX', order: ['1Esd', 'Tob', 'Jdt', '1Macc', '2Macc', '3Macc', '4Macc', 'Wis', 'Sir', 'PsSol', 'Odes', 'Bar', 'EpJer', 'Sus', 'Bel'] },
   { headingKey: 'books.nt', corpus: 'GNT', order: ['Matt', 'Mark', 'Luke', 'John', 'Acts', 'Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm', 'Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude', 'Rev'] },
   // Hebrew Masoretic OT — the standard 39-book Hebrew canon (MT osisIds).

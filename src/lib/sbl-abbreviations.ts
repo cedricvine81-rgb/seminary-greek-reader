@@ -118,7 +118,7 @@ export const SBL_ABBREVIATIONS: AbbrevGroup[] = [
       { abbr: 'CC BY-SA 3.0 / 4.0', full: 'Creative Commons Attribution-ShareAlike 3.0 / 4.0' },
       { abbr: 'CC BY-SA 3.0 US', full: 'Creative Commons Attribution-ShareAlike 3.0 United States (Perseus Digital Library texts)' },
       { abbr: 'NA1904', full: 'Nestle 1904 Greek New Testament (public domain)' },
-      { abbr: 'Rahlfs 1935', full: 'Rahlfs’ Septuaginta, 1935 edition (public domain)' },
+      { abbr: 'Swete', full: 'Swete, The Old Testament in Greek According to the Septuagint (Cambridge, 1887–1912); digital text via nathans/lxx-swete and First1KGreek (CC BY-SA 4.0)' },
       { abbr: 'Brenton', full: 'Brenton’s 1851 English translation of the Septuagint (public domain)' },
       { abbr: 'BSB', full: 'Berean Standard Bible (public domain)' },
       { abbr: 'WEB', full: 'World English Bible (public domain)' },
