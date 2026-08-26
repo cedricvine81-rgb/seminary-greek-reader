@@ -2,7 +2,7 @@ import type { CourseLevel } from './course'
 
 // Mirrors the AssignmentType enum in prisma/schema.prisma — the two must be kept in step, and
 // the Postgres enum gains the value first (a value can be added to an enum but never removed).
-export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES' | 'GROUP_PRESENTATION' | 'CONSTRUCT_SEARCH' | 'DIAGRAM'
+export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES' | 'GROUP_PRESENTATION' | 'CONSTRUCT_SEARCH' | 'DIAGRAM' | 'ACTIVITY_LOG'
 
 export type QuestionType =
   | 'GREEK_TO_ENGLISH'
@@ -91,4 +91,9 @@ export interface AssignmentFormData {
   constructCount?: number
   constructAskTranslation?: boolean
   constructAskComment?: boolean
+  // ACTIVITY_LOG: how long the weekly check-in runs and what passes it. The activity
+  // itself is the free text in `instructions`.
+  activityWeeks?: number
+  activityDayOfWeek?: number
+  activityRequiredWeeks?: number
 }

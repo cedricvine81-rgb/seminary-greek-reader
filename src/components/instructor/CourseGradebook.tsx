@@ -14,20 +14,29 @@ interface Props {
 // the seventh copy of that enum's labels.
 const GROUPS = [
   'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
-  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH', 'DIAGRAM',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH', 'DIAGRAM', 'ACTIVITY_LOG',
 ] as const
 
-function PctCell({ pct, muted = false }: { pct: number | null; muted?: boolean }) {
+// Activity logs are Pass/Fail, stored as 100/0 so the averaging above needs no special
+// case — but "100%" is the wrong word for a pass, so those columns render the words.
+// `passFail` is set by the caller from the column's assignment type.
+function PctCell({ pct, muted = false, passFail = false, t }: {
+  pct: number | null; muted?: boolean; passFail?: boolean
+  t?: (key: string) => string
+}) {
   if (pct === null) {
     return <td className="px-2 py-2 text-center text-gray-200 text-xs">—</td>
   }
   const colour = pct >= 90 ? 'text-green-700 bg-green-50'
     : pct >= 70 ? 'text-amber-700 bg-amber-50'
     : 'text-red-700 bg-red-50'
+  const label = passFail && t
+    ? (pct >= 50 ? t('al.pass') : t('al.fail'))
+    : `${pct}%`
   return (
     <td className={`px-2 py-2 text-center ${muted ? 'bg-gray-50' : ''}`}>
       <span className={`inline-block px-1.5 py-0.5 rounded text-xs font-semibold ${colour}`}>
-        {pct}%
+        {label}
       </span>
     </td>
   )
@@ -75,8 +84,11 @@ export async function CourseGradebook({ courseId }: Props) {
   const constructIds = assignments.filter(a => a.type === 'CONSTRUCT_SEARCH').map(a => a.id)
   // Diagramming exercises are graded 0–100 on the student's canvases (DiagramSubmission.grade).
   const diagramIds = assignments.filter(a => a.type === 'DIAGRAM').map(a => a.id)
+  // Activity logs are Pass/Fail, stored as 100/0 on ActivityLogSubmission.grade so the
+  // averaging below needs no special case.
+  const activityLogIds = assignments.filter(a => a.type === 'ACTIVITY_LOG').map(a => a.id)
 
-  const [realAttempts, realResponses, exegesisGrades, noteGrades, presentationGroups, constructGrades, diagramGrades] = await Promise.all([
+  const [realAttempts, realResponses, exegesisGrades, noteGrades, presentationGroups, constructGrades, diagramGrades, activityLogGrades] = await Promise.all([
     prisma.quizAttempt.findMany({
       where: { assignmentId: { in: assignmentIds }, isBest: true },
       select: { userId: true, assignmentId: true, percentage: true },
@@ -122,6 +134,12 @@ export async function CourseGradebook({ courseId }: Props) {
           select: { userId: true, assignmentId: true, grade: true },
         })
       : Promise.resolve([]),
+    activityLogIds.length > 0
+      ? prisma.activityLogSubmission.findMany({
+          where: { assignmentId: { in: activityLogIds }, grade: { not: null } },
+          select: { userId: true, assignmentId: true, grade: true },
+        })
+      : Promise.resolve([]),
   ])
 
   // Flatten group presentations to per-student grades. Each member gets their per-member
@@ -153,6 +171,10 @@ export async function CourseGradebook({ courseId }: Props) {
     }
     if (assignment.type === 'DIAGRAM') {
       const sub = diagramGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
+      return sub?.grade ?? null
+    }
+    if (assignment.type === 'ACTIVITY_LOG') {
+      const sub = activityLogGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
       return sub?.grade ?? null
     }
     if (assignment.type === 'GROUP_PRESENTATION') {
@@ -269,7 +291,7 @@ export async function CourseGradebook({ courseId }: Props) {
                   catAvgs.push({ type: g.type as GradeCategory, avg: avg(groupScores) })
                   return (
                     <Fragment key={g.type}>
-                      {g.cols.map(a => <PctCell key={a.id} pct={getScore(student.id, a)} />)}
+                      {g.cols.map(a => <PctCell key={a.id} pct={getScore(student.id, a)} passFail={a.type === 'ACTIVITY_LOG'} t={t} />)}
                       <PctCell key={`${g.type}-avg`} pct={avg(groupScores)} muted />
                     </Fragment>
                   )
@@ -298,7 +320,7 @@ export async function CourseGradebook({ courseId }: Props) {
                 const groupAvg = avg(groupColAvgs)
                 catAvgs.push({ type: g.type as GradeCategory, avg: groupAvg })
 
-                g.cols.forEach((a, i) => cells.push(<PctCell key={a.id} pct={groupColAvgs[i]} />))
+                g.cols.forEach((a, i) => cells.push(<PctCell key={a.id} pct={groupColAvgs[i]} passFail={a.type === 'ACTIVITY_LOG'} t={t} />))
                 cells.push(<PctCell key={`${g.type}-avg`} pct={groupAvg} muted />)
               })
 

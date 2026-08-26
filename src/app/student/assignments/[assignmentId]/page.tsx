@@ -12,6 +12,7 @@ import { ExegesisWorkspace } from '@/components/student/ExegesisWorkspace'
 import { ExamOpensNotice } from '@/components/student/ExamOpensNotice'
 import { ConstructSearchWorkspace } from '@/components/student/ConstructSearchWorkspace'
 import { DiagramWorkspace } from '@/components/student/DiagramWorkspace'
+import { ActivityLogWorkspace } from '@/components/student/ActivityLogWorkspace'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, isPreviewMode } from '@/lib/preview'
@@ -338,7 +339,14 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           <DiagramWorkspace assignmentId={assignment.id} previewMode={previewMode} />
         )}
 
-        {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'CONSTRUCT_SEARCH' && assignment.type !== 'DIAGRAM' && (
+        {/* Activity logs: one row per week, ticked as the student does the activity. Shown
+            even when closed — the workspace goes read-only, so a student can still read
+            their own log and their Pass/Fail. */}
+        {assignment.type === 'ACTIVITY_LOG' && (
+          <ActivityLogWorkspace assignmentId={assignment.id} previewMode={previewMode} />
+        )}
+
+        {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'CONSTRUCT_SEARCH' && assignment.type !== 'DIAGRAM' && assignment.type !== 'ACTIVITY_LOG' && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}

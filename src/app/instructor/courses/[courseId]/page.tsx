@@ -35,6 +35,7 @@ const typeLabel: Record<string, string> = {
   GROUP_PRESENTATION: 'Group Pres.',
   CONSTRUCT_SEARCH: 'Construct',
   DIAGRAM: 'Diagram',
+  ACTIVITY_LOG: 'Activity Log',
 }
 const typeVariant: Record<string, 'blue' | 'purple' | 'green' | 'gray'> = {
   VOCABULARY_QUIZ: 'blue',
@@ -45,6 +46,7 @@ const typeVariant: Record<string, 'blue' | 'purple' | 'green' | 'gray'> = {
   GROUP_PRESENTATION: 'purple',
   CONSTRUCT_SEARCH: 'green',
   DIAGRAM: 'purple',
+  ACTIVITY_LOG: 'green',
 }
 
 export default async function CourseDetailPage({ params }: { params: { courseId: string } }) {
@@ -207,7 +209,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                         </Badge>
                         {/* Grade column — reserved width; blank for non-gradeable types */}
                         <div>
-                          {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM' || a.type === 'COURSE_NOTES' || a.type === 'GROUP_PRESENTATION' || a.type === 'CONSTRUCT_SEARCH' || a.type === 'DIAGRAM') && (
+                          {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM' || a.type === 'COURSE_NOTES' || a.type === 'GROUP_PRESENTATION' || a.type === 'CONSTRUCT_SEARCH' || a.type === 'DIAGRAM' || a.type === 'ACTIVITY_LOG') && (
                             <Link href={`/instructor/assignments/${a.id}/grade`}>
                               <Button size="sm" variant="primary" className="w-full">Grade</Button>
                             </Link>
@@ -245,7 +247,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                         {a._count.questions > 0 && <span>· {a._count.questions}q</span>}
                       </div>
                       <div className="flex gap-2 mt-2.5">
-                        {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM' || a.type === 'COURSE_NOTES' || a.type === 'GROUP_PRESENTATION' || a.type === 'CONSTRUCT_SEARCH' || a.type === 'DIAGRAM') && (
+                        {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM' || a.type === 'COURSE_NOTES' || a.type === 'GROUP_PRESENTATION' || a.type === 'CONSTRUCT_SEARCH' || a.type === 'DIAGRAM' || a.type === 'ACTIVITY_LOG') && (
                           <Link href={`/instructor/assignments/${a.id}/grade`} className="flex-1">
                             <Button size="sm" variant="primary" className="w-full">Grade</Button>
                           </Link>

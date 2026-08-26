@@ -7,6 +7,7 @@ import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
 import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
+import { normalizeActivityConfig } from '@/lib/activity-log-submissions'
 import { normalizeWeights, examTotal } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { requireStudentAccess } from '@/lib/subscription'
@@ -75,6 +76,7 @@ export async function PATCH(
     allowLate, lateDaysLimit, opensAt, submissionDeadline, round1Deadline, round2Deadline, assessed,
     allowReaderInRound2, maxAppeals, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations,
     notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment,
+    activityWeeks, activityDayOfWeek, activityRequiredWeeks,
   } = body
 
   const data: Record<string, unknown> = {}
@@ -101,6 +103,16 @@ export async function PATCH(
         requiredCount: constructCount,
         askTranslation: constructAskTranslation,
         askComment: constructAskComment,
+      }) }
+    }
+    // Activity logs: the whole schedule is rewritten together, because requiredWeeks is
+    // clamped against weeks — patching one without the other could leave a log demanding
+    // more reports than it has weeks.
+    if (activityWeeks !== undefined || activityDayOfWeek !== undefined || activityRequiredWeeks !== undefined) {
+      data.activityConfig = { ...normalizeActivityConfig({
+        weeks: activityWeeks,
+        dayOfWeek: activityDayOfWeek,
+        requiredWeeks: activityRequiredWeeks,
       }) }
     }
     // Passage reference (translation exercises). Reject clearing it to empty.

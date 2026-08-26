@@ -18,7 +18,7 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 // still counting in the instructor's.
 const GROUPS = [
   'VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ', 'TRANSLATION_EXERCISE', 'TRANSLATION_EXAM',
-  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH', 'DIAGRAM',
+  'COURSE_NOTES', 'GROUP_PRESENTATION', 'CONSTRUCT_SEARCH', 'DIAGRAM', 'ACTIVITY_LOG',
 ] as const
 
 export interface GradebookRow {
@@ -29,16 +29,23 @@ export interface GradebookRow {
   pct: number | null
 }
 
-function PctCell({ pct, muted = false }: { pct: number | null; muted?: boolean }) {
+// Activity logs are Pass/Fail, stored as 100/0 so the averaging above needs no special
+// case — but "100%" is the wrong word for a pass, so those columns render the words.
+// `passFail` is set by the caller from the column's assignment type.
+function PctCell({ pct, muted = false, passFail = false, t }: {
+  pct: number | null; muted?: boolean; passFail?: boolean
+  t?: (key: string) => string
+}) {
   if (pct === null) {
     return <td className={`px-2 py-2 text-center text-gray-200 text-xs ${muted ? 'bg-gray-50' : ''}`}>—</td>
   }
   const colour = pct >= 90 ? 'text-green-700 bg-green-50'
     : pct >= 70 ? 'text-amber-700 bg-amber-50'
     : 'text-red-700 bg-red-50'
+  const label = passFail && t ? (pct >= 50 ? t('al.pass') : t('al.fail')) : `${pct}%`
   return (
     <td className={`px-2 py-2 text-center ${muted ? 'bg-gray-50' : ''}`}>
-      <span className={`inline-block px-1.5 py-0.5 rounded text-xs font-semibold ${colour}`}>{pct}%</span>
+      <span className={`inline-block px-1.5 py-0.5 rounded text-xs font-semibold ${colour}`}>{label}</span>
     </td>
   )
 }
@@ -125,7 +132,7 @@ export function StudentGradebook({ studentName, rows, weights = null }: { studen
               catAvgs.push({ type: g.type as GradeCategory, avg: avg(groupScores) })
               return (
                 <Fragment key={g.type}>
-                  {g.cols.map(a => <PctCell key={a.id} pct={a.pct} />)}
+                  {g.cols.map(a => <PctCell key={a.id} pct={a.pct} passFail={a.type === 'ACTIVITY_LOG'} t={t} />)}
                   <PctCell key={`${g.type}-avg`} pct={avg(groupScores)} muted />
                 </Fragment>
               )

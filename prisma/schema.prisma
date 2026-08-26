@@ -72,31 +72,32 @@ model User {
   // flips to CANCELED. Written only by the webhook handler, same as subscriptionStatus.
   subscriptionCancelAtPeriodEnd Boolean            @default(false)
 
-  instructorCourses    Course[]              @relation("InstructorCourses")
-  coInstructorOf       CourseCoInstructor[]
-  enrollments          Enrollment[]
-  responses            Response[]
-  quizAttempts         QuizAttempt[]
-  flashcardProgress    FlashcardProgress[]
-  createdAssignments   Assignment[]          @relation("CreatedAssignments")
-  exegesisSessions     ExegesisSession[]
-  sentMessages         Message[]             @relation("SentMessages")
-  receivedMessages     Message[]             @relation("ReceivedMessages")
-  vocabAppeals         VocabAppeal[]
-  ownedMaterials       Material[]            @relation("InstructorMaterials")
-  ownedFolders         MaterialFolder[]      @relation("InstructorFolders")
-  noteFolders          NoteFolder[]
-  verseNotes           VerseNote[]
-  noteSubmissions      NoteSubmission[]
-  constructSubmissions ConstructSubmission[]
-  diagramSubmissions   DiagramSubmission[]
-  highlights           Highlight[]
-  phraseDiagrams       PhraseDiagram[]
-  blockAnnotations     BlockAnnotation[]
-  groupMemberships     CourseGroupMember[]
-  groupContributions   GroupContribution[]
-  morphologyProgress   MorphologyProgress[]
-  seriesTemplates      SeriesTemplate[]
+  instructorCourses      Course[]                @relation("InstructorCourses")
+  coInstructorOf         CourseCoInstructor[]
+  enrollments            Enrollment[]
+  responses              Response[]
+  quizAttempts           QuizAttempt[]
+  flashcardProgress      FlashcardProgress[]
+  createdAssignments     Assignment[]            @relation("CreatedAssignments")
+  exegesisSessions       ExegesisSession[]
+  sentMessages           Message[]               @relation("SentMessages")
+  receivedMessages       Message[]               @relation("ReceivedMessages")
+  vocabAppeals           VocabAppeal[]
+  ownedMaterials         Material[]              @relation("InstructorMaterials")
+  ownedFolders           MaterialFolder[]        @relation("InstructorFolders")
+  noteFolders            NoteFolder[]
+  verseNotes             VerseNote[]
+  noteSubmissions        NoteSubmission[]
+  constructSubmissions   ConstructSubmission[]
+  diagramSubmissions     DiagramSubmission[]
+  activityLogSubmissions ActivityLogSubmission[]
+  highlights             Highlight[]
+  phraseDiagrams         PhraseDiagram[]
+  blockAnnotations       BlockAnnotation[]
+  groupMemberships       CourseGroupMember[]
+  groupContributions     GroupContribution[]
+  morphologyProgress     MorphologyProgress[]
+  seriesTemplates        SeriesTemplate[]
 
   @@index([email])
   @@index([paddleCustomerId])
@@ -481,6 +482,10 @@ enum AssignmentType {
   // A diagramming exercise: the passage in `reference`, worked on the drag-and-drop diagram
   // canvas (Exegesis -> Diagramming). Same hand-first rule for the Postgres enum.
   DIAGRAM
+  // A weekly check-in: the instructor states a required activity and how many weeks it runs,
+  // and the student reports once a week that they did it. Graded Pass/Fail. Same hand-first
+  // rule for the Postgres enum (scripts/activity-log-assignments.sql).
+  ACTIVITY_LOG
 }
 
 model Assignment {
@@ -547,6 +552,10 @@ model Assignment {
   // { requiredCount: number, askTranslation: boolean, askComment: boolean }.
   // The search itself is the link in `reference`, which is the whole query (construct-query.ts).
   constructConfig       Json?
+  // For ACTIVITY_LOG: how the weekly check-in runs —
+  // { weeks: number, dayOfWeek: number (0=Sunday..6=Saturday), requiredWeeks: number }.
+  // The activity the student must do is the free text in `instructions`.
+  activityConfig        Json?
   // False = a class exercise: students work it exactly like homework, but it carries no
   // grade — excluded from the student gradebook, scores page and course averages.
   assessed              Boolean        @default(true)
@@ -554,19 +563,20 @@ model Assignment {
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
 
-  course               Course                @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  createdBy            User                  @relation("CreatedAssignments", fields: [createdById], references: [id])
-  questions            Question[]
-  responses            Response[]
-  attempts             QuizAttempt[]
-  appeals              VocabAppeal[]
-  noteSubmissions      NoteSubmission[]
-  noteFolders          NoteFolder[]
-  groups               CourseGroup[]         @relation("GroupPresentationGroups")
-  groupContributions   GroupContribution[]
-  groupSubmissions     GroupSubmission[]
-  constructSubmissions ConstructSubmission[]
-  diagramSubmissions   DiagramSubmission[]
+  course                 Course                  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdBy              User                    @relation("CreatedAssignments", fields: [createdById], references: [id])
+  questions              Question[]
+  responses              Response[]
+  attempts               QuizAttempt[]
+  appeals                VocabAppeal[]
+  noteSubmissions        NoteSubmission[]
+  noteFolders            NoteFolder[]
+  groups                 CourseGroup[]           @relation("GroupPresentationGroups")
+  groupContributions     GroupContribution[]
+  groupSubmissions       GroupSubmission[]
+  constructSubmissions   ConstructSubmission[]
+  diagramSubmissions     DiagramSubmission[]
+  activityLogSubmissions ActivityLogSubmission[]
 
   @@index([courseId])
 }
@@ -1163,4 +1173,35 @@ model ErrorLog {
   userId  String?
 
   @@index([time])
+}
+
+// A student's weekly check-ins for an ACTIVITY_LOG assignment. One row per student per
+// assignment, covering the whole run of weeks — not one row per week — so the gradebook
+// gets a single Pass/Fail column however long the activity runs.
+model ActivityLogSubmission {
+  id           String    @id @default(cuid())
+  userId       String
+  assignmentId String
+  // Keyed by week number as a string, "1".."N":
+  //   { "1": { done: true, at: "2026-09-08T…", comment: "" } }
+  // Kept as JSON rather than a row-per-week table because how many weeks exist is
+  // per-assignment (Assignment.activityConfig), and an unreported week is simply an
+  // absent key rather than a NULL row.
+  entries      Json      @default("{}")
+  notes        String    @default("") // the student's overall comment on the activity
+  // Set only once EVERY week has been reported, so "handed in" never claims a log is
+  // finished while weeks are still outstanding. Cleared again if a week is un-reported.
+  submittedAt  DateTime?
+  // Pass/Fail stored as 100/0 so the gradebook's numeric averaging works unchanged.
+  // Computed from the weeks reported, but an instructor's explicit grade wins.
+  grade        Int?
+  gradeNote    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, assignmentId])
+  @@index([assignmentId])
 }

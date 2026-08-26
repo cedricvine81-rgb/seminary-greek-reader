@@ -17,6 +17,7 @@ import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { constructCorpusLabel, constructLinkFromReference } from '@/lib/construct-assignment'
+import { normalizeActivityConfig } from '@/lib/activity-log'
 
 export const metadata: Metadata = { title: 'Edit Assignment' }
 
@@ -77,7 +78,10 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
               const link = constructLinkFromReference(assignment.reference)
               return link ? <Badge variant="blue">{constructCorpusLabel(link.query)}</Badge> : null
             })()
-          ) : (assignment.type === 'COURSE_NOTES' || assignment.type === 'GROUP_PRESENTATION') ? null : (() => {
+          ) : assignment.type === 'ACTIVITY_LOG' ? (() => {
+            const cfg = normalizeActivityConfig(assignment.activityConfig)
+            return <Badge variant="green">{cfg.weeks} weeks · {t(`al.day.${cfg.dayOfWeek}`)}</Badge>
+          })() : (assignment.type === 'COURSE_NOTES' || assignment.type === 'GROUP_PRESENTATION') ? null : (() => {
             // Re-sampling vocab quizzes store the whole pool and show `perAttempt`
             // random questions each attempt — show that, not the raw pool size.
             const sel = assignment.vocabSelection as { perAttempt?: number } | null
@@ -146,10 +150,11 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             lockdown: assignment.lockdown,
             lockdownMaxViolations: assignment.lockdownMaxViolations,
             constructConfig: assignment.constructConfig,
+            activityConfig: assignment.activityConfig,
           }}
         />
 
-        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'GROUP_PRESENTATION' && assignment.type !== 'CONSTRUCT_SEARCH' && assignment.type !== 'DIAGRAM' && (
+        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'GROUP_PRESENTATION' && assignment.type !== 'CONSTRUCT_SEARCH' && assignment.type !== 'DIAGRAM' && assignment.type !== 'ACTIVITY_LOG' && (
           <QuizPreview
             questions={assignment.questions.map(q => ({
               id: q.id,

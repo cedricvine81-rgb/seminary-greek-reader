@@ -5,6 +5,7 @@ import { addDays, format, getDay, parseISO } from 'date-fns'
 import { CalendarDays, FileText, CheckCircle2, Download, Eye } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
+import { MAX_WEEKS } from '@/lib/activity-log'
 import { GRAMMAR_HOMEWORK_SETS } from '@/data/grammar-homework'
 import { HomeworkSetPreviewLink } from '@/components/instructor/HomeworkSetPreview'
 import { Button } from '@/components/ui/Button'
@@ -316,6 +317,11 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       setError(t('inst.b.err.passageRequired'))
       return
     }
+    // An activity log with no stated activity is a checkbox with nothing behind it.
+    if (form.type === 'ACTIVITY_LOG' && !form.instructions?.trim()) {
+      setError(t('inst.b.err.activity'))
+      return
+    }
     if (form.round1Deadline && form.round2Deadline && new Date(form.round2Deadline) <= new Date(form.round1Deadline)) {
       setError(t('inst.b.err.roundOrder'))
       return
@@ -354,7 +360,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0, vocabSubsections, vocabReviewPct } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, vocabThruBand, fields: morphologyFields, parseFilter: morphParseFilter } : {}),
           // Construct searches store the search as the assignment's reference — the server
           // re-parses it, so a pasted absolute URL is normalised to a same-origin path there.
-          ...(form.type === 'CONSTRUCT_SEARCH' ? { constructUrl: form.constructUrl, constructCount: form.constructCount, constructAskTranslation: form.constructAskTranslation, constructAskComment: form.constructAskComment } : {}) }),
+          ...(form.type === 'CONSTRUCT_SEARCH' ? { constructUrl: form.constructUrl, constructCount: form.constructCount, constructAskTranslation: form.constructAskTranslation, constructAskComment: form.constructAskComment } : {}),
+          ...(form.type === 'ACTIVITY_LOG' ? { activityWeeks: form.activityWeeks ?? 1, activityDayOfWeek: form.activityDayOfWeek ?? 0, activityRequiredWeeks: form.activityRequiredWeeks ?? form.activityWeeks ?? 1 } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? t('inst.b.err.createAssignment'))
@@ -443,6 +450,47 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             onChange={e => set('reference', e.target.value)}
             placeholder={t('inst.b.dg.passageExample')}
           />
+        </div>
+      )}
+
+      {form.type === 'ACTIVITY_LOG' && (
+        <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
+          <p className="text-sm font-semibold text-brand-800">{t('inst.b.al.heading')}</p>
+          <p className="text-xs text-brand-700">{t('inst.b.al.desc')}</p>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Input
+              label={t('inst.b.al.weeks')}
+              type="number"
+              min={1}
+              max={MAX_WEEKS}
+              value={String(form.activityWeeks ?? 1)}
+              onChange={e => {
+                const weeks = Math.max(1, Math.min(MAX_WEEKS, Number(e.target.value) || 1))
+                // Keep requiredWeeks inside the new range, or a shortened activity would
+                // demand more reports than it has weeks.
+                setForm(f => ({
+                  ...f,
+                  activityWeeks: weeks,
+                  activityRequiredWeeks: Math.min(weeks, f.activityRequiredWeeks ?? weeks),
+                }))
+              }}
+            />
+            <Select
+              label={t('inst.b.al.day')}
+              value={String(form.activityDayOfWeek ?? 0)}
+              onChange={e => set('activityDayOfWeek', Number(e.target.value))}
+              options={[0, 1, 2, 3, 4, 5, 6].map(d => ({ value: String(d), label: t(`al.day.${d}`) }))}
+            />
+            <Input
+              label={t('inst.b.al.required')}
+              type="number"
+              min={1}
+              max={form.activityWeeks ?? 1}
+              value={String(form.activityRequiredWeeks ?? form.activityWeeks ?? 1)}
+              onChange={e => set('activityRequiredWeeks', Math.max(1, Math.min(form.activityWeeks ?? 1, Number(e.target.value) || 1)))}
+            />
+          </div>
+          <p className="text-xs text-brand-700">{t('inst.b.al.requiredHelp')}</p>
         </div>
       )}
 

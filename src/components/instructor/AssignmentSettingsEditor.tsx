@@ -12,6 +12,7 @@ import { isHebrewLevel } from '@/lib/constants'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { ConstructSearchFields } from '@/components/instructor/ConstructSearchFields'
 import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
+import { normalizeActivityConfig, MAX_WEEKS } from '@/lib/activity-log'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { retakeOptions, appealOptions, glossaryOptions } from '@/lib/assignment-display'
 
@@ -44,6 +45,7 @@ interface Props {
     lockdown: boolean                  // translation exams only
     lockdownMaxViolations: number | null  // translation exams only
     constructConfig: unknown           // construct searches only; reference holds the search link
+    activityConfig: unknown            // activity logs only; instructions holds the required activity
   }
   /** The assignment's course level — decides which vocabulary deck the section picker shows. */
   level?: string
@@ -75,7 +77,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const isConstruct = assignmentType === 'CONSTRUCT_SEARCH'
   // Diagramming exercises have no questions either — their setting is the passage.
   const isDiagram = assignmentType === 'DIAGRAM'
+  // Activity logs have no questions either — their settings are the weekly schedule.
+  const isActivity = assignmentType === 'ACTIVITY_LOG'
   const construct = normalizeConstructConfig(initial.constructConfig)
+  const activity = normalizeActivityConfig(initial.activityConfig)
 
   const [title, setTitle] = useState(initial.title)
   const [weekNumber, setWeekNumber] = useState(initial.weekNumber)
@@ -126,6 +131,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [constructCount, setConstructCount] = useState(construct.requiredCount)
   const [constructAskTranslation, setConstructAskTranslation] = useState(construct.askTranslation)
   const [constructAskComment, setConstructAskComment] = useState(construct.askComment)
+  // Activity log: weeks, the weekday each report is due, and how many weeks pass it.
+  const [activityWeeks, setActivityWeeks] = useState(activity.weeks)
+  const [activityDayOfWeek, setActivityDayOfWeek] = useState(activity.dayOfWeek)
+  const [activityRequiredWeeks, setActivityRequiredWeeks] = useState(activity.requiredWeeks)
 
   async function handleSave() {
     if ((isTranslation || isExam || isDiagram) && !reference.trim()) {
@@ -134,6 +143,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
     }
     if (isConstruct && !parseConstructLink(reference)) {
       setError(t('as.constructLinkError'))
+      return
+    }
+    if (isActivity && !instructions.trim()) {
+      setError(t('inst.b.err.activity'))
       return
     }
     if (isTranslation && round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
@@ -164,6 +177,9 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           constructCount: isConstruct ? constructCount : undefined,
           constructAskTranslation: isConstruct ? constructAskTranslation : undefined,
           constructAskComment: isConstruct ? constructAskComment : undefined,
+          activityWeeks: isActivity ? activityWeeks : undefined,
+          activityDayOfWeek: isActivity ? activityDayOfWeek : undefined,
+          activityRequiredWeeks: isActivity ? activityRequiredWeeks : undefined,
           // Convert back to seconds for storage
           timePerQuestion: isTranslation ? timePerQuestion * 60 || 0 : timePerQuestion,
           reviewTimeSeconds: reviewTimeSeconds * 60 || 0,
@@ -249,7 +265,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
   return (
     <Card>
-      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : isNotes ? 'Notes Settings' : isGroup ? 'Presentation Settings' : isConstruct ? 'Search Settings' : isDiagram ? 'Exercise Settings' : 'Quiz Settings'}</CardTitle>
+      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : isNotes ? 'Notes Settings' : isGroup ? 'Presentation Settings' : isConstruct ? 'Search Settings' : isDiagram ? 'Exercise Settings' : isActivity ? 'Activity Settings' : 'Quiz Settings'}</CardTitle>
       <div className="mt-5 space-y-5">
 
         <div className="grid grid-cols-2 gap-4">
@@ -522,6 +538,40 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             />
             <p className="text-xs text-brand-600 mt-1">{t('inst.b.dg.desc')}</p>
           </div>
+        ) : isActivity ? (
+          <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
+            <p className="text-xs text-brand-700">{t('inst.b.al.desc')}</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Input
+                label={t('inst.b.al.weeks')}
+                type="number"
+                min={1}
+                max={MAX_WEEKS}
+                value={String(activityWeeks)}
+                onChange={e => {
+                  const weeks = Math.max(1, Math.min(MAX_WEEKS, Number(e.target.value) || 1))
+                  setActivityWeeks(weeks)
+                  // Shortening the activity must not leave it demanding more reports than weeks.
+                  setActivityRequiredWeeks(r => Math.min(weeks, r))
+                }}
+              />
+              <Select
+                label={t('inst.b.al.day')}
+                value={String(activityDayOfWeek)}
+                onChange={e => setActivityDayOfWeek(Number(e.target.value))}
+                options={[0, 1, 2, 3, 4, 5, 6].map(d => ({ value: String(d), label: t(`al.day.${d}`) }))}
+              />
+              <Input
+                label={t('inst.b.al.required')}
+                type="number"
+                min={1}
+                max={activityWeeks}
+                value={String(activityRequiredWeeks)}
+                onChange={e => setActivityRequiredWeeks(Math.max(1, Math.min(activityWeeks, Number(e.target.value) || 1)))}
+              />
+            </div>
+            <p className="text-xs text-brand-600">{t('inst.b.al.requiredHelp')}</p>
+          </div>
         ) : isConstruct ? (
           <ConstructSearchFields
             url={reference}
@@ -627,7 +677,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           </div>
         )}
 
-        {!isTranslation && !isNotes && !isGroup && !isConstruct && !isDiagram && (
+        {!isTranslation && !isNotes && !isGroup && !isConstruct && !isDiagram && !isActivity && (
           <Select
             label={t('inst.b.retakes')}
             value={maxRetakes === null ? '' : String(maxRetakes)}

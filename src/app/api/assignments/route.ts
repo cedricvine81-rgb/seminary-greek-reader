@@ -6,6 +6,7 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isInstructorOfCourse } from '@/lib/course-auth'
 import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
+import { normalizeActivityConfig } from '@/lib/activity-log-submissions'
 import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
 import {
   generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype,
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, assessed, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, vocabThruBand, notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, assessed, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, vocabThruBand, notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment, activityWeeks, activityDayOfWeek, activityRequiredWeeks } = body
 
   // Construct searches: the search link is the assignment, so it is parsed here rather than
   // trusted — what gets stored is the same-origin path it decodes to.
@@ -64,6 +65,16 @@ export async function POST(req: NextRequest) {
         requiredCount: constructCount,
         askTranslation: constructAskTranslation,
         askComment: constructAskComment,
+      })
+    : null
+
+  // Activity logs: how many weeks, which weekday the weekly report is due, and how many
+  // weeks must be reported to pass.
+  const activityConfig = type === 'ACTIVITY_LOG'
+    ? normalizeActivityConfig({
+        weeks: activityWeeks,
+        dayOfWeek: activityDayOfWeek,
+        requiredWeeks: activityRequiredWeeks,
       })
     : null
 
@@ -108,6 +119,10 @@ export async function POST(req: NextRequest) {
   // A diagramming exercise is its passage — without one there is nothing to diagram.
   if (type === 'DIAGRAM' && !reference?.trim()) {
     return NextResponse.json({ error: 'A passage reference is required.' }, { status: 400 })
+  }
+  // An activity log with no stated activity is a checkbox with nothing behind it.
+  if (type === 'ACTIVITY_LOG' && !String(instructions ?? '').trim()) {
+    return NextResponse.json({ error: 'Describe the activity students must complete each week.' }, { status: 400 })
   }
   if (round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
     return NextResponse.json({ error: 'Round 2 deadline must be after the Round 1 deadline.' }, { status: 400 })
@@ -163,6 +178,14 @@ export async function POST(req: NextRequest) {
             requiredCount: constructConfig.requiredCount,
             askTranslation: constructConfig.askTranslation,
             askComment: constructConfig.askComment,
+          }
+        : undefined,
+      // Activity logs: the weekly schedule and how many weeks are required to pass.
+      activityConfig: activityConfig
+        ? {
+            weeks: activityConfig.weeks,
+            dayOfWeek: activityConfig.dayOfWeek,
+            requiredWeeks: activityConfig.requiredWeeks,
           }
         : undefined,
       // Morphology quizzes: subtype + full generation recipe, exactly as the semester
