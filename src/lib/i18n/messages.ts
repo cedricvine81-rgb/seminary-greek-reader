@@ -785,7 +785,7 @@ const en: Catalogue = {
   'da.workedCount': '{done} / {total} sentences',
   'da.studentComment': 'Student\u2019s comment',
   // ── Activity Log: instructor setup ──────────────────────────────────────────
-  'inst.b.al.heading': '🗓 Activity Log',
+  'inst.b.al.heading': 'Activity Log',
   'inst.b.al.desc': 'Students report once a week that they completed the activity you describe in the instructions. Graded Pass/Fail.',
   'inst.b.al.weeks': 'Number of weeks',
   'inst.b.al.day': 'Report due each',
@@ -3648,7 +3648,7 @@ const es: Catalogue = {
   'da.workedCount': '{done} / {total} oraciones',
   'da.studentComment': 'Comentario del estudiante',
   // ── Activity Log: instructor setup ──────────────────────────────────────────
-  'inst.b.al.heading': '🗓 Registro de actividad',
+  'inst.b.al.heading': 'Registro de actividad',
   'inst.b.al.desc': 'Los estudiantes reportan una vez por semana que completaron la actividad que usted describe en las instrucciones. Se califica Aprobado/Reprobado.',
   'inst.b.al.weeks': 'Número de semanas',
   'inst.b.al.day': 'El reporte vence cada',

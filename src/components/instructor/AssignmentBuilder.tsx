@@ -455,42 +455,40 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'ACTIVITY_LOG' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-brand-800">{t('inst.b.al.heading')}</p>
+          <p className="text-sm font-semibold text-brand-800">🗓 {t('inst.b.al.heading')}</p>
           <p className="text-xs text-brand-700">{t('inst.b.al.desc')}</p>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <Input
-              label={t('inst.b.al.weeks')}
-              type="number"
-              min={1}
-              max={MAX_WEEKS}
-              value={String(form.activityWeeks ?? 1)}
-              onChange={e => {
-                const weeks = Math.max(1, Math.min(MAX_WEEKS, Number(e.target.value) || 1))
-                // Keep requiredWeeks inside the new range, or a shortened activity would
-                // demand more reports than it has weeks.
-                setForm(f => ({
-                  ...f,
-                  activityWeeks: weeks,
-                  activityRequiredWeeks: Math.min(weeks, f.activityRequiredWeeks ?? weeks),
-                }))
-              }}
-            />
-            <Select
-              label={t('inst.b.al.day')}
-              value={String(form.activityDayOfWeek ?? 0)}
-              onChange={e => set('activityDayOfWeek', Number(e.target.value))}
-              options={[0, 1, 2, 3, 4, 5, 6].map(d => ({ value: String(d), label: t(`al.day.${d}`) }))}
-            />
-            <Input
-              label={t('inst.b.al.required')}
-              type="number"
-              min={1}
-              max={form.activityWeeks ?? 1}
-              value={String(form.activityRequiredWeeks ?? form.activityWeeks ?? 1)}
-              onChange={e => set('activityRequiredWeeks', Math.max(1, Math.min(form.activityWeeks ?? 1, Number(e.target.value) || 1)))}
-            />
-          </div>
-          <p className="text-xs text-brand-700">{t('inst.b.al.requiredHelp')}</p>
+          <Input
+            label={t('inst.b.al.weeks')}
+            type="number"
+            min={1}
+            max={MAX_WEEKS}
+            value={String(form.activityWeeks ?? 1)}
+            onChange={e => {
+              const weeks = Math.max(1, Math.min(MAX_WEEKS, Number(e.target.value) || 1))
+              // Keep requiredWeeks inside the new range, or a shortened activity would
+              // demand more reports than it has weeks.
+              setForm(f => ({
+                ...f,
+                activityWeeks: weeks,
+                activityRequiredWeeks: Math.min(weeks, f.activityRequiredWeeks ?? weeks),
+              }))
+            }}
+          />
+          <Select
+            label={t('inst.b.al.day')}
+            value={String(form.activityDayOfWeek ?? 0)}
+            onChange={e => set('activityDayOfWeek', Number(e.target.value))}
+            options={[0, 1, 2, 3, 4, 5, 6].map(d => ({ value: String(d), label: t(`al.day.${d}`) }))}
+          />
+          <Input
+            label={t('inst.b.al.required')}
+            type="number"
+            min={1}
+            max={form.activityWeeks ?? 1}
+            value={String(form.activityRequiredWeeks ?? form.activityWeeks ?? 1)}
+            onChange={e => set('activityRequiredWeeks', Math.max(1, Math.min(form.activityWeeks ?? 1, Number(e.target.value) || 1)))}
+          />
+          <p className="-mt-2 text-xs text-brand-600">{t('inst.b.al.requiredHelp')}</p>
         </div>
       )}
 

@@ -541,36 +541,34 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
         ) : isActivity ? (
           <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
             <p className="text-xs text-brand-700">{t('inst.b.al.desc')}</p>
-            <div className="grid gap-3 sm:grid-cols-3">
-              <Input
-                label={t('inst.b.al.weeks')}
-                type="number"
-                min={1}
-                max={MAX_WEEKS}
-                value={String(activityWeeks)}
-                onChange={e => {
-                  const weeks = Math.max(1, Math.min(MAX_WEEKS, Number(e.target.value) || 1))
-                  setActivityWeeks(weeks)
-                  // Shortening the activity must not leave it demanding more reports than weeks.
-                  setActivityRequiredWeeks(r => Math.min(weeks, r))
-                }}
-              />
-              <Select
-                label={t('inst.b.al.day')}
-                value={String(activityDayOfWeek)}
-                onChange={e => setActivityDayOfWeek(Number(e.target.value))}
-                options={[0, 1, 2, 3, 4, 5, 6].map(d => ({ value: String(d), label: t(`al.day.${d}`) }))}
-              />
-              <Input
-                label={t('inst.b.al.required')}
-                type="number"
-                min={1}
-                max={activityWeeks}
-                value={String(activityRequiredWeeks)}
-                onChange={e => setActivityRequiredWeeks(Math.max(1, Math.min(activityWeeks, Number(e.target.value) || 1)))}
-              />
-            </div>
-            <p className="text-xs text-brand-600">{t('inst.b.al.requiredHelp')}</p>
+            <Input
+              label={t('inst.b.al.weeks')}
+              type="number"
+              min={1}
+              max={MAX_WEEKS}
+              value={String(activityWeeks)}
+              onChange={e => {
+                const weeks = Math.max(1, Math.min(MAX_WEEKS, Number(e.target.value) || 1))
+                setActivityWeeks(weeks)
+                // Shortening the activity must not leave it demanding more reports than weeks.
+                setActivityRequiredWeeks(r => Math.min(weeks, r))
+              }}
+            />
+            <Select
+              label={t('inst.b.al.day')}
+              value={String(activityDayOfWeek)}
+              onChange={e => setActivityDayOfWeek(Number(e.target.value))}
+              options={[0, 1, 2, 3, 4, 5, 6].map(d => ({ value: String(d), label: t(`al.day.${d}`) }))}
+            />
+            <Input
+              label={t('inst.b.al.required')}
+              type="number"
+              min={1}
+              max={activityWeeks}
+              value={String(activityRequiredWeeks)}
+              onChange={e => setActivityRequiredWeeks(Math.max(1, Math.min(activityWeeks, Number(e.target.value) || 1)))}
+            />
+            <p className="-mt-2 text-xs text-brand-600">{t('inst.b.al.requiredHelp')}</p>
           </div>
         ) : isConstruct ? (
           <ConstructSearchFields
