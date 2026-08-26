@@ -768,7 +768,7 @@ const en: Catalogue = {
   'cs.reopenConfirm': 'Reopen {name}’s find-list so they can keep working on it?',
   'cs.reopenFailed': 'Could not reopen this submission. Please try again.',
   // ── Diagramming exercises (DIAGRAM assignments) ──
-  'inst.b.dg.heading': '✏️ Diagramming exercise',
+  'inst.b.dg.heading': 'Diagramming exercise',
   'inst.b.dg.desc': 'Students arrange the passage\u2019s Greek words on a canvas — dragging, drawing lines and brackets, adding labels — using the same diagramming tools as the Exegesis page. Their work is saved per sentence and handed in for grading.',
   'inst.b.dg.passage': 'Passage',
   'inst.b.dg.passageExample': 'e.g. John 1:1-5',
@@ -3631,7 +3631,7 @@ const es: Catalogue = {
   'cs.reopenConfirm': '¿Reabrir la lista de hallazgos de {name} para que pueda seguir trabajando en ella?',
   'cs.reopenFailed': 'No se pudo reabrir esta entrega. Inténtalo de nuevo.',
   // ── Ejercicios de diagramación (tareas DIAGRAM) ──
-  'inst.b.dg.heading': '✏️ Ejercicio de diagramación',
+  'inst.b.dg.heading': 'Ejercicio de diagramación',
   'inst.b.dg.desc': 'Los estudiantes organizan las palabras griegas del pasaje en un lienzo (arrastrando, trazando líneas y corchetes, añadiendo etiquetas) con las mismas herramientas de diagramación de la página de Exégesis. Su trabajo se guarda por oración y se entrega para calificar.',
   'inst.b.dg.passage': 'Pasaje',
   'inst.b.dg.passageExample': 'p. ej., Juan 1:1-5',

@@ -420,7 +420,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'COURSE_NOTES' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-brand-800">📓 {t('inst.b.notes.heading')}</p>
+          <p className="text-sm font-semibold text-brand-800">{t('inst.b.notes.heading')}</p>
           <p className="text-xs text-brand-700">{t('inst.b.notes.desc')}</p>
           <Input
             label={t('inst.b.notes.folderName')}
@@ -434,7 +434,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'GROUP_PRESENTATION' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-2">
-          <p className="text-sm font-semibold text-brand-800">👥 {t('inst.b.group.heading')}</p>
+          <p className="text-sm font-semibold text-brand-800">{t('inst.b.group.heading')}</p>
           <p className="text-xs text-brand-700">{t('inst.b.group.desc')}</p>
         </div>
       )}
@@ -678,7 +678,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'TRANSLATION_EXAM' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-brand-800">📜 {t('inst.b.exam.heading')}</p>
+          <p className="text-sm font-semibold text-brand-800">{t('inst.b.exam.heading')}</p>
           <p className="text-xs text-brand-700">{t('inst.b.exam.desc')}</p>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t('inst.b.exam.passages')}</label>

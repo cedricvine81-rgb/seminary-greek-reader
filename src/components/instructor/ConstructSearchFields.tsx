@@ -32,7 +32,7 @@ export function ConstructSearchFields({
 
   return (
     <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-      <p className="text-sm font-semibold text-brand-800">🔍 {t('cf.heading')}</p>
+      <p className="text-sm font-semibold text-brand-800">{t('cf.heading')}</p>
       <p className="text-xs text-brand-700">{t('cf.intro')}</p>
       <Link
         href="/search/construct"
