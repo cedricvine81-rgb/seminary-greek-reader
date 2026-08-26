@@ -193,7 +193,6 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: 'Job', name: 'Job', source: 'lxx', osisId: 'Job', chapters: 42, english: 'brenton' },
       { id: 'Ps', name: 'Psalms', source: 'lxx', osisId: 'Ps', chapters: 151, english: 'brenton' },
       { id: 'Prov', name: 'Proverbs', source: 'lxx', osisId: 'Prov', chapters: 31, english: 'brenton' },
-      { id: 'Eccl', name: 'Ecclesiastes', source: 'lxx', osisId: 'Eccl', chapters: 12, english: 'brenton' },
       { id: 'Song', name: 'Song of Songs', source: 'lxx', osisId: 'Song', chapters: 8, english: 'brenton' },
       { id: 'Isa', name: 'Isaiah', source: 'lxx', osisId: 'Isa', chapters: 66, english: 'brenton' },
       { id: 'Jer', name: 'Jeremiah', source: 'lxx', osisId: 'Jer', chapters: 52, english: 'brenton' },

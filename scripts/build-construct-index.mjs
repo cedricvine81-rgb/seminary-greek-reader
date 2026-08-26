@@ -90,10 +90,12 @@ const LXX_POS = {
   // 'M' is the numeral tag (ἑπτά, τριάκοντα) — 3,328 words.
   M: 'number',
 }
-// X/Y/Z are the perfect system, absent from the named tenses: πεπτωκότας (perfect),
-// ᾠκοδόμητο (pluperfect), κεκλήσεται (future perfect — one word, and we have no token for it).
+// Swete's morphology is our own (Stanza `grc`), so the perfect system is named outright.
+// The Rahlfs/CATSS data this replaced encoded it as X (perfect) and Y (pluperfect) instead —
+// tags that carried no tense name at all. Those keys are kept so a stale index still maps.
 const LXX_TENSE = {
   Present: 'present', Imperfect: 'imperfect', Future: 'future', Aorist: 'aorist',
+  Perfect: 'perfect', Pluperfect: 'pluperfect',
   X: 'perfect', Y: 'pluperfect',
 }
 const LXX_SIMPLE = {

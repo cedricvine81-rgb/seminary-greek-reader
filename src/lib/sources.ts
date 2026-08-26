@@ -30,7 +30,10 @@ export const SOURCE_CREDITS: SourceCredit[] = [
   // ── The biblical text ───────────────────────────────────────────────────────────────
   { id: 'mt', group: 'scripture', url: 'https://hb.openscriptures.org' },
   { id: 'na1904', group: 'scripture' },
-  { id: 'lxx', group: 'scripture' },
+  // Swete via First1KGreek. CC BY-SA: attribution is required and share-alike attaches to the
+  // derived indexes built from it (construct, search shards, lemma-forms). Replaced the previous
+  // Rahlfs/CATSS data, which was CC BY-NC-SA and so blocked by the paid tier. See docs/provenance.md.
+  { id: 'lxx', group: 'scripture', licence: 'CC BY-SA 4.0', url: 'https://github.com/nathans/lxx-swete' },
   { id: 'brenton', group: 'scripture' },
   { id: 'web', group: 'scripture' },
   { id: 'bsb', group: 'scripture' },

@@ -1,6 +1,6 @@
 // Choosing what to show of a long passage.
 //
-// A single window spanning every match is no use: 1 Kings 12:24 carries the whole of Rahlfs's
+// A single window spanning every match is no use: 1 Kings 12:24 carries the whole of Swete's
 // 12:24a-24z at 1,017 words, and a construct can match near the start and again 800 words later —
 // one window around both shows almost the entire passage, which is the thing being avoided.
 // So matches are CLUSTERED, and each cluster gets its own window, joined by an ellipsis.

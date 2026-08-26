@@ -50,7 +50,7 @@ function hilite(text: string, terms: string[]): ReactNode {
 
 // A verse long enough that printing all of it buries the match. The New Testament has none — its
 // longest is Revelation 20:4 at 58 words — but the Septuagint has 19 over 100, because our source
-// collapses Rahlfs's letter sub-verses into the base number: 1Kgs 12:24 carries the whole of
+// collapses the edition's letter sub-verses into the base number: 1Kgs 12:24 carries the whole of
 // 12:24a-24z (the alternate Jeroboam narrative) at 1,017 words, and Esther's Additions sit inside
 // 4:17, 8:12, 1:1, 3:13 and 10:3. Windowing needs exact matched positions, so it only applies where
 // the caller can supply them.

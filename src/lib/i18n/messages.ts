@@ -164,10 +164,10 @@ const en: Catalogue = {
   'sources.mt.body': 'The consonantal and pointed text with its morphology from the Open Scriptures Hebrew Bible, based on the Westminster Leningrad Codex. Public domain.',
   'sources.na1904.title': 'Greek New Testament — Nestle 1904',
   'sources.na1904.body': 'Eberhard Nestle’s 1904 edition, and Tischendorf’s eighth edition as an alternative. Both public domain.',
-  'sources.lxx.title': 'Septuagint — Rahlfs',
-  'sources.lxx.body': 'Alfred Rahlfs’ Septuagint (1935), public domain. Where Rahlfs prints the Old Greek rather than Theodotion — Susanna and Bel — the reader says so, because it is not the text behind most printed Bibles.',
+  'sources.lxx.title': 'Septuagint — Swete',
+  'sources.lxx.body': 'Henry Barclay Swete’s The Old Testament in Greek According to the Septuagint (Cambridge, 1887–1912) — a diplomatic text of Codex Vaticanus. Digital text from nathans/lxx-swete, derived from the Open Greek and Latin Project’s First1KGreek, CC BY-SA 4.0. Morphology, lemmas and Strong’s numbers are machine-generated here (Stanza, Ancient Greek) and have not been read by a human; about one word in nine carries no Strong’s number, and the parses of Semitic proper names are the least reliable part of it. Swete prints both the Old Greek and Theodotion of Daniel, Susanna and Bel. Greek Ecclesiastes is absent from this edition’s digital text altogether, and around 600 further verses Brenton translated have no Greek beside them here — mostly the Septuagint’s reordering of Proverbs and passages Codex Vaticanus omits.',
   'sources.brenton.title': 'English Septuagint — Brenton',
-  'sources.brenton.body': 'Sir Lancelot Brenton’s English translation of the Septuagint (1851). Public domain.',
+  'sources.brenton.body': 'Sir Lancelot Brenton’s English translation of the Septuagint (1851). Public domain. Brenton worked from a different Greek edition than the Swete text shown beside it, so the two columns do not always agree: his Daniel, Susanna and Bel follow Theodotion rather than the Old Greek printed here, and where Codex Vaticanus omits a passage the English stands on its own.',
   'sources.web.title': 'English Bible — World English Bible',
   'sources.web.body': 'The World English Bible, released to the public domain by Rainbow Missions.',
   'sources.bsb.title': 'English Bible — Berean Standard Bible',
@@ -224,18 +224,24 @@ const en: Catalogue = {
   'sources.places.body': 'The place data behind the map is drawn from the Perseus Digital Library’s own place tagging.',
   'texts.spanishOurs': 'Spanish (our translation)',
   'texts.spanishOursCredit': 'Spanish: translated for this app directly from the Greek shown here. Not a published edition; only the chapters already done carry it.',
-  'reader.creditGreek': 'Greek text: {edition} (SBLGNT) © 2010 Society of Biblical Literature and Logos Bible Software.',
-  'reader.creditGreekEdition': 'SBL Greek New Testament',
+  // The reader serves Nestle 1904 (default) or Tischendorf 8th for the NT, and Swete for the
+  // LXX — never the SBLGNT, which is only the base of the SYNTAX datasets credited on the next
+  // line. The edition is chosen by corpus in GreekReader; see docs/provenance.md.
+  'reader.creditGreek': 'Greek text: {edition}.'
+  , 'reader.creditGreekTischendorf': 'Tischendorf’s eighth edition (1869–1872), public domain'
+  , 'reader.creditGreekLxx': 'Swete’s Septuagint (Cambridge, 1887–1912) via nathans/lxx-swete and First1KGreek, CC BY-SA 4.0; morphology machine-generated, not yet human-verified'
+  , 'reader.creditHebrew': 'Hebrew text: Westminster Leningrad Codex via the Open Scriptures Hebrew Bible, with Macula Hebrew syntax (CC BY 4.0).',
+  'reader.creditGreekEdition': 'Eberhard Nestle’s Novum Testamentum Graece (1904), public domain',
   'reader.creditSyntax': 'Syntax: {lowfat} treebank (Wallace & PROIEL) · {macula} (GBI) © Clear Bible, CC BY 4.0 · {abs} © Asian Bible Society.',
   // The deuterocanonical Spanish is the one text in the app with no published source, because
   // we made it. Every other text names a translator and a date; a student citing this one in a
   // paper has to be able to see what it is.
   'reader.creditOurTranslation': 'Spanish for the deuterocanonical books: translated for this app directly from the Greek shown here. Not a published edition.',
   'reader.ourTranslationBadge': 'our translation from the Greek',
-  // Susanna and Bel are printed here in the Old Greek, which Rahlfs gives; every Spanish and
+  // Susanna and Bel are printed here in the Old Greek, which Swete gives; every Spanish and
   // English Bible a student is likely to own prints Theodotion instead. The two differ enough
   // that the missing verse numbers read as a bug in this app rather than a feature of the text.
-  'reader.oldGreekNote': 'This is the Old Greek text, which Rahlfs prints. Printed Bibles follow Theodotion’s later version, which is longer and worded differently — so verse numbers jump here and passages you expect may be missing.',
+  'reader.oldGreekNote': 'This is the Old Greek text, which Swete prints. Printed Bibles follow Theodotion’s later version, which is longer and worded differently — so verse numbers jump here and passages you expect may be missing.',
   // Brenton translated Theodotion for these two books, so the parallel column is a different
   // recension from the Greek beside it — visibly so from v. 7 on. Our Spanish renders this Greek.
   'reader.oldGreekBrenton': 'Brenton’s English translates Theodotion, so the two columns here are different texts and do not line up. The Spanish renders the Greek shown.',
@@ -3082,10 +3088,10 @@ const es: Catalogue = {
   'sources.mt.body': 'El texto consonántico y puntuado con su morfología, de la Open Scriptures Hebrew Bible, basado en el Códice de Leningrado (Westminster). Dominio público.',
   'sources.na1904.title': 'Nuevo Testamento griego — Nestle 1904',
   'sources.na1904.body': 'La edición de Eberhard Nestle de 1904, y la octava edición de Tischendorf como alternativa. Ambas de dominio público.',
-  'sources.lxx.title': 'Septuaginta — Rahlfs',
-  'sources.lxx.body': 'La Septuaginta de Alfred Rahlfs (1935), de dominio público. Donde Rahlfs imprime el griego antiguo y no a Teodoción —Susana y Bel—, el lector lo advierte, porque no es el texto que hay detrás de la mayoría de las Biblias impresas.',
+  'sources.lxx.title': 'Septuaginta — Swete',
+  'sources.lxx.body': 'The Old Testament in Greek According to the Septuagint de Henry Barclay Swete (Cambridge, 1887-1912), texto diplomático del Códice Vaticano. Texto digital de nathans/lxx-swete, derivado del First1KGreek del Open Greek and Latin Project, CC BY-SA 4.0. La morfología, los lemas y los números Strong se generaron aquí por máquina (Stanza, griego antiguo) y ninguna persona los ha revisado: alrededor de una de cada nueve palabras no lleva número Strong, y los análisis de los nombres propios semíticos son la parte menos fiable. Swete imprime tanto el griego antiguo como a Teodoción de Daniel, Susana y Bel. El Eclesiastés griego falta por completo en el texto digital de esta edición, y otros 600 versículos que Brenton tradujo no tienen griego al lado: sobre todo la reordenación de Proverbios y los pasajes que omite el Códice Vaticano.',
   'sources.brenton.title': 'Septuaginta en inglés — Brenton',
-  'sources.brenton.body': 'La traducción inglesa de la Septuaginta de sir Lancelot Brenton (1851). Dominio público.',
+  'sources.brenton.body': 'La traducción inglesa de la Septuaginta de sir Lancelot Brenton (1851). Dominio público. Brenton partió de una edición griega distinta de la de Swete que aparece al lado, de modo que las dos columnas no siempre coinciden: su Daniel, Susana y Bel siguen a Teodoción y no al griego antiguo que aquí se imprime, y donde el Códice Vaticano omite un pasaje el inglés queda solo.',
   'sources.web.title': 'Biblia en inglés — World English Bible',
   'sources.web.body': 'La World English Bible, puesta en dominio público por Rainbow Missions.',
   'sources.bsb.title': 'Biblia en inglés — Berean Standard Bible',
@@ -3142,12 +3148,15 @@ const es: Catalogue = {
   'sources.places.body': 'Los datos de lugares que hay detrás del mapa se toman del propio etiquetado de lugares de la Perseus Digital Library.',
   'texts.spanishOurs': 'Español (traducción propia)',
   'texts.spanishOursCredit': 'Español: traducción hecha para esta aplicación a partir del griego que aquí se muestra. No es una edición publicada; solo la llevan los capítulos ya traducidos.',
-  'reader.creditGreek': 'Texto griego: {edition} (SBLGNT) © 2010 Society of Biblical Literature y Logos Bible Software.',
-  'reader.creditGreekEdition': 'SBL Greek New Testament',
+  'reader.creditGreek': 'Texto griego: {edition}.'
+  , 'reader.creditGreekTischendorf': 'la octava edición de Tischendorf (1869-1872), de dominio público'
+  , 'reader.creditGreekLxx': 'la Septuaginta de Swete (Cambridge, 1887-1912) vía nathans/lxx-swete y First1KGreek, CC BY-SA 4.0; morfología generada por máquina, sin verificar'
+  , 'reader.creditHebrew': 'Texto hebreo: Códice de Leningrado (Westminster) vía Open Scriptures Hebrew Bible, con la sintaxis de Macula Hebrew (CC BY 4.0).',
+  'reader.creditGreekEdition': 'el Novum Testamentum Graece de Eberhard Nestle (1904), de dominio público',
   'reader.creditSyntax': 'Sintaxis: treebank {lowfat} (Wallace y PROIEL) · {macula} (GBI) © Clear Bible, CC BY 4.0 · {abs} © Asian Bible Society.',
   'reader.creditOurTranslation': 'El español de los libros deuterocanónicos es una traducción hecha para esta aplicación a partir del griego que aquí se muestra. No es una edición publicada.',
   'reader.ourTranslationBadge': 'traducción propia del griego',
-  'reader.oldGreekNote': 'Este es el texto griego antiguo, el que imprime Rahlfs. Las Biblias impresas siguen la versión posterior de Teodoción, más larga y de redacción distinta: por eso aquí la numeración da saltos y puede que falten pasajes que usted espera encontrar.',
+  'reader.oldGreekNote': 'Este es el texto griego antiguo, el que imprime Swete. Las Biblias impresas siguen la versión posterior de Teodoción, más larga y de redacción distinta: por eso aquí la numeración da saltos y puede que falten pasajes que usted espera encontrar.',
   'reader.oldGreekBrenton': 'El inglés de Brenton traduce a Teodoción, así que las dos columnas son textos distintos y no se corresponden. El español sí traduce el griego que aquí se muestra.',
   'reader.glossLocal': 'Glosa',
   'inst.welcome': 'Hola de nuevo, {name}',
