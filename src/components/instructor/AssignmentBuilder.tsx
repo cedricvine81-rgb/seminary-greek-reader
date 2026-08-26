@@ -455,7 +455,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'ACTIVITY_LOG' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-brand-800">🗓 {t('inst.b.al.heading')}</p>
+          <p className="text-sm font-semibold text-brand-800">{t('inst.b.al.heading')}</p>
           <p className="text-xs text-brand-700">{t('inst.b.al.desc')}</p>
           <Input
             label={t('inst.b.al.weeks')}
