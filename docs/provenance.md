@@ -199,6 +199,16 @@ not "zero orphans".**
 a changed verse invalidates them. Count the affected rows before designing a
 migration; if the number is small, notify and drop.
 
+**The queries are written out in
+[lxx-swete-user-data-impact.sql](lxx-swete-user-data-impact.sql)** — read-only,
+covering the three separable problems: highlights whose offsets died, the 895
+verse anchors that no longer exist, and the Odes, whose anchors survived but now
+name a different canticle. That last one is the dangerous case: nothing errors,
+the note simply sits on the wrong text. Note that `Eccl` is in the book list
+even though it is no longer in `books.json` — the rows are still in the database.
+
+The sketch below is kept because it shows the shape; prefer the file.
+
 ```sql
 -- LXX Greek highlights, by book
 SELECT "book", count(*) FROM "Highlight"
