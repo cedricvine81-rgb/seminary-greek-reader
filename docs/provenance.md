@@ -121,6 +121,34 @@ npx tsx --tsconfig tsconfig.i18n.json scripts/build-backgrounds-search.ts
 `build-word-index.mjs` is the New Testament's and does not need rerunning for a
 Septuagint change.
 
+### How accurate the tagging actually is
+
+Measured, not assumed — `scripts/lxx-parse-accuracy.py` compares our parses against the
+Rahlfs/CATSS analysis this app used to ship, read out of git history purely as a
+measuring stick (nothing derived from it is shipped). Only about a third of verses
+can be compared at all: the two editions have to print the same words in the same
+order for a verse to enter the sample. 149,567 words qualified.
+
+| | agreement |
+|---|---|
+| every field the reference states | **81.3%** |
+| part of speech | 89.7% same label · 8.1% different label but same broad class (convention) · **2.2% genuinely wrong class** |
+| verbs, where both call it a verb | tense 93.2% · voice 93.5% · mood 94.7% · person 96.0% · number 98.8% · **all fields 83.9%** |
+| nouns/adjectives/articles/pronouns, class agreed | case 94.6% · number 99.1% · gender 93.1% · **all fields 89.4%** |
+
+**Agreement is not truth.** The reference is a different edition, is itself a
+machine-readable analysis, and is not infallible. And Greek forms are frequently
+ambiguous: of the 8,438 nominal disagreements, **62% are readings the reference
+itself gives that same form somewhere else** — παντί read as neuter where the
+reference read masculine is a different reading, not a wrong one. The remaining
+38% have no support in the reference at all and are the likeliest real errors.
+
+So: individual fields land in the 93–99% range, a whole parse is right about
+four times in five, and the residue is roughly 4% real error on nominals plus a
+2% part-of-speech error rate. Good enough to search on, not good enough to grade
+a student against without a human eye — which is what the reader's credit line
+says.
+
 ### What the machine tagging is worth
 
 587,998 words. Strong's numbers on **88.6%** — Stanza's lemmatiser is seq2seq, so
