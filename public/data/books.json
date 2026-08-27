@@ -499,6 +499,14 @@
       "totalChapters": 12
     },
     {
+      "id": "DanTh",
+      "corpus": "LXX",
+      "osisId": "DanTh",
+      "name": "Daniel (Theodotion)",
+      "abbrev": "Dan Th",
+      "totalChapters": 12
+    },
+    {
       "id": "Bel",
       "corpus": "LXX",
       "osisId": "Bel",

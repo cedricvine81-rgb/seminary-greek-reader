@@ -166,7 +166,7 @@ function scrollPanelToVerse(panel: HTMLElement | null, el: HTMLElement): void {
 
 // Books where Swete prints the Old Greek and not Theodotion — the recension behind every
 // printed Bible a student is likely to own. See reader.oldGreekNote.
-const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel'])
+const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel', 'DanLXX'])
 
 const LOOKAHEAD = 1600   // px ahead of sentinel to start loading next chapter
 const NAV_PRE   = 3      // chapters to preload before the search target

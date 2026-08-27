@@ -141,6 +141,10 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: 'Sus', name: 'Susanna', source: 'lxx', osisId: 'Sus', chapters: 1, english: 'brenton' },
       { id: 'Bel', name: 'Bel and the Dragon', source: 'lxx', osisId: 'Bel', chapters: 1, english: 'brenton' },
       { id: 'DanLXX', name: 'Daniel (LXX)', source: 'lxx', osisId: 'DanLXX', chapters: 12 },
+      // Theodotion's Daniel, which is the recension every English Bible actually translates. The
+      // Old Greek above it is a different book in chapters 3-6, so a student reading it against an
+      // English column was comparing two different texts; this gives them one that corresponds.
+      { id: 'DanTh', name: 'Daniel (Theodotion)', source: 'lxx', osisId: 'DanTh', chapters: 12 },
       // Greek from the LXX; English is G. Buchanan Gray's 1913 translation, written into the
       // brenton/ side-file because that is the mechanism for LXX English — the directory name
       // is not a claim about the translator.

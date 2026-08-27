@@ -241,7 +241,7 @@ const en: Catalogue = {
   // Susanna and Bel are printed here in the Old Greek, which Swete gives; every Spanish and
   // English Bible a student is likely to own prints Theodotion instead. The two differ enough
   // that the missing verse numbers read as a bug in this app rather than a feature of the text.
-  'reader.oldGreekNote': 'This is the Old Greek text, which Swete prints. Printed Bibles follow Theodotion’s later version, which is longer and worded differently — so verse numbers jump here and passages you expect may be missing.',
+  'reader.oldGreekNote': 'This is the Old Greek text, which Swete prints. Printed Bibles follow Theodotion’s later version, which is longer and worded differently — so verse numbers jump here and passages you expect may be missing. For Daniel, the Theodotion text is here too, listed separately.',
   // Brenton translated Theodotion for these two books, so the parallel column is a different
   // recension from the Greek beside it — visibly so from v. 7 on. Our Spanish renders this Greek.
   'reader.oldGreekBrenton': 'Brenton’s English translates Theodotion, so the two columns here are different texts and do not line up. The Spanish renders the Greek shown.',
@@ -3164,7 +3164,7 @@ const es: Catalogue = {
   'reader.creditSyntax': 'Sintaxis: treebank {lowfat} (Wallace y PROIEL) · {macula} (GBI) © Clear Bible, CC BY 4.0 · {abs} © Asian Bible Society.',
   'reader.creditOurTranslation': 'El español de los libros deuterocanónicos es una traducción hecha para esta aplicación a partir del griego que aquí se muestra. No es una edición publicada.',
   'reader.ourTranslationBadge': 'traducción propia del griego',
-  'reader.oldGreekNote': 'Este es el texto griego antiguo, el que imprime Swete. Las Biblias impresas siguen la versión posterior de Teodoción, más larga y de redacción distinta: por eso aquí la numeración da saltos y puede que falten pasajes que usted espera encontrar.',
+  'reader.oldGreekNote': 'Este es el texto griego antiguo, el que imprime Swete. Las Biblias impresas siguen la versión posterior de Teodoción, más larga y de redacción distinta: por eso aquí la numeración da saltos y puede que falten pasajes que usted espera encontrar. En el caso de Daniel, el texto de Teodoción también está aquí, en una entrada aparte.',
   'reader.oldGreekBrenton': 'El inglés de Brenton traduce a Teodoción, así que las dos columnas son textos distintos y no se corresponden. El español sí traduce el griego que aquí se muestra.',
   'reader.glossLocal': 'Glosa',
   'inst.welcome': 'Hola de nuevo, {name}',

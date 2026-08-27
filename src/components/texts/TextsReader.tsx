@@ -100,7 +100,7 @@ const ENGLISH_BY_WORK: Record<string, { label: string; attribution: string; gapN
 
 // Books where Swete prints the Old Greek and not Theodotion — the recension behind every
 // printed Bible a student is likely to own. See reader.oldGreekNote.
-const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel'])
+const OLD_GREEK_BOOKS = new Set(['Sus', 'Bel', 'DanLXX'])
 
 // The parallel translations available for a work. A work only gets a selector once it has more
 // than one option — a single column needs no menu, which is why most works still return [].

@@ -11,7 +11,7 @@ const OSIS_TO_BOOK: Record<string, number> = {
   '1Chr': 13, '2Chr': 14, Ezra: 15, Neh: 16,
   Esth: 17, EsthGr: 17, Job: 18, Ps: 19, Prov: 20,
   Eccl: 21, Song: 22, Isa: 23, Jer: 24, Lam: 25,
-  Ezek: 26, Dan: 27, DanLXX: 27, Hos: 28, Joel: 29,
+  Ezek: 26, Dan: 27, DanLXX: 27, DanTh: 27, Hos: 28, Joel: 29,
   Amos: 30, Obad: 31, Jonah: 32, Mic: 33, Nah: 34,
   Hab: 35, Zeph: 36, Hag: 37, Zech: 38, Mal: 39,
   // NT
