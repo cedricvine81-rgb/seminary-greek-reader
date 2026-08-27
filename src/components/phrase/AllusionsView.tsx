@@ -12,7 +12,7 @@ import { CITATION_STOP, detectCitation } from '@/lib/citation-formula'
 import { defaultReadingLang, useEffectiveReadingLang, readingLangLabel } from '@/lib/reading-language'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { hebrewizeInfo, loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
-import { alignBrenton } from '@/lib/brenton-alignment'
+import { alignBrenton, brentonSourceBook } from '@/lib/brenton-alignment'
 
 // ── Allusions tab ───────────────────────────────────────────────────────────────────────
 // Find and argue Old Testament allusions behind a New Testament passage, after Dale C.
@@ -539,7 +539,7 @@ export function AllusionsView({ controlledPassage, isAuthenticated = false, onAt
   function loadTranslation(osis: string, chapter: number, lang: string) {
     if (lang === 'brenton') {
       if (brentonCache[osis]) return
-      fetch(`/data/brenton/${osis}.json`).then(r => (r.ok ? r.json() : {}))
+      fetch(`/data/brenton/${brentonSourceBook(osis)}.json`).then(r => (r.ok ? r.json() : {}))
         .then(d => { brentonCache[osis] = alignBrenton(osis, d); setLxxTick(t => t + 1) })
         .catch(() => { brentonCache[osis] = {} })
       return

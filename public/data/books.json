@@ -483,6 +483,14 @@
       "totalChapters": 1
     },
     {
+      "id": "SusTh",
+      "corpus": "LXX",
+      "osisId": "SusTh",
+      "name": "Susanna (Theodotion)",
+      "abbrev": "Sus Th",
+      "totalChapters": 1
+    },
+    {
       "id": "Ezek",
       "corpus": "LXX",
       "osisId": "Ezek",
@@ -512,6 +520,14 @@
       "osisId": "Bel",
       "name": "Bel and the Dragon",
       "abbrev": "Bel",
+      "totalChapters": 1
+    },
+    {
+      "id": "BelTh",
+      "corpus": "LXX",
+      "osisId": "BelTh",
+      "name": "Bel and the Dragon (Theodotion)",
+      "abbrev": "Bel Th",
       "totalChapters": 1
     },
     {

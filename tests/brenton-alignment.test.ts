@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { alignBrenton, hasBrentonAlignment } from '@/lib/brenton-alignment'
+import { alignBrenton, hasBrentonAlignment, brentonSourceBook } from '@/lib/brenton-alignment'
 
 /**
  * Brenton's verse numbers against Swete's.
@@ -71,5 +71,38 @@ describe('Brenton alignment', () => {
   it('does not invent English where Brenton has none', () => {
     const out = alignBrenton('Tob', brenton('Tob'))
     for (const [, text] of Object.entries(out)) expect(typeof text).toBe('string')
+  })
+
+  /**
+   * Brenton translated Theodotion for Susanna and Bel — his Susanna has 64 verses where the Old
+   * Greek has 43 — so his English belongs beside the Theodotion text, under its name.
+   */
+  describe('Theodotion Susanna and Bel', () => {
+    it('reads Brenton out of the file he actually filed it under', () => {
+      expect(brentonSourceBook('SusTh')).toBe('Sus')
+      expect(brentonSourceBook('BelTh')).toBe('Bel')
+      expect(brentonSourceBook('Tob')).toBe('Tob')
+    })
+
+    it('re-keys Susanna into the Theodotion book, verse for verse', () => {
+      const raw = brenton('Sus')
+      const out = alignBrenton('SusTh', raw)
+      expect(out['SusTh.1.1']).toBe(raw['Sus.1.1'])
+      expect(out['SusTh.1.64']).toBe(raw['Sus.1.64'])
+      expect(Object.keys(out)).toHaveLength(Object.keys(raw).length)
+      expect(out['Sus.1.1']).toBeUndefined()
+    })
+
+    it('leaves the Old Greek reading its own file unchanged', () => {
+      const raw = brenton('Sus')
+      expect(alignBrenton('Sus', raw)).toBe(raw)
+    })
+
+    it('carries Bel across too', () => {
+      const raw = brenton('Bel')
+      const out = alignBrenton('BelTh', raw)
+      expect(out['BelTh.1.1']).toMatch(/Astyages/)
+      expect(out['BelTh.1.36']).toMatch(/angel of the Lord/i)
+    })
   })
 })

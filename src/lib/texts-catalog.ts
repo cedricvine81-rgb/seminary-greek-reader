@@ -139,7 +139,11 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: 'Bar', name: 'Baruch', source: 'lxx', osisId: 'Bar', chapters: 5, english: 'brenton' },
       { id: 'EpJer', name: 'Epistle of Jeremiah', source: 'lxx', osisId: 'EpJer', chapters: 1, english: 'brenton' },
       { id: 'Sus', name: 'Susanna', source: 'lxx', osisId: 'Sus', chapters: 1, english: 'brenton' },
+      // Brenton translated Theodotion for Susanna and Bel, so his English belongs beside these
+      // and not beside the Old Greek above them — 64 verses against the Old Greek's 43.
+      { id: 'SusTh', name: 'Susanna (Theodotion)', source: 'lxx', osisId: 'SusTh', chapters: 1, english: 'brenton' },
       { id: 'Bel', name: 'Bel and the Dragon', source: 'lxx', osisId: 'Bel', chapters: 1, english: 'brenton' },
+      { id: 'BelTh', name: 'Bel and the Dragon (Theodotion)', source: 'lxx', osisId: 'BelTh', chapters: 1, english: 'brenton' },
       { id: 'DanLXX', name: 'Daniel (LXX)', source: 'lxx', osisId: 'DanLXX', chapters: 12 },
       // Theodotion's Daniel, which is the recension every English Bible actually translates. The
       // Old Greek above it is a different book in chapters 3-6, so a student reading it against an

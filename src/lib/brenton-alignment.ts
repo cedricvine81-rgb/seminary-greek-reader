@@ -29,6 +29,22 @@
  * shows, so it is aligned to it by construction.
  */
 
+/**
+ * Books whose English lives in another book's Brenton file.
+ *
+ * Brenton translated THEODOTION for Susanna and Bel — his Susanna has 64 verses where the Old
+ * Greek has 43 — so his English is the English of SusTh and BelTh, and it sits under their names
+ * in his own numbering. The Old Greek keeps the same file (that is how it has always been shown,
+ * with a warning that it is a different recension), but the Theodotion books need to fetch it
+ * under the name Brenton files it by, and then read it under their own.
+ */
+const BRENTON_SOURCE: Record<string, string> = { SusTh: 'Sus', BelTh: 'Bel' }
+
+/** Which Brenton file backs this book. Usually itself. */
+export function brentonSourceBook(osisId: string): string {
+  return BRENTON_SOURCE[osisId] ?? osisId
+}
+
 /** Greek verses `from`..`to` take the English verse `offset` away. `to: null` runs to the end. */
 interface Span { from: number; to: number | null; offset: number }
 
@@ -70,6 +86,20 @@ export function hasBrentonAlignment(osisId: string): boolean {
  * Chapters with no entry are passed through untouched, which is nearly all of them.
  */
 export function alignBrenton(osisId: string, raw: Record<string, string>): Record<string, string> {
+  const source = brentonSourceBook(osisId)
+  if (source !== osisId) {
+    // Re-key from the file's own book name into this one's: Sus.1.14 becomes SusTh.1.14, so a
+    // lookup by the Greek verse id on screen finds it. Verified 1:1 — Brenton's 64 Susanna
+    // verses are Theodotion's 64, and his Bel runs verse-for-verse with Theodotion's as far as
+    // our text goes (his 37-42 have no Greek here, so they simply do not appear).
+    const rekeyed: Record<string, string> = {}
+    for (const [key, text] of Object.entries(raw)) {
+      const rest = key.startsWith(`${source}.`) ? key.slice(source.length + 1) : null
+      if (rest) rekeyed[`${osisId}.${rest}`] = text
+    }
+    return rekeyed
+  }
+
   const chapters = ALIGNMENT[osisId]
   if (!chapters) return raw
 
