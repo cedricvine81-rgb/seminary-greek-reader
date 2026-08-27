@@ -4,13 +4,19 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ParsingDock } from './ParsingDock'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { buildHebrewInfo } from '@/components/reader/HebrewWord'
+import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
 import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
 import { useHighlights } from '@/components/highlights/useHighlights'
-import { highlightAt } from '@/components/highlights/render'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
+import { highlightAt, verseAnchorProps } from '@/components/highlights/render'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { shouldSnippet, snippetRanges } from '@/lib/snippet'
 
@@ -86,6 +92,31 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks,
   // the word, and highlight it (the highlight is stored against the verse, so it shows up
   // in the reader too).
   const highlights = useHighlights(isAuthenticated)
+  // Results showed existing highlights but could not make one: a reader who found a verse here
+  // had to open it in the reader to mark it. The verse text is already rendered on the canonical
+  // basis (tokens joined by single spaces), which is the whole contract useHighlightSelection
+  // needs, so the marks it makes here are the same marks the reader shows.
+  const resultsRef = useRef<HTMLDivElement>(null)
+  const highlightSelection = useHighlightSelection(resultsRef)
+
+  // Which verses on screen already carry a note, so the button shows its filled state. Results
+  // span many chapters, so this asks per chapter rather than once, and re-asks when a note is
+  // saved anywhere (the notes bus) — otherwise the icon lies until the next search.
+  const [notedKeys, setNotedKeys] = useState<Set<string>>(new Set())
+  const chapterKeys = Array.from(new Set(hits.map(h => `${h.osisId}.${h.chapter}`))).join(',')
+  const loadNoted = useCallback(async () => {
+    if (!isAuthenticated || !chapterKeys) { setNotedKeys(new Set()); return }
+    const chapters = chapterKeys.split(',').map(k => { const i = k.lastIndexOf('.'); return [k.slice(0, i), k.slice(i + 1)] as const })
+    try {
+      const sets = await Promise.all(chapters.map(([book, ch]) =>
+        fetch(`/api/notes?book=${encodeURIComponent(book)}&chapter=${ch}&verseStart=1&verseEnd=500`)
+          .then(r => (r.ok ? r.json() : { notes: [] }))
+          .then((d: { notes?: { verse: number }[] }) => (d.notes ?? []).map(n => `${book}.${ch}.${n.verse}`))))
+      setNotedKeys(new Set(sets.flat()))
+    } catch { /* leave as-is */ }
+  }, [isAuthenticated, chapterKeys])
+  useEffect(() => { void loadNoted() }, [loadNoted])
+  useEffect(() => onNotesChanged(() => void loadNoted()), [loadNoted])
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
   // Verses the reader has asked to see in full.
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
@@ -104,6 +135,10 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks,
   const showInfo = (i: LexicalInfoPanel | null) => { if (useSink) emitParsingInfo(i); else setInfo(i) }
 
   // verseId → tokens (Greek, per corpus) and verseId → translation text (per lang), lazily filled.
+  // Saved highlights for every chapter these results touch. Without this, forVerse only ever
+  // sees marks made in THIS session — the same trap OTVariantsView documents: stored correctly,
+  // shown in the reader, invisible here after a reload.
+  const loadedHl = useRef<Set<string>>(new Set())
   const tokens = useRef<Record<string, Token[]>>({})
   const trans = useRef<Record<string, Record<string, string>>>({})
   const fetchedTok = useRef<Set<string>>(new Set())
@@ -136,6 +171,16 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks,
   const corpusOf = useCallback((osisId: string): 'GNT' | 'LXX' | 'NA1904' | 'MT' =>
     corpus === 'BOTH' ? (gntBooks?.has(osisId) ? 'GNT' : 'LXX') : corpus,
   [corpus, gntBooks])
+
+  useEffect(() => {
+    if (!isAuthenticated) return
+    for (const h of hits) {
+      const key = `${h.osisId}.${h.chapter}`
+      if (loadedHl.current.has(key)) continue
+      loadedHl.current.add(key)
+      void highlights.loadFor(h.osisId, h.chapter)
+    }
+  }, [hits, isAuthenticated, highlights.loadFor])
 
   useEffect(() => {
     // Caches live in refs (persist across renders), so late-resolving fetches always store —
@@ -298,7 +343,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks,
   }
 
   return (
-    <div>
+    <div ref={resultsRef}>
       <div className="divide-y divide-gray-100">
         {hits.map((h, i) => {
           const verses: CtxVerse[] = context > 0 && (ctxMap[`${h.osisId}.${h.chapter}.${h.verse}`]?.length ?? 0) > 0
@@ -306,9 +351,18 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks,
             : [{ chapter: h.chapter, verse: h.verse, text: h.text }]
           return (
             <div key={i} className="py-2.5">
-              <button onClick={() => onOpen(h)} className="text-xs font-medium text-brand-600 hover:underline">
-                {bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}
-              </button>
+              <span className="inline-flex items-center gap-1.5">
+                <button onClick={() => onOpen(h)} className="text-xs font-medium text-brand-600 hover:underline">
+                  {bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}
+                </button>
+                {/* Background and Texts hits have carried a note button all along; biblical ones
+                    did not, so a verse found here had to be opened elsewhere to annotate. */}
+                {isAuthenticated && (
+                  <VerseNoteButton book={h.osisId} chapter={h.chapter} verse={h.verse}
+                    noted={notedKeys.has(`${h.osisId}.${h.chapter}.${h.verse}`)}
+                    onChanged={() => void loadNoted()} />
+                )}
+              </span>
               <div className="mt-1 space-y-1">
                 {verses.map(cv => {
                   const isHit = cv.chapter === h.chapter && cv.verse === h.verse
@@ -322,6 +376,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks,
                         dir={corpus === 'MT' ? 'rtl' : undefined}
                         lang={corpus === 'MT' ? 'he' : undefined}
                         className={`${corpus === 'MT' ? 'font-hebrew text-[1.15rem]' : 'greek-text'} leading-relaxed ${isHit ? 'text-gray-900' : 'text-gray-400'}`}
+                        {...verseAnchorProps(h.osisId, cv.chapter, cv.verse, corpus === 'MT' ? HEBREW_LAYER : 'grc')}
                       >
                         <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{cv.verse}</sup>
                         {greekCell(h, cv, isHit, rowKey)}
@@ -357,6 +412,27 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks,
       {/* Parsing pane docked at the bottom — fills on Greek word hover/click, drag to resize.
           Hidden when the host page's pane is serving (useSink) — see parsing-info-bus. */}
       {!useSink && <ParsingDock info={info} />}
+
+      {/* Drag a phrase to highlight it, exactly as in the reader. The offsets are into the same
+          canonical verse text, so a mark made here is the mark the reader shows. */}
+      {isAuthenticated && <TouchHighlighter containerRef={resultsRef} onRange={highlightSelection.openForRange} />}
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'new') for (const sp of state.splits) void highlights.create(sp.book, sp.chapter, sp.verse, sp.start, sp.end, color, sp.layer)
+            else void highlights.recolor(state.id, state.book, state.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
+        />
+      )}
     </div>
   )
 }

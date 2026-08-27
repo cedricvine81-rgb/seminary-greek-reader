@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { mtToEnglish } from '@/lib/versification'
 import { normalizeHebrew } from '@/lib/hebrew-fold'
@@ -9,7 +9,12 @@ import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { buildHebrewInfo } from '@/components/reader/HebrewWord'
 import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
 import { useHighlights } from '@/components/highlights/useHighlights'
-import { highlightAt } from '@/components/highlights/render'
+import { highlightAt, verseAnchorProps } from '@/components/highlights/render'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TouchHighlighter } from '@/components/highlights/TouchHighlighter'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { ParsingDock } from './ParsingDock'
@@ -51,6 +56,37 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
   // with a space, and both are one character), so a mark made here lands on the same words in
   // the Reader and vice versa.
   const highlights = useHighlights(isAuthenticated)
+  // Marks made here are the marks the Reader shows: the Hebrew renders on the same canonical
+  // basis and anchors on the same layer, so a drag-selection resolves identically.
+  const resultsRef = useRef<HTMLDivElement>(null)
+  const highlightSelection = useHighlightSelection(resultsRef)
+
+  const [notedKeys, setNotedKeys] = useState<Set<string>>(new Set())
+  const loadedHl = useRef<Set<string>>(new Set())
+  const chapterKeys = Array.from(new Set(hits.map(h => `${h.osisId}.${h.chapter}`))).join(',')
+  const loadNoted = useCallback(async () => {
+    if (!isAuthenticated || !chapterKeys) { setNotedKeys(new Set()); return }
+    const chapters = chapterKeys.split(',').map(k => { const i = k.lastIndexOf('.'); return [k.slice(0, i), k.slice(i + 1)] as const })
+    try {
+      const sets = await Promise.all(chapters.map(([book, ch]) =>
+        fetch(`/api/notes?book=${encodeURIComponent(book)}&chapter=${ch}&verseStart=1&verseEnd=500`)
+          .then(r => (r.ok ? r.json() : { notes: [] }))
+          .then((d: { notes?: { verse: number }[] }) => (d.notes ?? []).map(n => `${book}.${ch}.${n.verse}`))))
+      setNotedKeys(new Set(sets.flat()))
+    } catch { /* leave as-is */ }
+  }, [isAuthenticated, chapterKeys])
+  useEffect(() => { void loadNoted() }, [loadNoted])
+  useEffect(() => onNotesChanged(() => void loadNoted()), [loadNoted])
+  // Saved highlights for the chapters on screen — without it, only this session's marks appear.
+  useEffect(() => {
+    if (!isAuthenticated) return
+    for (const h of hits) {
+      const key = `${h.osisId}.${h.chapter}`
+      if (loadedHl.current.has(key)) continue
+      loadedHl.current.add(key)
+      void highlights.loadFor(h.osisId, h.chapter)
+    }
+  }, [hits, isAuthenticated, highlights.loadFor])
   const [, bump] = useState(0)
   const [selKey, setSelKey] = useState<string | null>(null)
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
@@ -180,19 +216,27 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
   const trMap = showTrans ? trans.current[transLang] ?? {} : {}
 
   return (
-    <div>
+    <div ref={resultsRef}>
       <div className="divide-y divide-gray-100">
         {hits.map((h, i) => {
           const eng = mtToEnglish(h.osisId, h.chapter, h.verse)
           const vid = eng ? `${h.osisId}.${eng.chapter}.${eng.verse}` : null
           return (
             <div key={i} className="py-2.5">
-              <button onClick={() => onOpen(h, transLang)} className="text-xs font-medium text-brand-600 hover:underline">
-                {bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}
-              </button>
+              <span className="inline-flex items-center gap-1.5">
+                <button onClick={() => onOpen(h, transLang)} className="text-xs font-medium text-brand-600 hover:underline">
+                  {bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}
+                </button>
+                {isAuthenticated && (
+                  <VerseNoteButton book={h.osisId} chapter={h.chapter} verse={h.verse}
+                    noted={notedKeys.has(`${h.osisId}.${h.chapter}.${h.verse}`)}
+                    onChanged={() => void loadNoted()} />
+                )}
+              </span>
               <div className={`mt-1 grid gap-x-4 gap-y-1 items-baseline ${showTrans ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
                 {/* Same size the Reader's Hebrew column uses so the split view reads as one surface. */}
-                <p dir="rtl" className="font-hebrew leading-loose text-gray-800" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+                <p dir="rtl" className="font-hebrew leading-loose text-gray-800" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
+                  {...verseAnchorProps(h.osisId, h.chapter, h.verse, HEBREW_LAYER)}>
                   {hebrewVerse(h)}
                 </p>
                 {showTrans && (
@@ -224,6 +268,25 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
 
       {/* Full page (no host pane): dock the parsing pane here, like the Greek results. */}
       {!useSink && <ParsingDock info={info} />}
+
+      {isAuthenticated && <TouchHighlighter containerRef={resultsRef} onRange={highlightSelection.openForRange} />}
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'new') for (const sp of state.splits) void highlights.create(sp.book, sp.chapter, sp.verse, sp.start, sp.end, color, sp.layer)
+            else void highlights.recolor(state.id, state.book, state.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
+        />
+      )}
     </div>
   )
 }
