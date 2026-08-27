@@ -38,6 +38,7 @@ import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/hi
 import { TransWords } from '@/components/highlights/TransWords'
 import { GreekWords } from '@/components/highlights/GreekWords'
 import { highlightMarkClass } from '@/lib/highlight-colors'
+import { alignBrenton } from '@/lib/brenton-alignment'
 
 // A clickable Greek word carries what the shared parsing pane needs.
 type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
@@ -736,8 +737,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (brentonCache.current[osisId]) return brentonCache.current[osisId]
     const r = await fetch(`/data/brenton/${osisId}.json`)
     const d = r.ok ? await r.json() : {}
-    brentonCache.current[osisId] = d
-    return d
+    // Brenton's verse numbers disagree with Swete's in a few deuterocanonical chapters, so his
+    // English is re-keyed into the Greek's numbering once here rather than at every lookup.
+    brentonCache.current[osisId] = alignBrenton(osisId, d)
+    return brentonCache.current[osisId]
   }
   async function loadBsb(): Promise<Record<string, string>> {
     if (bsbCache.current) return bsbCache.current

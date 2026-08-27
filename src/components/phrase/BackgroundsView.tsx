@@ -25,6 +25,7 @@ import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/hi
 import { TransWords } from '@/components/highlights/TransWords'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { highlightMarkClass } from '@/lib/highlight-colors'
+import { alignBrenton } from '@/lib/brenton-alignment'
 
 // A reference the "Open in Texts" button can hand off to the Texts tab — only shown when
 // the currently displayed cross-reference text is actually embedded there.
@@ -721,7 +722,8 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
         } else if (rv === 'brenton') {
           // Brenton's English Septuagint — a static per-book file, filtered to this chapter.
           const r = await fetch(`/data/brenton/${osis}.json`)
-          const d: Record<string, string> = r.ok ? await r.json() : {}
+          // Re-keyed into the Greek's verse numbering — Brenton's differs in a few chapters.
+          const d: Record<string, string> = alignBrenton(osis, r.ok ? await r.json() : {})
           cacheForVersion[ck] = Object.entries(d)
             .filter(([vid]) => vid.startsWith(`${osis}.${chapter}.`))
             .map(([vid, text]) => ({ verse: parseInt(vid.split('.')[2], 10), text }))
