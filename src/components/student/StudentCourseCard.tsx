@@ -19,6 +19,7 @@ export interface StudentCourse {
   startDate: string
   endDate: string
   instructorName: string
+  /** Comma-separated: a co-taught course mails the whole teaching team. */
   instructorEmail: string
   assignments: { id: string; title: string; type: string; dueDate: string; weekNumber: number; completed: boolean }[]
   gradebookRows: GradebookRow[]
@@ -103,10 +104,14 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
               <ArrowLeft size={14} /> {t('course.backToDashboard')}
             </button>
             <div className="flex items-center gap-4 shrink-0">
-              <MessageInstructorButton courseId={course.id} courseName={course.name} instructorName={course.instructorName} />
+              <MessageInstructorButton courseId={course.id} courseName={course.name}
+                instructorName={course.instructorName}
+                recipients={course.instructorEmail ? course.instructorEmail.split(',').length : 1} />
               {course.instructorEmail && (
                 <a
-                  href={`mailto:${encodeURIComponent(course.instructorEmail)}?subject=${encodeURIComponent(`[${course.name}] `)}`}
+                  // Each address is encoded separately and rejoined with commas — encoding the
+                  // whole list would escape the separators and leave one unusable recipient.
+                  href={`mailto:${course.instructorEmail.split(',').map(e => encodeURIComponent(e.trim())).join(',')}?subject=${encodeURIComponent(`[${course.name}] `)}`}
                   className="inline-flex items-center gap-1.5 text-sm text-brand-600 hover:underline"
                   title={t('course.emailTitle', { name: course.instructorName })}
                 >

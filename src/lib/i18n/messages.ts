@@ -2396,6 +2396,9 @@ const en: Catalogue = {
   },
   'msg.messageGroup': 'Message group',
   'msg.messageInstructor': 'Message instructor',
+  // A co-taught course sends to everyone teaching it, so the label says so rather than
+  // implying the message goes to one person.
+  'msg.messageInstructors': 'Message instructors',
   'msg.messageClass': 'Message Class',
   'msg.subject': 'Subject',
   'msg.message': 'Message',
@@ -5196,6 +5199,7 @@ const es: Catalogue = {
   },
   'msg.messageGroup': 'Mensaje al grupo',
   'msg.messageInstructor': 'Mensaje al profesor',
+  'msg.messageInstructors': 'Mensaje a los profesores',
   'msg.messageClass': 'Mensaje a la clase',
   'msg.subject': 'Asunto',
   'msg.message': 'Mensaje',
@@ -5833,6 +5837,7 @@ const ru: Catalogue = {
   },
   'msg.messageGroup': 'Написать группе',
   'msg.messageInstructor': 'Написать преподавателю',
+  'msg.messageInstructors': 'Написать преподавателям',
   'msg.messageClass': 'Написать всей группе',
   'msg.subject': 'Тема',
   'msg.message': 'Сообщение',
@@ -6141,6 +6146,7 @@ const zh: Catalogue = {
   },
   'msg.messageGroup': '傳送訊息給小組',
   'msg.messageInstructor': '傳送訊息給教師',
+  'msg.messageInstructors': '傳送訊息給教師群',
   'msg.messageClass': '傳送訊息給全班',
   'msg.subject': '主旨',
   'msg.message': '訊息',

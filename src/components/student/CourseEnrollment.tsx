@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { teachingTeamName } from '@/lib/teaching-team'
 
 interface AvailableCourse {
   id: string
@@ -16,6 +17,9 @@ interface AvailableCourse {
   startDate: string | Date
   endDate: string | Date
   instructor: { firstName: string; surname: string; title: string | null }
+  /** Anyone co-teaching. Often the person actually running the course, so they are named here
+      too — the stored instructor can be no more than the administrative owner. */
+  coInstructors?: { user: { firstName: string; surname: string; title: string | null } }[]
   institution: { name: string } | null
   _count: { enrollments: number; assignments: number }
 }
@@ -80,8 +84,8 @@ export function CourseEnrollment({
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {courses.map(course => {
-          const instructorName = [course.instructor.title, course.instructor.firstName, course.instructor.surname]
-            .filter(Boolean).join(' ')
+          const instructorName = teachingTeamName(
+            course.instructor, (course.coInstructors ?? []).map(c => c.user), locale)
           const opts = { month: 'short', year: 'numeric' } as const
           const start = new Date(course.startDate).toLocaleDateString(locale, opts)
           const end = new Date(course.endDate).toLocaleDateString(locale, opts)

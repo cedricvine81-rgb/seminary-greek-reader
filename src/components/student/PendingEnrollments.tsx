@@ -2,13 +2,15 @@
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/Card'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { teachingTeamName } from '@/lib/teaching-team'
 
 interface PendingEnrollment {
   courseId: string
   course: {
     name: string
     instructor: { title: string | null; firstName: string; surname: string }
+    coInstructors?: { user: { title: string | null; firstName: string; surname: string } }[]
   }
 }
 
@@ -19,6 +21,7 @@ interface Props {
 export function PendingEnrollments({ pending }: Props) {
   const router = useRouter()
   const t = useT()
+  const locale = useLocale()
   // Keep a stable ref so the interval closure always sees the latest list
   const pendingRef = useRef(pending)
   useEffect(() => { pendingRef.current = pending }, [pending])
@@ -54,11 +57,8 @@ export function PendingEnrollments({ pending }: Props) {
       <h2 className="text-base font-semibold text-gray-900">{t('courses.pendingRequests')}</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {pending.map(e => {
-          const instructorName = [
-            e.course.instructor.title,
-            e.course.instructor.firstName,
-            e.course.instructor.surname,
-          ].filter(Boolean).join(' ')
+          const instructorName = teachingTeamName(
+            e.course.instructor, (e.course.coInstructors ?? []).map(c => c.user), locale)
           return (
             <Card key={e.courseId} className="space-y-2 border-amber-200 bg-amber-50">
               <div className="flex items-start justify-between">

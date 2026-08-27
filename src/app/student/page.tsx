@@ -9,6 +9,8 @@ import { prisma } from '@/lib/db'
 import { effectiveDeadline } from '@/lib/assignment-deadline'
 import { normalizeCategoryWeights } from '@/lib/grade-weights'
 import { completedAssignmentIds } from '@/lib/assignment-completion'
+import { teachingTeamName, teachingTeamEmails } from '@/lib/teaching-team'
+import { getServerLocale } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Student Dashboard' }
 
@@ -27,6 +29,12 @@ export default async function StudentPage() {
           include: {
             assignments: true,
             instructor: { select: { firstName: true, surname: true, title: true, email: true } },
+            // A co-taught course is frequently run by the co-instructor, so the student's card
+            // has to name them too — the lead is often only the administrative owner.
+            coInstructors: {
+              where: { user: { deletedAt: null } },
+              select: { user: { select: { firstName: true, surname: true, title: true, email: true } } },
+            },
           },
         },
       },
@@ -92,6 +100,7 @@ export default async function StudentPage() {
     startDate: e.course.startDate, endDate: e.course.endDate,
   })).flatMap(g => g.items)
 
+  const locale = getServerLocale()
   const courses = orderedEnrollments.slice(0, 5).map(e => {
     const published = e.course.assignments.filter(a => a.isPublished).slice().sort((a, b) => a.weekNumber - b.weekNumber)
     return {
@@ -99,8 +108,8 @@ export default async function StudentPage() {
       name: e.course.name,
       startDate: e.course.startDate.toISOString(),
       endDate: e.course.endDate.toISOString(),
-      instructorName: [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' '),
-      instructorEmail: e.course.instructor.email,
+      instructorName: teachingTeamName(e.course.instructor, e.course.coInstructors.map(c => c.user), locale),
+      instructorEmail: teachingTeamEmails(e.course.instructor, e.course.coInstructors.map(c => c.user)).join(','),
       assignments: published.map(a => ({
         id: a.id,
         title: a.title,

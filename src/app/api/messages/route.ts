@@ -175,11 +175,13 @@ export async function POST(req: NextRequest) {
 
       const course = await prisma.course.findUnique({
         where: { id: courseId },
-        select: { instructorId: true },
+        select: {
+          instructorId: true,
+          coInstructors: { where: { user: { deletedAt: null } }, select: { userId: true } },
+        },
       })
       if (!course) return NextResponse.json({ error: 'Course not found.' }, { status: 404 })
 
-      let targetId = course.instructorId
       if (recipientId && recipientId !== course.instructorId) {
         // Messaging a classmate directly — only allowed if they're an approved,
         // opted-in student enrolled in the same course.
@@ -191,22 +193,38 @@ export async function POST(req: NextRequest) {
           select: { id: true },
         })
         if (!target) return NextResponse.json({ error: 'That classmate is not available to message.' }, { status: 403 })
-        targetId = target.id
+        await prisma.message.create({
+          data: {
+            courseId, senderId: payload.sub, recipientId: target.id,
+            subject: subject.trim(), body: body.trim(),
+          },
+        })
+        revalidatePath('/instructor/messages')
+        revalidatePath('/student/messages')
+        return NextResponse.json({ ok: true, sent: 1 }, { status: 201 })
       }
 
-      await prisma.message.create({
-        data: {
+      // ── "Message instructor" reaches everyone who teaches the course ──
+      // It used to reach the lead instructor alone. On a co-taught course the co-instructor is
+      // frequently the one actually running it, so a student's question could sit unread with
+      // the person least involved while the person who would have answered never saw it. They
+      // share a broadcastId, so the two copies read as one thread rather than two.
+      const teachingTeam = Array.from(new Set([course.instructorId, ...course.coInstructors.map(c => c.userId)]))
+      const teamBroadcastId = teachingTeam.length > 1 ? crypto.randomUUID() : null
+      await prisma.message.createMany({
+        data: teachingTeam.map(rid => ({
           courseId,
           senderId: payload.sub,
-          recipientId: targetId,
+          recipientId: rid,
           subject: subject.trim(),
           body: body.trim(),
-        },
+          broadcastId: teamBroadcastId,
+        })),
       })
 
       revalidatePath('/instructor/messages')
       revalidatePath('/student/messages')
-      return NextResponse.json({ ok: true, sent: 1 }, { status: 201 })
+      return NextResponse.json({ ok: true, sent: teachingTeam.length }, { status: 201 })
     }
 
     // ── Instructor-initiated message (individual or whole-class broadcast) ──

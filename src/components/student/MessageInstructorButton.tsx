@@ -11,6 +11,9 @@ interface Props {
   courseId: string
   courseName: string
   instructorName: string
+  /** How many people teach this course — the label says "instructors" when there is more
+      than one, and the message reaches all of them (routed server-side in /api/messages). */
+  recipients?: number
 }
 
 /**
@@ -19,7 +22,7 @@ interface Props {
  * {t('msg.messageClass')} button on their course page. Posts to the same /api/messages
  * endpoint, which routes a student-sent message to the course's instructor.
  */
-export function MessageInstructorButton({ courseId, courseName, instructorName }: Props) {
+export function MessageInstructorButton({ courseId, courseName, instructorName, recipients = 1 }: Props) {
   const t = useT()
   const [open, setOpen] = useState(false)
   const [subject, setSubject] = useState('')
@@ -64,7 +67,7 @@ export function MessageInstructorButton({ courseId, courseName, instructorName }
         onClick={() => { reset(); setOpen(true) }}
         className="inline-flex items-center gap-1.5 text-sm text-brand-600 hover:underline"
       >
-        <Mail size={14} /> {t('msg.messageInstructor')}
+        <Mail size={14} /> {t(recipients > 1 ? 'msg.messageInstructors' : 'msg.messageInstructor')}
       </button>
 
       <Modal open={open} onClose={() => setOpen(false)} title={`Message ${instructorName || 'your instructor'}`} size="lg">

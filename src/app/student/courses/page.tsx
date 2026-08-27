@@ -15,18 +15,27 @@ import { PendingEnrollments } from '@/components/student/PendingEnrollments'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import { MessageGroupButton } from '@/components/student/MessageGroupButton'
 import { isPreviewMode } from '@/lib/preview'
-import { getServerT } from '@/lib/i18n/server'
+import { getServerLocale, getServerT } from '@/lib/i18n/server'
+import { teachingTeamName, teachingTeamEmails } from '@/lib/teaching-team'
 
 export const metadata: Metadata = { title: 'My Courses' }
 
 const courseIncludes = {
   instructor: { select: { firstName: true, surname: true, title: true } },
+  // A student choosing a course needs to see who actually teaches it: on a co-taught course the
+  // co-instructor is frequently the lead in practice, and the stored instructorId is only the
+  // administrative owner.
+  coInstructors: {
+    where: { user: { deletedAt: null } },
+    select: { user: { select: { firstName: true, surname: true, title: true, email: true } } },
+  },
   institution: { select: { name: true } },
   _count: { select: { enrollments: { where: { status: 'APPROVED' as const } }, assignments: true } },
 } as const
 
 export default async function StudentCoursesPage() {
   const t = getServerT()
+  const locale = getServerLocale()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
@@ -53,6 +62,10 @@ export default async function StudentCoursesPage() {
         course: {
           include: {
             instructor: { select: { firstName: true, surname: true, title: true, email: true } },
+            coInstructors: {
+              where: { user: { deletedAt: null } },
+              select: { user: { select: { firstName: true, surname: true, title: true, email: true } } },
+            },
             _count: { select: { assignments: true, enrollments: { where: { status: 'APPROVED' } } } },
           },
         },
@@ -64,7 +77,13 @@ export default async function StudentCoursesPage() {
       where: { userId: payload.sub, status: 'PENDING' },
       include: {
         course: {
-          include: { instructor: { select: { firstName: true, surname: true, title: true } } },
+          include: {
+            instructor: { select: { firstName: true, surname: true, title: true } },
+            coInstructors: {
+              where: { user: { deletedAt: null } },
+              select: { user: { select: { firstName: true, surname: true, title: true } } },
+            },
+          },
         },
       },
     }),
@@ -117,11 +136,10 @@ export default async function StudentCoursesPage() {
             </h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {group.items.map(e => {
-                const instructorName = [
-                  e.course.instructor.title,
-                  e.course.instructor.firstName,
-                  e.course.instructor.surname,
-                ].filter(Boolean).join(' ')
+                const instructorName = teachingTeamName(
+                  e.course.instructor, e.course.coInstructors.map(c => c.user), locale)
+                const teamEmails = teachingTeamEmails(
+                  e.course.instructor, e.course.coInstructors.map(c => c.user))
                 const status = courseStatus(e.course.startDate, e.course.endDate)
                 return (
                   <Card key={e.courseId} className={clsx('space-y-2', status.edge,
@@ -147,9 +165,9 @@ export default async function StudentCoursesPage() {
                           instructorName={instructorName}
                         />
                         <MessageGroupButton courseId={e.courseId} />
-                        {e.course.instructor.email && (
+                        {teamEmails.length > 0 && (
                           <a
-                            href={`mailto:${encodeURIComponent(e.course.instructor.email)}?subject=${encodeURIComponent(`[${e.course.name}] `)}`}
+                            href={`mailto:${teamEmails.map(encodeURIComponent).join(',')}?subject=${encodeURIComponent(`[${e.course.name}] `)}`}
                             className="inline-flex items-center gap-1.5 text-sm text-brand-600 hover:underline"
                             title={`Email ${instructorName} via your mail program`}
                           >
@@ -171,7 +189,11 @@ export default async function StudentCoursesPage() {
         {/* ── Pending requests — polls every 10 s and refreshes when approved ── */}
         <PendingEnrollments pending={pendingEnrollments.map(e => ({
           courseId: e.courseId,
-          course: { name: e.course.name, instructor: e.course.instructor },
+          course: {
+            name: e.course.name,
+            instructor: e.course.instructor,
+            coInstructors: e.course.coInstructors,
+          },
         }))} />
 
         {/* ── Open courses (no institution) ── */}
