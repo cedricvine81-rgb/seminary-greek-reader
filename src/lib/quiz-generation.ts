@@ -447,7 +447,24 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
         f === 'partOfSpeech' || soft(e, f)
         || (e as unknown as Record<string, unknown>)[f] != null))
     : entries
-  return shuffle(testable).slice(0, count).map((entry, idx) => {
+  // ONE QUESTION PER FORM. Greek forms are routinely identical across parses — παντί is both
+  // masculine and neuter dative singular, πολλῶν is genitive plural in all three genders — and
+  // the pool holds each reading as its own entry. Drawn twice, the same word appeared twice in
+  // one quiz with two different expected answers, so a student lost the gender field on one of
+  // them whichever way they answered it, having done nothing wrong. Ambiguity is highest exactly
+  // where the pool is thinnest: a third of the pronoun pool, a tenth of the adjectives.
+  //
+  // Deduping does not make an ambiguous form answerable — asked once, παντί still expects the
+  // one gender the corpus happened to record — but it removes the guaranteed loss. The
+  // declension path has always deduped this way; this is the rule the other path was missing.
+  const seenForm = new Set<string>()
+  const distinct = shuffle(testable).filter(e => {
+    const key = `${e.surface}|${e.lexeme}`
+    if (seenForm.has(key)) return false
+    seenForm.add(key)
+    return true
+  })
+  return distinct.slice(0, count).map((entry, idx) => {
     const full: Record<string, string | null> = {
       partOfSpeech: entry.partOfSpeech,
       tense:  entry.tense  ?? null,
