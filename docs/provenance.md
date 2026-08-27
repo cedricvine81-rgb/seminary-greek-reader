@@ -107,9 +107,19 @@ python3 scripts/lxx-repair-tokens.py                     # split words, apparatu
 python3 scripts/lxx-fix-homoglyphs.py                    # Latin letters inside Greek words
 ```
 
-Then rebuild what derives from it: `npm run build:construct`,
-`scripts/build-word-index.mjs`, `scripts/build-lemma-index.mjs`, and
-`scripts/build-backgrounds-search.ts`.
+Then rebuild what derives from it:
+
+```bash
+npm run build:construct                       # construct search + lemma-forms
+node scripts/build-search-index.mjs           # word + reference search (the Septuagint half)
+node scripts/build-word-index-lxx.mjs         # morphology + Strong's search
+node scripts/build-lemma-index.mjs            # "all forms" search, both Testaments
+node scripts/build-morph-ambiguity.mjs        # forms with more than one valid parse
+npx tsx --tsconfig tsconfig.i18n.json scripts/build-backgrounds-search.ts
+```
+
+`build-word-index.mjs` is the New Testament's and does not need rerunning for a
+Septuagint change.
 
 ### What the machine tagging is worth
 

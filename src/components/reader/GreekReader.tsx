@@ -292,6 +292,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   const [highlightedVerse, setHighlightedVerse] = useState<string | null>(null)
   const [navKey, setNavKey] = useState(0)   // incremented on every reference search to force scroll
   const [morphPickerWord, setMorphPickerWord] = useState<VerseWord | null>(null)
+  // Which corpus the morphology search should run over — the NT/OT/Both toggle from the word
+  // menu, carried across the picker so the search matches what was asked for.
+  const [morphPickerScope, setMorphPickerScope] = useState<SearchScope>('GNT')
   const [lexiconWord, setLexiconWord]       = useState<VerseWord | null>(null)
 
   // ── Settings ─────────────────────────────────────────────────────────────────
@@ -1191,7 +1194,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     // did nothing at all from inside the NT, which is exactly where a reader is most likely to
     // want the Septuagint alongside.
     const greekScope = `greek:${scope}` as const
-    if (action === 'morph')   { setMorphPickerWord(w); setSyntaxMenu(null); return }
+    if (action === 'morph')   { setMorphPickerWord(w); setMorphPickerScope(scope); setSyntaxMenu(null); return }
     if (action === 'lexicon') { setLexiconWord(w);     setSyntaxMenu(null); return }
     if (action === 'backgrounds') {
       // Search the embedded background texts (Philo, Josephus, LXX, …) for this word,
@@ -1209,9 +1212,11 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
 
   function runMorphSearch(features: string[], lemma: string | null) {
     setMorphPickerWord(null)
-    // Morphology search runs on the full /search page (Greek NT). lemma (if restricting) rides in
-    // the query slot; the criteria ride in `features`.
-    openMasterSearch({ query: lemma ?? '', scope: 'morph:GNT', features: features.join(',') })
+    // Morphology search runs on the full /search page, over whichever corpus the word menu's
+    // toggle asked for. It was fixed to the New Testament until the Septuagint had a parse on
+    // every word — the Rahlfs data had none we could use. lemma (if restricting) rides in the
+    // query slot; the criteria ride in `features`.
+    openMasterSearch({ query: lemma ?? '', scope: `morph:${morphPickerScope}`, features: features.join(',') })
   }
 
   // ── Settings flyout helpers ────────────────────────────────────────────────────

@@ -67,7 +67,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks,
   // rendering construct hits against it makes the word positions exact by construction.
   corpus: 'GNT' | 'LXX' | 'NA1904' | 'MT' | 'BOTH'
   /** New Testament book ids, so a combined Greek search can tell which half each hit came from. */
-  gntBooks?: Set<string>
+  gntBooks?: ReadonlySet<string>
   bookName: Map<string, string>
   context: number
   ctxMap: Record<string, CtxVerse[]>

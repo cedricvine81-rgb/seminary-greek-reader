@@ -11,12 +11,19 @@ import { MORPH_GROUPS } from '@/lib/morph-features'
 import { featureLabel, groupLabel } from '@/lib/i18n/morph-labels'
 import { normalizeFold } from '@/lib/highlight-terms'
 import { markScrollRestore } from '@/lib/scroll-restore'
+import { GNT_BOOKS } from '@/lib/constants'
 
-// The morphology facet of the search (scope `morph:GNT`). Reached from the Reader's
-// "By morphology" picker and the Grammar pages' "See it in the New Testament" links
-// (openMasterSearch). Kept as its own component (branched in /search/page.tsx and
+/** New Testament book ids, so a combined search can tell which half a hit came from. */
+const NT_BOOK_IDS: ReadonlySet<string> = new Set<string>(GNT_BOOKS.map(b => b.osisId))
+
+// The morphology facet of the search (scope `morph:GNT`, `morph:LXX`, `morph:BOTH`). Reached
+// from the Reader's "By morphology" picker and the Grammar pages' "See it in the New Testament"
+// links (openMasterSearch). Kept as its own component (branched in /search/page.tsx and
 // MasterSearchPanel) so it stays isolated from the text-query search UI while reusing
-// GreekSearchResults for the Greek | translation display. NT-only.
+// GreekSearchResults for the Greek | translation display.
+//
+// It was New-Testament-only until the Septuagint had a parse on every word: the Rahlfs data
+// carried none we could use, so there was nothing to match a morphological criterion against.
 //
 // `embedded` hosts it inside the Master Search SIDE PANEL (MasterSearchPanel): the page
 // underneath stays mounted (split view, like Reader searches), there is no "return"
@@ -33,9 +40,11 @@ function returnLabelFor(from?: string): string {
   return 'page'
 }
 
-export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma, returnTo, embedded = false, onRequestClose }: {
+export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma, corpus = 'GNT', returnTo, embedded = false, onRequestClose }: {
   features: string[]
   lemma: string          // '' when not restricting to a lemma
+  /** Which Greek corpus to search — from the word menu's NT / OT / Both toggle. */
+  corpus?: 'GNT' | 'LXX' | 'BOTH'
   returnTo?: string
   embedded?: boolean
   onRequestClose?: () => void
@@ -62,12 +71,13 @@ export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma
       }).catch(() => {})
   }, [])
 
-  // Run the morphology search (GNT). Re-runs if the criteria change (an Edit navigates here anew).
+  // Run the morphology search over the requested corpus. Re-runs if the criteria change (an
+  // Edit navigates here anew).
   useEffect(() => {
     if (features.length === 0 && !lemma) { setHits([]); setLoading(false); return }
     let live = true
     setLoading(true)
-    const params = new URLSearchParams({ type: 'morph', features: features.join(','), corpus: 'GNT' })
+    const params = new URLSearchParams({ type: 'morph', features: features.join(','), corpus })
     if (lemma) params.set('lemma', lemma)
     fetch(`/api/search?${params.toString()}`)
       .then(r => r.ok ? r.json() : { results: [] })
@@ -92,7 +102,7 @@ export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma
       setCriteria({ features: feats, lemma: lem ?? '' })
       return
     }
-    const p = new URLSearchParams({ in: 'morph:GNT', features: feats.join(',') })
+    const p = new URLSearchParams({ in: `morph:${corpus}`, features: feats.join(',') })
     if (lem) p.set('q', lem)
     if (returnTo) p.set('from', returnTo)
     router.push(`/search?${p.toString()}`)
@@ -164,7 +174,8 @@ export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma
               hits={hits}
               terms={[]}
               searchLemma={lemma ? normalizeFold(lemma) : undefined}
-              corpus="GNT"
+              corpus={corpus}
+              gntBooks={NT_BOOK_IDS}
               bookName={bookName}
               context={0}
               ctxMap={{}}

@@ -124,6 +124,7 @@ export function MasterSearchPanel({ preset, onClose, isAuthenticated = false }: 
               onRequestClose={onClose}
               features={(preset.features ?? '').split(',').map(f => f.trim()).filter(Boolean)}
               lemma={(preset.query ?? '').trim()}
+              corpus={(preset.scope.slice(6) || 'GNT') as 'GNT' | 'LXX' | 'BOTH'}
             />
           ) : (
             <SearchPageView

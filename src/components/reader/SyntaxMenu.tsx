@@ -265,7 +265,10 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             </button>
             <button type="button" onClick={() => onWordAction('morph', scope)}
               className="col-span-2 text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              {t('reader.byMorphology')} <span className="text-gray-400">· NT</span>
+              {/* Follows the toggle: morphology search used to be New Testament only, because
+                  the Septuagint had no parse to match against. It does now. */}
+              {t('reader.byMorphology')} <span className="text-gray-400">
+                · {scope === 'GNT' ? 'NT' : scope === 'LXX' ? 'OT' : 'NT+OT'}</span>
             </button>
             <button type="button" onClick={() => onWordAction('backgrounds', scope)}
               className="col-span-2 text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">

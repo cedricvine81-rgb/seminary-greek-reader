@@ -154,22 +154,42 @@ export async function searchByLemma(lexeme: string, corpus: SearchCorpus): Promi
 
 // ─── Per-word search: morphology & Strong's number ────────────────────────────
 
-// word-index.json.gz (scripts/build-word-index.mjs): every GNT word grouped by verse,
-// each as [strongs, lemmaNorm, parsingLower]. GNT only — the parsing trees don't cover
-// the LXX, so morphology / Strong's search is New-Testament scope.
+// Every word grouped by verse, each as [strongs, lemmaNorm, parsingLower]. Two files with the
+// same shape: word-index.json.gz for the New Testament (scripts/build-word-index.mjs, from the
+// parsing trees) and word-index-lxx.json.gz for the Septuagint (scripts/build-word-index-lxx.mjs,
+// from our own Stanza tagging of Swete).
+//
+// The Septuagint one is loaded only when a search asks for it. It is four times the size of the
+// New Testament's — 576,000 words against 138,000 — and most searches never leave the New
+// Testament, so making every cold start pay for it would be a poor trade.
+//
+// Morphology search over the Septuagint was impossible before this: the Rahlfs data carried no
+// usable parse, its `lemma` field holding the inflected surface form rather than a dictionary
+// form. Asking for it returned nothing, silently, because the verse ids in the index were all
+// New Testament and filtering them by corpus left the empty set.
 type WordRow = [string, string, string]          // [strongs, lemmaNorm, parsingLower]
 type WordIndex = Record<string, WordRow[]>       // verseId → words
-let _wordIndex: WordIndex | null = null
+const _wordIndexes: Partial<Record<'GNT' | 'LXX', WordIndex>> = {}
 
-function getWordIndex(): WordIndex {
-  if (_wordIndex) return _wordIndex
-  const file = path.join(process.cwd(), 'public', 'data', 'word-index.json.gz')
+function getWordIndex(which: 'GNT' | 'LXX' = 'GNT'): WordIndex {
+  const cached = _wordIndexes[which]
+  if (cached) return cached
+  const name = which === 'LXX' ? 'word-index-lxx.json.gz' : 'word-index.json.gz'
+  let loaded: WordIndex
   try {
-    _wordIndex = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8'))
+    loaded = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(process.cwd(), 'public', 'data', name))).toString('utf8'))
   } catch {
-    _wordIndex = {}
+    loaded = {}
   }
-  return _wordIndex!
+  _wordIndexes[which] = loaded
+  return loaded
+}
+
+/** Which per-word indexes a search over this corpus has to scan. */
+function wordIndexesFor(corpus: SearchCorpus): WordIndex[] {
+  if (corpus === 'LXX') return [getWordIndex('LXX')]
+  if (corpus === 'GNT') return [getWordIndex('GNT')]
+  return [getWordIndex('GNT'), getWordIndex('LXX')]
 }
 
 // Collect the matched verse ids in canonical order (via the main index) and apply the
@@ -204,11 +224,10 @@ export async function searchByMorph(criteria: MorphCriteria, corpus: SearchCorpu
   const feats = criteria.features.map(f => f.toLowerCase().trim()).filter(Boolean)
   const lemmaNorm = criteria.lemma ? normalizeGreek(criteria.lemma) : null
   if (!feats.length && !lemmaNorm) return []
-  const wi = getWordIndex()
   // verseId → normalized lemmas of the words that matched, so the results view can
   // red-highlight exactly the matching token(s) in each verse.
   const matched = new Map<string, Set<string>>()
-  for (const verseId in wi) {
+  for (const wi of wordIndexesFor(corpus)) for (const verseId in wi) {
     for (const [, l, p] of wi[verseId]) {
       if (lemmaNorm && l !== lemmaNorm) continue
       const toks = p ? p.split(', ') : []
@@ -227,9 +246,8 @@ export async function searchByMorph(criteria: MorphCriteria, corpus: SearchCorpu
 export async function searchByStrongs(strongs: string, corpus: SearchCorpus): Promise<BiblicalVerse[]> {
   const s = String(strongs).replace(/^g/i, '').trim()
   if (!s) return []
-  const wi = getWordIndex()
   const matched = new Set<string>()
-  for (const verseId in wi) {
+  for (const wi of wordIndexesFor(corpus)) for (const verseId in wi) {
     if (wi[verseId].some(w => w[0] === s)) matched.add(verseId)
   }
   return versesFor(matched, corpus)
