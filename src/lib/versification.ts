@@ -129,3 +129,62 @@ export function mtToEnglish(osisId: string, chapter: number, verse: number): Eng
   const rule = RULES[`${osisId}.${chapter}`]
   return rule ? rule(verse) : { chapter, verse }
 }
+
+// ─── Septuagint → English ─────────────────────────────────────────────────────
+//
+// The Septuagint numbers the Psalter differently from the Hebrew, and every translation this app
+// pairs with a Greek column — WEB, Reina-Valera, Segond, Almeida, Synodal, Korean, Chinese — is
+// numbered from the Hebrew. So reading Septuagint Psalm 22, which is Κύριος ποιμαίνει με, put
+// Psalm 22 of the translation beside it: "My God, my God, why have you forsaken me". A different
+// psalm, silently, for most of the Psalter.
+//
+// The Hebrew path has always mapped its references (mtToEnglish, used by the reader's Hebrew
+// sections). The Greek path fetched the raw chapter number and never mapped anything.
+//
+// DERIVED FROM THE APP'S OWN TEXTS, not from a published table. Every join below was checked
+// against our Septuagint and Masoretic verse counts and the arithmetic is exact:
+//
+//   LXX 9   = MT 9 + 10     39 verses = 21 + 18
+//   LXX 113 = MT 114 + 115  26 verses = 8 + 18
+//   LXX 114 + 115 = MT 116  10 + 9 = 19
+//
+// and the plain +1 stretches were confirmed by matching verse counts psalm for psalm.
+//
+// This composes onto mtToEnglish rather than duplicating it, so the Psalm-title offsets that
+// map Hebrew to English are applied once, in the place that already gets them right.
+const LXX_PSALM_SPLITS: Record<number, (v: number) => { chapter: number; verse: number }> = {
+  9:   v => (v <= 21 ? { chapter: 9,   verse: v } : { chapter: 10,  verse: v - 21 }),
+  113: v => (v <= 8  ? { chapter: 114, verse: v } : { chapter: 115, verse: v - 8 }),
+  114: v => ({ chapter: 116, verse: v }),
+  115: v => ({ chapter: 116, verse: v + 10 }),
+  146: v => ({ chapter: 147, verse: v }),
+  147: v => ({ chapter: 147, verse: v + 11 }),
+}
+
+/** A Septuagint Psalm reference in Hebrew numbering, or null where the Hebrew has no counterpart. */
+function lxxPsalmToMt(chapter: number, verse: number): { chapter: number; verse: number } | null {
+  if (chapter <= 8 || (chapter >= 148 && chapter <= 150)) return { chapter, verse }
+  const split = LXX_PSALM_SPLITS[chapter]
+  if (split) return split(verse)
+  if (chapter >= 10 && chapter <= 112) return { chapter: chapter + 1, verse }
+  if (chapter >= 116 && chapter <= 145) return { chapter: chapter + 1, verse }
+  return null   // Psalm 151 — outside the Hebrew Psalter entirely
+}
+
+/**
+ * Map a Septuagint reference to the English chapter+verse a translation will carry it under.
+ * `null` where no counterpart exists (Psalm 151, a superscription English leaves unnumbered).
+ *
+ * ONLY THE PSALTER IS MAPPED. Jeremiah is also renumbered in the Septuagint — its oracles against
+ * the nations sit in a different place, so LXX 27:1 is MT 50:1 and LXX 32:1 is MT 25:15 — but that
+ * is a rearrangement of whole blocks rather than an offset, and the table for it is a scholarly
+ * judgement this app has no verified source for. Mapping it from memory would replace a visible
+ * mismatch with an invisible one, so Jeremiah is deliberately left alone and reported instead.
+ */
+export function lxxToEnglish(osisId: string, chapter: number, verse: number): EngRef | null {
+  if (osisId === 'Ps') {
+    const heb = lxxPsalmToMt(chapter, verse)
+    return heb ? mtToEnglish('Ps', heb.chapter, heb.verse) : null
+  }
+  return mtToEnglish(osisId, chapter, verse)
+}

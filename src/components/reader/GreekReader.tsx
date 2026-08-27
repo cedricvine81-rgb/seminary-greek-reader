@@ -37,7 +37,7 @@ import { loadGbi, type GbiEntry } from '@/lib/gbi-data'
 import { loadAbsSyntax, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { loadMaculaSyntax } from '@/lib/macula-syntax'
 import { parseReference } from '@/lib/parseReference'
-import { mtToEnglish } from '@/lib/versification'
+import { mtToEnglish, lxxToEnglish } from '@/lib/versification'
 import { registerParsingSink } from '@/lib/parsing-info-bus'
 import { normalizeGreek } from '@/lib/greek-utils'
 import { parseSearchTerms } from '@/lib/search-query'
@@ -991,24 +991,47 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     if (lang === 'bsb' && !bsbAlignment) loadBsbAlignment().then(setBsbAlignment)
     // Greek sections for every language except BSB (which the Greek view renders from its
     // word-alignment file, not the translation API).
-    const greekSections = lang === 'bsb' ? [] : [...gnt.sections, ...lxx.sections]
-    for (const sec of greekSections) {
+    // The Septuagint numbers the Psalter differently from the Hebrew, and every translation here
+    // is numbered from the Hebrew — so Septuagint Psalm 22 (Κύριος ποιμαίνει με) was shown against
+    // Psalm 22 of the translation, which is a different psalm. The Hebrew sections below have
+    // always mapped their references; the Greek ones fetched the raw chapter number. They now
+    // resolve the same way, through lib/versification, which is also why the fetch may need more
+    // than one chapter: a Septuagint psalm can straddle two Hebrew ones.
+    const greekSections = lang === 'bsb'
+      ? []
+      : [...gnt.sections.map(sec => ({ sec, mapped: false })),
+         ...lxx.sections.map(sec => ({ sec, mapped: true }))]
+    for (const { sec, mapped } of greekSections) {
       const key = `${lang}.${sec.key}`
       if (fetchedTransKeys.current.has(key)) continue
       fetchedTransKeys.current.add(key)
       const [osisId, chapterStr] = sec.key.split('-')
       const chapter = parseInt(chapterStr, 10)
       const verseIds = sec.verses.map(v => v.id)
-      fetch(`/api/translation?book=${osisId}&chapter=${chapter}&lang=${lang}`)
-        .then(r => r.json())
-        .then(data => {
-          const received: Record<string, string> = data.verses ?? {}
+      const engByVerseId = new Map(sec.verses.map(v =>
+        [v.id, mapped ? lxxToEnglish(osisId, chapter, v.verse) : { chapter, verse: v.verse }]))
+      const engChapters = Array.from(new Set(
+        sec.verses.map(v => engByVerseId.get(v.id)?.chapter).filter((c): c is number => c != null)))
+      // A section whose every verse maps to nothing (Psalm 151) needs no request at all.
+      if (engChapters.length === 0) {
+        setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...Object.fromEntries(verseIds.map(id => [id, ''])) } }))
+        continue
+      }
+      Promise.all(engChapters.map(ec =>
+        fetch(`/api/translation?book=${osisId}&chapter=${ec}&lang=${lang}`)
+          .then(r => r.json())
+          .then((d: { verses?: Record<string, string>; ourTranslation?: boolean }) => d)))
+        .then(results => {
+          const received: Record<string, string> = Object.assign({}, ...results.map(d => d.verses ?? {}))
           // Fill in '' for any verse the API didn't return so it doesn't show "Loading…"
-          // forever (deuterocanonical books, uncovered chapters).
+          // forever (deuterocanonical books, uncovered chapters, a psalm with no Hebrew number).
           const patch: Record<string, string> = {}
-          for (const id of verseIds) patch[id] = received[id] ?? ''
+          for (const id of verseIds) {
+            const eng = engByVerseId.get(id)
+            patch[id] = eng ? received[`${osisId}.${eng.chapter}.${eng.verse}`] ?? received[id] ?? '' : ''
+          }
           setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
-          if (data.ourTranslation) {
+          if (results.some(d => d.ourTranslation)) {
             setOurTransChapters(prev => prev.has(sec.key) ? prev : new Set(prev).add(sec.key))
           }
         })
