@@ -820,6 +820,12 @@ const en: Catalogue = {
   'al.reportedOn': 'Reported {date}',
   'al.overdue': 'Overdue',
   'al.commentPlaceholder': 'Optional note about this week…',
+  // The weekly report is a statement of what was done, not a tick with an optional aside: a
+  // finished log used to be able to say nothing at all about the activity, which is little use
+  // to the instructor reading it. The week cannot be ticked until this is written.
+  'al.statementLabel': 'What you did in week {n}',
+  'al.statementPlaceholder': 'Say what you did — enough for your instructor to see it was done.',
+  'al.statementFirst': 'Say what you did, then tick it off',
   'al.closed': 'This activity log is closed — reports are no longer accepted.',
   'al.notesLabel': 'Anything to say about the activity overall?',
   'al.notesPlaceholder': 'Optional — what went well, what got in the way…',
@@ -3688,6 +3694,9 @@ const es: Catalogue = {
   'al.reportedOn': 'Reportado el {date}',
   'al.overdue': 'Atrasado',
   'al.commentPlaceholder': 'Nota opcional sobre esta semana…',
+  'al.statementLabel': 'Lo que hiciste en la semana {n}',
+  'al.statementPlaceholder': 'Cuenta qué hiciste: lo suficiente para que tu profesor vea que se hizo.',
+  'al.statementFirst': 'Cuenta qué hiciste y luego márcalo',
   'al.closed': 'Este registro de actividad está cerrado — ya no se aceptan reportes.',
   'al.notesLabel': '¿Algo que quieras decir sobre la actividad en general?',
   'al.notesPlaceholder': 'Opcional — qué salió bien, qué se interpuso…',

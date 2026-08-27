@@ -11,7 +11,7 @@ import { prisma } from './db'
 import { compareStudentsByName } from './sort-students'
 import { submissionWindow } from './construct-submissions'
 import {
-  normalizeActivityConfig, normalizeEntries, weeksReported, autoGrade, weekDeadlines,
+  normalizeActivityConfig, normalizeEntries, weeksReported, autoGrade, weekDeadlines, hasStatement,
   type ActivityLogConfig, type ActivityLogEntries,
 } from './activity-log'
 
@@ -115,8 +115,28 @@ export async function saveActivityLog(
   if (!open) throw new Error('CLOSED')
 
   const config = normalizeActivityConfig(a.activityConfig)
-  const entries = normalizeEntries(input.entries, config.weeks)
+  const incoming = normalizeEntries(input.entries, config.weeks)
   const notes = typeof input.notes === 'string' ? input.notes.slice(0, 20000) : ''
+
+  // A week may only be reported with a statement of what was done. Enforced here as well as in
+  // the workspace, because the client is not the authority on it.
+  //
+  // WEEKS ALREADY REPORTED ARE LEFT ALONE. The requirement arrived while courses were running,
+  // and a student who ticked a week last term under the old rules has not done anything wrong;
+  // un-ticking their work retroactively would be the app rewriting their record. So the rule
+  // binds new reports only, and an existing tick stays a tick whether or not it says anything.
+  const existing = await prisma.activityLogSubmission.findUnique({
+    where: { userId_assignmentId: { userId, assignmentId } },
+    select: { entries: true },
+  })
+  const before = normalizeEntries(existing?.entries, config.weeks)
+  const entries: ActivityLogEntries = {}
+  for (const [week, entry] of Object.entries(incoming)) {
+    entries[week] = entry.done && !hasStatement(entry) && !before[week]?.done
+      ? { ...entry, done: false }
+      : entry
+  }
+
   const submittedAt = weeksReported(entries) >= config.weeks ? new Date() : null
 
   const saved = await prisma.activityLogSubmission.upsert({

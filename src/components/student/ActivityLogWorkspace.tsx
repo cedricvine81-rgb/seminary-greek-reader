@@ -87,16 +87,27 @@ function Log({ data, assignmentId, previewMode, onSaved }: {
 
   function toggleWeek(week: number, on: boolean) {
     const next = { ...entries }
-    if (on) next[String(week)] = { done: true, at: new Date().toISOString(), comment: next[String(week)]?.comment ?? '' }
+    const existing = next[String(week)]
+    if (on) next[String(week)] = { done: true, at: new Date().toISOString(), comment: existing?.comment ?? '' }
+    // Un-ticking keeps whatever statement was written — the student may be correcting the tick,
+    // not withdrawing what they said, and losing the text would punish the correction.
+    else if (existing?.comment.trim()) next[String(week)] = { ...existing, done: false }
     else delete next[String(week)]
     setEntries(next)
     void persist(next, notes)
   }
 
+  // The statement can be written before the week is ticked — it has to be, since the tick now
+  // depends on it — so this creates the entry if it does not exist yet. An entry with done:false
+  // is a draft: it is saved, but weeksReported does not count it.
   function setComment(week: number, comment: string) {
     const existing = entries[String(week)]
-    if (!existing) return
-    setEntries({ ...entries, [String(week)]: { ...existing, comment } })
+    setEntries({
+      ...entries,
+      [String(week)]: existing
+        ? { ...existing, comment }
+        : { done: false, at: new Date().toISOString(), comment },
+    })
   }
 
   return (
@@ -138,21 +149,26 @@ function Log({ data, assignmentId, previewMode, onSaved }: {
       <ul className="space-y-2">
         {Array.from({ length: config.weeks }, (_, i) => i + 1).map(week => {
           const entry = entries[String(week)]
+          const done = !!entry?.done
+          // A statement is required before the week can be reported. A week already ticked stays
+          // ticked whatever it says: the rule arrived mid-course and must not un-report work
+          // done under the old one.
+          const written = !!entry?.comment.trim()
           const deadline = deadlines[week - 1]
-          const overdue = !entry && deadline != null && new Date(deadline) < new Date()
+          const overdue = !done && deadline != null && new Date(deadline) < new Date()
           return (
             <li
               key={week}
               className={`rounded-xl border p-3 ${
-                entry ? 'border-green-200 bg-green-50/60' : overdue ? 'border-amber-200 bg-amber-50/50' : 'border-gray-200'
+                done ? 'border-green-200 bg-green-50/60' : overdue ? 'border-amber-200 bg-amber-50/50' : 'border-gray-200'
               }`}
             >
               <label className="flex items-start gap-3">
                 <input
                   type="checkbox"
                   className="mt-1 h-4 w-4 accent-brand-600"
-                  checked={!!entry}
-                  disabled={locked}
+                  checked={done}
+                  disabled={locked || (!done && !written)}
                   onChange={e => toggleWeek(week, e.target.checked)}
                 />
                 <span className="min-w-0 flex-1">
@@ -170,21 +186,26 @@ function Log({ data, assignmentId, previewMode, onSaved }: {
                     )}
                   </span>
                   <span className="mt-0.5 block text-xs text-gray-600">
-                    {entry ? t('al.reportedOn', { date: dateFmt.format(new Date(entry.at)) }) : t('al.markDone')}
+                    {done ? t('al.reportedOn', { date: dateFmt.format(new Date(entry!.at)) })
+                      : written ? t('al.markDone') : t('al.statementFirst')}
                   </span>
                 </span>
               </label>
 
-              {entry && (
-                <input
-                  className="mt-2 w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm"
-                  placeholder={t('al.commentPlaceholder')}
-                  value={entry.comment}
+              {/* The statement of completion. Always available, because it has to be written
+                  before the week can be ticked — it is the report, not a note about it. */}
+              <label className="mt-2 block">
+                <span className="sr-only">{t('al.statementLabel', { n: week })}</span>
+                <textarea
+                  className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm"
+                  rows={2}
+                  placeholder={t('al.statementPlaceholder')}
+                  value={entry?.comment ?? ''}
                   disabled={locked}
                   onChange={e => setComment(week, e.target.value)}
                   onBlur={() => void persist(entries, notes)}
                 />
-              )}
+              </label>
             </li>
           )
         })}

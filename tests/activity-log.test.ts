@@ -38,9 +38,20 @@ describe('normalizeEntries', () => {
     expect(Object.keys(out)).toEqual(['1'])
   })
 
-  it('drops un-ticked weeks rather than storing done:false', () => {
-    const out = normalizeEntries({ 1: { done: false, at, comment: 'x' }, 2: { done: true, at, comment: '' } }, 4)
-    expect(Object.keys(out)).toEqual(['2'])
+  // This used to assert that an un-ticked week was dropped outright. It no longer is, and the
+  // change was deliberate: a week now needs a statement of what was done before it can be ticked,
+  // so the statement has to be savable while the week is still un-ticked or text typed and not
+  // yet ticked would be lost by closing the tab. An un-ticked week with nothing written is still
+  // dropped, and weeksReported still counts `done`, so a draft earns no credit.
+  it('keeps an un-ticked week that has a statement, drops an empty one', () => {
+    const out = normalizeEntries({
+      1: { done: false, at, comment: 'x' },
+      2: { done: true, at, comment: '' },
+      3: { done: false, at, comment: '' },
+    }, 4)
+    expect(Object.keys(out).sort()).toEqual(['1', '2'])
+    expect(out['1'].done).toBe(false)
+    expect(weeksReported(out)).toBe(1)
   })
 
   it('rejects non-object and out-of-range keys', () => {

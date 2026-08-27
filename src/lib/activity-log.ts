@@ -61,20 +61,33 @@ export function normalizeEntries(raw: unknown, weeks: number): ActivityLogEntrie
     if (!Number.isInteger(week) || week < 1 || week > weeks) continue
     if (!val || typeof val !== 'object' || Array.isArray(val)) continue
     const v = val as Record<string, unknown>
-    if (v.done !== true) continue // an un-ticked week is simply absent
+    const comment = typeof v.comment === 'string' ? v.comment.slice(0, MAX_COMMENT) : ''
+    // A week is kept if it has been reported OR if the student has begun writing its
+    // statement. Drafts have to survive a save: a student now has to say what they did
+    // before the week can be ticked, and text that only lived in the browser until the tick
+    // would be lost by closing the tab mid-sentence. weeksReported counts `done`, not keys,
+    // so a draft never counts as a week reported.
+    if (v.done !== true && !comment.trim()) continue
     const at = typeof v.at === 'string' && !Number.isNaN(Date.parse(v.at))
       ? new Date(v.at).toISOString()
       : new Date().toISOString()
-    out[String(week)] = {
-      done: true,
-      at,
-      comment: typeof v.comment === 'string' ? v.comment.slice(0, MAX_COMMENT) : '',
-    }
+    out[String(week)] = { done: v.done === true, at, comment }
   }
   return out
 }
 
 /** How many of the activity's weeks the student has reported. */
+/**
+ * Whether this week carries the statement of completion a report requires.
+ *
+ * Ticking "I completed this" used to be the whole report, and the note beside it was optional
+ * and framed as an aside — so a finished log could say nothing at all about what was actually
+ * done, which is not much use to the instructor reading it.
+ */
+export function hasStatement(entry: ActivityLogEntry | undefined): boolean {
+  return !!entry?.comment.trim()
+}
+
 export function weeksReported(entries: ActivityLogEntries): number {
   return Object.values(entries).filter(e => e.done).length
 }
