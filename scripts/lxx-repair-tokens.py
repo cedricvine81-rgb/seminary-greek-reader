@@ -29,7 +29,14 @@ conversion — each was confirmed against the source .txt before being touched. 
    sigla. A lone lowercase letter may be a real word abbreviated, so it stays in the text, but its
    parse is cleared: better an unparsed word than a confident wrong one.
 
-4. WORDS SET IN DISPLAY CAPITALS. Swete opens a book in unaccented capitals (ΕΝ ΑΡΧΗ) and Stanza
+4. PUNCTUATION STANDING ON ITS OWN. The word-per-line source sometimes puts a mark on a line of
+   its own, so `;` — the Greek question mark — arrives as a word in its own right: Genesis 37:8
+   ended `κυριεύσεις ἡμῶν ; καὶ`, with a space before it. 679 of them. They are not words: they
+   inflate the word count, they cannot be parsed (nothing to parse), and they print wrongly.
+   Each is joined to the word before it, which leaves the text reading exactly as the edition
+   punctuates it and removes a token that was never a word.
+
+5. WORDS SET IN DISPLAY CAPITALS. Swete opens a book in unaccented capitals (ΕΝ ΑΡΧΗ) and Stanza
    has never seen Greek written that way, so lxx-fix-capitals.py takes the lexeme from Nestle 1904
    instead. The morphology it guessed for those forms is no better than the lemma was, so it is
    cleared too rather than left contradicting the word it now claims to be.
@@ -82,6 +89,7 @@ def main():
     att = attested()
 
     joined = dropped = cleared = files = 0
+    punct_merged = [0]
     emptied = []
     for path in sorted(glob.glob(f'{LXX}/*.json')):
         doc = json.load(open(path))
@@ -120,7 +128,24 @@ def main():
                 emptied.append(v['reference']); touched = True
                 continue
 
-            # 3./4. do not pretend to have parsed a lone letter, or a word set in capitals
+            # 4. punctuation is not a word — give it back to the word it belongs to
+            merged = []
+            for w in kept:
+                if not [c for c in w['surface'] if c.isalpha()]:
+                    if merged:
+                        merged[-1] = dict(merged[-1])
+                        merged[-1]['surface'] = merged[-1]['surface'] + w['surface']
+                        punct_merged[0] += 1; touched = True
+                        continue
+                    if len(kept) > 1:          # verse-initial: attach to what follows instead
+                        nxt = kept[kept.index(w) + 1]
+                        nxt['surface'] = w['surface'] + nxt['surface']
+                        punct_merged[0] += 1; touched = True
+                        continue
+                merged.append(w)
+            kept = merged
+
+            # 3./5. do not pretend to have parsed a lone letter, or a word set in capitals
             for w in kept:
                 b = bare(w['surface'])
                 caps = len(b) > 1 and b.isalpha() and b.isupper() and not has_diacritic(b)
@@ -147,6 +172,7 @@ def main():
 
     print(f'files rewritten: {files}')
     print(f'split words rejoined: {joined} · apparatus tokens dropped: {dropped} · sigla unparsed: {cleared}')
+    print(f'stray punctuation joined to its word: {punct_merged[0]}')
     print(f'verses dropped as holding nothing but a chapter numeral: {len(emptied)}')
     for r in emptied:
         print(f'   {r}')
