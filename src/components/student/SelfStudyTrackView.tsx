@@ -18,9 +18,10 @@ import type { MorphLevel } from '@/components/morphology/shared'
 // (localStorage + account when signed in), so Greek Beginning's grammar ticks are the
 // same ticks as the Grammar page's course mode.
 //
-// Vocabulary and quiz steps open in a RIGHT-HAND PANEL over this page rather than
-// navigating away — losing the plan behind a full-page vocab session was the complaint.
-// Grammar chapters still navigate (they are full reading pages with their own sidebar).
+// EVERY step opens in a RIGHT-HAND PANEL over this page rather than navigating away — losing
+// the plan behind a full-page session was the complaint, and it applied to a grammar chapter
+// as much as to a vocabulary drill. (This comment used to say grammar chapters still navigate;
+// they have not since the embedded grammar views were wired in below.)
 // The step href stays real, so middle-click/new-tab and the panel's open-full-page
 // button keep working. The heavy panel bodies (the vocab builder pulls the whole deck)
 // load on demand via dynamic imports — nothing lands in this page's bundle until opened.
@@ -150,19 +151,26 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
                       >
                         <Check size={12} />
                       </button>
-                      <span className={clsx(
-                        'inline-flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
-                        step.kind === 'grammar' ? 'bg-brand-50 text-brand-700' : isQuiz ? 'bg-purple-50 text-purple-700' : 'bg-amber-50 text-amber-700',
-                      )}>
-                        {step.kind === 'grammar' ? <BookOpen size={10} /> : isQuiz ? <Award size={10} /> : <BookMarked size={10} />}
-                        {step.kind === 'grammar' ? t('ss.read') : isQuiz ? t('ss.quiz') : t('ss.vocab')}
-                      </span>
+                      {/* The KIND CHIP IS PART OF THE LINK. It used to be a bare span beside it,
+                          so the row read as one control and behaved as two: clicking READ — the
+                          obvious target, and the widest — did nothing at all, and only the title
+                          text opened the chapter. The chapter has always opened in the side
+                          panel; for anyone who aimed at the chip, it appeared not to. */}
                       <Link
                         href={step.href}
                         onClick={inPanel ? e => { e.preventDefault(); setPanel(step) } : undefined}
-                        className={clsx('min-w-0 flex-1 truncate text-sm hover:text-brand-700 hover:underline', stepDone ? 'text-gray-400 line-through' : 'text-gray-800')}
+                        className="group flex min-w-0 flex-1 items-center gap-2.5"
                       >
-                        {step.labelKey ? t(step.labelKey) : step.label}
+                        <span className={clsx(
+                          'inline-flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
+                          step.kind === 'grammar' ? 'bg-brand-50 text-brand-700' : isQuiz ? 'bg-purple-50 text-purple-700' : 'bg-amber-50 text-amber-700',
+                        )}>
+                          {step.kind === 'grammar' ? <BookOpen size={10} /> : isQuiz ? <Award size={10} /> : <BookMarked size={10} />}
+                          {step.kind === 'grammar' ? t('ss.read') : isQuiz ? t('ss.quiz') : t('ss.vocab')}
+                        </span>
+                        <span className={clsx('min-w-0 flex-1 truncate text-sm group-hover:text-brand-700 group-hover:underline', stepDone ? 'text-gray-400 line-through' : 'text-gray-800')}>
+                          {step.labelKey ? t(step.labelKey) : step.label}
+                        </span>
                       </Link>
                     </li>
                   )
