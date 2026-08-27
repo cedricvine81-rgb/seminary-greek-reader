@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { parseMTRef } from '@/lib/mt-books'
 import { OTVariantsView } from './OTVariantsView'
 import { useT } from '@/lib/i18n/LocaleProvider'
-import { X, ChevronDown, Info, Printer, SlidersHorizontal } from 'lucide-react'
+import { X, ChevronDown, Info, Printer, SlidersHorizontal, Copy, Check } from 'lucide-react'
 import { FONT_SIZE_MAP, FONT_SIZES, type PhraseFontSize } from './PhraseExplorer'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -39,6 +39,25 @@ const GNT_MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'nu
 function formatGntMorph(m: Record<string, string | null> | undefined): string {
   if (!m) return ''
   return GNT_MORPH_ORDER.map(k => m[k]).filter(Boolean).join(', ')
+}
+
+/**
+ * What a drag-selection over the collation should actually put on the clipboard.
+ *
+ * The readings live in a table — one row per witness, one cell per word — so the browser's own
+ * copy separates every word with a TAB and every witness with a newline. Selecting a reading and
+ * pasting it into an essay gave `ἐν→ἀρχῇ→ἦν→ὁ→λόγος`, which is not a quotation of anything.
+ *
+ * Tabs become spaces, runs of whitespace collapse, and the blank lines left by the sticky
+ * verse-number column go. Line breaks between witnesses are kept: selecting three witnesses is
+ * asking for three readings, and running them together would misrepresent all three.
+ */
+function cleanCollationCopy(raw: string): string {
+  return raw
+    .split('\n')
+    .map(line => line.replace(/\t+/g, ' ').replace(/\s+/g, ' ').trim())
+    .filter(Boolean)
+    .join('\n')
 }
 
 // NT books with the OSIS ids used for /data/variants/<osis>_<ch>.json filenames.
@@ -164,6 +183,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   const [legendOpen, setLegendOpen] = useState(false)
   const [openMenu, setOpenMenu] = useState<'ref' | 'wit' | null>(null)
   const [hoverCol, setHoverCol] = useState<number | null>(null)
+  const [copiedVid, setCopiedVid] = useState<string | null>(null)
   const [openNote, setOpenNote] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const barRef = useRef<HTMLDivElement>(null)
@@ -366,6 +386,30 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   }
 
   // One clickable Greek word inside a collation cell.
+  /**
+   * The whole apparatus for one verse as plain text: each witness's reading followed by the
+   * sigla that carry it. Offered alongside drag-copy because a drag gives you what you happened
+   * to select, and an apparatus entry is usually the thing actually wanted — and because a
+   * horizontally-scrolling table is awkward to drag across accurately.
+   */
+  function verseApparatus(vm: { verse: number; rows: VMRow[] }): string {
+    const ref = `${parsed?.name ?? ''} ${parsed?.chapter}:${vm.verse}`.trim()
+    const lines = vm.rows.map(r => {
+      const reading = r.cells.map(c => (c.omit ? '—' : c.shown)).join(' ').replace(/\s+/g, ' ').trim()
+      const sigla = r.sigla.map(sg => sg.sigil).join(' ')
+      return sigla ? `${reading}   ${sigla}` : reading
+    })
+    return [ref, ...lines].join('\n')
+  }
+
+  async function copyApparatus(vm: { vid: string; verse: number; rows: VMRow[] }) {
+    try {
+      await navigator.clipboard.writeText(verseApparatus(vm))
+      setCopiedVid(vm.vid)
+      setTimeout(() => setCopiedVid(k => (k === vm.vid ? null : k)), 1500)
+    } catch { /* clipboard refused (permissions, insecure context) — drag-copy still works */ }
+  }
+
   function GreekWord({ text, verse, wkey, bold }: { text: string; verse: number; wkey: string; bold?: boolean }) {
     const parsable = !!parseMap[verse]?.[gkey(text)]
     return (
@@ -500,11 +544,22 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
             {isMobile && displayed.map(vm => {
               const units = variationUnits(vm.rows, false)
               return (
-                <div key={vm.vid} className="mb-3 rounded-lg border border-gray-100 p-2.5">
+                <div key={vm.vid} className="mb-3 rounded-lg border border-gray-100 p-2.5"
+                  onCopy={e => {
+                    const text = cleanCollationCopy(window.getSelection()?.toString() ?? '')
+                    if (!text) return
+                    e.clipboardData.setData('text/plain', text)
+                    e.preventDefault()
+                  }}>
                   <div className="flex items-center gap-1 text-[0.7rem] font-mono text-gray-500 mb-1.5">
                     <span className="font-semibold text-gray-600">{parsed!.chapter}:{vm.verse}</span>
                     {isAuthenticated && <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
                       noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>}
+                    <button type="button" onClick={() => void copyApparatus(vm)}
+                      title={t('var.copyApparatus')} aria-label={t('var.copyApparatus')}
+                      className="font-sans text-gray-400 hover:text-brand-700">
+                      {copiedVid === vm.vid ? <Check size={13} className="text-green-600" /> : <Copy size={13} />}
+                    </button>
                     <NoteBadge vid={vm.vid} verse={vm.verse} />
                   </div>
                   <NotePanel vid={vm.vid} verse={vm.verse} />
@@ -540,7 +595,14 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               <div key={vm.vid} className="mb-4">
                 <div className="pl-6"><NotePanel vid={vm.vid} verse={vm.verse} /></div>
                 <div className="overflow-x-auto pb-1 [&::-webkit-scrollbar]:h-1.5 print:overflow-visible">
-                  <table className="border-collapse font-greek" style={{ fontSize: fs, whiteSpace: 'nowrap' }} onMouseLeave={() => setHoverCol(null)}>
+                  <table className="border-collapse font-greek" style={{ fontSize: fs, whiteSpace: 'nowrap' }}
+                    onMouseLeave={() => setHoverCol(null)}
+                    onCopy={e => {
+                      const text = cleanCollationCopy(window.getSelection()?.toString() ?? '')
+                      if (!text) return
+                      e.clipboardData.setData('text/plain', text)
+                      e.preventDefault()
+                    }}>
                     <tbody>
                       {vm.rows.map((r, ri) => (
                         <tr key={ri} className={r.isRef ? 'font-semibold' : ''}>
@@ -550,6 +612,11 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                                 <span className="font-semibold text-gray-600">{parsed!.chapter}:{vm.verse}</span>
                                 {isAuthenticated && <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
                                   noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>}
+                                <button type="button" onClick={() => void copyApparatus(vm)}
+                                  title={t('var.copyApparatus')} aria-label={t('var.copyApparatus')}
+                                  className="font-sans text-gray-400 hover:text-brand-700">
+                                  {copiedVid === vm.vid ? <Check size={13} className="text-green-600" /> : <Copy size={13} />}
+                                </button>
                                 <NoteBadge vid={vm.vid} verse={vm.verse} />
                               </span>
                             )}
