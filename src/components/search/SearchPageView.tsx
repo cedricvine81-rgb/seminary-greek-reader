@@ -71,13 +71,16 @@ const DEUTERO = new Set(['1Esd', 'Tob', 'Jdt', 'PsSol', 'Wis', 'Sir', 'EpJer', '
 interface Catalog { gnt: PickBook[]; lxx: PickBook[] }
 
 type Scope =
-  | { kind: 'greek'; corpus: 'GNT' | 'LXX' }
+  // 'BOTH' searches the New Testament and the Septuagint together. The reader's word menu has
+  // offered a "Both" toggle all along, but there was no combined scope to send it to, so it
+  // quietly resolved to the New Testament and the toggle did nothing.
+  | { kind: 'greek'; corpus: 'GNT' | 'LXX' | 'BOTH' }
   | { kind: 'hebrew' }
   | { kind: 'trans'; lang: string }
   | { kind: 'bg'; category: string | null; lang?: 'grc' | 'es' }
 
 function parseScope(v: string): Scope {
-  if (v.startsWith('greek:')) return { kind: 'greek', corpus: v.slice(6) as 'GNT' | 'LXX' }
+  if (v.startsWith('greek:')) return { kind: 'greek', corpus: v.slice(6) as 'GNT' | 'LXX' | 'BOTH' }
   if (v.startsWith('hebrew:')) return { kind: 'hebrew' }
   if (v.startsWith('trans:')) return { kind: 'trans', lang: v.slice(6) }
   // bggrc: forces the Greek (Septuagint) facet of the background corpus, bges: our own Spanish;
@@ -330,10 +333,16 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     hasBookNames(locale)
       ? bs.map(b => ({ ...b, name: bookNameFor(b.osisId, locale, b.name), abbrev: bookAbbrev(b.osisId, locale, b.abbrev) }))
       : bs, [locale])
+  const gntBookIds = useMemo(() => new Set((catalog?.gnt ?? []).map(b => b.osisId)), [catalog])
   const bookGroups: BookGroup[] = useMemo(() => {
     if (!catalog) return []
     if (scope.kind === 'greek') {
       if (scope.corpus === 'GNT') return [{ heading: t('books.nt'), books: localizeBooks(catalog.gnt) }]
+      if (scope.corpus === 'BOTH') return [
+        { heading: t('books.nt'), books: localizeBooks(catalog.gnt) },
+        { heading: t('books.ot'), books: localizeBooks(catalog.lxx.filter(b => !DEUTERO.has(b.osisId))) },
+        { heading: t('books.deutero'), books: localizeBooks(catalog.lxx.filter(b => DEUTERO.has(b.osisId))) },
+      ]
       return [
         { heading: t('books.ot'), books: localizeBooks(catalog.lxx.filter(b => !DEUTERO.has(b.osisId))) },
         { heading: t('books.deutero'), books: localizeBooks(catalog.lxx.filter(b => DEUTERO.has(b.osisId))) },
@@ -368,6 +377,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     { val: `trans:${transLang}`, label: t(TRANSLATIONS.find(tr => tr.lang === transLang)?.key ?? 'search.trans.generic') },
     { val: 'greek:GNT', label: t('search.lane.greekNT') },
     { val: 'greek:LXX', label: t('search.lane.greekLXX') },
+    { val: 'greek:BOTH', label: t('search.lane.greekBoth') },
     { val: bgLane, label: t('search.lane.backgrounds') },
   ], [transLang, bgLane, t])
   const activeLane = scope.kind === 'bg' ? bgLane
@@ -631,6 +641,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // blank. The Greek scope carries over, so a Septuagint search opens against the Septuagint.
   const constructHref = (() => {
     const p = new URLSearchParams()
+    // Construct search runs against one corpus, so a combined Greek search carries nothing over
+    // and opens on its default rather than guessing which half the reader meant.
     if (scope.kind === 'greek' && scope.corpus === 'LXX') p.set('in', 'LXX')
     const one = query.trim()
     if (one && !/\s/.test(one) && GREEK_RE.test(one)) p.set('c', `@${one}~`)
@@ -1134,6 +1146,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 <optgroup label={t('search.scope.greek')}>
                   <option value="greek:GNT">{t('search.scope.greekNT')}{optCount('greek:GNT')}</option>
                   <option value="greek:LXX">{t('search.scope.greekLXX')}{optCount('greek:LXX')}</option>
+                  <option value="greek:BOTH">{t('search.scope.greekBoth')}{optCount('greek:BOTH')}</option>
                 </optgroup>
                 <optgroup label={t('search.scope.hebrew')}>
                   <option value="hebrew:MT">{t('search.scope.hebrewOT')}{optCount('hebrew:MT')}</option>
@@ -1330,6 +1343,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 terms={terms}
                 searchLemma={lemmaMode ? normalizeFold(query.trim()) : undefined}
                 corpus={scope.corpus}
+                gntBooks={gntBookIds}
                 bookName={bookName}
                 context={context}
                 ctxMap={ctxMap}

@@ -64,6 +64,8 @@ interface SyntaxMenuProps {
   gbiOn: boolean
   absOn: boolean
   onWordAction: (action: WordSearchAction, scope: SearchScope) => void
+  /** Which corpus the reader is showing, so the frequency count is only shown when it applies. */
+  readerScope?: SearchScope
   highlight?: WordHighlight
   loading?: boolean   // syntax datasets still downloading — show a placeholder, not the empty state
   onClose: () => void
@@ -100,7 +102,7 @@ const LEVEL_BADGE: Record<WallaceCategory['level'], string> = {
   intermediate: 'bg-indigo-100 text-indigo-700',
 }
 
-export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onWordAction, highlight, loading, onClose }: SyntaxMenuProps) {
+export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onWordAction, readerScope, highlight, loading, onClose }: SyntaxMenuProps) {
   const t = useT()
   const ref = useRef<HTMLDivElement>(null)
 
@@ -250,7 +252,12 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
           <div className="grid grid-cols-2 gap-1.5">
             <button type="button" onClick={() => onWordAction('lemma', scope)}
               className="text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              {t('reader.allForms')}{typeof freq === 'number' ? <span className="text-gray-400"> · {freq}×</span> : null}
+              {/* The count is the lexeme's frequency in the corpus being read, so it only
+                  describes the search about to run while the toggle agrees with it. Under
+                  "Both" — or the other Testament — it would be a New Testament number
+                  labelling a wider search, so it is dropped rather than left to mislead. */}
+              {t('reader.allForms')}{typeof freq === 'number' && scope === readerScope
+                ? <span className="text-gray-400"> · {freq}×</span> : null}
             </button>
             <button type="button" onClick={() => onWordAction('form', scope)}
               className="text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">

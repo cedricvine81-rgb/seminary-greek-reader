@@ -1186,9 +1186,11 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     const w = syntaxMenu?.word
     if (!w) return
     const lemma = w.lexeme?.lexeme
-    // /search's Greek scope is one corpus at a time (NT or OT), so "Both" lands on NT with the
-    // LXX tab one click away.
-    const greekScope = `greek:${scope === 'LXX' ? 'LXX' : 'GNT'}` as const
+    // The menu's NT / OT / Both toggle goes straight through to /search. "Both" used to resolve
+    // to the New Testament — /search had no combined Greek scope to send it to — so the toggle
+    // did nothing at all from inside the NT, which is exactly where a reader is most likely to
+    // want the Septuagint alongside.
+    const greekScope = `greek:${scope}` as const
     if (action === 'morph')   { setMorphPickerWord(w); setSyntaxMenu(null); return }
     if (action === 'lexicon') { setLexiconWord(w);     setSyntaxMenu(null); return }
     if (action === 'backgrounds') {
@@ -2241,6 +2243,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           gbiOn={gbiOn}
           absOn={absOn}
           onWordAction={handleWordAction}
+          readerScope={corpus === 'LXX' ? 'LXX' : 'GNT'}
           highlight={syntaxMenu.highlight}
           loading={syntaxMenu.loading}
           onClose={() => setSyntaxMenu(null)}

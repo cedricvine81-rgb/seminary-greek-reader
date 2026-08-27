@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ParsingDock } from './ParsingDock'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { buildHebrewInfo } from '@/components/reader/HebrewWord'
@@ -57,7 +57,7 @@ function hilite(text: string, terms: string[]): ReactNode {
 const LONG_VERSE = 60
 const CONTEXT_WORDS = 12
 
-export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, transLang, onOpen, embedded = false, isAuthenticated = false, snippetLongVerses = false }: {
+export function GreekSearchResults({ hits, terms, searchLemma, corpus, gntBooks, bookName, context, ctxMap, transLang, onOpen, embedded = false, isAuthenticated = false, snippetLongVerses = false }: {
   hits: GreekHit[]
   terms: string[]
   // Folded lemma for an "all forms" search: matched words are inflected forms that don't contain
@@ -65,7 +65,9 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
   searchLemma?: string
   // NA1904 is Nestle 1904, which is what the parsing trees behind Construct search ARE — so
   // rendering construct hits against it makes the word positions exact by construction.
-  corpus: 'GNT' | 'LXX' | 'NA1904' | 'MT'
+  corpus: 'GNT' | 'LXX' | 'NA1904' | 'MT' | 'BOTH'
+  /** New Testament book ids, so a combined Greek search can tell which half each hit came from. */
+  gntBooks?: Set<string>
   bookName: Map<string, string>
   context: number
   ctxMap: Record<string, CtxVerse[]>
@@ -128,16 +130,24 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
     if (context > 0) for (const cv of ctxMap[`${h.osisId}.${h.chapter}.${h.verse}`] ?? []) chapters.add(`${h.osisId}.${cv.chapter}`)
   }
 
+  // A combined Greek search returns hits from both Testaments at once, so the corpus is a
+  // property of each hit rather than of the search. Everything downstream — which chapter file
+  // to parse against, which reader a word belongs to — has to ask per book, not once.
+  const corpusOf = useCallback((osisId: string): 'GNT' | 'LXX' | 'NA1904' | 'MT' =>
+    corpus === 'BOTH' ? (gntBooks?.has(osisId) ? 'GNT' : 'LXX') : corpus,
+  [corpus, gntBooks])
+
   useEffect(() => {
     // Caches live in refs (persist across renders), so late-resolving fetches always store —
     // no per-run "alive" guard (which would drop data when the effect re-runs but the dedupe
     // set skips a re-fetch).
     for (const ck of Array.from(chapters)) {
       const [osis, ch] = ck.split('.')
-      const tokKey = `${corpus}.${ck}`
+      const hitCorpus = corpusOf(osis)
+      const tokKey = `${hitCorpus}.${ck}`
       if (!fetchedTok.current.has(tokKey)) {
         fetchedTok.current.add(tokKey)
-        if (corpus === 'MT') {
+        if (hitCorpus === 'MT') {
           // Straight from the MT chapter files, like the Hebrew Reader (GreekReader) does.
           // /api/reader flattens Hebrew into the Greek word shape — Strong's arrives as "G7225"
           // and the OSHB code is dropped — so a Hebrew word looked up as Greek, which is why the
@@ -158,7 +168,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
               bump(x => x + 1)
             }).catch(() => { fetchedTok.current.delete(tokKey) })
         } else {
-        fetch(`/api/reader?book=${osis}&chapter=${ch}&corpus=${corpus}`)
+        fetch(`/api/reader?book=${osis}&chapter=${ch}&corpus=${hitCorpus}`)
           .then(r => (r.ok ? r.json() : null))
           .then((d: { verses?: { verse: number; words?: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: Record<string, string | null>[] }[] }[] } | null) => {
             if (!d?.verses) return
@@ -194,7 +204,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hits, context, ctxMap, corpus, transLang])
+  }, [hits, context, ctxMap, corpus, corpusOf, transLang])
 
   const showTrans = transLang !== 'none'
   const trMap = showTrans ? trans.current[transLang] ?? {} : {}
@@ -252,14 +262,14 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
             // The word-search panel is Greek-only (its scopes and lexicon are). A Hebrew word
             // would open it pointed at the wrong corpus, so the MT keeps hover-parsing and the
             // parsing pane but no right-click search until that panel learns Hebrew.
-            if (corpus === 'MT') return
+            if (corpusOf(h.osisId) === 'MT') return
             const existing = verseHl.find(hh => start < hh.endOffset && end > hh.startOffset)
             openWordSearch({
               x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null,
               reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}`,
               // NA1904 is a display edition, not a search scope — a word looked up from it searches
               // the New Testament.
-              kind: 'greek', greekCorpus: corpus === 'LXX' ? 'LXX' : 'GNT', book: h.osisId,
+              kind: 'greek', greekCorpus: corpusOf(h.osisId) === 'LXX' ? 'LXX' : 'GNT', book: h.osisId,
               highlight: isAuthenticated ? {
                 activeColor: existing?.color ?? null,
                 onPick: c => existing
