@@ -7,7 +7,9 @@ Each rule below was derived by comparing verse COUNTS per chapter, not guessed:
   EpJer  Swete numbers the Epistle ch 0; ours is ch 1 (73 verses both).
   Mal    Swete splits our ch 3 (24 v) into ch 3 (18) + ch 4 (6).
   Joel   Swete merges our ch 2 (27) + ch 3 (5) into one ch 2 (32); our ch 4 is Swete's ch 3.
-  Lam    Swete folds our ch 0 prologue (1 v) in as ch 1 v 1, shifting ch 1 down by one.
+  Lam    Swete carries the prologue as ch 1 VERSE 0; ours is ch 0 v 1. The body is not shifted:
+         Swete 1:1 is our 1:1. (Read as "verse 1" once, which put the prologue at verse -1 and
+         moved all 22 verses of chapter 1 down by one.)
   Wis    Swete runs 1-14, 16-20 where we run 1-19: Swete ch >= 16 is ours minus one.
 
 Single verse numbers the source mistypes, corrected by content (not by guesswork):

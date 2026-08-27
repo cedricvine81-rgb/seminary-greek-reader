@@ -81,11 +81,14 @@ export async function searchByReference(
 
 // ─── Word suggestions (autocomplete) & lemma search ──────────────────────────
 
-// A comprehensive GNT lemma index (scripts/build-lemma-index.mjs): every lemma with a
+// A comprehensive Greek lemma index (scripts/build-lemma-index.mjs): every lemma with a
 // gloss, frequency, and the verses it occurs in (in any inflected form). Built from the
-// parsing trees, so it covers every word — not just the vocabulary lexicon. Small enough
-// (~0.4 MB) to bundle and read via fs; ranked by frequency.
-interface LemmaEntry { n: string; l: string; g: string; f: number; v: string[] }
+// parsing trees, so it covers every word — not just the vocabulary lexicon; ranked by frequency.
+//
+// `v` and `f` are the New Testament. The Septuagint is kept apart in `lx`/`lf` deliberately:
+// suggestGreekLexemes and lemmaVerseIds both read `v`, and merging would put Septuagint verses
+// into New Testament vocabulary suggestions and into the vocab drill's example sentences.
+interface LemmaEntry { n: string; l: string; g: string; f: number; v: string[]; lf?: number; lx?: string[] }
 let _lemmaIndex: LemmaEntry[] | null = null
 let _lemmaByNorm: Map<string, LemmaEntry> | null = null
 
@@ -112,6 +115,9 @@ export function suggestGreekLexemes(prefix: string, limit = 12): { word: string;
   if (p.length < 2) return []
   const out: { word: string; sub: string }[] = []
   for (const e of getLemmaIndex()) {          // pre-sorted by frequency
+    // Skip lexemes that occur only in the Septuagint (f === 0). They carry no gloss — the trees
+    // are the only source of one — so they would appear as a bare word with an empty subtitle.
+    if (e.f === 0) continue
     if (e.n.startsWith(p)) { out.push({ word: e.l, sub: e.g }); if (out.length >= limit) break }
   }
   return out
@@ -125,10 +131,20 @@ export function lemmaVerseIds(lemma: string): string[] | null {
 }
 
 // Every verse containing any inflected form of a lexeme — straight from the lemma index.
+//
+// The corpus decides which verse list is consulted: the New Testament's `v`, the Septuagint's
+// `lx`, or both. Asking the Septuagint used to filter the GNT list by corpus and hand back the
+// empty set that necessarily produced — "no matches", indistinguishable from the word being
+// absent. A lexeme with no list for the corpus asked for now falls back to surface search rather
+// than reporting nothing, which is what an unknown lemma has always done.
 export async function searchByLemma(lexeme: string, corpus: SearchCorpus): Promise<BiblicalVerse[]> {
   const entry = getLemmaByNorm().get(normalizeGreek(lexeme))
   if (!entry) return searchByGreekWord(lexeme, corpus)  // unknown lemma → fall back to surface search
-  const vset = new Set(entry.v)
+  const ids = corpus === 'LXX' ? (entry.lx ?? [])
+    : corpus === 'GNT' ? entry.v
+    : [...entry.v, ...(entry.lx ?? [])]
+  if (ids.length === 0) return searchByGreekWord(lexeme, corpus)
+  const vset = new Set(ids)
   const out: BiblicalVerse[] = []
   for (const v of getIndex()) {               // iterate the index for canonical order
     if ((corpus === 'BOTH' || v.corpus === corpus) && vset.has(v.id)) out.push(indexToVerse(v))
