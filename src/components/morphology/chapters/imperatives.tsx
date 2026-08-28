@@ -10,9 +10,12 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 
 export const IMPERATIVES_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="imperatives.h.start-english-giving">Start with English: giving orders</SectionHeading>

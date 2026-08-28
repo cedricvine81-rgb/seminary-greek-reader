@@ -9,6 +9,7 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 
 // Deponency is not a searchable CATEGORY: the index records voice as active/middle/passive, so
@@ -18,6 +19,8 @@ const DEPONENT_SEARCHES = CONSTRUCT_PRESETS.find(g => g.heading === 'Verb forms 
 
 export const DEPONENTS_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="deponents.h.start-english-forms">Start with English: forms that don't mean what they look like</SectionHeading>

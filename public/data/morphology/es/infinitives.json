@@ -1,1 +1,858 @@
-{"infinitives.al.sentences":{"fp":"1lxc06k","text":"En frases"},"infinitives.al.sentences-2":{"fp":"1lxc06k","text":"En frases"},"infinitives.as.deserves-special-note":{"fp":"142muq5","text":"{δεῖ} merece nota aparte: el griego no tiene una palabra para «deber», así que «es necesario…» hace ese trabajo; y en los Evangelios {δεῖ} carga a menudo con el peso de la necesidad divina ({δεῖ τὸν υἱὸν τοῦ ἀνθρώπου πολλὰ παθεῖν}, Marcos 8:31)."},"infinitives.as.infinitive-form-person":{"fp":"1phs2ri","text":"El infinitivo es la forma que nombra la acción. No tiene persona ni número, así que nunca cambia por «yo / tú / él»."},"infinitives.as.literally-necessary-son":{"fp":"sqyg5u","text":"Literalmente: «es necesario _al Hijo del Hombre_ [ac.] _padecer_ muchas cosas»."},"infinitives.as.method-translate-preposition":{"fp":"6exaj7","text":"Método: traduce la preposición, convierte el infinitivo en verbo conjugado y haz sujeto suyo cualquier acusativo — {μετὰ τὸ ἐγερθῆναί με} = «después del [hecho de] ser yo resucitado» → «después de que yo resucite»."},"infinitives.as.when-two-accusatives":{"fp":"14b8ov2","text":"Cuando dos acusativos flanquean un infinitivo copulativo, rige el mismo orden de prelación que en los predicativos nominales: el pronombre, el nombre propio o el sustantivo con artículo es el sujeto ({ἔλεγον αὐτὸν εἶναι θεόν}, «decían que _él_ era un dios», Hechos 28:6)."},"infinitives.cat.causal.d":{"fp":"l1lb3n","text":"responde a _¿por qué?_ mirando hacia atrás; {διὰ τό} + infinitivo"},"infinitives.cat.causal.e0":{"fp":"1l6daco","text":"porque no tenía raíz"},"infinitives.cat.causal.e1":{"fp":"p0nkwe","text":"porque era de la casa de David"},"infinitives.cat.causal.eg":{"fp":"1v5ach","text":"«porque no tenía raíz»"},"infinitives.cat.causal.name":{"fp":"rr4co0","text":"Causal"},"infinitives.cat.complementary.d":{"fp":"1bf1jv3","text":"completa un verbo auxiliar ({δύναμαι, θέλω, μέλλω, ἄρχομαι})"},"infinitives.cat.complementary.e0":{"fp":"1fwyi44","text":"no pueden servir a Dios y a las riquezas"},"infinitives.cat.complementary.e1":{"fp":"s9cag4","text":"Jesús comenzó a predicar"},"infinitives.cat.complementary.eg":{"fp":"1u657wd","text":"«no pueden servir a Dios y a las riquezas»"},"infinitives.cat.complementary.name":{"fp":"11xhnld","text":"Complementario"},"infinitives.cat.epexegetical.d":{"fp":"14erojh","text":"explica un sustantivo o un adjetivo (capacidad, libertad, necesidad…)"},"infinitives.cat.epexegetical.e0":{"fp":"10odljk","text":"autoridad para pisar serpientes"},"infinitives.cat.epexegetical.e1":{"fp":"1e74yx1","text":"tengo autoridad para ponerla"},"infinitives.cat.epexegetical.eg":{"fp":"18qqd9d","text":"«autoridad para pisar serpientes»"},"infinitives.cat.epexegetical.name":{"fp":"ppg6gp","text":"Epexegético"},"infinitives.cat.indirect-discourse.d":{"fp":"x39uci","text":"refiere lo dicho o pensado tras un verbo de percepción"},"infinitives.cat.indirect-discourse.e0":{"fp":"1k1m1g4","text":"dicen que no hay resurrección"},"infinitives.cat.indirect-discourse.e1":{"fp":"15m4q3q","text":"¿quién dicen que soy yo?"},"infinitives.cat.indirect-discourse.eg":{"fp":"1qeecwp","text":"«dicen que no hay resurrección»"},"infinitives.cat.indirect-discourse.name":{"fp":"1by1tyq","text":"Discurso indirecto"},"infinitives.cat.purpose.d":{"fp":"176b5iz","text":"responde a _¿por qué?_ — «para»; infinitivo solo, o {τοῦ / εἰς τό / πρὸς τό}"},"infinitives.cat.purpose.e0":{"fp":"9e5l8d","text":"no vine a abolir, sino a cumplir"},"infinitives.cat.purpose.e1":{"fp":"n5e4j0","text":"el sembrador salió a sembrar"},"infinitives.cat.purpose.eg":{"fp":"19urfwb","text":"«vine a abolir la ley»"},"infinitives.cat.purpose.name":{"fp":"4cofj5","text":"Finalidad"},"infinitives.cat.result.d":{"fp":"sh8uc5","text":"el desenlace producido; normalmente {ὥστε} + infinitivo"},"infinitives.cat.result.e0":{"fp":"trnbpw","text":"de modo que la multitud se maravilló"},"infinitives.cat.result.e1":{"fp":"1vmlseh","text":"de modo que la barca ya se llenaba"},"infinitives.cat.result.eg":{"fp":"1upylyu","text":"«…de modo que la multitud se asombró»"},"infinitives.cat.result.name":{"fp":"ma0s3o","text":"Resultado"},"infinitives.cat.subject.d":{"fp":"nzcba7","text":"el infinitivo es el sujeto, a menudo con {δεῖ, ἔξεστιν}"},"infinitives.cat.subject.e0":{"fp":"1najbfy","text":"el vivir es Cristo y el morir es ganancia"},"infinitives.cat.subject.e1":{"fp":"q2xi46","text":"bueno es para nosotros estar aquí"},"infinitives.cat.subject.eg":{"fp":"bhqhlk","text":"«el vivir es Cristo» (Fil 1:21)"},"infinitives.cat.subject.name":{"fp":"18ix78v","text":"Sujeto"},"infinitives.cat.time.d":{"fp":"3sp9hy","text":"responde a _¿cuándo?_ — {μετὰ τό} «después de», {ἐν τῷ} «mientras», {πρὸ τοῦ} «antes de»"},"infinitives.cat.time.e0":{"fp":"2klo5x","text":"mientras sembraba"},"infinitives.cat.time.e1":{"fp":"jdv0ki","text":"después de que yo haya resucitado"},"infinitives.cat.time.name":{"fp":"1q4eyv8","text":"Tiempo"},"infinitives.cg.substantival-use-like":{"fp":"kzjui9","text":"Uso sustantivado (como sustantivo)"},"infinitives.cg.verbal-use-like":{"fp":"ljdwhe","text":"Uso verbal (como verbo)"},"infinitives.cs1.lesson":{"fp":"19o7f4q","text":"El sujeto en acusativo"},"infinitives.cs1.s0":{"fp":"14x1v5p","text":"Es necesario que el Hijo del Hombre padezca mucho."},"infinitives.cs1.s0.note":{"fp":"3zj0dn","text":"Marcos 8:31 — τὸν υἱόν va en acusativo porque es el SUJETO del infinitivo."},"infinitives.cs1.s0.w0.gloss":{"fp":"o8wrkv","text":"es necesario"},"infinitives.cs1.s0.w1.gloss":{"fp":"1dyjk0s","text":"el"},"infinitives.cs1.s0.w2.gloss":{"fp":"iis1sr","text":"Hijo"},"infinitives.cs1.s0.w2.syntax":{"fp":"1fmd8ph","text":"Sujeto del infinitivo en acusativo"},"infinitives.cs1.s0.w3.gloss":{"fp":"t6uqnc","text":"de"},"infinitives.cs1.s0.w4.gloss":{"fp":"ltob9r","text":"Hombre"},"infinitives.cs1.s0.w4.syntax":{"fp":"ue6747","text":"Genitivo de relación"},"infinitives.cs1.s0.w5.gloss":{"fp":"1dlbf4f","text":"muchas cosas"},"infinitives.cs1.s0.w5.syntax":{"fp":"6nscg3","text":"Objeto directo"},"infinitives.cs1.s0.w6.gloss":{"fp":"4a07w3","text":"padecer"},"infinitives.cs1.s0.w6.syntax":{"fp":"pn17zi","text":"Infinitivo complementario"},"infinitives.cs2.lesson":{"fp":"1cora2q","text":"Lecciones 5 y 8 · El infinitivo"},"infinitives.cs2.s0":{"fp":"jhcm2o","text":"¿Quieres oír?"},"infinitives.cs2.s0.w0.gloss":{"fp":"uquxb2","text":"¿quieres?"},"infinitives.cs2.s0.w1.gloss":{"fp":"1abig4","text":"oír"},"infinitives.cs2.s0.w1.syntax":{"fp":"pn17zi","text":"Infinitivo complementario"},"infinitives.cs2.s1":{"fp":"1q472b6","text":"Es necesario orar."},"infinitives.cs2.s1.note":{"fp":"ej6f5z","text":"Con el impersonal δεῖ, el infinitivo es el sujeto gramatical."},"infinitives.cs2.s1.w0.gloss":{"fp":"o8wrkv","text":"es necesario"},"infinitives.cs2.s1.w1.gloss":{"fp":"jklfow","text":"orar"},"infinitives.cs2.s1.w1.syntax":{"fp":"l1tr8w","text":"Infinitivo sujeto"},"infinitives.cs2.s2":{"fp":"9rq6su","text":"Estabais a punto de venir."},"infinitives.cs2.s2.w0.gloss":{"fp":"sccaak","text":"estabais a punto"},"infinitives.cs2.s2.w1.gloss":{"fp":"1kh3yk","text":"de venir"},"infinitives.cs2.s2.w1.syntax":{"fp":"pn17zi","text":"Infinitivo complementario"},"infinitives.cs2.s3":{"fp":"1x6gr3e","text":"Es necesario guardar los mandamientos."},"infinitives.cs2.s3.w0.gloss":{"fp":"o8wrkv","text":"es necesario"},"infinitives.cs2.s3.w1.gloss":{"fp":"1tgia71","text":"guardar"},"infinitives.cs2.s3.w1.syntax":{"fp":"l1tr8w","text":"Infinitivo sujeto"},"infinitives.cs2.s3.w2.gloss":{"fp":"1dyjk0s","text":"los"},"infinitives.cs2.s3.w3.gloss":{"fp":"15z46mb","text":"mandamientos"},"infinitives.cs2.s3.w3.syntax":{"fp":"6nscg3","text":"Objeto directo"},"infinitives.d1.o0":{"fp":"1wnsz0r","text":"Presente activo — «soltar»"},"infinitives.d1.o1":{"fp":"1m9mo2n","text":"Aoristo activo — «soltar (sin más)»"},"infinitives.d1.o2":{"fp":"sq3j1b","text":"Presente medio/pasivo"},"infinitives.d1.o3":{"fp":"c55qo6","text":"Aoristo pasivo — «ser soltado»"},"infinitives.d1.o4":{"fp":"1rrihcl","text":"Presente (deponente) — «venir»"},"infinitives.d1.o5":{"fp":"1y5waol","text":"Aoristo (segundo) — «venir»"},"infinitives.d1.title":{"fp":"1cox3vo","text":"Práctica — identifica el infinitivo"},"infinitives.d2.o0":{"fp":"p1ljel","text":"«mientras …»"},"infinitives.d2.o1":{"fp":"1xy5mnq","text":"«porque … / a causa de …»"},"infinitives.d2.o2":{"fp":"1buz56d","text":"«para …»"},"infinitives.d2.o3":{"fp":"1j9tpog","text":"«después de …»"},"infinitives.d2.title":{"fp":"u5w6qk","text":"Práctica — artículo + infinitivo"},"infinitives.ex.about-come":{"fp":"tu4ee0","text":"está a punto de venir"},"infinitives.ex.after-raised-matt":{"fp":"bbyues","text":"después de que yo resucite (Mateo 26:32)"},"infinitives.ex.because-had-root":{"fp":"1qso1ew","text":"porque no tenía raíz (Marcos 4:6)"},"infinitives.ex.cannot-serve-god":{"fp":"19mzmyn","text":"no podéis servir a Dios y a las riquezas (Mateo 6:24)"},"infinitives.ex.loose-aorist-augment":{"fp":"12a91f","text":"soltar (aoristo — con σ, pero sin aumento)"},"infinitives.ex.son-man-must":{"fp":"117fwb1","text":"es necesario que el Hijo del Hombre padezca mucho (Marcos 8:31)"},"infinitives.ex.want-loose":{"fp":"kgpxpp","text":"quiero soltar"},"infinitives.ex.while-was-sowing":{"fp":"1sfspq9","text":"mientras sembraba (Marcos 4:4)"},"infinitives.exp.eg.want-loose":{"fp":"16b5pq0","text":"{θέλω λύειν} = «quiero _soltar_»."},"infinitives.exp.p.infinitive-form-verb":{"fp":"wk2004","text":"Un *infinitivo* es la forma del verbo que nombra la acción ({λύειν} «soltar»). La nombra sin sujeto, persona ni número, así que no cambia por «yo / tú / él». Sobre todo basta con reconocer dos formas: presente activo ({‑ειν}) y aoristo activo ({‑σαι}). El infinitivo aoristo lleva la {σ} pero, y esto importa, *ningún aumento* (el aumento vive solo en el indicativo)."},"infinitives.exp.p.infinitive-verbal-noun":{"fp":"kp6bli","text":"El infinitivo es un *sustantivo verbal*, así que puede llevar artículo ({τό}) e incluso un sujeto en acusativo ({θέλω τὸν ἄγγελον ἀπελθεῖν} = «quiero que el mensajero se vaya»). Estas son sus *categorías sintácticas esenciales* (según Wallace)."},"infinitives.exp.p.present-aorist-infinitive":{"fp":"19txkes","text":"Presente frente a aoristo en el infinitivo es aspecto, no tiempo: acción en curso frente a acción simple."},"infinitives.h.article-infinitive-greek's":{"fp":"czgvdk","text":"El artículo + infinitivo: la navaja suiza del griego"},"infinitives.h.forms-two-endings":{"fp":"11kvut3","text":"Las formas: dos desinencias cubren casi todo"},"infinitives.h.going-deeper-infinitive":{"fp":"1xhbvwx","text":"Más a fondo: el infinitivo como caballo de batalla de la teología"},"infinitives.h.start-english-form":{"fp":"wyibpr","text":"Empecemos por el español: la forma en -ar, -er, -ir"},"infinitives.h.try":{"fp":"1c7r8bb","text":"Practiquemos"},"infinitives.h.watch-out":{"fp":"sg44kc","text":"Ojo"},"infinitives.h.where-you'll-meet":{"fp":"hnl03w","text":"Dónde lo encontrarás primero: tras los verbos auxiliares"},"infinitives.h.who-does-infinitive's":{"fp":"1ec3bi4","text":"¿Quién ejecuta la acción del infinitivo? El sujeto en acusativo"},"infinitives.intro.preposition-chooses-meaning":{"fp":"lckepi","text":"La preposición elige el significado."},"infinitives.intro.vocabulary-eat-pray":{"fp":"11zjhw5","text":"Vocabulario: {ἐσθίω / φαγεῖν} «comer» · {προσεύχομαι} «orar» · {βαπτισθῆναι} «ser bautizado»."},"infinitives.intro.watch-patterns-helper":{"fp":"ztjmiq","text":"Observa cómo los patrones — auxiliar + infinitivo, preposición + infinitivo con artículo — se repiten página tras página."},"infinitives.le.aorist-infinitives-whole":{"fp":"x8xh9o","text":"Infinitivos aoristos — el «…» de acción entera"},"infinitives.le.every-form-able":{"fp":"1qistnt","text":"Todas las formas de {δύναμαι} — «poder…» + infinitivo"},"infinitives.le.every-form-nt's":{"fp":"19vwz24","text":"Todas las formas de {δεῖ} — el «hay que» del NT"},"infinitives.le.infinitive":{"fp":"12o56iv","text":"Todos los infinitivos del NT"},"infinitives.p.always-outside-indicative":{"fp":"1fp6ql4","text":"Como siempre fuera del indicativo: el infinitivo aoristo lleva la {σ} pero *ningún aumento*, y su «tiempo» es aspecto: {λύειν} presenta un soltar en curso; {λῦσαι}, el acto como un todo. Las formas medias y pasivas terminan en {‑εσθαι} (pres. m/p: {λύεσθαι}) y {‑θῆναι} (aor. pas.: {λυθῆναι}): reconócelas, no te angusties por producirlas."},"infinitives.p.because-infinitive-noun":{"fp":"80ny2n","text":"Como el infinitivo es un sustantivo, puede llevar el artículo neutro — {τὸ λύειν}, «el (acto de) soltar» —, y una vez que lleva artículo puede seguir a una [preposition:preposición]. Esa combinación construye cláusulas compactas, y el español la reconoce sin esfuerzo porque también dice «el vivir», «al entrar», «por no tener»:"},"infinitives.p.exactly-english-set":{"fp":"mcryo6","text":"Exactamente como en español, un conjunto de verbos «auxiliares» queda incompleto sin un infinitivo: «_puedo_… (¿hacer qué?)». Aprende estas parejas como una unidad:"},"infinitives.p.indirect-discourse-after":{"fp":"2fe458","text":"*Discurso indirecto.* Tras verbos de decir y de pensar, el infinitivo puede referir el habla: {λέγουσιν ἀνάστασιν μὴ εἶναι} — «dicen que no hay resurrección» (Marcos 12:18, de los saduceos). El esquema de acusativo más infinitivo («dicen _no ser resurrección_») es la maquinaria griega que hay detrás de muchas oraciones con «que»."},"infinitives.p.notice-something-about":{"fp":"6nzmmh","text":"Fíjate en algo de «_Errar_ es humano»: el infinitivo funciona como _sustantivo_, es el sujeto de «es». Esa doble vida es la clave del infinitivo griego: es un *sustantivo verbal*. Bastante verbo como para tener [tense:tiempo] y [voice:voz] y llevar complementos («comer _pan_»); bastante sustantivo como para hacer de sujeto, llevar el artículo {τό} y hasta seguir a preposiciones. Y aquí el español tiene ventaja sobre el inglés: tú ya dices «_el vivir_», «_el andar_», que es exactamente lo que hace el griego."},"infinitives.p.purpose-result-infinitive":{"fp":"10h5wh4","text":"*Finalidad frente a resultado.* {εἰς τό} + infinitivo marca normalmente la intención («para que»); {ὥστε} + infinitivo marca normalmente el desenlace («de modo que, con el resultado de que»): {ὥστε τὸν ὄχλον θαυμάσαι}, «de modo que la multitud se maravillaba» (Mateo 15:31). Cuando un texto es ambiguo — ¿_pretendía_ Dios el desenlace o simplemente lo _permitió_? —, la elección entre finalidad y resultado es una decisión genuinamente teológica."},"infinitives.p.she-wanted-learn":{"fp":"1fnkw4","text":"«Ella quería _aprender_»: ella es quien aprende. «Ella quería que _yo_ aprendiera»: ahora lo hace otro, y el español lo introduce con «que» y un verbo conjugado. El griego resuelve lo mismo de otra manera: ese alguien va en [accusative:acusativo] y el verbo queda en infinitivo: {θέλω τὸν ἄγγελον ἀπελθεῖν}, «quiero que el mensajero se vaya», literalmente «quiero _al mensajero_ [ac.] _irse_»."},"infinitives.p.subject-infinitives-article":{"fp":"1escunp","text":"*Infinitivos sujeto.* Con el artículo, un infinitivo puede sostener una proposición entera: {ἐμοὶ γὰρ τὸ ζῆν Χριστὸς καὶ τὸ ἀποθανεῖν κέρδος} — «porque para mí _el vivir_ es Cristo y _el morir_ es ganancia» (Fil. 1:21). Aquí el español calca al griego palabra por palabra, artículo incluido: dos infinitivos con artículo son los sujetos, y toda la fuerza de la frase depende de verlos como sustantivos."},"infinitives.p.want-eat-she":{"fp":"ru8w1e","text":"«Quiero _comer_.» «Espera _ganar_.» «_Errar_ es humano.» El *infinitivo* — el español lo marca con la terminación -ar, -er o -ir — es la forma comodín del verbo: sin sujeto, sin persona, sin número. Nombra la acción misma."},"infinitives.pa.after-eating-went":{"fp":"1v9gt3u","text":"«Después de comer, salieron» — μετὰ τό + infinitivo aoristo."},"infinitives.pa.came-baptized-bare":{"fp":"13knnn","text":"«Vino a ser bautizado» — infinitivo de finalidad, sin artículo, tras un verbo de movimiento (cf. Mateo 3:13)."},"infinitives.pa.must-pray-literally":{"fp":"nuxdqx","text":"«Debemos orar» — literalmente «es necesario [a] nosotros [ac.] orar»."},"infinitives.pa.want-hear-word":{"fp":"ak5p5v","text":"«Queremos oír la palabra» — infinitivo complementario tras θέλω."},"infinitives.pa.while-was-speaking":{"fp":"102698t","text":"«Mientras hablaba, se asombraban» — ἐν τῷ + infinitivo con sujeto en acusativo αὐτόν."},"infinitives.pr1.title":{"fp":"1vvo23e","text":"Práctica — traduce"},"infinitives.t1.h1":{"fp":"16wg01y","text":"Presente activo"},"infinitives.t1.h2":{"fp":"1y3dkqf","text":"Aoristo activo"},"infinitives.t1.title":{"fp":"1gplzhk","text":"Formas de infinitivo más frecuentes — λύω"},"infinitives.t2.c0.1":{"fp":"1wrqpi","text":"puedo, soy capaz de"},"infinitives.t2.c1.1":{"fp":"umanfw","text":"quiero, deseo"},"infinitives.t2.c2.1":{"fp":"16tidc5","text":"estoy a punto de"},"infinitives.t2.c3.1":{"fp":"154272z","text":"comienzo a"},"infinitives.t2.c4.1":{"fp":"rre3b","text":"debo"},"infinitives.t2.c5.1":{"fp":"1jhz13n","text":"es necesario — «hay que»"},"infinitives.t2.c6.1":{"fp":"2kkh4a","text":"es lícito / está permitido"},"infinitives.t2.h0":{"fp":"muvidc","text":"Verbo"},"infinitives.t2.h1":{"fp":"1az3v8k","text":"Significado"},"infinitives.t2.title":{"fp":"7ubhsz","text":"Verbos auxiliares que rigen infinitivo"},"infinitives.t3.c0.1":{"fp":"duets8","text":"— (verbo conjugado)"},"infinitives.t3.c0.2":{"fp":"j12dch","text":"el marco"},"infinitives.t3.c1.1":{"fp":"5ygshn","text":"acusativo"},"infinitives.t3.c1.2":{"fp":"1iav1gk","text":"sujeto del infinitivo"},"infinitives.t3.c2.1":{"fp":"odt1vp","text":"— (infinitivo)"},"infinitives.t3.c2.2":{"fp":"d5srkm","text":"la acción"},"infinitives.t3.h0":{"fp":"1c4mk2t","text":"Pieza"},"infinitives.t3.h1":{"fp":"7kvjkh","text":"Caso"},"infinitives.t3.h2":{"fp":"ijqa2k","text":"Papel"},"infinitives.t3.title":{"fp":"8sndpi","text":"El patrón"},"infinitives.t4.c0.1":{"fp":"4s72bv","text":"mientras / al …"},"infinitives.t4.c1.1":{"fp":"179ppuf","text":"después de …"},"infinitives.t4.c2.1":{"fp":"1ikz1uc","text":"antes de …"},"infinitives.t4.c3.1":{"fp":"1emjs05","text":"porque …"},"infinitives.t4.c4.1":{"fp":"1e0t7y0","text":"para … (finalidad)"},"infinitives.t4.c5.1":{"fp":"1umdvdm","text":"de modo que … (resultado)"},"infinitives.t4.h0":{"fp":"1vuws7d","text":"Patrón"},"infinitives.t4.h1":{"fp":"1az3v8k","text":"Significado"},"infinitives.t4.title":{"fp":"10d8xxc","text":"Preposición + infinitivo con artículo"},"infinitives.wo.aorist-active-infinitive":{"fp":"1l5kozc","text":"Infinitivo aoristo activo {λῦσαι} frente a imperativo aoristo medio {λῦσαι}: grafía idéntica; lo decide el marco de la frase."},"infinitives.wo.augment-never":{"fp":"1uhygg9","text":"Sin aumento: {λῦσαι}, nunca {ἐλῦσαι}."},"infinitives.wo.negative-having":{"fp":"ewdpuw","text":"La negación es {μή}, no {οὐ}: {τὸ μὴ ἔχειν}, «el no tener»."},"infinitives.wo.verbs-contract-normally":{"fp":"34i4nq","text":"Los verbos en -εω se contraen con normalidad: {φιλεῖν} «amar», {ποιῆσαι} «hacer»."},"infinitives.wo.when-translating-trade":{"fp":"1qftrrq","text":"Al traducir {δεῖ}, cambia «es necesario que X…» por el llano «X debe…»."}}
+{
+  "infinitives.al.sentences": {
+    "fp": "1lxc06k",
+    "text": "En frases"
+  },
+  "infinitives.al.sentences-2": {
+    "fp": "1lxc06k",
+    "text": "En frases"
+  },
+  "infinitives.as.deserves-special-note": {
+    "fp": "142muq5",
+    "text": "{δεῖ} merece nota aparte: el griego no tiene una palabra para «deber», así que «es necesario…» hace ese trabajo; y en los Evangelios {δεῖ} carga a menudo con el peso de la necesidad divina ({δεῖ τὸν υἱὸν τοῦ ἀνθρώπου πολλὰ παθεῖν}, Marcos 8:31)."
+  },
+  "infinitives.as.infinitive-form-person": {
+    "fp": "1phs2ri",
+    "text": "El infinitivo es la forma que nombra la acción. No tiene persona ni número, así que nunca cambia por «yo / tú / él»."
+  },
+  "infinitives.as.literally-necessary-son": {
+    "fp": "sqyg5u",
+    "text": "Literalmente: «es necesario _al Hijo del Hombre_ [ac.] _padecer_ muchas cosas»."
+  },
+  "infinitives.as.method-translate-preposition": {
+    "fp": "6exaj7",
+    "text": "Método: traduce la preposición, convierte el infinitivo en verbo conjugado y haz sujeto suyo cualquier acusativo — {μετὰ τὸ ἐγερθῆναί με} = «después del [hecho de] ser yo resucitado» → «después de que yo resucite»."
+  },
+  "infinitives.as.when-two-accusatives": {
+    "fp": "14b8ov2",
+    "text": "Cuando dos acusativos flanquean un infinitivo copulativo, rige el mismo orden de prelación que en los predicativos nominales: el pronombre, el nombre propio o el sustantivo con artículo es el sujeto ({ἔλεγον αὐτὸν εἶναι θεόν}, «decían que _él_ era un dios», Hechos 28:6)."
+  },
+  "infinitives.cat.causal.d": {
+    "fp": "l1lb3n",
+    "text": "responde a _¿por qué?_ mirando hacia atrás; {διὰ τό} + infinitivo"
+  },
+  "infinitives.cat.causal.e0": {
+    "fp": "1l6daco",
+    "text": "porque no tenía raíz"
+  },
+  "infinitives.cat.causal.e1": {
+    "fp": "p0nkwe",
+    "text": "porque era de la casa de David"
+  },
+  "infinitives.cat.causal.eg": {
+    "fp": "1v5ach",
+    "text": "«porque no tenía raíz»"
+  },
+  "infinitives.cat.causal.name": {
+    "fp": "rr4co0",
+    "text": "Causal"
+  },
+  "infinitives.cat.complementary.d": {
+    "fp": "1bf1jv3",
+    "text": "completa un verbo auxiliar ({δύναμαι, θέλω, μέλλω, ἄρχομαι})"
+  },
+  "infinitives.cat.complementary.e0": {
+    "fp": "1fwyi44",
+    "text": "no pueden servir a Dios y a las riquezas"
+  },
+  "infinitives.cat.complementary.e1": {
+    "fp": "s9cag4",
+    "text": "Jesús comenzó a predicar"
+  },
+  "infinitives.cat.complementary.eg": {
+    "fp": "1u657wd",
+    "text": "«no pueden servir a Dios y a las riquezas»"
+  },
+  "infinitives.cat.complementary.name": {
+    "fp": "11xhnld",
+    "text": "Complementario"
+  },
+  "infinitives.cat.epexegetical.d": {
+    "fp": "14erojh",
+    "text": "explica un sustantivo o un adjetivo (capacidad, libertad, necesidad…)"
+  },
+  "infinitives.cat.epexegetical.e0": {
+    "fp": "10odljk",
+    "text": "autoridad para pisar serpientes"
+  },
+  "infinitives.cat.epexegetical.e1": {
+    "fp": "1e74yx1",
+    "text": "tengo autoridad para ponerla"
+  },
+  "infinitives.cat.epexegetical.eg": {
+    "fp": "18qqd9d",
+    "text": "«autoridad para pisar serpientes»"
+  },
+  "infinitives.cat.epexegetical.name": {
+    "fp": "ppg6gp",
+    "text": "Epexegético"
+  },
+  "infinitives.cat.indirect-discourse.d": {
+    "fp": "x39uci",
+    "text": "refiere lo dicho o pensado tras un verbo de percepción"
+  },
+  "infinitives.cat.indirect-discourse.e0": {
+    "fp": "1k1m1g4",
+    "text": "dicen que no hay resurrección"
+  },
+  "infinitives.cat.indirect-discourse.e1": {
+    "fp": "15m4q3q",
+    "text": "¿quién dicen que soy yo?"
+  },
+  "infinitives.cat.indirect-discourse.eg": {
+    "fp": "1qeecwp",
+    "text": "«dicen que no hay resurrección»"
+  },
+  "infinitives.cat.indirect-discourse.name": {
+    "fp": "1by1tyq",
+    "text": "Discurso indirecto"
+  },
+  "infinitives.cat.purpose.d": {
+    "fp": "176b5iz",
+    "text": "responde a _¿por qué?_ — «para»; infinitivo solo, o {τοῦ / εἰς τό / πρὸς τό}"
+  },
+  "infinitives.cat.purpose.e0": {
+    "fp": "9e5l8d",
+    "text": "no vine a abolir, sino a cumplir"
+  },
+  "infinitives.cat.purpose.e1": {
+    "fp": "n5e4j0",
+    "text": "el sembrador salió a sembrar"
+  },
+  "infinitives.cat.purpose.eg": {
+    "fp": "19urfwb",
+    "text": "«vine a abolir la ley»"
+  },
+  "infinitives.cat.purpose.name": {
+    "fp": "4cofj5",
+    "text": "Finalidad"
+  },
+  "infinitives.cat.result.d": {
+    "fp": "sh8uc5",
+    "text": "el desenlace producido; normalmente {ὥστε} + infinitivo"
+  },
+  "infinitives.cat.result.e0": {
+    "fp": "trnbpw",
+    "text": "de modo que la multitud se maravilló"
+  },
+  "infinitives.cat.result.e1": {
+    "fp": "1vmlseh",
+    "text": "de modo que la barca ya se llenaba"
+  },
+  "infinitives.cat.result.eg": {
+    "fp": "1upylyu",
+    "text": "«…de modo que la multitud se asombró»"
+  },
+  "infinitives.cat.result.name": {
+    "fp": "ma0s3o",
+    "text": "Resultado"
+  },
+  "infinitives.cat.subject.d": {
+    "fp": "nzcba7",
+    "text": "el infinitivo es el sujeto, a menudo con {δεῖ, ἔξεστιν}"
+  },
+  "infinitives.cat.subject.e0": {
+    "fp": "1najbfy",
+    "text": "el vivir es Cristo y el morir es ganancia"
+  },
+  "infinitives.cat.subject.e1": {
+    "fp": "q2xi46",
+    "text": "bueno es para nosotros estar aquí"
+  },
+  "infinitives.cat.subject.eg": {
+    "fp": "bhqhlk",
+    "text": "«el vivir es Cristo» (Fil 1:21)"
+  },
+  "infinitives.cat.subject.name": {
+    "fp": "18ix78v",
+    "text": "Sujeto"
+  },
+  "infinitives.cat.time.d": {
+    "fp": "3sp9hy",
+    "text": "responde a _¿cuándo?_ — {μετὰ τό} «después de», {ἐν τῷ} «mientras», {πρὸ τοῦ} «antes de»"
+  },
+  "infinitives.cat.time.e0": {
+    "fp": "2klo5x",
+    "text": "mientras sembraba"
+  },
+  "infinitives.cat.time.e1": {
+    "fp": "jdv0ki",
+    "text": "después de que yo haya resucitado"
+  },
+  "infinitives.cat.time.name": {
+    "fp": "1q4eyv8",
+    "text": "Tiempo"
+  },
+  "infinitives.cg.substantival-use-like": {
+    "fp": "kzjui9",
+    "text": "Uso sustantivado (como sustantivo)"
+  },
+  "infinitives.cg.verbal-use-like": {
+    "fp": "ljdwhe",
+    "text": "Uso verbal (como verbo)"
+  },
+  "infinitives.cs1.lesson": {
+    "fp": "19o7f4q",
+    "text": "El sujeto en acusativo"
+  },
+  "infinitives.cs1.s0": {
+    "fp": "14x1v5p",
+    "text": "Es necesario que el Hijo del Hombre padezca mucho."
+  },
+  "infinitives.cs1.s0.note": {
+    "fp": "3zj0dn",
+    "text": "Marcos 8:31 — τὸν υἱόν va en acusativo porque es el SUJETO del infinitivo."
+  },
+  "infinitives.cs1.s0.w0.gloss": {
+    "fp": "o8wrkv",
+    "text": "es necesario"
+  },
+  "infinitives.cs1.s0.w1.gloss": {
+    "fp": "1dyjk0s",
+    "text": "el"
+  },
+  "infinitives.cs1.s0.w2.gloss": {
+    "fp": "iis1sr",
+    "text": "Hijo"
+  },
+  "infinitives.cs1.s0.w2.syntax": {
+    "fp": "1fmd8ph",
+    "text": "Sujeto del infinitivo en acusativo"
+  },
+  "infinitives.cs1.s0.w3.gloss": {
+    "fp": "t6uqnc",
+    "text": "de"
+  },
+  "infinitives.cs1.s0.w4.gloss": {
+    "fp": "ltob9r",
+    "text": "Hombre"
+  },
+  "infinitives.cs1.s0.w4.syntax": {
+    "fp": "ue6747",
+    "text": "Genitivo de relación"
+  },
+  "infinitives.cs1.s0.w5.gloss": {
+    "fp": "1dlbf4f",
+    "text": "muchas cosas"
+  },
+  "infinitives.cs1.s0.w5.syntax": {
+    "fp": "6nscg3",
+    "text": "Objeto directo"
+  },
+  "infinitives.cs1.s0.w6.gloss": {
+    "fp": "4a07w3",
+    "text": "padecer"
+  },
+  "infinitives.cs1.s0.w6.syntax": {
+    "fp": "pn17zi",
+    "text": "Infinitivo complementario"
+  },
+  "infinitives.cs2.lesson": {
+    "fp": "1cora2q",
+    "text": "Lecciones 5 y 8 · El infinitivo"
+  },
+  "infinitives.cs2.s0": {
+    "fp": "jhcm2o",
+    "text": "¿Quieres oír?"
+  },
+  "infinitives.cs2.s0.w0.gloss": {
+    "fp": "uquxb2",
+    "text": "¿quieres?"
+  },
+  "infinitives.cs2.s0.w1.gloss": {
+    "fp": "1abig4",
+    "text": "oír"
+  },
+  "infinitives.cs2.s0.w1.syntax": {
+    "fp": "pn17zi",
+    "text": "Infinitivo complementario"
+  },
+  "infinitives.cs2.s1": {
+    "fp": "1q472b6",
+    "text": "Es necesario orar."
+  },
+  "infinitives.cs2.s1.note": {
+    "fp": "ej6f5z",
+    "text": "Con el impersonal δεῖ, el infinitivo es el sujeto gramatical."
+  },
+  "infinitives.cs2.s1.w0.gloss": {
+    "fp": "o8wrkv",
+    "text": "es necesario"
+  },
+  "infinitives.cs2.s1.w1.gloss": {
+    "fp": "jklfow",
+    "text": "orar"
+  },
+  "infinitives.cs2.s1.w1.syntax": {
+    "fp": "l1tr8w",
+    "text": "Infinitivo sujeto"
+  },
+  "infinitives.cs2.s2": {
+    "fp": "9rq6su",
+    "text": "Estabais a punto de venir."
+  },
+  "infinitives.cs2.s2.w0.gloss": {
+    "fp": "sccaak",
+    "text": "estabais a punto"
+  },
+  "infinitives.cs2.s2.w1.gloss": {
+    "fp": "1kh3yk",
+    "text": "de venir"
+  },
+  "infinitives.cs2.s2.w1.syntax": {
+    "fp": "pn17zi",
+    "text": "Infinitivo complementario"
+  },
+  "infinitives.cs2.s3": {
+    "fp": "1x6gr3e",
+    "text": "Es necesario guardar los mandamientos."
+  },
+  "infinitives.cs2.s3.w0.gloss": {
+    "fp": "o8wrkv",
+    "text": "es necesario"
+  },
+  "infinitives.cs2.s3.w1.gloss": {
+    "fp": "1tgia71",
+    "text": "guardar"
+  },
+  "infinitives.cs2.s3.w1.syntax": {
+    "fp": "l1tr8w",
+    "text": "Infinitivo sujeto"
+  },
+  "infinitives.cs2.s3.w2.gloss": {
+    "fp": "1dyjk0s",
+    "text": "los"
+  },
+  "infinitives.cs2.s3.w3.gloss": {
+    "fp": "15z46mb",
+    "text": "mandamientos"
+  },
+  "infinitives.cs2.s3.w3.syntax": {
+    "fp": "6nscg3",
+    "text": "Objeto directo"
+  },
+  "infinitives.d1.o0": {
+    "fp": "1wnsz0r",
+    "text": "Presente activo — «soltar»"
+  },
+  "infinitives.d1.o1": {
+    "fp": "1m9mo2n",
+    "text": "Aoristo activo — «soltar (sin más)»"
+  },
+  "infinitives.d1.o2": {
+    "fp": "sq3j1b",
+    "text": "Presente medio/pasivo"
+  },
+  "infinitives.d1.o3": {
+    "fp": "c55qo6",
+    "text": "Aoristo pasivo — «ser soltado»"
+  },
+  "infinitives.d1.o4": {
+    "fp": "1rrihcl",
+    "text": "Presente (deponente) — «venir»"
+  },
+  "infinitives.d1.o5": {
+    "fp": "1y5waol",
+    "text": "Aoristo (segundo) — «venir»"
+  },
+  "infinitives.d1.title": {
+    "fp": "1cox3vo",
+    "text": "Práctica — identifica el infinitivo"
+  },
+  "infinitives.d2.o0": {
+    "fp": "p1ljel",
+    "text": "«mientras …»"
+  },
+  "infinitives.d2.o1": {
+    "fp": "1xy5mnq",
+    "text": "«porque … / a causa de …»"
+  },
+  "infinitives.d2.o2": {
+    "fp": "1buz56d",
+    "text": "«para …»"
+  },
+  "infinitives.d2.o3": {
+    "fp": "1j9tpog",
+    "text": "«después de …»"
+  },
+  "infinitives.d2.title": {
+    "fp": "u5w6qk",
+    "text": "Práctica — artículo + infinitivo"
+  },
+  "infinitives.ex.about-come": {
+    "fp": "tu4ee0",
+    "text": "está a punto de venir"
+  },
+  "infinitives.ex.after-raised-matt": {
+    "fp": "bbyues",
+    "text": "después de que yo resucite (Mateo 26:32)"
+  },
+  "infinitives.ex.because-had-root": {
+    "fp": "1qso1ew",
+    "text": "porque no tenía raíz (Marcos 4:6)"
+  },
+  "infinitives.ex.cannot-serve-god": {
+    "fp": "19mzmyn",
+    "text": "no podéis servir a Dios y a las riquezas (Mateo 6:24)"
+  },
+  "infinitives.ex.loose-aorist-augment": {
+    "fp": "12a91f",
+    "text": "soltar (aoristo — con σ, pero sin aumento)"
+  },
+  "infinitives.ex.son-man-must": {
+    "fp": "117fwb1",
+    "text": "es necesario que el Hijo del Hombre padezca mucho (Marcos 8:31)"
+  },
+  "infinitives.ex.want-loose": {
+    "fp": "kgpxpp",
+    "text": "quiero soltar"
+  },
+  "infinitives.ex.while-was-sowing": {
+    "fp": "1sfspq9",
+    "text": "mientras sembraba (Marcos 4:4)"
+  },
+  "infinitives.exp.eg.want-loose": {
+    "fp": "16b5pq0",
+    "text": "{θέλω λύειν} = «quiero _soltar_»."
+  },
+  "infinitives.exp.p.infinitive-form-verb": {
+    "fp": "wk2004",
+    "text": "Un *infinitivo* es la forma del verbo que nombra la acción ({λύειν} «soltar»). La nombra sin sujeto, persona ni número, así que no cambia por «yo / tú / él». Sobre todo basta con reconocer dos formas: presente activo ({‑ειν}) y aoristo activo ({‑σαι}). El infinitivo aoristo lleva la {σ} pero, y esto importa, *ningún aumento* (el aumento vive solo en el indicativo)."
+  },
+  "infinitives.exp.p.infinitive-verbal-noun": {
+    "fp": "kp6bli",
+    "text": "El infinitivo es un *sustantivo verbal*, así que puede llevar artículo ({τό}) e incluso un sujeto en acusativo ({θέλω τὸν ἄγγελον ἀπελθεῖν} = «quiero que el mensajero se vaya»). Estas son sus *categorías sintácticas esenciales* (según Wallace)."
+  },
+  "infinitives.exp.p.present-aorist-infinitive": {
+    "fp": "19txkes",
+    "text": "Presente frente a aoristo en el infinitivo es aspecto, no tiempo: acción en curso frente a acción simple."
+  },
+  "infinitives.h.article-infinitive-greek's": {
+    "fp": "czgvdk",
+    "text": "El artículo + infinitivo: la navaja suiza del griego"
+  },
+  "infinitives.h.forms-two-endings": {
+    "fp": "11kvut3",
+    "text": "Las formas: dos desinencias cubren casi todo"
+  },
+  "infinitives.h.going-deeper-infinitive": {
+    "fp": "1xhbvwx",
+    "text": "Más a fondo: el infinitivo como caballo de batalla de la teología"
+  },
+  "infinitives.h.start-english-form": {
+    "fp": "wyibpr",
+    "text": "Empecemos por el español: la forma en -ar, -er, -ir"
+  },
+  "infinitives.h.try": {
+    "fp": "1c7r8bb",
+    "text": "Practiquemos"
+  },
+  "infinitives.h.watch-out": {
+    "fp": "sg44kc",
+    "text": "Ojo"
+  },
+  "infinitives.h.where-you'll-meet": {
+    "fp": "hnl03w",
+    "text": "Dónde lo encontrarás primero: tras los verbos auxiliares"
+  },
+  "infinitives.h.who-does-infinitive's": {
+    "fp": "1ec3bi4",
+    "text": "¿Quién ejecuta la acción del infinitivo? El sujeto en acusativo"
+  },
+  "infinitives.intro.preposition-chooses-meaning": {
+    "fp": "lckepi",
+    "text": "La preposición elige el significado."
+  },
+  "infinitives.intro.vocabulary-eat-pray": {
+    "fp": "11zjhw5",
+    "text": "Vocabulario: {ἐσθίω / φαγεῖν} «comer» · {προσεύχομαι} «orar» · {βαπτισθῆναι} «ser bautizado»."
+  },
+  "infinitives.intro.watch-patterns-helper": {
+    "fp": "ztjmiq",
+    "text": "Observa cómo los patrones — auxiliar + infinitivo, preposición + infinitivo con artículo — se repiten página tras página."
+  },
+  "infinitives.le.aorist-infinitives-whole": {
+    "fp": "x8xh9o",
+    "text": "Infinitivos aoristos — el «…» de acción entera"
+  },
+  "infinitives.le.every-form-able": {
+    "fp": "1qistnt",
+    "text": "Todas las formas de {δύναμαι} — «poder…» + infinitivo"
+  },
+  "infinitives.le.every-form-nt's": {
+    "fp": "19vwz24",
+    "text": "Todas las formas de {δεῖ} — el «hay que» del NT"
+  },
+  "infinitives.le.infinitive": {
+    "fp": "12o56iv",
+    "text": "Todos los infinitivos del NT"
+  },
+  "infinitives.p.always-outside-indicative": {
+    "fp": "1fp6ql4",
+    "text": "Como siempre fuera del indicativo: el infinitivo aoristo lleva la {σ} pero *ningún aumento*, y su «tiempo» es aspecto: {λύειν} presenta un soltar en curso; {λῦσαι}, el acto como un todo. Las formas medias y pasivas terminan en {‑εσθαι} (pres. m/p: {λύεσθαι}) y {‑θῆναι} (aor. pas.: {λυθῆναι}): reconócelas, no te angusties por producirlas."
+  },
+  "infinitives.p.because-infinitive-noun": {
+    "fp": "80ny2n",
+    "text": "Como el infinitivo es un sustantivo, puede llevar el artículo neutro — {τὸ λύειν}, «el (acto de) soltar» —, y una vez que lleva artículo puede seguir a una [preposition:preposición]. Esa combinación construye cláusulas compactas, y el español la reconoce sin esfuerzo porque también dice «el vivir», «al entrar», «por no tener»:"
+  },
+  "infinitives.p.exactly-english-set": {
+    "fp": "mcryo6",
+    "text": "Exactamente como en español, un conjunto de verbos «auxiliares» queda incompleto sin un infinitivo: «_puedo_… (¿hacer qué?)». Aprende estas parejas como una unidad:"
+  },
+  "infinitives.p.indirect-discourse-after": {
+    "fp": "2fe458",
+    "text": "*Discurso indirecto.* Tras verbos de decir y de pensar, el infinitivo puede referir el habla: {λέγουσιν ἀνάστασιν μὴ εἶναι} — «dicen que no hay resurrección» (Marcos 12:18, de los saduceos). El esquema de acusativo más infinitivo («dicen _no ser resurrección_») es la maquinaria griega que hay detrás de muchas oraciones con «que»."
+  },
+  "infinitives.p.notice-something-about": {
+    "fp": "6nzmmh",
+    "text": "Fíjate en algo de «_Errar_ es humano»: el infinitivo funciona como _sustantivo_, es el sujeto de «es». Esa doble vida es la clave del infinitivo griego: es un *sustantivo verbal*. Bastante verbo como para tener [tense:tiempo] y [voice:voz] y llevar complementos («comer _pan_»); bastante sustantivo como para hacer de sujeto, llevar el artículo {τό} y hasta seguir a preposiciones. Y aquí el español tiene ventaja sobre el inglés: tú ya dices «_el vivir_», «_el andar_», que es exactamente lo que hace el griego."
+  },
+  "infinitives.p.purpose-result-infinitive": {
+    "fp": "10h5wh4",
+    "text": "*Finalidad frente a resultado.* {εἰς τό} + infinitivo marca normalmente la intención («para que»); {ὥστε} + infinitivo marca normalmente el desenlace («de modo que, con el resultado de que»): {ὥστε τὸν ὄχλον θαυμάσαι}, «de modo que la multitud se maravillaba» (Mateo 15:31). Cuando un texto es ambiguo — ¿_pretendía_ Dios el desenlace o simplemente lo _permitió_? —, la elección entre finalidad y resultado es una decisión genuinamente teológica."
+  },
+  "infinitives.p.she-wanted-learn": {
+    "fp": "1fnkw4",
+    "text": "«Ella quería _aprender_»: ella es quien aprende. «Ella quería que _yo_ aprendiera»: ahora lo hace otro, y el español lo introduce con «que» y un verbo conjugado. El griego resuelve lo mismo de otra manera: ese alguien va en [accusative:acusativo] y el verbo queda en infinitivo: {θέλω τὸν ἄγγελον ἀπελθεῖν}, «quiero que el mensajero se vaya», literalmente «quiero _al mensajero_ [ac.] _irse_»."
+  },
+  "infinitives.p.subject-infinitives-article": {
+    "fp": "1escunp",
+    "text": "*Infinitivos sujeto.* Con el artículo, un infinitivo puede sostener una proposición entera: {ἐμοὶ γὰρ τὸ ζῆν Χριστὸς καὶ τὸ ἀποθανεῖν κέρδος} — «porque para mí _el vivir_ es Cristo y _el morir_ es ganancia» (Fil. 1:21). Aquí el español calca al griego palabra por palabra, artículo incluido: dos infinitivos con artículo son los sujetos, y toda la fuerza de la frase depende de verlos como sustantivos."
+  },
+  "infinitives.p.want-eat-she": {
+    "fp": "ru8w1e",
+    "text": "«Quiero _comer_.» «Espera _ganar_.» «_Errar_ es humano.» El *infinitivo* — el español lo marca con la terminación -ar, -er o -ir — es la forma comodín del verbo: sin sujeto, sin persona, sin número. Nombra la acción misma."
+  },
+  "infinitives.pa.after-eating-went": {
+    "fp": "1v9gt3u",
+    "text": "«Después de comer, salieron» — μετὰ τό + infinitivo aoristo."
+  },
+  "infinitives.pa.came-baptized-bare": {
+    "fp": "13knnn",
+    "text": "«Vino a ser bautizado» — infinitivo de finalidad, sin artículo, tras un verbo de movimiento (cf. Mateo 3:13)."
+  },
+  "infinitives.pa.must-pray-literally": {
+    "fp": "nuxdqx",
+    "text": "«Debemos orar» — literalmente «es necesario [a] nosotros [ac.] orar»."
+  },
+  "infinitives.pa.want-hear-word": {
+    "fp": "ak5p5v",
+    "text": "«Queremos oír la palabra» — infinitivo complementario tras θέλω."
+  },
+  "infinitives.pa.while-was-speaking": {
+    "fp": "102698t",
+    "text": "«Mientras hablaba, se asombraban» — ἐν τῷ + infinitivo con sujeto en acusativo αὐτόν."
+  },
+  "infinitives.pr1.title": {
+    "fp": "1vvo23e",
+    "text": "Práctica — traduce"
+  },
+  "infinitives.t1.h1": {
+    "fp": "16wg01y",
+    "text": "Presente activo"
+  },
+  "infinitives.t1.h2": {
+    "fp": "1y3dkqf",
+    "text": "Aoristo activo"
+  },
+  "infinitives.t1.title": {
+    "fp": "1gplzhk",
+    "text": "Formas de infinitivo más frecuentes — λύω"
+  },
+  "infinitives.t2.c0.1": {
+    "fp": "1wrqpi",
+    "text": "puedo, soy capaz de"
+  },
+  "infinitives.t2.c1.1": {
+    "fp": "umanfw",
+    "text": "quiero, deseo"
+  },
+  "infinitives.t2.c2.1": {
+    "fp": "16tidc5",
+    "text": "estoy a punto de"
+  },
+  "infinitives.t2.c3.1": {
+    "fp": "154272z",
+    "text": "comienzo a"
+  },
+  "infinitives.t2.c4.1": {
+    "fp": "rre3b",
+    "text": "debo"
+  },
+  "infinitives.t2.c5.1": {
+    "fp": "1jhz13n",
+    "text": "es necesario — «hay que»"
+  },
+  "infinitives.t2.c6.1": {
+    "fp": "2kkh4a",
+    "text": "es lícito / está permitido"
+  },
+  "infinitives.t2.h0": {
+    "fp": "muvidc",
+    "text": "Verbo"
+  },
+  "infinitives.t2.h1": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "infinitives.t2.title": {
+    "fp": "7ubhsz",
+    "text": "Verbos auxiliares que rigen infinitivo"
+  },
+  "infinitives.t3.c0.1": {
+    "fp": "duets8",
+    "text": "— (verbo conjugado)"
+  },
+  "infinitives.t3.c0.2": {
+    "fp": "j12dch",
+    "text": "el marco"
+  },
+  "infinitives.t3.c1.1": {
+    "fp": "5ygshn",
+    "text": "acusativo"
+  },
+  "infinitives.t3.c1.2": {
+    "fp": "1iav1gk",
+    "text": "sujeto del infinitivo"
+  },
+  "infinitives.t3.c2.1": {
+    "fp": "odt1vp",
+    "text": "— (infinitivo)"
+  },
+  "infinitives.t3.c2.2": {
+    "fp": "d5srkm",
+    "text": "la acción"
+  },
+  "infinitives.t3.h0": {
+    "fp": "1c4mk2t",
+    "text": "Pieza"
+  },
+  "infinitives.t3.h1": {
+    "fp": "7kvjkh",
+    "text": "Caso"
+  },
+  "infinitives.t3.h2": {
+    "fp": "ijqa2k",
+    "text": "Papel"
+  },
+  "infinitives.t3.title": {
+    "fp": "8sndpi",
+    "text": "El patrón"
+  },
+  "infinitives.t4.c0.1": {
+    "fp": "4s72bv",
+    "text": "mientras / al …"
+  },
+  "infinitives.t4.c1.1": {
+    "fp": "179ppuf",
+    "text": "después de …"
+  },
+  "infinitives.t4.c2.1": {
+    "fp": "1ikz1uc",
+    "text": "antes de …"
+  },
+  "infinitives.t4.c3.1": {
+    "fp": "1emjs05",
+    "text": "porque …"
+  },
+  "infinitives.t4.c4.1": {
+    "fp": "1e0t7y0",
+    "text": "para … (finalidad)"
+  },
+  "infinitives.t4.c5.1": {
+    "fp": "1umdvdm",
+    "text": "de modo que … (resultado)"
+  },
+  "infinitives.t4.h0": {
+    "fp": "1vuws7d",
+    "text": "Patrón"
+  },
+  "infinitives.t4.h1": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "infinitives.t4.title": {
+    "fp": "10d8xxc",
+    "text": "Preposición + infinitivo con artículo"
+  },
+  "infinitives.wo.aorist-active-infinitive": {
+    "fp": "1l5kozc",
+    "text": "Infinitivo aoristo activo {λῦσαι} frente a imperativo aoristo medio {λῦσαι}: grafía idéntica; lo decide el marco de la frase."
+  },
+  "infinitives.wo.augment-never": {
+    "fp": "1uhygg9",
+    "text": "Sin aumento: {λῦσαι}, nunca {ἐλῦσαι}."
+  },
+  "infinitives.wo.negative-having": {
+    "fp": "ewdpuw",
+    "text": "La negación es {μή}, no {οὐ}: {τὸ μὴ ἔχειν}, «el no tener»."
+  },
+  "infinitives.wo.verbs-contract-normally": {
+    "fp": "34i4nq",
+    "text": "Los verbos en -εω se contraen con normalidad: {φιλεῖν} «amar», {ποιῆσαι} «hacer»."
+  },
+  "infinitives.wo.when-translating-trade": {
+    "fp": "1qftrrq",
+    "text": "Al traducir {δεῖ}, cambia «es necesario que X…» por el llano «X debe…»."
+  },
+  "parseframe.case.0": {
+    "fp": "ts6un5",
+    "text": "Nom."
+  },
+  "parseframe.case.1": {
+    "fp": "13rcnlo",
+    "text": "Acus."
+  },
+  "parseframe.case.2": {
+    "fp": "1jtmupt",
+    "text": "Gen."
+  },
+  "parseframe.case.3": {
+    "fp": "37b14",
+    "text": "Dat."
+  },
+  "parseframe.ex.inflected": {
+    "fp": "asvu1q",
+    "text": "p. ej. desatamos"
+  },
+  "parseframe.ex.meaning": {
+    "fp": "v9un47",
+    "text": "desato"
+  },
+  "parseframe.gender.0": {
+    "fp": "1y03fz1",
+    "text": "Masc."
+  },
+  "parseframe.gender.1": {
+    "fp": "4udjbj",
+    "text": "Fem."
+  },
+  "parseframe.gender.2": {
+    "fp": "105oupl",
+    "text": "Neut."
+  },
+  "parseframe.h.case": {
+    "fp": "7kvjkh",
+    "text": "Caso"
+  },
+  "parseframe.h.gender": {
+    "fp": "1jtmupt",
+    "text": "Gén."
+  },
+  "parseframe.h.inflected": {
+    "fp": "euv39q",
+    "text": "Significado de la forma"
+  },
+  "parseframe.h.lexical": {
+    "fp": "bq1p8e",
+    "text": "1.ª persona sg."
+  },
+  "parseframe.h.meaning": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "parseframe.h.mood": {
+    "fp": "rat53y",
+    "text": "Modo"
+  },
+  "parseframe.h.number": {
+    "fp": "pb3jd3",
+    "text": "Núm."
+  },
+  "parseframe.h.person": {
+    "fp": "1i84mn4",
+    "text": "Persona"
+  },
+  "parseframe.h.tense": {
+    "fp": "smsl28",
+    "text": "Tiempo"
+  },
+  "parseframe.h.voice": {
+    "fp": "b1qn4p",
+    "text": "Voz"
+  },
+  "parseframe.mood.0": {
+    "fp": "1qzvbfn",
+    "text": "Indicativo"
+  },
+  "parseframe.mood.1": {
+    "fp": "q7kfd7",
+    "text": "Imperativo"
+  },
+  "parseframe.mood.2": {
+    "fp": "1f02x94",
+    "text": "Infinitivo"
+  },
+  "parseframe.mood.3": {
+    "fp": "wsvpvd",
+    "text": "Subjuntivo"
+  },
+  "parseframe.mood.participle": {
+    "fp": "1sgvho2",
+    "text": "Participio"
+  },
+  "parseframe.note": {
+    "fp": "1hb7xd1",
+    "text": "Todo verbo conjugado lleva las cinco primeras; el participio cambia la persona por el caso y el género; el infinitivo se detiene después del modo. El análisis termina con la forma léxica —la 1.ª persona del singular— y debes poder decir qué significan tanto ella como la forma que tienes delante."
+  },
+  "parseframe.number.0": {
+    "fp": "69uey8",
+    "text": "Sing."
+  },
+  "parseframe.number.1": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "parseframe.person.0": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "parseframe.person.1": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "parseframe.person.2": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "parseframe.tense.0": {
+    "fp": "1m3e00c",
+    "text": "Presente"
+  },
+  "parseframe.tense.1": {
+    "fp": "174diuu",
+    "text": "Futuro"
+  },
+  "parseframe.tense.2": {
+    "fp": "qj874s",
+    "text": "Imperfecto"
+  },
+  "parseframe.tense.3": {
+    "fp": "1dkvb7z",
+    "text": "Aoristo"
+  },
+  "parseframe.tense.4": {
+    "fp": "1qm91la",
+    "text": "Perfecto"
+  },
+  "parseframe.tense.5": {
+    "fp": "1ioi1a9",
+    "text": "Pluscuamperfecto"
+  },
+  "parseframe.title": {
+    "fp": "g2ksel",
+    "text": "Para analizar un verbo, indica cada casilla"
+  },
+  "parseframe.voice.0": {
+    "fp": "8qzyhb",
+    "text": "Activa"
+  },
+  "parseframe.voice.1": {
+    "fp": "17pyed4",
+    "text": "Media"
+  },
+  "parseframe.voice.2": {
+    "fp": "pq49ha",
+    "text": "Pasiva"
+  }
+}

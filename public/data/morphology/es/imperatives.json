@@ -1,1 +1,622 @@
-{"imperatives.al.default-translations":{"fp":"vhribm","text":"Traducciones por defecto"},"imperatives.as.imperative-gives-command":{"fp":"xt1vdm","text":"El imperativo da una orden. Aprende primero las formas de segunda persona."},"imperatives.as.let-him-translation":{"fp":"11vza3","text":"«Que él…» es una muleta de traducción, no un permiso: el imperativo de tercera persona manda con la misma firmeza que el de segunda. {ὁ ἔχων ὦτα ἀκουέτω} es una orden de oír, no un ofrecimiento."},"imperatives.cat.command.d":{"fp":"7o56pm","text":"una orden sin más, normalmente de superior a inferior"},"imperatives.cat.command.e0":{"fp":"13dp9zq","text":"vayan y hagan discípulos de todas las naciones"},"imperatives.cat.command.e1":{"fp":"1u3wzja","text":"síganme"},"imperatives.cat.command.eg":{"fp":"1xnbtsx","text":"«Vayan y hagan discípulos»"},"imperatives.cat.command.name":{"fp":"1j2mkia","text":"Mandato"},"imperatives.cat.conditional.d":{"fp":"1qm1s9g","text":"un imperativo que enuncia una condición («haz X, y seguirá Y»)"},"imperatives.cat.conditional.e0":{"fp":"1w8hg38","text":"destruyan este templo, y yo lo levantaré"},"imperatives.cat.conditional.e1":{"fp":"3w73y4","text":"acérquense a Dios, y él se acercará a ustedes"},"imperatives.cat.conditional.name":{"fp":"p6nakz","text":"Condicional"},"imperatives.cat.permissive.d":{"fp":"106ceqw","text":"permite o tolera una acción («que lo haga»)"},"imperatives.cat.permissive.e0":{"fp":"hd2h1k","text":"lo que vas a hacer, hazlo pronto"},"imperatives.cat.permissive.e1":{"fp":"9rz683","text":"si el incrédulo se separa, que se separe"},"imperatives.cat.permissive.name":{"fp":"wz8ab6","text":"Permisivo"},"imperatives.cat.prohibition.d":{"fp":"1iub58o","text":"{μή} + imperativo prohíbe una acción"},"imperatives.cat.prohibition.e0":{"fp":"121rn3","text":"no temas, solo cree"},"imperatives.cat.prohibition.e1":{"fp":"sev30o","text":"no juzguen, para que no sean juzgados"},"imperatives.cat.prohibition.eg":{"fp":"1elar3a","text":"«no temas»"},"imperatives.cat.prohibition.name":{"fp":"11tr5go","text":"Prohibición"},"imperatives.cat.request-entreaty.d":{"fp":"1ybwcw6","text":"un ruego cortés, a menudo de inferior a superior"},"imperatives.cat.request-entreaty.e0":{"fp":"vezwir","text":"danos hoy nuestro pan de cada día"},"imperatives.cat.request-entreaty.e1":{"fp":"1pwfbw5","text":"Señor, ayúdame"},"imperatives.cat.request-entreaty.eg":{"fp":"1ugqe30","text":"«danos hoy nuestro pan de cada día»"},"imperatives.cat.request-entreaty.name":{"fp":"1xcgtmt","text":"Petición / súplica"},"imperatives.cs1.lesson":{"fp":"1pokaiw","text":"Órdenes en el texto"},"imperatives.cs1.s0":{"fp":"1rhiq0g","text":"Regocijaos en el Señor siempre."},"imperatives.cs1.s0.note":{"fp":"brnu33","text":"Filipenses 4:4 — imperativo presente: seguid regocijándoos."},"imperatives.cs1.s0.w0.gloss":{"fp":"uc3pzp","text":"¡regocijaos!"},"imperatives.cs1.s0.w1.gloss":{"fp":"i3gxwe","text":"en"},"imperatives.cs1.s0.w2.gloss":{"fp":"vypk3","text":"el Señor"},"imperatives.cs1.s0.w3.gloss":{"fp":"smyztw","text":"siempre"},"imperatives.cs1.s1":{"fp":"1czgvci","text":"No temas; cree solamente."},"imperatives.cs1.s1.note":{"fp":"1v6ujhm","text":"Marcos 5:36 — μή + imperativo presente: deja de temer (y sigue creyendo)."},"imperatives.cs1.s1.w0.gloss":{"fp":"bkgu4q","text":"no"},"imperatives.cs1.s1.w1.gloss":{"fp":"1ky4oav","text":"temas"},"imperatives.cs1.s1.w2.gloss":{"fp":"17qey2f","text":"solamente"},"imperatives.cs1.s1.w3.gloss":{"fp":"10au60v","text":"cree"},"imperatives.cs2.lesson":{"fp":"kusdmz","text":"Lección 8 · El imperativo"},"imperatives.cs2.s0":{"fp":"1r2ekh","text":"¡Buscad la verdad!"},"imperatives.cs2.s0.note":{"fp":"1nl6os1","text":"Imperativo presente = orden continuada."},"imperatives.cs2.s0.w0.gloss":{"fp":"1rg0j60","text":"¡buscad! (seguid buscando)"},"imperatives.cs2.s0.w1.gloss":{"fp":"1dyjk0s","text":"la"},"imperatives.cs2.s0.w2.gloss":{"fp":"1ni9n4u","text":"verdad"},"imperatives.cs2.s0.w2.syntax":{"fp":"6nscg3","text":"Objeto directo"},"imperatives.cs2.s1":{"fp":"1e36n7h","text":"¡Envíale!"},"imperatives.cs2.s1.note":{"fp":"55bqp9","text":"Imperativo aoristo = orden simple (la «por defecto»)."},"imperatives.cs2.s1.w0.gloss":{"fp":"17tjki2","text":"¡envía!"},"imperatives.cs2.s1.w1.gloss":{"fp":"kb93zq","text":"a él"},"imperatives.cs2.s1.w1.syntax":{"fp":"198u2h0","text":"Dativo de objeto indirecto"},"imperatives.cs2.s2":{"fp":"v1dfq6","text":"¡Enseñad al pueblo!"},"imperatives.cs2.s2.w0.gloss":{"fp":"n1mddl","text":"¡enseñad!"},"imperatives.cs2.s2.w1.gloss":{"fp":"1dyjk0s","text":"al"},"imperatives.cs2.s2.w2.gloss":{"fp":"15ob10u","text":"pueblo"},"imperatives.cs2.s2.w2.syntax":{"fp":"6nscg3","text":"Objeto directo"},"imperatives.d1.o0":{"fp":"167dysu","text":"Pres Impv 2 Sg — «¡sigue soltando!»"},"imperatives.d1.o1":{"fp":"jludfo","text":"Aor Impv 2 Sg — «¡suelta!»"},"imperatives.d1.o2":{"fp":"ne886p","text":"Pres Impv 2 Pl"},"imperatives.d1.o3":{"fp":"ql0wkj","text":"Aor Impv 2 Pl"},"imperatives.d1.o4":{"fp":"179lgvi","text":"Pres Impv 3 Sg — «¡que él suelte!»"},"imperatives.d1.o5":{"fp":"1sswuso","text":"Aor Impv 3 Sg — «¡que él suelte!»"},"imperatives.d1.title":{"fp":"1ji839d","text":"Práctica — analiza la orden"},"imperatives.ex.believe-keep-believing":{"fp":"1t7sx83","text":"¡cree! (sigue creyendo)"},"imperatives.ex.hear-rev-refrain":{"fp":"h8rzwg","text":"que él oiga (el estribillo de Ap. 2:7)"},"imperatives.ex.loose":{"fp":"1yx5gbw","text":"¡suelta! (tú)"},"imperatives.ex.loose-2":{"fp":"ekw7vy","text":"que él suelte"},"imperatives.ex.loose-3":{"fp":"znhlz6","text":"que ellos suelten"},"imperatives.ex.loose-all":{"fp":"wyedej","text":"¡soltad! (vosotros)"},"imperatives.exp.eg.believe-present-keep":{"fp":"1brexn3","text":"{πίστευε} = «¡Cree!» (presente: «sigue creyendo»)."},"imperatives.exp.hook.it's-easy-confuse":{"fp":"1m5ah1z","text":"Es fácil confundir el *indicativo futuro* con el *imperativo aoristo*: los dos llevan {σ} y no llevan aumento. Lo deciden las _desinencias_: {πίστευσον} «¡Cree!» (impv. aor.) frente a {πιστεύσομεν} «creeremos» (ind. fut.)."},"imperatives.exp.hook.prohibitions-split-aspect":{"fp":"kkdrlk","text":"Las prohibiciones se dividen por aspecto: {μή} + imperativo *presente* = «deja de / no sigas haciendo», mientras que {μή} + subjuntivo *aoristo* = «no empieces / no lo hagas nunca»."},"imperatives.exp.p.imperative-command-mood":{"fp":"919cnn","text":"El *imperativo* es el modo del mandato («¡Suelta!» «¡Cree!»). El griego tiene imperativos de 2.ª persona («tú, haz esto») y de 3.ª persona (literalmente «que él haga esto»), que el español expresa con «que…». Sobre todo memorizas las formas de 2.ª persona más las desinencias {‑τω} (3.ª sg.) y {‑τωσαν} (3.ª pl.). Los imperativos aoristos llevan la {σ} pero no el aumento."},"imperatives.exp.p.present-aorist-imperative":{"fp":"17onqnx","text":"Presente frente a aoristo en el imperativo es *aspecto*: el presente = continuado o general («haz de ello tu práctica»), el aoristo = una acción concreta y entera («hazlo»). El aoristo es el más frecuente de los dos, así que fíjate cuando se elige el _presente_. Estas son sus *categorías sintácticas esenciales* (según Wallace)."},"imperatives.h.forms-you'll-meet":{"fp":"1cy1n0n","text":"Las formas que más encontrarás"},"imperatives.h.going-deeper-commands":{"fp":"1taxohg","text":"Más a fondo: órdenes con modales"},"imperatives.h.present-aorist-aspect":{"fp":"1exj556","text":"¿Presente o aoristo? El aspecto de una orden"},"imperatives.h.start-english-giving":{"fp":"gi0je6","text":"Empecemos por el español: dar órdenes"},"imperatives.h.try":{"fp":"1c7r8bb","text":"Practiquemos"},"imperatives.h.watch-out":{"fp":"sg44kc","text":"Ojo"},"imperatives.intro.full-commands-compare":{"fp":"5pe21p","text":"El NT está lleno de órdenes: compara cómo se sienten el presente y el aoristo en su contexto."},"imperatives.intro.identify-person-number":{"fp":"q1xe8x","text":"Identifica persona, número y tiempo; luego percibe el aspecto. Vocabulario: {ἀκούω} «oír» · {ἔγειρε} «levántate» · {δός} (impv. aor. de δίδωμι, «da»)."},"imperatives.le.aorist-imperatives-specific":{"fp":"dz72y0","text":"Imperativos aoristos — órdenes concretas, de acción entera"},"imperatives.le.imperative":{"fp":"1d7ye18","text":"Todos los imperativos del NT"},"imperatives.le.present-imperatives-ongoing":{"fp":"1x0cbf9","text":"Imperativos presentes — órdenes continuadas o habituales"},"imperatives.p.aorist-imperative-somewhat":{"fp":"1c2nls3","text":"El imperativo aoristo es en cierto modo el que se da por defecto para las peticiones concretas, lo cual hace que un _presente_ elegido merezca atención. Las prohibiciones se dividen por la misma línea: {μή} + imperativo presente tiende a «deja de hacer / no sigas haciendo», mientras que «no (llegues a) hacer» suele llevar {μή} + _subjuntivo_ aoristo (véase el capítulo de los Subjuntivos)."},"imperatives.p.both-tenses-command":{"fp":"d4h31h","text":"Los dos tiempos mandan; mandan _de manera distinta_. El aoristo ordena un acto concreto y entero: {λύσον}, «desátalo (ahora, este)». El presente ordena una acción continuada o habitual: {λῦε}, «sigue desatando / haz del desatar tu práctica». El {πίστευε} (presente) de Jesús a Jairo es «sigue creyendo»; el {πίστευσον} (aoristo) de Pablo al carcelero es «pon tu fe: el acto decisivo»."},"imperatives.p.greek's-imperative-richer":{"fp":"1dr21pr","text":"El imperativo griego es más rico en dos aspectos. Primero, marca el [number:número]: decir a una persona que escuche ({ἄκουε}) es una forma distinta de decírselo a una multitud ({ἀκούετε}); el español también lo distingue, pero el inglés escrito no puede. Segundo, el griego tiene imperativo de *tercera persona*: un mandato _sobre_ alguien — {λυέτω}, «que él suelte», «él debe soltar». El español ha de parafrasear con «que…»; el griego lo dice en una sola palabra."},"imperatives.p.permission-toleration-occasionally":{"fp":"1dak2m9","text":"*Permiso y tolerancia.* De vez en cuando el imperativo concede en lugar de mandar: {ὁ ἀδικῶν ἀδικησάτω ἔτι}, «el que es injusto, siga haciendo injusticia» (Ap. 22:11): un permiso siniestro, no un estímulo. El contexto, como siempre, asigna la fuerza."},"imperatives.p.request-just-order":{"fp":"1ou9u9h","text":"*Petición, no solo orden.* La dirección del rango importa: un imperativo de un inferior a un superior es un ruego. Todas las peticiones del Padrenuestro son imperativos aoristos — {ἁγιασθήτω, ἐλθέτω, γενηθήτω, δός, ἄφες} —: lenguaje de oración, no órdenes ladradas. Traducir «dánoslo» como algo brusco es leer mal el alcance del modo."},"imperatives.p.sit-listen-come":{"fp":"1vsp4m9","text":"«¡Siéntate!» «Escucha.» «Pasa.» Las órdenes españolas tienen sus propias formas, distintas del presente, y distinguen tú de ustedes. Ese es el *imperativo*, el [mood:modo] del mandato y de la petición."},"imperatives.p.subjunctive-augment-past":{"fp":"1orvsr","text":"Y, como en el subjuntivo: sin aumento, sin tiempo pasado. Un imperativo aoristo manda una acción entera y única; un imperativo presente manda una acción continuada. La diferencia es de [aspect:aspecto], nunca de tiempo."},"imperatives.p.third-person-builds":{"fp":"16hd1a5","text":"La tercera persona se construye sobre dos desinencias que conviene memorizar a fondo: {‑τω} (singular, «que él…») y {‑τωσαν} (plural, «que ellos…»). Los paradigmas completos están en Minimums 7; aquí tienes la forma general del asunto:"},"imperatives.pa.give-today-aorist":{"fp":"1czft2j","text":"«Dánoslo hoy» — imperativo aoristo de δίδωμι: el Padrenuestro pide en actos enteros y concretos."},"imperatives.pa.hear-these-words":{"fp":"1xtopf2","text":"«¡Oíd estas palabras!» — 2.ª pl. aoristo: un acto concreto de escucha (así abre Hechos 2:22)."},"imperatives.pa.hear-word-present":{"fp":"nvj4r0","text":"«¡Oye la palabra!» — 2.ª sg. presente: sigue oyendo, como práctica."},"imperatives.pa.judge-stop-judging":{"fp":"bvm6jr","text":"«No juzguéis / dejad de juzgar» — μή + imperativo presente (Mateo 7:1): no hagas del juzgar tu costumbre."},"imperatives.pa.let-one-who":{"fp":"15q7bk8","text":"«Que el que tiene oídos, oiga» — imperativo de 3.ª sg. en ‑τω."},"imperatives.pr1.title":{"fp":"1cm3ypw","text":"Práctica — analiza y traduce"},"imperatives.t1.c0.0":{"fp":"1ilh2d1","text":"2.ª persona singular"},"imperatives.t1.c1.0":{"fp":"1bqv7za","text":"2.ª persona plural"},"imperatives.t1.h1":{"fp":"16wg01y","text":"Presente activo"},"imperatives.t1.h2":{"fp":"1y3dkqf","text":"Aoristo activo"},"imperatives.t1.title":{"fp":"c4zrc3","text":"Formas de imperativo más frecuentes — λύω"},"imperatives.t2.c0.0":{"fp":"1ww6hnl","text":"3.ª singular"},"imperatives.t2.c0.2":{"fp":"q1a60e","text":"que él / ella / ello…"},"imperatives.t2.c1.0":{"fp":"1rmxo62","text":"3.ª plural"},"imperatives.t2.c1.2":{"fp":"hfrxve","text":"que ellos…"},"imperatives.t2.h1":{"fp":"pakdrq","text":"Desinencia"},"imperatives.t2.h2":{"fp":"8pl92c","text":"Fuerza"},"imperatives.t2.title":{"fp":"1dy7krz","text":"Las desinencias de tercera persona"},"imperatives.wo.aorist-imperative-future":{"fp":"1blnwxn","text":"Imperativo aoristo frente a indicativo futuro: los dos llevan {σ} y no llevan aumento; lo deciden las _desinencias_: {πίστευσον} «¡cree!» frente a {πιστεύσομεν} «creeremos»."},"imperatives.wo.augment-imperatives-that's":{"fp":"1rp1zd0","text":"Los imperativos no llevan aumento: {λύσατε}, no {ἐλύσατε} (que es el indicativo «soltasteis»)."},"imperatives.wo.middle-passive-imperatives":{"fp":"1m02feq","text":"También existen imperativos medios y pasivos: {λύου} «¡sé suelto!», {προσεύχου} «¡ora!» (deponente, de sentido activo)."},"imperatives.wo.plural-present-imperative":{"fp":"148r3ur","text":"El imperativo presente de 2.ª plural es idéntico al indicativo presente de 2.ª plural ({λύετε} = «¡soltad!» o «soltáis»). Lo decide el contexto, sobre todo un vocativo o un μή."}}
+{
+  "imperatives.al.default-translations": {
+    "fp": "vhribm",
+    "text": "Traducciones por defecto"
+  },
+  "imperatives.as.imperative-gives-command": {
+    "fp": "xt1vdm",
+    "text": "El imperativo da una orden. Aprende primero las formas de segunda persona."
+  },
+  "imperatives.as.let-him-translation": {
+    "fp": "11vza3",
+    "text": "«Que él…» es una muleta de traducción, no un permiso: el imperativo de tercera persona manda con la misma firmeza que el de segunda. {ὁ ἔχων ὦτα ἀκουέτω} es una orden de oír, no un ofrecimiento."
+  },
+  "imperatives.cat.command.d": {
+    "fp": "7o56pm",
+    "text": "una orden sin más, normalmente de superior a inferior"
+  },
+  "imperatives.cat.command.e0": {
+    "fp": "13dp9zq",
+    "text": "vayan y hagan discípulos de todas las naciones"
+  },
+  "imperatives.cat.command.e1": {
+    "fp": "1u3wzja",
+    "text": "síganme"
+  },
+  "imperatives.cat.command.eg": {
+    "fp": "1xnbtsx",
+    "text": "«Vayan y hagan discípulos»"
+  },
+  "imperatives.cat.command.name": {
+    "fp": "1j2mkia",
+    "text": "Mandato"
+  },
+  "imperatives.cat.conditional.d": {
+    "fp": "1qm1s9g",
+    "text": "un imperativo que enuncia una condición («haz X, y seguirá Y»)"
+  },
+  "imperatives.cat.conditional.e0": {
+    "fp": "1w8hg38",
+    "text": "destruyan este templo, y yo lo levantaré"
+  },
+  "imperatives.cat.conditional.e1": {
+    "fp": "3w73y4",
+    "text": "acérquense a Dios, y él se acercará a ustedes"
+  },
+  "imperatives.cat.conditional.name": {
+    "fp": "p6nakz",
+    "text": "Condicional"
+  },
+  "imperatives.cat.permissive.d": {
+    "fp": "106ceqw",
+    "text": "permite o tolera una acción («que lo haga»)"
+  },
+  "imperatives.cat.permissive.e0": {
+    "fp": "hd2h1k",
+    "text": "lo que vas a hacer, hazlo pronto"
+  },
+  "imperatives.cat.permissive.e1": {
+    "fp": "9rz683",
+    "text": "si el incrédulo se separa, que se separe"
+  },
+  "imperatives.cat.permissive.name": {
+    "fp": "wz8ab6",
+    "text": "Permisivo"
+  },
+  "imperatives.cat.prohibition.d": {
+    "fp": "1iub58o",
+    "text": "{μή} + imperativo prohíbe una acción"
+  },
+  "imperatives.cat.prohibition.e0": {
+    "fp": "121rn3",
+    "text": "no temas, solo cree"
+  },
+  "imperatives.cat.prohibition.e1": {
+    "fp": "sev30o",
+    "text": "no juzguen, para que no sean juzgados"
+  },
+  "imperatives.cat.prohibition.eg": {
+    "fp": "1elar3a",
+    "text": "«no temas»"
+  },
+  "imperatives.cat.prohibition.name": {
+    "fp": "11tr5go",
+    "text": "Prohibición"
+  },
+  "imperatives.cat.request-entreaty.d": {
+    "fp": "1ybwcw6",
+    "text": "un ruego cortés, a menudo de inferior a superior"
+  },
+  "imperatives.cat.request-entreaty.e0": {
+    "fp": "vezwir",
+    "text": "danos hoy nuestro pan de cada día"
+  },
+  "imperatives.cat.request-entreaty.e1": {
+    "fp": "1pwfbw5",
+    "text": "Señor, ayúdame"
+  },
+  "imperatives.cat.request-entreaty.eg": {
+    "fp": "1ugqe30",
+    "text": "«danos hoy nuestro pan de cada día»"
+  },
+  "imperatives.cat.request-entreaty.name": {
+    "fp": "1xcgtmt",
+    "text": "Petición / súplica"
+  },
+  "imperatives.cs1.lesson": {
+    "fp": "1pokaiw",
+    "text": "Órdenes en el texto"
+  },
+  "imperatives.cs1.s0": {
+    "fp": "1rhiq0g",
+    "text": "Regocijaos en el Señor siempre."
+  },
+  "imperatives.cs1.s0.note": {
+    "fp": "brnu33",
+    "text": "Filipenses 4:4 — imperativo presente: seguid regocijándoos."
+  },
+  "imperatives.cs1.s0.w0.gloss": {
+    "fp": "uc3pzp",
+    "text": "¡regocijaos!"
+  },
+  "imperatives.cs1.s0.w1.gloss": {
+    "fp": "i3gxwe",
+    "text": "en"
+  },
+  "imperatives.cs1.s0.w2.gloss": {
+    "fp": "vypk3",
+    "text": "el Señor"
+  },
+  "imperatives.cs1.s0.w3.gloss": {
+    "fp": "smyztw",
+    "text": "siempre"
+  },
+  "imperatives.cs1.s1": {
+    "fp": "1czgvci",
+    "text": "No temas; cree solamente."
+  },
+  "imperatives.cs1.s1.note": {
+    "fp": "1v6ujhm",
+    "text": "Marcos 5:36 — μή + imperativo presente: deja de temer (y sigue creyendo)."
+  },
+  "imperatives.cs1.s1.w0.gloss": {
+    "fp": "bkgu4q",
+    "text": "no"
+  },
+  "imperatives.cs1.s1.w1.gloss": {
+    "fp": "1ky4oav",
+    "text": "temas"
+  },
+  "imperatives.cs1.s1.w2.gloss": {
+    "fp": "17qey2f",
+    "text": "solamente"
+  },
+  "imperatives.cs1.s1.w3.gloss": {
+    "fp": "10au60v",
+    "text": "cree"
+  },
+  "imperatives.cs2.lesson": {
+    "fp": "kusdmz",
+    "text": "Lección 8 · El imperativo"
+  },
+  "imperatives.cs2.s0": {
+    "fp": "1r2ekh",
+    "text": "¡Buscad la verdad!"
+  },
+  "imperatives.cs2.s0.note": {
+    "fp": "1nl6os1",
+    "text": "Imperativo presente = orden continuada."
+  },
+  "imperatives.cs2.s0.w0.gloss": {
+    "fp": "1rg0j60",
+    "text": "¡buscad! (seguid buscando)"
+  },
+  "imperatives.cs2.s0.w1.gloss": {
+    "fp": "1dyjk0s",
+    "text": "la"
+  },
+  "imperatives.cs2.s0.w2.gloss": {
+    "fp": "1ni9n4u",
+    "text": "verdad"
+  },
+  "imperatives.cs2.s0.w2.syntax": {
+    "fp": "6nscg3",
+    "text": "Objeto directo"
+  },
+  "imperatives.cs2.s1": {
+    "fp": "1e36n7h",
+    "text": "¡Envíale!"
+  },
+  "imperatives.cs2.s1.note": {
+    "fp": "55bqp9",
+    "text": "Imperativo aoristo = orden simple (la «por defecto»)."
+  },
+  "imperatives.cs2.s1.w0.gloss": {
+    "fp": "17tjki2",
+    "text": "¡envía!"
+  },
+  "imperatives.cs2.s1.w1.gloss": {
+    "fp": "kb93zq",
+    "text": "a él"
+  },
+  "imperatives.cs2.s1.w1.syntax": {
+    "fp": "198u2h0",
+    "text": "Dativo de objeto indirecto"
+  },
+  "imperatives.cs2.s2": {
+    "fp": "v1dfq6",
+    "text": "¡Enseñad al pueblo!"
+  },
+  "imperatives.cs2.s2.w0.gloss": {
+    "fp": "n1mddl",
+    "text": "¡enseñad!"
+  },
+  "imperatives.cs2.s2.w1.gloss": {
+    "fp": "1dyjk0s",
+    "text": "al"
+  },
+  "imperatives.cs2.s2.w2.gloss": {
+    "fp": "15ob10u",
+    "text": "pueblo"
+  },
+  "imperatives.cs2.s2.w2.syntax": {
+    "fp": "6nscg3",
+    "text": "Objeto directo"
+  },
+  "imperatives.d1.o0": {
+    "fp": "167dysu",
+    "text": "Pres Impv 2 Sg — «¡sigue soltando!»"
+  },
+  "imperatives.d1.o1": {
+    "fp": "jludfo",
+    "text": "Aor Impv 2 Sg — «¡suelta!»"
+  },
+  "imperatives.d1.o2": {
+    "fp": "ne886p",
+    "text": "Pres Impv 2 Pl"
+  },
+  "imperatives.d1.o3": {
+    "fp": "ql0wkj",
+    "text": "Aor Impv 2 Pl"
+  },
+  "imperatives.d1.o4": {
+    "fp": "179lgvi",
+    "text": "Pres Impv 3 Sg — «¡que él suelte!»"
+  },
+  "imperatives.d1.o5": {
+    "fp": "1sswuso",
+    "text": "Aor Impv 3 Sg — «¡que él suelte!»"
+  },
+  "imperatives.d1.title": {
+    "fp": "1ji839d",
+    "text": "Práctica — analiza la orden"
+  },
+  "imperatives.ex.believe-keep-believing": {
+    "fp": "1t7sx83",
+    "text": "¡cree! (sigue creyendo)"
+  },
+  "imperatives.ex.hear-rev-refrain": {
+    "fp": "h8rzwg",
+    "text": "que él oiga (el estribillo de Ap. 2:7)"
+  },
+  "imperatives.ex.loose": {
+    "fp": "1yx5gbw",
+    "text": "¡suelta! (tú)"
+  },
+  "imperatives.ex.loose-2": {
+    "fp": "ekw7vy",
+    "text": "que él suelte"
+  },
+  "imperatives.ex.loose-3": {
+    "fp": "znhlz6",
+    "text": "que ellos suelten"
+  },
+  "imperatives.ex.loose-all": {
+    "fp": "wyedej",
+    "text": "¡soltad! (vosotros)"
+  },
+  "imperatives.exp.eg.believe-present-keep": {
+    "fp": "1brexn3",
+    "text": "{πίστευε} = «¡Cree!» (presente: «sigue creyendo»)."
+  },
+  "imperatives.exp.hook.it's-easy-confuse": {
+    "fp": "1m5ah1z",
+    "text": "Es fácil confundir el *indicativo futuro* con el *imperativo aoristo*: los dos llevan {σ} y no llevan aumento. Lo deciden las _desinencias_: {πίστευσον} «¡Cree!» (impv. aor.) frente a {πιστεύσομεν} «creeremos» (ind. fut.)."
+  },
+  "imperatives.exp.hook.prohibitions-split-aspect": {
+    "fp": "kkdrlk",
+    "text": "Las prohibiciones se dividen por aspecto: {μή} + imperativo *presente* = «deja de / no sigas haciendo», mientras que {μή} + subjuntivo *aoristo* = «no empieces / no lo hagas nunca»."
+  },
+  "imperatives.exp.p.imperative-command-mood": {
+    "fp": "919cnn",
+    "text": "El *imperativo* es el modo del mandato («¡Suelta!» «¡Cree!»). El griego tiene imperativos de 2.ª persona («tú, haz esto») y de 3.ª persona (literalmente «que él haga esto»), que el español expresa con «que…». Sobre todo memorizas las formas de 2.ª persona más las desinencias {‑τω} (3.ª sg.) y {‑τωσαν} (3.ª pl.). Los imperativos aoristos llevan la {σ} pero no el aumento."
+  },
+  "imperatives.exp.p.present-aorist-imperative": {
+    "fp": "17onqnx",
+    "text": "Presente frente a aoristo en el imperativo es *aspecto*: el presente = continuado o general («haz de ello tu práctica»), el aoristo = una acción concreta y entera («hazlo»). El aoristo es el más frecuente de los dos, así que fíjate cuando se elige el _presente_. Estas son sus *categorías sintácticas esenciales* (según Wallace)."
+  },
+  "imperatives.h.forms-you'll-meet": {
+    "fp": "1cy1n0n",
+    "text": "Las formas que más encontrarás"
+  },
+  "imperatives.h.going-deeper-commands": {
+    "fp": "1taxohg",
+    "text": "Más a fondo: órdenes con modales"
+  },
+  "imperatives.h.present-aorist-aspect": {
+    "fp": "1exj556",
+    "text": "¿Presente o aoristo? El aspecto de una orden"
+  },
+  "imperatives.h.start-english-giving": {
+    "fp": "gi0je6",
+    "text": "Empecemos por el español: dar órdenes"
+  },
+  "imperatives.h.try": {
+    "fp": "1c7r8bb",
+    "text": "Practiquemos"
+  },
+  "imperatives.h.watch-out": {
+    "fp": "sg44kc",
+    "text": "Ojo"
+  },
+  "imperatives.intro.full-commands-compare": {
+    "fp": "5pe21p",
+    "text": "El NT está lleno de órdenes: compara cómo se sienten el presente y el aoristo en su contexto."
+  },
+  "imperatives.intro.identify-person-number": {
+    "fp": "q1xe8x",
+    "text": "Identifica persona, número y tiempo; luego percibe el aspecto. Vocabulario: {ἀκούω} «oír» · {ἔγειρε} «levántate» · {δός} (impv. aor. de δίδωμι, «da»)."
+  },
+  "imperatives.le.aorist-imperatives-specific": {
+    "fp": "dz72y0",
+    "text": "Imperativos aoristos — órdenes concretas, de acción entera"
+  },
+  "imperatives.le.imperative": {
+    "fp": "1d7ye18",
+    "text": "Todos los imperativos del NT"
+  },
+  "imperatives.le.present-imperatives-ongoing": {
+    "fp": "1x0cbf9",
+    "text": "Imperativos presentes — órdenes continuadas o habituales"
+  },
+  "imperatives.p.aorist-imperative-somewhat": {
+    "fp": "1c2nls3",
+    "text": "El imperativo aoristo es en cierto modo el que se da por defecto para las peticiones concretas, lo cual hace que un _presente_ elegido merezca atención. Las prohibiciones se dividen por la misma línea: {μή} + imperativo presente tiende a «deja de hacer / no sigas haciendo», mientras que «no (llegues a) hacer» suele llevar {μή} + _subjuntivo_ aoristo (véase el capítulo de los Subjuntivos)."
+  },
+  "imperatives.p.both-tenses-command": {
+    "fp": "d4h31h",
+    "text": "Los dos tiempos mandan; mandan _de manera distinta_. El aoristo ordena un acto concreto y entero: {λύσον}, «desátalo (ahora, este)». El presente ordena una acción continuada o habitual: {λῦε}, «sigue desatando / haz del desatar tu práctica». El {πίστευε} (presente) de Jesús a Jairo es «sigue creyendo»; el {πίστευσον} (aoristo) de Pablo al carcelero es «pon tu fe: el acto decisivo»."
+  },
+  "imperatives.p.greek's-imperative-richer": {
+    "fp": "1dr21pr",
+    "text": "El imperativo griego es más rico en dos aspectos. Primero, marca el [number:número]: decir a una persona que escuche ({ἄκουε}) es una forma distinta de decírselo a una multitud ({ἀκούετε}); el español también lo distingue, pero el inglés escrito no puede. Segundo, el griego tiene imperativo de *tercera persona*: un mandato _sobre_ alguien — {λυέτω}, «que él suelte», «él debe soltar». El español ha de parafrasear con «que…»; el griego lo dice en una sola palabra."
+  },
+  "imperatives.p.permission-toleration-occasionally": {
+    "fp": "1dak2m9",
+    "text": "*Permiso y tolerancia.* De vez en cuando el imperativo concede en lugar de mandar: {ὁ ἀδικῶν ἀδικησάτω ἔτι}, «el que es injusto, siga haciendo injusticia» (Ap. 22:11): un permiso siniestro, no un estímulo. El contexto, como siempre, asigna la fuerza."
+  },
+  "imperatives.p.request-just-order": {
+    "fp": "1ou9u9h",
+    "text": "*Petición, no solo orden.* La dirección del rango importa: un imperativo de un inferior a un superior es un ruego. Todas las peticiones del Padrenuestro son imperativos aoristos — {ἁγιασθήτω, ἐλθέτω, γενηθήτω, δός, ἄφες} —: lenguaje de oración, no órdenes ladradas. Traducir «dánoslo» como algo brusco es leer mal el alcance del modo."
+  },
+  "imperatives.p.sit-listen-come": {
+    "fp": "1vsp4m9",
+    "text": "«¡Siéntate!» «Escucha.» «Pasa.» Las órdenes españolas tienen sus propias formas, distintas del presente, y distinguen tú de ustedes. Ese es el *imperativo*, el [mood:modo] del mandato y de la petición."
+  },
+  "imperatives.p.subjunctive-augment-past": {
+    "fp": "1orvsr",
+    "text": "Y, como en el subjuntivo: sin aumento, sin tiempo pasado. Un imperativo aoristo manda una acción entera y única; un imperativo presente manda una acción continuada. La diferencia es de [aspect:aspecto], nunca de tiempo."
+  },
+  "imperatives.p.third-person-builds": {
+    "fp": "16hd1a5",
+    "text": "La tercera persona se construye sobre dos desinencias que conviene memorizar a fondo: {‑τω} (singular, «que él…») y {‑τωσαν} (plural, «que ellos…»). Los paradigmas completos están en Minimums 7; aquí tienes la forma general del asunto:"
+  },
+  "imperatives.pa.give-today-aorist": {
+    "fp": "1czft2j",
+    "text": "«Dánoslo hoy» — imperativo aoristo de δίδωμι: el Padrenuestro pide en actos enteros y concretos."
+  },
+  "imperatives.pa.hear-these-words": {
+    "fp": "1xtopf2",
+    "text": "«¡Oíd estas palabras!» — 2.ª pl. aoristo: un acto concreto de escucha (así abre Hechos 2:22)."
+  },
+  "imperatives.pa.hear-word-present": {
+    "fp": "nvj4r0",
+    "text": "«¡Oye la palabra!» — 2.ª sg. presente: sigue oyendo, como práctica."
+  },
+  "imperatives.pa.judge-stop-judging": {
+    "fp": "bvm6jr",
+    "text": "«No juzguéis / dejad de juzgar» — μή + imperativo presente (Mateo 7:1): no hagas del juzgar tu costumbre."
+  },
+  "imperatives.pa.let-one-who": {
+    "fp": "15q7bk8",
+    "text": "«Que el que tiene oídos, oiga» — imperativo de 3.ª sg. en ‑τω."
+  },
+  "imperatives.pr1.title": {
+    "fp": "1cm3ypw",
+    "text": "Práctica — analiza y traduce"
+  },
+  "imperatives.t1.c0.0": {
+    "fp": "1ilh2d1",
+    "text": "2.ª persona singular"
+  },
+  "imperatives.t1.c1.0": {
+    "fp": "1bqv7za",
+    "text": "2.ª persona plural"
+  },
+  "imperatives.t1.h1": {
+    "fp": "16wg01y",
+    "text": "Presente activo"
+  },
+  "imperatives.t1.h2": {
+    "fp": "1y3dkqf",
+    "text": "Aoristo activo"
+  },
+  "imperatives.t1.title": {
+    "fp": "c4zrc3",
+    "text": "Formas de imperativo más frecuentes — λύω"
+  },
+  "imperatives.t2.c0.0": {
+    "fp": "1ww6hnl",
+    "text": "3.ª singular"
+  },
+  "imperatives.t2.c0.2": {
+    "fp": "q1a60e",
+    "text": "que él / ella / ello…"
+  },
+  "imperatives.t2.c1.0": {
+    "fp": "1rmxo62",
+    "text": "3.ª plural"
+  },
+  "imperatives.t2.c1.2": {
+    "fp": "hfrxve",
+    "text": "que ellos…"
+  },
+  "imperatives.t2.h1": {
+    "fp": "pakdrq",
+    "text": "Desinencia"
+  },
+  "imperatives.t2.h2": {
+    "fp": "8pl92c",
+    "text": "Fuerza"
+  },
+  "imperatives.t2.title": {
+    "fp": "1dy7krz",
+    "text": "Las desinencias de tercera persona"
+  },
+  "imperatives.wo.aorist-imperative-future": {
+    "fp": "1blnwxn",
+    "text": "Imperativo aoristo frente a indicativo futuro: los dos llevan {σ} y no llevan aumento; lo deciden las _desinencias_: {πίστευσον} «¡cree!» frente a {πιστεύσομεν} «creeremos»."
+  },
+  "imperatives.wo.augment-imperatives-that's": {
+    "fp": "1rp1zd0",
+    "text": "Los imperativos no llevan aumento: {λύσατε}, no {ἐλύσατε} (que es el indicativo «soltasteis»)."
+  },
+  "imperatives.wo.middle-passive-imperatives": {
+    "fp": "1m02feq",
+    "text": "También existen imperativos medios y pasivos: {λύου} «¡sé suelto!», {προσεύχου} «¡ora!» (deponente, de sentido activo)."
+  },
+  "imperatives.wo.plural-present-imperative": {
+    "fp": "148r3ur",
+    "text": "El imperativo presente de 2.ª plural es idéntico al indicativo presente de 2.ª plural ({λύετε} = «¡soltad!» o «soltáis»). Lo decide el contexto, sobre todo un vocativo o un μή."
+  },
+  "parseframe.case.0": {
+    "fp": "ts6un5",
+    "text": "Nom."
+  },
+  "parseframe.case.1": {
+    "fp": "13rcnlo",
+    "text": "Acus."
+  },
+  "parseframe.case.2": {
+    "fp": "1jtmupt",
+    "text": "Gen."
+  },
+  "parseframe.case.3": {
+    "fp": "37b14",
+    "text": "Dat."
+  },
+  "parseframe.ex.inflected": {
+    "fp": "asvu1q",
+    "text": "p. ej. desatamos"
+  },
+  "parseframe.ex.meaning": {
+    "fp": "v9un47",
+    "text": "desato"
+  },
+  "parseframe.gender.0": {
+    "fp": "1y03fz1",
+    "text": "Masc."
+  },
+  "parseframe.gender.1": {
+    "fp": "4udjbj",
+    "text": "Fem."
+  },
+  "parseframe.gender.2": {
+    "fp": "105oupl",
+    "text": "Neut."
+  },
+  "parseframe.h.case": {
+    "fp": "7kvjkh",
+    "text": "Caso"
+  },
+  "parseframe.h.gender": {
+    "fp": "1jtmupt",
+    "text": "Gén."
+  },
+  "parseframe.h.inflected": {
+    "fp": "euv39q",
+    "text": "Significado de la forma"
+  },
+  "parseframe.h.lexical": {
+    "fp": "bq1p8e",
+    "text": "1.ª persona sg."
+  },
+  "parseframe.h.meaning": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "parseframe.h.mood": {
+    "fp": "rat53y",
+    "text": "Modo"
+  },
+  "parseframe.h.number": {
+    "fp": "pb3jd3",
+    "text": "Núm."
+  },
+  "parseframe.h.person": {
+    "fp": "1i84mn4",
+    "text": "Persona"
+  },
+  "parseframe.h.tense": {
+    "fp": "smsl28",
+    "text": "Tiempo"
+  },
+  "parseframe.h.voice": {
+    "fp": "b1qn4p",
+    "text": "Voz"
+  },
+  "parseframe.mood.0": {
+    "fp": "1qzvbfn",
+    "text": "Indicativo"
+  },
+  "parseframe.mood.1": {
+    "fp": "q7kfd7",
+    "text": "Imperativo"
+  },
+  "parseframe.mood.2": {
+    "fp": "1f02x94",
+    "text": "Infinitivo"
+  },
+  "parseframe.mood.3": {
+    "fp": "wsvpvd",
+    "text": "Subjuntivo"
+  },
+  "parseframe.mood.participle": {
+    "fp": "1sgvho2",
+    "text": "Participio"
+  },
+  "parseframe.note": {
+    "fp": "1hb7xd1",
+    "text": "Todo verbo conjugado lleva las cinco primeras; el participio cambia la persona por el caso y el género; el infinitivo se detiene después del modo. El análisis termina con la forma léxica —la 1.ª persona del singular— y debes poder decir qué significan tanto ella como la forma que tienes delante."
+  },
+  "parseframe.number.0": {
+    "fp": "69uey8",
+    "text": "Sing."
+  },
+  "parseframe.number.1": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "parseframe.person.0": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "parseframe.person.1": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "parseframe.person.2": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "parseframe.tense.0": {
+    "fp": "1m3e00c",
+    "text": "Presente"
+  },
+  "parseframe.tense.1": {
+    "fp": "174diuu",
+    "text": "Futuro"
+  },
+  "parseframe.tense.2": {
+    "fp": "qj874s",
+    "text": "Imperfecto"
+  },
+  "parseframe.tense.3": {
+    "fp": "1dkvb7z",
+    "text": "Aoristo"
+  },
+  "parseframe.tense.4": {
+    "fp": "1qm91la",
+    "text": "Perfecto"
+  },
+  "parseframe.tense.5": {
+    "fp": "1ioi1a9",
+    "text": "Pluscuamperfecto"
+  },
+  "parseframe.title": {
+    "fp": "g2ksel",
+    "text": "Para analizar un verbo, indica cada casilla"
+  },
+  "parseframe.voice.0": {
+    "fp": "8qzyhb",
+    "text": "Activa"
+  },
+  "parseframe.voice.1": {
+    "fp": "17pyed4",
+    "text": "Media"
+  },
+  "parseframe.voice.2": {
+    "fp": "pq49ha",
+    "text": "Pasiva"
+  }
+}

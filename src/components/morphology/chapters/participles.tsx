@@ -10,6 +10,7 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 
 // The participle's uses from Construct search — drawn from the preset list rather than
@@ -18,6 +19,8 @@ const PARTICIPLE_USES = CONSTRUCT_PRESETS.find(g => g.heading === 'Uses of the p
 
 export const PARTICIPLES_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="participles.h.start-english-verbs">Start with English: verbs wearing adjective clothes</SectionHeading>

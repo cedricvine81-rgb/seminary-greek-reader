@@ -21,6 +21,7 @@ import {
   P, SectionHeading, LevelOnly, Term, InfoBox,
   GuidedExample, DropdownPractice, LiveExamples,  Tr,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 
 /** A parse written out, so the fixed word order is visible at a glance. */
 function Slots({ children }: { children: React.ReactNode }) {
@@ -29,6 +30,8 @@ function Slots({ children }: { children: React.ReactNode }) {
 
 export const PARSING_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · What parsing is (Beginning only) ───────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="parsing.h.before-forms-learn">Before the forms: learn the answer</SectionHeading>

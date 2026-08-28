@@ -11,9 +11,12 @@ import {
   ClassSentences, DropdownPractice,
   Tr,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 
 export const INDICATIVES_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="indicatives.h.start-english-what">Start with English: what a verb carries</SectionHeading>

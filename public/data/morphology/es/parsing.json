@@ -1,1 +1,906 @@
-{"parsing.al.five-one-breath":{"fp":"h2amr6","text":"Cinco de un tirón"},"parsing.al.gender-grammatical-natural":{"fp":"4cixwm","text":"El género es gramatical, no natural"},"parsing.al.optative":{"fp":"1j9vni6","text":"El optativo"},"parsing.al.pluperfect":{"fp":"1ioi1a9","text":"Pluscuamperfecto"},"parsing.al.read-column-time":{"fp":"hxxsbv","text":"Lee una columna a la vez"},"parsing.al.tense-aspect-first":{"fp":"18hwvd","text":"El tiempo es aspecto primero y tiempo después"},"parsing.al.why-vocative-listed":{"fp":"1q290py","text":"Por qué el vocativo va al final de la lista"},"parsing.al.worked":{"fp":"1tkxo5d","text":"Resuelto"},"parsing.al.worked-2":{"fp":"1tkxo5d","text":"Resuelto"},"parsing.as.ldquo-child-rdquo":{"fp":"zfdo9m","text":"{τὸ τέκνον} («el niño») es neutro y {ἡ ἁμαρτία} («el pecado») es femenino; ninguno de los dos dice nada sobre el referente. El género es una propiedad del sustantivo en el léxico, así que es la única casilla que no siempre puedes leer en la terminación — se aprende junto con la palabra."},"parsing.as.notice-article-agrees":{"fp":"1om9qbv","text":"Fíjate en que el artículo concuerda con su sustantivo en las tres casillas. Eso convierte al artículo en la mejor pista de análisis del idioma: analízalo, y habrás analizado el sustantivo."},"parsing.as.only-occurrences-most":{"fp":"xx6ef1","text":"Solo unas 68 apariciones en el NT, la mayoría el {μὴ γένοιτο} de Pablo. Se queda en la tabla porque es una opción real de la casilla y tanto Lucas como Pablo lo usan a propósito."},"parsing.as.outside-indicative-tense":{"fp":"3hmlnm","text":"Fuera del indicativo, la casilla del tiempo lleva [aspect:aspecto] y no tiempo en absoluto: un subjuntivo aoristo no es pasado. Sigue nombrando el tiempo por su etiqueta — estás informando de la forma, no comprometiéndote con una traducción."},"parsing.as.parse-finished-only":{"fp":"1l3tdl4","text":"Un análisis solo está terminado cuando has nombrado _todas_ las casillas de esa clase de palabra y luego la forma léxica. «Aoristo» no es un análisis. «Aoristo activo indicativo 3.ª singular de {λύω}» sí lo es."},"parsing.as.rare-never-augmented":{"fp":"1r8234a","text":"Raro (unas 86 veces en el NT) y nunca aumentado de forma consistente; algunas gramáticas lo funden con el perfecto para principiantes. Aquí se nombra para que lo reconozcas en un aparato crítico."},"parsing.as.say-single-phrase":{"fp":"15692mv","text":"Dilo como una sola frase y deja de parecer cinco datos: «presente-activo-indicativo-tercera-singular». Los estudiantes que hacen pausa entre casillas se pierden; los que lo recitan de corrido, no."},"parsing.as.vocative-distinct-only":{"fp":"1z0h9kq","text":"El vocativo se distingue solo en unas pocas formas del singular ({κύριε}, {πάτερ}, {ἀδελφέ}); en lo demás toma prestado el nominativo. Por eso algunos paradigmas lo omiten, pero es un caso de verdad y el NT lo usa constantemente para dirigirse a alguien y en la oración."},"parsing.as.voice-asks-whether":{"fp":"13y8nnt","text":"La *voz* pregunta si el sujeto actúa (activa), recibe la acción (pasiva) o actúa con un interés propio en el resultado (media). El *modo* pregunta cómo lo presenta el hablante: como hecho, como posibilidad, como mandato, como deseo."},"parsing.as.work-left-right":{"fp":"6nyb6f","text":"Trabaja de izquierda a derecha y dilo como una sola frase. No te detengas en el caso — un análisis a medias («es genitivo») no es una respuesta."},"parsing.ct1.h0":{"fp":"go2z8f","text":"Clase de palabra"},"parsing.ct1.h1":{"fp":"o24zu9","text":"Casillas, en orden"},"parsing.ct1.h2":{"fp":"6y2c7n","text":"Ejemplo resuelto"},"parsing.ct1.note":{"fp":"xfhrxc","text":"La forma léxica va siempre al final, introducida por «de»."},"parsing.ct1.title":{"fp":"ow4cyu","text":"El análisis, según la clase de palabra"},"parsing.ct2.h0":{"fp":"164hxkn","text":"1 · Caso"},"parsing.ct2.h1":{"fp":"sfd8i1","text":"2 · Número"},"parsing.ct2.h2":{"fp":"1gqkp8c","text":"3 · Género"},"parsing.ct2.note":{"fp":"15mmwjt","text":"Luego añade la forma léxica: «acusativo plural masculino de ἄνθρωπος»."},"parsing.ct2.title":{"fp":"ye70qa","text":"Casillas del sustantivo — escoge una de cada columna"},"parsing.ct3.h0":{"fp":"u6mgsi","text":"1 · Tiempo"},"parsing.ct3.h1":{"fp":"7er4te","text":"2 · Voz"},"parsing.ct3.h2":{"fp":"1hopo1u","text":"3 · Modo"},"parsing.ct3.h3":{"fp":"1jw5g9v","text":"4 · Persona"},"parsing.ct3.h4":{"fp":"2ufjlq","text":"5 · Número"},"parsing.ct3.note":{"fp":"1ls7l2i","text":"Luego añade la forma léxica: «presente activo indicativo 3.ª singular de λύω»."},"parsing.ct3.title":{"fp":"suxj87","text":"Casillas del verbo finito — escoge una de cada columna"},"parsing.ct4.h0":{"fp":"1hf0yuf","text":"Forma"},"parsing.ct4.h1":{"fp":"o24zu9","text":"Casillas, en orden"},"parsing.ct4.h2":{"fp":"6y2c7n","text":"Ejemplo resuelto"},"parsing.ct4.note":{"fp":"1cmd398","text":"«Participio» e «infinitivo» ocupan la casilla del modo en este esquema — di la palabra en voz alta donde iría el modo."},"parsing.ct5.c0.1":{"fp":"1bg8tbf","text":"nominativo o acusativo plural neutro"},"parsing.ct5.c0.2":{"fp":"1838di0","text":"El neutro nunca distingue los dos — busca el verbo y pregúntate si esto hace la acción o la recibe."},"parsing.ct5.c1.1":{"fp":"uhzak9","text":"presente medio o pasivo indicativo 3.ª singular"},"parsing.ct5.c1.2":{"fp":"5pybon","text":"La media y la pasiva son idénticas fuera del aoristo y el futuro. Lo deciden el sentido y cualquier expresión de agente (ὑπό + genitivo)."},"parsing.ct5.c2.1":{"fp":"b77duu","text":"genitivo singular femenino"},"parsing.ct5.c2.2":{"fp":"r6advt","text":"No hay ambigüedad — pero que sea de posesión, de origen u objetivo ya es sintaxis, no análisis morfológico."},"parsing.ct5.c3.1":{"fp":"lmla5a","text":"genitivo singular masculino"},"parsing.ct5.c3.2":{"fp":"nt5hv2","text":"Compáralo con ἀνθρώπους (acusativo plural): una letra de diferencia al oído, y una función completamente distinta."},"parsing.ct5.h0":{"fp":"1hf0yuf","text":"Forma"},"parsing.ct5.h1":{"fp":"1t8jxj5","text":"Formalmente"},"parsing.ct5.h2":{"fp":"4nkmeg","text":"Cómo lo decide el contexto"},"parsing.ct5.note":{"fp":"1i00rex","text":"Nombrar las dos opciones es un análisis completo. Escoger una en silencio, no."},"parsing.d1.o0":{"fp":"x6d8s5","text":"nominativo singular masculino"},"parsing.d1.o1":{"fp":"lmla5a","text":"genitivo singular masculino"},"parsing.d1.o2":{"fp":"1sfgw3o","text":"dativo singular masculino"},"parsing.d1.o3":{"fp":"hpfqc1","text":"acusativo singular masculino"},"parsing.d1.o4":{"fp":"oh13tu","text":"acusativo plural masculino"},"parsing.d1.o5":{"fp":"c6us1m","text":"acusativo plural femenino"},"parsing.d1.o6":{"fp":"b77duu","text":"genitivo singular femenino"},"parsing.d1.o7":{"fp":"1kcq3gz","text":"dativo plural masculino"},"parsing.d1.o8":{"fp":"1bg8tbf","text":"nominativo o acusativo plural neutro"},"parsing.d1.title":{"fp":"lm5wy0","text":"Práctica — analiza el sustantivo"},"parsing.d2.o0":{"fp":"1bif1o0","text":"presente activo indicativo 3.ª singular"},"parsing.d2.o1":{"fp":"nypx76","text":"presente activo indicativo 1.ª plural"},"parsing.d2.o2":{"fp":"uhzak9","text":"presente medio o pasivo indicativo 3.ª singular"},"parsing.d2.o3":{"fp":"bupxj4","text":"imperfecto activo indicativo 3.ª singular"},"parsing.d2.o4":{"fp":"twnmfg","text":"futuro activo indicativo 1.ª plural"},"parsing.d2.o5":{"fp":"l8wsxz","text":"aoristo activo indicativo 1.ª plural"},"parsing.d2.o6":{"fp":"18mukn2","text":"aoristo activo indicativo 3.ª plural"},"parsing.d2.o7":{"fp":"rmy6f4","text":"aoristo pasivo indicativo 3.ª singular"},"parsing.d2.title":{"fp":"1ctuse5","text":"Práctica — analiza el verbo"},"parsing.ex.aorist-active-indicative":{"fp":"13z5ws3","text":"aoristo activo indicativo 3.ª plural de πιστεύω — «creyeron»"},"parsing.ex.dative-plural-masculine":{"fp":"vs02hg","text":"dativo plural masculino — «a/con las palabras»"},"parsing.ex.genitive-singular-feminine":{"fp":"1bbdgxw","text":"genitivo singular femenino — «del reino»"},"parsing.ex.present-active-indicative":{"fp":"16ink9l","text":"presente activo indicativo 1.ª plural de ἀκούω — «oímos»"},"parsing.g.accusative":{"fp":"1z0px7f","text":"Acusativo"},"parsing.g.accusative-plural-masculine":{"fp":"17jjwd0","text":"{ἀνθρώπους} = acusativo plural masculino de {ἄνθρωπος}"},"parsing.g.active":{"fp":"8qzyhb","text":"Activa"},"parsing.g.also-adjective-article":{"fp":"19v785c","text":"también adjetivo, artículo, pronombre"},"parsing.g.aorist":{"fp":"1dkvb7z","text":"Aoristo"},"parsing.g.case-number-gender":{"fp":"18c4zcd","text":" · caso · número · género · léxica"},"parsing.g.case-number-gender-lexical":{"fp":"zbc3xu","text":"caso · número · género · forma léxica"},"parsing.g.command":{"fp":"1p11oqe","text":"— mandato"},"parsing.g.ct4-r0-ex":{"fp":"1rjyhs2","text":"{πιστεύων} = participio presente activo nominativo singular masculino de {πιστεύω}"},"parsing.g.ct4-r1-ex":{"fp":"zbkv6g","text":"{γραφέντα} = participio aoristo pasivo acusativo singular masculino de {γράφω}"},"parsing.g.ct4-r2-ex":{"fp":"b2960t","text":"{πιστεύειν} = infinitivo presente activo de {πιστεύω}"},"parsing.g.ct4-r3-ex":{"fp":"1p78ci2","text":"{γραφῆναι} = infinitivo aoristo pasivo de {γράφω}"},"parsing.g.dative":{"fp":"akt5fg","text":"Dativo"},"parsing.g.direct-address":{"fp":"hsrxyw","text":"— llamada directa"},"parsing.g.direct-object":{"fp":"uv80pr","text":"— objeto directo"},"parsing.g.feminine":{"fp":"sgd6o6","text":"Femenino"},"parsing.g.finite-verb":{"fp":"1faq6zf","text":"Verbo finito"},"parsing.g.for-with":{"fp":"1iwz6xw","text":"— «a / para / con / en»"},"parsing.g.future":{"fp":"174diuu","text":"Futuro"},"parsing.g.genitive":{"fp":"18vi6na","text":"Genitivo"},"parsing.g.he-she-it-they":{"fp":"1o5kslr","text":"— él/ella, ellos"},"parsing.g.i-we":{"fp":"6x10in","text":"— yo / nosotros"},"parsing.g.imperative":{"fp":"q7kfd7","text":"Imperativo"},"parsing.g.imperfect":{"fp":"qj874s","text":"Imperfecto"},"parsing.g.indeclinable":{"fp":"10w80s1","text":"Indeclinable"},"parsing.g.indicative":{"fp":"1qzvbfn","text":"Indicativo"},"parsing.g.infinitive":{"fp":"1f02x94","text":"Infinitivo"},"parsing.g.infinitive-lower":{"fp":"l0b16g","text":"infinitivo"},"parsing.g.lexical-tail":{"fp":"12r7gz0","text":" · léxica"},"parsing.g.masculine":{"fp":"gqyk3i","text":"Masculino"},"parsing.g.may-might":{"fp":"c1jkn0","text":"— pueda / pudiera"},"parsing.g.middle":{"fp":"17pyed4","text":"Media"},"parsing.g.neuter":{"fp":"cpc7ry","text":"Neutro"},"parsing.g.no-person-number":{"fp":"1wxqtqj","text":"sin persona, sin número, sin género"},"parsing.g.no-slots-name":{"fp":"ey0jh7","text":"sin casillas — nombra la clase de palabra"},"parsing.g.nominative":{"fp":"1wk4icv","text":"Nominativo"},"parsing.g.noun":{"fp":"c04und","text":"Sustantivo"},"parsing.g.of-possession-source":{"fp":"vez932","text":"— «de», posesión, origen"},"parsing.g.optative":{"fp":"1kixomj","text":"Optativo"},"parsing.g.participle":{"fp":"1sgvho2","text":"Participio"},"parsing.g.participle-2":{"fp":"qkciz6","text":"participio"},"parsing.g.participle-3":{"fp":"1sgvho2","text":"Participio"},"parsing.g.passive":{"fp":"pq49ha","text":"Pasiva"},"parsing.g.perfect":{"fp":"1qm91la","text":"Perfecto"},"parsing.g.person-1st":{"fp":"exw76z","text":"1.ª"},"parsing.g.person-2nd":{"fp":"pdxfbz","text":"2.ª"},"parsing.g.person-3rd":{"fp":"3imjoc","text":"3.ª"},"parsing.g.pluperfect":{"fp":"1ioi1a9","text":"Pluscuamperfecto"},"parsing.g.plural":{"fp":"6viz8v","text":"Plural"},"parsing.g.preposition-conjunction-adverb":{"fp":"5ck97p","text":"preposición, conjunción, adverbio, partícula"},"parsing.g.preposition-takes-dative":{"fp":"clueds","text":"{ἐν} = preposición (rige dativo)"},"parsing.g.present":{"fp":"1m3e00c","text":"Presente"},"parsing.g.present-active-indicative-3sg":{"fp":"nj2tm9","text":"{λύει} = presente activo indicativo 3.ª singular de {λύω}"},"parsing.g.present-active-infinitive":{"fp":"texjh1","text":"{λύειν} = infinitivo presente activo de {λύω}"},"parsing.g.present-active-participle-nsm":{"fp":"n40som","text":"{λύων} = participio presente activo nominativo singular masculino de {λύω}"},"parsing.g.same-six-slots":{"fp":"1smx96q","text":"las mismas seis casillas, otra forma"},"parsing.g.singular":{"fp":"wsfw4g","text":"Singular"},"parsing.g.states-fact":{"fp":"qdg08e","text":"— afirma un hecho"},"parsing.g.subject":{"fp":"14lqfzn","text":"— sujeto"},"parsing.g.subjunctive":{"fp":"wsvpvd","text":"Subjuntivo"},"parsing.g.tense-voice":{"fp":"o59jam","text":"tiempo · voz · "},"parsing.g.tense-voice-infinitive-lexical":{"fp":"1e8idb0","text":"tiempo · voz · infinitivo · forma léxica"},"parsing.g.tense-voice-mood-lexical":{"fp":"1i2f3ga","text":"tiempo · voz · modo · persona · número · forma léxica"},"parsing.g.tense-voice-participle-full":{"fp":"376h1","text":"tiempo · voz · participio · caso · número · género · forma léxica"},"parsing.g.verb-subject-built":{"fp":"mhcrf3","text":"un verbo con el sujeto incorporado"},"parsing.g.verbal-adjective-both":{"fp":"1hz44le","text":"adjetivo verbal — los dos juegos"},"parsing.g.verbal-noun-person":{"fp":"x6d18v","text":"sustantivo verbal — sin persona"},"parsing.g.vocative":{"fp":"1mhmyj0","text":"Vocativo"},"parsing.g.wish-rare":{"fp":"1n236x5","text":"— deseo (raro)"},"parsing.g.you":{"fp":"11ox0xk","text":"— tú / ustedes"},"parsing.ga.dative-singular-feminine":{"fp":"122sz9r","text":"Dativo singular femenino de {ἀρχή}. La terminación {-ῃ} es dativo singular, y {ἐν} rige siempre dativo — la preposición confirma el caso."},"parsing.ga.imperfect-active-indicative":{"fp":"5vfx8o","text":"Imperfecto activo indicativo 3.ª singular de {εἰμί}. Las cinco casillas nombradas, y luego la forma léxica."},"parsing.ga.nominative-singular-masculine":{"fp":"185hu34","text":"{ὁ} = artículo nominativo singular masculino; {λόγος} = nominativo singular masculino de {λόγος}. Concuerdan en las tres casillas, que es como sabes que van juntos. El nominativo significa que este es el sujeto."},"parsing.ga.preposition-indeclinable-slots":{"fp":"8dsml5","text":"{ἐν} es una preposición — indeclinable, sin casillas. {ἀρχῇ} y {λόγος} son sustantivos — tres casillas cada uno. {ὁ} es el artículo — se analiza como un sustantivo. {ἦν} es el único verbo finito — cinco casillas."},"parsing.ga.that-the-subject":{"fp":"161ak1z","text":"Que {ὁ λόγος} es el sujeto (nominativo) y que {ἐν ἀρχῇ} es una frase preposicional de lugar o tiempo (dativo) — antes de haber traducido una sola palabra. El imperfecto {ἦν} describe una existencia continua y no un punto de origen, que es exactamente el peso teológico que carga el versículo."},"parsing.ge.together-parse-every":{"fp":"180493k","text":"Juntos: analiza cada palabra de Juan 1:1a"},"parsing.gp.parse":{"fp":"gllmlv","text":"Analiza {ἀρχῇ}."},"parsing.gp.parse-2":{"fp":"1xypyof","text":"Analiza {ἦν}."},"parsing.gp.parse-both-words":{"fp":"14ik1ag","text":"Analiza {ὁ λόγος} — las dos palabras."},"parsing.h.before-forms-learn":{"fp":"9jyac9","text":"Antes de las formas: aprende cómo es una respuesta"},"parsing.h.conventions-will-meet":{"fp":"eph9vr","text":"Convenciones que te encontrarás en otros sitios"},"parsing.h.four-patterns-which":{"fp":"10bp6ty","text":"Cuatro patrones — qué casillas rellenar"},"parsing.h.parsing-finite-verb":{"fp":"19etfn6","text":"Analizar un verbo finito: tiempo · voz · modo · persona · número"},"parsing.h.parsing-noun-case":{"fp":"1gzbxhu","text":"Analizar un sustantivo: caso · número · género"},"parsing.h.participles-infinitives-hybrids":{"fp":"l1uolw","text":"Participios e infinitivos — los híbridos"},"parsing.ib.one-rule":{"fp":"17rt62l","text":"La única regla que hay que llevarse"},"parsing.intro.every-one-these":{"fp":"1xlu928","text":"Cada una de estas casillas está etiquetada en el Nuevo Testamento griego. Busca una casilla y lee formas reales — este es el mismo análisis que harás durante todo el año."},"parsing.intro.give-all-five":{"fp":"1jj6m91","text":"Da las cinco casillas en orden: tiempo, voz, modo, persona, número."},"parsing.intro.give-all-three":{"fp":"fy5afx","text":"Da las tres casillas en orden: caso, número, género. (Las formas léxicas te las damos; lo que estás nombrando son las casillas, no el paradigma.)"},"parsing.le.aorist-indicative":{"fp":"15f8ld3","text":"Todos los aoristos activos de indicativo — la columna vertebral narrativa de los Evangelios"},"parsing.le.dative-singular":{"fp":"1fnn4iv","text":"Todos los sustantivos en dativo singular del NT — la casilla que acabas de aprender"},"parsing.le.infinitive":{"fp":"1wbsscn","text":"Todos los infinitivos — sin persona, sin número"},"parsing.le.present-participle":{"fp":"1h8nk3i","text":"Todos los participios de presente — el híbrido de seis casillas"},"parsing.le.vocative":{"fp":"1asclci","text":"Todos los vocativos — llamada directa y oración"},"parsing.n.0":{"fp":"12erd3g","text":"La terminación {-ῳ} es la marca del dativo singular en esta declinación."},"parsing.n.1":{"fp":"1bsmphv","text":"«de un hombre». No lo confundas con {ἀνθρώπους}, acusativo plural."},"parsing.n.2":{"fp":"3lbyy2","text":"El neutro nunca distingue el nominativo del acusativo. Nombrar los dos es la respuesta completa."},"parsing.n.3":{"fp":"cm58fn","text":"«él/ella oye». La persona va dentro de la terminación — no hace falta un pronombre aparte."},"parsing.n.4":{"fp":"13ap8b2","text":"Aumento {ἐ-} más la marca {-σα-}: aoristo. La {-μεν} es 1.ª plural."},"parsing.n.5":{"fp":"1t6je1y","text":"La media y la pasiva comparten una sola forma en el presente. Nombra las dos — lo decide el contexto, no la terminación."},"parsing.p.ambiguity-normal-answer":{"fp":"1lubysr","text":"*La ambigüedad es normal, y es una respuesta.* Muchísimas formas son formalmente ambiguas, y el análisis honrado nombra las opciones en vez de adivinar:"},"parsing.p.can-now-read":{"fp":"1wxan8f","text":"Ya puedes leer las letras griegas en voz alta. Lo siguiente que hay que aprender no es un paradigma: es qué aspecto tiene una respuesta correcta. [parse:Analizar] una palabra es decir qué función está cumpliendo, y el griego dice esa función en voz alta en la terminación de la palabra. El español se apoya sobre todo en el orden y en las preposiciones: «el perro mordió al hombre» y «el hombre mordió al perro» usan las mismas palabras y significan lo contrario. El griego puede barajar las palabras a su antojo, porque son las terminaciones, y no el orden, las que dicen quién hizo qué."},"parsing.p.case-number-gender":{"fp":"tirl9r","text":"*Caso-número-género frente a género-número-caso.* El orden que se enseña aquí — el caso primero — es el habitual de las gramáticas introductorias (Mounce, Black, Croy) y el de este curso. La _Greek Grammar Beyond the Basics_ de Wallace y varias guías de análisis lo invierten a género-número-caso. Ambos nombran las mismas tres casillas; lo único que cambia es el orden de recitación. Usa caso-número-género en este curso, y que no te descoloque encontrar en un comentario «masculino singular nominativo»."},"parsing.p.every-greek-word":{"fp":"1s93t4c","text":"Así que cada palabra griega que te encuentres plantea la misma lista corta de preguntas, y las respuestas vienen siempre en el mismo orden fijo. Aprende el orden ahora y cada capítulo posterior será solo rellenar opciones para las que ya tienes casillas."},"parsing.p.every-noun-adjective":{"fp":"1gfxbk1","text":"Todo sustantivo, adjetivo, artículo y pronombre recibe exactamente tres respuestas, siempre en este orden. Cada columna de abajo es una casilla; escoge una opción de cada una."},"parsing.p.finite-verb-one":{"fp":"1omcs74","text":"Un verbo *finito* es el que lleva su propio sujeto — {λύει} ya significa «él/ella desata» sin una palabra aparte para «él». Los verbos finitos reciben cinco respuestas, siempre en este orden."},"parsing.p.last-row-worth":{"fp":"obljuv","text":"Vale la pena detenerse en esa última fila. El análisis te dice la _forma_; no te dice la _función_. «Genitivo singular femenino» es un análisis; «genitivo de origen» es una afirmación exegética que necesita un argumento. Mantener las dos cosas separadas es casi todo lo que separa la exégesis cuidadosa de citar versículos a la medida con un léxico en la mano."},"parsing.p.mood-traditional-paradigms":{"fp":"g4koy8","text":"*Modo, ¿o no?* Los paradigmas tradicionales colocan el infinitivo y el participio junto a los cuatro modos, lo cual resulta cómodo para analizar y es incorrecto como gramática: ninguno de los dos es un modo, ya que ninguno hace una afirmación. Di «participio» en la casilla del modo, pero no concluyas que lo sea."},"parsing.p.there-only-four":{"fp":"1jyo5p1","text":"En griego solo hay cuatro patrones de análisis. Averigua a cuál pertenece la palabra y luego rellena sus casillas de izquierda a derecha. La última casilla es siempre la *forma léxica* — la entrada del diccionario bajo la cual buscarías la palabra."},"parsing.p.these-two-non":{"fp":"1kyg28f","text":"Estos dos son *no finitos*: no tienen persona, porque no tienen sujeto propio. El participio es un adjetivo verbal, así que después de sus casillas verbales toma también todo el juego del sustantivo. El infinitivo es un sustantivo verbal y sencillamente se detiene ahí."},"parsing.src.john-1-1":{"fp":"n4k9m2","text":"Juan 1:1"}}
+{
+  "parseframe.case.0": {
+    "fp": "ts6un5",
+    "text": "Nom."
+  },
+  "parseframe.case.1": {
+    "fp": "13rcnlo",
+    "text": "Acus."
+  },
+  "parseframe.case.2": {
+    "fp": "1jtmupt",
+    "text": "Gen."
+  },
+  "parseframe.case.3": {
+    "fp": "37b14",
+    "text": "Dat."
+  },
+  "parseframe.ex.inflected": {
+    "fp": "asvu1q",
+    "text": "p. ej. desatamos"
+  },
+  "parseframe.ex.meaning": {
+    "fp": "v9un47",
+    "text": "desato"
+  },
+  "parseframe.gender.0": {
+    "fp": "1y03fz1",
+    "text": "Masc."
+  },
+  "parseframe.gender.1": {
+    "fp": "4udjbj",
+    "text": "Fem."
+  },
+  "parseframe.gender.2": {
+    "fp": "105oupl",
+    "text": "Neut."
+  },
+  "parseframe.h.case": {
+    "fp": "7kvjkh",
+    "text": "Caso"
+  },
+  "parseframe.h.gender": {
+    "fp": "1jtmupt",
+    "text": "Gén."
+  },
+  "parseframe.h.inflected": {
+    "fp": "euv39q",
+    "text": "Significado de la forma"
+  },
+  "parseframe.h.lexical": {
+    "fp": "bq1p8e",
+    "text": "1.ª persona sg."
+  },
+  "parseframe.h.meaning": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "parseframe.h.mood": {
+    "fp": "rat53y",
+    "text": "Modo"
+  },
+  "parseframe.h.number": {
+    "fp": "pb3jd3",
+    "text": "Núm."
+  },
+  "parseframe.h.person": {
+    "fp": "1i84mn4",
+    "text": "Persona"
+  },
+  "parseframe.h.tense": {
+    "fp": "smsl28",
+    "text": "Tiempo"
+  },
+  "parseframe.h.voice": {
+    "fp": "b1qn4p",
+    "text": "Voz"
+  },
+  "parseframe.mood.0": {
+    "fp": "1qzvbfn",
+    "text": "Indicativo"
+  },
+  "parseframe.mood.1": {
+    "fp": "q7kfd7",
+    "text": "Imperativo"
+  },
+  "parseframe.mood.2": {
+    "fp": "1f02x94",
+    "text": "Infinitivo"
+  },
+  "parseframe.mood.3": {
+    "fp": "wsvpvd",
+    "text": "Subjuntivo"
+  },
+  "parseframe.mood.participle": {
+    "fp": "1sgvho2",
+    "text": "Participio"
+  },
+  "parseframe.note": {
+    "fp": "1hb7xd1",
+    "text": "Todo verbo conjugado lleva las cinco primeras; el participio cambia la persona por el caso y el género; el infinitivo se detiene después del modo. El análisis termina con la forma léxica —la 1.ª persona del singular— y debes poder decir qué significan tanto ella como la forma que tienes delante."
+  },
+  "parseframe.number.0": {
+    "fp": "69uey8",
+    "text": "Sing."
+  },
+  "parseframe.number.1": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "parseframe.person.0": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "parseframe.person.1": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "parseframe.person.2": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "parseframe.tense.0": {
+    "fp": "1m3e00c",
+    "text": "Presente"
+  },
+  "parseframe.tense.1": {
+    "fp": "174diuu",
+    "text": "Futuro"
+  },
+  "parseframe.tense.2": {
+    "fp": "qj874s",
+    "text": "Imperfecto"
+  },
+  "parseframe.tense.3": {
+    "fp": "1dkvb7z",
+    "text": "Aoristo"
+  },
+  "parseframe.tense.4": {
+    "fp": "1qm91la",
+    "text": "Perfecto"
+  },
+  "parseframe.tense.5": {
+    "fp": "1ioi1a9",
+    "text": "Pluscuamperfecto"
+  },
+  "parseframe.title": {
+    "fp": "g2ksel",
+    "text": "Para analizar un verbo, indica cada casilla"
+  },
+  "parseframe.voice.0": {
+    "fp": "8qzyhb",
+    "text": "Activa"
+  },
+  "parseframe.voice.1": {
+    "fp": "17pyed4",
+    "text": "Media"
+  },
+  "parseframe.voice.2": {
+    "fp": "pq49ha",
+    "text": "Pasiva"
+  },
+  "parsing.al.five-one-breath": {
+    "fp": "h2amr6",
+    "text": "Cinco de un tirón"
+  },
+  "parsing.al.gender-grammatical-natural": {
+    "fp": "4cixwm",
+    "text": "El género es gramatical, no natural"
+  },
+  "parsing.al.optative": {
+    "fp": "1j9vni6",
+    "text": "El optativo"
+  },
+  "parsing.al.pluperfect": {
+    "fp": "1ioi1a9",
+    "text": "Pluscuamperfecto"
+  },
+  "parsing.al.read-column-time": {
+    "fp": "hxxsbv",
+    "text": "Lee una columna a la vez"
+  },
+  "parsing.al.tense-aspect-first": {
+    "fp": "18hwvd",
+    "text": "El tiempo es aspecto primero y tiempo después"
+  },
+  "parsing.al.why-vocative-listed": {
+    "fp": "1q290py",
+    "text": "Por qué el vocativo va al final de la lista"
+  },
+  "parsing.al.worked": {
+    "fp": "1tkxo5d",
+    "text": "Resuelto"
+  },
+  "parsing.al.worked-2": {
+    "fp": "1tkxo5d",
+    "text": "Resuelto"
+  },
+  "parsing.as.ldquo-child-rdquo": {
+    "fp": "zfdo9m",
+    "text": "{τὸ τέκνον} («el niño») es neutro y {ἡ ἁμαρτία} («el pecado») es femenino; ninguno de los dos dice nada sobre el referente. El género es una propiedad del sustantivo en el léxico, así que es la única casilla que no siempre puedes leer en la terminación — se aprende junto con la palabra."
+  },
+  "parsing.as.notice-article-agrees": {
+    "fp": "1om9qbv",
+    "text": "Fíjate en que el artículo concuerda con su sustantivo en las tres casillas. Eso convierte al artículo en la mejor pista de análisis del idioma: analízalo, y habrás analizado el sustantivo."
+  },
+  "parsing.as.only-occurrences-most": {
+    "fp": "xx6ef1",
+    "text": "Solo unas 68 apariciones en el NT, la mayoría el {μὴ γένοιτο} de Pablo. Se queda en la tabla porque es una opción real de la casilla y tanto Lucas como Pablo lo usan a propósito."
+  },
+  "parsing.as.outside-indicative-tense": {
+    "fp": "3hmlnm",
+    "text": "Fuera del indicativo, la casilla del tiempo lleva [aspect:aspecto] y no tiempo en absoluto: un subjuntivo aoristo no es pasado. Sigue nombrando el tiempo por su etiqueta — estás informando de la forma, no comprometiéndote con una traducción."
+  },
+  "parsing.as.parse-finished-only": {
+    "fp": "1l3tdl4",
+    "text": "Un análisis solo está terminado cuando has nombrado _todas_ las casillas de esa clase de palabra y luego la forma léxica. «Aoristo» no es un análisis. «Aoristo activo indicativo 3.ª singular de {λύω}» sí lo es."
+  },
+  "parsing.as.rare-never-augmented": {
+    "fp": "1r8234a",
+    "text": "Raro (unas 86 veces en el NT) y nunca aumentado de forma consistente; algunas gramáticas lo funden con el perfecto para principiantes. Aquí se nombra para que lo reconozcas en un aparato crítico."
+  },
+  "parsing.as.say-single-phrase": {
+    "fp": "15692mv",
+    "text": "Dilo como una sola frase y deja de parecer cinco datos: «presente-activo-indicativo-tercera-singular». Los estudiantes que hacen pausa entre casillas se pierden; los que lo recitan de corrido, no."
+  },
+  "parsing.as.vocative-distinct-only": {
+    "fp": "1z0h9kq",
+    "text": "El vocativo se distingue solo en unas pocas formas del singular ({κύριε}, {πάτερ}, {ἀδελφέ}); en lo demás toma prestado el nominativo. Por eso algunos paradigmas lo omiten, pero es un caso de verdad y el NT lo usa constantemente para dirigirse a alguien y en la oración."
+  },
+  "parsing.as.voice-asks-whether": {
+    "fp": "13y8nnt",
+    "text": "La *voz* pregunta si el sujeto actúa (activa), recibe la acción (pasiva) o actúa con un interés propio en el resultado (media). El *modo* pregunta cómo lo presenta el hablante: como hecho, como posibilidad, como mandato, como deseo."
+  },
+  "parsing.as.work-left-right": {
+    "fp": "6nyb6f",
+    "text": "Trabaja de izquierda a derecha y dilo como una sola frase. No te detengas en el caso — un análisis a medias («es genitivo») no es una respuesta."
+  },
+  "parsing.ct1.h0": {
+    "fp": "go2z8f",
+    "text": "Clase de palabra"
+  },
+  "parsing.ct1.h1": {
+    "fp": "o24zu9",
+    "text": "Casillas, en orden"
+  },
+  "parsing.ct1.h2": {
+    "fp": "6y2c7n",
+    "text": "Ejemplo resuelto"
+  },
+  "parsing.ct1.note": {
+    "fp": "xfhrxc",
+    "text": "La forma léxica va siempre al final, introducida por «de»."
+  },
+  "parsing.ct1.title": {
+    "fp": "ow4cyu",
+    "text": "El análisis, según la clase de palabra"
+  },
+  "parsing.ct2.h0": {
+    "fp": "164hxkn",
+    "text": "1 · Caso"
+  },
+  "parsing.ct2.h1": {
+    "fp": "sfd8i1",
+    "text": "2 · Número"
+  },
+  "parsing.ct2.h2": {
+    "fp": "1gqkp8c",
+    "text": "3 · Género"
+  },
+  "parsing.ct2.note": {
+    "fp": "15mmwjt",
+    "text": "Luego añade la forma léxica: «acusativo plural masculino de ἄνθρωπος»."
+  },
+  "parsing.ct2.title": {
+    "fp": "ye70qa",
+    "text": "Casillas del sustantivo — escoge una de cada columna"
+  },
+  "parsing.ct3.h0": {
+    "fp": "u6mgsi",
+    "text": "1 · Tiempo"
+  },
+  "parsing.ct3.h1": {
+    "fp": "7er4te",
+    "text": "2 · Voz"
+  },
+  "parsing.ct3.h2": {
+    "fp": "1hopo1u",
+    "text": "3 · Modo"
+  },
+  "parsing.ct3.h3": {
+    "fp": "1jw5g9v",
+    "text": "4 · Persona"
+  },
+  "parsing.ct3.h4": {
+    "fp": "2ufjlq",
+    "text": "5 · Número"
+  },
+  "parsing.ct3.note": {
+    "fp": "1ls7l2i",
+    "text": "Luego añade la forma léxica: «presente activo indicativo 3.ª singular de λύω»."
+  },
+  "parsing.ct3.title": {
+    "fp": "suxj87",
+    "text": "Casillas del verbo finito — escoge una de cada columna"
+  },
+  "parsing.ct4.h0": {
+    "fp": "1hf0yuf",
+    "text": "Forma"
+  },
+  "parsing.ct4.h1": {
+    "fp": "o24zu9",
+    "text": "Casillas, en orden"
+  },
+  "parsing.ct4.h2": {
+    "fp": "6y2c7n",
+    "text": "Ejemplo resuelto"
+  },
+  "parsing.ct4.note": {
+    "fp": "1cmd398",
+    "text": "«Participio» e «infinitivo» ocupan la casilla del modo en este esquema — di la palabra en voz alta donde iría el modo."
+  },
+  "parsing.ct5.c0.1": {
+    "fp": "1bg8tbf",
+    "text": "nominativo o acusativo plural neutro"
+  },
+  "parsing.ct5.c0.2": {
+    "fp": "1838di0",
+    "text": "El neutro nunca distingue los dos — busca el verbo y pregúntate si esto hace la acción o la recibe."
+  },
+  "parsing.ct5.c1.1": {
+    "fp": "uhzak9",
+    "text": "presente medio o pasivo indicativo 3.ª singular"
+  },
+  "parsing.ct5.c1.2": {
+    "fp": "5pybon",
+    "text": "La media y la pasiva son idénticas fuera del aoristo y el futuro. Lo deciden el sentido y cualquier expresión de agente (ὑπό + genitivo)."
+  },
+  "parsing.ct5.c2.1": {
+    "fp": "b77duu",
+    "text": "genitivo singular femenino"
+  },
+  "parsing.ct5.c2.2": {
+    "fp": "r6advt",
+    "text": "No hay ambigüedad — pero que sea de posesión, de origen u objetivo ya es sintaxis, no análisis morfológico."
+  },
+  "parsing.ct5.c3.1": {
+    "fp": "lmla5a",
+    "text": "genitivo singular masculino"
+  },
+  "parsing.ct5.c3.2": {
+    "fp": "nt5hv2",
+    "text": "Compáralo con ἀνθρώπους (acusativo plural): una letra de diferencia al oído, y una función completamente distinta."
+  },
+  "parsing.ct5.h0": {
+    "fp": "1hf0yuf",
+    "text": "Forma"
+  },
+  "parsing.ct5.h1": {
+    "fp": "1t8jxj5",
+    "text": "Formalmente"
+  },
+  "parsing.ct5.h2": {
+    "fp": "4nkmeg",
+    "text": "Cómo lo decide el contexto"
+  },
+  "parsing.ct5.note": {
+    "fp": "1i00rex",
+    "text": "Nombrar las dos opciones es un análisis completo. Escoger una en silencio, no."
+  },
+  "parsing.d1.o0": {
+    "fp": "x6d8s5",
+    "text": "nominativo singular masculino"
+  },
+  "parsing.d1.o1": {
+    "fp": "lmla5a",
+    "text": "genitivo singular masculino"
+  },
+  "parsing.d1.o2": {
+    "fp": "1sfgw3o",
+    "text": "dativo singular masculino"
+  },
+  "parsing.d1.o3": {
+    "fp": "hpfqc1",
+    "text": "acusativo singular masculino"
+  },
+  "parsing.d1.o4": {
+    "fp": "oh13tu",
+    "text": "acusativo plural masculino"
+  },
+  "parsing.d1.o5": {
+    "fp": "c6us1m",
+    "text": "acusativo plural femenino"
+  },
+  "parsing.d1.o6": {
+    "fp": "b77duu",
+    "text": "genitivo singular femenino"
+  },
+  "parsing.d1.o7": {
+    "fp": "1kcq3gz",
+    "text": "dativo plural masculino"
+  },
+  "parsing.d1.o8": {
+    "fp": "1bg8tbf",
+    "text": "nominativo o acusativo plural neutro"
+  },
+  "parsing.d1.title": {
+    "fp": "lm5wy0",
+    "text": "Práctica — analiza el sustantivo"
+  },
+  "parsing.d2.o0": {
+    "fp": "1bif1o0",
+    "text": "presente activo indicativo 3.ª singular"
+  },
+  "parsing.d2.o1": {
+    "fp": "nypx76",
+    "text": "presente activo indicativo 1.ª plural"
+  },
+  "parsing.d2.o2": {
+    "fp": "uhzak9",
+    "text": "presente medio o pasivo indicativo 3.ª singular"
+  },
+  "parsing.d2.o3": {
+    "fp": "bupxj4",
+    "text": "imperfecto activo indicativo 3.ª singular"
+  },
+  "parsing.d2.o4": {
+    "fp": "twnmfg",
+    "text": "futuro activo indicativo 1.ª plural"
+  },
+  "parsing.d2.o5": {
+    "fp": "l8wsxz",
+    "text": "aoristo activo indicativo 1.ª plural"
+  },
+  "parsing.d2.o6": {
+    "fp": "18mukn2",
+    "text": "aoristo activo indicativo 3.ª plural"
+  },
+  "parsing.d2.o7": {
+    "fp": "rmy6f4",
+    "text": "aoristo pasivo indicativo 3.ª singular"
+  },
+  "parsing.d2.title": {
+    "fp": "1ctuse5",
+    "text": "Práctica — analiza el verbo"
+  },
+  "parsing.ex.aorist-active-indicative": {
+    "fp": "13z5ws3",
+    "text": "aoristo activo indicativo 3.ª plural de πιστεύω — «creyeron»"
+  },
+  "parsing.ex.dative-plural-masculine": {
+    "fp": "vs02hg",
+    "text": "dativo plural masculino — «a/con las palabras»"
+  },
+  "parsing.ex.genitive-singular-feminine": {
+    "fp": "1bbdgxw",
+    "text": "genitivo singular femenino — «del reino»"
+  },
+  "parsing.ex.present-active-indicative": {
+    "fp": "16ink9l",
+    "text": "presente activo indicativo 1.ª plural de ἀκούω — «oímos»"
+  },
+  "parsing.g.accusative": {
+    "fp": "1z0px7f",
+    "text": "Acusativo"
+  },
+  "parsing.g.accusative-plural-masculine": {
+    "fp": "17jjwd0",
+    "text": "{ἀνθρώπους} = acusativo plural masculino de {ἄνθρωπος}"
+  },
+  "parsing.g.active": {
+    "fp": "8qzyhb",
+    "text": "Activa"
+  },
+  "parsing.g.also-adjective-article": {
+    "fp": "19v785c",
+    "text": "también adjetivo, artículo, pronombre"
+  },
+  "parsing.g.aorist": {
+    "fp": "1dkvb7z",
+    "text": "Aoristo"
+  },
+  "parsing.g.case-number-gender": {
+    "fp": "18c4zcd",
+    "text": " · caso · número · género · léxica"
+  },
+  "parsing.g.case-number-gender-lexical": {
+    "fp": "zbc3xu",
+    "text": "caso · número · género · forma léxica"
+  },
+  "parsing.g.command": {
+    "fp": "1p11oqe",
+    "text": "— mandato"
+  },
+  "parsing.g.ct4-r0-ex": {
+    "fp": "1rjyhs2",
+    "text": "{πιστεύων} = participio presente activo nominativo singular masculino de {πιστεύω}"
+  },
+  "parsing.g.ct4-r1-ex": {
+    "fp": "zbkv6g",
+    "text": "{γραφέντα} = participio aoristo pasivo acusativo singular masculino de {γράφω}"
+  },
+  "parsing.g.ct4-r2-ex": {
+    "fp": "b2960t",
+    "text": "{πιστεύειν} = infinitivo presente activo de {πιστεύω}"
+  },
+  "parsing.g.ct4-r3-ex": {
+    "fp": "1p78ci2",
+    "text": "{γραφῆναι} = infinitivo aoristo pasivo de {γράφω}"
+  },
+  "parsing.g.dative": {
+    "fp": "akt5fg",
+    "text": "Dativo"
+  },
+  "parsing.g.direct-address": {
+    "fp": "hsrxyw",
+    "text": "— llamada directa"
+  },
+  "parsing.g.direct-object": {
+    "fp": "uv80pr",
+    "text": "— objeto directo"
+  },
+  "parsing.g.feminine": {
+    "fp": "sgd6o6",
+    "text": "Femenino"
+  },
+  "parsing.g.finite-verb": {
+    "fp": "1faq6zf",
+    "text": "Verbo finito"
+  },
+  "parsing.g.for-with": {
+    "fp": "1iwz6xw",
+    "text": "— «a / para / con / en»"
+  },
+  "parsing.g.future": {
+    "fp": "174diuu",
+    "text": "Futuro"
+  },
+  "parsing.g.genitive": {
+    "fp": "18vi6na",
+    "text": "Genitivo"
+  },
+  "parsing.g.he-she-it-they": {
+    "fp": "1o5kslr",
+    "text": "— él/ella, ellos"
+  },
+  "parsing.g.i-we": {
+    "fp": "6x10in",
+    "text": "— yo / nosotros"
+  },
+  "parsing.g.imperative": {
+    "fp": "q7kfd7",
+    "text": "Imperativo"
+  },
+  "parsing.g.imperfect": {
+    "fp": "qj874s",
+    "text": "Imperfecto"
+  },
+  "parsing.g.indeclinable": {
+    "fp": "10w80s1",
+    "text": "Indeclinable"
+  },
+  "parsing.g.indicative": {
+    "fp": "1qzvbfn",
+    "text": "Indicativo"
+  },
+  "parsing.g.infinitive": {
+    "fp": "1f02x94",
+    "text": "Infinitivo"
+  },
+  "parsing.g.infinitive-lower": {
+    "fp": "l0b16g",
+    "text": "infinitivo"
+  },
+  "parsing.g.lexical-tail": {
+    "fp": "12r7gz0",
+    "text": " · léxica"
+  },
+  "parsing.g.masculine": {
+    "fp": "gqyk3i",
+    "text": "Masculino"
+  },
+  "parsing.g.may-might": {
+    "fp": "c1jkn0",
+    "text": "— pueda / pudiera"
+  },
+  "parsing.g.middle": {
+    "fp": "17pyed4",
+    "text": "Media"
+  },
+  "parsing.g.neuter": {
+    "fp": "cpc7ry",
+    "text": "Neutro"
+  },
+  "parsing.g.no-person-number": {
+    "fp": "1wxqtqj",
+    "text": "sin persona, sin número, sin género"
+  },
+  "parsing.g.no-slots-name": {
+    "fp": "ey0jh7",
+    "text": "sin casillas — nombra la clase de palabra"
+  },
+  "parsing.g.nominative": {
+    "fp": "1wk4icv",
+    "text": "Nominativo"
+  },
+  "parsing.g.noun": {
+    "fp": "c04und",
+    "text": "Sustantivo"
+  },
+  "parsing.g.of-possession-source": {
+    "fp": "vez932",
+    "text": "— «de», posesión, origen"
+  },
+  "parsing.g.optative": {
+    "fp": "1kixomj",
+    "text": "Optativo"
+  },
+  "parsing.g.participle": {
+    "fp": "1sgvho2",
+    "text": "Participio"
+  },
+  "parsing.g.participle-2": {
+    "fp": "qkciz6",
+    "text": "participio"
+  },
+  "parsing.g.participle-3": {
+    "fp": "1sgvho2",
+    "text": "Participio"
+  },
+  "parsing.g.passive": {
+    "fp": "pq49ha",
+    "text": "Pasiva"
+  },
+  "parsing.g.perfect": {
+    "fp": "1qm91la",
+    "text": "Perfecto"
+  },
+  "parsing.g.person-1st": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "parsing.g.person-2nd": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "parsing.g.person-3rd": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "parsing.g.pluperfect": {
+    "fp": "1ioi1a9",
+    "text": "Pluscuamperfecto"
+  },
+  "parsing.g.plural": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "parsing.g.preposition-conjunction-adverb": {
+    "fp": "5ck97p",
+    "text": "preposición, conjunción, adverbio, partícula"
+  },
+  "parsing.g.preposition-takes-dative": {
+    "fp": "clueds",
+    "text": "{ἐν} = preposición (rige dativo)"
+  },
+  "parsing.g.present": {
+    "fp": "1m3e00c",
+    "text": "Presente"
+  },
+  "parsing.g.present-active-indicative-3sg": {
+    "fp": "nj2tm9",
+    "text": "{λύει} = presente activo indicativo 3.ª singular de {λύω}"
+  },
+  "parsing.g.present-active-infinitive": {
+    "fp": "texjh1",
+    "text": "{λύειν} = infinitivo presente activo de {λύω}"
+  },
+  "parsing.g.present-active-participle-nsm": {
+    "fp": "n40som",
+    "text": "{λύων} = participio presente activo nominativo singular masculino de {λύω}"
+  },
+  "parsing.g.same-six-slots": {
+    "fp": "1smx96q",
+    "text": "las mismas seis casillas, otra forma"
+  },
+  "parsing.g.singular": {
+    "fp": "wsfw4g",
+    "text": "Singular"
+  },
+  "parsing.g.states-fact": {
+    "fp": "qdg08e",
+    "text": "— afirma un hecho"
+  },
+  "parsing.g.subject": {
+    "fp": "14lqfzn",
+    "text": "— sujeto"
+  },
+  "parsing.g.subjunctive": {
+    "fp": "wsvpvd",
+    "text": "Subjuntivo"
+  },
+  "parsing.g.tense-voice": {
+    "fp": "o59jam",
+    "text": "tiempo · voz · "
+  },
+  "parsing.g.tense-voice-infinitive-lexical": {
+    "fp": "1e8idb0",
+    "text": "tiempo · voz · infinitivo · forma léxica"
+  },
+  "parsing.g.tense-voice-mood-lexical": {
+    "fp": "1i2f3ga",
+    "text": "tiempo · voz · modo · persona · número · forma léxica"
+  },
+  "parsing.g.tense-voice-participle-full": {
+    "fp": "376h1",
+    "text": "tiempo · voz · participio · caso · número · género · forma léxica"
+  },
+  "parsing.g.verb-subject-built": {
+    "fp": "mhcrf3",
+    "text": "un verbo con el sujeto incorporado"
+  },
+  "parsing.g.verbal-adjective-both": {
+    "fp": "1hz44le",
+    "text": "adjetivo verbal — los dos juegos"
+  },
+  "parsing.g.verbal-noun-person": {
+    "fp": "x6d18v",
+    "text": "sustantivo verbal — sin persona"
+  },
+  "parsing.g.vocative": {
+    "fp": "1mhmyj0",
+    "text": "Vocativo"
+  },
+  "parsing.g.wish-rare": {
+    "fp": "1n236x5",
+    "text": "— deseo (raro)"
+  },
+  "parsing.g.you": {
+    "fp": "11ox0xk",
+    "text": "— tú / ustedes"
+  },
+  "parsing.ga.dative-singular-feminine": {
+    "fp": "122sz9r",
+    "text": "Dativo singular femenino de {ἀρχή}. La terminación {-ῃ} es dativo singular, y {ἐν} rige siempre dativo — la preposición confirma el caso."
+  },
+  "parsing.ga.imperfect-active-indicative": {
+    "fp": "5vfx8o",
+    "text": "Imperfecto activo indicativo 3.ª singular de {εἰμί}. Las cinco casillas nombradas, y luego la forma léxica."
+  },
+  "parsing.ga.nominative-singular-masculine": {
+    "fp": "185hu34",
+    "text": "{ὁ} = artículo nominativo singular masculino; {λόγος} = nominativo singular masculino de {λόγος}. Concuerdan en las tres casillas, que es como sabes que van juntos. El nominativo significa que este es el sujeto."
+  },
+  "parsing.ga.preposition-indeclinable-slots": {
+    "fp": "8dsml5",
+    "text": "{ἐν} es una preposición — indeclinable, sin casillas. {ἀρχῇ} y {λόγος} son sustantivos — tres casillas cada uno. {ὁ} es el artículo — se analiza como un sustantivo. {ἦν} es el único verbo finito — cinco casillas."
+  },
+  "parsing.ga.that-the-subject": {
+    "fp": "161ak1z",
+    "text": "Que {ὁ λόγος} es el sujeto (nominativo) y que {ἐν ἀρχῇ} es una frase preposicional de lugar o tiempo (dativo) — antes de haber traducido una sola palabra. El imperfecto {ἦν} describe una existencia continua y no un punto de origen, que es exactamente el peso teológico que carga el versículo."
+  },
+  "parsing.ge.together-parse-every": {
+    "fp": "180493k",
+    "text": "Juntos: analiza cada palabra de Juan 1:1a"
+  },
+  "parsing.gp.parse": {
+    "fp": "gllmlv",
+    "text": "Analiza {ἀρχῇ}."
+  },
+  "parsing.gp.parse-2": {
+    "fp": "1xypyof",
+    "text": "Analiza {ἦν}."
+  },
+  "parsing.gp.parse-both-words": {
+    "fp": "14ik1ag",
+    "text": "Analiza {ὁ λόγος} — las dos palabras."
+  },
+  "parsing.h.before-forms-learn": {
+    "fp": "9jyac9",
+    "text": "Antes de las formas: aprende cómo es una respuesta"
+  },
+  "parsing.h.conventions-will-meet": {
+    "fp": "eph9vr",
+    "text": "Convenciones que te encontrarás en otros sitios"
+  },
+  "parsing.h.four-patterns-which": {
+    "fp": "10bp6ty",
+    "text": "Cuatro patrones — qué casillas rellenar"
+  },
+  "parsing.h.parsing-finite-verb": {
+    "fp": "19etfn6",
+    "text": "Analizar un verbo finito: tiempo · voz · modo · persona · número"
+  },
+  "parsing.h.parsing-noun-case": {
+    "fp": "1gzbxhu",
+    "text": "Analizar un sustantivo: caso · número · género"
+  },
+  "parsing.h.participles-infinitives-hybrids": {
+    "fp": "l1uolw",
+    "text": "Participios e infinitivos — los híbridos"
+  },
+  "parsing.ib.one-rule": {
+    "fp": "17rt62l",
+    "text": "La única regla que hay que llevarse"
+  },
+  "parsing.intro.every-one-these": {
+    "fp": "1xlu928",
+    "text": "Cada una de estas casillas está etiquetada en el Nuevo Testamento griego. Busca una casilla y lee formas reales — este es el mismo análisis que harás durante todo el año."
+  },
+  "parsing.intro.give-all-five": {
+    "fp": "1jj6m91",
+    "text": "Da las cinco casillas en orden: tiempo, voz, modo, persona, número."
+  },
+  "parsing.intro.give-all-three": {
+    "fp": "fy5afx",
+    "text": "Da las tres casillas en orden: caso, número, género. (Las formas léxicas te las damos; lo que estás nombrando son las casillas, no el paradigma.)"
+  },
+  "parsing.le.aorist-indicative": {
+    "fp": "15f8ld3",
+    "text": "Todos los aoristos activos de indicativo — la columna vertebral narrativa de los Evangelios"
+  },
+  "parsing.le.dative-singular": {
+    "fp": "1fnn4iv",
+    "text": "Todos los sustantivos en dativo singular del NT — la casilla que acabas de aprender"
+  },
+  "parsing.le.infinitive": {
+    "fp": "1wbsscn",
+    "text": "Todos los infinitivos — sin persona, sin número"
+  },
+  "parsing.le.present-participle": {
+    "fp": "1h8nk3i",
+    "text": "Todos los participios de presente — el híbrido de seis casillas"
+  },
+  "parsing.le.vocative": {
+    "fp": "1asclci",
+    "text": "Todos los vocativos — llamada directa y oración"
+  },
+  "parsing.n.0": {
+    "fp": "12erd3g",
+    "text": "La terminación {-ῳ} es la marca del dativo singular en esta declinación."
+  },
+  "parsing.n.1": {
+    "fp": "1bsmphv",
+    "text": "«de un hombre». No lo confundas con {ἀνθρώπους}, acusativo plural."
+  },
+  "parsing.n.2": {
+    "fp": "3lbyy2",
+    "text": "El neutro nunca distingue el nominativo del acusativo. Nombrar los dos es la respuesta completa."
+  },
+  "parsing.n.3": {
+    "fp": "cm58fn",
+    "text": "«él/ella oye». La persona va dentro de la terminación — no hace falta un pronombre aparte."
+  },
+  "parsing.n.4": {
+    "fp": "13ap8b2",
+    "text": "Aumento {ἐ-} más la marca {-σα-}: aoristo. La {-μεν} es 1.ª plural."
+  },
+  "parsing.n.5": {
+    "fp": "1t6je1y",
+    "text": "La media y la pasiva comparten una sola forma en el presente. Nombra las dos — lo decide el contexto, no la terminación."
+  },
+  "parsing.p.ambiguity-normal-answer": {
+    "fp": "1lubysr",
+    "text": "*La ambigüedad es normal, y es una respuesta.* Muchísimas formas son formalmente ambiguas, y el análisis honrado nombra las opciones en vez de adivinar:"
+  },
+  "parsing.p.can-now-read": {
+    "fp": "1wxan8f",
+    "text": "Ya puedes leer las letras griegas en voz alta. Lo siguiente que hay que aprender no es un paradigma: es qué aspecto tiene una respuesta correcta. [parse:Analizar] una palabra es decir qué función está cumpliendo, y el griego dice esa función en voz alta en la terminación de la palabra. El español se apoya sobre todo en el orden y en las preposiciones: «el perro mordió al hombre» y «el hombre mordió al perro» usan las mismas palabras y significan lo contrario. El griego puede barajar las palabras a su antojo, porque son las terminaciones, y no el orden, las que dicen quién hizo qué."
+  },
+  "parsing.p.case-number-gender": {
+    "fp": "tirl9r",
+    "text": "*Caso-número-género frente a género-número-caso.* El orden que se enseña aquí — el caso primero — es el habitual de las gramáticas introductorias (Mounce, Black, Croy) y el de este curso. La _Greek Grammar Beyond the Basics_ de Wallace y varias guías de análisis lo invierten a género-número-caso. Ambos nombran las mismas tres casillas; lo único que cambia es el orden de recitación. Usa caso-número-género en este curso, y que no te descoloque encontrar en un comentario «masculino singular nominativo»."
+  },
+  "parsing.p.every-greek-word": {
+    "fp": "1s93t4c",
+    "text": "Así que cada palabra griega que te encuentres plantea la misma lista corta de preguntas, y las respuestas vienen siempre en el mismo orden fijo. Aprende el orden ahora y cada capítulo posterior será solo rellenar opciones para las que ya tienes casillas."
+  },
+  "parsing.p.every-noun-adjective": {
+    "fp": "1gfxbk1",
+    "text": "Todo sustantivo, adjetivo, artículo y pronombre recibe exactamente tres respuestas, siempre en este orden. Cada columna de abajo es una casilla; escoge una opción de cada una."
+  },
+  "parsing.p.finite-verb-one": {
+    "fp": "1omcs74",
+    "text": "Un verbo *finito* es el que lleva su propio sujeto — {λύει} ya significa «él/ella desata» sin una palabra aparte para «él». Los verbos finitos reciben cinco respuestas, siempre en este orden."
+  },
+  "parsing.p.last-row-worth": {
+    "fp": "obljuv",
+    "text": "Vale la pena detenerse en esa última fila. El análisis te dice la _forma_; no te dice la _función_. «Genitivo singular femenino» es un análisis; «genitivo de origen» es una afirmación exegética que necesita un argumento. Mantener las dos cosas separadas es casi todo lo que separa la exégesis cuidadosa de citar versículos a la medida con un léxico en la mano."
+  },
+  "parsing.p.mood-traditional-paradigms": {
+    "fp": "g4koy8",
+    "text": "*Modo, ¿o no?* Los paradigmas tradicionales colocan el infinitivo y el participio junto a los cuatro modos, lo cual resulta cómodo para analizar y es incorrecto como gramática: ninguno de los dos es un modo, ya que ninguno hace una afirmación. Di «participio» en la casilla del modo, pero no concluyas que lo sea."
+  },
+  "parsing.p.there-only-four": {
+    "fp": "1jyo5p1",
+    "text": "En griego solo hay cuatro patrones de análisis. Averigua a cuál pertenece la palabra y luego rellena sus casillas de izquierda a derecha. La última casilla es siempre la *forma léxica* — la entrada del diccionario bajo la cual buscarías la palabra."
+  },
+  "parsing.p.these-two-non": {
+    "fp": "1kyg28f",
+    "text": "Estos dos son *no finitos*: no tienen persona, porque no tienen sujeto propio. El participio es un adjetivo verbal, así que después de sus casillas verbales toma también todo el juego del sustantivo. El infinitivo es un sustantivo verbal y sencillamente se detiene ahí."
+  },
+  "parsing.src.john-1-1": {
+    "fp": "n4k9m2",
+    "text": "Juan 1:1"
+  }
+}

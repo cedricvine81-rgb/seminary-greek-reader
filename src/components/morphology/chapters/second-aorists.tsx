@@ -10,6 +10,7 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 
 // The second aorist is not a searchable CATEGORY: the index records tense simply as 'aorist',
@@ -19,6 +20,8 @@ const SECOND_AORIST_SEARCHES = CONSTRUCT_PRESETS.find(g => g.heading === 'Verb f
 
 export const SECOND_AORISTS_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="second-aorists.h.start-english-sing">Start with English: sing, sang — go, went</SectionHeading>

@@ -10,6 +10,7 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 
 // The subjunctive presets from Construct search, so the chapter and the search can't drift apart.
@@ -17,6 +18,8 @@ const SUBJUNCTIVE_USES = CONSTRUCT_PRESETS.find(g => g.heading === 'Uses of the 
 
 export const SUBJUNCTIVES_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="subjunctives.h.start-english-maybe">Start with English: the maybe-mood</SectionHeading>

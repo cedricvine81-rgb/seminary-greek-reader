@@ -1,1 +1,522 @@
-{"principal-parts.a1.int":{"fp":"ofdega","text":"Las partes 1-2 usan desinencias primarias; la 3 es el sistema del aoristo (indicativo + los modos sin aumento); 4-5, los sistemas del perfecto; 6, el aoristo pasivo _y_ el futuro pasivo ({λυθήσομαι} nace de la parte 6, no de la 2)."},"principal-parts.a1.label":{"fp":"1vi8vn0","text":"Qué abre cada parte"},"principal-parts.a1.note":{"fp":"1tsaabj","text":"Toda forma que llegues a encontrar desciende de una de estas seis. Analizar una forma desconocida = preguntar «¿de qué parte viene?»."},"principal-parts.a2.chant":{"fp":"y4ecsx","text":"No memorices la tabla de una sentada: una fila al día, y siempre como una cantinela: {λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην}."},"principal-parts.a2.clubs":{"fp":"1fkdu3q","text":"Reconoce los grupos que ya conoces: aoristos segundos en la parte 3 ({ἔλαβον}), futuros medios de los deponentes ({λήμψομαι}), futuros líquidos ({βαλῶ})."},"principal-parts.a2.int":{"fp":"1snkaeh","text":"Cuando las partes vienen de raíces distintas ({λέγω/ἐρῶ/εἶπον}; {ὁράω/ὄψομαι/εἶδον}; {φέρω/οἴσω/ἤνεγκα}), estás ante una _supleción_: verbos antiguos fundidos en un solo paradigma, como el español ir/voy/fui."},"principal-parts.a3.eg":{"fp":"1u6wery","text":"Te encuentras {ὄψεσθε}. Las desinencias dicen futuro medio, 2.ª pl., así que es una forma de la parte 2. Recorre la columna del futuro… {ὄψομαι} → fila {ὁράω}: «veréis»."},"principal-parts.a3.int":{"fp":"1ie47ei","text":"Por esto los léxicos citan los verbos por sus partes principales, y por esto el tiempo dedicado a memorizar la tabla se paga en cada sesión de lectura. La alternativa es buscar {ἤνεγκα} por orden alfabético y no encontrar nada cerca de {φέρω}."},"principal-parts.a3.label":{"fp":"6y2c7n","text":"Ejemplo resuelto"},"principal-parts.d1.intro":{"fp":"kgypid","text":"Coloca cada forma en su parte principal."},"principal-parts.d1.o0":{"fp":"1eybni0","text":"Parte 1 — presente"},"principal-parts.d1.o1":{"fp":"1u47enp","text":"Parte 2 — futuro activo"},"principal-parts.d1.o2":{"fp":"1ji09ed","text":"Parte 3 — aoristo activo"},"principal-parts.d1.o3":{"fp":"1rl9j2d","text":"Parte 4 — perfecto activo"},"principal-parts.d1.o4":{"fp":"1pnfcn1","text":"Parte 5 — perfecto medio/pasivo"},"principal-parts.d1.o5":{"fp":"1sr1iut","text":"Parte 6 — aoristo pasivo"},"principal-parts.d1.title":{"fp":"4q8ahy","text":"Práctica — ¿qué llave?"},"principal-parts.d2.intro":{"fp":"1wbeei8","text":"Raíces supletivas: empareja la forma con su verbo de diccionario."},"principal-parts.d2.o0":{"fp":"dj4qx9","text":"φέρω — «llevé»"},"principal-parts.d2.o1":{"fp":"lebec7","text":"λέγω — «dije»"},"principal-parts.d2.o2":{"fp":"8gfns3","text":"ἔρχομαι — «vine»"},"principal-parts.d2.o3":{"fp":"12ni4si","text":"ὁράω — «vi»"},"principal-parts.d2.o4":{"fp":"i6g2jd","text":"ἐσθίω — «comí»"},"principal-parts.d2.o5":{"fp":"1k6vvza","text":"γινώσκω — «conocí»"},"principal-parts.d2.title":{"fp":"1ji5qoc","text":"Práctica — nombra al rebelde"},"principal-parts.exp.b.eg":{"fp":"16rnyhm","text":"Los verbos regulares son predecibles; memoriza solo los rebeldes ({ἔρχομαι, ὁράω, φέρω}…), que son precisamente los verbos de cada página."},"principal-parts.exp.b.hook":{"fp":"2n19c7","text":"Aprende la fila de un verbo rebelde como una *cantinela*, de izquierda a derecha — {λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην} — exactamente como aprendiste _hago, hice, hecho_."},"principal-parts.exp.b.intro":{"fp":"1ln04c6","text":"Los diccionarios de griego describen un verbo por sus seis *partes principales* — como el español «hago, hice, hecho», pero con seis casillas: presente, futuro, aoristo, perfecto activo, perfecto medio/pasivo, aoristo pasivo ({λύω, λύσω, ἔλυσα, λέλυκα, λέλυμαι, ἐλύθην}). Toda forma que llegues a encontrar desciende de una de las seis."},"principal-parts.exp.i.main":{"fp":"ia380w","text":"Piensa en *sistemas temporales*, no en tiempos: la raíz de cada parte sirve a todos los modos de su sistema. Los apuntes al lado de la tabla indican qué desinencias y modos pertenecen a cada parte, y «Más a fondo», abajo, sigue la idea más lejos."},"principal-parts.h.deeper":{"fp":"11mc3kh","text":"Más a fondo: sistemas, no tiempos"},"principal-parts.h.english-first":{"fp":"11ud8oo","text":"Empecemos por el español: hago, hice, hecho"},"principal-parts.h.lookup":{"fp":"1jm66h4","text":"Usar la tabla: de la forma misteriosa al diccionario"},"principal-parts.h.rebels":{"fp":"1eylcam","text":"Los rebeldes que vale la pena memorizar"},"principal-parts.h.six-keys":{"fp":"xm5ywj","text":"Las seis llaves"},"principal-parts.h.try-it":{"fp":"1c7r8bb","text":"Practiquemos"},"principal-parts.h.watch-out":{"fp":"sg44kc","text":"Ojo"},"principal-parts.le.intro":{"fp":"ngt3ct","text":"Elige un verbo rebelde y observa cómo sus seis caras aparecen en texto real."},"principal-parts.le.l0":{"fp":"16s3eyj","text":"Todas las formas de {φέρω} — la supletiva máxima"},"principal-parts.le.l1":{"fp":"1cruwkl","text":"Todas las formas de {γινώσκω} — aoristo radical + futuro deponente"},"principal-parts.le.l2":{"fp":"ujvq3h","text":"Todas las formas de {εὑρίσκω} — de εὗρον a εὕρηκα («¡eureka!»)"},"principal-parts.p.dict":{"fp":"13ojvb7","text":"¿Cómo trata un diccionario español un verbo irregular? Enumera las formas que no se pueden predecir: _hago, hice, hecho_ — _voy, fui, ido_. Dale a un hispanohablante esas «partes principales» y construirá todo lo demás («había hecho», «iré») por regla."},"principal-parts.p.part6":{"fp":"jxbet6","text":"*La curiosa carrera de la parte 6.* La raíz en θη empezó como marca de intransitividad, no de pasiva estricta, lo cual explica los «deponentes pasivos» como {ἐπορεύθην} «fui» y {ἀπεκρίθην} «respondí»: antiguas medias intransitivas vestidas de θη. La pulcra cuadrícula activa/pasiva es una simplificación posterior tendida sobre una historia más desordenada."},"principal-parts.p.perfects":{"fp":"1m5j5tu","text":"*γέγονεν y ἐλήλυθα.* Los perfectos de los verbos cotidianos cargan un peso desproporcionado a su tamaño: el {ὃ γέγονεν} de Juan 1:3 («lo que ha llegado a ser») y el recurrente {ἐλήλυθεν ἡ ὥρα} («la hora _ha llegado_ — y ahora está aquí») se apoyan ambos en la fuerza de resultado permanente del perfecto que viste en el capítulo de los Indicativos."},"principal-parts.p.rows":{"fp":"ph3n1q","text":"Estos son los conjuntos irregulares de mayor frecuencia en el Nuevo Testamento. Lee cada fila en voz alta, de izquierda a derecha, como _hago–hice–hecho_. Una raya indica que la parte falta o es rara en el NT."},"principal-parts.p.six":{"fp":"ylq02c","text":"El griego hace exactamente esto, con *seis* partes principales por verbo: seis llaves, una para cada ala de la casa del verbo. Sabe en qué ala vive una forma y su llave te dirá qué raíz esperar. En los verbos regulares como {λύω} las seis partes son aburridamente predecibles, y ahí está la gracia: solo memorizas las partes de los rebeldes ({ἔρχομαι, λέγω, ὁράω, φέρω}…), y esos rebeldes son justamente los verbos que aparecen en cada página."},"principal-parts.p.systems":{"fp":"j3cce1","text":"*Piensa en sistemas temporales.* Las seis partes revelan la verdadera arquitectura del griego: no «tiempos», sino _sistemas_ — presente, futuro, aoristo, perfecto activo, perfecto medio/pasivo, aoristo pasivo —, cada uno con una raíz que sirve a todos los modos. Por eso el subjuntivo, el infinitivo, el imperativo y el participio de aoristo comparten todos la raíz de la parte 3 menos el aumento. Domina los sistemas y los cientos de «formas» se reducen a seis raíces más reglas que ya conoces."},"principal-parts.pr.a0":{"fp":"m7g5ae","text":"«Conoceréis la verdad» (Juan 8:32) — parte 2 de γινώσκω (futuro deponente γνώσομαι)."},"principal-parts.pr.a1":{"fp":"bgd2hh","text":"«Lo llevaron a Jesús» — parte 3 de φέρω (la supletiva ἤνεγκα)."},"principal-parts.pr.a2":{"fp":"l3td79","text":"«Ha visto al Padre» — parte 4 de ὁράω (Juan 6:46)."},"principal-parts.pr.a3":{"fp":"dfwb8a","text":"«Toda autoridad me ha sido dada» — parte 6 de δίδωμι (Mateo 28:18)."},"principal-parts.pr.a4":{"fp":"jxk2vc","text":"«La hora ha llegado» — parte 4 de ἔρχομαι (Juan 12:23), el perfecto de aspecto extraño ἐλήλυθα."},"principal-parts.pr.intro":{"fp":"9l6lqh","text":"Di de qué parte principal viene, cuál es el verbo de diccionario, y traduce."},"principal-parts.pr.title":{"fp":"ea5o8b","text":"Práctica — rastrea la forma hasta su fila"},"principal-parts.t1.c0.1":{"fp":"1m3e00c","text":"Presente"},"principal-parts.t1.c0.3":{"fp":"oymib8","text":"presente e imperfecto, todos los modos"},"principal-parts.t1.c1.1":{"fp":"1ykw7i4","text":"Futuro activo/medio"},"principal-parts.t1.c1.3":{"fp":"185x2bz","text":"futuro activo y medio"},"principal-parts.t1.c2.1":{"fp":"x21nrx","text":"Aoristo activo/medio"},"principal-parts.t1.c2.3":{"fp":"1n1lm71","text":"aoristo activo y medio, todos los modos"},"principal-parts.t1.c3.1":{"fp":"r19d4s","text":"Perfecto activo"},"principal-parts.t1.c3.3":{"fp":"s6i1e2","text":"perfecto y pluscuamperfecto activos"},"principal-parts.t1.c4.1":{"fp":"17jraud","text":"Perfecto medio/pasivo"},"principal-parts.t1.c4.3":{"fp":"16v0c6j","text":"perfecto y pluscuamperfecto medio/pasivos"},"principal-parts.t1.c5.1":{"fp":"si8ie","text":"Aoristo pasivo"},"principal-parts.t1.c5.3":{"fp":"5gy6e3","text":"aoristo pasivo + futuro pasivo"},"principal-parts.t1.h0":{"fp":"ak280i","text":"#"},"principal-parts.t1.h1":{"fp":"1r2xdf8","text":"Parte"},"principal-parts.t1.h2":{"fp":"1hf0yuf","text":"Forma"},"principal-parts.t1.h3":{"fp":"12ykp1v","text":"Genera"},"principal-parts.t1.title":{"fp":"1mm63hn","text":"Las seis partes principales — λύω"},"principal-parts.t2.h0":{"fp":"1m3e00c","text":"Presente"},"principal-parts.t2.h1":{"fp":"174diuu","text":"Futuro"},"principal-parts.t2.h2":{"fp":"1dkvb7z","text":"Aoristo"},"principal-parts.t2.h3":{"fp":"18l34bi","text":"Perf. act."},"principal-parts.t2.h4":{"fp":"4ltlq8","text":"Perf. m/p"},"principal-parts.t2.h5":{"fp":"1nurmfw","text":"Aor. pas."},"principal-parts.t2.note":{"fp":"1m5mxg1","text":"La raya (—) = no atestiguado o raro en el NT. Aprende cada fila como una cantinela, de izquierda a derecha."},"principal-parts.t2.title":{"fp":"18kede1","text":"Partes principales de verbos clave del NT"},"principal-parts.t3.c0.1":{"fp":"1tgplqb","text":"¿Qué desinencias? (persona, número, voz, modo)"},"principal-parts.t3.c1.1":{"fp":"pzlq8f","text":"¿Qué sistema? (¿aumento? ¿σ? ¿reduplicación? ¿θη?)"},"principal-parts.t3.c2.1":{"fp":"1xgn9ly","text":"¿De qué parte principal depende ese sistema?"},"principal-parts.t3.c3.1":{"fp":"1v2pypk","text":"¿En qué fila está esa forma? → forma de diccionario"},"principal-parts.t3.h0":{"fp":"jtn9kf","text":"Paso"},"principal-parts.t3.h1":{"fp":"yohkfm","text":"Pregunta"},"principal-parts.t3.title":{"fp":"tb1w7r","text":"El ejercicio de búsqueda"},"principal-parts.wo.0":{"fp":"1691nta","text":"El futuro pasivo nace de la parte *6*, no de la 2: {λυθήσομαι} de {ἐλύθην}. Si falta la parte 6, por lo general tampoco hay futuro pasivo."},"principal-parts.wo.1":{"fp":"1jhhpev","text":"{γέγονα} (perfecto de γίνομαι) es activo en la forma, aunque el verbo sea deponente: los perfectos rompen a veces las costumbres de un deponente."},"principal-parts.wo.2":{"fp":"92bzqk","text":"{ἵστημι} conserva dos aoristos con dos sentidos: {ἔστησα} «puse (en pie)» (transitivo) frente a {ἔστην} «me puse en pie» (intransitivo)."},"principal-parts.wo.3":{"fp":"1a3mbwg","text":"Los futuros deponentes sorprenden: {λήμψομαι} «recibiré», {γνώσομαι} «conoceré», {ὄψομαι} «veré»: sentido activo, forma media."},"principal-parts.wo.4":{"fp":"431uzo","text":"El aumento pertenece solo a las partes 3 y 6 en cuanto _indicativos_: las mismas raíces sin aumento sirven a los demás modos ({ἐλθών, γνῶναι, δοθῆναι})."}}
+{
+  "parseframe.case.0": {
+    "fp": "ts6un5",
+    "text": "Nom."
+  },
+  "parseframe.case.1": {
+    "fp": "13rcnlo",
+    "text": "Acus."
+  },
+  "parseframe.case.2": {
+    "fp": "1jtmupt",
+    "text": "Gen."
+  },
+  "parseframe.case.3": {
+    "fp": "37b14",
+    "text": "Dat."
+  },
+  "parseframe.ex.inflected": {
+    "fp": "asvu1q",
+    "text": "p. ej. desatamos"
+  },
+  "parseframe.ex.meaning": {
+    "fp": "v9un47",
+    "text": "desato"
+  },
+  "parseframe.gender.0": {
+    "fp": "1y03fz1",
+    "text": "Masc."
+  },
+  "parseframe.gender.1": {
+    "fp": "4udjbj",
+    "text": "Fem."
+  },
+  "parseframe.gender.2": {
+    "fp": "105oupl",
+    "text": "Neut."
+  },
+  "parseframe.h.case": {
+    "fp": "7kvjkh",
+    "text": "Caso"
+  },
+  "parseframe.h.gender": {
+    "fp": "1jtmupt",
+    "text": "Gén."
+  },
+  "parseframe.h.inflected": {
+    "fp": "euv39q",
+    "text": "Significado de la forma"
+  },
+  "parseframe.h.lexical": {
+    "fp": "bq1p8e",
+    "text": "1.ª persona sg."
+  },
+  "parseframe.h.meaning": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "parseframe.h.mood": {
+    "fp": "rat53y",
+    "text": "Modo"
+  },
+  "parseframe.h.number": {
+    "fp": "pb3jd3",
+    "text": "Núm."
+  },
+  "parseframe.h.person": {
+    "fp": "1i84mn4",
+    "text": "Persona"
+  },
+  "parseframe.h.tense": {
+    "fp": "smsl28",
+    "text": "Tiempo"
+  },
+  "parseframe.h.voice": {
+    "fp": "b1qn4p",
+    "text": "Voz"
+  },
+  "parseframe.mood.0": {
+    "fp": "1qzvbfn",
+    "text": "Indicativo"
+  },
+  "parseframe.mood.1": {
+    "fp": "q7kfd7",
+    "text": "Imperativo"
+  },
+  "parseframe.mood.2": {
+    "fp": "1f02x94",
+    "text": "Infinitivo"
+  },
+  "parseframe.mood.3": {
+    "fp": "wsvpvd",
+    "text": "Subjuntivo"
+  },
+  "parseframe.mood.participle": {
+    "fp": "1sgvho2",
+    "text": "Participio"
+  },
+  "parseframe.note": {
+    "fp": "1hb7xd1",
+    "text": "Todo verbo conjugado lleva las cinco primeras; el participio cambia la persona por el caso y el género; el infinitivo se detiene después del modo. El análisis termina con la forma léxica —la 1.ª persona del singular— y debes poder decir qué significan tanto ella como la forma que tienes delante."
+  },
+  "parseframe.number.0": {
+    "fp": "69uey8",
+    "text": "Sing."
+  },
+  "parseframe.number.1": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "parseframe.person.0": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "parseframe.person.1": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "parseframe.person.2": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "parseframe.tense.0": {
+    "fp": "1m3e00c",
+    "text": "Presente"
+  },
+  "parseframe.tense.1": {
+    "fp": "174diuu",
+    "text": "Futuro"
+  },
+  "parseframe.tense.2": {
+    "fp": "qj874s",
+    "text": "Imperfecto"
+  },
+  "parseframe.tense.3": {
+    "fp": "1dkvb7z",
+    "text": "Aoristo"
+  },
+  "parseframe.tense.4": {
+    "fp": "1qm91la",
+    "text": "Perfecto"
+  },
+  "parseframe.tense.5": {
+    "fp": "1ioi1a9",
+    "text": "Pluscuamperfecto"
+  },
+  "parseframe.title": {
+    "fp": "g2ksel",
+    "text": "Para analizar un verbo, indica cada casilla"
+  },
+  "parseframe.voice.0": {
+    "fp": "8qzyhb",
+    "text": "Activa"
+  },
+  "parseframe.voice.1": {
+    "fp": "17pyed4",
+    "text": "Media"
+  },
+  "parseframe.voice.2": {
+    "fp": "pq49ha",
+    "text": "Pasiva"
+  },
+  "principal-parts.a1.int": {
+    "fp": "ofdega",
+    "text": "Las partes 1-2 usan desinencias primarias; la 3 es el sistema del aoristo (indicativo + los modos sin aumento); 4-5, los sistemas del perfecto; 6, el aoristo pasivo _y_ el futuro pasivo ({λυθήσομαι} nace de la parte 6, no de la 2)."
+  },
+  "principal-parts.a1.label": {
+    "fp": "1vi8vn0",
+    "text": "Qué abre cada parte"
+  },
+  "principal-parts.a1.note": {
+    "fp": "1tsaabj",
+    "text": "Toda forma que llegues a encontrar desciende de una de estas seis. Analizar una forma desconocida = preguntar «¿de qué parte viene?»."
+  },
+  "principal-parts.a2.chant": {
+    "fp": "y4ecsx",
+    "text": "No memorices la tabla de una sentada: una fila al día, y siempre como una cantinela: {λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην}."
+  },
+  "principal-parts.a2.clubs": {
+    "fp": "1fkdu3q",
+    "text": "Reconoce los grupos que ya conoces: aoristos segundos en la parte 3 ({ἔλαβον}), futuros medios de los deponentes ({λήμψομαι}), futuros líquidos ({βαλῶ})."
+  },
+  "principal-parts.a2.int": {
+    "fp": "1snkaeh",
+    "text": "Cuando las partes vienen de raíces distintas ({λέγω/ἐρῶ/εἶπον}; {ὁράω/ὄψομαι/εἶδον}; {φέρω/οἴσω/ἤνεγκα}), estás ante una _supleción_: verbos antiguos fundidos en un solo paradigma, como el español ir/voy/fui."
+  },
+  "principal-parts.a3.eg": {
+    "fp": "1u6wery",
+    "text": "Te encuentras {ὄψεσθε}. Las desinencias dicen futuro medio, 2.ª pl., así que es una forma de la parte 2. Recorre la columna del futuro… {ὄψομαι} → fila {ὁράω}: «veréis»."
+  },
+  "principal-parts.a3.int": {
+    "fp": "1ie47ei",
+    "text": "Por esto los léxicos citan los verbos por sus partes principales, y por esto el tiempo dedicado a memorizar la tabla se paga en cada sesión de lectura. La alternativa es buscar {ἤνεγκα} por orden alfabético y no encontrar nada cerca de {φέρω}."
+  },
+  "principal-parts.a3.label": {
+    "fp": "6y2c7n",
+    "text": "Ejemplo resuelto"
+  },
+  "principal-parts.d1.intro": {
+    "fp": "kgypid",
+    "text": "Coloca cada forma en su parte principal."
+  },
+  "principal-parts.d1.o0": {
+    "fp": "1eybni0",
+    "text": "Parte 1 — presente"
+  },
+  "principal-parts.d1.o1": {
+    "fp": "1u47enp",
+    "text": "Parte 2 — futuro activo"
+  },
+  "principal-parts.d1.o2": {
+    "fp": "1ji09ed",
+    "text": "Parte 3 — aoristo activo"
+  },
+  "principal-parts.d1.o3": {
+    "fp": "1rl9j2d",
+    "text": "Parte 4 — perfecto activo"
+  },
+  "principal-parts.d1.o4": {
+    "fp": "1pnfcn1",
+    "text": "Parte 5 — perfecto medio/pasivo"
+  },
+  "principal-parts.d1.o5": {
+    "fp": "1sr1iut",
+    "text": "Parte 6 — aoristo pasivo"
+  },
+  "principal-parts.d1.title": {
+    "fp": "4q8ahy",
+    "text": "Práctica — ¿qué llave?"
+  },
+  "principal-parts.d2.intro": {
+    "fp": "1wbeei8",
+    "text": "Raíces supletivas: empareja la forma con su verbo de diccionario."
+  },
+  "principal-parts.d2.o0": {
+    "fp": "dj4qx9",
+    "text": "φέρω — «llevé»"
+  },
+  "principal-parts.d2.o1": {
+    "fp": "lebec7",
+    "text": "λέγω — «dije»"
+  },
+  "principal-parts.d2.o2": {
+    "fp": "8gfns3",
+    "text": "ἔρχομαι — «vine»"
+  },
+  "principal-parts.d2.o3": {
+    "fp": "12ni4si",
+    "text": "ὁράω — «vi»"
+  },
+  "principal-parts.d2.o4": {
+    "fp": "i6g2jd",
+    "text": "ἐσθίω — «comí»"
+  },
+  "principal-parts.d2.o5": {
+    "fp": "1k6vvza",
+    "text": "γινώσκω — «conocí»"
+  },
+  "principal-parts.d2.title": {
+    "fp": "1ji5qoc",
+    "text": "Práctica — nombra al rebelde"
+  },
+  "principal-parts.exp.b.eg": {
+    "fp": "16rnyhm",
+    "text": "Los verbos regulares son predecibles; memoriza solo los rebeldes ({ἔρχομαι, ὁράω, φέρω}…), que son precisamente los verbos de cada página."
+  },
+  "principal-parts.exp.b.hook": {
+    "fp": "2n19c7",
+    "text": "Aprende la fila de un verbo rebelde como una *cantinela*, de izquierda a derecha — {λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην} — exactamente como aprendiste _hago, hice, hecho_."
+  },
+  "principal-parts.exp.b.intro": {
+    "fp": "1ln04c6",
+    "text": "Los diccionarios de griego describen un verbo por sus seis *partes principales* — como el español «hago, hice, hecho», pero con seis casillas: presente, futuro, aoristo, perfecto activo, perfecto medio/pasivo, aoristo pasivo ({λύω, λύσω, ἔλυσα, λέλυκα, λέλυμαι, ἐλύθην}). Toda forma que llegues a encontrar desciende de una de las seis."
+  },
+  "principal-parts.exp.i.main": {
+    "fp": "ia380w",
+    "text": "Piensa en *sistemas temporales*, no en tiempos: la raíz de cada parte sirve a todos los modos de su sistema. Los apuntes al lado de la tabla indican qué desinencias y modos pertenecen a cada parte, y «Más a fondo», abajo, sigue la idea más lejos."
+  },
+  "principal-parts.h.deeper": {
+    "fp": "11mc3kh",
+    "text": "Más a fondo: sistemas, no tiempos"
+  },
+  "principal-parts.h.english-first": {
+    "fp": "11ud8oo",
+    "text": "Empecemos por el español: hago, hice, hecho"
+  },
+  "principal-parts.h.lookup": {
+    "fp": "1jm66h4",
+    "text": "Usar la tabla: de la forma misteriosa al diccionario"
+  },
+  "principal-parts.h.rebels": {
+    "fp": "1eylcam",
+    "text": "Los rebeldes que vale la pena memorizar"
+  },
+  "principal-parts.h.six-keys": {
+    "fp": "xm5ywj",
+    "text": "Las seis llaves"
+  },
+  "principal-parts.h.try-it": {
+    "fp": "1c7r8bb",
+    "text": "Practiquemos"
+  },
+  "principal-parts.h.watch-out": {
+    "fp": "sg44kc",
+    "text": "Ojo"
+  },
+  "principal-parts.le.intro": {
+    "fp": "ngt3ct",
+    "text": "Elige un verbo rebelde y observa cómo sus seis caras aparecen en texto real."
+  },
+  "principal-parts.le.l0": {
+    "fp": "16s3eyj",
+    "text": "Todas las formas de {φέρω} — la supletiva máxima"
+  },
+  "principal-parts.le.l1": {
+    "fp": "1cruwkl",
+    "text": "Todas las formas de {γινώσκω} — aoristo radical + futuro deponente"
+  },
+  "principal-parts.le.l2": {
+    "fp": "ujvq3h",
+    "text": "Todas las formas de {εὑρίσκω} — de εὗρον a εὕρηκα («¡eureka!»)"
+  },
+  "principal-parts.p.dict": {
+    "fp": "13ojvb7",
+    "text": "¿Cómo trata un diccionario español un verbo irregular? Enumera las formas que no se pueden predecir: _hago, hice, hecho_ — _voy, fui, ido_. Dale a un hispanohablante esas «partes principales» y construirá todo lo demás («había hecho», «iré») por regla."
+  },
+  "principal-parts.p.part6": {
+    "fp": "jxbet6",
+    "text": "*La curiosa carrera de la parte 6.* La raíz en θη empezó como marca de intransitividad, no de pasiva estricta, lo cual explica los «deponentes pasivos» como {ἐπορεύθην} «fui» y {ἀπεκρίθην} «respondí»: antiguas medias intransitivas vestidas de θη. La pulcra cuadrícula activa/pasiva es una simplificación posterior tendida sobre una historia más desordenada."
+  },
+  "principal-parts.p.perfects": {
+    "fp": "1m5j5tu",
+    "text": "*γέγονεν y ἐλήλυθα.* Los perfectos de los verbos cotidianos cargan un peso desproporcionado a su tamaño: el {ὃ γέγονεν} de Juan 1:3 («lo que ha llegado a ser») y el recurrente {ἐλήλυθεν ἡ ὥρα} («la hora _ha llegado_ — y ahora está aquí») se apoyan ambos en la fuerza de resultado permanente del perfecto que viste en el capítulo de los Indicativos."
+  },
+  "principal-parts.p.rows": {
+    "fp": "ph3n1q",
+    "text": "Estos son los conjuntos irregulares de mayor frecuencia en el Nuevo Testamento. Lee cada fila en voz alta, de izquierda a derecha, como _hago–hice–hecho_. Una raya indica que la parte falta o es rara en el NT."
+  },
+  "principal-parts.p.six": {
+    "fp": "ylq02c",
+    "text": "El griego hace exactamente esto, con *seis* partes principales por verbo: seis llaves, una para cada ala de la casa del verbo. Sabe en qué ala vive una forma y su llave te dirá qué raíz esperar. En los verbos regulares como {λύω} las seis partes son aburridamente predecibles, y ahí está la gracia: solo memorizas las partes de los rebeldes ({ἔρχομαι, λέγω, ὁράω, φέρω}…), y esos rebeldes son justamente los verbos que aparecen en cada página."
+  },
+  "principal-parts.p.systems": {
+    "fp": "j3cce1",
+    "text": "*Piensa en sistemas temporales.* Las seis partes revelan la verdadera arquitectura del griego: no «tiempos», sino _sistemas_ — presente, futuro, aoristo, perfecto activo, perfecto medio/pasivo, aoristo pasivo —, cada uno con una raíz que sirve a todos los modos. Por eso el subjuntivo, el infinitivo, el imperativo y el participio de aoristo comparten todos la raíz de la parte 3 menos el aumento. Domina los sistemas y los cientos de «formas» se reducen a seis raíces más reglas que ya conoces."
+  },
+  "principal-parts.pr.a0": {
+    "fp": "m7g5ae",
+    "text": "«Conoceréis la verdad» (Juan 8:32) — parte 2 de γινώσκω (futuro deponente γνώσομαι)."
+  },
+  "principal-parts.pr.a1": {
+    "fp": "bgd2hh",
+    "text": "«Lo llevaron a Jesús» — parte 3 de φέρω (la supletiva ἤνεγκα)."
+  },
+  "principal-parts.pr.a2": {
+    "fp": "l3td79",
+    "text": "«Ha visto al Padre» — parte 4 de ὁράω (Juan 6:46)."
+  },
+  "principal-parts.pr.a3": {
+    "fp": "dfwb8a",
+    "text": "«Toda autoridad me ha sido dada» — parte 6 de δίδωμι (Mateo 28:18)."
+  },
+  "principal-parts.pr.a4": {
+    "fp": "jxk2vc",
+    "text": "«La hora ha llegado» — parte 4 de ἔρχομαι (Juan 12:23), el perfecto de aspecto extraño ἐλήλυθα."
+  },
+  "principal-parts.pr.intro": {
+    "fp": "9l6lqh",
+    "text": "Di de qué parte principal viene, cuál es el verbo de diccionario, y traduce."
+  },
+  "principal-parts.pr.title": {
+    "fp": "ea5o8b",
+    "text": "Práctica — rastrea la forma hasta su fila"
+  },
+  "principal-parts.t1.c0.1": {
+    "fp": "1m3e00c",
+    "text": "Presente"
+  },
+  "principal-parts.t1.c0.3": {
+    "fp": "oymib8",
+    "text": "presente e imperfecto, todos los modos"
+  },
+  "principal-parts.t1.c1.1": {
+    "fp": "1ykw7i4",
+    "text": "Futuro activo/medio"
+  },
+  "principal-parts.t1.c1.3": {
+    "fp": "185x2bz",
+    "text": "futuro activo y medio"
+  },
+  "principal-parts.t1.c2.1": {
+    "fp": "x21nrx",
+    "text": "Aoristo activo/medio"
+  },
+  "principal-parts.t1.c2.3": {
+    "fp": "1n1lm71",
+    "text": "aoristo activo y medio, todos los modos"
+  },
+  "principal-parts.t1.c3.1": {
+    "fp": "r19d4s",
+    "text": "Perfecto activo"
+  },
+  "principal-parts.t1.c3.3": {
+    "fp": "s6i1e2",
+    "text": "perfecto y pluscuamperfecto activos"
+  },
+  "principal-parts.t1.c4.1": {
+    "fp": "17jraud",
+    "text": "Perfecto medio/pasivo"
+  },
+  "principal-parts.t1.c4.3": {
+    "fp": "16v0c6j",
+    "text": "perfecto y pluscuamperfecto medio/pasivos"
+  },
+  "principal-parts.t1.c5.1": {
+    "fp": "si8ie",
+    "text": "Aoristo pasivo"
+  },
+  "principal-parts.t1.c5.3": {
+    "fp": "5gy6e3",
+    "text": "aoristo pasivo + futuro pasivo"
+  },
+  "principal-parts.t1.h0": {
+    "fp": "ak280i",
+    "text": "#"
+  },
+  "principal-parts.t1.h1": {
+    "fp": "1r2xdf8",
+    "text": "Parte"
+  },
+  "principal-parts.t1.h2": {
+    "fp": "1hf0yuf",
+    "text": "Forma"
+  },
+  "principal-parts.t1.h3": {
+    "fp": "12ykp1v",
+    "text": "Genera"
+  },
+  "principal-parts.t1.title": {
+    "fp": "1mm63hn",
+    "text": "Las seis partes principales — λύω"
+  },
+  "principal-parts.t2.h0": {
+    "fp": "1m3e00c",
+    "text": "Presente"
+  },
+  "principal-parts.t2.h1": {
+    "fp": "174diuu",
+    "text": "Futuro"
+  },
+  "principal-parts.t2.h2": {
+    "fp": "1dkvb7z",
+    "text": "Aoristo"
+  },
+  "principal-parts.t2.h3": {
+    "fp": "18l34bi",
+    "text": "Perf. act."
+  },
+  "principal-parts.t2.h4": {
+    "fp": "4ltlq8",
+    "text": "Perf. m/p"
+  },
+  "principal-parts.t2.h5": {
+    "fp": "1nurmfw",
+    "text": "Aor. pas."
+  },
+  "principal-parts.t2.note": {
+    "fp": "1m5mxg1",
+    "text": "La raya (—) = no atestiguado o raro en el NT. Aprende cada fila como una cantinela, de izquierda a derecha."
+  },
+  "principal-parts.t2.title": {
+    "fp": "18kede1",
+    "text": "Partes principales de verbos clave del NT"
+  },
+  "principal-parts.t3.c0.1": {
+    "fp": "1tgplqb",
+    "text": "¿Qué desinencias? (persona, número, voz, modo)"
+  },
+  "principal-parts.t3.c1.1": {
+    "fp": "pzlq8f",
+    "text": "¿Qué sistema? (¿aumento? ¿σ? ¿reduplicación? ¿θη?)"
+  },
+  "principal-parts.t3.c2.1": {
+    "fp": "1xgn9ly",
+    "text": "¿De qué parte principal depende ese sistema?"
+  },
+  "principal-parts.t3.c3.1": {
+    "fp": "1v2pypk",
+    "text": "¿En qué fila está esa forma? → forma de diccionario"
+  },
+  "principal-parts.t3.h0": {
+    "fp": "jtn9kf",
+    "text": "Paso"
+  },
+  "principal-parts.t3.h1": {
+    "fp": "yohkfm",
+    "text": "Pregunta"
+  },
+  "principal-parts.t3.title": {
+    "fp": "tb1w7r",
+    "text": "El ejercicio de búsqueda"
+  },
+  "principal-parts.wo.0": {
+    "fp": "1691nta",
+    "text": "El futuro pasivo nace de la parte *6*, no de la 2: {λυθήσομαι} de {ἐλύθην}. Si falta la parte 6, por lo general tampoco hay futuro pasivo."
+  },
+  "principal-parts.wo.1": {
+    "fp": "1jhhpev",
+    "text": "{γέγονα} (perfecto de γίνομαι) es activo en la forma, aunque el verbo sea deponente: los perfectos rompen a veces las costumbres de un deponente."
+  },
+  "principal-parts.wo.2": {
+    "fp": "92bzqk",
+    "text": "{ἵστημι} conserva dos aoristos con dos sentidos: {ἔστησα} «puse (en pie)» (transitivo) frente a {ἔστην} «me puse en pie» (intransitivo)."
+  },
+  "principal-parts.wo.3": {
+    "fp": "1a3mbwg",
+    "text": "Los futuros deponentes sorprenden: {λήμψομαι} «recibiré», {γνώσομαι} «conoceré», {ὄψομαι} «veré»: sentido activo, forma media."
+  },
+  "principal-parts.wo.4": {
+    "fp": "431uzo",
+    "text": "El aumento pertenece solo a las partes 3 y 6 en cuanto _indicativos_: las mismas raíces sin aumento sirven a los demás modos ({ἐλθών, γνῶναι, δοθῆναι})."
+  }
+}

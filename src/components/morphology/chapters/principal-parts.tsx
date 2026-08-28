@@ -9,9 +9,12 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   DropdownPractice, Tr,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 
 export const PRINCIPAL_PARTS_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="principal-parts.h.english-first">Start with English: sing, sang, sung</SectionHeading>

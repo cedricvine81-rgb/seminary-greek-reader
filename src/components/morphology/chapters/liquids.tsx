@@ -10,9 +10,12 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox, Tr,
   ClassSentences, DropdownPractice,
 } from '../shared'
+import { ParseFrame } from '../ParseFrame'
 
 export const LIQUIDS_CONTENT = (
   <>
+    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
+    <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="liquids.h.english-first">Start with English: sounds that won't take an -s</SectionHeading>
