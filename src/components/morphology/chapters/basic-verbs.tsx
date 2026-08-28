@@ -12,10 +12,14 @@
    the other tenses, the middle and passive, the moods, the contract and μι verbs — is left to
    the chapters that own it. The point is only to make the noun chapters readable.
 
-   The verbs are the instructor's own two lists — the nine that behave like λύω and the six ε-contracts
-   like φιλέω, taken from the chapter-end vocabularies in Duff — plus γράφω, γινώσκω and πιστεύω, which
-   the noun chapters use and which follow the λύω pattern exactly. All fifteen are already in the BGVB
-   vocabulary this course schedules, and the NT counts here are that deck's.
+   The verbs are the instructor's own three lists, taken from the chapter-end vocabularies in Duff: the
+   nine that behave like λύω, the six ε-contracts like φιλέω, and eleven compounds — plus γράφω, γινώσκω
+   and πιστεύω, which the noun chapters use and which follow the λύω pattern exactly. All of them are
+   already in the BGVB vocabulary this course schedules, and the NT counts here are that deck's.
+
+   The compounds are placed last on purpose: nine of the eleven are built on verbs conjugated earlier in
+   this same chapter, so by the time a student reaches them the table is mostly a list of things they can
+   already do.
 
    Textbook chapter (see chapters/nouns.tsx for the template).
 ───────────────────────────────────────────── */
@@ -150,6 +154,45 @@ export const BASIC_VERBS_CONTENT = (
       note="The lexical form is always given uncontracted — φιλέω, ποιέω — which is why the dictionary form and the form on the page can look different."
     />
 
+    {/* ── 3c · Compounds ─────────────────────────────────── */}
+    <SectionHeading id="basic-verbs.h.compounds">Eleven compound verbs</SectionHeading>
+    <P id="basic-verbs.p.compound-prefix">
+      A compound verb is a preposition stuck on the front of a verb, and the join changes nothing about
+      the endings. <Gk>συνάγω</Gk> is <Gk>σύν</Gk> + <Gk>ἄγω</Gk> and conjugates exactly like <Gk>ἄγω</Gk>:
+      <Gk> συνάγω, συνάγεις, συνάγει, συνάγομεν, συνάγετε, συνάγουσι(ν)</Gk>. The prefix simply rides along at
+      the front — so nine of the eleven below are verbs you have already conjugated in this chapter.
+    </P>
+    <P id="basic-verbs.p.compound-meaning">
+      What the prefix does change is the sense, and not always predictably. <Gk>ἐκβάλλω</Gk> is "throw
+      <em>out</em>," which you could have guessed from <Gk>ἐκ</Gk> "out of" and <Gk>βάλλω</Gk> "I throw";
+      but <Gk>παρακαλέω</Gk> — "call alongside" — means to exhort, or to comfort. Read the prefix as a hint,
+      never as a definition.
+    </P>
+    <MorphTable id="basic-verbs.t6" tCols={[2, 3]} flush title="Eleven compound verbs"
+      headers={['1st sg.', 'Built from', 'Meaning', 'Pattern', 'NT times']} firstColIsData
+      rows={[
+        ['ἀναβλέπω', 'ἀνά + βλέπω', 'I look up, receive sight', 'like λύω', '25'],
+        ['ἀπολύω', 'ἀπό + λύω', 'I set free, divorce, dismiss', 'like λύω', '67'],
+        ['ἐκβάλλω', 'ἐκ + βάλλω', 'I drive out, cast out', 'like λύω', '80'],
+        ['ἐπικαλέω', 'ἐπί + καλέω', 'I call upon, name', 'like φιλέω', '30'],
+        ['κατοικέω', 'κατά + οἰκέω', 'I dwell, inhabit, live', 'like φιλέω', '45'],
+        ['παρακαλέω', 'παρά + καλέω', 'I exhort, comfort, encourage', 'like φιλέω', '108'],
+        ['παραλαμβάνω', 'παρά + λαμβάνω', 'I take, receive', 'like λύω', '49'],
+        ['περιπατέω', 'περί + πατέω', 'I walk about, live', 'like φιλέω', '94'],
+        ['προσκυνέω', 'πρός + κυνέω', 'I worship (+ dative)', 'like φιλέω', '59'],
+        ['συνάγω', 'σύν + ἄγω', 'I gather, bring together', 'like λύω', '59'],
+        ['ὑπάγω', 'ὑπό + ἄγω', 'I depart', 'like λύω', '81'],
+      ]}
+      note="Pattern tells you which table to conjugate it from: the -ω verbs take λύω's endings, the -έω verbs contract like φιλέω. προσκυνέω takes its object in the dative rather than the accusative."
+    />
+    <LevelOnly level="intermediate">
+      <P id="basic-verbs.p.compound-bound-stems">
+        Three of the bases — <Gk>οἰκέω</Gk>, <Gk>πατέω</Gk>, <Gk>κυνέω</Gk> — are rare or unused on their own in
+        the New Testament: the compound is the word. Splitting them is still worth doing, because the same
+        bases recur in other compounds (<Gk>οἰκία</Gk>, <Gk>οἰκοδομέω</Gk>).
+      </P>
+    </LevelOnly>
+
     {/* ── 4 · εἰμί, the odd one out ───────────────────────── */}
     <SectionHeading id="basic-verbs.h.eimi">εἰμί — the one that breaks the pattern</SectionHeading>
     <P id="basic-verbs.p.eimi-irregular">
@@ -189,6 +232,7 @@ export const BASIC_VERBS_CONTENT = (
         { q: <span className="normal-case">ἔχεις</span>, answer: '2nd singular', note: <Tr id="basic-verbs.n.you-have">"You (one person) have."</Tr> },
         { q: <span className="normal-case">ποιεῖ</span>, answer: '3rd singular', note: <Tr id="basic-verbs.n.he-does">"He does, he makes." A contract verb: ποιέ-ει has run together into ποιεῖ.</Tr> },
         { q: <span className="normal-case">λαλοῦμεν</span>, answer: '1st plural', note: <Tr id="basic-verbs.n.we-speak">"We speak." Contracted from λαλέ-ομεν.</Tr> },
+        { q: <span className="normal-case">ἐκβάλλουσιν</span>, answer: '3rd plural', note: <Tr id="basic-verbs.n.they-cast-out">"They cast out." A compound: strip ἐκ- and it is βάλλουσιν, which you already know.</Tr> },
       ]}
     />
   </>
