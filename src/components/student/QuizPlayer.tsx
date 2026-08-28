@@ -83,6 +83,10 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   const retakesUsed = Math.max(0, attemptCount - 1)
   const retakesRemaining = maxRetakes === null ? null : Math.max(0, maxRetakes - retakesUsed)
   const canRetake = maxAllowed === null || attemptCount < maxAllowed
+  // Practising is always available — including after the graded attempts are gone, which is
+  // exactly when a student revising for an exam wants the quiz most. A practice run is graded
+  // by the server like any other, and recorded nowhere.
+  const [practiceMode, setPracticeMode] = useState(false)
 
   // Per-attempt randomised order (and shuffled MC options). Reshuffled on each retake
   // so the quiz is different every time. Grading is unaffected (keyed by question id).
@@ -234,7 +238,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
       const res = await fetch('/api/quizzes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ assignmentId, responses: payload, retake: false }),
+        body: JSON.stringify({ assignmentId, responses: payload, retake: false, practice: practiceMode }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok || !data?.result) {
@@ -244,8 +248,10 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
       }
       setResult(data.result)
       setPhase('submitted')
-      setAttemptCount(data.result.attemptNumber)
-      if (data.result.isNewBest) setBestPct(data.result.percentage)
+      if (!data.result.practice) {
+        setAttemptCount(data.result.attemptNumber)
+        if (data.result.isNewBest) setBestPct(data.result.percentage)
+      }
 
       // Submit any mid-quiz "marked for appeal" intents. The breakdown now has
       // responseIds, so we can POST each appeal against the actual Response row.
@@ -277,7 +283,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     }
   }
 
-  function handleRetake() {
+  function handleRetake(asPractice = false) {
+    setPracticeMode(asPractice)
     setOrderedQuestions(shuffleQuiz(questions, questionsPerAttempt))  // fresh random draw for the new attempt
     setIdx(0)
     setDraft('')
@@ -405,16 +412,26 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           <CheckCircle2 size={40} className="text-green-500 mx-auto mb-2" />
           <p className="text-4xl font-bold text-brand-700">{result.percentage}%</p>
           <p className="text-gray-600 mt-1">{t('quiz.correctSubmitted', { n: result.correctAnswers, total: result.totalQuestions })}</p>
-          {result.isNewBest ? (
-            <p className="text-xs text-green-600 mt-1 font-medium">{t('quiz.newBest')}</p>
-          ) : (
-            <p className="text-xs text-gray-400 mt-1">{t('quiz.bestScore', { pct: bestPct ?? '' })}</p>
-          )}
-          {maxRetakes !== null && (
-            <p className="text-xs text-gray-500 mt-2">
-              {t('quiz.attemptOf', { n: attemptCount, max: maxAllowed ?? 0 })} ·{' '}
-              {retakesRemaining === 0 ? t('quiz.noRetakes') : t('quiz.retakesRemaining', { count: retakesRemaining ?? 0 })}
+          {/* A practice score must never read as a mark. It says so plainly, and the
+              best-score and attempts-remaining lines are withheld: neither moved. */}
+          {result.practice ? (
+            <p className="mt-2 inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
+              {t('quiz.practiceNote')}
             </p>
+          ) : (
+            <>
+              {result.isNewBest ? (
+                <p className="text-xs text-green-600 mt-1 font-medium">{t('quiz.newBest')}</p>
+              ) : (
+                <p className="text-xs text-gray-400 mt-1">{t('quiz.bestScore', { pct: bestPct ?? '' })}</p>
+              )}
+              {maxRetakes !== null && (
+                <p className="text-xs text-gray-500 mt-2">
+                  {t('quiz.attemptOf', { n: attemptCount, max: maxAllowed ?? 0 })} ·{' '}
+                  {retakesRemaining === 0 ? t('quiz.noRetakes') : t('quiz.retakesRemaining', { count: retakesRemaining ?? 0 })}
+                </p>
+              )}
+            </>
           )}
         </div>
 
@@ -495,11 +512,17 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
         <div className="flex gap-3 justify-end">
           {canRetake && (
-            <Button onClick={handleRetake} variant="ghost" className="flex items-center gap-2">
+            <Button onClick={() => handleRetake(false)} variant="ghost" className="flex items-center gap-2">
               <RotateCcw size={15} />
-              Retake Quiz
+              {t('quiz.retake')}
             </Button>
           )}
+          {/* Always offered, and the only thing on offer once the graded attempts are gone —
+              which is when a student revising actually wants the quiz. */}
+          <Button onClick={() => handleRetake(true)} variant="ghost" className="flex items-center gap-2">
+            <RotateCcw size={15} />
+            {t('quiz.practiceAgain')}
+          </Button>
           <Button variant="ghost" onClick={() => { router.push('/student/assignments'); router.refresh() }}>
             Back to Assignments
           </Button>
@@ -738,6 +761,10 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             {!clientCorrect[q.id]
               && type === 'VOCABULARY_QUIZ'
               && maxAppeals > 0
+              // Nothing to appeal on a practice run: no mark is recorded, so no mark is in
+              // dispute. (The results-screen appeal is already impossible — it needs a
+              // responseId, and a practice run creates no Response rows.)
+              && !practiceMode
               && (answers[q.id]?.trim() ?? '') !== ''
               && (() => {
                 const isMarked = markedForAppeal.has(q.id)

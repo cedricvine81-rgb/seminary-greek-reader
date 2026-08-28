@@ -66,6 +66,13 @@ export async function POST(req: NextRequest) {
   const totalPoints = responses.reduce((s, r) => s + (questionMap[r.questionId]?.points ?? 0), 0)
 
   // Count previous attempts
+  // PRACTICE RUNS ARE GRADED BUT NOT RECORDED. A student who has used their attempts still
+  // wants to test themselves on the material — that is what the quiz is for once the marks are
+  // settled. Graded here rather than in the browser so practice and assessment score by exactly
+  // the same rules: the morphology partial credit, the ambiguous-form allowance, the vocabulary
+  // matching. A second implementation would drift, and would drift silently.
+  const practice = body.practice === true
+
   const previousAttempts = await prisma.quizAttempt.findMany({
     where: { userId: payload.sub, assignmentId },
     orderBy: { attemptNumber: 'asc' },
@@ -73,7 +80,7 @@ export async function POST(req: NextRequest) {
 
   const attemptNumber = previousAttempts.length + 1
   const maxAllowed = assignment.maxRetakes === null ? null : assignment.maxRetakes + 1
-  if (maxAllowed !== null && previousAttempts.length >= maxAllowed) {
+  if (!practice && maxAllowed !== null && previousAttempts.length >= maxAllowed) {
     return NextResponse.json({ error: 'No retakes remaining.' }, { status: 403 })
   }
 
@@ -103,6 +110,26 @@ export async function POST(req: NextRequest) {
   // Compared as a PERCENTAGE, not raw points: a re-sampling pool shows a different number
   // of questions each attempt, so 12/20 (60%) used to beat 10/10 (100%) and overwrite it.
   const isNewBest = !bestPrevious || percentage >= bestPrevious.percentage
+
+  // A practice run stops here: same grading, nothing written. No Response rows, no QuizAttempt,
+  // no cache busting — the gradebook, the best-attempt record and the retake count are all left
+  // exactly as they were. Without responseIds there is nothing for an appeal to hang on, which
+  // is correct: there is no mark to appeal against.
+  if (practice) {
+    return NextResponse.json({
+      result: {
+        assignmentId,
+        practice: true,
+        totalQuestions: breakdown.length,
+        correctAnswers: breakdown.filter(b => b.isCorrect).length,
+        score: earnedPoints,
+        percentage,
+        attemptNumber: previousAttempts.length,
+        isNewBest: false,
+        breakdown,
+      },
+    })
+  }
 
   // Persist results atomically — response records + attempt record in one transaction
   // so a mid-flight crash never leaves partial data.

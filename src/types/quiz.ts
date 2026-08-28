@@ -31,6 +31,8 @@ export interface QuizResult {
   percentage: number
   breakdown: QuizResultItem[]
   isNewBest?: boolean
+  /** A practice run: graded by the same rules, recorded nowhere. */
+  practice?: boolean
   attemptNumber?: number
   retakesRemaining?: number | null
 }
