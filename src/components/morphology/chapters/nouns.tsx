@@ -499,6 +499,28 @@ export const NOUNS_CONTENT = (
       adjective is <strong>attributive</strong>: "the good word." Outside it (<Gk>καλὸς ὁ λόγος</Gk>) it
       is <strong>predicate</strong>: it makes a statement — "the word <em>is</em> good," with no "is" written.
     </P>
+    <P id="nouns.p.substantival-adjective-alone">
+      An adjective can also drop its noun and stand on its own, with the article doing the work:
+      <Gk>ὁ ἀγαθός</Gk> "the good man," <Gk>τὰ ἀγαθά</Gk> "the good things." This is
+      the <strong>substantival</strong> use, and the article's gender and number tell you who or what
+      is meant — the noun never has to be written.
+    </P>
+    <MorphTable id="nouns.t-adj-uses" tCols={[0, 2]} title="The three uses of the adjective"
+      headers={['Use', 'Greek', 'English']} firstColIsData dividerRows={[2, 4]}
+      rows={[
+        ['Attributive', 'ὁ ἀγαθὸς ἄνθρωπος', 'the good man'],
+        ['', 'ὁ ἄνθρωπος ὁ ἀγαθός', 'the good man'],
+        ['Predicative', 'ὁ ἄνθρωπος ἀγαθός', 'the man is good'],
+        ['', 'ἀγαθὸς ὁ ἄνθρωπος', 'the man is good'],
+        ['Substantival', 'ὁ ἀγαθός', 'the good man'],
+        ['', 'οἱ ἀγαθοί', 'the good men'],
+        ['', 'ἡ ἀγαθή', 'the good woman'],
+        ['', 'αἱ ἀγαθαί', 'the good women'],
+        ['', 'τὸ ἀγαθόν', 'the good thing'],
+        ['', 'τὰ ἀγαθά', 'the good things'],
+      ]}
+      note="Attributive and predicative each have two word orders and one meaning; what decides the sense is whether the adjective sits inside the article–noun unit or outside it."
+    />
     <LevelOnly level="intermediate">
       <P id="nouns.p.delete-test-settles">
         The delete-test settles hard cases: remove the adjective, and if the sentence still works it was
