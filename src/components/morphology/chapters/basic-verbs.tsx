@@ -12,8 +12,10 @@
    the other tenses, the middle and passive, the moods, the contract and μι verbs — is left to
    the chapters that own it. The point is only to make the noun chapters readable.
 
-   The verbs are not chosen by taste: they are the verbs those chapters use, checked against the
-   text, and they are all in the first lessons of the BGVB vocabulary the course schedules.
+   The verbs are the instructor's own two lists — the nine that behave like λύω and the six ε-contracts
+   like φιλέω, taken from the chapter-end vocabularies in Duff — plus γράφω, γινώσκω and πιστεύω, which
+   the noun chapters use and which follow the λύω pattern exactly. All fifteen are already in the BGVB
+   vocabulary this course schedules, and the NT counts here are that deck's.
 
    Textbook chapter (see chapters/nouns.tsx for the template).
 ───────────────────────────────────────────── */
@@ -37,7 +39,8 @@ export const BASIC_VERBS_CONTENT = (
       A sentence needs a verb. The chapters that follow are about nouns and adjectives, but every
       example in them has a verb in it — "the good man <em>hears</em> the word," "we <em>have</em> the
       book" — so a handful of verbs has to come first, or the examples cannot be read.
-      This chapter is that handful: one tense, one voice, one mood, and the endings that carry them.
+      This chapter is that handful: one tense, one voice, one mood, and the endings that carry them —
+      the verbs gone through in class before the nouns begin.
     </P>
     <P id="basic-verbs.p.ending-carries-person">
       The important difference from English is where the person lives. English needs a pronoun —
@@ -91,24 +94,60 @@ export const BASIC_VERBS_CONTENT = (
 
     {/* ── 3 · The verbs the next chapters use ─────────────── */}
     <SectionHeading id="basic-verbs.h.core-verbs">The core verbs</SectionHeading>
-    <P id="basic-verbs.p.these-eight">
-      These are the verbs the noun and adjective chapters use, and they all take the endings you have just
-      learned — the stem is what changes from verb to verb, never the ending. Each is among the first
-      words of the course vocabulary, so they are worth knowing cold before going further.
+    <P id="basic-verbs.p.nine-like-luo">
+      Nine verbs behave exactly like <Gk>λύω</Gk>. They take the endings you have just learned without a
+      single change — only the stem differs, never the ending — so learning the table once has already
+      given you all nine. The number is how often each occurs in the New Testament.
     </P>
-    <MorphTable id="basic-verbs.t2" tCols={[1, 3]} flush title="Core verbs — present active indicative"
-      headers={['1st sg.', 'Meaning', '3rd sg.', 'Meaning']} firstColIsData
+    <MorphTable id="basic-verbs.t2" tCols={[1, 3]} flush title="Nine verbs like λύω"
+      headers={['1st sg.', 'Meaning', '3rd sg.', 'NT times']} firstColIsData
       rows={[
-        ['λέγω', 'I say, tell', 'λέγει', 'he says'],
-        ['ἀκούω', 'I hear, listen', 'ἀκούει', 'he hears'],
-        ['βλέπω', 'I look, see', 'βλέπει', 'he sees'],
-        ['γράφω', 'I write', 'γράφει', 'he writes'],
-        ['γινώσκω', 'I know, learn', 'γινώσκει', 'he knows'],
-        ['λαμβάνω', 'I receive, take', 'λαμβάνει', 'he receives'],
-        ['πιστεύω', 'I believe, trust', 'πιστεύει', 'he believes'],
-        ['ἔχω', 'I have, hold', 'ἔχει', 'he has'],
+        ['ἄγω', 'I lead, bring', 'ἄγει', '70'],
+        ['ἀκούω', 'I hear, listen to', 'ἀκούει', '427'],
+        ['βάλλω', 'I throw', 'βάλλει', '125'],
+        ['βλέπω', 'I see, watch', 'βλέπει', '132'],
+        ['διδάσκω', 'I teach', 'διδάσκει', '97'],
+        ['ἔχω', 'I have, hold', 'ἔχει', '707'],
+        ['λαμβάνω', 'I take, receive', 'λαμβάνει', '259'],
+        ['λέγω', 'I say, speak, tell', 'λέγει', '2,258'],
+        ['λύω', 'I untie', 'λύει', '42'],
       ]}
-      note="Conjugate any of them by swapping λυ- for the stem: ἀκού|ω, ἀκού|εις, ἀκού|ει, ἀκού|ομεν, ἀκού|ετε, ἀκού|ουσι(ν)."
+      note="Conjugate any of them by swapping the stem: ἀκού|ω, ἀκού|εις, ἀκού|ει, ἀκού|ομεν, ἀκού|ετε, ἀκού|ουσι(ν)."
+    />
+    <P id="basic-verbs.p.three-more">
+      Three more follow the same pattern and turn up in the chapters just ahead, so they are worth adding
+      now: <Gk>γράφω</Gk> "I write," <Gk>γινώσκω</Gk> "I know," <Gk>πιστεύω</Gk> "I believe, trust."
+    </P>
+
+    {/* ── 3b · The ε-contracts ────────────────────────────── */}
+    <SectionHeading id="basic-verbs.h.like-phileo">Six more like φιλέω</SectionHeading>
+    <P id="basic-verbs.p.contract-explained">
+      A second group ends in <Gk>-έω</Gk> rather than <Gk>-ω</Gk>, and the ε meets the vowel of the ending and
+      merges with it: <Gk>φιλέ-ω</Gk> becomes <Gk>φιλῶ</Gk>. Nothing new is happening — the endings are the
+      ones you already know, wearing a circumflex where two vowels have run together. These are
+      the <Term t="contract verb">contract verbs</Term>, and the chapter of that name works through all three
+      kinds; these six are the ones needed now.
+    </P>
+    <MorphTable id="basic-verbs.t4" tCols={[0, 2, 4]} flush title="φιλέω — present active indicative (contracted)"
+      headers={['', 'Singular', '', 'Plural', '']} firstColIsData
+      rows={[
+        ['1st', 'φιλῶ', 'I love', 'φιλοῦμεν', 'we love'],
+        ['2nd', 'φιλεῖς', 'you love', 'φιλεῖτε', 'you (pl.) love'],
+        ['3rd', 'φιλεῖ', 'he/she/it loves', 'φιλοῦσι(ν)', 'they love'],
+      ]}
+      note="Uncontracted these would be φιλέω, φιλέεις, φιλέει … — say them slowly and you can hear the contracted form appear."
+    />
+    <MorphTable id="basic-verbs.t5" tCols={[1, 3]} flush title="Six verbs like φιλέω"
+      headers={['1st sg.', 'Meaning', '3rd sg.', 'NT times']} firstColIsData
+      rows={[
+        ['ζητέω', 'I seek', 'ζητεῖ', '117'],
+        ['καλέω', 'I call', 'καλεῖ', '148'],
+        ['λαλέω', 'I speak, say', 'λαλεῖ', '298'],
+        ['ποιέω', 'I do, make', 'ποιεῖ', '569'],
+        ['τηρέω', 'I keep', 'τηρεῖ', '71'],
+        ['φιλέω', 'I love, like', 'φιλεῖ', '25'],
+      ]}
+      note="The lexical form is always given uncontracted — φιλέω, ποιέω — which is why the dictionary form and the form on the page can look different."
     />
 
     {/* ── 4 · εἰμί, the odd one out ───────────────────────── */}
@@ -148,6 +187,8 @@ export const BASIC_VERBS_CONTENT = (
         { q: <span className="normal-case">λαμβάνουσιν</span>, answer: '3rd plural', note: <Tr id="basic-verbs.n.they-receive">"They receive." The ν is movable and changes nothing.</Tr> },
         { q: <span className="normal-case">βλέπω</span>, answer: '1st singular', note: <Tr id="basic-verbs.n.i-see">"I see." No pronoun needed.</Tr> },
         { q: <span className="normal-case">ἔχεις</span>, answer: '2nd singular', note: <Tr id="basic-verbs.n.you-have">"You (one person) have."</Tr> },
+        { q: <span className="normal-case">ποιεῖ</span>, answer: '3rd singular', note: <Tr id="basic-verbs.n.he-does">"He does, he makes." A contract verb: ποιέ-ει has run together into ποιεῖ.</Tr> },
+        { q: <span className="normal-case">λαλοῦμεν</span>, answer: '1st plural', note: <Tr id="basic-verbs.n.we-speak">"We speak." Contracted from λαλέ-ομεν.</Tr> },
       ]}
     />
   </>
