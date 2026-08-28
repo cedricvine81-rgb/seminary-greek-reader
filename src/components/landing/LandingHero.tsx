@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BookOpen, BookMarked, Table2, Scroll, ClipboardList, Bookmark, MessageSquare, FlaskConical } from 'lucide-react'
+import { BookOpen, BookMarked, Table2, Scroll, ClipboardList, Bookmark, MessageSquare, FlaskConical, Search, Library, GraduationCap, Highlighter } from 'lucide-react'
 import { getServerTrack } from '@/lib/track-server'
 import { getServerT } from '@/lib/i18n/server'
 
@@ -30,10 +30,12 @@ export function LandingHero() {
           <p className="font-semibold text-gray-900">{t('land.free')}</p>
           <p className="text-sm text-gray-400 mb-4">{t('land.noAccountNeeded')}</p>
           <ul className="space-y-3 text-sm text-gray-600">
-            <li className="flex items-center gap-2.5"><BookOpen size={18} className="text-brand-600 shrink-0" /> {t('land.parsingReader')}</li>
-            <li className="flex items-center gap-2.5"><BookMarked size={18} className="text-brand-600 shrink-0" /> {t('land.vocabDrills')}</li>
-            <li className="flex items-center gap-2.5"><Table2 size={18} className="text-brand-600 shrink-0" /> {t('land.morphPractice')}</li>
-            <li className="flex items-center gap-2.5"><Scroll size={18} className="text-brand-600 shrink-0" /> {t('land.exegesisWorkspace')}</li>
+            <li className="flex items-start gap-2.5"><BookOpen size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.parsingReader')}</li>
+            <li className="flex items-start gap-2.5"><Scroll size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.exegesisWorkspace')}</li>
+            <li className="flex items-start gap-2.5"><Search size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.searchTools')}</li>
+            <li className="flex items-start gap-2.5"><Library size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.textsLibrary')}</li>
+            <li className="flex items-start gap-2.5"><BookMarked size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.vocabDrills')}</li>
+            <li className="flex items-start gap-2.5"><Table2 size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.morphPractice')}</li>
           </ul>
           <Link
             href="/reader"
@@ -51,10 +53,12 @@ export function LandingHero() {
           </div>
           <p className="text-xs text-gray-400 mt-1 mb-4">{t('land.priceNote')}</p>
           <ul className="space-y-3 text-sm text-gray-600">
-            <li className="flex items-center gap-2.5"><ClipboardList size={18} className="text-brand-600 shrink-0" /> {t('land.courseAssignments')}</li>
-            <li className="flex items-center gap-2.5"><Bookmark size={18} className="text-brand-600 shrink-0" /> {t('land.savedProgress')}</li>
-            <li className="flex items-center gap-2.5"><MessageSquare size={18} className="text-brand-600 shrink-0" /> {t('land.classMessaging')}</li>
-            <li className="flex items-center gap-2.5"><FlaskConical size={18} className="text-brand-600 shrink-0" /> {t('land.deepResearch')}</li>
+            <li className="flex items-start gap-2.5"><Highlighter size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.keepYourWork')}</li>
+            <li className="flex items-start gap-2.5"><GraduationCap size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.selfStudy')}</li>
+            <li className="flex items-start gap-2.5"><ClipboardList size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.courseAssignments')}</li>
+            <li className="flex items-start gap-2.5"><Bookmark size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.savedProgress')}</li>
+            <li className="flex items-start gap-2.5"><FlaskConical size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.deepResearch')}</li>
+            <li className="flex items-start gap-2.5"><MessageSquare size={18} className="text-brand-600 shrink-0 mt-0.5" /> {t('land.classMessaging')}</li>
           </ul>
           <Link
             href="/auth/sign-up/student"
