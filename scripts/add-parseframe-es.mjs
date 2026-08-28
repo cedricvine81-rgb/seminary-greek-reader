@@ -25,6 +25,7 @@ function fingerprint(s) {
 // chapters/second-aorists.tsx is served as the tab '2nd-aorists'.
 const CHAPTERS = ['parsing', 'indicatives', 'contract-verbs', 'liquids', 'principal-parts',
   '2nd-aorists', 'deponents', 'infinitives', 'imperatives', 'participles',
+  'basic-verbs',
   'subjunctives', 'mi-verbs']
 
 // key → [English exactly as ParseFrame passes it, Spanish]

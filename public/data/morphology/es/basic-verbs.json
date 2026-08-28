@@ -1,0 +1,162 @@
+{
+  "parseframe.case.0": {
+    "fp": "ts6un5",
+    "text": "Nom."
+  },
+  "parseframe.case.1": {
+    "fp": "13rcnlo",
+    "text": "Acus."
+  },
+  "parseframe.case.2": {
+    "fp": "1jtmupt",
+    "text": "Gen."
+  },
+  "parseframe.case.3": {
+    "fp": "37b14",
+    "text": "Dat."
+  },
+  "parseframe.ex.inflected": {
+    "fp": "asvu1q",
+    "text": "p. ej. desatamos"
+  },
+  "parseframe.ex.meaning": {
+    "fp": "v9un47",
+    "text": "desato"
+  },
+  "parseframe.gender.0": {
+    "fp": "1y03fz1",
+    "text": "Masc."
+  },
+  "parseframe.gender.1": {
+    "fp": "4udjbj",
+    "text": "Fem."
+  },
+  "parseframe.gender.2": {
+    "fp": "105oupl",
+    "text": "Neut."
+  },
+  "parseframe.h.case": {
+    "fp": "7kvjkh",
+    "text": "Caso"
+  },
+  "parseframe.h.gender": {
+    "fp": "1jtmupt",
+    "text": "Gén."
+  },
+  "parseframe.h.inflected": {
+    "fp": "euv39q",
+    "text": "Significado de la forma"
+  },
+  "parseframe.h.lexical": {
+    "fp": "bq1p8e",
+    "text": "1.ª persona sg."
+  },
+  "parseframe.h.meaning": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "parseframe.h.mood": {
+    "fp": "rat53y",
+    "text": "Modo"
+  },
+  "parseframe.h.number": {
+    "fp": "pb3jd3",
+    "text": "Núm."
+  },
+  "parseframe.h.person": {
+    "fp": "1i84mn4",
+    "text": "Persona"
+  },
+  "parseframe.h.tense": {
+    "fp": "smsl28",
+    "text": "Tiempo"
+  },
+  "parseframe.h.voice": {
+    "fp": "b1qn4p",
+    "text": "Voz"
+  },
+  "parseframe.mood.0": {
+    "fp": "1qzvbfn",
+    "text": "Indicativo"
+  },
+  "parseframe.mood.1": {
+    "fp": "q7kfd7",
+    "text": "Imperativo"
+  },
+  "parseframe.mood.2": {
+    "fp": "1f02x94",
+    "text": "Infinitivo"
+  },
+  "parseframe.mood.3": {
+    "fp": "wsvpvd",
+    "text": "Subjuntivo"
+  },
+  "parseframe.mood.participle": {
+    "fp": "1sgvho2",
+    "text": "Participio"
+  },
+  "parseframe.note": {
+    "fp": "1hb7xd1",
+    "text": "Todo verbo conjugado lleva las cinco primeras; el participio cambia la persona por el caso y el género; el infinitivo se detiene después del modo. El análisis termina con la forma léxica —la 1.ª persona del singular— y debes poder decir qué significan tanto ella como la forma que tienes delante."
+  },
+  "parseframe.number.0": {
+    "fp": "69uey8",
+    "text": "Sing."
+  },
+  "parseframe.number.1": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "parseframe.person.0": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "parseframe.person.1": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "parseframe.person.2": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "parseframe.tense.0": {
+    "fp": "1m3e00c",
+    "text": "Presente"
+  },
+  "parseframe.tense.1": {
+    "fp": "174diuu",
+    "text": "Futuro"
+  },
+  "parseframe.tense.2": {
+    "fp": "qj874s",
+    "text": "Imperfecto"
+  },
+  "parseframe.tense.3": {
+    "fp": "1dkvb7z",
+    "text": "Aoristo"
+  },
+  "parseframe.tense.4": {
+    "fp": "1qm91la",
+    "text": "Perfecto"
+  },
+  "parseframe.tense.5": {
+    "fp": "1ioi1a9",
+    "text": "Pluscuamperfecto"
+  },
+  "parseframe.title": {
+    "fp": "g2ksel",
+    "text": "Para analizar un verbo, indica cada casilla"
+  },
+  "parseframe.voice.0": {
+    "fp": "8qzyhb",
+    "text": "Activa"
+  },
+  "parseframe.voice.1": {
+    "fp": "17pyed4",
+    "text": "Media"
+  },
+  "parseframe.voice.2": {
+    "fp": "pq49ha",
+    "text": "Pasiva"
+  }
+}

@@ -63,6 +63,7 @@ export interface SelfStudyTrackDef {
 const GREEK_CHAPTERS: { id: string; labelKey: string }[] = [
   { id: 'pronunciation',   labelKey: 'morph.tab.pronunciation' },
   { id: 'parsing',         labelKey: 'morph.tab.parsing' },
+  { id: 'basic-verbs',     labelKey: 'morph.tab.basic-verbs' },
   { id: 'nouns',           labelKey: 'morph.tab.nouns' },
   { id: 'prepositions',    labelKey: 'morph.tab.prepositions' },
   { id: 'pronouns',        labelKey: 'morph.tab.pronouns' },

@@ -40,6 +40,7 @@ import { PARTICIPLES_CONTENT } from '@/components/morphology/chapters/participle
 import { SUBJUNCTIVES_CONTENT } from '@/components/morphology/chapters/subjunctives'
 import { MI_VERBS_CONTENT } from '@/components/morphology/chapters/mi-verbs'
 import { SECOND_AORISTS_CONTENT } from '@/components/morphology/chapters/second-aorists'
+import { BASIC_VERBS_CONTENT } from '@/components/morphology/chapters/basic-verbs'
 import { DEPONENTS_CONTENT } from '@/components/morphology/chapters/deponents'
 
 /* ─────────────────────────────────────────────
@@ -95,7 +96,7 @@ function ExplanationCard({ explanation, level }: { explanation?: Explanation; le
    Top-level tab definitions
 ───────────────────────────────────────────── */
 
-export type MainTab = 'essentials' | 'pronunciation' | 'parsing' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
+export type MainTab = 'essentials' | 'pronunciation' | 'parsing' | 'basic-verbs' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
                'conjunctions' | 'conj-adv' | 'indicatives' | 'contract-verbs' | 'liquids' | 'principal-parts' |
                'infinitives' | 'imperatives' | 'participles' | 'subjunctives' | 'mi-verbs' |
                '2nd-aorists' | 'deponents'
@@ -113,6 +114,7 @@ const MAIN_TABS: { id: MainTab; labelKey: string }[] = [
   // Sits before the first paradigm on purpose: the student learns the shape of
   // the ANSWER (which slots, in what order) before meeting forms to fill it in.
   { id: 'parsing',         labelKey: 'morph.tab.parsing' },
+  { id: 'basic-verbs',     labelKey: 'morph.tab.basic-verbs' },
   { id: 'nouns',           labelKey: 'morph.tab.nouns' },
   { id: 'prepositions',    labelKey: 'morph.tab.prepositions' },
   { id: 'pronouns',        labelKey: 'morph.tab.pronouns' },
@@ -159,6 +161,8 @@ const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
   essentials:        null,
   pronunciation:     PRONUNCIATION_CONTENT,
   parsing:           PARSING_CONTENT,
+  // Before the nouns: the noun chapters read verbs the verb chapters have not taught yet.
+  'basic-verbs':     BASIC_VERBS_CONTENT,
   nouns:             NOUNS_CONTENT,
   pronouns:          PRONOUNS_CONTENT,
   demonstratives:    DEMONSTRATIVES_CONTENT,
