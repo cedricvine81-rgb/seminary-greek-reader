@@ -63,7 +63,6 @@ export interface SelfStudyTrackDef {
 const GREEK_CHAPTERS: { id: string; labelKey: string }[] = [
   { id: 'pronunciation',   labelKey: 'morph.tab.pronunciation' },
   { id: 'parsing',         labelKey: 'morph.tab.parsing' },
-  { id: 'basic-verbs',     labelKey: 'morph.tab.basic-verbs' },
   { id: 'nouns',           labelKey: 'morph.tab.nouns' },
   { id: 'prepositions',    labelKey: 'morph.tab.prepositions' },
   { id: 'pronouns',        labelKey: 'morph.tab.pronouns' },
@@ -133,6 +132,20 @@ function greekBeginning(): SelfStudyLesson[] {
       // SHARED key with the Grammar page's course mode — ticks in both places.
       { key: c.id, kind: 'grammar', labelKey: c.labelKey, href: `/grammar?chapter=${c.id}&level=beginning&track=greek` },
     ]
+    // Basic Verbs rides IN the nouns lesson rather than taking a lesson of its own. The lesson
+    // number here is the chapter's index, and the vocabulary set, the vocab quiz and every
+    // completion tick are keyed to it — so giving this chapter its own lesson pushed
+    // Nouns/Adjectives from Lesson 3 to Lesson 4 and handed it BGVB section 4 instead of 3,
+    // silently, for a course already running. It belongs in this lesson anyway: it is read
+    // before the nouns in the same sitting.
+    if (c.id === 'nouns') {
+      steps.unshift({
+        key: 'basic-verbs',
+        kind: 'grammar',
+        labelKey: 'morph.tab.basic-verbs',
+        href: '/grammar?chapter=basic-verbs&level=beginning&track=greek',
+      })
+    }
     const lesson = i + 1
     if (lesson <= BGVB_LESSON_COUNT) {
       const sec = bgvbSection(lesson)

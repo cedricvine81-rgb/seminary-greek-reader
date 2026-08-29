@@ -9,10 +9,12 @@
 // Each entry carries the fingerprint of the ENGLISH it was translated from — that is what makes a
 // stale translation fall back instead of quietly contradicting the English (src/lib/i18n/content.ts).
 //
-// This exists because scripts/i18n-content.ts --build cannot run: it imports the chapter .tsx
-// files and dies on "React is not defined", which predates the frame.
+// It has to run AFTER every i18n-content --build. The generator collects keys by rendering the
+// chapter .tsx files, and the frame's tm() calls live inside ParseFrame.tsx rather than in any
+// chapter, so the build reads these keys as orphans and drops them. `npm run i18n:content` chains
+// the two for that reason; run the build on its own and the frame silently reverts to English.
 //
-// Usage:  node scripts/add-parseframe-es.mjs
+// Usage:  npm run i18n:content   (or: node scripts/add-parseframe-es.mjs after a manual build)
 import fs from 'node:fs'
 
 function fingerprint(s) {

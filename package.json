@@ -19,7 +19,7 @@
     "i18n:keys": "node scripts/i18n-guard.mjs --keys",
     "i18n:books": "node scripts/check-book-names.mjs",
     "i18n:snapshot": "node scripts/i18n-guard.mjs --snapshot",
-    "i18n:content": "tsx --tsconfig tsconfig.i18n.json scripts/i18n-content.ts --build",
+    "i18n:content": "tsx --tsconfig tsconfig.i18n.json scripts/i18n-content.ts --build && node scripts/add-parseframe-es.mjs",
     "i18n:audit": "tsx --tsconfig tsconfig.i18n.json scripts/i18n-content.ts --audit",
     "audit:quizzes": "tsx scripts/audit-quizzes.ts",
     "i18n:literals": "node scripts/i18n-literals.mjs",

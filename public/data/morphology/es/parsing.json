@@ -367,6 +367,58 @@
     "fp": "1i00rex",
     "text": "Nombrar las dos opciones es un análisis completo. Escoger una en silencio, no."
   },
+  "parsing.ct7.h0": {
+    "fp": "u6mgsi",
+    "text": "1 · Tiempo"
+  },
+  "parsing.ct7.h1": {
+    "fp": "7er4te",
+    "text": "2 · Voz"
+  },
+  "parsing.ct7.h2": {
+    "fp": "1hopo1u",
+    "text": "3 · Modo"
+  },
+  "parsing.ct7.h3": {
+    "fp": "7k5rlu",
+    "text": "4 · Caso"
+  },
+  "parsing.ct7.h4": {
+    "fp": "2ufjlq",
+    "text": "5 · Número"
+  },
+  "parsing.ct7.h5": {
+    "fp": "1lxgofl",
+    "text": "6 · Género"
+  },
+  "parsing.ct7.note": {
+    "fp": "1xudgk9",
+    "text": "Solo estos cuatro tiempos forman participios: no hay imperfecto ni pluscuamperfecto. El participio en vocativo existe, pero es raro."
+  },
+  "parsing.ct7.title": {
+    "fp": "czrcal",
+    "text": "Casillas del participio: elige una de cada columna"
+  },
+  "parsing.ct8.h0": {
+    "fp": "u6mgsi",
+    "text": "1 · Tiempo"
+  },
+  "parsing.ct8.h1": {
+    "fp": "7er4te",
+    "text": "2 · Voz"
+  },
+  "parsing.ct8.h2": {
+    "fp": "1hopo1u",
+    "text": "3 · Modo"
+  },
+  "parsing.ct8.note": {
+    "fp": "cp0tf9",
+    "text": "Después, la forma léxica, y el análisis está completo: «infinitivo aoristo pasivo de γράφω»."
+  },
+  "parsing.ct8.title": {
+    "fp": "8myj6r",
+    "text": "Casillas del infinitivo: elige una de cada columna"
+  },
   "parsing.d1.o0": {
     "fp": "x6d8s5",
     "text": "nominativo singular masculino"

@@ -1,4 +1,612 @@
 {
+  "basic-verbs.al.no-pronoun": {
+    "fp": "nm7s0u",
+    "text": "No hace falta pronombre"
+  },
+  "basic-verbs.as.ending-does-work": {
+    "fp": "9gwje3",
+    "text": "La desinencia hace el trabajo que en inglés hace el pronombre. Todavía puede añadirse un pronombre para dar énfasis —{ἐγὼ λύω} «_yo_ desato»—, pero nunca es obligatorio."
+  },
+  "basic-verbs.as.movable-nu": {
+    "fp": "g31x16",
+    "text": "La ν de {λύουσι(ν)} es una ν móvil: aparece ante vocal o ante pausa y se cae en los demás casos. No forma parte de la desinencia y nunca altera el análisis."
+  },
+  "basic-verbs.as.thematic-vowel": {
+    "fp": "11tygwf",
+    "text": "La ο/ε que va alternando por las desinencias es la vocal temática: la misma vocal que reaparece en los demás tiempos construidos sobre esta raíz."
+  },
+  "basic-verbs.d1.o0": {
+    "fp": "10rzxak",
+    "text": "1.ª singular"
+  },
+  "basic-verbs.d1.o1": {
+    "fp": "1euzrko",
+    "text": "2.ª singular"
+  },
+  "basic-verbs.d1.o2": {
+    "fp": "1ww6hnl",
+    "text": "3.ª singular"
+  },
+  "basic-verbs.d1.o3": {
+    "fp": "1djzko3",
+    "text": "1.ª plural"
+  },
+  "basic-verbs.d1.o4": {
+    "fp": "1q6r2vr",
+    "text": "2.ª plural"
+  },
+  "basic-verbs.d1.o5": {
+    "fp": "1rmxo62",
+    "text": "3.ª plural"
+  },
+  "basic-verbs.d1.title": {
+    "fp": "7j82ku",
+    "text": "Práctica: analiza la forma"
+  },
+  "basic-verbs.ex.i-loose": {
+    "fp": "1yzc6j2",
+    "text": "desato"
+  },
+  "basic-verbs.ex.they-loose": {
+    "fp": "31rtmx",
+    "text": "desatan"
+  },
+  "basic-verbs.h.compounds": {
+    "fp": "dam7in",
+    "text": "Once verbos compuestos"
+  },
+  "basic-verbs.h.core-verbs": {
+    "fp": "1pji3o5",
+    "text": "Los verbos básicos"
+  },
+  "basic-verbs.h.eimi": {
+    "fp": "y9eygs",
+    "text": "εἰμί, el que rompe el modelo"
+  },
+  "basic-verbs.h.like-phileo": {
+    "fp": "1gbhoxb",
+    "text": "Otros seis como φιλέω"
+  },
+  "basic-verbs.h.luo-paradigm": {
+    "fp": "13akq8u",
+    "text": "λύω, el verbo modelo"
+  },
+  "basic-verbs.h.why-verbs-first": {
+    "fp": "1kbvb7v",
+    "text": "Por qué los verbos van primero"
+  },
+  "basic-verbs.ib.body": {
+    "fp": "1uqora3",
+    "text": "Da las casillas en orden y luego la forma léxica. {λύομεν} es presente · activo · indicativo · 1.ª persona · plural · de {λύω}, y deberías poder decir qué significan ambas: {λύω} es «desato» y {λύομεν} es «desatamos».¶Ese último paso es el que los estudiantes se saltan. Un análisis que se detiene en las etiquetas no ha demostrado que se entendiera la forma; el significado de la forma flexionada es justamente el objeto del análisis."
+  },
+  "basic-verbs.ib.how-to-parse": {
+    "fp": "puq68q",
+    "text": "Cómo analizar λύω"
+  },
+  "basic-verbs.intro.give-person-number": {
+    "fp": "1vw2qrb",
+    "text": "Da la persona y el número, y luego di qué significa."
+  },
+  "basic-verbs.n.he-does": {
+    "fp": "1ukvfjd",
+    "text": "«Hace». Es un verbo contracto: ποιέ-ει se ha fundido en ποιεῖ."
+  },
+  "basic-verbs.n.he-hears": {
+    "fp": "8p863e",
+    "text": "«Oye». La desinencia -ει es la pista."
+  },
+  "basic-verbs.n.i-see": {
+    "fp": "1sl2s7g",
+    "text": "«Veo». No hace falta pronombre."
+  },
+  "basic-verbs.n.they-cast-out": {
+    "fp": "8cwyeb",
+    "text": "«Echan fuera». Es un compuesto: quita ἐκ- y queda βάλλουσιν, que ya conoces."
+  },
+  "basic-verbs.n.they-receive": {
+    "fp": "bdkk71",
+    "text": "«Reciben». La ν es móvil y no cambia nada."
+  },
+  "basic-verbs.n.we-believe": {
+    "fp": "4xm665",
+    "text": "«Creemos»."
+  },
+  "basic-verbs.n.we-speak": {
+    "fp": "1o62xv2",
+    "text": "«Hablamos». Contracción de λαλέ-ομεν."
+  },
+  "basic-verbs.n.you-have": {
+    "fp": "em8dru",
+    "text": "«Tienes» (una sola persona)."
+  },
+  "basic-verbs.n.you-write": {
+    "fp": "r62yb8",
+    "text": "«Escribís» (más de una persona)."
+  },
+  "basic-verbs.p.compound-bound-stems": {
+    "fp": "1vu4t8e",
+    "text": "Tres de las bases —{οἰκέω}, {πατέω}, {κυνέω}— son raras o no se usan solas en el Nuevo Testamento: el compuesto es la palabra. Aun así vale la pena separarlas, porque esas mismas bases reaparecen en otros compuestos ({οἰκία}, {οἰκοδομέω})."
+  },
+  "basic-verbs.p.compound-meaning": {
+    "fp": "abirdx",
+    "text": "Lo que el prefijo sí cambia es el sentido, y no siempre de forma previsible. {ἐκβάλλω} es «echar _fuera_», cosa que podrías haber adivinado a partir de {ἐκ} «fuera de» y {βάλλω} «arrojo»; pero {παρακαλέω} —«llamar al lado»— significa exhortar, o consolar. Lee el prefijo como una pista, nunca como una definición."
+  },
+  "basic-verbs.p.compound-prefix": {
+    "fp": "1wi9m5c",
+    "text": "Un verbo compuesto es una preposición pegada delante de un verbo, y la unión no cambia nada en las desinencias. {συνάγω} es {σύν} + {ἄγω} y se conjuga exactamente como {ἄγω}: {συνάγω, συνάγεις, συνάγει, συνάγομεν, συνάγετε, συνάγουσι(ν)}. El prefijo simplemente viaja al frente, así que nueve de los once de abajo son verbos que ya has conjugado en este capítulo."
+  },
+  "basic-verbs.p.contract-explained": {
+    "fp": "hw2ggx",
+    "text": "Un segundo grupo termina en {-έω} y no en {-ω}, y la ε se encuentra con la vocal de la desinencia y se funde con ella: {φιλέ-ω} se convierte en {φιλῶ}. No ocurre nada nuevo: las desinencias son las que ya conoces, luciendo un circunflejo allí donde dos vocales se han juntado. Son los [contract verb:verbos contractos], y el capítulo de ese nombre recorre las tres clases; estos seis son los que hacen falta ahora."
+  },
+  "basic-verbs.p.eimi-enclitic": {
+    "fp": "1gy7qil",
+    "text": "Casi todas estas formas son enclíticas: se apoyan en la palabra anterior y de ordinario no llevan acento propio. {ἔστιν} sí lo lleva cuando encabeza su cláusula o cuando significa «existe»."
+  },
+  "basic-verbs.p.eimi-irregular": {
+    "fp": "1e46vz4",
+    "text": "Un verbo hay que aprenderlo aparte, y es el más frecuente de todos: {εἰμί} «soy, estoy». No lleva complemento directo, porque no actúa sobre nada: _enlaza_, uniendo un sujeto con aquello que se dice de él. Por eso importa aquí: las oraciones con adjetivo del próximo capítulo («el hombre _es_ bueno») se construyen sobre él, y el griego a menudo lo omite del todo y espera que el lector lo supla."
+  },
+  "basic-verbs.p.ending-carries-person": {
+    "fp": "1havkc",
+    "text": "La diferencia importante con el inglés está en dónde vive la persona. El inglés necesita un pronombre: «_I_ hear», «_we_ hear». El griego la pone en la *desinencia*, así que el pronombre no hace falta: {ἀκούω} ya es «oigo», y {ἀκούομεν} ya es «oímos». El español funciona igual —_oigo_, _oímos_—, así que este rasgo del griego ya te resulta familiar. Aprende las seis desinencias una vez y te sirven para todos los verbos regulares de la lengua."
+  },
+  "basic-verbs.p.luo-is-the-model": {
+    "fp": "5mwfd5",
+    "text": "Las gramáticas conjugan {λύω} «desato, suelto» en primer lugar, porque es perfectamente regular y su raíz nunca cambia: {λυ-} más una desinencia, seis veces. Aprende esta tabla y tendrás el presente activo de indicativo de todos los verbos regulares."
+  },
+  "basic-verbs.p.nine-like-luo": {
+    "fp": "1xbpp9o",
+    "text": "Nueve verbos se comportan exactamente como {λύω}. Toman las desinencias que acabas de aprender sin un solo cambio —solo difiere la raíz, nunca la desinencia—, de modo que aprender la tabla una vez ya te ha dado los nueve. La cifra indica cuántas veces aparece cada uno en el Nuevo Testamento."
+  },
+  "basic-verbs.p.sentence-needs-verb": {
+    "fp": "1lgu6j3",
+    "text": "Una oración necesita un verbo. Los capítulos que siguen tratan de sustantivos y adjetivos, pero todos sus ejemplos llevan un verbo dentro —«el hombre bueno _oye_ la palabra», «_tenemos_ el libro»—, de modo que un puñado de verbos tiene que venir antes, o los ejemplos no se pueden leer. Este capítulo es ese puñado: un tiempo, una voz, un modo y las desinencias que los llevan: los verbos que se repasan en clase antes de empezar con los sustantivos."
+  },
+  "basic-verbs.p.three-more": {
+    "fp": "1xs48t1",
+    "text": "Otros tres siguen el mismo modelo y aparecen en los capítulos que vienen justo después, así que conviene añadirlos ya: {γράφω} «escribo», {γινώσκω} «conozco», {πιστεύω} «creo, confío»."
+  },
+  "basic-verbs.t1.c0.0": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "basic-verbs.t1.c0.2": {
+    "fp": "1yzc6j2",
+    "text": "desato"
+  },
+  "basic-verbs.t1.c0.4": {
+    "fp": "136fhov",
+    "text": "desatamos"
+  },
+  "basic-verbs.t1.c1.0": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "basic-verbs.t1.c1.2": {
+    "fp": "vvoxhy",
+    "text": "desatas"
+  },
+  "basic-verbs.t1.c1.4": {
+    "fp": "1wgqxj3",
+    "text": "desatáis / desatan (uds.)"
+  },
+  "basic-verbs.t1.c2.0": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "basic-verbs.t1.c2.2": {
+    "fp": "8qgrfk",
+    "text": "él/ella desata"
+  },
+  "basic-verbs.t1.c2.4": {
+    "fp": "31rtmx",
+    "text": "desatan"
+  },
+  "basic-verbs.t1.h1": {
+    "fp": "wsfw4g",
+    "text": "Singular"
+  },
+  "basic-verbs.t1.h3": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "basic-verbs.t1.note": {
+    "fp": "6kzp1i",
+    "text": "La raíz λυ- nunca cambia; solo se mueve la desinencia: en eso consiste todo el presente activo de indicativo."
+  },
+  "basic-verbs.t1.title": {
+    "fp": "ac28zb",
+    "text": "λύω — presente activo de indicativo"
+  },
+  "basic-verbs.t2.c0.1": {
+    "fp": "11tlvq",
+    "text": "conduzco, llevo"
+  },
+  "basic-verbs.t2.c0.3": {
+    "fp": "13xcr02",
+    "text": "70"
+  },
+  "basic-verbs.t2.c1.1": {
+    "fp": "16eqeoo",
+    "text": "oigo, escucho"
+  },
+  "basic-verbs.t2.c1.3": {
+    "fp": "185wifw",
+    "text": "427"
+  },
+  "basic-verbs.t2.c2.1": {
+    "fp": "ntg81w",
+    "text": "arrojo, echo"
+  },
+  "basic-verbs.t2.c2.3": {
+    "fp": "xcuj65",
+    "text": "125"
+  },
+  "basic-verbs.t2.c3.1": {
+    "fp": "18yz3k2",
+    "text": "veo, miro"
+  },
+  "basic-verbs.t2.c3.3": {
+    "fp": "y6whr1",
+    "text": "132"
+  },
+  "basic-verbs.t2.c4.1": {
+    "fp": "4h8lwh",
+    "text": "enseño"
+  },
+  "basic-verbs.t2.c4.3": {
+    "fp": "31tjy1",
+    "text": "97"
+  },
+  "basic-verbs.t2.c5.1": {
+    "fp": "8nblz3",
+    "text": "tengo, sostengo"
+  },
+  "basic-verbs.t2.c5.3": {
+    "fp": "39nf4v",
+    "text": "707"
+  },
+  "basic-verbs.t2.c6.1": {
+    "fp": "q2wxfc",
+    "text": "tomo, recibo"
+  },
+  "basic-verbs.t2.c6.3": {
+    "fp": "d0187v",
+    "text": "259"
+  },
+  "basic-verbs.t2.c7.1": {
+    "fp": "190di70",
+    "text": "digo, hablo, cuento"
+  },
+  "basic-verbs.t2.c7.3": {
+    "fp": "1efospy",
+    "text": "2258"
+  },
+  "basic-verbs.t2.c8.1": {
+    "fp": "v9un47",
+    "text": "desato"
+  },
+  "basic-verbs.t2.c8.3": {
+    "fp": "11pcryb",
+    "text": "42"
+  },
+  "basic-verbs.t2.h0": {
+    "fp": "ltos87",
+    "text": "1.ª sg."
+  },
+  "basic-verbs.t2.h1": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "basic-verbs.t2.h2": {
+    "fp": "nb4ud4",
+    "text": "3.ª sg."
+  },
+  "basic-verbs.t2.h3": {
+    "fp": "trwx71",
+    "text": "Veces en el NT"
+  },
+  "basic-verbs.t2.note": {
+    "fp": "1f117gk",
+    "text": "Conjuga cualquiera de ellos cambiando la raíz: ἀκού|ω, ἀκού|εις, ἀκού|ει, ἀκού|ομεν, ἀκού|ετε, ἀκού|ουσι(ν)."
+  },
+  "basic-verbs.t2.title": {
+    "fp": "yn7xzl",
+    "text": "Nueve verbos como λύω"
+  },
+  "basic-verbs.t3.c0.0": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "basic-verbs.t3.c0.2": {
+    "fp": "qbb4i6",
+    "text": "soy, estoy"
+  },
+  "basic-verbs.t3.c0.4": {
+    "fp": "3z72c3",
+    "text": "somos, estamos"
+  },
+  "basic-verbs.t3.c1.0": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "basic-verbs.t3.c1.2": {
+    "fp": "mb5jt2",
+    "text": "eres, estás"
+  },
+  "basic-verbs.t3.c1.4": {
+    "fp": "1sy3nsz",
+    "text": "sois / son (uds.)"
+  },
+  "basic-verbs.t3.c2.0": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "basic-verbs.t3.c2.2": {
+    "fp": "1ste557",
+    "text": "él/ella es, está"
+  },
+  "basic-verbs.t3.c2.4": {
+    "fp": "pqddr9",
+    "text": "son, están"
+  },
+  "basic-verbs.t3.h1": {
+    "fp": "wsfw4g",
+    "text": "Singular"
+  },
+  "basic-verbs.t3.h3": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "basic-verbs.t3.note": {
+    "fp": "1yqk5gj",
+    "text": "De εἰμί no se da voz: no hay nada sobre lo que actúe, de modo que «activo» no diría nada. Analízalo como presente de indicativo, con la persona y el número."
+  },
+  "basic-verbs.t3.title": {
+    "fp": "bvzl60",
+    "text": "εἰμί — presente de indicativo"
+  },
+  "basic-verbs.t4.c0.0": {
+    "fp": "exw76z",
+    "text": "1.ª"
+  },
+  "basic-verbs.t4.c0.2": {
+    "fp": "3jwuyk",
+    "text": "amo"
+  },
+  "basic-verbs.t4.c0.4": {
+    "fp": "t3nnjb",
+    "text": "amamos"
+  },
+  "basic-verbs.t4.c1.0": {
+    "fp": "pdxfbz",
+    "text": "2.ª"
+  },
+  "basic-verbs.t4.c1.2": {
+    "fp": "1p094ro",
+    "text": "amas"
+  },
+  "basic-verbs.t4.c1.4": {
+    "fp": "91lkvr",
+    "text": "amáis / aman (uds.)"
+  },
+  "basic-verbs.t4.c2.0": {
+    "fp": "3imjoc",
+    "text": "3.ª"
+  },
+  "basic-verbs.t4.c2.2": {
+    "fp": "1w6fcb4",
+    "text": "él/ella ama"
+  },
+  "basic-verbs.t4.c2.4": {
+    "fp": "wgyf6h",
+    "text": "aman"
+  },
+  "basic-verbs.t4.h1": {
+    "fp": "wsfw4g",
+    "text": "Singular"
+  },
+  "basic-verbs.t4.h3": {
+    "fp": "6viz8v",
+    "text": "Plural"
+  },
+  "basic-verbs.t4.note": {
+    "fp": "8sen1a",
+    "text": "Sin contraer serían φιλέω, φιλέεις, φιλέει…: dilas despacio y oirás cómo aparece la forma contracta."
+  },
+  "basic-verbs.t4.title": {
+    "fp": "1ggi43m",
+    "text": "φιλέω — presente activo de indicativo (contracto)"
+  },
+  "basic-verbs.t5.c0.1": {
+    "fp": "14kupqc",
+    "text": "busco"
+  },
+  "basic-verbs.t5.c0.3": {
+    "fp": "scyj6o",
+    "text": "117"
+  },
+  "basic-verbs.t5.c1.1": {
+    "fp": "3xrguk",
+    "text": "llamo"
+  },
+  "basic-verbs.t5.c1.3": {
+    "fp": "smg5s0",
+    "text": "148"
+  },
+  "basic-verbs.t5.c2.1": {
+    "fp": "n2hxfd",
+    "text": "hablo, digo"
+  },
+  "basic-verbs.t5.c2.3": {
+    "fp": "ez4p9w",
+    "text": "298"
+  },
+  "basic-verbs.t5.c3.1": {
+    "fp": "1ovh6j",
+    "text": "hago"
+  },
+  "basic-verbs.t5.c3.3": {
+    "fp": "fpwwj5",
+    "text": "569"
+  },
+  "basic-verbs.t5.c4.1": {
+    "fp": "1bi7mql",
+    "text": "guardo"
+  },
+  "basic-verbs.t5.c4.3": {
+    "fp": "147ccp1",
+    "text": "71"
+  },
+  "basic-verbs.t5.c5.1": {
+    "fp": "lstsxf",
+    "text": "amo, quiero"
+  },
+  "basic-verbs.t5.c5.3": {
+    "fp": "11zxi8w",
+    "text": "25"
+  },
+  "basic-verbs.t5.h0": {
+    "fp": "ltos87",
+    "text": "1.ª sg."
+  },
+  "basic-verbs.t5.h1": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "basic-verbs.t5.h2": {
+    "fp": "nb4ud4",
+    "text": "3.ª sg."
+  },
+  "basic-verbs.t5.h3": {
+    "fp": "trwx71",
+    "text": "Veces en el NT"
+  },
+  "basic-verbs.t5.note": {
+    "fp": "1azwpjn",
+    "text": "La forma léxica se da siempre sin contraer —φιλέω, ποιέω—, y por eso la forma del diccionario y la de la página pueden verse distintas."
+  },
+  "basic-verbs.t5.title": {
+    "fp": "1hvhkn8",
+    "text": "Seis verbos como φιλέω"
+  },
+  "basic-verbs.t6.c0.2": {
+    "fp": "1lnncr4",
+    "text": "levanto la vista, recobro la vista"
+  },
+  "basic-verbs.t6.c0.3": {
+    "fp": "we1d69",
+    "text": "como λύω"
+  },
+  "basic-verbs.t6.c1.2": {
+    "fp": "az659o",
+    "text": "libero, me divorcio de, despido"
+  },
+  "basic-verbs.t6.c1.3": {
+    "fp": "we1d69",
+    "text": "como λύω"
+  },
+  "basic-verbs.t6.c10.2": {
+    "fp": "phtfoa",
+    "text": "parto, me voy"
+  },
+  "basic-verbs.t6.c10.3": {
+    "fp": "we1d69",
+    "text": "como λύω"
+  },
+  "basic-verbs.t6.c2.2": {
+    "fp": "1isym6r",
+    "text": "expulso, echo fuera"
+  },
+  "basic-verbs.t6.c2.3": {
+    "fp": "we1d69",
+    "text": "como λύω"
+  },
+  "basic-verbs.t6.c3.2": {
+    "fp": "5rr86z",
+    "text": "invoco, llamo por nombre"
+  },
+  "basic-verbs.t6.c3.3": {
+    "fp": "1x311i6",
+    "text": "como φιλέω"
+  },
+  "basic-verbs.t6.c4.2": {
+    "fp": "1tg4y45",
+    "text": "habito, moro, vivo"
+  },
+  "basic-verbs.t6.c4.3": {
+    "fp": "1x311i6",
+    "text": "como φιλέω"
+  },
+  "basic-verbs.t6.c5.2": {
+    "fp": "116g0tb",
+    "text": "exhorto, consuelo, animo"
+  },
+  "basic-verbs.t6.c5.3": {
+    "fp": "1x311i6",
+    "text": "como φιλέω"
+  },
+  "basic-verbs.t6.c6.2": {
+    "fp": "q2wxfc",
+    "text": "tomo, recibo"
+  },
+  "basic-verbs.t6.c6.3": {
+    "fp": "we1d69",
+    "text": "como λύω"
+  },
+  "basic-verbs.t6.c7.2": {
+    "fp": "1txf4d6",
+    "text": "ando, camino, vivo"
+  },
+  "basic-verbs.t6.c7.3": {
+    "fp": "1x311i6",
+    "text": "como φιλέω"
+  },
+  "basic-verbs.t6.c8.2": {
+    "fp": "b2fdwr",
+    "text": "adoro (+ dativo)"
+  },
+  "basic-verbs.t6.c8.3": {
+    "fp": "1x311i6",
+    "text": "como φιλέω"
+  },
+  "basic-verbs.t6.c9.2": {
+    "fp": "rf1iex",
+    "text": "reúno, congrego"
+  },
+  "basic-verbs.t6.c9.3": {
+    "fp": "we1d69",
+    "text": "como λύω"
+  },
+  "basic-verbs.t6.h0": {
+    "fp": "ltos87",
+    "text": "1.ª sg."
+  },
+  "basic-verbs.t6.h1": {
+    "fp": "19nuidd",
+    "text": "Formado de"
+  },
+  "basic-verbs.t6.h2": {
+    "fp": "1az3v8k",
+    "text": "Significado"
+  },
+  "basic-verbs.t6.h3": {
+    "fp": "1vuws7d",
+    "text": "Modelo"
+  },
+  "basic-verbs.t6.h4": {
+    "fp": "trwx71",
+    "text": "Veces en el NT"
+  },
+  "basic-verbs.t6.note": {
+    "fp": "1nvf7wi",
+    "text": "El modelo te dice desde qué tabla conjugarlo: los verbos en -ω toman las desinencias de λύω; los verbos en -έω contraen como φιλέω. προσκυνέω lleva su complemento en dativo y no en acusativo."
+  },
+  "basic-verbs.t6.title": {
+    "fp": "dam7in",
+    "text": "Once verbos compuestos"
+  },
   "parseframe.case.0": {
     "fp": "ts6un5",
     "text": "Nom."

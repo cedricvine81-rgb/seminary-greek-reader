@@ -15,6 +15,15 @@
  */
 import fs from 'node:fs'
 import zlib from 'node:zlib'
+import * as React from 'react'
+
+// The chapter modules are require()d further down (morphologyItems), and that require path
+// transforms their JSX with the CLASSIC runtime — which expects `React` to be a global and threw
+// "React is not defined" on the first chapter it loaded, taking --list and --build down with it.
+// The tsconfig asks for the automatic runtime, but it does not reach these runtime requires.
+// Putting React on the global satisfies the classic runtime without changing how anything is
+// compiled for the app itself.
+;(globalThis as unknown as { React: typeof React }).React = React
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS } from '../src/lib/themes'
 import { workDate } from '../src/lib/work-dates'
 import { DEVICES, GROUP_LABEL, GROUP_DESC } from '../src/lib/rhetoric-devices'

@@ -246,7 +246,7 @@ export const PARSING_CONTENT = (
 
     {/* The same pick-one-per-column layout as the finite-verb table above, so the two
         hybrid forms' options are all on the page (user request, 2026-08-24). */}
-    <ColsTable id="parsing.ct5"
+    <ColsTable id="parsing.ct7"
       title="Participle slots — pick one from each column"
       headers={['1 · Tense', '2 · Voice', '3 · Mood', '4 · Case', '5 · Number', '6 · Gender']}
       rows={[
@@ -258,7 +258,7 @@ export const PARSING_CONTENT = (
       note="Only these four tenses form participles — no imperfect or pluperfect. A vocative participle exists but is rare."
     />
 
-    <ColsTable id="parsing.ct6"
+    <ColsTable id="parsing.ct8"
       title="Infinitive slots — pick one from each column"
       headers={['1 · Tense', '2 · Voice', '3 · Mood']}
       rows={[
