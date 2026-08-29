@@ -2180,7 +2180,11 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             <div className="max-h-64 overflow-y-auto divide-y divide-gray-100">
               {(form.quizType === 'MORPHOLOGY_QUIZ' ? schedule.slice(0, form.morphologySeries.length) : schedule).map((s, i) => {
                 const lesson = form.quizType === 'VOCABULARY_QUIZ' ? getLessonForWeek(s.week) : null
-                const sectionLabel = lesson ? lesson.section.replace('-', ':') : null
+                // The chip prints the code with a colon ("Section I:C"); the word in front of it
+                // is the catalogue's, so it can become "Sección".
+                const sectionLabel = lesson
+                  ? t('inst.b.s.sectionChip', { section: lesson.section.replace('-', ':') })
+                  : null
                 const morphTest = form.quizType === 'MORPHOLOGY_QUIZ' ? form.morphologySeries[i] : null
                 const morphLabel = morphTest ? t(`morph.subtypeShort.${morphTest.subtype}`) : null
                 const vocabLabel = morphTest?.vocabThruLesson

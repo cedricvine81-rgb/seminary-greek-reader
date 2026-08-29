@@ -252,7 +252,12 @@ export async function POST(req: NextRequest) {
     }
 
     const instructions = lesson
-      ? `Source: ${sourceLabel} · ${lesson.section} (${lesson.pages})`
+      // This string is WRITTEN INTO THE DATABASE as the assignment's instructions, which the
+      // instructor then edits by hand — it is their content, not chrome, and the whole
+      // sentence around it is English too. So the word "Section" is spelled out here rather
+      // than taken from `lesson.section`, which now holds the bare code: the generated text
+      // stays byte-identical to every row already stored.
+      ? `Source: ${sourceLabel} · Section ${lesson.section} (${lesson.pages})`
       : quizType === 'MORPHOLOGY_QUIZ' && !hebrew && testConfig?.vocabThruLesson
         ? `Vocabulary through Lesson ${testConfig.vocabThruLesson}`
         : (source ? `Source: ${sourceLabel}` : '')

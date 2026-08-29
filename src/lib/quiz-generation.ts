@@ -416,7 +416,6 @@ import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz
 import type { GreekParseEntry } from '@/data/greek-parsing-data'
 import { CONDITIONAL_EXAMPLES, CONDITIONAL_TYPES } from '@/data/conditional-examples'
 import { SUBJUNCTIVE_EXAMPLES, SUBJUNCTIVE_TYPES } from '@/data/subjunctive-examples'
-import { VOCAB_LESSONS } from '@/lib/vocab-lesson-map'
 
 // Field/filter vocabulary lives in '@/lib/quiz-fields' (no data import, so the instructor
 // client bundle stays free of the ~840KB question pool). Re-exported here for server callers.
