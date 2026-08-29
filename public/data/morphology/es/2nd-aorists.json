@@ -1,4 +1,76 @@
 {
+  "2nd-aorists.cat.imperfect-clash.d": {
+    "fp": "1oebpyx",
+    "text": "las desinencias son las del imperfecto, así que solo la raíz los separa. {ἔβαλλον} es imperfecto y {ἔβαλον} aoristo: una letra, dos aspectos"
+  },
+  "2nd-aorists.cat.imperfect-clash.e0": {
+    "fp": "rmu6a8",
+    "text": "vino una viuda pobre y echó dos moneditas"
+  },
+  "2nd-aorists.cat.imperfect-clash.eg": {
+    "fp": "whsa9t",
+    "text": "ἔβαλλον / ἔβαλον"
+  },
+  "2nd-aorists.cat.imperfect-clash.name": {
+    "fp": "1gy3r3x",
+    "text": "Distinguirlo del imperfecto"
+  },
+  "2nd-aorists.cat.lexical.d": {
+    "fp": "hu8dtf",
+    "text": "la raíz de aoristo segundo pertenece a la entrada del diccionario, no a la sintaxis. {λαμβάνω} hace {ἔλαβον} porque esa es su parte principal: no hay nada que interpretar"
+  },
+  "2nd-aorists.cat.lexical.e0": {
+    "fp": "s6dab2",
+    "text": "pero a todos los que lo recibieron"
+  },
+  "2nd-aorists.cat.lexical.eg": {
+    "fp": "4jgdi1",
+    "text": "λαμβάνω → ἔλαβον"
+  },
+  "2nd-aorists.cat.lexical.name": {
+    "fp": "1wbsfwz",
+    "text": "Es un hecho léxico"
+  },
+  "2nd-aorists.cat.stem-elsewhere.d": {
+    "fp": "jv3wwo",
+    "text": "la raíz de aoristo alimenta también el participio, el infinitivo, el subjuntivo y el imperativo de aoristo, pero sin aumento, que pertenece solo al indicativo"
+  },
+  "2nd-aorists.cat.stem-elsewhere.e0": {
+    "fp": "1xo72xd",
+    "text": "y tomando pan y dando gracias, lo partió"
+  },
+  "2nd-aorists.cat.stem-elsewhere.eg": {
+    "fp": "12e7s3i",
+    "text": "ἔλαβον → λαβών, λαβεῖν"
+  },
+  "2nd-aorists.cat.stem-elsewhere.name": {
+    "fp": "1xdcndl",
+    "text": "La raíz fuera del indicativo"
+  },
+  "2nd-aorists.cat.suppletive.d": {
+    "fp": "1tivuah",
+    "text": "algunos verbos toman prestada para el aoristo una raíz sin ningún parentesco, igual que el español con «ir/fue». La forma léxica del aoristo no se deduce del presente"
+  },
+  "2nd-aorists.cat.suppletive.e0": {
+    "fp": "1rm3utb",
+    "text": "así que Jesús les dijo"
+  },
+  "2nd-aorists.cat.suppletive.e1": {
+    "fp": "1h65dmr",
+    "text": "y vio el Espíritu de Dios que descendía"
+  },
+  "2nd-aorists.cat.suppletive.eg": {
+    "fp": "vc5q6f",
+    "text": "λέγω → εἶπον · ὁράω → εἶδον"
+  },
+  "2nd-aorists.cat.suppletive.name": {
+    "fp": "pnr1f0",
+    "text": "Supleción"
+  },
+  "2nd-aorists.cg.int-uses": {
+    "fp": "16y2rac",
+    "text": "Qué te está diciendo realmente la raíz"
+  },
   "2nd-aorists.exp.eg.take-took-stem": {
     "fp": "ws5bfl",
     "text": "{λαμβάνω} «tomo» → {ἔλαβον} «tomé» (raíz cambiada: {λαμβαν‑} → {λαβ‑})."
@@ -14,6 +86,18 @@
   "2nd-aorists.exp.p.some-verbs-suppletive": {
     "fp": "j39b4k",
     "text": "Algunos verbos son *supletivos* y toman prestada una raíz totalmente distinta para el aoristo ({λέγω → εἶπον}, {ὁράω → εἶδον}). Aprende la raíz del aoristo como una de las _partes principales_ del verbo para poder rastrear una forma desconocida hasta su forma léxica."
+  },
+  "2nd-aorists.h.int-form-not-meaning": {
+    "fp": "19pn47n",
+    "text": "Una forma distinta, no un significado distinto"
+  },
+  "2nd-aorists.p.int-caution": {
+    "fp": "10elcjn",
+    "text": "*La advertencia exegética.* Como la elección es léxica, de «el autor usó un aoristo segundo» no se sigue nada. Lo que sí se sigue es el aspecto: es un aoristo y, por tanto, presenta la acción como un todo. Argumenta desde el tiempo, nunca desde la conjugación con que ese tiempo se construyó."
+  },
+  "2nd-aorists.p.int-lead": {
+    "fp": "kzgfix",
+    "text": "El dato más importante sobre el aoristo segundo es negativo: no significa nada que un aoristo primero no signifique. Son dos maneras alternativas de construir el mismo tiempo, como «anduvo» y «corrió» son dos pasados del español. Un verbo tiene uno u otro por su historia, no porque el autor eligiera un matiz."
   },
   "parseframe.case.0": {
     "fp": "ts6un5",

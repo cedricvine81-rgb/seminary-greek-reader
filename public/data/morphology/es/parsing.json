@@ -235,6 +235,74 @@
     "fp": "6nyb6f",
     "text": "Trabaja de izquierda a derecha y dilo como una sola frase. No te detengas en el caso — un análisis a medias («es genitivo») no es una respuesta."
   },
+  "parsing.cat.contract-lookalikes.d": {
+    "fp": "yv8wwf",
+    "text": "un futuro líquido lleva las desinencias de un presente en {-έω}, de modo que {μενῶ} «permaneceré» se distingue solo por el acento"
+  },
+  "parsing.cat.contract-lookalikes.e0": {
+    "fp": "1cdqwup",
+    "text": "el que permanece en mí, y yo en él"
+  },
+  "parsing.cat.contract-lookalikes.eg": {
+    "fp": "qwwo6a",
+    "text": "μενῶ (fut.) frente a μένω (pres.)"
+  },
+  "parsing.cat.contract-lookalikes.name": {
+    "fp": "1sc4o3w",
+    "text": "Parecidos de los contractos"
+  },
+  "parsing.cat.first-decl-gen-acc.d": {
+    "fp": "nq4k3h",
+    "text": "{-ας} sirve a los dos en muchos sustantivos, y el artículo suele resolverlo, lo que es una razón más para analizar primero el artículo"
+  },
+  "parsing.cat.first-decl-gen-acc.e0": {
+    "fp": "ycfggg",
+    "text": "yo estoy con ustedes todos los días"
+  },
+  "parsing.cat.first-decl-gen-acc.eg": {
+    "fp": "1o82jgy",
+    "text": "τῆς ἡμέρας / τὰς ἡμέρας"
+  },
+  "parsing.cat.first-decl-gen-acc.name": {
+    "fp": "16i80v9",
+    "text": "1.ª declinación: genitivo singular y acusativo plural"
+  },
+  "parsing.cat.middle-passive.d": {
+    "fp": "13fmbvn",
+    "text": "idénticas fuera del aoristo y del futuro. Un complemento agente con {ὑπό} inclina la balanza hacia la pasiva; si no, deciden los hábitos del propio verbo"
+  },
+  "parsing.cat.middle-passive.e0": {
+    "fp": "1mknuv3",
+    "text": "eran bautizados por él en el río Jordán"
+  },
+  "parsing.cat.middle-passive.eg": {
+    "fp": "rtj1k3",
+    "text": "γράφεται: «se escribe» o «escribe para sí»"
+  },
+  "parsing.cat.middle-passive.name": {
+    "fp": "1sk9pbg",
+    "text": "Media y pasiva"
+  },
+  "parsing.cat.neuter-nom-acc.d": {
+    "fp": "srv2qa",
+    "text": "siempre idénticos, en singular y en plural. Solo el verbo y el orden de palabras dicen si un sustantivo neutro hace la acción o la recibe"
+  },
+  "parsing.cat.neuter-nom-acc.e0": {
+    "fp": "1w1e6vp",
+    "text": "yo expulso los demonios por Beelzebul"
+  },
+  "parsing.cat.neuter-nom-acc.eg": {
+    "fp": "1bec449",
+    "text": "τὰ δαιμόνια, ¿sujeto o complemento?"
+  },
+  "parsing.cat.neuter-nom-acc.name": {
+    "fp": "a9g9x",
+    "text": "Nominativo y acusativo neutros"
+  },
+  "parsing.cg.int-ambiguities": {
+    "fp": "1nf3w2h",
+    "text": "Las ambigüedades regulares"
+  },
   "parsing.ct1.h0": {
     "fp": "go2z8f",
     "text": "Clase de palabra"
@@ -839,6 +907,10 @@
     "fp": "10bp6ty",
     "text": "Cuatro patrones — qué casillas rellenar"
   },
+  "parsing.h.int-syncretism": {
+    "fp": "1rw8y99",
+    "text": "Donde las formas se confunden"
+  },
   "parsing.h.parsing-finite-verb": {
     "fp": "19etfn6",
     "text": "Analizar un verbo finito: tiempo · voz · modo · persona · número"
@@ -934,6 +1006,14 @@
   "parsing.p.finite-verb-one": {
     "fp": "1omcs74",
     "text": "Un verbo *finito* es el que lleva su propio sujeto — {λύει} ya significa «él/ella desata» sin una palabra aparte para «él». Los verbos finitos reciben cinco respuestas, siempre en este orden."
+  },
+  "parsing.p.int-honest": {
+    "fp": "kwyday",
+    "text": "*Nombrar la ambigüedad es la respuesta.* Un análisis que escoge una opción en silencio no está hecho; uno que dice «nominativo o acusativo plural neutro, y lo decide el verbo» sí lo está. El hábito importa sobre todo justo en los lugares donde una traducción ya ha escogido por ti."
+  },
+  "parsing.p.int-lead": {
+    "fp": "1ocpmgw",
+    "text": "Una desinencia griega no siempre identifica una sola casilla. Varias sirven a dos o tres, y ninguna cantidad de morfología las separará: tiene que hacerlo la oración. Saber exactamente _cuáles_ formas son ambiguas es lo que convierte el análisis en lectura, porque te dice dónde dejar de consultar el paradigma y empezar a consultar el contexto."
   },
   "parsing.p.last-row-worth": {
     "fp": "obljuv",

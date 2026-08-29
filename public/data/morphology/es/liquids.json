@@ -39,6 +39,62 @@
     "fp": "47gn5v",
     "text": "Aumento + raíz alargada + desinencias en α, sin σ."
   },
+  "liquids.cat.aorist-no-sigma.d": {
+    "fp": "17po7pf",
+    "text": "el aumento y las desinencias en α están todos, pero la {σα} no; la raíz suele compensarlo alargando su vocal o simplificando una consonante doble"
+  },
+  "liquids.cat.aorist-no-sigma.e0": {
+    "fp": "1826fuj",
+    "text": "y María se quedó con ella como tres meses"
+  },
+  "liquids.cat.aorist-no-sigma.eg": {
+    "fp": "njifvu",
+    "text": "μένω → ἔμεινα"
+  },
+  "liquids.cat.aorist-no-sigma.name": {
+    "fp": "ut5u23",
+    "text": "El aoristo sin σ"
+  },
+  "liquids.cat.frequency.d": {
+    "fp": "10uvy6l",
+    "text": "la clase líquida contiene algunos de los verbos más frecuentes del Nuevo Testamento, así que el patrón se encuentra constantemente y no como curiosidad"
+  },
+  "liquids.cat.frequency.e0": {
+    "fp": "b17p5f",
+    "text": "como me envió el Padre viviente"
+  },
+  "liquids.cat.frequency.e1": {
+    "fp": "idmnse",
+    "text": "Dios lo resucitó de entre los muertos"
+  },
+  "liquids.cat.frequency.eg": {
+    "fp": "qovnc3",
+    "text": "μένω, ἀποστέλλω, ἐγείρω, κρίνω"
+  },
+  "liquids.cat.frequency.name": {
+    "fp": "1nesnpv",
+    "text": "No son marginales"
+  },
+  "liquids.cat.future-contract.d": {
+    "fp": "1duc7jp",
+    "text": "en lugar de {σ}, el futuro inserta una {ε} que contrae de inmediato, así que un futuro líquido se escribe como un presente en {-έω}. Solo el acento los separa"
+  },
+  "liquids.cat.future-contract.e0": {
+    "fp": "15w2ybk",
+    "text": "el que permanece en mí y yo en él, ese lleva mucho fruto"
+  },
+  "liquids.cat.future-contract.eg": {
+    "fp": "uqnvvn",
+    "text": "μενῶ «permaneceré»"
+  },
+  "liquids.cat.future-contract.name": {
+    "fp": "eh1x77",
+    "text": "El futuro que parece presente"
+  },
+  "liquids.cg.int-reading": {
+    "fp": "gmsijk",
+    "text": "Qué vigilar"
+  },
   "liquids.cs.lesson": {
     "fp": "hvrshw",
     "text": "Lección 6 · Futuros y aoristos líquidos"
@@ -223,6 +279,10 @@
     "fp": "1hcj9w6",
     "text": "El futuro líquido: un futuro sigiloso"
   },
+  "liquids.h.int-why-liquids": {
+    "fp": "1t3fg0c",
+    "text": "Por qué los líquidos se comportan distinto"
+  },
   "liquids.h.try-it": {
     "fp": "1c7r8bb",
     "text": "Practiquemos"
@@ -274,6 +334,14 @@
   "liquids.p.future": {
     "fp": "ref8rl",
     "text": "En lugar de {σ}, el futuro líquido introduce una {ε} que se contrae de inmediato; por eso el futuro de un verbo líquido lleva las desinencias de un _presente contracto_ (al estilo de {φιλέω}): {μένω} «permanezco» → futuro {μενῶ} «permaneceré». La única diferencia visible respecto del presente suele ser el *acento circunflejo*: un futuro verdaderamente sigiloso."
+  },
+  "liquids.p.int-caution": {
+    "fp": "13iegob",
+    "text": "*La consecuencia práctica.* Encontrar {μενεῖ} y leerlo como presente es el error líquido estándar, y convierte una promesa sobre el futuro en una afirmación sobre el presente. Cuando una raíz termine en líquida, deja que el acento decida el tiempo antes que el sentido."
+  },
+  "liquids.p.int-lead": {
+    "fp": "1fgcvrr",
+    "text": "Los verbos cuya raíz termina en {λ μ ν ρ} rechazan la {σ} que construye el futuro y el aoristo ordinarios. Eso es un hecho de sonido, no de significado, pero produce dos formas fáciles de leer mal, y ambas son frecuentes."
   },
   "liquids.p.meno": {
     "fp": "1chwmtq",

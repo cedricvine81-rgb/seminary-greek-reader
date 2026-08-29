@@ -23,6 +23,74 @@
     "fp": "10lzyg0",
     "text": "La reduplicación con iota ({δι‑, τι‑, ἱ‑}) marca el presente. Si la ves, el verbo está en presente o imperfecto."
   },
+  "mi-verbs.cat.compounds.d": {
+    "fp": "1lvy4qb",
+    "text": "preposición + verbo en {-μι} sostiene buena parte del peso neotestamentario de la clase, y varios de esos compuestos son piezas teológicas de primer orden"
+  },
+  "mi-verbs.cat.compounds.e0": {
+    "fp": "1q8tsz1",
+    "text": "tus pecados te son perdonados"
+  },
+  "mi-verbs.cat.compounds.eg": {
+    "fp": "1urbibt",
+    "text": "παραδίδωμι, ἀφίημι, ἀνίστημι"
+  },
+  "mi-verbs.cat.compounds.name": {
+    "fp": "1kunslv",
+    "text": "Casi toda la frecuencia está en los compuestos"
+  },
+  "mi-verbs.cat.kappa-aorist.d": {
+    "fp": "1xguoas",
+    "text": "el aoristo pierde la reduplicación con iota y toma {-κα} en lugar de {-σα}. Mismo aumento, mismas desinencias, marca distinta"
+  },
+  "mi-verbs.cat.kappa-aorist.e0": {
+    "fp": "hsb4z9",
+    "text": "yo doy mi vida por las ovejas"
+  },
+  "mi-verbs.cat.kappa-aorist.eg": {
+    "fp": "lx45jf",
+    "text": "ἔδωκα, ἔθηκα"
+  },
+  "mi-verbs.cat.kappa-aorist.name": {
+    "fp": "1jsd95i",
+    "text": "Una κ donde los demás llevan σ"
+  },
+  "mi-verbs.cat.reduplication.d": {
+    "fp": "2yi58m",
+    "text": "la raíz de presente dobla su primera consonante con una {ι}: {δι-δο}, {τι-θε}, {ἱ-στα}. Si ves ese patrón, estás en el sistema de presente y en ningún otro"
+  },
+  "mi-verbs.cat.reduplication.e0": {
+    "fp": "v15ruy",
+    "text": "porque de tal manera amó Dios al mundo, que dio a su Hijo unigénito"
+  },
+  "mi-verbs.cat.reduplication.eg": {
+    "fp": "ad7z61",
+    "text": "δίδωμι, τίθημι, ἵστημι"
+  },
+  "mi-verbs.cat.reduplication.name": {
+    "fp": "j64xow",
+    "text": "Reduplicación de presente con iota"
+  },
+  "mi-verbs.cat.vowel-gradation.d": {
+    "fp": "1a6sgcz",
+    "text": "la vocal de la raíz alterna según el número: {δίδωμι, δίδως, δίδωσι} frente a {δίδομεν, δίδοτε}. Es la señal más segura después de la reduplicación"
+  },
+  "mi-verbs.cat.vowel-gradation.e0": {
+    "fp": "1dt25ru",
+    "text": "yo les doy vida eterna"
+  },
+  "mi-verbs.cat.vowel-gradation.eg": {
+    "fp": "g35s6s",
+    "text": "δίδωσι / δίδομεν"
+  },
+  "mi-verbs.cat.vowel-gradation.name": {
+    "fp": "1r8fxoa",
+    "text": "Larga en singular, breve en plural"
+  },
+  "mi-verbs.cg.int-habits": {
+    "fp": "fjm7ji",
+    "text": "Los hábitos que los identifican"
+  },
   "mi-verbs.cs1.lesson": {
     "fp": "mjpaq6",
     "text": "Verbos en μι en el texto"
@@ -303,6 +371,10 @@
     "fp": "z352vd",
     "text": "Costumbre primera: dos raíces"
   },
+  "mi-verbs.h.int-athematic": {
+    "fp": "1jwojb3",
+    "text": "La conjugación atemática"
+  },
   "mi-verbs.h.marker-aorist": {
     "fp": "ch2tj5",
     "text": "La marca: un aoristo en ‑κα"
@@ -370,6 +442,14 @@
   "mi-verbs.p.habit-two-hides": {
     "fp": "j7wbec",
     "text": "La segunda costumbre se esconde en esa nota: la vocal de la raíz juega a *breve / larga*: larga en el singular ({δίδωμι, δίδως, δίδωσι}), breve en el plural ({δίδομεν, δίδοτε}). Observa el patrón recorriendo el presente:"
+  },
+  "mi-verbs.p.int-caution": {
+    "fp": "18wt3mp",
+    "text": "*Dónde se nota.* {παραδίδωμι} —«entregar»— es el verbo de la traición y el de la entrega del Hijo, y es la misma palabra en ambos casos. Leer con soltura las formas en {-μι} es la diferencia entre advertirlo y no advertirlo."
+  },
+  "mi-verbs.p.int-lead": {
+    "fp": "bbawiv",
+    "text": "Los verbos en {-μι} son el estrato más antiguo de la lengua. Pegan sus desinencias directamente a la raíz, sin vocal de unión —eso significa «atemático»—, y el club es lo bastante pequeño como para aprenderlo de memoria; pero sus miembros son tan frecuentes, y tan cargados teológicamente, que el esfuerzo se paga varias veces."
   },
   "mi-verbs.p.much-club's-frequency": {
     "fp": "i7bgx6",

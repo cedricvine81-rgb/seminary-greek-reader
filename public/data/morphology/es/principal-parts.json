@@ -195,6 +195,106 @@
     "fp": "6y2c7n",
     "text": "Ejemplo resuelto"
   },
+  "principal-parts.cat.aorist-passive.d": {
+    "fp": "1kheuqu",
+    "text": "aoristo y futuro pasivos, con la marca {θη}. Un verbo puede ser perfectamente regular en cinco sistemas e irregular en este"
+  },
+  "principal-parts.cat.aorist-passive.e0": {
+    "fp": "1l94ltg",
+    "text": "y el Verbo se hizo carne"
+  },
+  "principal-parts.cat.aorist-passive.eg": {
+    "fp": "1e5ppez",
+    "text": "ἐλύθην · ἐγράφη"
+  },
+  "principal-parts.cat.aorist-passive.name": {
+    "fp": "swi620",
+    "text": "6. Aoristo pasivo"
+  },
+  "principal-parts.cat.aorist-system.d": {
+    "fp": "1cw3fi",
+    "text": "el aoristo en esas voces, más su participio, infinitivo, subjuntivo e imperativo; el aumento, solo en el indicativo"
+  },
+  "principal-parts.cat.aorist-system.e0": {
+    "fp": "1pkctbc",
+    "text": "al oír esto, Jesús se admiró"
+  },
+  "principal-parts.cat.aorist-system.eg": {
+    "fp": "k5e7x5",
+    "text": "ἔλυσα → λύσας, λῦσαι"
+  },
+  "principal-parts.cat.aorist-system.name": {
+    "fp": "12okqj4",
+    "text": "3. Aoristo activo/medio"
+  },
+  "principal-parts.cat.future-system.d": {
+    "fp": "4f3ubj",
+    "text": "el futuro solo en esas dos voces. Un verbo líquido lo construye sin σ, y por eso puede parecer un presente contracto"
+  },
+  "principal-parts.cat.future-system.e0": {
+    "fp": "7ve8xz",
+    "text": "él los bautizará con Espíritu Santo"
+  },
+  "principal-parts.cat.future-system.eg": {
+    "fp": "1vjaixk",
+    "text": "λύσω · μενῶ"
+  },
+  "principal-parts.cat.future-system.name": {
+    "fp": "10oqzj2",
+    "text": "2. Futuro activo/medio"
+  },
+  "principal-parts.cat.perfect-active.d": {
+    "fp": "11soytk",
+    "text": "perfecto y pluscuamperfecto activos, marcados por la reduplicación. El perfecto es un estado, no un pasado, y por eso este sistema merece lugar propio"
+  },
+  "principal-parts.cat.perfect-active.e0": {
+    "fp": "1aag09a",
+    "text": "porque está escrito en el libro de los Salmos"
+  },
+  "principal-parts.cat.perfect-active.eg": {
+    "fp": "ap7auk",
+    "text": "λέλυκα · γέγραπται"
+  },
+  "principal-parts.cat.perfect-active.name": {
+    "fp": "1n6eiz0",
+    "text": "4. Perfecto activo"
+  },
+  "principal-parts.cat.perfect-middle.d": {
+    "fp": "1r8bs7w",
+    "text": "los mismos tiempos en las otras voces, con las desinencias pegadas directamente a la raíz sin vocal de unión, que es donde ocurren los cambios consonánticos"
+  },
+  "principal-parts.cat.perfect-middle.e0": {
+    "fp": "c4c4vu",
+    "text": "consumado está; e inclinando la cabeza, entregó el espíritu"
+  },
+  "principal-parts.cat.perfect-middle.eg": {
+    "fp": "1ac16zx",
+    "text": "λέλυμαι"
+  },
+  "principal-parts.cat.perfect-middle.name": {
+    "fp": "9h9gzu",
+    "text": "5. Perfecto medio/pasivo"
+  },
+  "principal-parts.cat.present-system.d": {
+    "fp": "lp0uqv",
+    "text": "presente e imperfecto, en todas las voces; y la raíz de presente es la que contrae, reduplica o nasaliza, así que suele ser la rara del conjunto"
+  },
+  "principal-parts.cat.present-system.e0": {
+    "fp": "2lfl64",
+    "text": "el que cree en el Hijo tiene vida eterna"
+  },
+  "principal-parts.cat.present-system.eg": {
+    "fp": "1rohut6",
+    "text": "λύω → ἔλυον"
+  },
+  "principal-parts.cat.present-system.name": {
+    "fp": "1bdhwql",
+    "text": "1. Presente"
+  },
+  "principal-parts.cg.int-systems": {
+    "fp": "1efjq6t",
+    "text": "Qué gobierna cada parte"
+  },
   "principal-parts.d1.intro": {
     "fp": "kgypid",
     "text": "Coloca cada forma en su parte principal."
@@ -283,6 +383,10 @@
     "fp": "11ud8oo",
     "text": "Empecemos por el español: hago, hice, hecho"
   },
+  "principal-parts.h.int-six-systems": {
+    "fp": "1jtagpi",
+    "text": "Seis sistemas, no seis tiempos"
+  },
   "principal-parts.h.lookup": {
     "fp": "1jm66h4",
     "text": "Usar la tabla: de la forma misteriosa al diccionario"
@@ -322,6 +426,14 @@
   "principal-parts.p.dict": {
     "fp": "13ojvb7",
     "text": "¿Cómo trata un diccionario español un verbo irregular? Enumera las formas que no se pueden predecir: _hago, hice, hecho_ — _voy, fui, ido_. Dale a un hispanohablante esas «partes principales» y construirá todo lo demás («había hecho», «iré») por regla."
+  },
+  "principal-parts.p.int-caution": {
+    "fp": "1a12kpf",
+    "text": "*Por qué los diccionarios las imprimen.* Una forma que no logras situar es una forma cuyo sistema no has identificado. Encuentra la marca —reduplicación, {σ}, {θη}, un aumento— y esa marca nombra la parte; la parte nombra la entrada; y solo entonces el léxico sirve de algo. Trabajar al revés, a partir de un presente adivinado, es como un lector acaba inventándose un verbo."
+  },
+  "principal-parts.p.int-lead": {
+    "fp": "ktkolk",
+    "text": "Las partes principales no son una lista que recitar sino un mapa de dónde cambian las raíces de un verbo. Cada parte encabeza un _sistema_ —un grupo de formas construidas a partir de ella—, de modo que conocer una parte te da todas las formas de su sistema, y saber a qué sistema pertenece una forma te dice qué parte buscar."
   },
   "principal-parts.p.part6": {
     "fp": "jxbet6",

@@ -23,6 +23,74 @@
     "fp": "1gpyswt",
     "text": "¿Ves un verbo en presente con *circunflejo* en la desinencia ({ποιεῖ, ἀγαπᾷ, πληροῖ})? Es un verbo contracto. Vuelve a la forma de diccionario preguntándote a qué familia apuntan las vocales."
   },
+  "contract-verbs.cat.circumflex-witness.d": {
+    "fp": "1twcma4",
+    "text": "dónde se sitúa el acento de un verbo contracto te dice que hubo contracción; el acento de la forma sin contraer suele sobrevivir a la fusión, y por eso puede caer donde un verbo no contracto nunca lo pondría"
+  },
+  "contract-verbs.cat.circumflex-witness.e0": {
+    "fp": "1dpbioo",
+    "text": "el que practica la verdad viene a la luz"
+  },
+  "contract-verbs.cat.circumflex-witness.eg": {
+    "fp": "cn3k3t",
+    "text": "ποιῶν (contracto) frente a un hipotético ποίων"
+  },
+  "contract-verbs.cat.circumflex-witness.name": {
+    "fp": "s5nbul",
+    "text": "El circunflejo como testigo"
+  },
+  "contract-verbs.cat.lexical-form.d": {
+    "fp": "151dxo7",
+    "text": "los diccionarios registran {ποιέω} y la página muestra {ποιεῖ}. Buscar lo que ves fracasará: hay que restituir la vocal temática antes de poder consultar nada"
+  },
+  "contract-verbs.cat.lexical-form.e0": {
+    "fp": "2evct",
+    "text": "mi Padre hasta ahora trabaja, y yo trabajo"
+  },
+  "contract-verbs.cat.lexical-form.eg": {
+    "fp": "1bnwu94",
+    "text": "ποιέω → ποιεῖ"
+  },
+  "contract-verbs.cat.lexical-form.name": {
+    "fp": "1jnu0va",
+    "text": "La forma léxica va sin contraer"
+  },
+  "contract-verbs.cat.liquid-future.d": {
+    "fp": "1gvy1df",
+    "text": "un futuro líquido también contrae, así que se viste como un presente en {-έω}. {μενῶ} «permaneceré» se distingue del presente {μένω} solo por el acento"
+  },
+  "contract-verbs.cat.liquid-future.e0": {
+    "fp": "1gayvn4",
+    "text": "permanezcan en mí, y yo en ustedes"
+  },
+  "contract-verbs.cat.liquid-future.eg": {
+    "fp": "1vep7u5",
+    "text": "μενῶ / μένω"
+  },
+  "contract-verbs.cat.liquid-future.name": {
+    "fp": "1harj38",
+    "text": "Frente al futuro líquido"
+  },
+  "contract-verbs.cat.outside-present.d": {
+    "fp": "1sags0v",
+    "text": "la contracción necesita que una vocal de unión se encuentre con la vocal de la raíz, y eso solo pasa en presente e imperfecto. En los demás tiempos la vocal simplemente se alarga y el verbo es corriente"
+  },
+  "contract-verbs.cat.outside-present.e0": {
+    "fp": "1m5iewq",
+    "text": "porque lo que aquel hace, eso también lo hace el Hijo igualmente"
+  },
+  "contract-verbs.cat.outside-present.eg": {
+    "fp": "w1f5nr",
+    "text": "ποιῶ pero ἐποίησα"
+  },
+  "contract-verbs.cat.outside-present.name": {
+    "fp": "15pr57b",
+    "text": "Solo contraen dos tiempos"
+  },
+  "contract-verbs.cg.int-reading": {
+    "fp": "2kjnj7",
+    "text": "Leer la forma contracta"
+  },
   "contract-verbs.d1.o0": {
     "fp": "lffmwl",
     "text": "φιλῶ"
@@ -131,6 +199,10 @@
     "fp": "7e3abj",
     "text": "Más a fondo: verbos del amor y verbos de fórmula"
   },
+  "contract-verbs.h.int-accent-evidence": {
+    "fp": "8qt3p3",
+    "text": "El acento es evidencia"
+  },
   "contract-verbs.h.outside-present-vowel": {
     "fp": "vjthhx",
     "text": "Fuera del presente: la vocal se hace mayor"
@@ -198,6 +270,14 @@
   "contract-verbs.p.here-all-three": {
     "fp": "hgxsz4",
     "text": "Aquí están las tres familias a lo largo del presente activo; compara columna por columna con {λύω}:"
+  },
+  "contract-verbs.p.int-caution": {
+    "fp": "8erz4f",
+    "text": "*El reflejo que hay que formar.* Cuando un acento parezca mal puesto, sospecha de la contracción antes que del editor. Y cuando dos lecturas de una forma sean posibles —presente o futuro, indicativo o subjuntivo—, comprueba si es el acento el que decide, porque en esta clase de verbos lo hace con frecuencia."
+  },
+  "contract-verbs.p.int-lead": {
+    "fp": "ittr3x",
+    "text": "La contracción es un cambio fonético con una consecuencia ortográfica, y el circunflejo que deja no es adorno: es el registro de dos vocales fundidas. Para el lector, eso convierte el acento en un dato de análisis y, en unos pocos lugares, en el _único_ dato."
   },
   "contract-verbs.p.john-alternates-two": {
     "fp": "f6wswr",

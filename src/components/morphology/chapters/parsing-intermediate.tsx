@@ -8,14 +8,34 @@
    Going-deeper card into real sections. Same ids throughout, so the Spanish moved with it.
 
    The shared page now renders only at Beginning; new Intermediate depth belongs here.
+
+   Category NAMES below are the standard apparatus of the intermediate grammars (Wallace,
+   Black, Porter; behind them Burton and Robertson) used as the shared terminology they
+   are. The explanations and English glosses are ours, and every Greek example is quoted
+   from the text this app serves (NA1904) and checked by scripts/verify-examples.mjs.
 ───────────────────────────────────────────── */
 
 import {
-  ColsTable, Gk, P, SectionHeading,
+  ColsTable, Gk, P, SectionHeading
 } from '../shared'
+import { Cat, CatGroup, T, G } from '@/components/vocab/morphology-explanations'
 
 export const PARSING_INTERMEDIATE_CONTENT = (
   <>
+    <SectionHeading id="parsing.h.int-syncretism">Where the forms run together</SectionHeading>
+    <P id="parsing.p.int-lead">
+      A Greek ending does not always identify one slot. Several endings serve two or three, and no amount of morphology will separate them — the sentence has to. Knowing exactly <em>which</em> forms are ambiguous is what turns parsing from decoding into reading, because it tells you where to stop consulting the paradigm and start consulting the context.
+    </P>
+    <SectionHeading id="parsing.cg.int-ambiguities">The regular ambiguities</SectionHeading>
+    <CatGroup>
+      <Cat id="parsing.cat.neuter-nom-acc" name="Neuter nominative and accusative" eg="τὰ δαιμόνια — subject or object?" ex={[{ g: "ἐγὼ ἐν Βεελζεβοὺλ ἐκβάλλω τὰ δαιμόνια", e: "I cast out the demons by Beelzebul", r: "Matt 12:27" }]}><T id="parsing.cat.neuter-nom-acc.d">always identical, singular and plural. Only the verb and word order say whether a neuter noun is doing or being done to</T></Cat>
+      <Cat id="parsing.cat.middle-passive" name="Middle and passive" eg="γράφεται — “is written” or “writes for himself”" ex={[{ g: "ἐβαπτίζοντο ἐν τῷ Ἰορδάνῃ ποταμῷ ὑπ’ αὐτοῦ", e: "they were baptised in the river Jordan by him", r: "Matt 3:6" }]}><T id="parsing.cat.middle-passive.d">identical outside the aorist and future. An agent phrase with <G>ὑπό</G> settles it toward passive; otherwise the verb’s own habits decide</T></Cat>
+      <Cat id="parsing.cat.first-decl-gen-acc" name="1st-declension genitive singular and accusative plural" eg="τῆς ἡμέρας / τὰς ἡμέρας" ex={[{ g: "ἐγὼ μεθ’ ὑμῶν εἰμι πάσας τὰς ἡμέρας", e: "I am with you all the days", r: "Matt 28:20" }]}><T id="parsing.cat.first-decl-gen-acc.d"><G>-ας</G> serves both in many nouns, and the article usually resolves it — which is one more reason to parse the article first</T></Cat>
+      <Cat id="parsing.cat.contract-lookalikes" name="Contract look-alikes" eg="μενῶ (fut.) vs μένω (pres.)" ex={[{ g: "ὁ μένων ἐν ἐμοὶ κἀγὼ ἐν αὐτῷ", e: "the one who remains in me, and I in him", r: "John 15:5" }]}><T id="parsing.cat.contract-lookalikes.d">a liquid future wears the endings of an <G>-έω</G> present, so <G>μενῶ</G> “I will remain” and a present contract differ by accent alone</T></Cat>
+    </CatGroup>
+    <P id="parsing.p.int-honest">
+      <strong>Naming the ambiguity is the answer.</strong> A parse that silently picks one option has not been done; a parse that says “nominative or accusative plural neuter, and the verb decides” has. The habit matters most in exactly the places where a translation has quietly chosen for you.
+    </P>
     <SectionHeading id="parsing.h.conventions-will-meet">Conventions you will meet elsewhere</SectionHeading>
     <P id="parsing.p.case-number-gender">
       <strong>Case-number-gender vs gender-number-case.</strong> The order taught here — case first — is
