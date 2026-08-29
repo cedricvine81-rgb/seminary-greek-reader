@@ -30,8 +30,6 @@ function Slots({ children }: { children: React.ReactNode }) {
 
 export const PARSING_CONTENT = (
   <>
-    {/* The frame every verb parse fills in — same grid on every verb chapter. */}
-    <ParseFrame />
     {/* ── 1 · What parsing is (Beginning only) ───────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="parsing.h.before-forms-learn">Before the forms: learn the answer</SectionHeading>
@@ -153,6 +151,14 @@ export const PARSING_CONTENT = (
       &ldquo;he/she/it looses&rdquo; without a separate word for &ldquo;he.&rdquo; Finite verbs take five
       answers, always in this order.
     </P>
+
+    {/* The whole frame, here rather than at the head of the chapter. Every other verb chapter
+        opens with it because the shape of a parse is new there; this chapter BUILDS that shape
+        section by section, so arriving at the finite verb is the first moment the grid says
+        something the reader has not just been told — and the section after this one adds the
+        participle and infinitive rows it already shows. (No section number in this note: the
+        Beginning view has one heading the Intermediate view hides, so the two disagree by one.) */}
+    <ParseFrame />
 
     <TableAside
       beginning={

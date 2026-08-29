@@ -40,15 +40,20 @@ function Options({ items, tm, k }: { items: string[]; tm: (key: string, en: stri
 
 export function ParseFrame() {
   const tm = useTm()
-  const th = 'border border-gray-300 px-2 py-1.5 text-center text-xs font-semibold text-gray-700 bg-parchment-50'
-  const td = 'border border-gray-300 px-2 py-1.5 align-top text-sm text-gray-800'
+  // Same visual language as MorphTable/ColsTable (shared.tsx): brand header band, rounded
+  // bordered card, surface body. The interior gridlines are this table's own — the participle
+  // row spans its columns differently from the finite row, and without them the two readings
+  // run together — so they are drawn in the light divider grey those tables use between rows.
+  const th = 'border border-brand-200 bg-brand-100 px-3 py-2 text-center font-semibold text-brand-900 whitespace-nowrap'
+  const td = 'border border-gray-200 px-3 py-2 align-top text-gray-900'
+  const sub = 'block text-xs font-semibold uppercase tracking-wide text-brand-700'
   return (
-    <div className="mb-6">
-      <p className="mb-1.5 text-sm font-semibold text-gray-900">
+    <div className="mb-5">
+      <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-brand-700">
         {tm('parseframe.title', 'To parse a verb, provide every element')}
       </p>
-      <div className="overflow-x-auto">
-        <table className="border-collapse w-full min-w-[640px]">
+      <div className="max-w-full overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
+        <table className="w-full min-w-[640px] border-collapse bg-surface text-[15px]">
           <thead>
             <tr>
               <th className={th}>{tm('parseframe.h.tense', 'Tense')}</th>
@@ -76,22 +81,22 @@ export function ParseFrame() {
             <tr>
               <td className={td}>{tm('parseframe.mood.participle', 'Participle')}</td>
               <td className={td}>
-                <span className="block text-xs font-semibold text-gray-600">{tm('parseframe.h.case', 'Case')}</span>
+                <span className={sub}>{tm('parseframe.h.case', 'Case')}</span>
                 <Options items={CASES} tm={tm} k="case" />
               </td>
               <td className={td}>
-                <span className="block text-xs font-semibold text-gray-600">{tm('parseframe.h.number', 'Num.')}</span>
+                <span className={sub}>{tm('parseframe.h.number', 'Num.')}</span>
                 <Options items={NUMBERS} tm={tm} k="number" />
               </td>
               <td className={td}>
-                <span className="block text-xs font-semibold text-gray-600">{tm('parseframe.h.gender', 'Gen.')}</span>
+                <span className={sub}>{tm('parseframe.h.gender', 'Gen.')}</span>
                 <Options items={GENDERS} tm={tm} k="gender" />
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p className="mt-1.5 text-xs text-gray-500">
+      <p className="mt-1.5 text-xs italic text-gray-500">
         {tm('parseframe.note',
           'Every finite verb has the first five; a participle swaps person for case and gender; an infinitive stops after the mood. The parse ends with the lexical form — the 1st person singular — and you should be able to say what both it and the form in front of you mean.')}
       </p>
