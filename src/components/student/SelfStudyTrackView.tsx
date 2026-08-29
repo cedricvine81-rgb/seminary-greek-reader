@@ -60,6 +60,17 @@ function grammarTarget(href: string): { chapter: MainTab; level: MorphLevel } {
   }
 }
 
+/**
+ * A step's display name. Vocabulary set labels are composed sentences ("BGVB 3 · Section I-C
+ * (41–60)"), so they carry a key AND its holes rather than a pre-built string — the word
+ * "Section" has to be able to become "Sección", and the order of the pieces has to be the
+ * catalogue's business, not this file's. `label` remains for the labels with nothing
+ * translatable in them (an author's name plus a band code).
+ */
+function stepLabel(step: SelfStudyStep, t: (k: string, vars?: Record<string, string | number>) => string) {
+  return step.labelKey ? t(step.labelKey, step.labelVars) : step.label
+}
+
 function PanelLoading() {
   const t = useT()
   return <p className="py-8 text-sm italic text-gray-400">{t('hw.loading')}</p>
@@ -169,7 +180,7 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
                           {step.kind === 'grammar' ? t('ss.read') : isQuiz ? t('ss.quiz') : t('ss.vocab')}
                         </span>
                         <span className={clsx('min-w-0 flex-1 truncate text-sm group-hover:text-brand-700 group-hover:underline', stepDone ? 'text-gray-400 line-through' : 'text-gray-800')}>
-                          {step.labelKey ? t(step.labelKey) : step.label}
+                          {stepLabel(step, t)}
                         </span>
                       </Link>
                     </li>
@@ -192,7 +203,7 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
           // also resets a half-finished quiz and the scroll position, which is what
           // "open this step" should mean.
           key={panel.key}
-          title={(panel.labelKey ? t(panel.labelKey) : panel.label) ?? ''}
+          title={stepLabel(panel, t) ?? ''}
           subtitle={panel.lesson != null ? t('ss.lessonN', { n: panel.lesson }) : undefined}
           fullHref={panel.href}
           fullLabel={t('ss.fullPage')}

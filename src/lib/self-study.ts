@@ -17,11 +17,13 @@ import { GREEK_MORPH_QUIZZES, HEBREW_MORPH_QUIZZES, morphKeyFor } from './self-s
 // frequency ranks 20n-19..20n, printed as Section I A–H (lessons 1–8) then II A–H (9–16),
 // stored under the subsection key "1-A"…"2-H" (see src/lib/vocab-lesson-map.ts).
 const BGVB_LESSON_COUNT = 16
-function bgvbSection(lesson: number): { name: string; key: string } {
+// `section` is the printed code alone ("I-C"), never "Section I-C": the word in front of it
+// is part of the label's sentence and belongs to the catalogue, not to this function.
+function bgvbSection(lesson: number): { section: string; key: string } {
   const roman = lesson <= 8 ? 'I' : 'II'
   const num = lesson <= 8 ? 1 : 2
   const letter = String.fromCharCode(65 + ((lesson - 1) % 8))
-  return { name: `Section ${roman}-${letter}`, key: `${num}-${letter}` }
+  return { section: `${roman}-${letter}`, key: `${num}-${letter}` }
 }
 
 export type SelfStudyTrackId = 'greek-beginning' | 'greek-intermediate' | 'hebrew-beginning' | 'hebrew-intermediate'
@@ -30,8 +32,10 @@ export interface SelfStudyStep {
   /** Progress item key (MorphologyProgress.chapterId — [a-z0-9-], ≤40 chars). */
   key: string
   kind: 'grammar' | 'vocab' | 'quiz'
-  /** i18n key for chapter names; `label` for composed vocabulary labels. */
+  /** i18n key for chapter names, and for composed vocabulary labels that take `labelVars`.
+   *  `label` is only for labels with nothing translatable in them (proper names and codes). */
   labelKey?: string
+  labelVars?: Record<string, string | number>
   label?: string
   href: string
   /** Quiz steps only: which deck words the practice quiz draws from. The quiz page
@@ -152,7 +156,8 @@ function greekBeginning(): SelfStudyLesson[] {
       steps.push({
         key: `ssv-gk-${lesson}`,
         kind: 'vocab',
-        label: `BGVB ${lesson} · ${sec.name} (${lesson * 20 - 19}–${lesson * 20})`,
+        labelKey: 'ss.bgvbSet',
+        labelVars: { n: lesson, section: sec.section, from: lesson * 20 - 19, to: lesson * 20 },
         href: '/vocab?track=greek',
       })
       steps.push({
@@ -204,6 +209,7 @@ function hebrew(chapters: { id: string; labelKey: string }[], withBands: boolean
       steps.push({
         key: `ssv-hb-${band.toLowerCase()}`,
         kind: 'vocab',
+        // "Glanz 1A" is the author's name and the band's code: nothing here translates.
         label: `Glanz ${band}`,
         href: '/vocab?track=hebrew',
       })
