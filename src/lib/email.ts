@@ -14,6 +14,19 @@ import { logError, logWarn } from './logger'
  *
  * Swapping providers (SMTP, SES, etc.) later means changing only this file.
  */
+/**
+ * Whether email can actually leave the building.
+ *
+ * sendEmail() deliberately no-ops when the keys are absent so no caller ever fails because
+ * email is not set up. That is right for a notification and wrong for a flow whose ONLY output
+ * is the message — a password reset that silently sends nothing tells the student to check an
+ * inbox that will stay empty, which is worse than not offering the link. Surfaces that state
+ * so the UI can say what is true instead.
+ */
+export function emailConfigured(): boolean {
+  return Boolean(process.env.RESEND_API_KEY && process.env.EMAIL_FROM)
+}
+
 export async function sendEmail(opts: {
   to: string[]
   subject: string

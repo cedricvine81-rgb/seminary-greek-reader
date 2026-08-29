@@ -3,7 +3,8 @@ import { cookies } from 'next/headers'
 import { prisma } from '@/lib/db'
 import { hashPassword, verifyPassword, signToken, setAuthCookie, clearAuthCookie, getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
-import { sendEmail, escapeHtml } from '@/lib/email'
+import { sendEmail, escapeHtml, emailConfigured } from '@/lib/email'
+import { createHash, randomBytes } from 'node:crypto'
 import { instructorNotifyRecipients } from '@/lib/app-settings'
 import { logError } from '@/lib/logger'
 import type { Role } from '@/types/auth'
@@ -15,6 +16,11 @@ const TERMS_VERSION = '2026-07'
 function clientIp(req: NextRequest): string {
   return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
 }
+
+/** The stored form of a reset token. The plaintext only ever exists in the emailed link. */
+const hashResetToken = (raw: string) => createHash('sha256').update(raw).digest('hex')
+
+const RESET_TTL_MS = 60 * 60 * 1000 // one hour
 
 export async function POST(req: NextRequest) {
   try {
@@ -119,6 +125,106 @@ export async function POST(req: NextRequest) {
       // previous account in this browser, so a student never inherits preview mode.
       cookies().delete('instructor_preview')
       return NextResponse.json({ user: { id: user.id, email, role: user.role }, token })
+    }
+
+    // ── Self-service password reset ─────────────────────────────────────────────
+    //
+    // Two actions. `request-password-reset` never reveals whether an address is registered:
+    // it answers the same way for a real account, an unknown one, and a rate-limited caller,
+    // because a reset form that says "no such user" is an account-enumeration oracle.
+    //
+    // It DOES fail loudly when email is unconfigured. That is not enumeration — it is a fact
+    // about this deployment, and a student who is told "check your inbox" for a message that
+    // can never be sent is worse off than one told to contact their instructor.
+    if (action === 'request-password-reset') {
+      const { email } = body
+      if (!email || typeof email !== 'string') {
+        return NextResponse.json({ error: 'Email is required.' }, { status: 400 })
+      }
+      if (!emailConfigured()) {
+        return NextResponse.json({ error: 'email_not_configured' }, { status: 503 })
+      }
+
+      const addr = email.trim().toLowerCase()
+      // Two limits: one stops a scan across many addresses, one stops mailbox-flooding a
+      // single victim. Both answer 200 so neither can be used to probe.
+      const ipRl = rateLimit(`reset-ip:${ip}`, 10, 3_600_000)
+      const emailRl = rateLimit(`reset-email:${addr}`, 4, 3_600_000)
+
+      if (ipRl.ok && emailRl.ok) {
+        const user = await prisma.user.findUnique({
+          where: { email: addr },
+          select: { id: true, firstName: true, deletedAt: true },
+        })
+        if (user && !user.deletedAt) {
+          const raw = randomBytes(32).toString('base64url')
+          await prisma.passwordResetToken.create({
+            data: {
+              userId: user.id,
+              tokenHash: hashResetToken(raw),
+              expiresAt: new Date(Date.now() + RESET_TTL_MS),
+            },
+          })
+          const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ?? ''
+          const link = `${base}/auth/reset-password?token=${raw}`
+          await sendEmail({
+            to: [addr],
+            subject: 'Reset your Seminary Greek password',
+            html: `<p>Hello ${escapeHtml(user.firstName)},</p>`
+              + `<p>Someone asked to reset the password for this account. `
+              + `The link below works once and expires in one hour:</p>`
+              + `<p><a href="${escapeHtml(link)}">Choose a new password</a></p>`
+              + `<p>If that was not you, you can ignore this message — `
+              + `your password has not changed.</p>`,
+            text: `Hello ${user.firstName},\n\n`
+              + `Someone asked to reset the password for this account. The link below works `
+              + `once and expires in one hour:\n\n${link}\n\n`
+              + `If that was not you, you can ignore this message - your password has not changed.\n`,
+          })
+        }
+      }
+      // Same answer either way.
+      return NextResponse.json({ ok: true })
+    }
+
+    if (action === 'reset-password') {
+      const { token, password } = body
+      if (!token || typeof token !== 'string') {
+        return NextResponse.json({ error: 'invalid_token' }, { status: 400 })
+      }
+      if (typeof password !== 'string' || password.length < 8) {
+        return NextResponse.json({ error: 'Password must be at least 8 characters.' }, { status: 400 })
+      }
+      // Guessing a 32-byte token is not realistic, but the limit also caps the damage from a
+      // leaked link being hammered.
+      const rl = rateLimit(`reset-submit:${ip}`, 20, 3_600_000)
+      if (!rl.ok) {
+        return NextResponse.json({ error: 'Too many attempts. Please try again later.' },
+          { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } })
+      }
+
+      const row = await prisma.passwordResetToken.findUnique({
+        where: { tokenHash: hashResetToken(token) },
+        select: { id: true, userId: true, expiresAt: true, usedAt: true },
+      })
+      if (!row || row.usedAt || row.expiresAt < new Date()) {
+        return NextResponse.json({ error: 'invalid_token' }, { status: 400 })
+      }
+
+      const hashed = await hashPassword(password)
+      // One transaction: set the password, spend this ticket, and spend every other
+      // outstanding ticket for the same user, so an older forwarded email stops working.
+      await prisma.$transaction([
+        prisma.user.update({
+          where: { id: row.userId },
+          data: { password: hashed, mustChangePassword: false },
+        }),
+        prisma.passwordResetToken.updateMany({
+          where: { userId: row.userId, usedAt: null },
+          data: { usedAt: new Date() },
+        }),
+      ])
+      return NextResponse.json({ ok: true })
     }
 
     if (action === 'signin') {

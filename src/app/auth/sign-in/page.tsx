@@ -21,6 +21,11 @@ export default function SignInPage() {
           </div>
           <SignInForm />
           <p className="text-center text-sm text-gray-500 mt-4">
+            <Link href="/auth/forgot-password" className="text-brand-600 hover:underline font-medium">
+              {t('auth.forgotLink')}
+            </Link>
+          </p>
+          <p className="text-center text-sm text-gray-500 mt-2">
             {t('auth.noAccount')}{' '}
             <Link href="/auth/sign-up" className="text-brand-600 hover:underline font-medium">{t('auth.signUpLink')}</Link>
           </p>

@@ -98,6 +98,7 @@ model User {
   groupContributions     GroupContribution[]
   morphologyProgress     MorphologyProgress[]
   seriesTemplates        SeriesTemplate[]
+  passwordResetTokens    PasswordResetToken[]
 
   @@index([email])
   @@index([paddleCustomerId])
@@ -1204,4 +1205,24 @@ model ActivityLogSubmission {
 
   @@unique([userId, assignmentId])
   @@index([assignmentId])
+}
+
+/// A single-use, time-limited password-reset ticket.
+///
+/// Only the SHA-256 of the token is stored: the plaintext exists in the emailed link and
+/// nowhere else, so a leaked database row cannot be redeemed. Rows are single-use (`usedAt`)
+/// and every other outstanding token for the same user is spent when one is redeemed, so a
+/// forwarded older email stops working the moment the newest one is used.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
 }
