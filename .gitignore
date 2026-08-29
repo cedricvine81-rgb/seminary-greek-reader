@@ -62,3 +62,6 @@ public/data/theology/*.candidates.json
 .web-cache/
 .ot-runs/
 .tmp/
+
+# deck copies for scripts/check-decks.mjs (not part of the app)
+/decks/
