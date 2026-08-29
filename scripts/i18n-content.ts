@@ -226,6 +226,25 @@ const CHAPTER_TAB: Record<string, string> = {
   // A level's own page shares its chapter's catalogue: the view fetches by TAB id, and the
   // tab is 'nouns' whichever file renders it.
   'nouns-intermediate': 'nouns',
+  'pronunciation-intermediate': 'pronunciation',
+  'parsing-intermediate': 'parsing',
+  'prepositions-intermediate': 'prepositions',
+  'pronouns-intermediate': 'pronouns',
+  'demonstratives-intermediate': 'demonstratives',
+  'relatives-intermediate': 'relatives',
+  'conditionals-intermediate': 'conjunctions',
+  'conj-adv-intermediate': 'conj-adv',
+  'indicatives-intermediate': 'indicatives',
+  'contract-verbs-intermediate': 'contract-verbs',
+  'liquids-intermediate': 'liquids',
+  'principal-parts-intermediate': 'principal-parts',
+  'infinitives-intermediate': 'infinitives',
+  'imperatives-intermediate': 'imperatives',
+  'participles-intermediate': 'participles',
+  'subjunctives-intermediate': 'subjunctives',
+  'mi-verbs-intermediate': 'mi-verbs',
+  'second-aorists-intermediate': '2nd-aorists',
+  'deponents-intermediate': 'deponents',
 }
 
 /**

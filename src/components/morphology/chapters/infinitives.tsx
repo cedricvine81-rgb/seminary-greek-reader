@@ -270,27 +270,5 @@ export const INFINITIVES_CONTENT = (
     />
 
     {/* ── 9 · Going deeper (Intermediate only) ───────────── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="infinitives.h.going-deeper-infinitive">Going deeper: the infinitive as theology's workhorse</SectionHeading>
-      <P id="infinitives.p.subject-infinitives-article">
-        <strong>Subject infinitives.</strong> With the article, an infinitive can anchor a whole
-        proposition: <Gk>ἐμοὶ γὰρ τὸ ζῆν Χριστὸς καὶ τὸ ἀποθανεῖν κέρδος</Gk> — "for to me, <em>to
-        live</em> is Christ and <em>to die</em> is gain" (Phil 1:21). Two articular infinitives are the
-        subjects; the sentence's punch depends on seeing them as nouns.
-      </P>
-      <P id="infinitives.p.indirect-discourse-after">
-        <strong>Indirect discourse.</strong> After verbs of saying and thinking, the infinitive can report
-        speech: <Gk>λέγουσιν ἀνάστασιν μὴ εἶναι</Gk> — "they say there is no resurrection" (Mark 12:18,
-        of the Sadducees). The accusative-plus-infinitive frame ("they say <em>resurrection not to
-        be</em>") is the Greek machinery behind many an English "that"-clause.
-      </P>
-      <P id="infinitives.p.purpose-result-infinitive">
-        <strong>Purpose vs. result.</strong> <Gk>εἰς τό</Gk> + infinitive usually marks intention
-        ("in order to"); <Gk>ὥστε</Gk> + infinitive usually marks outcome ("so that, with the result
-        that"): <Gk>ὥστε τὸν ὄχλον θαυμάσαι</Gk>, "so that the crowd was amazed" (Matt 15:31). Where a
-        text is ambiguous — did God <em>intend</em> or merely <em>allow</em> the outcome? — the choice
-        between purpose and result is a genuinely theological call.
-      </P>
-    </LevelOnly>
   </>
 )

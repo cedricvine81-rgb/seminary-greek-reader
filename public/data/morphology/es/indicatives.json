@@ -887,6 +887,10 @@
     "fp": "bwzt91",
     "text": "Un paso más: el tiempo como interpretación"
   },
+  "indicatives.h.int-aspect": {
+    "fp": "odvmgl",
+    "text": "El aspecto antes que el tiempo"
+  },
   "indicatives.h.marking-past-time": {
     "fp": "1vhf7qd",
     "text": "Marcar el pasado: el aumento"
@@ -1008,7 +1012,7 @@
     "text": "*El presente histórico.* A Marcos le encanta narrar el pasado en presente — {λέγει αὐτῷ}, «le _dice_» — igual que un narrador entusiasmado se desliza al «y entonces me _dice_…». Tradúcelo en pasado, pero fíjate en la viveza que añade esa elección."
   },
   "indicatives.p.int-aspect-primary": {
-    "fp": "gy05c3",
+    "fp": "116gdoo",
     "text": "El aspecto es el valor primario del tiempo griego; el tiempo cronológico es secundario, y el indicativo es el único modo donde el tiempo verbal codifica tiempo cronológico. El perfectivo (aoristo) presenta la acción como un todo, el imperfectivo (presente, imperfecto) la presenta desplegándose, y el estativo (perfecto, pluscuamperfecto) presenta un estado resultante. Los identificadores de abajo son cómo se construyen las _formas_; lo que un tiempo _significa_ en una oración concreta es la taxonomía del panel «Para profundizar» de arriba."
   },
   "indicatives.p.just-english-was": {

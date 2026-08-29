@@ -43,6 +43,25 @@ import { SECOND_AORISTS_CONTENT } from '@/components/morphology/chapters/second-
 import { BASIC_VERBS_CONTENT } from '@/components/morphology/chapters/basic-verbs'
 import { DEPONENTS_CONTENT } from '@/components/morphology/chapters/deponents'
 import { NOUNS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/nouns-intermediate'
+import { PRONUNCIATION_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/pronunciation-intermediate'
+import { PARSING_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/parsing-intermediate'
+import { PREPOSITIONS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/prepositions-intermediate'
+import { PRONOUNS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/pronouns-intermediate'
+import { DEMONSTRATIVES_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/demonstratives-intermediate'
+import { RELATIVES_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/relatives-intermediate'
+import { CONJUNCTIONS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/conditionals-intermediate'
+import { CONJ_ADV_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/conj-adv-intermediate'
+import { INDICATIVES_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/indicatives-intermediate'
+import { CONTRACT_VERBS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/contract-verbs-intermediate'
+import { LIQUIDS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/liquids-intermediate'
+import { PRINCIPAL_PARTS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/principal-parts-intermediate'
+import { INFINITIVES_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/infinitives-intermediate'
+import { IMPERATIVES_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/imperatives-intermediate'
+import { PARTICIPLES_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/participles-intermediate'
+import { SUBJUNCTIVES_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/subjunctives-intermediate'
+import { MI_VERBS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/mi-verbs-intermediate'
+import { SECOND_AORISTS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/second-aorists-intermediate'
+import { DEPONENTS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/deponents-intermediate'
 
 /* ─────────────────────────────────────────────
    Beginning / Intermediate explanations
@@ -194,6 +213,27 @@ const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
  */
 const INTERMEDIATE_CONTENT: Partial<Record<MainTab, React.ReactNode>> = {
   nouns: NOUNS_INTERMEDIATE_CONTENT,
+  pronunciation: PRONUNCIATION_INTERMEDIATE_CONTENT,
+  parsing: PARSING_INTERMEDIATE_CONTENT,
+  prepositions: PREPOSITIONS_INTERMEDIATE_CONTENT,
+  pronouns: PRONOUNS_INTERMEDIATE_CONTENT,
+  demonstratives: DEMONSTRATIVES_INTERMEDIATE_CONTENT,
+  relatives: RELATIVES_INTERMEDIATE_CONTENT,
+  conjunctions: CONJUNCTIONS_INTERMEDIATE_CONTENT,
+  'conj-adv': CONJ_ADV_INTERMEDIATE_CONTENT,
+  indicatives: INDICATIVES_INTERMEDIATE_CONTENT,
+  'contract-verbs': CONTRACT_VERBS_INTERMEDIATE_CONTENT,
+  liquids: LIQUIDS_INTERMEDIATE_CONTENT,
+  'principal-parts': PRINCIPAL_PARTS_INTERMEDIATE_CONTENT,
+  infinitives: INFINITIVES_INTERMEDIATE_CONTENT,
+  imperatives: IMPERATIVES_INTERMEDIATE_CONTENT,
+  participles: PARTICIPLES_INTERMEDIATE_CONTENT,
+  subjunctives: SUBJUNCTIVES_INTERMEDIATE_CONTENT,
+  'mi-verbs': MI_VERBS_INTERMEDIATE_CONTENT,
+  '2nd-aorists': SECOND_AORISTS_INTERMEDIATE_CONTENT,
+  deponents: DEPONENTS_INTERMEDIATE_CONTENT,
+  // basic-verbs stays shared on purpose: it is the remedial chapter, and its two
+  // intermediate notes are asides on tables that live in the Beginning flow.
 }
 
 /** The body for a chapter at a level — the level's own page where one exists. */

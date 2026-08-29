@@ -286,27 +286,5 @@ export const SUBJUNCTIVES_CONTENT = (
     />
 
     {/* ── 8 · Going deeper (Intermediate only) ───────────── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="subjunctives.h.going-deeper-purpose">Going deeper: purpose, promise, and the strongest no</SectionHeading>
-      <P id="subjunctives.p.beyond-purpose-classical">
-        <strong>ἵνα beyond purpose.</strong> Classical ἵνα meant "in order that"; Koine stretched it. It can
-        mark <em>result</em> ("so that"), <em>content</em> (answering "what?" after verbs of asking —
-        "I ask that you…"), even stand where an infinitive would. When John writes
-        <Gk> αὕτη ἐστὶν ἡ ἐντολή, ἵνα ἀγαπᾶτε</Gk> (John 15:12), the ἵνα clause is not the command's
-        purpose — it <em>is</em> the command's content. Always ask which job ἵνα is doing.
-      </P>
-      <P id="subjunctives.p.emphatic-piling-both">
-        <strong>The emphatic οὐ μή.</strong> Piling both negatives onto an aorist subjunctive produces
-        Greek's most absolute denial — about 85 NT occurrences, heavily in sayings of Jesus:
-        <Gk> οὐ μὴ ἀπόλωνται εἰς τὸν αἰῶνα</Gk>, "they shall <em>by no means ever</em> perish" (John 10:28).
-        English "never" undersells it; translators reach for "certainly not," "by no means."
-      </P>
-      <P id="subjunctives.p.prohibition-aspect-aorist">
-        <strong>Prohibition aspect.</strong> <Gk>μή</Gk> + <em>aorist</em> subjunctive forbids as a whole
-        ("don't do it / don't start"); <Gk>μή</Gk> + <em>present</em> imperative leans "stop doing / don't
-        keep doing." The distinction is a tendency, not a law — check context before preaching it — but it
-        often illuminates: <Gk>μὴ φοβοῦ</Gk> (pres.) to the fearing disciple, "stop being afraid."
-      </P>
-    </LevelOnly>
   </>
 )

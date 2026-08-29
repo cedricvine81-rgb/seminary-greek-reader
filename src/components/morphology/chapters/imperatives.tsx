@@ -203,19 +203,5 @@ export const IMPERATIVES_CONTENT = (
     />
 
     {/* ── 7 · Going deeper (Intermediate only) ───────────── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="imperatives.h.going-deeper-commands">Going deeper: commands with manners</SectionHeading>
-      <P id="imperatives.p.request-just-order">
-        <strong>Request, not just order.</strong> Direction of rank matters: an imperative from an inferior
-        to a superior is an entreaty. Every petition of the Lord's Prayer is an aorist imperative —
-        <Gk> ἁγιασθήτω, ἐλθέτω, γενηθήτω, δός, ἄφες</Gk> — prayer language, not barked orders. Translating
-        "give us" as rude misreads the mood's range.
-      </P>
-      <P id="imperatives.p.permission-toleration-occasionally">
-        <strong>Permission and toleration.</strong> Occasionally the imperative concedes rather than
-        commands: <Gk>ὁ ἀδικῶν ἀδικησάτω ἔτι</Gk>, "let the evildoer still do evil" (Rev 22:11) — grim
-        permission, not encouragement. Context, as ever, assigns the force.
-      </P>
-    </LevelOnly>
   </>
 )

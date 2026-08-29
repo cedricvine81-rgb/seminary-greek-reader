@@ -32,9 +32,9 @@ export const NOUNS_INTERMEDIATE_CONTENT = (
     {/* ── 1 · Form before function ───────────────────────── */}
     <SectionHeading id="nouns.h.int-form-function">The case system: form before function</SectionHeading>
     <P id="nouns.p.int-case-form-function">
-      Five case <em>forms</em>, and more case <em>functions</em> than five. The paradigm below is
-      the five-case system — the endings that are actually distinct — which is what you parse.
-      The older eight-case scheme splits the genitive into genitive and ablative and the dative
+      Five case <em>forms</em>, and more case <em>functions</em> than five. The five-case system
+      is the set of endings that are actually distinct — that is what you parse, and the paradigms
+      live on the Beginning page, one toggle away. The older eight-case scheme splits the genitive into genitive and ablative and the dative
       into dative, locative and instrumental; it is describing function, not form, and the same
       distinctions survive in Wallace as syntactic categories under the five. Parse the form,
       then argue for the function.
@@ -82,7 +82,7 @@ export const NOUNS_INTERMEDIATE_CONTENT = (
             <Cat id="nouns.cat.after-certain-prepositions"name="After certain prepositions" ex={[{ g: "ἀπέστειλεν ὁ θεὸς τὸν υἱὸν εἰς τὸν κόσμον", e: "God sent the Son into the world", r: "John 3:17" }, { g: "πάντες ἔρχονται πρὸς αὐτόν", e: "everyone is coming to him", r: "John 3:26" }]}><T id="nouns.cat.after-certain-prepositions.d">prepositions that govern the accusative</T></Cat>
     </CatGroup>
 
-    {/* ── 6 · The article ────────────────────────────────── */}
+    {/* ── 5 · The article ────────────────────────────────── */}
     <SectionHeading id="nouns.h.article-beyond">The article — beyond "the"</SectionHeading>
     <P id="nouns.p.intermediate-course-gives">The Intermediate course gives the article its own session:</P>
     <MorphTable id="nouns.t8" tCols={[0, 1, 2]}
@@ -100,66 +100,19 @@ export const NOUNS_INTERMEDIATE_CONTENT = (
       note="Colwell and Granville Sharp are rules of thumb about when the article may be dropped without a change of meaning — both matter in key christological texts."
     />
 
-    {/* ── 7 · Adjective syntax ───────────────────────────── */}
-    <SectionHeading id="nouns.h.adjectives-agree-nouns">Adjectives agree with their nouns</SectionHeading>
-    <MorphTable id="nouns.t-adj-uses" tCols={[0, 2]} title="The three uses of the adjective"
-      headers={['Use', 'Greek', 'English']} firstColIsData dividerRows={[2, 4]}
-      rows={[
-        ['Attributive', 'ὁ ἀγαθὸς ἄνθρωπος', 'the good man'],
-        ['', 'ὁ ἄνθρωπος ὁ ἀγαθός', 'the good man'],
-        ['Predicative', 'ὁ ἄνθρωπος ἀγαθός', 'the man is good'],
-        ['', 'ἀγαθὸς ὁ ἄνθρωπος', 'the man is good'],
-        ['Substantival', 'ὁ ἀγαθός', 'the good man'],
-        ['', 'οἱ ἀγαθοί', 'the good men'],
-        ['', 'ἡ ἀγαθή', 'the good woman'],
-        ['', 'αἱ ἀγαθαί', 'the good women'],
-        ['', 'τὸ ἀγαθόν', 'the good thing'],
-        ['', 'τὰ ἀγαθά', 'the good things'],
-      ]}
-      note="Attributive and predicative each have two word orders and one meaning; what decides the sense is whether the adjective sits inside the article–noun unit or outside it."
-    />
+    {/* ── 6 · Adjective position ───────────────────────────── */}
+    <SectionHeading id="nouns.h.int-adjective-position">Adjective position: attributive or predicate?</SectionHeading>
     <P id="nouns.p.delete-test-settles">
       The delete-test settles hard cases: remove the adjective, and if the sentence still works it was
       attributive ("the [good] word"); if the sentence collapses, the adjective <em>was</em> the point —
       predicate.
     </P>
 
-    {/* ── 8 · Reference ──────────────────────────────────── */}
-    <SectionHeading id="nouns.h.int-reference">Reference: the paradigms</SectionHeading>
-    <P id="nouns.p.int-reference-pointer">
-      The two tables an exegete keeps reaching for: the article — still the fastest answer key in
-      the language — and the 3rd declension. The full teaching sequence, the 1st/2nd-declension
-      paradigms and the drills stay on the Beginning page, one toggle away.
-    </P>
-      <MorphTable id="nouns.t4" tCols={[0, 1]} flush title="Article & Noun Paradigm" headers={['','','Art.','Noun','Art.','Noun','Art.','Noun']}
-        rows={[
-          ['','','Masc.','λόγ|ος','Fem.','ἀρχ|ή','Neut.','ἔργ|ον'],
-          ['Sg.','Nom.','|ὁ','λόγ|ος','|ἡ','ἀρχ|ή','|τό','ἔργ|ον'],
-          ['','Gen.','|τοῦ','λόγ|ου','|τῆς','ἀρχ|ῆς','|τοῦ','ἔργ|ου'],
-          ['','Dat.','|τῷ','λόγ|ῳ','|τῇ','ἀρχ|ῇ','|τῷ','ἔργ|ῳ'],
-          ['','Acc.','|τόν','λόγ|ον','|τήν','ἀρχ|ήν','|τό','ἔργ|ον'],
-          ['Pl.','Nom.','|οἱ','λόγ|οι','|αἱ','ἀρχ|αί','|τά','ἔργ|α'],
-          ['','Gen.','|τῶν','λόγ|ων','|τῶν','ἀρχ|ῶν','|τῶν','ἔργ|ων'],
-          ['','Dat.','|τοῖς','λόγ|οις','|ταῖς','ἀρχ|αῖς','|τοῖς','ἔργ|οις'],
-          ['','Acc.','|τούς','λόγ|ους','|τάς','ἀρχ|άς','|τά','ἔργ|α'],
-        ]}
-      />
-      <MorphTable id="nouns.t5" tCols={[0, 1, 2, 3]} flush title="3rd Declension Endings" headers={['','Masc./Fem.','Neuter','Sense']} dividerRows={[0,5]}
-        rows={[
-          ['Singular','','',''],
-          ['Nom.','‒ς  or  ‒(none)','‒(none)','subject'],['Gen.','‒ος →','‒ος','of'],
-          ['Dat.','‒ι →','‒ι','to / for'],['Acc.','‒α  or  ‒ν','= Nom.','object'],
-          ['Plural','','',''],
-          ['Nom.','‒ες','‒α','subject'],['Gen.','‒ων →','‒ων','of'],['Dat.','‒σι →','‒σι','to / for'],['Acc.','‒ας','= Nom.','object'],
-        ]}
-        note="→ neuter takes the same ending as Masc./Fem.  ·  Neuter Acc. = Neuter Nom."
-      />
-
-    {/* ── 9 · Method ─────────────────────────────────────── */}
+    {/* ── 7 · Method ─────────────────────────────────────── */}
     <SectionHeading id="nouns.h.going-deeper-when">Going deeper: when the default translation isn't enough</SectionHeading>
     <P id="nouns.p.glosses-training-wheels">
       The glosses "of" and "to/for" are training wheels. Interpretation begins when you ask <em>which kind</em> of
-      genitive or dative you are looking at — the full catalogue is in the card at the top of this page. Three
+      genitive or dative you are looking at — the full catalogue is the case sections above. Three
       highlights show why it matters:
     </P>
     <P id="nouns.p.genitive-spectrum-love">

@@ -246,26 +246,5 @@ export const SECOND_AORISTS_CONTENT = (
     />
 
     {/* ── 7 · Going deeper (Intermediate only) ───────────── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="second-aorists.h.going-deeper-narrative's">Going deeper: narrative's engine room</SectionHeading>
-      <P id="second-aorists.p.narrative-glue-luke">
-        <strong>ἐγένετο as narrative glue.</strong> Luke especially loves opening scenes with
-        <Gk> καὶ ἐγένετο</Gk> — the King James' "and it came to pass" — a Septuagintalism echoing Hebrew
-        narrative style (<Gk>וַיְהִי</Gk>). It rarely needs translating as an event; it is a curtain-raiser.
-        Spotting it tunes your ear to Luke's deliberately biblical register.
-      </P>
-      <P id="second-aorists.p.suppletion-information-when">
-        <strong>Suppletion is information.</strong> When one verb's principal parts come from different
-        roots (<Gk>λέγω / ἐρῶ / εἶπον</Gk>; <Gk>ὁράω / ὄψομαι / εἶδον</Gk>), each root once was its own
-        verb. That is why <Gk>εἶδον</Gk> shares a root with "idea" and "video" (ϝιδ‑, "see") — etymology
-        that occasionally illuminates, and always helps memory.
-      </P>
-      <P id="second-aorists.p.first-second-forms">
-        <strong>First and second forms side by side.</strong> Some verbs show both aorists
-        (<Gk>ἀπέστειλα / ἀπέστειλον</Gk>), and Koine was slowly regularizing toward 1st-aorist endings
-        even on 2nd-aorist stems (<Gk>εἶπαν</Gk> for <Gk>εἶπον</Gk> in many manuscripts). Treat the
-        variation as spelling, not meaning.
-      </P>
-    </LevelOnly>
   </>
 )

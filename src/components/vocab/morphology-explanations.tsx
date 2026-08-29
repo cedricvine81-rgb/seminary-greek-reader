@@ -365,35 +365,10 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P><T id="indicatives.exp.b.eg">In the <em>indicative</em>, tense encodes both <strong>time</strong> and <strong>aspect</strong>. The same form can be put to several uses; naming the use is the interpretive step. These are the <strong>Essential Syntax Categories</strong> for the tenses (after Wallace).</T></P>
-        <CatGroup label={<T id="indicatives.cg.present-imperfective-ongoing">Present (imperfective — ongoing)</T>}>
-          <Cat id="indicatives.cat.progressive"name="Progressive" eg="“she is writing”" ex={[{ g: "κύριε, σῶσον, ἀπολλύμεθα", e: "Lord, save us! We are perishing", r: "Matt 8:25" }, { g: "πάντες ζητοῦσίν σε", e: "everyone is looking for you", r: "Mark 1:37" }]}><T id="indicatives.cat.progressive.d">action in progress right now</T></Cat>
-          <Cat id="indicatives.cat.iterative"name="Iterative" ex={[{ g: "νηστεύω δὶς τοῦ σαββάτου", e: "I fast twice a week", r: "Luke 18:12" }, { g: "καθ’ ἡμέραν ἀποθνῄσκω", e: "I die daily", r: "1 Cor 15:31" }]}><T id="indicatives.cat.iterative.d">a repeated / habitual action</T></Cat>
-          <Cat id="indicatives.cat.extending-from-past"name="Extending-from-past" ex={[{ g: "τοσαῦτα ἔτη δουλεύω σοι", e: "these many years I have been serving you", r: "Luke 15:29" }, { g: "ἀπ’ ἀρχῆς μετ’ ἐμοῦ ἐστε", e: "you have been with me from the beginning", r: "John 15:27" }]}><T id="indicatives.cat.extending-from-past.d">began in the past and continues ("I have been…")</T></Cat>
-          <Cat id="indicatives.cat.conative"name="Conative" ex={[{ g: "διὰ ποῖον ἔργον ἐμὲ λιθάζετε;", e: "for which deed are you trying to stone me?", r: "John 10:32" }, { g: "ἐν ὀλίγῳ με πείθεις Χριστιανὸν ποιῆσαι", e: "you are trying to persuade me to become a Christian", r: "Acts 26:28" }]}><T id="indicatives.cat.conative.d">attempted or about-to-begin action ("is trying to…")</T></Cat>
-          <Cat id="indicatives.cat.historical"name="Historical" eg="“Jesus says to them…”" ex={[{ g: "λέγει αὐτῇ ὁ Ἰησοῦς", e: "Jesus says to her", r: "John 20:15" }, { g: "ἔρχονται πάλιν εἰς Ἱεροσόλυμα", e: "they come again to Jerusalem", r: "Mark 11:27" }]}><T id="indicatives.cat.historical.d">a present-tense verb narrating a past event (vivid)</T></Cat>
-          <Cat id="indicatives.cat.futuristic"name="Futuristic" ex={[{ g: "ἔρχομαι πρὸς ὑμᾶς", e: "I am coming to you", r: "John 14:18" }, { g: "μετὰ δύο ἡμέρας τὸ πάσχα γίνεται", e: "after two days the Passover takes place", r: "Matt 26:2" }]}><T id="indicatives.cat.futuristic.d">a present form referring to a certain future event</T></Cat>
-        </CatGroup>
-        <CatGroup label={<T id="indicatives.cg.imperfect-past-imperfective">Imperfect (past imperfective)</T>}>
-          <Cat id="indicatives.cat.progressive-2"name="Progressive" eg="“he was teaching”" ex={[{ g: "ἐδίδασκεν αὐτούς", e: "he was teaching them", r: "Mark 2:13" }, { g: "ἐκάθητο παρὰ τὴν ὁδόν", e: "he was sitting beside the road", r: "Mark 10:46" }]}><T id="indicatives.cat.progressive-2.d">ongoing action in past time</T></Cat>
-          <Cat id="indicatives.cat.iterative-2"name="Iterative" ex={[{ g: "κατ’ ἔτος ἐπορεύοντο εἰς Ἰερουσαλήμ", e: "every year they went to Jerusalem", r: "Luke 2:41" }, { g: "ἐβαπτίζοντο ἐν τῷ Ἰορδάνῃ ποταμῷ", e: "they were being baptized in the Jordan River", r: "Mark 1:5" }]}><T id="indicatives.cat.iterative-2.d">a repeated action in the past ("kept on…")</T></Cat>
-          <Cat id="indicatives.cat.ingressive-inceptive"name="Ingressive / Inceptive" eg="“he began to speak”" ex={[{ g: "ἀνοίξας τὸ στόμα αὐτοῦ ἐδίδασκεν αὐτούς", e: "he opened his mouth and began to teach them", r: "Matt 5:2" }, { g: "ἐξαλλόμενος ἔστη καὶ περιεπάτει", e: "leaping up, he stood and began to walk", r: "Acts 3:8" }]}><T id="indicatives.cat.ingressive-inceptive.d">focus on the start of the action</T></Cat>
-          <Cat id="indicatives.cat.conative-2"name="Conative" ex={[{ g: "ὁ δὲ Ἰωάννης διεκώλυεν αὐτόν", e: "but John was trying to prevent him", r: "Matt 3:14" }, { g: "ἐκάλουν αὐτὸ Ζαχαρίαν", e: "they were going to name him Zechariah", r: "Luke 1:59" }]}><T id="indicatives.cat.conative-2.d">attempted past action ("was trying to…")</T></Cat>
-        </CatGroup>
-        <CatGroup label={<T id="indicatives.cg.aorist-perfective-whole">Aorist (perfective — a whole action)</T>}>
-          <Cat id="indicatives.cat.constative"name="Constative" ex={[{ g: "τεσσεράκοντα καὶ ἓξ ἔτεσιν οἰκοδομήθη ὁ ναὸς οὗτος", e: "this temple was built in forty-six years", r: "John 2:20" }, { g: "ἐβασίλευσεν ὁ θάνατος ἀπὸ Ἀδάμ", e: "death reigned from Adam", r: "Rom 5:14" }]}><T id="indicatives.cat.constative.d">the action as a simple whole (the default aorist)</T></Cat>
-          <Cat id="indicatives.cat.ingressive"name="Ingressive" eg="“he became rich”" ex={[{ g: "δι’ ὑμᾶς ἐπτώχευσεν πλούσιος ὤν", e: "though he was rich, for your sakes he became poor", r: "2 Cor 8:9" }, { g: "ἐσίγησεν πᾶν τὸ πλῆθος", e: "the whole crowd fell silent", r: "Acts 15:12" }]}><T id="indicatives.cat.ingressive.d">stresses entry into a state / action</T></Cat>
-          <Cat id="indicatives.cat.culminative"name="Culminative" ex={[{ g: "ἔμαθον αὐτάρκης εἶναι", e: "I have learned to be content", r: "Phil 4:11" }, { g: "ἐνίκησεν ὁ λέων ὁ ἐκ τῆς φυλῆς Ἰούδα", e: "the Lion of the tribe of Judah has conquered", r: "Rev 5:5" }]}><T id="indicatives.cat.culminative.d">stresses the completed end-point</T></Cat>
-          <Cat id="indicatives.cat.gnomic"name="Gnomic" ex={[{ g: "ἐξηράνθη ὁ χόρτος καὶ τὸ ἄνθος ἐξέπεσεν", e: "the grass withers and the flower falls", r: "1 Pet 1:24" }, { g: "ἐδικαιώθη ἡ σοφία ἀπὸ τῶν τέκνων αὐτῆς", e: "wisdom is justified by her children", r: "Luke 7:35" }]}><T id="indicatives.cat.gnomic.d">a timeless / proverbial truth</T></Cat>
-          <Cat id="indicatives.cat.epistolary"name="Epistolary" ex={[{ g: "ἔπεμψα αὐτὸν πρὸς ὑμᾶς", e: "I am sending him to you", r: "Phil 2:28" }, { g: "ἔγραψά σοι", e: "I am writing to you", r: "Phlm 21" }]}><T id="indicatives.cat.epistolary.d">the writer's "now" written as a past ("I wrote")</T></Cat>
-          <Cat id="indicatives.cat.dramatic"name="Dramatic" ex={[{ g: "νῦν ἐδοξάσθη ὁ υἱὸς τοῦ ἀνθρώπου", e: "now the Son of Man is glorified", r: "John 13:31" }, { g: "ἡ θυγάτηρ μου ἄρτι ἐτελεύτησεν", e: "my daughter has just now died", r: "Matt 9:18" }]}><T id="indicatives.cat.dramatic.d">an immediate past, stated for vividness</T></Cat>
-        </CatGroup>
-        <CatGroup label={<T id="indicatives.cg.perfect-future">Perfect & Future</T>}>
-          <Cat id="indicatives.cat.intensive-perfect"name="Intensive Perfect" eg="“it stands finished”" ex={[{ g: "τετέλεσται", e: "it is finished (and stands so)", r: "John 19:30" }, { g: "γέγραπται", e: "it stands written", r: "Matt 4:4" }]}><T id="indicatives.cat.intensive-perfect.d">stresses the resulting present state</T></Cat>
-          <Cat id="indicatives.cat.extensive-perfect"name="Extensive Perfect" ex={[{ g: "τὸν δρόμον τετέλεκα, τὴν πίστιν τετήρηκα", e: "I have finished the race, I have kept the faith", r: "2 Tim 4:7" }, { g: "ἐγὼ πεπίστευκα ὅτι σὺ εἶ ὁ Χριστός", e: "I have come to believe that you are the Christ", r: "John 11:27" }]}><T id="indicatives.cat.extensive-perfect.d">stresses the completed past act that produced the state</T></Cat>
-          <Cat id="indicatives.cat.predictive-future"name="Predictive Future" eg="“he will come”" ex={[{ g: "αὐτὸς σώσει τὸν λαὸν αὐτοῦ", e: "he will save his people", r: "Matt 1:21" }, { g: "ὁ οὐρανὸς καὶ ἡ γῆ παρελεύσονται", e: "heaven and earth will pass away", r: "Matt 24:35" }]}><T id="indicatives.cat.predictive-future.d">a plain prediction</T></Cat>
-          <Cat id="indicatives.cat.imperatival-future"name="Imperatival Future" ex={[{ g: "ἀγαπήσεις τὸν πλησίον σου", e: "you shall love your neighbor", r: "Matt 22:39" }, { g: "οὐ φονεύσεις", e: "you shall not murder", r: "Matt 5:21" }]}><T id="indicatives.cat.imperatival-future.d">a future used as a command ("you shall not…")</T></Cat>
-          <Cat id="indicatives.cat.deliberative-future"name="Deliberative Future" ex={[{ g: "κύριε, πρὸς τίνα ἀπελευσόμεθα;", e: "Lord, to whom shall we go?", r: "John 6:68" }, { g: "πῶς ἔτι ζήσομεν ἐν αὐτῇ;", e: "how shall we still live in it?", r: "Rom 6:2" }]}><T id="indicatives.cat.deliberative-future.d">a real or rhetorical question ("what shall we do?")</T></Cat>
-        </CatGroup>
+        {/* The category groups moved into the chapter body when this level got its own
+            page (chapters/indicatives-intermediate.tsx) — same ids, so the translations went
+            with them. The card keeps its orientation prose. */}
+
       </Note>
     ),
   },
@@ -407,19 +382,11 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P><T id="infinitives.exp.p.infinitive-verbal-noun">The infinitive is a <strong>verbal noun</strong>, so it can take an article (<G>τό</G>) and even a subject in the accusative (<G>θέλω τὸν ἄγγελον ἀπελθεῖν</G> = "I want the messenger to depart"). These are its <strong>Essential Syntax Categories</strong> (after Wallace).</T></P>
-        <CatGroup label={<T id="infinitives.cg.verbal-use-like">Verbal use (like a verb)</T>}>
-          <Cat id="infinitives.cat.purpose"name="Purpose" eg="“I came to destroy the law”" ex={[{ g: "οὐκ ἦλθον καταλῦσαι ἀλλὰ πληρῶσαι", e: "I did not come to abolish but to fulfill", r: "Matt 5:17" }, { g: "ἐξῆλθεν ὁ σπείρων σπεῖραι", e: "the sower went out to sow", r: "Mark 4:3" }]}><T id="infinitives.cat.purpose.d">answers <em>why?</em> — “in order to”; naked inf., or <G>τοῦ / εἰς τό / πρὸς τό</G></T></Cat>
-          <Cat id="infinitives.cat.result"name="Result" eg="“…so that the crowd was amazed”" ex={[{ g: "ὥστε τὸν ὄχλον θαυμάσαι", e: "so that the crowd marveled", r: "Matt 15:31" }, { g: "ὥστε ἤδη γεμίζεσθαι τὸ πλοῖον", e: "so that the boat was already filling", r: "Mark 4:37" }]}><T id="infinitives.cat.result.d">the outcome produced; usually <G>ὥστε</G> + infinitive</T></Cat>
-          <Cat id="infinitives.cat.time"name="Time" ex={[{ g: "ἐν τῷ σπείρειν αὐτόν", e: "while he was sowing", r: "Matt 13:4" }, { g: "μετὰ τὸ ἐγερθῆναί με", e: "after I have been raised", r: "Matt 26:32" }]}><T id="infinitives.cat.time.d">answers <em>when?</em> — <G>μετὰ τό</G> "after," <G>ἐν τῷ</G> "while," <G>πρὸ τοῦ</G> "before"</T></Cat>
-          <Cat id="infinitives.cat.causal"name="Causal" eg="“because it had no root”" ex={[{ g: "διὰ τὸ μὴ ἔχειν ῥίζαν", e: "because it had no root", r: "Mark 4:6" }, { g: "διὰ τὸ εἶναι αὐτὸν ἐξ οἴκου Δαυίδ", e: "because he was of the house of David", r: "Luke 2:4" }]}><T id="infinitives.cat.causal.d">answers <em>why?</em> looking back; <G>διὰ τό</G> + infinitive</T></Cat>
-          <Cat id="infinitives.cat.complementary"name="Complementary" eg="“you cannot serve God and mammon”" ex={[{ g: "οὐ δύνασθε θεῷ δουλεύειν καὶ μαμωνᾷ", e: "you cannot serve God and mammon", r: "Matt 6:24" }, { g: "ἤρξατο ὁ Ἰησοῦς κηρύσσειν", e: "Jesus began to preach", r: "Matt 4:17" }]}><T id="infinitives.cat.complementary.d">completes a helper verb (<G>δύναμαι, θέλω, μέλλω, ἄρχομαι</G>)</T></Cat>
-        </CatGroup>
-        <CatGroup label={<T id="infinitives.cg.substantival-use-like">Substantival use (like a noun)</T>}>
-          <Cat id="infinitives.cat.subject"name="Subject" eg="“to live is Christ” (Phil 1:21)" ex={[{ g: "ἐμοὶ τὸ ζῆν Χριστὸς καὶ τὸ ἀποθανεῖν κέρδος", e: "to live is Christ and to die is gain", r: "Phil 1:21" }, { g: "καλόν ἐστιν ἡμᾶς ὧδε εἶναι", e: "it is good for us to be here", r: "Mark 9:5" }]}><T id="infinitives.cat.subject.d">the infinitive is the subject, often with <G>δεῖ, ἔξεστιν</G></T></Cat>
-          <Cat id="infinitives.cat.indirect-discourse"name="Indirect Discourse" eg="“they say there is no resurrection”" ex={[{ g: "λέγουσιν ἀνάστασιν μὴ εἶναι", e: "they say there is no resurrection", r: "Mark 12:18" }, { g: "τίνα με λέγουσιν εἶναι;", e: "who do they say that I am?", r: "Mark 8:27" }]}><T id="infinitives.cat.indirect-discourse.d">reports speech/thought after a verb of perception</T></Cat>
-          <Cat id="infinitives.cat.epexegetical"name="Epexegetical" eg="“authority to tread on serpents”" ex={[{ g: "ἐξουσίαν τοῦ πατεῖν ἐπάνω ὄφεων", e: "authority to tread on serpents", r: "Luke 10:19" }, { g: "ἐξουσίαν ἔχω θεῖναι αὐτήν", e: "I have authority to lay it down", r: "John 10:18" }]}><T id="infinitives.cat.epexegetical.d">explains a noun or adjective (ability, freedom, need…)</T></Cat>
-        </CatGroup>
         <P><T id="infinitives.exp.p.present-aorist-infinitive">Present vs. aorist infinitive is aspect, not time: ongoing vs. simple action.</T></P>
+        {/* The category groups moved into the chapter body when this level got its own
+            page (chapters/infinitives-intermediate.tsx) — same ids, so the translations went
+            with them. The card keeps its orientation prose. */}
+
       </Note>
     ),
   },
@@ -433,15 +400,11 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P><T id="imperatives.exp.p.present-aorist-imperative">Present vs. aorist imperative is <strong>aspect</strong>: present = ongoing / general ("make it your practice to…"), aorist = a specific, whole action ("do it"). The aorist is the more common of the two, so take note when the <em>present</em> imperative is chosen. These are its <strong>Essential Syntax Categories</strong> (after Wallace).</T></P>
-        <CatGroup>
-          <Cat id="imperatives.cat.command"name="Command" eg="“Go and make disciples”" ex={[{ g: "πορευθέντες μαθητεύσατε πάντα τὰ ἔθνη", e: "go and make disciples of all nations", r: "Matt 28:19" }, { g: "ἀκολούθει μοι", e: "follow me", r: "Matt 9:9" }]}><T id="imperatives.cat.command.d">a straightforward order, usually superior to inferior</T></Cat>
-          <Cat id="imperatives.cat.prohibition"name="Prohibition" eg="“do not fear”" ex={[{ g: "μὴ φοβοῦ, μόνον πίστευε", e: "do not fear, only believe", r: "Mark 5:36" }, { g: "μὴ κρίνετε, ἵνα μὴ κριθῆτε", e: "do not judge, so that you may not be judged", r: "Matt 7:1" }]}><T id="imperatives.cat.prohibition.d"><G>μή</G> + imperative forbids an action</T></Cat>
-          <Cat id="imperatives.cat.request-entreaty"name="Request / Entreaty" eg="“give us this day our daily bread”" ex={[{ g: "τὸν ἄρτον ἡμῶν δὸς ἡμῖν σήμερον", e: "give us this day our daily bread", r: "Matt 6:11" }, { g: "κύριε, βοήθει μοι", e: "Lord, help me", r: "Matt 15:25" }]}><T id="imperatives.cat.request-entreaty.d">a polite appeal, often inferior to superior</T></Cat>
-          <Cat id="imperatives.cat.permissive"name="Permissive" ex={[{ g: "ὃ ποιεῖς ποίησον τάχιον", e: "what you do, do quickly", r: "John 13:27" }, { g: "εἰ ὁ ἄπιστος χωρίζεται, χωριζέσθω", e: "if the unbeliever separates, let it be so", r: "1 Cor 7:15" }]}><T id="imperatives.cat.permissive.d">allows or tolerates an action ("let him do it")</T></Cat>
-          <Cat id="imperatives.cat.conditional"name="Conditional" ex={[{ g: "λύσατε τὸν ναὸν τοῦτον, καὶ ἐγερῶ αὐτόν", e: "destroy this temple, and I will raise it up", r: "John 2:19" }, { g: "ἐγγίσατε τῷ θεῷ, καὶ ἐγγιεῖ ὑμῖν", e: "draw near to God, and he will draw near to you", r: "Jas 4:8" }]}><T id="imperatives.cat.conditional.d">an imperative that states a condition ("do X, and Y will follow")</T></Cat>
-        </CatGroup>
+
         <Hook><T id="imperatives.exp.hook.prohibitions-split-aspect">Prohibitions split by aspect: <G>μή</G> + <strong>present</strong> imperative = "stop / don't keep doing," while <G>μή</G> + <strong>aorist</strong> subjunctive = "don't start / don't ever."</T></Hook>
         <Hook><T id="imperatives.exp.hook.it's-easy-confuse">It's easy to confuse the <strong>future indicative</strong> and the <strong>aorist imperative</strong> — both have a <G>σ</G> and no augment. The <em>endings</em> decide: <G>πίστευσον</G> "Believe!" (aor. imperative) vs. <G>πιστεύσομεν</G> "we will believe" (fut. indicative).</T></Hook>
+        {/* The category list moved into chapters/imperatives-intermediate.tsx when this
+            level got its own page — same ids, so the translations went with it. */}
       </Note>
     ),
   },
@@ -456,26 +419,11 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P><T id="participles.exp.i.intro">The first question is <strong>article or no article?</strong> With the article the participle is <em>adjectival</em>; without it, usually <em>adverbial</em>. These are its <strong>Essential Syntax Categories</strong> (after Wallace).</T></P>
-        <CatGroup label={<T id="participles.cg.adjectival-with-the">Adjectival (with the article)</T>}>
-          <Cat id="participles.cat.attributive"name="Attributive" eg="“the man who is loosing…”" ex={[{ g: "ὁ ἄρτος ὁ ἐκ τοῦ οὐρανοῦ καταβαίνων", e: "the bread that comes down from heaven", r: "John 6:50" }, { g: "τὸ πνεῦμα τὸ λαλοῦν ἐν ὑμῖν", e: "the Spirit who speaks in you", r: "Matt 10:20" }]}><T id="participles.cat.attributive.d">adds detail to a noun (“who / which”)</T></Cat>
-          <Cat id="participles.cat.substantival"name="Substantival" eg="ὁ πιστεύων, “the believer”" ex={[{ g: "ὁ πιστεύων εἰς τὸν υἱὸν ἔχει ζωὴν αἰώνιον", e: "the one who believes in the Son has eternal life", r: "John 3:36" }, { g: "μακάριοι οἱ πενθοῦντες", e: "blessed are those who mourn", r: "Matt 5:4" }]}><T id="participles.cat.substantival.d">stands alone as a noun</T></Cat>
-          <Cat id="participles.cat.predicate"name="Predicate" ex={[{ g: "εἶδεν τὸ πνεῦμα καταβαῖνον εἰς αὐτόν", e: "he saw the Spirit descending upon him", r: "Mark 1:10" }, { g: "εὑρήσετε βρέφος κείμενον ἐν φάτνῃ", e: "you will find a baby lying in a manger", r: "Luke 2:12" }]}><T id="participles.cat.predicate.d">asserts something of the noun (rare)</T></Cat>
-        </CatGroup>
-        <CatGroup label={<T id="participles.cg.adverbial-circumstantial-no">Adverbial / circumstantial (no article) — modifies the main verb</T>}>
-          <Cat id="participles.cat.temporal"name="Temporal" eg="“while eating…”" ex={[{ g: "ἐλθὼν ὁ Ἰησοῦς εἰς τὴν οἰκίαν Πέτρου", e: "when Jesus came into Peter’s house", r: "Matt 8:14" }, { g: "ἀκούσαντες δὲ ἐβαπτίσθησαν", e: "and when they heard, they were baptized", r: "Acts 19:5" }]}><T id="participles.cat.temporal.d">answers <em>when?</em></T></Cat>
-          <Cat id="participles.cat.cause"name="Cause" eg="“because he was righteous”" ex={[{ g: "Ἰωσὴφ δίκαιος ὢν", e: "Joseph, because he was righteous", r: "Matt 1:19" }, { g: "πλανᾶσθε μὴ εἰδότες τὰς γραφάς", e: "you are wrong because you do not know the Scriptures", r: "Matt 22:29" }]}><T id="participles.cat.cause.d">answers <em>why?</em> — “because”</T></Cat>
-          <Cat id="participles.cat.means-manner"name="Means / Manner" eg="“by doing this…”" ex={[{ g: "τίς μεριμνῶν δύναται προσθεῖναι πῆχυν;", e: "who by worrying can add a single cubit?", r: "Matt 6:27" }, { g: "ἐπορεύοντο χαίροντες", e: "they went on their way rejoicing", r: "Acts 5:41" }]}><T id="participles.cat.means-manner.d">answers <em>how?</em></T></Cat>
-          <Cat id="participles.cat.condition"name="Condition" eg="“if you do this…”" ex={[{ g: "θερίσομεν μὴ ἐκλυόμενοι", e: "we will reap, if we do not give up", r: "Gal 6:9" }, { g: "πῶς ἡμεῖς ἐκφευξόμεθα τηλικαύτης ἀμελήσαντες σωτηρίας;", e: "how shall we escape if we neglect so great a salvation?", r: "Heb 2:3" }]}><T id="participles.cat.condition.d">the “if” on which the verb depends</T></Cat>
-          <Cat id="participles.cat.concession"name="Concession" eg="“although they knew God…”" ex={[{ g: "γνόντες τὸν θεὸν οὐχ ὡς θεὸν ἐδόξασαν", e: "although they knew God, they did not glorify him as God", r: "Rom 1:21" }, { g: "ὃν οὐκ ἰδόντες ἀγαπᾶτε", e: "though you have not seen him, you love him", r: "1 Pet 1:8" }]}><T id="participles.cat.concession.d">“although”</T></Cat>
-          <Cat id="participles.cat.purpose"name="Purpose" ex={[{ g: "ἐληλύθει προσκυνήσων εἰς Ἰερουσαλήμ", e: "he had come to worship in Jerusalem", r: "Acts 8:27" }, { g: "ἴδωμεν εἰ ἔρχεται Ἠλίας σώσων αὐτόν", e: "let us see whether Elijah comes to save him", r: "Matt 27:49" }]}><T id="participles.cat.purpose.d">answers <em>why?</em> looking forward — “in order to”</T></Cat>
-        </CatGroup>
-        <CatGroup label={<T id="participles.cg.other-uses">Other uses</T>}>
-          <Cat id="participles.cat.attendant-circumstance"name="Attendant Circumstance" eg="“Go and make disciples”" ex={[{ g: "πορευθέντες μαθητεύσατε πάντα τὰ ἔθνη", e: "go and make disciples of all nations", r: "Matt 28:19" }, { g: "ἐγερθεὶς παράλαβε τὸ παιδίον", e: "rise and take the child", r: "Matt 2:13" }]}><T id="participles.cat.attendant-circumstance.d">translate as a finite verb + “and”; pigg-backs on the main verb</T></Cat>
-          <Cat id="participles.cat.periphrastic"name="Periphrastic" ex={[{ g: "ἦν διδάσκων αὐτοὺς ὡς ἐξουσίαν ἔχων", e: "he was teaching them as one having authority", r: "Mark 1:22" }, { g: "ἦν ὁ λαὸς προσδοκῶν τὸν Ζαχαρίαν", e: "the people were waiting for Zechariah", r: "Luke 1:21" }]}><T id="participles.cat.periphrastic.d">a participle + a form of <G>εἰμί</G> making one verbal idea</T></Cat>
-          <Cat id="participles.cat.imperatival"name="Imperatival" ex={[{ g: "τῇ ἐλπίδι χαίροντες, τῇ θλίψει ὑπομένοντες", e: "rejoice in hope, be patient in tribulation", r: "Rom 12:12" }, { g: "ἀποστυγοῦντες τὸ πονηρόν, κολλώμενοι τῷ ἀγαθῷ", e: "abhor what is evil, cling to what is good", r: "Rom 12:9" }]}><T id="participles.cat.imperatival.d">a participle functioning as a command</T></Cat>
-          <Cat id="participles.cat.genitive-absolute"name="Genitive Absolute" ex={[{ g: "ὀψίας δὲ γενομένης", e: "when evening had come", r: "Matt 8:16" }, { g: "ἔτι αὐτοῦ λαλοῦντος ἰδοὺ Ἰούδας ἦλθεν", e: "while he was still speaking, behold, Judas came", r: "Matt 26:47" }]}><T id="participles.cat.genitive-absolute.d">detached participle + noun, both genitive — usually background/time</T></Cat>
-        </CatGroup>
         <Hook><T id="participles.exp.x.b1">Don't be afraid to add "<strong>who</strong>" for a substantival participle, and if the first word of a sentence is <strong>genitive</strong>, <em>think genitive absolute</em> — its subject differs from the main verb's (<G>ὀψίας γενομένης</G>… = "when evening had come…").</T></Hook>
+        {/* The category groups moved into the chapter body when this level got its own
+            page (chapters/participles-intermediate.tsx) — same ids, so the translations went
+            with them. The card keeps its orientation prose. */}
+
       </Note>
     ),
   },
@@ -490,18 +438,11 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P><T id="subjunctives.exp.p.these-essential-syntax">These are its <strong>Essential Syntax Categories</strong> (after Wallace) — some standing alone, some inside a dependent clause.</T></P>
-        <CatGroup label={<T id="subjunctives.cg.in-independent-clauses">In independent clauses</T>}>
-          <Cat id="subjunctives.cat.hortatory"name="Hortatory" eg="“let us love one another”" ex={[{ g: "ἀγαπῶμεν ἀλλήλους", e: "let us love one another", r: "1 John 4:7" }, { g: "διέλθωμεν ἕως Βηθλέεμ", e: "let us go over to Bethlehem", r: "Luke 2:15" }]}><T id="subjunctives.cat.hortatory.d">1st person plural — an exhortation</T></Cat>
-          <Cat id="subjunctives.cat.deliberative"name="Deliberative" eg="“what shall we say?”" ex={[{ g: "τί οὖν ποιήσωμεν;", e: "what then shall we do?", r: "Luke 3:10" }, { g: "δῶμεν ἢ μὴ δῶμεν;", e: "shall we pay, or shall we not?", r: "Mark 12:14" }]}><T id="subjunctives.cat.deliberative.d">a real or rhetorical question about what to do</T></Cat>
-          <Cat id="subjunctives.cat.emphatic-negation"name="Emphatic Negation" eg="“will never perish”" ex={[{ g: "οὐ μὴ ἀπόλωνται εἰς τὸν αἰῶνα", e: "they shall never perish", r: "John 10:28" }, { g: "οἱ λόγοι μου οὐ μὴ παρέλθωσιν", e: "my words will never pass away", r: "Matt 24:35" }]}><T id="subjunctives.cat.emphatic-negation.d"><G>οὐ μή</G> + aorist subjunctive — the strongest “no”</T></Cat>
-          <Cat id="subjunctives.cat.prohibitive"name="Prohibitive" eg="“do not fear”" ex={[{ g: "μὴ φοβηθῇς παραλαβεῖν Μαρίαν", e: "do not be afraid to take Mary", r: "Matt 1:20" }, { g: "μὴ δόξητε λέγειν ἐν ἑαυτοῖς", e: "do not presume to say among yourselves", r: "Matt 3:9" }]}><T id="subjunctives.cat.prohibitive.d"><G>μή</G> + aorist subjunctive (a negative command)</T></Cat>
-        </CatGroup>
-        <CatGroup label={<T id="subjunctives.cg.in-dependent-clauses">In dependent clauses</T>}>
-          <Cat id="subjunctives.cat.subjunctive"name="ἵνα + subjunctive" ex={[{ g: "ἵνα πᾶς ὁ πιστεύων εἰς αὐτὸν ἔχῃ ζωὴν αἰώνιον", e: "that whoever believes in him may have eternal life", r: "John 3:16" }, { g: "ἦλθεν ἵνα μαρτυρήσῃ περὶ τοῦ φωτός", e: "he came to bear witness about the light", r: "John 1:7" }]}><T id="subjunctives.cat.subjunctive.d">purpose (“in order that”) or result (“so that”)</T></Cat>
-          <Cat id="subjunctives.cat.conditional"name="Conditional" eg="“if you ask…”" ex={[{ g: "ἐάν τι αἰτήσητέ με, ἐγὼ ποιήσω", e: "if you ask me anything, I will do it", r: "John 14:14" }, { g: "ἐὰν ὁμολογῶμεν τὰς ἁμαρτίας ἡμῶν", e: "if we confess our sins", r: "1 John 1:9" }]}><T id="subjunctives.cat.conditional.d"><G>ἐάν</G> + subjunctive — the 3rd-class condition</T></Cat>
-          <Cat id="subjunctives.cat.indefinite"name="Indefinite" eg="ὃς ἄν “whoever,” ὅταν “whenever”" ex={[{ g: "ὃς ἂν ποιήσῃ τὸ θέλημα τοῦ θεοῦ", e: "whoever does the will of God", r: "Mark 3:35" }, { g: "ὅταν προσεύχησθε, λέγετε", e: "whenever you pray, say", r: "Luke 11:2" }]}><T id="subjunctives.cat.indefinite.d">relative or temporal clauses with <G>ἄν</G></T></Cat>
-        </CatGroup>
         <P><T id="subjunctives.exp.p.because-subjunctive-carries">Because the subjunctive carries aspect only, choose your English helper ("may / should / might") from the <em>clause type</em>, not from a fixed gloss.</T></P>
+        {/* The category groups moved into the chapter body when this level got its own
+            page (chapters/subjunctives-intermediate.tsx) — same ids, so the translations went
+            with them. The card keeps its orientation prose. */}
+
       </Note>
     ),
   },

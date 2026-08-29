@@ -492,34 +492,5 @@ export const PARTICIPLES_CONTENT = (
     />
 
     {/* ── 9 · Going deeper (Intermediate only) ───────────── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="participles.h.going-deeper-adverbial">Going deeper: the adverbial flavours</SectionHeading>
-      <P id="participles.p.calling-participle-adverbial">
-        Calling a participle "adverbial" only starts the conversation; the exegetical question
-        is <em>which</em> circumstance it adds. The main flavours (full catalogue in the card above):
-        <strong> temporal</strong> ("when/after"), <strong>causal</strong> ("because" — <Gk>δίκαιος ὤν</Gk>,
-        "because he was righteous," Matt 1:19), <strong>concessive</strong> ("although" —
-        <Gk> γνόντες τὸν θεόν</Gk>, "although they knew God," Rom 1:21), <strong>means</strong> ("by …ing"),
-        <strong> conditional</strong> ("if"), and <strong>purpose</strong> ("in order to"). The form is
-        identical; context assigns the flavour — which means the translator is always interpreting.
-      </P>
-      <P id="participles.p.attendant-circumstance-sometimes">
-        <strong>Attendant circumstance.</strong> Sometimes an aorist participle piggy-backs on the main
-        verb's force and translates as a parallel verb + "and." The famous case is Matt 28:19:
-        <Gk> πορευθέντες μαθητεύσατε</Gk> — "<em>Go and</em> make disciples," the participle borrowing the
-        imperative's punch. The tell-tale pattern: aorist participle <em>before</em> an aorist main verb,
-        typically in narrative or command.
-      </P>
-      <P id="participles.p.periphrastics-participle-form">
-        <strong>Periphrastics.</strong> A participle + a form of <Gk>εἰμί</Gk> can stand in for a simple
-        tense: <Gk>ἦν διδάσκων</Gk> = "he was teaching" (imperfect equivalent). Common in Luke. The
-        combination usually emphasizes the ongoing process.
-      </P>
-      <P id="participles.p.redundant-participle-narrative">
-        <strong>Redundant participle.</strong> Narrative Greek loves <Gk>ἀποκριθεὶς εἶπεν</Gk> — literally
-        "having answered, he said," functionally just "he answered." A Semitic-flavoured idiom; translate
-        it once, not twice.
-      </P>
-    </LevelOnly>
   </>
 )

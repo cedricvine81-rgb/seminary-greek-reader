@@ -208,16 +208,6 @@ export const INDICATIVES_CONTENT = (
     />
 
     <SectionHeading id="indicatives.h.tense-machine-identifiers">The tense machine: identifiers</SectionHeading>
-    <LevelOnly level="intermediate">
-      <P id="indicatives.p.int-aspect-primary">
-        Aspect is the primary value of the Greek tense; time is secondary, and the indicative is
-        the only mood where tense encodes time at all. The perfective (aorist) presents an action
-        as a whole, the imperfective (present, imperfect) presents it as unfolding, and the
-        stative (perfect, pluperfect) presents a resulting state. The identifiers below are how
-        the <em>forms</em> are built — what a tense <em>means</em> in a given sentence is the
-        taxonomy in the Going deeper panel above.
-      </P>
-    </LevelOnly>
     <LevelOnly level="beginning">
       <P id="indicatives.p.here-payoff-learning">
         Here is the payoff of learning the two base paradigms: every remaining tense is built by inserting a
@@ -541,31 +531,5 @@ export const INDICATIVES_CONTENT = (
     />
 
     {/* ── 11 · Going deeper (Intermediate only) ──────────── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="indicatives.h.going-deeper-tense">Going deeper: tense as interpretation</SectionHeading>
-      <P id="indicatives.p.aspect-over-time">
-        <strong>Aspect over time.</strong> In the indicative Greek tense marks both time and
-        {' '}<Term t="aspect">aspect</Term>, but aspect is the deeper category: the imperfect paints a process,
-        the aorist reports a whole, the perfect asserts a standing result. When Mark writes
-        <Gk> ἐδίδασκεν</Gk> ("he was teaching"), he is setting a scene; when he switches to aorists, events
-        march. Watching an author alternate imperfect and aorist is watching him direct your attention.
-      </P>
-      <P id="indicatives.p.historical-present-mark">
-        <strong>The historical present.</strong> Mark loves narrating the past in the present tense —
-        <Gk> λέγει αὐτῷ</Gk>, "he <em>says</em> to him" — the way an excited storyteller slips into "so then
-        he <em>says</em> to me…". Translate as past, but notice the vividness the choice adds.
-      </P>
-      <P id="indicatives.p.divine-passive-passive">
-        <strong>The divine passive.</strong> A passive with no agent stated often implies God as the actor:
-        <Gk> ἠγέρθη</Gk>, "he <em>was raised</em>" (Rom 4:25) — raised <em>by God</em>. Jewish reverence for
-        the divine name made this a natural idiom, and the NT uses it constantly in promises: "they shall be
-        comforted" (Matt 5:4) — by whom? Exactly.
-      </P>
-      <P id="indicatives.p.caution-tense-choices">
-        <strong>A caution.</strong> Tense choices are only exegetically loaded where the author had a live
-        choice. Much aorist usage is simply default narration — resist sermons built on "the aorist means
-        once-for-all." It doesn't; it means the author viewed the action as a whole.
-      </P>
-    </LevelOnly>
   </>
 )

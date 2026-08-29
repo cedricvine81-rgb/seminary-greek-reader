@@ -151,13 +151,6 @@ export const DEMONSTRATIVES_CONTENT = (
       <em> himself</em>." The reciprocal <Gk>ἀλλήλων</Gk> ("one another") only exists in the plural — you
       need at least two to reciprocate: <Gk>ἀγαπᾶτε ἀλλήλους</Gk>, "love one another."
     </P>
-    <LevelOnly level="intermediate">
-      <P id="demonstratives.p.distinguish-reflexive-intensive">
-        Distinguish reflexive <Gk>ἑαυτόν</Gk> from intensive <Gk>αὐτός</Gk> by the delete-test you know
-        from the Pronouns chapter: delete "himself," and if the meaning collapses it was reflexive
-        (<Gk>σῴζει ἑαυτόν</Gk>), if unchanged it was intensive (<Gk>αὐτὸς ὁ κύριος σῴζει</Gk>).
-      </P>
-    </LevelOnly>
 
     {/* ── 5 · Watch out ──────────────────────────────────── */}
     <ClassSentences id="demonstratives.cs1"
@@ -267,25 +260,5 @@ export const DEMONSTRATIVES_CONTENT = (
     />
 
     {/* ── 8 · Going deeper (Intermediate only) ───────────── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="demonstratives.h.going-deeper-pointing">Going deeper: pointing with attitude</SectionHeading>
-      <P id="demonstratives.p.backward-forward-demonstrative">
-        <strong>Backward or forward?</strong> A demonstrative usually points back at what was just said
-        (anaphoric: <Gk>μετὰ ταῦτα</Gk>), but it can point forward to what's coming (cataphoric):
-        <Gk> αὕτη ἐστὶν ἡ ἐντολὴ ἡ ἐμή, ἵνα…</Gk> — "<em>this</em> is my commandment: that you love…"
-        (John 15:12). John especially uses forward-pointing οὗτος to headline a definition before giving it.
-      </P>
-      <P id="demonstratives.p.contemptuous-pointing-person">
-        <strong>The contemptuous οὗτος.</strong> Pointing at a person can sneer: <Gk>οὗτος</Gk> as "this
-        fellow" — <Gk>οὗτος ὁ ἄνθρωπος</Gk> on hostile lips (Luke 15:2, "this fellow welcomes sinners").
-        Context supplies the tone English must add with "fellow."
-      </P>
-      <P id="demonstratives.p.title-john's-farewell">
-        <strong>ἐκεῖνος as a title.</strong> In John's farewell discourse, <Gk>ἐκεῖνος</Gk> repeatedly
-        refers to the coming Spirit-Paraclete (John 14:26; 16:13–14) — a masculine demonstrative tracking
-        through the discourse. Note also the idiom <Gk>ἐν ἐκείνῃ τῇ ἡμέρᾳ</Gk>, "in that day," carrying
-        eschatological weight inherited from the prophets.
-      </P>
-    </LevelOnly>
   </>
 )
