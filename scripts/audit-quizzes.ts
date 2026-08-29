@@ -260,5 +260,10 @@ for (const sev of order) {
 if (!findings.length) console.log('no findings')
 console.log(`\n${findings.filter(f => f.sev === 'BLOCKER').length} blockers, ${findings.filter(f => f.sev === 'WARN').length} warnings, ${findings.filter(f => f.sev === 'NOTE').length} notes`)
 }
+// await, not fire-and-forget: main() is async, and calling process.exit() on the next line
+// tore the process down before sections 3-5 ran or a single finding printed. The audit exited
+// 0 and reported "no findings" because it had not looked — which is the worst way for a
+// pre-semester check to fail.
 main()
-process.exit(findings.some(f => f.sev === 'BLOCKER') ? 1 : 0)
+  .then(() => process.exit(findings.some(f => f.sev === 'BLOCKER') ? 1 : 0))
+  .catch(e => { console.error(e); process.exit(2) })

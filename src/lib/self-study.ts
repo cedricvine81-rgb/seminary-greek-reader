@@ -218,7 +218,11 @@ function hebrew(chapters: { id: string; labelKey: string }[], withBands: boolean
         kind: 'quiz',
         labelKey: 'ss.vocabQuiz',
         href: `/student/self-study/hebrew-beginning/quiz/${i + 1}`,
-        quiz: { deck: 'hebrew', selection: band },
+        // "Glanz 1A", not "1A": deckWordsForSelection matches a selection key against
+        // deck.wordSubsection ("1-A") or deck.wordBand, and the band is STORED with the
+        // author's name in it. Passing the bare code matched neither, so all twelve of these
+        // quizzes resolved to zero words and showed "No words found for this lesson."
+        quiz: { deck: 'hebrew', selection: `Glanz ${band}` },
         lesson: i + 1,
       })
     }
