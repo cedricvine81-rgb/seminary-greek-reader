@@ -22,6 +22,11 @@ import {
 
 export const NOUNS_CONTENT = (
   <>
+    {/* Scaffolding prose is Beginning-only; the paradigm tables are NOT. An Intermediate
+        reader still looks up the endings, so the tables stay at both levels and only the
+        narration around them changes — "here is the payoff of learning two paradigms" is
+        written to someone meeting them for the first time. The Intermediate reader gets the
+        Going deeper card (Wallace's categories) and the reference, without the walkthrough. */}
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
       <SectionHeading id="nouns.h.start-english-how">Start with English: how do you know who did what?</SectionHeading>
@@ -74,11 +79,23 @@ export const NOUNS_CONTENT = (
 
     {/* ── 2 · The four cases ─────────────────────────────── */}
     <SectionHeading id="nouns.h.four-cases-jobs">The four cases and their jobs</SectionHeading>
-    <P id="nouns.p.greek-nouns-four">
-      Greek nouns have four main cases (plus a fifth, the <Term t="vocative">vocative</Term>, for calling
-      someone — "O Lord!" — which usually looks like the nominative). Each case has a default English
-      translation that will carry you a long way:
-    </P>
+    <LevelOnly level="intermediate">
+      <P id="nouns.p.int-case-form-function">
+        Five case <em>forms</em>, and more case <em>functions</em> than five. The paradigm below is
+        the five-case system — the endings that are actually distinct — which is what you parse.
+        The older eight-case scheme splits the genitive into genitive and ablative and the dative
+        into dative, locative and instrumental; it is describing function, not form, and the same
+        distinctions survive in Wallace as syntactic categories under the five. Parse the form,
+        then argue for the function.
+      </P>
+    </LevelOnly>
+    <LevelOnly level="beginning">
+      <P id="nouns.p.greek-nouns-four">
+        Greek nouns have four main cases (plus a fifth, the <Term t="vocative">vocative</Term>, for calling
+        someone — "O Lord!" — which usually looks like the nominative). Each case has a default English
+        translation that will carry you a long way:
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="nouns.al.anchor-sentence">Anchor sentence</Tr></AsideLabel>
@@ -117,11 +134,13 @@ export const NOUNS_CONTENT = (
 
     {/* ── 3 · The forms ──────────────────────────────────── */}
     <SectionHeading id="nouns.h.forms-amp-declension">The forms: 1st &amp; 2nd declension</SectionHeading>
-    <P id="nouns.p.here-first-ending">
-      Here is the first ending-family. Masculine and neuter nouns mostly use the 2nd-declension columns;
-      feminine nouns mostly use the 1st (the <Gk>‒η</Gk> column). Read any form as <Term t="stem">stem</Term> +
-      ending: <Gk>λόγ‑ος, λόγ‑ου, λόγ‑ῳ, λόγ‑ον</Gk>.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="nouns.p.here-first-ending">
+        Here is the first ending-family. Masculine and neuter nouns mostly use the 2nd-declension columns;
+        feminine nouns mostly use the 1st (the <Gk>‒η</Gk> column). Read any form as <Term t="stem">stem</Term> +
+        ending: <Gk>λόγ‑ος, λόγ‑ου, λόγ‑ῳ, λόγ‑ον</Gk>.
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="nouns.al.default-translations">Default translations</Tr></AsideLabel>

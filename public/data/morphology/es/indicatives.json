@@ -1007,6 +1007,10 @@
     "fp": "uyftcy",
     "text": "*El presente histórico.* A Marcos le encanta narrar el pasado en presente — {λέγει αὐτῷ}, «le _dice_» — igual que un narrador entusiasmado se desliza al «y entonces me _dice_…». Tradúcelo en pasado, pero fíjate en la viveza que añade esa elección."
   },
+  "indicatives.p.int-aspect-primary": {
+    "fp": "gy05c3",
+    "text": "El aspecto es el valor primario del tiempo griego; el tiempo cronológico es secundario, y el indicativo es el único modo donde el tiempo verbal codifica tiempo cronológico. El perfectivo (aoristo) presenta la acción como un todo, el imperfectivo (presente, imperfecto) la presenta desplegándose, y el estativo (perfecto, pluscuamperfecto) presenta un estado resultante. Los identificadores de abajo son cómo se construyen las _formas_; lo que un tiempo _significa_ en una oración concreta es la taxonomía del panel «Para profundizar» de arriba."
+  },
   "indicatives.p.just-english-was": {
     "fp": "1vizjv9",
     "text": "Igual que en español (_soy, es, era, fui_ — ¡nada que se parezca a «ser»!), el verbo griego «ser» es irregular y sencillamente hay que memorizarlo. Merece la pena el esfuerzo: es el verbo más frecuente del Nuevo Testamento."

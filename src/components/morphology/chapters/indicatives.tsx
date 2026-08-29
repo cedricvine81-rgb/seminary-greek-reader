@@ -15,6 +15,11 @@ import { ParseFrame } from '../ParseFrame'
 
 export const INDICATIVES_CONTENT = (
   <>
+    {/* Scaffolding prose is Beginning-only; the paradigm tables are NOT. An Intermediate
+        reader still looks up the endings, so the tables stay at both levels and only the
+        narration around them changes — "here is the payoff of learning two paradigms" is
+        written to someone meeting them for the first time. The Intermediate reader gets the
+        Going deeper card (Wallace's categories) and the reference, without the walkthrough. */}
     {/* The frame every verb parse fills in — same grid on every verb chapter. */}
     <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
@@ -44,11 +49,13 @@ export const INDICATIVES_CONTENT = (
 
     {/* ── 2 · The ending is the subject ──────────────────── */}
     <SectionHeading id="indicatives.h.ending-subject">The ending is the subject</SectionHeading>
-    <P id="indicatives.p.greek-verbs-mark">
-      Greek verbs mark six persons: I / you (sg.) / he-she-it, and we / you (pl.) / they. Here is the
-      present tense of <Gk>λύω</Gk> ("I loose / untie"), the model verb your textbook tables will use
-      everywhere. Read the endings, not the stem — the stem <Gk>λυ‑</Gk> never changes here.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="indicatives.p.greek-verbs-mark">
+        Greek verbs mark six persons: I / you (sg.) / he-she-it, and we / you (pl.) / they. Here is the
+        present tense of <Gk>λύω</Gk> ("I loose / untie"), the model verb your textbook tables will use
+        everywhere. Read the endings, not the stem — the stem <Gk>λυ‑</Gk> never changes here.
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <p><Tr id="indicatives.as.greek's-present-covers">Greek's present covers <em>both</em> English "I loose" and "I am loosing" — it does not distinguish the two.</Tr></p>
@@ -87,13 +94,15 @@ export const INDICATIVES_CONTENT = (
     />
 
     <SectionHeading id="indicatives.h.marking-past-time">Marking past time: the augment</SectionHeading>
-    <P id="indicatives.p.push-verb-into">
-      To push a verb into the past, Greek glues an <Gk>ἐ‑</Gk> onto the front — called the
-      <strong> augment</strong>. Think of it as the past-time flag: <Gk>λύομεν</Gk> "we loose" →
-      <Gk> ἐλύομεν</Gk> "we were loosing." The <strong>imperfect</strong> tense (ongoing past, "was …ing")
-      is exactly that: augment + present stem + a slightly different set of endings. Those two sets of
-      endings — present and imperfect — are the base for everything else:
-    </P>
+    <LevelOnly level="beginning">
+      <P id="indicatives.p.push-verb-into">
+        To push a verb into the past, Greek glues an <Gk>ἐ‑</Gk> onto the front — called the
+        <strong> augment</strong>. Think of it as the past-time flag: <Gk>λύομεν</Gk> "we loose" →
+        <Gk> ἐλύομεν</Gk> "we were loosing." The <strong>imperfect</strong> tense (ongoing past, "was …ing")
+        is exactly that: augment + present stem + a slightly different set of endings. Those two sets of
+        endings — present and imperfect — are the base for everything else:
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="indicatives.al.default-translations-add">Default translations (add the verb)</Tr></AsideLabel>
@@ -140,10 +149,12 @@ export const INDICATIVES_CONTENT = (
     />
 
     <SectionHeading id="indicatives.h.most-common-verb">The most common verb of all: εἰμί, "to be"</SectionHeading>
-    <P id="indicatives.p.just-english-was">
-      Just as in English (<em>am, is, was</em> — nothing like "be"!), the Greek verb "to be" is irregular
-      and must simply be memorized. It is worth the effort: it is the most frequent verb in the New Testament.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="indicatives.p.just-english-was">
+        Just as in English (<em>am, is, was</em> — nothing like "be"!), the Greek verb "to be" is irregular
+        and must simply be memorized. It is worth the effort: it is the most frequent verb in the New Testament.
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="indicatives.al.verb">The verb "to be"</Tr></AsideLabel>
@@ -197,11 +208,23 @@ export const INDICATIVES_CONTENT = (
     />
 
     <SectionHeading id="indicatives.h.tense-machine-identifiers">The tense machine: identifiers</SectionHeading>
-    <P id="indicatives.p.here-payoff-learning">
-      Here is the payoff of learning the two base paradigms: every remaining tense is built by inserting a
-      <strong> tense identifier</strong> — a flag letter or two — between the stem and the ending. Learn six
-      flags and you can read the entire system:
-    </P>
+    <LevelOnly level="intermediate">
+      <P id="indicatives.p.int-aspect-primary">
+        Aspect is the primary value of the Greek tense; time is secondary, and the indicative is
+        the only mood where tense encodes time at all. The perfective (aorist) presents an action
+        as a whole, the imperfective (present, imperfect) presents it as unfolding, and the
+        stative (perfect, pluperfect) presents a resulting state. The identifiers below are how
+        the <em>forms</em> are built — what a tense <em>means</em> in a given sentence is the
+        taxonomy in the Going deeper panel above.
+      </P>
+    </LevelOnly>
+    <LevelOnly level="beginning">
+      <P id="indicatives.p.here-payoff-learning">
+        Here is the payoff of learning the two base paradigms: every remaining tense is built by inserting a
+        <strong> tense identifier</strong> — a flag letter or two — between the stem and the ending. Learn six
+        flags and you can read the entire system:
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <p><Tr id="indicatives.as.spot-flag-letter">Spot the flag letter, then read the ending for person. <Gk>‒σ‒</Gk> future, <Gk>‒σα‒</Gk> aorist, <Gk>‒θη‒</Gk> aorist passive, <Gk>‒κα‒</Gk> perfect.</Tr></p>
@@ -218,14 +241,16 @@ export const INDICATIVES_CONTENT = (
         ]}
       />
     </TableAside>
-    <P id="indicatives.p.aorist-deserves-introduction">
-      The <strong>aorist</strong> deserves an introduction, since English has no tense by that name. It is
-      the plain past — "I loosed," the action viewed as a simple whole — and it is the workhorse past tense
-      of the New Testament. Contrast the imperfect: <Gk>ἐλύομεν</Gk> "we <em>were</em> loosing" (a process
-      unrolling) vs. <Gk>ἐλύσαμεν</Gk> "we loosed" (done, whole, one event). And the <strong>perfect</strong> is
-      "I <em>have</em> loosed" — a past act whose result still stands; its extra signature is
-      <strong> reduplication</strong>, a doubled first consonant at the front: <Gk>λέ‑λυκα</Gk>.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="indicatives.p.aorist-deserves-introduction">
+        The <strong>aorist</strong> deserves an introduction, since English has no tense by that name. It is
+        the plain past — "I loosed," the action viewed as a simple whole — and it is the workhorse past tense
+        of the New Testament. Contrast the imperfect: <Gk>ἐλύομεν</Gk> "we <em>were</em> loosing" (a process
+        unrolling) vs. <Gk>ἐλύσαμεν</Gk> "we loosed" (done, whole, one event). And the <strong>perfect</strong> is
+        "I <em>have</em> loosed" — a past act whose result still stands; its extra signature is
+        <strong> reduplication</strong>, a doubled first consonant at the front: <Gk>λέ‑λυκα</Gk>.
+      </P>
+    </LevelOnly>
     <P id="indicatives.p.each-tense-modifies">Each tense modifies the base paradigms according to a fixed recipe:</P>
     <TableAside
       beginning={<>
