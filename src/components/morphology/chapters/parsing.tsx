@@ -49,7 +49,7 @@ export const PARSING_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · The master table ───────────────────────────── */}
-    <SectionHeading n={1} id="parsing.h.four-patterns-which">Four patterns — which slots to fill</SectionHeading>
+    <SectionHeading id="parsing.h.four-patterns-which">Four patterns — which slots to fill</SectionHeading>
     <P id="parsing.p.there-only-four">
       There are only four parsing patterns in Greek. Find which one the word belongs to, then fill its
       slots left to right. The last slot is always the <strong>lexical form</strong> — the dictionary
@@ -90,7 +90,7 @@ export const PARSING_CONTENT = (
     />
 
     {/* ── 3 · Nouns ──────────────────────────────────────── */}
-    <SectionHeading n={2} id="parsing.h.parsing-noun-case">Parsing a noun: case · number · gender</SectionHeading>
+    <SectionHeading id="parsing.h.parsing-noun-case">Parsing a noun: case · number · gender</SectionHeading>
     <P id="parsing.p.every-noun-adjective">
       Every noun, adjective, article and pronoun gets exactly three answers, always in this order. Each
       column below is one slot; pick one option from each.
@@ -145,7 +145,7 @@ export const PARSING_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Verbs ──────────────────────────────────────── */}
-    <SectionHeading n={3} id="parsing.h.parsing-finite-verb">Parsing a finite verb: tense · voice · mood · person · number</SectionHeading>
+    <SectionHeading id="parsing.h.parsing-finite-verb">Parsing a finite verb: tense · voice · mood · person · number</SectionHeading>
     <P id="parsing.p.finite-verb-one">
       A <strong>finite</strong> verb is one that carries its own subject — <Gk>λύει</Gk> already means
       &ldquo;he/she/it looses&rdquo; without a separate word for &ldquo;he.&rdquo; Finite verbs take five
@@ -216,7 +216,7 @@ export const PARSING_CONTENT = (
     </TableAside>
 
     {/* ── 5 · Non-finite ─────────────────────────────────── */}
-    <SectionHeading n={4} id="parsing.h.participles-infinitives-hybrids">Participles and infinitives — the hybrids</SectionHeading>
+    <SectionHeading id="parsing.h.participles-infinitives-hybrids">Participles and infinitives — the hybrids</SectionHeading>
     <P id="parsing.p.these-two-non">
       These two are <strong>non-finite</strong>: they have no person, because they have no subject of
       their own. A participle is a verbal adjective, so after its verb slots it takes the whole noun set
@@ -286,7 +286,7 @@ export const PARSING_CONTENT = (
 
     {/* ── 6 · Intermediate: conventions and ambiguity ────── */}
     <LevelOnly level="intermediate">
-      <SectionHeading n={5} id="parsing.h.conventions-will-meet">Conventions you will meet elsewhere</SectionHeading>
+      <SectionHeading id="parsing.h.conventions-will-meet">Conventions you will meet elsewhere</SectionHeading>
       <P id="parsing.p.case-number-gender">
         <strong>Case-number-gender vs gender-number-case.</strong> The order taught here — case first — is
         the standard of the introductory grammars (Mounce, Black, Croy) and of this course. Wallace&rsquo;s{' '}
