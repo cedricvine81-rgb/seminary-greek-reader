@@ -79,16 +79,6 @@ export const NOUNS_CONTENT = (
 
     {/* ── 2 · The four cases ─────────────────────────────── */}
     <SectionHeading id="nouns.h.four-cases-jobs">The four cases and their jobs</SectionHeading>
-    <LevelOnly level="intermediate">
-      <P id="nouns.p.int-case-form-function">
-        Five case <em>forms</em>, and more case <em>functions</em> than five. The paradigm below is
-        the five-case system — the endings that are actually distinct — which is what you parse.
-        The older eight-case scheme splits the genitive into genitive and ablative and the dative
-        into dative, locative and instrumental; it is describing function, not form, and the same
-        distinctions survive in Wallace as syntactic categories under the five. Parse the form,
-        then argue for the function.
-      </P>
-    </LevelOnly>
     <LevelOnly level="beginning">
       <P id="nouns.p.greek-nouns-four">
         Greek nouns have four main cases (plus a fifth, the <Term t="vocative">vocative</Term>, for calling
@@ -540,13 +530,6 @@ export const NOUNS_CONTENT = (
       ]}
       note="Attributive and predicative each have two word orders and one meaning; what decides the sense is whether the adjective sits inside the article–noun unit or outside it."
     />
-    <LevelOnly level="intermediate">
-      <P id="nouns.p.delete-test-settles">
-        The delete-test settles hard cases: remove the adjective, and if the sentence still works it was
-        attributive ("the [good] word"); if the sentence collapses, the adjective <em>was</em> the point —
-        predicate.
-      </P>
-    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="nouns.al.meaning">Meaning</Tr></AsideLabel>
@@ -748,55 +731,7 @@ export const NOUNS_CONTENT = (
         { label: <Tr id="nouns.le.third-declension">3rd-declension in action: every neuter noun</Tr>, features: ['noun', 'neuter'] },
       ]}
     />
-    {/* ── The article in full (Intermediate — from the Article session of the Int. course) ── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="nouns.h.article-beyond">The article — beyond "the"</SectionHeading>
-      <P id="nouns.p.intermediate-course-gives">The Intermediate course gives the article its own session:</P>
-      <MorphTable id="nouns.t8" tCols={[0, 1, 2]}
-        headers={['Use', 'What it does', 'Example']} firstColIsData striped
-        rows={[
-          ['As pronoun', 'ὁ δε = "but he"', 'ὁ δε ἐξελθων ἠρξατο κηρυσσειν (Mark 1:45)'],
-          ['Individualizing', 'points back to something already mentioned', 'τον ἀνθρωπον — THAT man, just discussed'],
-          ['Generic', 'the class, not an individual', 'ἀξιος ὁ ἐργατης του μισθου αὐτου (Luke 10:7)'],
-          ['Substantiver', 'turns anything into a noun', 'οἱ ἐκ πιστεως — those who are of faith (Gal 3:7)'],
-          ['Function marker', 'flags case or ties an attributive on', 'ἡ ἐντολη ἡ ἐμη (John 15:12)'],
-          ['Absence of article', 'often stresses quality, not indefiniteness', 'θεος ἠν ὁ λογος — the Word was (in nature) God (John 1:1)'],
-          ['Colwell’s rule', 'a definite predicate before the verb usually drops its article', 'θεος ἠν ὁ λογος again — anarthrous, still definite'],
-          ['Granville Sharp', 'one article + two singular nouns joined by και = one person', 'του θεου και σωτηρος ἡμων Ἰησου Χριστου (Tit 2:13)'],
-        ]}
-        note="Colwell and Granville Sharp are rules of thumb about when the article may be dropped without a change of meaning — both matter in key christological texts."
-      />
-    </LevelOnly>
 
 
-    {/* ── 10 · Going deeper (Intermediate only) ──────────── */}
-    <LevelOnly level="intermediate">
-      <SectionHeading id="nouns.h.going-deeper-when">Going deeper: when the default translation isn't enough</SectionHeading>
-      <P id="nouns.p.glosses-training-wheels">
-        The glosses "of" and "to/for" are training wheels. Interpretation begins when you ask <em>which kind</em> of
-        genitive or dative you are looking at — the full catalogue is in the card at the top of this page. Three
-        highlights show why it matters:
-      </P>
-      <P id="nouns.p.genitive-spectrum-love">
-        <strong>The genitive spectrum.</strong> "The love of God" (<Gk>ἡ ἀγάπη τοῦ θεοῦ</Gk>) is genuinely
-        ambiguous: God's love for us (<em>subjective</em> genitive — God does the loving) or our love for God
-        (<em>objective</em> — God receives it)? Grammar alone cannot decide; context and the author's usage must.
-        The most debated NT example is <Gk>πίστις Χριστοῦ</Gk> — "faith <em>in</em> Christ" (objective) or "the
-        faithfulness <em>of</em> Christ" (subjective)? Entire monographs hang on that genitive (Rom 3:22; Gal 2:16).
-      </P>
-      <P id="nouns.p.subject-predicate-nominative">
-        <strong>Subject vs. predicate nominative.</strong> With an equative verb both nouns are nominative —
-        so which is the subject of <Gk>θεὸς ἦν ὁ λόγος</Gk> (John 1:1)? The rule: pronouns outrank proper names
-        and articular nouns; here <Gk>ὁ λόγος</Gk> has the article, so it is the subject — "the Word was God,"
-        never "God was the Word." The predicate usually names the <em>class</em> the subject belongs to, the way
-        "God is love" does not mean "love is God."
-      </P>
-      <P id="nouns.p.time-cases-worked">
-        <strong>The time cases.</strong> "I worked at night" is ambiguous in English; Greek's case choice is not:
-        genitive <Gk>νυκτός</Gk> = "during the night" (kind of time), dative <Gk>νυκτί</Gk> = "at a point in the
-        night," accusative <Gk>νύκτα</Gk> = "all night long" (extent). Nicodemus came <Gk>νυκτός</Gk> (John 3:2) —
-        under cover of night, not at one instant.
-      </P>
-    </LevelOnly>
   </>
 )

@@ -223,6 +223,9 @@ export function rhetoricItems(): Item[] {
 const CHAPTER_TAB: Record<string, string> = {
   'second-aorists': '2nd-aorists',
   conditionals: 'conjunctions',
+  // A level's own page shares its chapter's catalogue: the view fetches by TAB id, and the
+  // tab is 'nouns' whichever file renders it.
+  'nouns-intermediate': 'nouns',
 }
 
 /**

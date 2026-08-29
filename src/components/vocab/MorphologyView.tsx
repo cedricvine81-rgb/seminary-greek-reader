@@ -42,6 +42,7 @@ import { MI_VERBS_CONTENT } from '@/components/morphology/chapters/mi-verbs'
 import { SECOND_AORISTS_CONTENT } from '@/components/morphology/chapters/second-aorists'
 import { BASIC_VERBS_CONTENT } from '@/components/morphology/chapters/basic-verbs'
 import { DEPONENTS_CONTENT } from '@/components/morphology/chapters/deponents'
+import { NOUNS_INTERMEDIATE_CONTENT } from '@/components/morphology/chapters/nouns-intermediate'
 
 /* ─────────────────────────────────────────────
    Beginning / Intermediate explanations
@@ -181,6 +182,23 @@ const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
   'mi-verbs':        MI_VERBS_CONTENT,
   '2nd-aorists':     SECOND_AORISTS_CONTENT,
   deponents:         DEPONENTS_CONTENT,
+}
+
+/**
+ * Chapters that have their OWN page at a level, instead of the shared page with level gates.
+ * The lookup falls back to REVISION_CONTENT, so migration is per-chapter: a chapter appears
+ * here when its Intermediate page has been written, and the rest keep today's behaviour. A
+ * future Advanced level is one more map beside this one. The chapter ID stays the same either
+ * way — progress ticks, self-study links and the per-chapter translation catalogue all key on
+ * it, and none of them care which file rendered.
+ */
+const INTERMEDIATE_CONTENT: Partial<Record<MainTab, React.ReactNode>> = {
+  nouns: NOUNS_INTERMEDIATE_CONTENT,
+}
+
+/** The body for a chapter at a level — the level's own page where one exists. */
+function contentFor(tab: MainTab, level: MorphLevel): React.ReactNode {
+  return (level === 'intermediate' && INTERMEDIATE_CONTENT[tab]) || REVISION_CONTENT[tab]
 }
 
 /* ─────────────────────────────────────────────
@@ -500,6 +518,7 @@ export function MorphologyView({
           onSelect={id => goToChapter(id as MainTab)}
           sections={mainTab === 'essentials' ? essToc : domToc}
           onSection={mainTab === 'essentials' ? (id => setEssId(Number(id))) : undefined}
+          topSlot={<LevelToggle level={level} onChange={changeLevel} />}
         />
       )}
       <div className="flex-1 min-w-0 overflow-y-auto">
@@ -512,7 +531,9 @@ export function MorphologyView({
                 <div className="flex flex-wrap items-center gap-2">
                   <FoldAllControls />
                   <CourseToggle on={courseMode} onToggle={toggleCourse} />
-                  <LevelToggle level={level} onChange={changeLevel} />
+                  {/* Desktop's toggle moved into the sidebar; this copy serves mobile and
+                      the embedded self-study pane, which render no sidebar. */}
+                  <div className={embedded ? '' : 'lg:hidden'}><LevelToggle level={level} onChange={changeLevel} /></div>
                 </div>
               </div>
               {/* The Getting Started card is INSIDE the layer: its prose already carries
@@ -537,13 +558,13 @@ export function MorphologyView({
               <div className="flex flex-wrap items-center gap-2">
                 <FoldAllControls />
                 <CourseToggle on={courseMode} onToggle={toggleCourse} />
-                <LevelToggle level={level} onChange={changeLevel} />
+                <div className={embedded ? '' : 'lg:hidden'}><LevelToggle level={level} onChange={changeLevel} /></div>
               </div>
             </div>
             <div ref={contentRef}>
             <AnnotationLayer page={mainTab}>
               <ExplanationCard explanation={TAB_EXPLANATIONS[mainTab]} level={level} />
-              {REVISION_CONTENT[mainTab]}
+              {contentFor(mainTab, level)}
             </AnnotationLayer>
             </div>
             {courseMode && chapterIndex >= 0 && (

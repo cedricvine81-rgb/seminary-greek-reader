@@ -73,7 +73,7 @@ const MIN_W = 180
 const MAX_W = 440
 const DEFAULT_W = 240
 
-export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection }: {
+export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection, topSlot }: {
   groups: { heading: string; items: SidebarItem[] }[]
   activeId: string
   onSelect: (id: string) => void
@@ -81,6 +81,9 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
   sections: TocSection[]
   /** Overrides the default behaviour (expand + scroll to the section's heading). */
   onSection?: (id: string) => void
+  /** Rendered above the chapter groups — the level toggle lives here, so the choice
+      that decides WHICH page every chapter shows sits beside the list of chapters. */
+  topSlot?: React.ReactNode
 }) {
   const t = useT()
   const jump = (id: string) => {
@@ -159,6 +162,7 @@ export function ChapterSidebar({ groups, activeId, onSelect, sections, onSection
             <PanelLeftClose size={15} />
           </button>
         </div>
+        {topSlot && <div className="mb-4 px-1">{topSlot}</div>}
         {groups.map(g => (
           <div key={g.heading} className="mb-4">
             <p className="mb-1.5 px-2 text-xs font-semibold uppercase tracking-wide text-gray-400">{g.heading}</p>
