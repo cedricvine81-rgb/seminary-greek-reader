@@ -214,10 +214,17 @@ const lemmaTable = (stem: string): Record<string, LemmaEntry> => {
 const GNT_LEMMAS = lemmaTable('lemma-forms-gnt')
 const LXX_LEMMAS = lemmaTable('lemma-forms-lxx')
 // Glosses run to a full dictionary sense ("a weak adversative particle…"); the table has room
-// for a hint, not a definition, so keep the first sense and cap it.
+// for a hint, not a definition, so keep the first sense and cap it. Three cleanups, because a
+// mangled gloss beside a Greek word reads as a bug rather than as a hint: the lexicon's "(a)"
+// / "(b)" sense enumerators are dropped, the cap falls on a word boundary, and a fragment left
+// holding an unclosed bracket is dropped entirely — λέγω's stored gloss is already truncated
+// to "(denoting speech in…" at source, and half of that is worse than none.
 const shortGloss = (g: string) => {
-  const first = g.split(/[;,]|…/)[0].trim()
-  return first.length > 34 ? `${first.slice(0, 33).trimEnd()}…` : first
+  let out = g.replace(/^\((?:[a-z]|\d+)\)\s*/i, '').split(/[;,]|…/)[0].trim()
+  if (out.length > 34) out = `${out.slice(0, 34).replace(/\s+\S*$/, '')}…`
+  const opens = (out.match(/\(/g) ?? []).length
+  const closes = (out.match(/\)/g) ?? []).length
+  return opens === closes ? out : ''
 }
 // The lexicon is keyed by the corpus's own lemma, so a canonicalized word has to be looked up
 // under the variants it absorbed as well: οὕτως is filed under οὕτω in both biblical lexicons.

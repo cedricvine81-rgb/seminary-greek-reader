@@ -10,7 +10,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ChevronRight, Info } from 'lucide-react'
+import { ChevronRight, Info, Printer } from 'lucide-react'
 import clsx from 'clsx'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
@@ -21,6 +21,7 @@ import {
   type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
 import { PassagePicker, type PassageSelection } from './PassagePicker'
+import { RegisterReport } from './RegisterReport'
 
 const LENSES: { id: Lens; key: string }[] = [
   { id: 'register', key: 'reg.lens.register' },
@@ -238,6 +239,19 @@ export function RegisterView() {
 
   return (
     <div className="space-y-6">
+      {targetUnit && (
+        <RegisterReport
+          meta={meta} lens={lens} targetUnit={targetUnit} results={results} spread={spread}
+          vocab={vocab} targetVocab={mode === 'passage' ? passageVocab : null}
+          mode={mode} outsideOnly={outsideOnly} includeShort={includeShort}
+          nameOf={nameOf} corpusOf={corpusOf} featureLabel={featureLabel}
+        />
+      )}
+
+      {/* The whole interactive surface stands down for print; RegisterReport above is the
+          document. Controls and a ranking truncated to what fits a screen are not what
+          belongs on paper. */}
+      <div className="space-y-6 print:hidden">
       {/* ── what this is, and what it is not ─────────────────────────────── */}
       <div className="rounded-xl border border-brand-100 bg-brand-50/60 px-4 py-3">
         <div className="mb-1.5 flex items-center gap-1.5">
@@ -319,6 +333,15 @@ export function RegisterView() {
           <input type="checkbox" checked={includeShort} onChange={e => setIncludeShort(e.target.checked)} />
           {t('reg.includeShort')}
         </label>
+
+        {/* The browser's own print dialogue, which is where "save as PDF" lives on every
+            platform — the same route the Exegesis workspace takes. */}
+        <button
+          type="button" onClick={() => window.print()} disabled={!targetUnit || !results.length}
+          className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1 text-sm font-medium text-gray-700 transition-colors hover:border-brand-300 hover:text-brand-700 disabled:opacity-40"
+        >
+          <Printer size={14} /> {t('reg.print')}
+        </button>
       </div>
 
       {missingWork && (
@@ -470,6 +493,7 @@ export function RegisterView() {
           {t('reg.chunkNote', { n: chunks.length, work: nameOf(targetUnit), size: meta.chunkWords.toLocaleString(locale) })}
         </p>
       )}
+      </div>
     </div>
   )
 }
