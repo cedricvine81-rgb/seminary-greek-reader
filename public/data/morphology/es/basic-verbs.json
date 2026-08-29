@@ -51,6 +51,22 @@
     "fp": "31rtmx",
     "text": "desatan"
   },
+  "basic-verbs.exp.b.eg": {
+    "fp": "1lnt7tt",
+    "text": "{λύω} = «desato» · {λύομεν} = «desatamos». La misma raíz {λυ-}, otra desinencia, otra persona."
+  },
+  "basic-verbs.exp.b.hook": {
+    "fp": "wec3hd",
+    "text": "*Seis desinencias, y no cambian nunca.* {-ω, -εις, -ει, -ομεν, -ετε, -ουσι(ν)}: lo único que varía de un verbo a otro es la raíz que va delante. {εἰμί} «soy, estoy» es el que hay que aprender aparte."
+  },
+  "basic-verbs.exp.b.intro": {
+    "fp": "wbjp7u",
+    "text": "El verbo griego lleva su sujeto en la *desinencia*, así que no hace falta pronombre: {ἀκούω} ya es «oigo» y {ἀκούομεν} ya es «oímos» —igual que en español—. Un solo juego de seis desinencias, aprendido una vez con {λύω}, sirve para todos los verbos regulares de la lengua. Este capítulo es deliberadamente pequeño: un tiempo, una voz, un modo y el puñado de verbos que los dos capítulos siguientes realmente usan."
+  },
+  "basic-verbs.exp.i.intro": {
+    "fp": "mzcoac",
+    "text": "La {ο/ε} que va alternando por estas desinencias es la *vocal temática*, y es lo que conviene retener: el imperfecto, el futuro y el aoristo segundo se construyen todos sobre esta misma raíz con esta misma vocal, de modo que lo que aprendes aquí no es un tiempo sino el armazón del que cuelgan los demás. Los verbos en {-έω} tampoco son un segundo sistema: {φιλέ-ω → φιλῶ} son estas mismas desinencias con dos vocales fundidas, y por eso aparece el circunflejo y por eso el léxico sigue dando la forma sin contraer."
+  },
   "basic-verbs.h.compounds": {
     "fp": "dam7in",
     "text": "Once verbos compuestos"
@@ -752,8 +768,8 @@
     "text": "Pluscuamperfecto"
   },
   "parseframe.title": {
-    "fp": "g2ksel",
-    "text": "Para analizar un verbo, indica cada casilla"
+    "fp": "11k18mx",
+    "text": "Para analizar un verbo, indica cada elemento"
   },
   "parseframe.voice.0": {
     "fp": "8qzyhb",

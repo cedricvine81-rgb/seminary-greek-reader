@@ -32,7 +32,7 @@ const CHAPTERS = ['parsing', 'indicatives', 'contract-verbs', 'liquids', 'princi
 
 // key → [English exactly as ParseFrame passes it, Spanish]
 const PAIRS = {
-  'parseframe.title': ['To parse a verb, give every slot', 'Para analizar un verbo, indica cada casilla'],
+  'parseframe.title': ['To parse a verb, provide every element', 'Para analizar un verbo, indica cada elemento'],
   'parseframe.h.tense': ['Tense', 'Tiempo'],
   'parseframe.h.voice': ['Voice', 'Voz'],
   'parseframe.h.mood': ['Mood', 'Modo'],

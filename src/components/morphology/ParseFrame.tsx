@@ -45,7 +45,7 @@ export function ParseFrame() {
   return (
     <div className="mb-6">
       <p className="mb-1.5 text-sm font-semibold text-gray-900">
-        {tm('parseframe.title', 'To parse a verb, give every slot')}
+        {tm('parseframe.title', 'To parse a verb, provide every element')}
       </p>
       <div className="overflow-x-auto">
         <table className="border-collapse w-full min-w-[640px]">

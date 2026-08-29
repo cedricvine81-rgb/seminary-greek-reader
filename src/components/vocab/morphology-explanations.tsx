@@ -262,6 +262,22 @@ export const ESS_EXPLANATIONS: Record<number, Explanation> = {
 ───────────────────────────────────────────── */
 
 export const TAB_EXPLANATIONS: Record<string, Explanation> = {
+  // Sits before `nouns` because it is read before the nouns: the noun chapter's examples all
+  // contain a verb, and this is the chapter that lets a student read them.
+  'basic-verbs': {
+    beginning: (
+      <Note>
+        <P><T id="basic-verbs.exp.b.intro">A Greek verb carries its subject in its <strong>ending</strong>, so no pronoun is needed where English demands one: <G>ἀκούω</G> is already "I hear," <G>ἀκούομεν</G> already "we hear." One set of six endings, learned once on <G>λύω</G>, works on every regular verb in the language. This chapter is deliberately small: one tense, one voice, one mood, and the handful of verbs the next two chapters actually use.</T></P>
+        <Hook><T id="basic-verbs.exp.b.hook"><strong>Six endings, and they never change.</strong> <G>-ω, -εις, -ει, -ομεν, -ετε, -ουσι(ν)</G> — the stem in front of them is the only thing that differs from verb to verb. <G>εἰμί</G> "I am" is the one that has to be learned separately.</T></Hook>
+        <Eg><T id="basic-verbs.exp.b.eg"><G>λύω</G> = "I loose" · <G>λύομεν</G> = "we loose." Same stem <G>λυ-</G>, different ending, different person.</T></Eg>
+      </Note>
+    ),
+    intermediate: (
+      <Note>
+        <P><T id="basic-verbs.exp.i.intro">The <G>ο/ε</G> alternating through these endings is the <strong>thematic vowel</strong>, and it is the thing to hold on to: the imperfect, the future and the second aorist are all built on this same stem with this same vowel, so what you learn here is not one tense but the frame the others hang on. The <G>-έω</G> verbs are not a second system either — <G>φιλέ-ω → φιλῶ</G> is these endings with two vowels run together, which is why the circumflex appears and why the lexicon still lists the uncontracted form.</T></P>
+      </Note>
+    ),
+  },
   nouns: {
     beginning: (
       <Note>
