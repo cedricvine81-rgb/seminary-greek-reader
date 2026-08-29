@@ -17,7 +17,6 @@ export default function RegisterPage() {
     <main className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-5 print:hidden">
         <h1 className="text-lg font-semibold text-gray-800">{t('reg.title')}</h1>
-        <p className="mt-0.5 text-sm text-gray-600">{t('reg.intro')}</p>
       </div>
       <RegisterView />
     </main>
