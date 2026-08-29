@@ -15,7 +15,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import zlib from 'node:zlib'
 import {
-  CONSTRUCTIONS, FEATURES, RATE_FEATURES, profileWords, type Profile, type Word,
+  CONSTRUCTIONS, DELTA_EXCLUDE, FEATURES, LEMMA_CANON, RATE_FEATURES, profileWords,
+  type Profile, type Word,
 } from '../src/lib/style-features'
 
 const SRC = 'public/data/construct'
@@ -171,6 +172,9 @@ for (const u of units) {
   u.lem.forEach((c, l) => overall.set(l, (overall.get(l) ?? 0) + c))
 }
 const DELTA_WORDS = Array.from(overall.entries())
+  // A lemma that measures the tagger and not the text is dropped before the list is cut, not
+  // after — see DELTA_EXCLUDE for what each of them was doing to the numbers.
+  .filter(([l]) => !DELTA_EXCLUDE.has(l))
   .sort((a, b) => b[1] - a[1])
   .slice(0, 150)
   .map(([l]) => l)
@@ -199,6 +203,46 @@ for (const u of units) {
     : null
 }
 
+/* ── readable labels for the Delta words ─────────────────────────────────────
+ * The index stores lemmas normalized — unaccented, lowercased — because that is what makes
+ * them comparable across nine differently-produced corpora. But "και / δε / μεν" is not how a
+ * Greek page should read, and the function-word table is meant to be read by students, so the
+ * accented form and a short gloss are resolved here from the lexicon that Construct search
+ * already ships. The New Testament's table is preferred and the Septuagint's fills the gaps.
+ */
+interface LemmaEntry { d?: string; g?: string }
+const lemmaTable = (stem: string): Record<string, LemmaEntry> => {
+  try {
+    return JSON.parse(fs.readFileSync(path.join('public/data', `${stem}.json`), 'utf8'))
+  } catch { return {} }
+}
+const GNT_LEMMAS = lemmaTable('lemma-forms-gnt')
+const LXX_LEMMAS = lemmaTable('lemma-forms-lxx')
+// Glosses run to a full dictionary sense ("a weak adversative particle…"); the table has room
+// for a hint, not a definition, so keep the first sense and cap it.
+const shortGloss = (g: string) => {
+  const first = g.split(/[;,]|…/)[0].trim()
+  return first.length > 34 ? `${first.slice(0, 33).trimEnd()}…` : first
+}
+// The lexicon is keyed by the corpus's own lemma, so a canonicalized word has to be looked up
+// under the variants it absorbed as well: οὕτως is filed under οὕτω in both biblical lexicons.
+const VARIANTS_OF: Record<string, string[]> = {}
+for (const [from, to] of Object.entries(LEMMA_CANON)) (VARIANTS_OF[to] ??= []).push(from)
+const deltaLabels: Record<string, { d: string; g: string }> = {}
+for (const l of DELTA_WORDS) {
+  const keys = [l, ...(VARIANTS_OF[l] ?? [])]
+  let e: LemmaEntry = {}
+  for (const k of keys) {
+    const hit = GNT_LEMMAS[k] ?? LXX_LEMMAS[k]
+    if (hit?.d) { e = hit; break }
+  }
+  deltaLabels[l] = { d: e.d || l, g: e.g ? shortGloss(e.g) : '' }
+}
+const unresolved = DELTA_WORDS.filter(l => deltaLabels[l].d === l)
+if (unresolved.length) {
+  console.error(`   ${unresolved.length} function words without an accented form: ${unresolved.join(' ')}`)
+}
+
 /* ── per-feature spread across whole works ───────────────────────────────────
  * The syntax lens and the "why" table both scale a gap by the feature's own spread. Computing
  * it in the browser from the loaded units gave the same answer, but a passage is scored
@@ -222,6 +266,7 @@ const meta = {
   minWords: MIN_CHUNK,
   reliableWords: RELIABLE,
   deltaWords: DELTA_WORDS,
+  deltaLabels,
   norm: { mu: round(mu, 4), sd: round(sd, 4) },
   spread: round(spread, 4),
   passageCorpora: Array.from(PASSAGE_CORPORA),

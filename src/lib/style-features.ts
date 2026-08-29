@@ -40,6 +40,64 @@ export interface FeatureDef {
 // Scan the whole parsing string: the LXX drops the POS field, so position is unreliable.
 const hasTok = (parsing: string, tok: string) => parsing.includes(tok)
 
+/* ── lemma canonicalization ──────────────────────────────────────────────────
+ * Lemma-anchored features are only safe if the corpora agree on what the lemma IS, and in
+ * three places they do not. Each of these was measured across all nine corpora, and each shows
+ * a COMPLEMENTARY distribution — where one form appears the other is absent — which is the
+ * signature of a tagging convention rather than of an author's usage:
+ *
+ *   γίνομαι   GNT 4.85/1k, every other corpus 0.00
+ *   γίγνομαι  GNT 0.00,    every other corpus 3.03-6.31
+ *     The hand-tagged New Testament lemmatizes to the Koine spelling; Stanza, trained on
+ *     Attic, gives the Attic one. Both are Strong's G1096. Left unfolded this was the single
+ *     largest "difference" the tool reported between Tobit and Mark — an entirely spurious
+ *     one, and on the flagship Septuagintal feature.
+ *
+ *   οὕτω      GNT 1.52, LXX 1.34, every other corpus 0.00-0.01
+ *   οὕτως     GNT 0.00, LXX 0.05, every other corpus 1.27-2.95
+ *     Same word (G3779), same split.
+ *
+ *   ἀλλ' δι' οὐδ' μηδ' ἐφ' ὑφ' κατ' καθ' μετ' μεθ' ἐπ' ὑπ'
+ *     Elided and aspirated forms that Stanza leaves unresolved and the hand tagging resolves.
+ *     Josephus's ἀλλά looked 2.4x rarer than the New Testament's until ἀλλ' was counted with
+ *     it; half of that gap was the apostrophe.
+ *
+ * Folding is one-directional and total: the canonical form is what every corpus is counted as
+ * using, so a rate is comparable wherever it is read.
+ */
+export const LEMMA_CANON: Record<string, string> = {
+  γιγνομαι: 'γινομαι',
+  ουτω: 'ουτως',
+  αλλ: 'αλλα',
+  δι: 'δια',
+  ουδ: 'ουδε',
+  μηδ: 'μηδε',
+  επ: 'επι', εφ: 'επι',
+  υπ: 'υπο', υφ: 'υπο',
+  κατ: 'κατα', καθ: 'κατα',
+  μετ: 'μετα', μεθ: 'μετα',
+  απ: 'απο', αφ: 'απο',
+  υπερ: 'υπερ',
+}
+
+/**
+ * Lemmas that must never become a Delta dimension, because they measure the tagger rather than
+ * the text. Delta compares the 150 commonest lemmas, and both of these are frequent enough to
+ * make that list.
+ *
+ *   ''      A word the tagger failed on. Concentrated where tagging was hardest — Eusebius
+ *           0.44% of all words, Philo 0.23%, the hand-tagged New Testament exactly 0 — so the
+ *           dimension ranks works by how well they were tagged.
+ *   ἵημι    Stanza's garbage bin for anything it cannot place: 563 "present active imperatives
+ *           of ἵημι" in Justin alone, who shows 28/1k against the Greco-Roman corpus's 0.64
+ *           though both were tagged by the same tool.
+ */
+export const DELTA_EXCLUDE = new Set(['', 'ιημι'])
+
+/** The lemma every corpus is counted as using. */
+export const canonLemma = (l: string): string => LEMMA_CANON[l] ?? l
+
+
 interface RateFeature extends FeatureDef {
   test: (w: Word) => boolean
 }
@@ -146,7 +204,15 @@ export interface Profile {
 }
 
 /** Profile one stretch of words. The single definition both the builder and the API use. */
-export function profileWords(words: Word[]): Profile {
+export function profileWords(input: Word[]): Profile {
+  // Canonicalize ONCE, here, so every feature test and the Delta vector alike see the same
+  // lemma. Doing it at the call sites instead would mean the builder and the passage profiler
+  // could disagree, which is exactly the drift this module exists to prevent.
+  const words: Word[] = input.map(w => {
+    const c = LEMMA_CANON[w[1]]
+    return c === undefined ? w : [w[0], c, w[2], w[3]]
+  })
+
   const n = words.length
   const rates: Record<string, number> = {}
   for (const f of RATE_FEATURES) {
