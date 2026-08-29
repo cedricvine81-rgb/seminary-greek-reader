@@ -35,25 +35,26 @@ const PRESETS: { corpus: string; book: string; fromCh: number; toCh: number; key
 ]
 
 export function PassagePicker({
-  manifest, value, onChange,
+  manifest, initial, onChange,
 }: {
   manifest: PassageManifest
-  value: PassageSelection | null
+  /** The passage a shared link opened on, if any. Read once, for the opening state only. */
+  initial: { corpus: string; book: string; fromCh: number; toCh: number } | null
   onChange: (s: PassageSelection) => void
 }) {
   const t = useT()
   const locale = useLocale()
 
   const corpora = useMemo(() => Object.keys(manifest), [manifest])
-  const [corpus, setCorpus] = useState(value?.corpus ?? corpora[0] ?? 'GNT')
+  const [corpus, setCorpus] = useState(initial?.corpus ?? corpora[0] ?? 'GNT')
   const books = manifest[corpus] ?? []
-  const [book, setBook] = useState(value?.book ?? 'Luke')
+  const [book, setBook] = useState(initial?.book ?? 'Luke')
   const current: PassageBook | undefined = books.find(b => b.id === book) ?? books[0]
 
   const chapters = current?.ch ?? []
   const lastCh = chapters.length ? chapters[chapters.length - 1][0] : 1
-  const [fromCh, setFromCh] = useState(value?.fromCh ?? 1)
-  const [toCh, setToCh] = useState(value?.toCh ?? lastCh)
+  const [fromCh, setFromCh] = useState(initial?.fromCh ?? 1)
+  const [toCh, setToCh] = useState(initial?.toCh ?? lastCh)
 
   const nameOf = (b: PassageBook) => bookName(b.id, locale, b.label)
 

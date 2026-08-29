@@ -11,7 +11,7 @@
 import fs from 'fs'
 import path from 'path'
 import { getCorpusIndex } from './construct-search'
-import { deltaVector, profileWords, type Word } from './style-features'
+import { contentVocab, deltaVector, profileWords, type Word } from './style-features'
 
 export interface StyleIndexMeta {
   deltaWords: string[]
@@ -44,6 +44,8 @@ export interface PassageProfile {
   n: number
   rates: Record<string, number>
   delta: number[]
+  /** Content lemmas as rates per 1,000, so the vocabulary lens works on a passage too. */
+  content: [string, number][]
   reliable: boolean
   /** The chapters actually covered, which may be narrower than asked if the book is shorter. */
   span: { fromCh: number; toCh: number }
@@ -105,6 +107,7 @@ export function profilePassage(ref: PassageRef): PassageProfile | null {
     n: p.n,
     rates: Object.fromEntries(Object.entries(p.rates).map(([k, v]) => [k, +v.toFixed(2)])),
     delta: deltaVector(p, m.deltaWords, m.norm.mu, m.norm.sd).map(x => +x.toFixed(2)),
+    content: contentVocab(p, m.deltaWords),
     reliable: p.n >= m.reliableWords,
     span,
   }

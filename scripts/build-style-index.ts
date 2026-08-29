@@ -15,8 +15,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import zlib from 'node:zlib'
 import {
-  CONSTRUCTIONS, DELTA_EXCLUDE, FEATURES, LEMMA_CANON, RATE_FEATURES, profileWords,
-  type Profile, type Word,
+  CONSTRUCTIONS, DELTA_EXCLUDE, FEATURES, LEMMA_CANON, RATE_FEATURES, contentVocab,
+  profileWords, type Profile, type Word,
 } from '../src/lib/style-features'
 
 const SRC = 'public/data/construct'
@@ -195,12 +195,7 @@ for (const u of units) {
   u.delta = DELTA_WORDS.map(l => (freqOf(u, l) - mu[l]) / sd[l])
   // Content vocabulary rides only on whole works, and is split into its own file: it is the
   // bulk of the payload and the third lens does not need it until the reader asks for it.
-  u.content = u.kind === 'work'
-    ? Array.from(u.lem.entries())
-        .filter(([l]) => !DELTA_SET.has(l))
-        .sort((a, b) => b[1] - a[1]).slice(0, 200)
-        .map(([l, c]) => [l, +(1000 * c / u.n).toFixed(2)] as [string, number])
-    : null
+  u.content = u.kind === 'work' ? contentVocab(u, DELTA_SET) : null
 }
 
 /* ── readable labels for the Delta words ─────────────────────────────────────
@@ -255,6 +250,64 @@ for (const f of FEATURES) {
   spread[f.key] = Math.sqrt(xs.reduce((a, b) => a + (b - m) ** 2, 0) / xs.length) || 1
 }
 
+/* ── an absolute scale for the result bars ───────────────────────────────────
+ * A bar normalized to the 25 results on screen always fills for the top hit, so Revelation —
+ * whose closest neighbour in the whole library sits at 0.78, further than most works' 25th —
+ * looked exactly as well-matched as Homer, whose closest sits at 0.24. That is the opposite of
+ * what a reader needs to know.
+ *
+ * So the scale is published, per lens, measured from the data: the near end is the 1st
+ * percentile of every work's nearest neighbour (as close as anything in this library gets),
+ * and the far end is the median of all pairs (two works picked at random). A full bar then
+ * means "as alike as Greek in this library gets", and an empty one means "no more alike than
+ * chance", on every screen.
+ */
+const barScale: Record<string, [number, number]> = {}
+{
+  const ws = workUnits
+  const pairDelta = (a: Unit, b: Unit) => {
+    let sum = 0
+    for (let i = 0; i < a.delta!.length; i++) sum += Math.abs(a.delta![i] - b.delta![i])
+    return sum / a.delta!.length
+  }
+  const pairSyntax = (a: Unit, b: Unit) => {
+    let sum = 0
+    const keys = Object.keys(a.rates)
+    for (const k of keys) sum += Math.abs((a.rates[k] ?? 0) - (b.rates[k] ?? 0)) / (spread[k] || 1)
+    return sum / keys.length
+  }
+  const pairVocab = (a: Unit, b: Unit) => {
+    const A = new Map(a.content ?? [])
+    let dot = 0, na = 0, nb = 0
+    for (const [, v] of a.content ?? []) na += v * v
+    for (const [l, v] of b.content ?? []) { nb += v * v; const x = A.get(l); if (x !== undefined) dot += x * v }
+    return na && nb ? 1 - dot / Math.sqrt(na * nb) : 1
+  }
+  const pct = (xs: number[], p: number) => {
+    const sorted = xs.slice().sort((x, y) => x - y)
+    return sorted[Math.floor(p * (sorted.length - 1))]
+  }
+  for (const [lens, measure] of [
+    ['register', pairDelta], ['syntax', pairSyntax], ['vocabulary', pairVocab],
+  ] as [string, (a: Unit, b: Unit) => number][]) {
+    const nearest: number[] = []
+    const every: number[] = []
+    for (let i = 0; i < ws.length; i++) {
+      let best = Infinity
+      for (let j = 0; j < ws.length; j++) {
+        if (i === j) continue
+        const d = measure(ws[i], ws[j])
+        if (j > i) every.push(d)
+        if (d < best) best = d
+      }
+      if (Number.isFinite(best)) nearest.push(best)
+    }
+    barScale[lens] = [+pct(nearest, 0.01).toFixed(3), +pct(every, 0.5).toFixed(3)]
+  }
+  console.error('   bar scale per lens: '
+    + Object.entries(barScale).map(([k, v]) => `${k} ${v[0]}–${v[1]}`).join(' · '))
+}
+
 /* ── write ───────────────────────────────────────────────────────────────── */
 fs.mkdirSync(OUT, { recursive: true })
 const round = (o: Record<string, number>, dp: number) =>
@@ -269,28 +322,55 @@ const meta = {
   deltaLabels,
   norm: { mu: round(mu, 4), sd: round(sd, 4) },
   spread: round(spread, 4),
+  barScale,
   passageCorpora: Array.from(PASSAGE_CORPORA),
   features: [...RATE_FEATURES, ...CONSTRUCTIONS].map(f => ({
     key: f.key, label: f.label, chapter: f.chapter,
     taggerSensitive: !!f.taggerSensitive, approx: !!('approx' in f && f.approx),
   })),
 }
+// meta.json is for the SERVER, which reads it off the filesystem and so always gets the copy
+// that shipped with the running deploy.
 fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify(meta))
-fs.writeFileSync(path.join(OUT, 'units.json'), JSON.stringify(
-  units.map(u => ({
-    corpus: u.corpus, work: u.work, label: WORK_LABEL.get(u.work) ?? u.work,
-    kind: u.kind, idx: u.idx, n: u.n,
-    reliable: u.n >= RELIABLE,
-    rates: round(u.rates, 2),
-    delta: u.delta!.map(x => +x.toFixed(2)),
-  })),
-))
-fs.writeFileSync(path.join(OUT, 'vocab.json'), JSON.stringify(
-  Object.fromEntries(units.filter(u => u.kind === 'work').map(u => [u.work, u.content])),
-))
+
+const publicUnits = units.map(u => ({
+  corpus: u.corpus, work: u.work, label: WORK_LABEL.get(u.work) ?? u.work,
+  kind: u.kind, idx: u.idx, n: u.n,
+  reliable: u.n >= RELIABLE,
+  rates: round(u.rates, 2),
+  delta: u.delta!.map(x => +x.toFixed(2)),
+}))
+
+// The BROWSER gets both in one file, on purpose. A unit's `delta` is positional against
+// meta.deltaWords and is scored against meta.norm, so the two only mean anything together —
+// and public/data is served with an hour of cache plus stale-while-revalidate, which after a
+// deploy can hand a returning reader a fresh half and a stale half. As one file that cannot
+// happen. It is the same `meta` object written above, so the two copies cannot drift.
+fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify({ meta, units: publicUnits }))
+// Content vocabulary, with the accented forms the biblical lexicons can supply. Coverage is
+// partial by nature — those lexicons know the Septuagint and the New Testament, not Strabo —
+// so a word without an entry keeps the normalized form it is stored under, the same
+// fall-back-to-what-you-had rule the rest of the app's naming uses. Labels ride in the same
+// file as the lists they label, for the reason index.json exists.
+const vocabWorks = Object.fromEntries(
+  units.filter(u => u.kind === 'work').map(u => [u.work, u.content]),
+)
+const vocabLabels: Record<string, string> = {}
+for (const list of Object.values(vocabWorks)) {
+  for (const [l] of list ?? []) {
+    if (l in vocabLabels) continue
+    const d = (GNT_LEMMAS[l] ?? LXX_LEMMAS[l])?.d
+    if (d && d !== l) vocabLabels[l] = d
+  }
+}
+fs.writeFileSync(path.join(OUT, 'vocab.json'),
+  JSON.stringify({ labels: vocabLabels, works: vocabWorks }))
+console.error(`   ${Object.keys(vocabLabels).length} of `
+  + `${new Set(Object.values(vocabWorks).flatMap(v => (v ?? []).map(x => x[0]))).size}`
+  + ` content words have an accented form in the biblical lexicons`)
 // The passage picker's manifest: book, its work id, and words per chapter.
 fs.writeFileSync(path.join(OUT, 'passages.json'), JSON.stringify(passageBooks))
 
 const kb = (f: string) => Math.round(fs.statSync(path.join(OUT, f)).size / 1024)
-console.error(`\nwrote ${OUT}/  units.json ${kb('units.json')}KB · vocab.json ${kb('vocab.json')}KB`
+console.error(`\nwrote ${OUT}/  index.json ${kb('index.json')}KB · vocab.json ${kb('vocab.json')}KB`
   + ` · passages.json ${kb('passages.json')}KB · meta.json ${kb('meta.json')}KB`)

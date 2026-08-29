@@ -33,9 +33,13 @@ export interface StyleMeta {
   minWords: number
   reliableWords: number
   deltaWords: string[]
+  /** Accented form and short gloss per Delta word, so the table reads as Greek. */
+  deltaLabels: Record<string, { d: string; g: string }>
   /** Published so a passage profiled server-side lands on the same scale as the works. */
   norm: { mu: Record<string, number>; sd: Record<string, number> }
   spread: Record<string, number>
+  /** Per lens, [as close as anything gets, no closer than chance] — the result bar's scale. */
+  barScale: Record<string, [number, number]>
   passageCorpora: string[]
   features: StyleFeature[]
 }
@@ -54,6 +58,8 @@ export interface PassageProfile {
   n: number
   rates: Record<string, number>
   delta: number[]
+  /** Content lemmas as rates per 1,000 — the vocabulary lens needs them for a passage too. */
+  content: [string, number][]
   reliable: boolean
   span: { fromCh: number; toCh: number }
 }
@@ -123,12 +129,67 @@ export function featureSpread(units: StyleUnit[]): Record<string, number> {
   return out
 }
 
+/** public/data/style/vocab.json: the per-work content lists, plus accented forms where known. */
+export interface VocabFile {
+  labels: Record<string, string>
+  works: Record<string, [string, number][] | null>
+}
+export type VocabIndex = VocabFile['works']
+
+/**
+ * Vocabulary distance: one minus the cosine similarity of two works' content-word profiles.
+ *
+ * This is a different question from the other two lenses and the page says so. Function words
+ * and syntax are habits a writer carries between subjects; content words are largely WHAT the
+ * text is about. Judith and Tobit score alike here partly because both are Jewish diaspora
+ * novellas, not only because their Greek is alike — which is useful to see, as long as nobody
+ * mistakes it for the same measurement.
+ */
+export function vocabDistance(a: [string, number][], b: [string, number][]): number {
+  const A = new Map(a)
+  let dot = 0, na = 0, nb = 0
+  for (const [, v] of a) na += v * v
+  for (const [l, v] of b) {
+    nb += v * v
+    const x = A.get(l)
+    if (x !== undefined) dot += x * v
+  }
+  if (!na || !nb) return 1
+  return 1 - dot / Math.sqrt(na * nb)
+}
+
+export interface SharedWord {
+  lemma: string
+  target: number
+  other: number
+  /** The weaker of the two rates — how much vocabulary they genuinely hold in common. */
+  shared: number
+}
+
+/** The "why" for the vocabulary lens: the content words both texts lean on. */
+export function explainVocab(
+  a: [string, number][], b: [string, number][], limit = 10,
+): SharedWord[] {
+  const B = new Map(b)
+  const out: SharedWord[] = []
+  for (const [lemma, x] of a) {
+    const y = B.get(lemma)
+    if (y === undefined) continue
+    out.push({ lemma, target: x, other: y, shared: Math.min(x, y) })
+  }
+  return out.sort((p, q) => q.shared - p.shared).slice(0, limit)
+}
+
 export interface NeighbourOptions {
   /** Drop candidates from the target's own corpus — "what OUTSIDE the NT reads like this?" */
   excludeSameCorpus?: boolean
   /** Hide units too short to be steady. */
   reliableOnly?: boolean
   limit?: number
+  /** Required by the vocabulary lens; ignored by the others. */
+  vocab?: VocabIndex
+  /** A passage's own content list, which is not in the prebuilt index. */
+  targetVocab?: [string, number][] | null
 }
 
 export function neighbours(
@@ -138,15 +199,21 @@ export function neighbours(
   spread: Record<string, number>,
   opts: NeighbourOptions = {},
 ): Neighbour[] {
-  const { excludeSameCorpus = false, reliableOnly = true, limit = 25 } = opts
+  const { excludeSameCorpus = false, reliableOnly = true, limit = 25, vocab, targetVocab } = opts
+  const mine = targetVocab ?? vocab?.[target.work] ?? null
   const measure = lens === 'syntax'
     ? (u: StyleUnit) => syntaxDistance(target, u, spread)
-    : (u: StyleUnit) => delta(target, u)
+    : lens === 'vocabulary'
+      ? (u: StyleUnit) => (mine && vocab?.[u.work] ? vocabDistance(mine, vocab[u.work]!) : 1)
+      : (u: StyleUnit) => delta(target, u)
 
   return units
     .filter(u => u.kind === 'work' && u.work !== target.work)
     .filter(u => (excludeSameCorpus ? u.corpus !== target.corpus : true))
     .filter(u => (reliableOnly ? u.reliable : true))
+    // On the vocabulary lens a work with no list cannot be scored; ranking it at the maximum
+    // distance would quietly park it at the bottom as though it had been measured.
+    .filter(u => (lens === 'vocabulary' ? !!vocab?.[u.work] : true))
     .map(u => ({ unit: u, distance: measure(u) }))
     .sort((a, b) => a.distance - b.distance)
     .slice(0, limit)
@@ -175,6 +242,48 @@ export function explain(
       return { feature: f, target: a, other: b, z: Math.abs(a - b) / (spread[f.key] || 1) }
     })
     .sort((x, y) => y.z - x.z)
+    .slice(0, limit)
+}
+
+export interface WordGap {
+  lemma: string
+  /** Accented form, for display. */
+  display: string
+  gloss: string
+  target: number
+  other: number
+  z: number
+}
+
+/**
+ * The "why" for the FUNCTION-WORD lens.
+ *
+ * The ranking and its explanation have to be computed from the same thing, or the page says one
+ * number and justifies it with another. Delta ranks on z-scored lemma frequencies, so this
+ * ranks the same 150 dimensions by the same difference, and converts each back to a rate per
+ * 1,000 words for reading — the z-score is what the distance is made of, the rate is what a
+ * reader can check against a text.
+ */
+export function explainDelta(
+  target: StyleUnit, other: StyleUnit, meta: StyleMeta, limit = 10,
+): WordGap[] {
+  const { mu, sd } = meta.norm
+  return meta.deltaWords
+    .map((lemma, i) => {
+      const za = target.delta[i] ?? 0
+      const zb = other.delta[i] ?? 0
+      const back = (z: number) => z * (sd[lemma] ?? 0) + (mu[lemma] ?? 0)
+      const label = meta.deltaLabels?.[lemma]
+      return {
+        lemma,
+        display: label?.d || lemma,
+        gloss: label?.g || '',
+        target: Math.max(0, back(za)),
+        other: Math.max(0, back(zb)),
+        z: Math.abs(za - zb),
+      }
+    })
+    .sort((a, b) => b.z - a.z)
     .slice(0, limit)
 }
 

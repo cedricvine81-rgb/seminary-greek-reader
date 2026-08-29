@@ -1,7 +1,8 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Rows3, Feather, Link2, type LucideIcon } from 'lucide-react'
+import Link from 'next/link'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Rows3, Feather, Link2, Scale, type LucideIcon } from 'lucide-react'
 import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
@@ -405,6 +406,21 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                     ))}
                   </div>
                 </div>
+
+                {/* "What else reads like this?" is a question that arises while reading, not
+                    while browsing the Tools menu. The link carries the current book; the
+                    tool itself can then narrow to a range of chapters. It lives in this menu
+                    rather than the tab row, which is already one tab from overflowing. */}
+                {anchor && (
+                  <Link
+                    href={`/tools/register?work=${encodeURIComponent(anchor.book)}`}
+                    onClick={() => setShowToolsMenu(false)}
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <Scale size={15} className="text-gray-400" />
+                    {t('exeg.compareRegister', { book: anchor.name })}
+                  </Link>
+                )}
 
                 {tab === 'workspace' && (
                   <>

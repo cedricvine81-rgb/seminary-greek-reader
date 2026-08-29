@@ -16,8 +16,8 @@ import { profilePassage } from '@/lib/style-passage'
 interface Unit { work: string; kind: string; n: number; rates: Record<string, number>; delta: number[] }
 
 const units: Unit[] = JSON.parse(
-  fs.readFileSync(path.join(process.cwd(), 'public/data/style/units.json'), 'utf8'),
-)
+  fs.readFileSync(path.join(process.cwd(), 'public/data/style/index.json'), 'utf8'),
+).units
 const work = (id: string) => units.find(u => u.kind === 'work' && u.work === id)!
 
 describe('passage profiling', () => {

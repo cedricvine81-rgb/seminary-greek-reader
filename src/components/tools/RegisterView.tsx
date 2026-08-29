@@ -15,18 +15,78 @@ import clsx from 'clsx'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
 import {
-  CORPUS_KEY, chunksOf, explain, featureSpread, isBiblical, neighbours, passageUnit,
+  CORPUS_KEY, chunksOf, explain, explainDelta, explainVocab, featureSpread, isBiblical,
+  neighbours, passageUnit,
   type Lens, type PassageManifest, type PassageProfile, type StyleFeature, type StyleMeta,
-  type StyleUnit,
+  type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
 import { PassagePicker, type PassageSelection } from './PassagePicker'
 
 const LENSES: { id: Lens; key: string }[] = [
   { id: 'register', key: 'reg.lens.register' },
   { id: 'syntax', key: 'reg.lens.syntax' },
+  { id: 'vocabulary', key: 'reg.lens.vocabulary' },
 ]
 
 type Mode = 'work' | 'passage'
+
+/* ── the comparison as a link ────────────────────────────────────────────────
+ * A ranking nobody can send to anyone is half a tool: the natural next move after finding
+ * that Luke 1-2 sits with the Septuagint is to show someone. The state goes in the query
+ * string, and is read back on mount so a pasted link opens on the same comparison.
+ *
+ * Written with history.replaceState rather than the router: this is a bookmark, not a
+ * navigation, and every keystroke in a chapter box should not become a history entry.
+ */
+interface UrlState {
+  mode: Mode
+  work: string
+  lens: Lens
+  outside: boolean
+  short: boolean
+  passage: { corpus: string; book: string; fromCh: number; toCh: number } | null
+}
+
+function readUrl(): UrlState {
+  const fallback: UrlState = {
+    mode: 'work', work: 'Mark', lens: 'register', outside: false, short: false, passage: null,
+  }
+  if (typeof window === 'undefined') return fallback
+  const q = new URLSearchParams(window.location.search)
+  const book = q.get('book')
+  const from = Number(q.get('from'))
+  const to = Number(q.get('to'))
+  const hasPassage = !!book && Number.isFinite(from) && from > 0 && Number.isFinite(to) && to > 0
+  return {
+    mode: q.get('mode') === 'passage' && hasPassage ? 'passage' : 'work',
+    work: q.get('work') || fallback.work,
+      lens: q.get('lens') === 'syntax' ? 'syntax'
+      : q.get('lens') === 'vocabulary' ? 'vocabulary' : 'register',
+    outside: q.get('outside') === '1',
+    short: q.get('short') === '1',
+    passage: hasPassage
+      ? { corpus: (q.get('corpus') || 'GNT').toUpperCase(), book: book!, fromCh: from, toCh: to }
+      : null,
+  }
+}
+
+function writeUrl(s: UrlState): void {
+  if (typeof window === 'undefined') return
+  const q = new URLSearchParams()
+  q.set('mode', s.mode)
+  q.set('lens', s.lens)
+  if (s.outside) q.set('outside', '1')
+  if (s.short) q.set('short', '1')
+  if (s.mode === 'passage' && s.passage) {
+    q.set('corpus', s.passage.corpus)
+    q.set('book', s.passage.book)
+    q.set('from', String(s.passage.fromCh))
+    q.set('to', String(s.passage.toCh))
+  } else {
+    q.set('work', s.work)
+  }
+  window.history.replaceState(null, '', `${window.location.pathname}?${q}`)
+}
 
 export function RegisterView() {
   const t = useT()
@@ -35,16 +95,21 @@ export function RegisterView() {
   const [units, setUnits] = useState<StyleUnit[] | null>(null)
   const [manifest, setManifest] = useState<PassageManifest | null>(null)
   const [error, setError] = useState(false)
-  const [mode, setMode] = useState<Mode>('work')
-  const [target, setTarget] = useState('Mark')
-  const [lens, setLens] = useState<Lens>('register')
-  const [outsideOnly, setOutsideOnly] = useState(false)
+  const initial = useMemo(readUrl, [])
+  const [mode, setMode] = useState<Mode>(initial.mode)
+  const [target, setTarget] = useState(initial.work)
+  const [lens, setLens] = useState<Lens>(initial.lens)
+  const [outsideOnly, setOutsideOnly] = useState(initial.outside)
+  const [includeShort, setIncludeShort] = useState(initial.short)
+  const [showAll, setShowAll] = useState(false)
   const [open, setOpen] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   const [selection, setSelection] = useState<PassageSelection | null>(null)
   const [passage, setPassage] = useState<StyleUnit | null>(null)
   const [loadingPassage, setLoadingPassage] = useState(false)
   const [passageError, setPassageError] = useState(false)
+  const [vocab, setVocab] = useState<VocabFile | null>(null)
+  const [passageVocab, setPassageVocab] = useState<[string, number][] | null>(null)
 
   // The biblical books localize through book-names.ts; a prose title stays as it is cited.
   const nameOf = (u: StyleUnit) => (isBiblical(u.corpus) && !u.work.startsWith('passage:')
@@ -61,14 +126,34 @@ export function RegisterView() {
   useEffect(() => {
     let live = true
     Promise.all([
-      fetch('/data/style/meta.json').then(r => r.json()),
-      fetch('/data/style/units.json').then(r => r.json()),
+      // One file, because a unit's `delta` is positional against meta.deltaWords and scored
+      // against meta.norm — fetched separately, an hour of cache could pair a fresh half with
+      // a stale one after a deploy. The shape is checked rather than trusted for the same
+      // reason: a mismatch should read as "could not load", never as a blank page.
+      fetch('/data/style/index.json').then(r => r.json()),
       fetch('/data/style/passages.json').then(r => r.json()),
     ])
-      .then(([m, u, p]) => { if (live) { setMeta(m); setUnits(u); setManifest(p) } })
+      .then(([idx, p]) => {
+        if (!live) return
+        if (!idx?.meta?.norm?.mu || !Array.isArray(idx.units) || !idx.units.length) {
+          setError(true)
+          return
+        }
+        setMeta(idx.meta); setUnits(idx.units); setManifest(p)
+      })
       .catch(() => { if (live) setError(true) })
     return () => { live = false }
   }, [])
+
+  // 1.9MB of content-word lists, fetched only if the reader asks for that lens.
+  useEffect(() => {
+    if (lens !== 'vocabulary' || vocab) return
+    let live = true
+    fetch('/data/style/vocab.json').then(r => r.json())
+      .then((v: VocabFile) => { if (live && v?.works) setVocab(v) })
+      .catch(() => { if (live) setError(true) })
+    return () => { live = false }
+  }, [lens, vocab])
 
   const works = useMemo(
     () => (units ?? []).filter(u => u.kind === 'work')
@@ -94,6 +179,7 @@ export function RegisterView() {
         const range = p.span.toCh === p.span.fromCh
           ? `${p.span.fromCh}` : `${p.span.fromCh}–${p.span.toCh}`
         setPassage(passageUnit(p, s.corpus, s.book, `${s.label} ${range}`))
+        setPassageVocab(p.content ?? null)
         setOpen(null)
       })
       .catch(() => { if (alive()) { setPassage(null); setPassageError(true) } })
@@ -107,15 +193,32 @@ export function RegisterView() {
     return () => { live = false; clearTimeout(id) }
   }, [mode, selection, fetchPassage])
 
-  const workUnit = works.find(w => w.work === target) ?? works[0]
+  useEffect(() => {
+    writeUrl({
+      mode, work: target, lens, outside: outsideOnly, short: includeShort,
+      passage: selection
+        ? { corpus: selection.corpus, book: selection.book, fromCh: selection.fromCh, toCh: selection.toCh }
+        : null,
+    })
+  }, [mode, target, lens, outsideOnly, includeShort, selection])
+
+  // A link can name a work the index does not hold — a book under the 400-word floor, or a
+  // stale URL. Falling back silently would answer a question nobody asked.
+  const requested = works.find(w => w.work === target)
+  const workUnit = requested ?? works[0]
+  const missingWork = mode === 'work' && !requested && target !== workUnit?.work
   const targetUnit = mode === 'passage' ? passage : workUnit
 
   const results = useMemo(() => {
     if (!units || !targetUnit) return []
+    if (lens === 'vocabulary' && !vocab) return []
     return neighbours(targetUnit, units, lens, spread, {
-      excludeSameCorpus: outsideOnly, limit: 25,
+      excludeSameCorpus: outsideOnly, reliableOnly: !includeShort,
+      limit: showAll ? units.length : 25,
+      vocab: vocab?.works,
+      targetVocab: mode === 'passage' ? passageVocab : undefined,
     })
-  }, [units, targetUnit, lens, spread, outsideOnly])
+  }, [units, targetUnit, lens, spread, outsideOnly, includeShort, showAll, vocab, mode, passageVocab])
 
   const filteredWorks = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -128,8 +231,9 @@ export function RegisterView() {
     return <p className="py-10 text-sm italic text-gray-400">{t('reg.loading')}</p>
   }
 
-  const maxD = results.length ? results[results.length - 1].distance : 1
-  const minD = results.length ? results[0].distance : 0
+  // Absolute, not relative to what is on screen — see meta.barScale for why.
+  const [barNear, barFar] = meta.barScale?.[lens] ?? [0.2, 1]
+  const barFor = (d: number) => Math.min(1, Math.max(0, (barFar - d) / (barFar - barNear)))
   const chunks = targetUnit ? chunksOf(targetUnit.work, units) : []
 
   return (
@@ -185,7 +289,7 @@ export function RegisterView() {
             )}
           </div>
         ) : (
-          <PassagePicker manifest={manifest} value={selection} onChange={setSelection} />
+          <PassagePicker manifest={manifest} initial={initial.passage} onChange={setSelection} />
         )}
       </div>
 
@@ -211,8 +315,17 @@ export function RegisterView() {
           <input type="checkbox" checked={outsideOnly} onChange={e => setOutsideOnly(e.target.checked)} />
           {t('reg.outsideOnly')}
         </label>
+        <label className="flex items-center gap-2 text-sm text-gray-700">
+          <input type="checkbox" checked={includeShort} onChange={e => setIncludeShort(e.target.checked)} />
+          {t('reg.includeShort')}
+        </label>
       </div>
 
+      {missingWork && (
+        <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          {t('reg.unknownWork', { work: target })}
+        </p>
+      )}
       {mode === 'passage' && passageError && (
         <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
           {t('reg.passageFailed')}
@@ -232,15 +345,31 @@ export function RegisterView() {
       ) : (
         <div className={clsx(loadingPassage && 'opacity-50 transition-opacity')}>
           <h2 className="mb-1 text-base font-semibold text-gray-900">
-            {t('reg.closestTo', { work: nameOf(targetUnit) })}
+            {t(lens === 'vocabulary' ? 'reg.closestVocab'
+              : lens === 'syntax' ? 'reg.closestSyntax' : 'reg.closestTo',
+              { work: nameOf(targetUnit) })}
           </h2>
-          <p className="mb-3 text-xs text-gray-500">{t('reg.scaleNote')}</p>
+          <p className="mb-3 text-xs text-gray-500">
+            {t('reg.scaleNoteAbs')}
+            {lens === 'vocabulary' && <> {t('reg.vocabCaveat')}</>}
+          </p>
 
           <ul className="divide-y divide-gray-100 border-y border-gray-100">
             {results.map(({ unit, distance }, i) => {
-              const pct = maxD > minD ? 1 - (distance - minD) / (maxD - minD) : 1
+              const pct = barFor(distance)
               const isOpen = open === unit.work
-              const gaps = isOpen ? explain(targetUnit, unit, meta.features, spread) : []
+              // The explanation follows the lens. Ranking on function words and then
+              // explaining with syntax would justify one number with another.
+              const gaps = isOpen && lens === 'syntax'
+                ? explain(targetUnit, unit, meta.features, spread) : []
+              const wordGaps = isOpen && lens === 'register'
+                ? explainDelta(targetUnit, unit, meta) : []
+              const shared = isOpen && lens === 'vocabulary' && vocab?.works[unit.work]
+                ? explainVocab(
+                    (mode === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
+                    vocab.works[unit.work]!,
+                  )
+                : []
               return (
                 <li key={unit.work}>
                   <button
@@ -258,7 +387,7 @@ export function RegisterView() {
                       </span>
                     </span>
                     <span className="hidden h-1.5 w-28 shrink-0 overflow-hidden rounded-full bg-gray-100 sm:block">
-                      <span className="block h-full rounded-full bg-brand-500" style={{ width: `${Math.max(4, pct * 100)}%` }} />
+                      <span className="block h-full rounded-full bg-brand-500" style={{ width: `${Math.max(2, pct * 100)}%` }} />
                     </span>
                     <span className="w-12 shrink-0 text-right font-mono text-xs tabular-nums text-gray-500">
                       {distance.toFixed(2)}
@@ -269,13 +398,14 @@ export function RegisterView() {
                   {isOpen && (
                     <div className="pb-4 pl-9 pr-2">
                       <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700">
-                        {t('reg.why')}
+                        {t(lens === 'syntax' ? 'reg.why'
+                          : lens === 'vocabulary' ? 'reg.whyShared' : 'reg.whyWords')}
                       </p>
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[26rem] text-sm">
                           <thead>
                             <tr className="text-xs uppercase tracking-wide text-gray-400">
-                              <th className="py-1 text-left font-medium">{t('reg.feature')}</th>
+                              <th className="py-1 text-left font-medium">{t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}</th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
                               <th className="py-1 text-right font-medium">{nameOf(unit)}</th>
                             </tr>
@@ -296,16 +426,42 @@ export function RegisterView() {
                                 <td className="py-1 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
                               </tr>
                             ))}
+                            {shared.map(g => (
+                              <tr key={g.lemma} className="border-t border-gray-50">
+                                <td className="py-1 pr-3 font-reading text-gray-900">{vocab?.labels[g.lemma] ?? g.lemma}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
+                              </tr>
+                            ))}
+                            {wordGaps.map(g => (
+                              <tr key={g.lemma} className="border-t border-gray-50">
+                                <td className="py-1 pr-3">
+                                  <span className="font-reading text-gray-900">{g.display}</span>
+                                  {g.gloss && <span className="ml-2 text-xs text-gray-500">{g.gloss}</span>}
+                                </td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
-                      <p className="mt-2 text-xs text-gray-500">{t('reg.per1000')} · <span className="text-gray-400">~</span> {t('reg.approxTip')}</p>
+                      <p className="mt-2 text-xs text-gray-500">
+                        {t('reg.per1000')}
+                        {lens === 'syntax' && <> · <span className="text-gray-400">~</span> {t('reg.approxTip')}</>}
+                      </p>
                     </div>
                   )}
                 </li>
               )
             })}
           </ul>
+          {!showAll && results.length >= 25 && (
+            <button onClick={() => setShowAll(true)}
+              className="mt-3 text-xs font-medium text-brand-700 hover:underline">
+              {t('reg.showAll')}
+            </button>
+          )}
         </div>
       )}
 

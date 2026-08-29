@@ -14,7 +14,7 @@
 import fs from 'node:fs'
 
 const meta = JSON.parse(fs.readFileSync('public/data/style/meta.json', 'utf8'))
-const units = JSON.parse(fs.readFileSync('public/data/style/units.json', 'utf8'))
+const units = JSON.parse(fs.readFileSync('public/data/style/index.json', 'utf8')).units
 const works = units.filter(u => u.kind === 'work')
 const byName = new Map(works.map(w => [w.work, w]))
 

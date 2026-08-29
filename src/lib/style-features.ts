@@ -241,3 +241,23 @@ export function deltaVector(
     return (freq - (mu[l] ?? 0)) / (sd[l] || 1e-9)
   })
 }
+
+/**
+ * The content vocabulary of a profile: the commonest lemmas that are NOT Delta dimensions,
+ * as rates per 1,000 words.
+ *
+ * Shared by the builder and the passage API for the same reason profileWords is — the
+ * vocabulary lens compares a passage's list against the prebuilt ones, and a list cut a
+ * different way would not be comparable.
+ */
+export function contentVocab(
+  p: Profile, deltaWords: Iterable<string>, limit = 200,
+): [string, number][] {
+  const skip = new Set(deltaWords)
+  const out: [string, number][] = []
+  p.lem.forEach((c, l) => { if (!skip.has(l) && l) out.push([l, c]) })
+  return out
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([l, c]) => [l, +(1000 * c / p.n).toFixed(2)] as [string, number])
+}
