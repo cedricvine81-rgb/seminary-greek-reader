@@ -74,10 +74,12 @@ export const PARTICIPLES_CONTENT = (
         note="Neuter Gen. & Dat. = Masculine  ·  Neuter Acc. = Neuter Nom."
       />
     </TableAside>
-    <P id="participles.p.now-bolt-those">
-      Now bolt those endings onto a verb stem and you have the <strong>present active participle</strong> —
-      "loosing." Notice it is literally <Gk>λύ‑</Gk> + the <Gk>ὤν</Gk> pattern:
-    </P>
+    <LevelOnly level="beginning">
+      <P id="participles.p.now-bolt-those">
+        Now bolt those endings onto a verb stem and you have the <strong>present active participle</strong> —
+        "loosing." Notice it is literally <Gk>λύ‑</Gk> + the <Gk>ὤν</Gk> pattern:
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <p><Tr id="participles.as.present-active-participle-2">Present active participle = "loosing" — action going on at the <em>same time</em> as the main verb (Simultaneous).</Tr></p>

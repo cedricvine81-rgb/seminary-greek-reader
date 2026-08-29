@@ -36,11 +36,13 @@ export const CONTRACT_VERBS_CONTENT = (
 
     {/* ── 2 · The rules ──────────────────────────────────── */}
     <SectionHeading id="contract-verbs.h.contraction-rules">The contraction rules</SectionHeading>
-    <P id="contract-verbs.p.each-stem-vowel">
-      Each stem-vowel family has its own small rule-set. You don't need to produce these from scratch —
-      you need to <em>recognize</em> the results, and the circumflex accent (<Gk>ῶ, εῖ, οῦ, ᾷ</Gk>) that
-      contraction usually leaves behind, like a scar marking where two vowels fused.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="contract-verbs.p.each-stem-vowel">
+        Each stem-vowel family has its own small rule-set. You don't need to produce these from scratch —
+        you need to <em>recognize</em> the results, and the circumflex accent (<Gk>ῶ, εῖ, οῦ, ᾷ</Gk>) that
+        contraction usually leaves behind, like a scar marking where two vowels fused.
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="contract-verbs.al.reading-tip">Reading tip</Tr></AsideLabel>
@@ -58,7 +60,9 @@ export const CONTRACT_VERBS_CONTENT = (
         ]}
       />
     </TableAside>
-    <P id="contract-verbs.p.here-all-three">Here are all three families across the present active — compare column by column with <Gk>λύω</Gk>:</P>
+    <LevelOnly level="beginning">
+      <P id="contract-verbs.p.here-all-three">Here are all three families across the present active — compare column by column with <Gk>λύω</Gk>:</P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="contract-verbs.al.default-translations">Default translations</Tr></AsideLabel>

@@ -36,11 +36,13 @@ export const PRONUNCIATION_CONTENT = (
 
     {/* ── 2 · The alphabet ───────────────────────────────── */}
     <SectionHeading id="pronunciation.h.letters">The 24 letters</SectionHeading>
-    <P id="pronunciation.p.here-full-alphabet">
-      Here is the full alphabet with the sounds we use in class (the <strong>Erasmian</strong> scheme —
-      more on the alternatives below). Say each letter's name aloud as you copy it out; the names
-      themselves rehearse the sounds.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="pronunciation.p.here-full-alphabet">
+        Here is the full alphabet with the sounds we use in class (the <strong>Erasmian</strong> scheme —
+        more on the alternatives below). Say each letter's name aloud as you copy it out; the names
+        themselves rehearse the sounds.
+      </P>
+    </LevelOnly>
     <TableAside
       sticky
       beginning={<>
@@ -88,10 +90,12 @@ export const PRONUNCIATION_CONTENT = (
 
     {/* ── 3 · Tricky letters ─────────────────────────────── */}
     <SectionHeading id="pronunciation.h.impostors-letters-fool">The impostors: letters that fool English eyes</SectionHeading>
-    <P id="pronunciation.p.most-mistakes-first">
-      Most mistakes in the first weeks come from six <strong>false friends</strong> — Greek letters that
-      look like English letters but aren't. Drill these until the reflex dies:
-    </P>
+    <LevelOnly level="beginning">
+      <P id="pronunciation.p.most-mistakes-first">
+        Most mistakes in the first weeks come from six <strong>false friends</strong> — Greek letters that
+        look like English letters but aren't. Drill these until the reflex dies:
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="pronunciation.al.three-groups-class">Three groups from class</Tr></AsideLabel>
@@ -199,14 +203,16 @@ export const PRONUNCIATION_CONTENT = (
 
     {/* ── 6 · Accents & punctuation ──────────────────────── */}
     <SectionHeading id="pronunciation.h.accents-punctuation">Accents and punctuation</SectionHeading>
-    <P id="pronunciation.p.greek-words-carry">
-      Greek words carry accent marks — acute (<Gk>ά</Gk>), grave (<Gk>ὰ</Gk>), circumflex (<Gk>ᾶ</Gk>).
-      For now, the class rule is blunt: <strong>breathings are essential; accents are unimportant</strong>.
-      Read the accent as a stress mark ("say this syllable louder") and move on. Later you'll meet the
-      handful of places where an accent is the only difference between words (<Gk>τις</Gk> "someone" vs.
-      <Gk> τίς</Gk> "who?"; present <Gk>μένω</Gk> vs. future <Gk>μενῶ</Gk>) — the Pronouns and Liquid
-      Verbs chapters flag them when they matter.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="pronunciation.p.greek-words-carry">
+        Greek words carry accent marks — acute (<Gk>ά</Gk>), grave (<Gk>ὰ</Gk>), circumflex (<Gk>ᾶ</Gk>).
+        For now, the class rule is blunt: <strong>breathings are essential; accents are unimportant</strong>.
+        Read the accent as a stress mark ("say this syllable louder") and move on. Later you'll meet the
+        handful of places where an accent is the only difference between words (<Gk>τις</Gk> "someone" vs.
+        <Gk> τίς</Gk> "who?"; present <Gk>μένω</Gk> vs. future <Gk>μενῶ</Gk>) — the Pronouns and Liquid
+        Verbs chapters flag them when they matter.
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <p><Tr id="pronunciation.as.question-mark-will">The question mark will ambush you once: what looks like an English semicolon <Gk>;</Gk> ends a Greek question.</Tr></p>

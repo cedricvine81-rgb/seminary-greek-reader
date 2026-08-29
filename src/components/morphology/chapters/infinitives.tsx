@@ -72,10 +72,12 @@ export const INFINITIVES_CONTENT = (
     />
 
     <SectionHeading id="infinitives.h.where-you'll-meet">Where you'll meet it first: after helper verbs</SectionHeading>
-    <P id="infinitives.p.exactly-english-set">
-      Exactly as in English, a set of "helper" verbs is incomplete without an infinitive:
-      "I <em>am able</em>… (to do what?)". Learn these pairs as a unit:
-    </P>
+    <LevelOnly level="beginning">
+      <P id="infinitives.p.exactly-english-set">
+        Exactly as in English, a set of "helper" verbs is incomplete without an infinitive:
+        "I <em>am able</em>… (to do what?)". Learn these pairs as a unit:
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="infinitives.al.sentences">In sentences</Tr></AsideLabel>

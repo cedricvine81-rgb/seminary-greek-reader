@@ -134,12 +134,14 @@ export const PRONOUNS_CONTENT = (
 
     {/* ── 3 · 1st & 2nd person ───────────────────────────── */}
     <SectionHeading id="pronouns.h.personal-pronouns">"I" and "you": the personal pronouns</SectionHeading>
-    <P id="pronouns.p.here-surprise-verb">
-      Here is a surprise from the verb chapter: Greek usually does <em>not</em> need a word for "I" or "you" —
-      the verb ending already says who acts (<Gk>λέγω</Gk> = "I say," all by itself). So when
-      <Gk> ἐγώ</Gk> or <Gk>σύ</Gk> <em>does</em> appear, it adds <strong>emphasis</strong>:
-      <Gk> ἐγὼ λέγω</Gk> is "<em>I</em> say" — I, whatever others may say.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="pronouns.p.here-surprise-verb">
+        Here is a surprise from the verb chapter: Greek usually does <em>not</em> need a word for "I" or "you" —
+        the verb ending already says who acts (<Gk>λέγω</Gk> = "I say," all by itself). So when
+        <Gk> ἐγώ</Gk> or <Gk>σύ</Gk> <em>does</em> appear, it adds <strong>emphasis</strong>:
+        <Gk> ἐγὼ λέγω</Gk> is "<em>I</em> say" — I, whatever others may say.
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <p><Tr id="pronouns.as.greek-usually-leaves">Greek usually leaves out "I / you" — the verb ending already says who acts. So when <Gk>ἐγώ</Gk> or <Gk>σύ</Gk> <em>do</em> appear, they add emphasis.</Tr></p>

@@ -39,27 +39,33 @@ export const BASIC_VERBS_CONTENT = (
 
     {/* ── 1 · Why a verb before the nouns ─────────────────── */}
     <SectionHeading id="basic-verbs.h.why-verbs-first">Why verbs come first</SectionHeading>
-    <P id="basic-verbs.p.sentence-needs-verb">
-      A sentence needs a verb. The chapters that follow are about nouns and adjectives, but every
-      example in them has a verb in it — "the good man <em>hears</em> the word," "we <em>have</em> the
-      book" — so a handful of verbs has to come first, or the examples cannot be read.
-      This chapter is that handful: one tense, one voice, one mood, and the endings that carry them —
-      the verbs gone through in class before the nouns begin.
-    </P>
-    <P id="basic-verbs.p.ending-carries-person">
-      The important difference from English is where the person lives. English needs a pronoun —
-      "<em>I</em> hear," "<em>we</em> hear." Greek puts it in the <strong>ending</strong>, so the pronoun
-      is not needed: <Gk>ἀκούω</Gk> is already "I hear," and <Gk>ἀκούομεν</Gk> is already "we hear."
-      Learn the six endings once and they work on every regular verb in the language.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="basic-verbs.p.sentence-needs-verb">
+        A sentence needs a verb. The chapters that follow are about nouns and adjectives, but every
+        example in them has a verb in it — "the good man <em>hears</em> the word," "we <em>have</em> the
+        book" — so a handful of verbs has to come first, or the examples cannot be read.
+        This chapter is that handful: one tense, one voice, one mood, and the endings that carry them —
+        the verbs gone through in class before the nouns begin.
+      </P>
+    </LevelOnly>
+    <LevelOnly level="beginning">
+      <P id="basic-verbs.p.ending-carries-person">
+        The important difference from English is where the person lives. English needs a pronoun —
+        "<em>I</em> hear," "<em>we</em> hear." Greek puts it in the <strong>ending</strong>, so the pronoun
+        is not needed: <Gk>ἀκούω</Gk> is already "I hear," and <Gk>ἀκούομεν</Gk> is already "we hear."
+        Learn the six endings once and they work on every regular verb in the language.
+      </P>
+    </LevelOnly>
 
     {/* ── 2 · λύω, the paradigm verb ──────────────────────── */}
     <SectionHeading id="basic-verbs.h.luo-paradigm">λύω — the pattern verb</SectionHeading>
-    <P id="basic-verbs.p.luo-is-the-model">
-      Grammars conjugate <Gk>λύω</Gk> "I loose, I untie" first, because it is perfectly regular and its
-      stem never changes: <Gk>λυ-</Gk> plus an ending, six times. Learn this table and you have the
-      present active indicative of every regular verb.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="basic-verbs.p.luo-is-the-model">
+        Grammars conjugate <Gk>λύω</Gk> "I loose, I untie" first, because it is perfectly regular and its
+        stem never changes: <Gk>λυ-</Gk> plus an ending, six times. Learn this table and you have the
+        present active indicative of every regular verb.
+      </P>
+    </LevelOnly>
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="basic-verbs.al.no-pronoun">No pronoun needed</Tr></AsideLabel>
@@ -98,11 +104,13 @@ export const BASIC_VERBS_CONTENT = (
 
     {/* ── 3 · The verbs the next chapters use ─────────────── */}
     <SectionHeading id="basic-verbs.h.core-verbs">The core verbs</SectionHeading>
-    <P id="basic-verbs.p.nine-like-luo">
-      Nine verbs behave exactly like <Gk>λύω</Gk>. They take the endings you have just learned without a
-      single change — only the stem differs, never the ending — so learning the table once has already
-      given you all nine. The number is how often each occurs in the New Testament.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="basic-verbs.p.nine-like-luo">
+        Nine verbs behave exactly like <Gk>λύω</Gk>. They take the endings you have just learned without a
+        single change — only the stem differs, never the ending — so learning the table once has already
+        given you all nine. The number is how often each occurs in the New Testament.
+      </P>
+    </LevelOnly>
     <MorphTable id="basic-verbs.t2" tCols={[1, 3]} flush title="Nine verbs like λύω"
       headers={['1st sg.', 'Meaning', '3rd sg.', 'NT times']} firstColIsData
       rows={[
@@ -125,13 +133,15 @@ export const BASIC_VERBS_CONTENT = (
 
     {/* ── 3b · The ε-contracts ────────────────────────────── */}
     <SectionHeading id="basic-verbs.h.like-phileo">Six more like φιλέω</SectionHeading>
-    <P id="basic-verbs.p.contract-explained">
-      A second group ends in <Gk>-έω</Gk> rather than <Gk>-ω</Gk>, and the ε meets the vowel of the ending and
-      merges with it: <Gk>φιλέ-ω</Gk> becomes <Gk>φιλῶ</Gk>. Nothing new is happening — the endings are the
-      ones you already know, wearing a circumflex where two vowels have run together. These are
-      the <Term t="contract verb">contract verbs</Term>, and the chapter of that name works through all three
-      kinds; these six are the ones needed now.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="basic-verbs.p.contract-explained">
+        A second group ends in <Gk>-έω</Gk> rather than <Gk>-ω</Gk>, and the ε meets the vowel of the ending and
+        merges with it: <Gk>φιλέ-ω</Gk> becomes <Gk>φιλῶ</Gk>. Nothing new is happening — the endings are the
+        ones you already know, wearing a circumflex where two vowels have run together. These are
+        the <Term t="contract verb">contract verbs</Term>, and the chapter of that name works through all three
+        kinds; these six are the ones needed now.
+      </P>
+    </LevelOnly>
     <MorphTable id="basic-verbs.t4" tCols={[0, 2, 4]} flush title="φιλέω — present active indicative (contracted)"
       headers={['', 'Singular', '', 'Plural', '']} firstColIsData
       rows={[
@@ -156,12 +166,14 @@ export const BASIC_VERBS_CONTENT = (
 
     {/* ── 3c · Compounds ─────────────────────────────────── */}
     <SectionHeading id="basic-verbs.h.compounds">Eleven compound verbs</SectionHeading>
-    <P id="basic-verbs.p.compound-prefix">
-      A compound verb is a preposition stuck on the front of a verb, and the join changes nothing about
-      the endings. <Gk>συνάγω</Gk> is <Gk>σύν</Gk> + <Gk>ἄγω</Gk> and conjugates exactly like <Gk>ἄγω</Gk>:
-      <Gk> συνάγω, συνάγεις, συνάγει, συνάγομεν, συνάγετε, συνάγουσι(ν)</Gk>. The prefix simply rides along at
-      the front — so nine of the eleven below are verbs you have already conjugated in this chapter.
-    </P>
+    <LevelOnly level="beginning">
+      <P id="basic-verbs.p.compound-prefix">
+        A compound verb is a preposition stuck on the front of a verb, and the join changes nothing about
+        the endings. <Gk>συνάγω</Gk> is <Gk>σύν</Gk> + <Gk>ἄγω</Gk> and conjugates exactly like <Gk>ἄγω</Gk>:
+        <Gk> συνάγω, συνάγεις, συνάγει, συνάγομεν, συνάγετε, συνάγουσι(ν)</Gk>. The prefix simply rides along at
+        the front — so nine of the eleven below are verbs you have already conjugated in this chapter.
+      </P>
+    </LevelOnly>
     <P id="basic-verbs.p.compound-meaning">
       What the prefix does change is the sense, and not always predictably. <Gk>ἐκβάλλω</Gk> is "throw
       <em>out</em>," which you could have guessed from <Gk>ἐκ</Gk> "out of" and <Gk>βάλλω</Gk> "I throw";
