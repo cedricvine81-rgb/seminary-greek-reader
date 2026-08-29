@@ -5,6 +5,7 @@
 // and every render dies with `(0 , x.NT) is not a function` — an error that only appears
 // in the production build, streamed after the 200 status, so curl checks look clean.
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import type { Assignment } from '@/types/assignment'
@@ -57,6 +58,20 @@ export function AssignmentList({ assignments, completedIds = [], courseNames = {
     )
   }
 
+  // "Now" is read AFTER mount, never during render. Comparing against a fresh `new Date()`
+  // while rendering asks the server and the browser the same question at two different
+  // instants on two different clocks, and any deadline that falls between them flips the
+  // badge — a hydration mismatch on a row that looks completely static. The first client
+  // render therefore matches the server exactly (nothing overdue), and the effect fills in
+  // the real answer a tick later.
+  const [now, setNow] = useState<number | null>(null)
+  useEffect(() => {
+    setNow(Date.now())
+    // Re-check on the minute so a deadline passing while the page is open is not missed.
+    const id = setInterval(() => setNow(Date.now()), 60_000)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <div className="space-y-2">
       {assignments.map(a => {
@@ -64,7 +79,7 @@ export function AssignmentList({ assignments, completedIds = [], courseNames = {
         // Two-round passage exercises run until the Round 2 deadline, so judge
         // "overdue"/"due" by that, not their dueDate (the Round 1 cut-off).
         const finalDue = a.round2Deadline ?? a.round1Deadline ?? a.dueDate
-        const overdue = !done && new Date(finalDue) < new Date()
+        const overdue = !done && now !== null && new Date(finalDue).getTime() < now
         return (
           <Link
             key={a.id}
