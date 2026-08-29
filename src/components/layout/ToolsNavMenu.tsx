@@ -19,6 +19,7 @@ const TOOLS = [
   { href: '/themes', key: 'tools.themes' },
   { href: '/map', key: 'tools.places' },
   { href: '/search/construct', key: 'tools.construct' },
+  { href: '/tools/register', key: 'tools.register' },
 ]
 
 export function ToolsNavMenu() {

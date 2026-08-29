@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Church, Map as MapIcon, Blocks, ArrowRight } from 'lucide-react'
+import { ArrowRight, Blocks, Church, Map as MapIcon, Scale } from 'lucide-react'
 import { THEME_PAGES } from '@/lib/themes'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { getServerT, getServerLocale } from '@/lib/i18n/server'
@@ -42,6 +42,11 @@ const TOOLS = [
     href: '/search/construct', icon: Blocks,
     nameKey: 'tools.construct', taglineKey: 'tools.construct.tagline', bodyKey: 'tools.construct.body',
     stat: (tr: (k: string) => string) => tr('tools.construct.stat'),
+  },
+  {
+    href: '/tools/register', icon: Scale,
+    nameKey: 'tools.register', taglineKey: 'tools.register.tagline', bodyKey: 'tools.register.body',
+    stat: (tr: (k: string) => string) => tr('tools.register.stat'),
   },
 ]
 

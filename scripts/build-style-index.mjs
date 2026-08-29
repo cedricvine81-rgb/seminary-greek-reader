@@ -42,6 +42,41 @@ const CORPORA = ['GNT', 'LXX', 'josephus', 'philo', 'apostolic-fathers',
 const load = name =>
   JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(SRC, `${name}.json.gz`))))
 
+/**
+ * Human names. Construct search already ships a label per BOOK plus a `group` naming the work
+ * it belongs to ("Josephus, Against Apion"), which is exactly the level this tool compares at,
+ * so the names come free rather than being re-invented here.
+ */
+const WORKS_META = JSON.parse(fs.readFileSync(path.join(SRC, 'works.json'), 'utf8'))
+// Keyed BY CORPUS, not by id alone: the Hebrew MT registry reuses the OSIS ids and labels them
+// with bare abbreviations ("Gen" → "Gen"), so a flat map silently renamed 34 Septuagint books
+// after whichever registry was read last.
+const LABELS = new Map()
+const labelKey = (corpus, id) => `${corpus}|${id}`
+for (const [corpus, entries] of Object.entries(WORKS_META)) {
+  for (const e of entries) {
+    // A single-segment id IS a book ("Tob" → "Tobit"), and there `group` is the corpus name
+    // ("Septuagint"), which would label every LXX book identically. Only multi-segment ids —
+    // the library works — take their group, which is the work the books belong to.
+    LABELS.set(labelKey(corpus, e.id), e.id.includes('/') ? (e.group || e.label) : e.label)
+  }
+}
+
+/**
+ * A work assembled from several books is labelled by its books, so the raw name carries the
+ * first book's number ("Eusebius, Ecclesiastical History (Book 1)"). Strip the book marker,
+ * but only when every constituent agrees once stripped — otherwise the label is genuinely
+ * per-book and needs a hand-written name.
+ */
+const GROUP_LABEL = { 'pseudepigrapha/testaments': 'Testaments of the Twelve Patriarchs' }
+const stripBook = s => s.replace(/\s*\((?:Book)\s+\d+\)$/, '').replace(/\s+(?:\d+|[IVX]+)$/, '')
+const groupLabel = (work, labels) => {
+  if (GROUP_LABEL[work]) return GROUP_LABEL[work]
+  if (labels.length < 2) return labels[0] ?? work
+  const stripped = new Set(labels.map(stripBook))
+  return stripped.size === 1 ? [...stripped][0] : labels[0]
+}
+
 /* ── morphology helpers ──────────────────────────────────────────────────── */
 // Scan the whole parsing string: the LXX drops the POS field, so position is unreliable.
 const hasTok = (parsing, tok) => parsing.includes(tok)
@@ -156,6 +191,7 @@ function profile(words) {
 }
 
 /* ── gather ──────────────────────────────────────────────────────────────── */
+const WORK_LABEL = new Map()
 const units = []          // { corpus, work, book, kind:'book'|'chunk', idx, profile }
 const corpusTotals = new Map()
 
@@ -165,18 +201,35 @@ for (const corpus of CORPORA) {
   const data = load(corpus)
   let wordsInCorpus = 0
 
-  // Group books into WORKS. "josephus/antiquities/3" → work "josephus/antiquities".
+  // Group books into WORKS. This is fiddlier than it looks and getting it wrong is silent:
+  // stripping the last segment unconditionally collapsed all 394 Greco-Roman keys into one
+  // "greco" work — Plato and Aristotle and Plutarch averaged into a single 3.6M-word blur,
+  // which is worse than useless for a tool whose whole job is telling works apart.
+  //
+  //   josephus/antiquities/3          → josephus/antiquities   (three segments: drop the book)
+  //   pseudepigrapha/testaments/asher → pseudepigrapha/testaments
+  //   greco/apollodorus-library-1     → greco/apollodorus-library   (trailing -N is a book)
+  //   greco/aristotle-nicomachean-ethics → itself, a work in its own right
+  //   Matt                            → itself
+  const workOf = key => {
+    const parts = key.split('/')
+    if (parts.length >= 3) return parts.slice(0, -1).join('/')
+    return key.replace(/-\d+$/, '')
+  }
   const byWork = new Map()
+  const bookLabels = new Map()
   for (const [bookKey, v] of Object.entries(data)) {
-    const parts = bookKey.split('/')
-    const work = parts.length > 1 ? parts.slice(0, -1).join('/') : bookKey
+    const work = workOf(bookKey)
     if (!byWork.has(work)) byWork.set(work, [])
+    if (!bookLabels.has(work)) bookLabels.set(work, [])
+    bookLabels.get(work).push(LABELS.get(labelKey(corpus, bookKey)) ?? bookKey)
     // A loop, not push(...spread): a spread of 100k+ words blows the call stack.
     const bucket = byWork.get(work)
     for (const word of v.w) bucket.push(word)
     wordsInCorpus += v.w.length
   }
   corpusTotals.set(corpus, wordsInCorpus)
+  for (const [work, labels] of bookLabels) WORK_LABEL.set(work, groupLabel(work, labels))
 
   for (const [work, words] of byWork) {
     if (words.length < MIN_WORK) continue
@@ -242,7 +295,8 @@ const meta = {
 fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify(meta))
 fs.writeFileSync(path.join(OUT, 'units.json'), JSON.stringify(
   units.map(u => ({
-    corpus: u.corpus, work: u.work, kind: u.kind, idx: u.idx, n: u.n,
+    corpus: u.corpus, work: u.work, label: WORK_LABEL.get(u.work) ?? u.work,
+    kind: u.kind, idx: u.idx, n: u.n,
     reliable: u.n >= RELIABLE,
     rates: Object.fromEntries(Object.entries(u.rates).map(([k, v]) => [k, +v.toFixed(2)])),
     delta: u.delta.map(x => +x.toFixed(2)),
