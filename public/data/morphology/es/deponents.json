@@ -7,6 +7,78 @@
     "fp": "1ar5sqd",
     "text": "Rarezas que conviene conocer: {ἔρχομαι} es deponente en presente, pero su aoristo {ἦλθον} es un aoristo segundo _activo_ sin más; y {θέλω} es activo en presente pero de futuro deponente. «Semideponente» cubre estas carreras mixtas."
   },
+  "deponents.cat.direct-middle.d": {
+    "fp": "hsh731",
+    "text": "el sujeto actúa sobre sí mismo; es rara en el Nuevo Testamento, y los ejemplos que se citan son casi siempre acciones corporales"
+  },
+  "deponents.cat.direct-middle.e0": {
+    "fp": "14468m8",
+    "text": "se fue y se ahorcó"
+  },
+  "deponents.cat.direct-middle.eg": {
+    "fp": "39f6t4",
+    "text": "«se ahorcó»"
+  },
+  "deponents.cat.direct-middle.name": {
+    "fp": "1555jh8",
+    "text": "Media directa (reflexiva)"
+  },
+  "deponents.cat.indirect-middle.d": {
+    "fp": "125q6qa",
+    "text": "el sujeto actúa _para sí mismo_, en su propio interés; es con mucho el uso más común"
+  },
+  "deponents.cat.indirect-middle.e0": {
+    "fp": "1ofbx68",
+    "text": "escogiendo para sí a doce de entre ellos"
+  },
+  "deponents.cat.indirect-middle.e1": {
+    "fp": "1eq7vyg",
+    "text": "la adquirió para sí mediante su propia sangre"
+  },
+  "deponents.cat.indirect-middle.eg": {
+    "fp": "uoaomd",
+    "text": "«escogiendo para sí»"
+  },
+  "deponents.cat.indirect-middle.name": {
+    "fp": "19xnago",
+    "text": "Media indirecta"
+  },
+  "deponents.cat.permissive-middle.d": {
+    "fp": "6vfrsv",
+    "text": "el sujeto _permite_ que la acción se le haga; en español suele expresarse con «hacerse» o «dejarse»"
+  },
+  "deponents.cat.permissive-middle.e0": {
+    "fp": "10wr7lk",
+    "text": "levántate, hazte bautizar y lava tus pecados"
+  },
+  "deponents.cat.permissive-middle.eg": {
+    "fp": "1otuhlp",
+    "text": "«hazte bautizar»"
+  },
+  "deponents.cat.permissive-middle.name": {
+    "fp": "1nr0d43",
+    "text": "Media permisiva"
+  },
+  "deponents.cat.reciprocal-middle.d": {
+    "fp": "1gooow",
+    "text": "un sujeto plural que actúa unos sobre otros"
+  },
+  "deponents.cat.reciprocal-middle.e0": {
+    "fp": "6i0v24",
+    "text": "se pusieron de acuerdo contra él"
+  },
+  "deponents.cat.reciprocal-middle.eg": {
+    "fp": "11aazai",
+    "text": "«se pusieron de acuerdo»"
+  },
+  "deponents.cat.reciprocal-middle.name": {
+    "fp": "1vfifaa",
+    "text": "Media recíproca"
+  },
+  "deponents.cg.int-middle": {
+    "fp": "urot47",
+    "text": "La voz media"
+  },
   "deponents.cs1.lesson": {
     "fp": "1xn8ri",
     "text": "Deponentes en el texto"
@@ -227,6 +299,14 @@
     "fp": "5ptr2e",
     "text": "Cómo reconocer uno"
   },
+  "deponents.h.int-deponency": {
+    "fp": "c4ctff",
+    "text": "¿Es «deponente» la palabra adecuada?"
+  },
+  "deponents.h.int-middle-uses": {
+    "fp": "1j2gbp7",
+    "text": "Qué hace realmente la voz media"
+  },
   "deponents.h.start-english-forms": {
     "fp": "vocseg",
     "text": "Empecemos por el español: formas que no significan lo que parecen"
@@ -306,6 +386,18 @@
   "deponents.p.greek-whole-club": {
     "fp": "y58dp0",
     "text": "El griego tiene todo un club así: verbos que llevan *desinencias medias o pasivas* (su forma de diccionario termina en {‑ομαι}, no en {‑ω}) pero cargan un significado *activo* sin más. {ἔρχομαι} _parece_ «soy venido»: significa sencillamente «vengo / voy». Son los verbos *deponentes*, del latín «dejar de lado»: han dejado de lado sus formas activas. Tu tarea es simple: analiza la forma como la media o pasiva que es, y luego traduce con el significado activo que da el léxico. No hay ninguna pasividad escondida que buscar."
+  },
+  "deponents.p.int-deponency-lead": {
+    "fp": "uwqpcd",
+    "text": "La explicación tradicional dice que estos verbos «depusieron» (del latín _deponere_) sus formas activas y significan algo activo de todos modos. Esa descripción se ha ido cuestionando: un verbo como {ἔρχομαι} nunca tuvo una activa que deponer, y en muchos de ellos la forma media hace exactamente lo que una media debe hacer: el sujeto está implicado en la acción. Leídos así, no son activos defectuosos sino verbos _solo medios_, y la etiqueta «deponente» informa más sobre la gramática latina que sobre el griego."
+  },
+  "deponents.p.int-deponency-practice": {
+    "fp": "5t03jb",
+    "text": "*Qué hacer con eso en la práctica.* Analiza la forma que ves —media o pasiva, según diga la desinencia— y traduce el sentido que el verbo realmente tiene. Donde la idea media sea visible, déjala verse: {ἀπεκρίθη} no es solo «respondió», sino una respuesta en la que el sujeto está comprometido. Donde no lo sea, no la fabriques; algunos de estos verbos se han aplanado en piezas léxicas corrientes, y una teología levantada sobre una desinencia media en la que el autor no estaba pensando es una teología levantada sobre nada."
+  },
+  "deponents.p.int-middle-lead": {
+    "fp": "qje8s9",
+    "text": "El inglés tiene dos voces y el griego tres, así que la media es la que no tiene casilla propia donde caer. Su hilo común es que el sujeto está de algún modo _implicado_ en la acción, más allá de simplemente realizarla. Las categorías de abajo son maneras de nombrar esa implicación; la forma es idéntica en todas, y solo el verbo y su contexto deciden."
   },
   "deponents.p.middle-voice-reappraisal": {
     "fp": "jkey3s",
