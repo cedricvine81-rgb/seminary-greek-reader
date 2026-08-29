@@ -1,7 +1,7 @@
 /**
  * Register — comparing how the Greek of one work behaves against the rest of the library.
  *
- * The index is built by scripts/build-style-index.mjs and served as a static asset. Everything
+ * The index is built by scripts/build-style-index.ts and served as a static asset. Everything
  * here is pure: the view fetches once and computes distances in the browser, because 433 works
  * against 150 dimensions is a few milliseconds and it keeps the tool responsive while the
  * reader changes lenses.
@@ -31,8 +31,46 @@ export interface StyleFeature {
 export interface StyleMeta {
   chunkWords: number
   minWords: number
+  reliableWords: number
   deltaWords: string[]
+  /** Published so a passage profiled server-side lands on the same scale as the works. */
+  norm: { mu: Record<string, number>; sd: Record<string, number> }
+  spread: Record<string, number>
+  passageCorpora: string[]
   features: StyleFeature[]
+}
+
+/** One book of a passage-capable corpus: its work id, and [chapter, words] for each chapter. */
+export interface PassageBook {
+  id: string
+  label: string
+  work: string
+  ch: [number, number][]
+}
+export type PassageManifest = Record<string, PassageBook[]>
+
+/** What /api/register/passage returns. */
+export interface PassageProfile {
+  n: number
+  rates: Record<string, number>
+  delta: number[]
+  reliable: boolean
+  span: { fromCh: number; toCh: number }
+}
+
+/**
+ * Dress a profiled passage as a unit so it can go through the same ranking as everything else.
+ *
+ * The synthetic `work` id deliberately does not collide with any real one, so the passage's own
+ * book stays in its results — seeing how far Luke 1-2 sits from Luke is the point, not noise.
+ */
+export function passageUnit(
+  p: PassageProfile, corpus: string, book: string, label: string,
+): StyleUnit {
+  return {
+    corpus, work: `passage:${corpus}/${book}/${p.span.fromCh}-${p.span.toCh}`, label,
+    kind: 'work', idx: 0, n: p.n, reliable: p.reliable, rates: p.rates, delta: p.delta,
+  }
 }
 
 export interface StyleUnit {

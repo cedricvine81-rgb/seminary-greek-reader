@@ -5,7 +5,7 @@ import { getServerT } from '@/lib/i18n/server'
 export const metadata: Metadata = { title: 'Register' }
 
 // Which works in the library write Greek like this one? Profiles are built by
-// scripts/build-style-index.mjs from the construct-search indexes — 433 works, 5.75M words —
+// scripts/build-style-index.ts from the construct-search indexes — 433 works, 5.75M words —
 // and served as static JSON; the arithmetic runs in the browser.
 //
 // The name is deliberate: REGISTER, the level and texture of the Greek, is what this measures.

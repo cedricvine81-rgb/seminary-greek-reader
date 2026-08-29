@@ -3,37 +3,52 @@
 // Register — the tool page. Fetches the prebuilt index once and does the arithmetic in the
 // browser: 433 works over 150 dimensions is milliseconds, and keeping it client-side means
 // changing lens or target is instant rather than a round trip.
+//
+// A PASSAGE is the exception: it has to be profiled from the tagged corpus, which lives on the
+// server, so that one selection costs a request. Everything after it — the ranking, the
+// why-table, switching lens — runs on the returned profile like any other unit.
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ChevronRight, Info } from 'lucide-react'
 import clsx from 'clsx'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
 import {
-  CORPUS_KEY, chunksOf, explain, featureSpread, isBiblical, neighbours,
-  type Lens, type StyleFeature, type StyleMeta, type StyleUnit,
+  CORPUS_KEY, chunksOf, explain, featureSpread, isBiblical, neighbours, passageUnit,
+  type Lens, type PassageManifest, type PassageProfile, type StyleFeature, type StyleMeta,
+  type StyleUnit,
 } from '@/lib/style-register'
+import { PassagePicker, type PassageSelection } from './PassagePicker'
 
 const LENSES: { id: Lens; key: string }[] = [
   { id: 'register', key: 'reg.lens.register' },
   { id: 'syntax', key: 'reg.lens.syntax' },
 ]
 
+type Mode = 'work' | 'passage'
+
 export function RegisterView() {
   const t = useT()
   const locale = useLocale()
   const [meta, setMeta] = useState<StyleMeta | null>(null)
   const [units, setUnits] = useState<StyleUnit[] | null>(null)
+  const [manifest, setManifest] = useState<PassageManifest | null>(null)
   const [error, setError] = useState(false)
+  const [mode, setMode] = useState<Mode>('work')
   const [target, setTarget] = useState('Mark')
   const [lens, setLens] = useState<Lens>('register')
   const [outsideOnly, setOutsideOnly] = useState(false)
   const [open, setOpen] = useState<string | null>(null)
   const [query, setQuery] = useState('')
+  const [selection, setSelection] = useState<PassageSelection | null>(null)
+  const [passage, setPassage] = useState<StyleUnit | null>(null)
+  const [loadingPassage, setLoadingPassage] = useState(false)
+  const [passageError, setPassageError] = useState(false)
 
   // The biblical books localize through book-names.ts; a prose title stays as it is cited.
-  const nameOf = (u: StyleUnit) => (isBiblical(u.corpus) ? bookName(u.work, locale, u.label) : u.label)
+  const nameOf = (u: StyleUnit) => (isBiblical(u.corpus) && !u.work.startsWith('passage:')
+    ? bookName(u.work, locale, u.label) : u.label)
   const corpusOf = (u: StyleUnit) => (CORPUS_KEY[u.corpus] ? t(CORPUS_KEY[u.corpus]) : u.corpus)
   // Keyed off the feature id so the builder stays the single source of the feature set; a
   // feature added there before its message exists shows its English label, not a key.
@@ -48,8 +63,9 @@ export function RegisterView() {
     Promise.all([
       fetch('/data/style/meta.json').then(r => r.json()),
       fetch('/data/style/units.json').then(r => r.json()),
+      fetch('/data/style/passages.json').then(r => r.json()),
     ])
-      .then(([m, u]) => { if (live) { setMeta(m); setUnits(u) } })
+      .then(([m, u, p]) => { if (live) { setMeta(m); setUnits(u); setManifest(p) } })
       .catch(() => { if (live) setError(true) })
     return () => { live = false }
   }, [])
@@ -61,7 +77,38 @@ export function RegisterView() {
     [units, locale],
   )
   const spread = useMemo(() => (units ? featureSpread(units) : {}), [units])
-  const targetUnit = works.find(w => w.work === target) ?? works[0]
+
+  /* ── the passage request ──────────────────────────────────────────────────
+   * Debounced, because the chapter inputs fire on every keystroke and profiling is the cheap
+   * half — reading the corpus index is not.
+   */
+  const fetchPassage = useCallback((s: PassageSelection, alive: () => boolean) => {
+    setLoadingPassage(true)
+    setPassageError(false)
+    const url = `/api/register/passage?corpus=${encodeURIComponent(s.corpus)}`
+      + `&book=${encodeURIComponent(s.book)}&from=${s.fromCh}&to=${s.toCh}`
+    fetch(url)
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error('bad'))))
+      .then((p: PassageProfile) => {
+        if (!alive()) return
+        const range = p.span.toCh === p.span.fromCh
+          ? `${p.span.fromCh}` : `${p.span.fromCh}–${p.span.toCh}`
+        setPassage(passageUnit(p, s.corpus, s.book, `${s.label} ${range}`))
+        setOpen(null)
+      })
+      .catch(() => { if (alive()) { setPassage(null); setPassageError(true) } })
+      .finally(() => { if (alive()) setLoadingPassage(false) })
+  }, [])
+
+  useEffect(() => {
+    if (mode !== 'passage' || !selection) return
+    let live = true
+    const id = setTimeout(() => fetchPassage(selection, () => live), 250)
+    return () => { live = false; clearTimeout(id) }
+  }, [mode, selection, fetchPassage])
+
+  const workUnit = works.find(w => w.work === target) ?? works[0]
+  const targetUnit = mode === 'passage' ? passage : workUnit
 
   const results = useMemo(() => {
     if (!units || !targetUnit) return []
@@ -77,13 +124,13 @@ export function RegisterView() {
   }, [works, query, locale])
 
   if (error) return <p className="py-10 text-sm text-red-600">{t('reg.loadFailed')}</p>
-  if (!meta || !units || !targetUnit) {
+  if (!meta || !units || !manifest || !workUnit) {
     return <p className="py-10 text-sm italic text-gray-400">{t('reg.loading')}</p>
   }
 
   const maxD = results.length ? results[results.length - 1].distance : 1
   const minD = results.length ? results[0].distance : 0
-  const chunks = chunksOf(targetUnit.work, units)
+  const chunks = targetUnit ? chunksOf(targetUnit.work, units) : []
 
   return (
     <div className="space-y-6">
@@ -98,30 +145,54 @@ export function RegisterView() {
         <p className="text-sm leading-relaxed text-gray-700">{t('reg.blurb')}</p>
       </div>
 
-      {/* ── controls ─────────────────────────────────────────────────────── */}
-      <div className="flex flex-wrap items-end gap-4">
-        <div className="min-w-[16rem] flex-1">
-          <label htmlFor="reg-target" className="mb-1 block text-sm font-medium text-gray-700">
-            {t('reg.compare')}
-          </label>
-          <input
-            id="reg-search" value={query} onChange={e => setQuery(e.target.value)}
-            placeholder={t('reg.filterWorks')} className="input mb-1.5 w-full text-sm"
-          />
-          <select
-            id="reg-target" value={targetUnit.work} onChange={e => { setTarget(e.target.value); setOpen(null) }}
-            className="input w-full" size={1}
-          >
-            {filteredWorks.map(w => (
-              <option key={w.work} value={w.work}>
-                {nameOf(w)} — {corpusOf(w)} ({w.n.toLocaleString(locale)})
-              </option>
+      {/* ── what to compare ──────────────────────────────────────────────── */}
+      <div className="space-y-3 rounded-xl border border-gray-200 px-4 py-3.5">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-sm font-medium text-gray-700">{t('reg.compare')}</span>
+          <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5" role="tablist">
+            {(['work', 'passage'] as Mode[]).map(m => (
+              <button
+                key={m} role="tab" aria-selected={mode === m}
+                onClick={() => { setMode(m); setOpen(null) }}
+                className={clsx('rounded-md px-3 py-1 text-sm font-medium transition-colors',
+                  mode === m ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900')}
+              >
+                {t(m === 'work' ? 'reg.mode.work' : 'reg.mode.passage')}
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
-        <div>
-          <span className="mb-1 block text-sm font-medium text-gray-700">{t('reg.lens')}</span>
+        {mode === 'work' ? (
+          <div className="max-w-md">
+            <input
+              id="reg-search" value={query} onChange={e => setQuery(e.target.value)}
+              placeholder={t('reg.filterWorks')} className="input mb-1.5 w-full text-sm"
+            />
+            <select
+              id="reg-target" value={workUnit.work}
+              onChange={e => { setTarget(e.target.value); setOpen(null) }}
+              className="input w-full" size={1}
+            >
+              {filteredWorks.map(w => (
+                <option key={w.work} value={w.work}>
+                  {nameOf(w)} — {corpusOf(w)} ({w.n.toLocaleString(locale)})
+                </option>
+              ))}
+            </select>
+            {query.trim() && !filteredWorks.some(w => w.work === workUnit.work) && (
+              <p className="mt-1 text-xs text-amber-700">{t('reg.filterHidesTarget')}</p>
+            )}
+          </div>
+        ) : (
+          <PassagePicker manifest={manifest} value={selection} onChange={setSelection} />
+        )}
+      </div>
+
+      {/* ── lens ─────────────────────────────────────────────────────────── */}
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700">{t('reg.lens')}</span>
           <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5" role="tablist">
             {LENSES.map(l => (
               <button
@@ -136,98 +207,109 @@ export function RegisterView() {
           </div>
         </div>
 
-        <label className="flex items-center gap-2 pb-1.5 text-sm text-gray-700">
+        <label className="flex items-center gap-2 text-sm text-gray-700">
           <input type="checkbox" checked={outsideOnly} onChange={e => setOutsideOnly(e.target.checked)} />
           {t('reg.outsideOnly')}
         </label>
       </div>
 
-      {!targetUnit.reliable && (
+      {mode === 'passage' && passageError && (
+        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          {t('reg.passageFailed')}
+        </p>
+      )}
+      {targetUnit && !targetUnit.reliable && (
         <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
           {t('reg.shortWork', { n: targetUnit.n.toLocaleString(locale) })}
         </p>
       )}
 
       {/* ── results ──────────────────────────────────────────────────────── */}
-      <div>
-        <h2 className="mb-1 text-base font-semibold text-gray-900">
-          {t('reg.closestTo', { work: nameOf(targetUnit) })}
-        </h2>
-        <p className="mb-3 text-xs text-gray-500">{t('reg.scaleNote')}</p>
+      {!targetUnit ? (
+        <p className="py-6 text-sm italic text-gray-400">
+          {loadingPassage ? t('reg.profiling') : t('reg.pickPassage')}
+        </p>
+      ) : (
+        <div className={clsx(loadingPassage && 'opacity-50 transition-opacity')}>
+          <h2 className="mb-1 text-base font-semibold text-gray-900">
+            {t('reg.closestTo', { work: nameOf(targetUnit) })}
+          </h2>
+          <p className="mb-3 text-xs text-gray-500">{t('reg.scaleNote')}</p>
 
-        <ul className="divide-y divide-gray-100 border-y border-gray-100">
-          {results.map(({ unit, distance }, i) => {
-            const pct = maxD > minD ? 1 - (distance - minD) / (maxD - minD) : 1
-            const isOpen = open === unit.work
-            const gaps = isOpen ? explain(targetUnit, unit, meta.features, spread) : []
-            return (
-              <li key={unit.work}>
-                <button
-                  onClick={() => setOpen(isOpen ? null : unit.work)}
-                  className="group flex w-full items-center gap-3 py-2.5 text-left"
-                  aria-expanded={isOpen}
-                >
-                  <span className="w-6 shrink-0 text-right font-mono text-xs text-gray-400">{i + 1}</span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-medium text-gray-900 group-hover:text-brand-700">
-                      {nameOf(unit)}
+          <ul className="divide-y divide-gray-100 border-y border-gray-100">
+            {results.map(({ unit, distance }, i) => {
+              const pct = maxD > minD ? 1 - (distance - minD) / (maxD - minD) : 1
+              const isOpen = open === unit.work
+              const gaps = isOpen ? explain(targetUnit, unit, meta.features, spread) : []
+              return (
+                <li key={unit.work}>
+                  <button
+                    onClick={() => setOpen(isOpen ? null : unit.work)}
+                    className="group flex w-full items-center gap-3 py-2.5 text-left"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="w-6 shrink-0 text-right font-mono text-xs text-gray-400">{i + 1}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium text-gray-900 group-hover:text-brand-700">
+                        {nameOf(unit)}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {corpusOf(unit)} · {unit.n.toLocaleString(locale)} {t('reg.words')}
+                      </span>
                     </span>
-                    <span className="text-xs text-gray-500">
-                      {corpusOf(unit)} · {unit.n.toLocaleString(locale)} {t('reg.words')}
+                    <span className="hidden h-1.5 w-28 shrink-0 overflow-hidden rounded-full bg-gray-100 sm:block">
+                      <span className="block h-full rounded-full bg-brand-500" style={{ width: `${Math.max(4, pct * 100)}%` }} />
                     </span>
-                  </span>
-                  <span className="hidden h-1.5 w-28 shrink-0 overflow-hidden rounded-full bg-gray-100 sm:block">
-                    <span className="block h-full rounded-full bg-brand-500" style={{ width: `${Math.max(4, pct * 100)}%` }} />
-                  </span>
-                  <span className="w-12 shrink-0 text-right font-mono text-xs tabular-nums text-gray-500">
-                    {distance.toFixed(2)}
-                  </span>
-                  <ChevronRight size={14} className={clsx('shrink-0 text-gray-300 transition-transform', isOpen && 'rotate-90')} />
-                </button>
+                    <span className="w-12 shrink-0 text-right font-mono text-xs tabular-nums text-gray-500">
+                      {distance.toFixed(2)}
+                    </span>
+                    <ChevronRight size={14} className={clsx('shrink-0 text-gray-300 transition-transform', isOpen && 'rotate-90')} />
+                  </button>
 
-                {isOpen && (
-                  <div className="pb-4 pl-9 pr-2">
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700">
-                      {t('reg.why')}
-                    </p>
-                    <div className="overflow-x-auto">
-                      <table className="w-full min-w-[26rem] text-sm">
-                        <thead>
-                          <tr className="text-xs uppercase tracking-wide text-gray-400">
-                            <th className="py-1 text-left font-medium">{t('reg.feature')}</th>
-                            <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
-                            <th className="py-1 text-right font-medium">{nameOf(unit)}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {gaps.map(g => (
-                            <tr key={g.feature.key} className="border-t border-gray-50">
-                              <td className="py-1 pr-3">
-                                <Link href={`/grammar?chapter=${g.feature.chapter}&level=intermediate&track=greek`}
-                                  className="text-gray-700 hover:text-brand-700 hover:underline">
-                                  {featureLabel(g.feature)}
-                                </Link>
-                                {(g.feature.taggerSensitive || g.feature.approx) && (
-                                  <span className="ml-1 text-gray-300" title={t('reg.approxTip')}>~</span>
-                                )}
-                              </td>
-                              <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
-                              <td className="py-1 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
+                  {isOpen && (
+                    <div className="pb-4 pl-9 pr-2">
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700">
+                        {t('reg.why')}
+                      </p>
+                      <div className="overflow-x-auto">
+                        <table className="w-full min-w-[26rem] text-sm">
+                          <thead>
+                            <tr className="text-xs uppercase tracking-wide text-gray-400">
+                              <th className="py-1 text-left font-medium">{t('reg.feature')}</th>
+                              <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
+                              <th className="py-1 text-right font-medium">{nameOf(unit)}</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {gaps.map(g => (
+                              <tr key={g.feature.key} className="border-t border-gray-50">
+                                <td className="py-1 pr-3">
+                                  <Link href={`/grammar?chapter=${g.feature.chapter}&level=intermediate&track=greek`}
+                                    className="text-gray-700 hover:text-brand-700 hover:underline">
+                                    {featureLabel(g.feature)}
+                                  </Link>
+                                  {(g.feature.taggerSensitive || g.feature.approx) && (
+                                    <span className="ml-1 text-gray-300" title={t('reg.approxTip')}>~</span>
+                                  )}
+                                </td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <p className="mt-2 text-xs text-gray-500">{t('reg.per1000')} · <span className="text-gray-400">~</span> {t('reg.approxTip')}</p>
                     </div>
-                    <p className="mt-2 text-xs text-gray-500">{t('reg.per1000')} · <span className="text-gray-400">~</span> {t('reg.approxTip')}</p>
-                  </div>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </div>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
 
-      {chunks.length > 2 && (
+      {mode === 'work' && targetUnit && chunks.length > 2 && (
         <p className="text-xs text-gray-500">
           {t('reg.chunkNote', { n: chunks.length, work: nameOf(targetUnit), size: meta.chunkWords.toLocaleString(locale) })}
         </p>
