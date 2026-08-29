@@ -40,18 +40,18 @@ export const SUBJUNCTIVE_EXAMPLES: SubjunctiveExample[] = [
     reference: 'Heb 4:16',
   },
   {
-    greek: 'εἴπωμεν τὰ κακά, ἵνα ἔλθῃ τὰ ἀγαθά',
+    greek: 'ποιήσωμεν τὰ κακὰ ἵνα ἔλθῃ τὰ ἀγαθά',
     translation: 'Let us do evil that good may come',
     type: 'Hortatory (Let us…)',
     explanation: '1st person plural aorist subjunctive (εἴπωμεν). Paul quotes a slanderous misrepresentation.',
     reference: 'Rom 3:8',
   },
   {
-    greek: 'ἀπολάβωμεν ἃ ἐπράξαμεν',
-    translation: 'Let us receive what we have done',
+    greek: 'τρέχωμεν τὸν προκείμενον ἡμῖν ἀγῶνα',
+    translation: 'let us run the race set before us',
     type: 'Hortatory (Let us…)',
-    explanation: '1st person plural aorist subjunctive. The penitent thief on the cross.',
-    reference: 'Luke 23:41',
+    explanation: '1st person plural present subjunctive — the writer exhorts his readers along with himself.',
+    reference: 'Heb 12:1',
   },
 
   // ── Deliberative ──
@@ -63,7 +63,7 @@ export const SUBJUNCTIVE_EXAMPLES: SubjunctiveExample[] = [
     reference: 'Rom 6:1',
   },
   {
-    greek: 'ποῦ ἀγοράσωμεν ἄρτους ἵνα φάγωσιν οὗτοι;',
+    greek: 'πόθεν ἀγοράσωμεν ἄρτους ἵνα φάγωσιν οὗτοι;',
     translation: 'Where are we to buy bread so that these people may eat?',
     type: 'Deliberative (What should we…?)',
     explanation: '1st person plural aorist subjunctive. Jesus tests Philip with a question about what to do.',
@@ -86,28 +86,28 @@ export const SUBJUNCTIVE_EXAMPLES: SubjunctiveExample[] = [
     reference: 'John 3:16',
   },
   {
-    greek: 'ἵνα τὰ ἔθνη ἐν τῷ σώματι αὐτοῦ εὐλογηθῶσιν',
+    greek: 'ἵνα εἰς τὰ ἔθνη ἡ εὐλογία τοῦ Ἀβραὰμ γένηται ἐν Χριστῷ Ἰησοῦ',
     translation: 'so that in Christ Jesus the blessing of Abraham might come to the Gentiles',
     type: 'Purpose (ἵνα / ὅπως)',
     explanation: 'ἵνα + aorist subjunctive (εὐλογηθῶσιν). Expresses the purpose of redemption from the curse.',
     reference: 'Gal 3:14',
   },
   {
-    greek: 'ὅπως πληρωθῇ τὸ ῥηθὲν ὑπὸ τοῦ προφήτου',
+    greek: 'ἵνα πληρωθῇ τὸ ῥηθὲν ὑπὸ κυρίου διὰ τοῦ προφήτου',
     translation: 'so that what was spoken by the prophet might be fulfilled',
     type: 'Purpose (ἵνα / ὅπως)',
     explanation: 'ὅπως + aorist subjunctive (πληρωθῇ). Matthew uses ὅπως frequently for purpose/result clauses.',
     reference: 'Matt 2:15',
   },
   {
-    greek: 'ἵνα ζωὴν ἔχητε καὶ περισσὸν ἔχητε',
+    greek: 'ἵνα ζωὴν ἔχωσιν καὶ περισσὸν ἔχωσιν',
     translation: 'so that they may have life and have it abundantly',
     type: 'Purpose (ἵνα / ὅπως)',
     explanation: 'ἵνα + present subjunctive (ἔχητε). Jesus states the purpose of his coming.',
     reference: 'John 10:10',
   },
   {
-    greek: 'ἵνα εἰρήνην ἔχητε ἐν ἐμοί',
+    greek: 'ἵνα ἐν ἐμοὶ εἰρήνην ἔχητε',
     translation: 'so that in me you may have peace',
     type: 'Purpose (ἵνα / ὅπως)',
     explanation: 'ἵνα + present subjunctive (ἔχητε). Jesus states the purpose of his disclosure of coming trouble.',
@@ -123,10 +123,10 @@ export const SUBJUNCTIVE_EXAMPLES: SubjunctiveExample[] = [
     reference: 'John 3:16',
   },
   {
-    greek: 'ὥστε τὸν υἱὸν τοῦ ἀνθρώπου κύριον εἶναι τοῦ σαββάτου',
-    translation: 'so that the Son of Man is lord of the Sabbath',
+    greek: 'ὥστε κύριός ἐστιν ὁ υἱὸς τοῦ ἀνθρώπου καὶ τοῦ σαββάτου',
+    translation: 'so the Son of Man is lord even of the Sabbath',
     type: 'Result (ὥστε)',
-    explanation: 'ὥστε + infinitive (εἶναι). Natural result clause.',
+    explanation: 'ὥστε + indicative (ἐστιν) stating an actual result — this edition has the indicative, not an infinitive.',
     reference: 'Mark 2:28',
   },
 
@@ -155,11 +155,11 @@ export const SUBJUNCTIVE_EXAMPLES: SubjunctiveExample[] = [
     reference: 'Matt 6:19',
   },
   {
-    greek: 'μὴ φοβηθῇς, μόνον πίστευε',
-    translation: 'Do not fear, only believe',
+    greek: 'μὴ φοβηθῇς παραλαβεῖν Μαριὰμ τὴν γυναῖκά σου',
+    translation: 'do not be afraid to take Mary as your wife',
     type: 'Prohibitive (μή + Aorist)',
     explanation: 'μή + aorist subjunctive (φοβηθῇς) prohibiting a specific future action.',
-    reference: 'Mark 5:36',
+    reference: 'Matt 1:20',
   },
   {
     greek: 'μὴ κρίνετε, ἵνα μὴ κριθῆτε',
@@ -199,7 +199,7 @@ export const SUBJUNCTIVE_EXAMPLES: SubjunctiveExample[] = [
     reference: 'Matt 5:26',
   },
   {
-    greek: 'ὁ ἐρχόμενος πρός με οὐ μὴ πεινάσῃ',
+    greek: 'ὁ ἐρχόμενος πρὸς ἐμὲ οὐ μὴ πεινάσῃ',
     translation: 'Whoever comes to me will never go hungry',
     type: 'Emphatic Negation (οὐ μή)',
     explanation: 'οὐ μή + aorist subjunctive (πεινάσῃ). Jesus makes an absolute promise.',
@@ -215,7 +215,7 @@ export const SUBJUNCTIVE_EXAMPLES: SubjunctiveExample[] = [
     reference: 'John 16:13',
   },
   {
-    greek: 'ὅταν γὰρ ἴδητε ταῦτα γινόμενα, γινώσκετε ὅτι ἐγγύς ἐστιν',
+    greek: 'ὅταν ἴδητε ταῦτα γινόμενα, γινώσκετε ὅτι ἐγγύς ἐστιν',
     translation: 'For when you see these things happening, know that he is near',
     type: 'Indefinite Temporal (ὅταν / ἕως)',
     explanation: 'ὅταν + aorist subjunctive (ἴδητε). The time is indefinite — whenever these signs are seen.',

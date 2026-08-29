@@ -25,6 +25,11 @@ const CHAPTERS = 'src/components/morphology/chapters'
 const norm = s => s
   .normalize('NFD')
   .replace(/[\u0300-\u036f\u0342-\u0345]/g, '')
+  // Elision is written with at least three different characters across our sources: the
+  // curly quote U+2019, the modifier apostrophe U+02BC, and GREEK KORONIS U+1FBD \u2014 and the
+  // koronis is IN the Greek block, so the class below would keep it while stripping the
+  // others, and \u03b4\u03b9\u2019 would never match \u03b4\u03b9\u1fbd. Drop all of them before anything else.
+  .replace(/[\u2019\u02bc\u1fbd'\u2018]/g, '')
   .replace(/[^\p{Script=Greek}\s]/gu, '')
   .replace(/\s+/g, ' ')
   .trim()
@@ -78,6 +83,44 @@ const only = process.argv.slice(2)
 let checked = 0
 const problems = []
 
+/**
+ * A reference spanning verses ("Rom 8:33-34") is a legitimate composed example — a clause
+ * drawn from one verse and its answer from the next. Match those against the two verses
+ * joined, so the citation is still checked rather than waved through.
+ */
+function spanned(r) {
+  const m = /^(.*?)\s*(\d+):(\d+)\s*[-–]\s*(\d+)$/.exec(r.trim())
+  if (!m) return null
+  const [, book, ch, from, to] = m
+  const parts = []
+  for (let v = Number(from); v <= Number(to); v++) {
+    const hit = verses.find(x => sameRef(`${book} ${ch}:${v}`, x.ref))
+    if (!hit) return null
+    parts.push(...hit.words)
+  }
+  return parts
+}
+
+/** Check one quoted clause against its stated reference. */
+function check(file, g, r) {
+  checked++
+  const needle = norm(g)
+  if (!needle) return
+  const words = needle.split(' ').filter(Boolean)
+
+  const span = spanned(r)
+  if (span) {
+    if (!inOrder(span, words)) problems.push({ file, r, g, why: 'not found across that verse range' })
+    return
+  }
+
+  const hits = verses.filter(v => inOrder(v.words, words))
+  if (hits.length === 0) problems.push({ file, r, g, why: 'not found in the GNT' })
+  else if (!hits.some(h => sameRef(r, h.ref))) {
+    problems.push({ file, r, g, why: `found in ${hits.slice(0, 3).map(h => h.ref).join(', ')}` })
+  }
+}
+
 for (const f of fs.readdirSync(CHAPTERS).sort()) {
   if (!f.endsWith('.tsx')) continue
   const name = f.replace(/\.tsx$/, '')
@@ -85,20 +128,32 @@ for (const f of fs.readdirSync(CHAPTERS).sort()) {
   const src = fs.readFileSync(path.join(CHAPTERS, f), 'utf8')
   // { g: "…", e: "…", r: "…" } — the example triples inside Cat's ex prop
   for (const m of src.matchAll(/\{\s*g:\s*"([^"]+)"\s*,\s*e:\s*"([^"]*)"\s*,\s*r:\s*"([^"]+)"\s*\}/g)) {
-    const [, g, , r] = m
-    checked++
-    const needle = norm(g)
-    if (!needle) continue
-    const words = needle.split(' ').filter(Boolean)
-    const hits = verses.filter(v => inOrder(v.words, words))
-    if (hits.length === 0) problems.push({ file: name, r, g, why: 'not found in the GNT' })
-    else if (!hits.some(h => sameRef(r, h.ref))) {
-      problems.push({ file: name, r, g, why: `found in ${hits.slice(0, 3).map(h => h.ref).join(', ')}` })
-    }
+    check(name, m[1], m[3])
   }
 }
 
-console.log(`checked ${checked} cited examples across the chapters`)
+/**
+ * The quiz datasets, which matter more than the chapters: a student sits these for a grade.
+ * Same shape in each — a `greek` field and a `reference` field — so one pattern covers them.
+ * grammar-homework-slides.ts is the decks' own Greek, pulled out of the PowerPoints, so
+ * anything wrong here is wrong in the deck a student is looking at in class.
+ */
+const DATASETS = [
+  'src/data/conditional-examples.ts',
+  'src/data/subjunctive-examples.ts',
+]
+for (const rel of DATASETS) {
+  const name = path.basename(rel, '.ts')
+  if (only.length && !only.some(o => name.includes(o))) continue
+  if (!fs.existsSync(rel)) continue
+  const src = fs.readFileSync(rel, 'utf8')
+  // greek: '…' … reference: '…'  (single or double quoted, fields in either order)
+  for (const m of src.matchAll(/greek:\s*(['"])(.*?)\1[\s\S]{0,600}?reference:\s*(['"])(.*?)\3/g)) {
+    check(name, m[2], m[4])
+  }
+}
+
+console.log(`checked ${checked} cited examples across the chapters and quiz datasets`)
 if (!problems.length) { console.log('every one matches its reference'); process.exit(0) }
 console.log(`\n${problems.length} to look at:`)
 for (const p of problems) console.log(`  [${p.file}] ${p.r} — ${p.why}\n      ${p.g}`)

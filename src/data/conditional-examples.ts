@@ -85,11 +85,11 @@ export const CONDITIONAL_EXAMPLES: ConditionalExample[] = [
     reference: 'John 7:17',
   },
   {
-    greek: 'εἰ ὁ θεὸς ἐδικαίωσεν, τίς ὁ κατακρινῶν;',
-    translation: 'If God justified, who is the one condemning?',
+    greek: 'εἰ ὁ θεὸς ὑπὲρ ἡμῶν, τίς καθ’ ἡμῶν;',
+    translation: 'If God is for us, who is against us?',
     type: 'First Class (Simple / Assumptive)',
-    explanation: 'εἰ + aorist indicative (ἐδικαίωσεν). The justification is assumed as fact.',
-    reference: 'Rom 8:33-34',
+    explanation: 'εἰ + indicative. Paul argues FROM the premise, not about whether it holds.',
+    reference: 'Rom 8:31',
   },
   {
     greek: 'εἰ δὲ ἐν πνεύματι θεοῦ ἐγὼ ἐκβάλλω τὰ δαιμόνια, ἄρα ἔφθασεν ἐφ᾽ ὑμᾶς ἡ βασιλεία τοῦ θεοῦ.',
@@ -99,14 +99,14 @@ export const CONDITIONAL_EXAMPLES: ConditionalExample[] = [
     reference: 'Matt 12:28',
   },
   {
-    greek: 'εἰ ὁ υἱὸς ὑμᾶς ἐλευθερώσῃ, ὄντως ἐλεύθεροι ἔσεσθε.',
+    greek: 'ἐὰν οὖν ὁ υἱὸς ὑμᾶς ἐλευθερώσῃ, ὄντως ἐλεύθεροι ἔσεσθε.',
     translation: 'If the Son sets you free, you will be truly free.',
     type: 'Third Class (Probable / Possible)',
     explanation: 'εἰ with aorist subjunctive (ἐλευθερώσῃ). Some manuscripts use ἐάν; the condition is a genuine future possibility.',
     reference: 'John 8:36',
   },
   {
-    greek: 'εἰ ἦμεν ἐν ταῖς ἡμέραις τῶν πατέρων ἡμῶν, οὐκ ἂν ἤμεθα αὐτῶν κοινωνοί.',
+    greek: 'εἰ ἤμεθα ἐν ταῖς ἡμέραις τῶν πατέρων ἡμῶν, οὐκ ἂν ἤμεθα κοινωνοὶ αὐτῶν.',
     translation: 'If we had lived in the days of our fathers, we would not have been partners with them.',
     type: 'Second Class (Contrary to Fact)',
     explanation: 'εἰ + imperfect indicative (ἦμεν) with ἄν + imperfect in apodosis. Contrary to fact in past time.',
@@ -127,7 +127,7 @@ export const CONDITIONAL_EXAMPLES: ConditionalExample[] = [
     reference: 'Rom 8:11',
   },
   {
-    greek: 'εἰ ἔζης ὧδε, οὐκ ἄν μου ἀπέθανεν ὁ ἀδελφός.',
+    greek: 'εἰ ἦς ὧδε, οὐκ ἂν ἀπέθανεν ὁ ἀδελφός μου.',
     translation: 'If you had been here, my brother would not have died.',
     type: 'Second Class (Contrary to Fact)',
     explanation: 'εἰ + imperfect indicative (ἔζης) with ἄν + aorist indicative in apodosis. Jesus was not there (contrary to fact).',
@@ -141,7 +141,7 @@ export const CONDITIONAL_EXAMPLES: ConditionalExample[] = [
     reference: 'Matt 18:3',
   },
   {
-    greek: 'εἰ δὲ ἐγὼ ἐν δακτύλῳ θεοῦ ἐκβάλλω τὰ δαιμόνια, ἄρα ἔφθασεν ἐφ᾽ ὑμᾶς ἡ βασιλεία τοῦ θεοῦ.',
+    greek: 'εἰ δὲ ἐν δακτύλῳ θεοῦ ἐκβάλλω τὰ δαιμόνια, ἄρα ἔφθασεν ἐφ’ ὑμᾶς ἡ βασιλεία τοῦ θεοῦ.',
     translation: 'But if I cast out demons by the finger of God, then the kingdom of God has come upon you.',
     type: 'First Class (Simple / Assumptive)',
     explanation: 'εἰ + present indicative (ἐκβάλλω). Jesus presents this as an assumed fact.',
@@ -155,7 +155,7 @@ export const CONDITIONAL_EXAMPLES: ConditionalExample[] = [
     reference: '2 Tim 2:5',
   },
   {
-    greek: 'εἰ γὰρ ἤδειτε τί ἐστιν Ἔλεος θέλω καὶ οὐ θυσίαν, οὐκ ἂν κατεδικάσατε τοὺς ἀναιτίους.',
+    greek: 'εἰ δὲ ἐγνώκειτε τί ἐστιν ἔλεος θέλω καὶ οὐ θυσίαν, οὐκ ἂν κατεδικάσατε τοὺς ἀναιτίους.',
     translation: 'For if you had known what this means — I desire mercy and not sacrifice — you would not have condemned the innocent.',
     type: 'Second Class (Contrary to Fact)',
     explanation: 'εἰ + pluperfect indicative (ἤδειτε) with ἄν + aorist in apodosis. They did not know (contrary to fact).',
