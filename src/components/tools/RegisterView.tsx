@@ -11,7 +11,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { ChevronRight, Info, Printer } from 'lucide-react'
+import { ChevronRight, Printer } from 'lucide-react'
 import clsx from 'clsx'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
@@ -126,7 +126,6 @@ export function RegisterView() {
   const [outsideOnly, setOutsideOnly] = useState(initial.outside)
   const [includeShort, setIncludeShort] = useState(initial.short)
   const [showAll, setShowAll] = useState(false)
-  const [aboutOpen, setAboutOpen] = useState(false)
   const [optionsOpen, setOptionsOpen] = useState(false)
   // The expanded row shows its five strongest shared traits; this opens the rest.
   const [allTraits, setAllTraits] = useState(false)
@@ -428,24 +427,6 @@ export function RegisterView() {
           document. Controls and a ranking truncated to what fits a screen are not what
           belongs on paper. */}
       <div className="space-y-6 print:hidden">
-      {/* ── what this is, and what it is not ─────────────────────────────────
-          Folded by default: the paragraph is true and worth reading once, and it was also the
-          largest thing on the page, standing between a reader and the answer. The same prose
-          is a tap away here, in the page guide, and in the background note. */}
-      <div className="rounded-xl border border-brand-100 bg-brand-50/60 px-4 py-2.5">
-        <button
-          type="button" onClick={() => setAboutOpen(o => !o)} aria-expanded={aboutOpen}
-          className="flex w-full items-center gap-1.5 text-left"
-        >
-          <Info size={15} className="shrink-0 text-brand-600" />
-          <span className="text-xs font-semibold uppercase tracking-wide text-brand-700">
-            {t('reg.whatItMeasures')}
-          </span>
-          <ChevronRight size={13} className={clsx('text-brand-400 transition-transform', aboutOpen && 'rotate-90')} />
-        </button>
-        {aboutOpen && <p className="mt-1.5 text-sm leading-relaxed text-gray-700">{t('reg.blurb')}</p>}
-      </div>
-
       {/* ── what to compare ────────────────────────────────────────────────
           One box for Scripture, which a reader can simply write down, and one list for the
           library, whose titles they would have to look up. */}

@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { RegisterView } from '@/components/tools/RegisterView'
+import { ColumnHint } from '@/components/tools/ColumnHint'
 import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Register' }
@@ -17,7 +18,12 @@ export default function RegisterPage() {
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-5 print:hidden">
-        <h1 className="text-lg font-semibold text-gray-800">{t('reg.title')}</h1>
+        {/* The what-this-measures paragraph hangs off the title itself — the same
+            tap-to-explain bubble every column heading uses, so the page has ONE way of
+            explaining things rather than a box for this and bubbles for the rest. */}
+        <h1 className="text-lg font-semibold text-gray-800">
+          <ColumnHint align="left" label={t('reg.title')} hint="reg.blurb" />
+        </h1>
       </div>
       {/* useSearchParams needs a boundary; the fallback matches the view's own loading line. */}
       <Suspense fallback={<p className="py-10 text-sm italic text-gray-400">{t('reg.loading')}</p>}>
