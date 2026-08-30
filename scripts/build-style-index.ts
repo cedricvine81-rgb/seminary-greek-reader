@@ -263,6 +263,7 @@ for (const f of FEATURES) {
   spread[f.key] = Math.sqrt(xs.reduce((a, b) => a + (b - m) ** 2, 0) / xs.length) || 1
 }
 
+
 /* ── an absolute scale for the result bars ───────────────────────────────────
  * A bar normalized to the 25 results on screen always fills for the top hit, so Revelation —
  * whose closest neighbour in the whole library sits at 0.78, further than most works' 25th —
@@ -566,6 +567,87 @@ console.error('   genre pools — classical: '
 const genreOfWork: Record<string, string> = {}
 for (const u of workUnits) genreOfWork[u.work] = genreOf(u, WORK_LABEL.get(u.work) ?? u.work)
 
+/* ── two named axes ──────────────────────────────────────────────────────────
+ * The rates answer "how much of this construction?". These two answer questions the
+ * scholarship has been asking for two thousand years, in the terms it asks them.
+ *
+ * PERIODICITY — Aristotle's distinction (Rhetoric 3.9) between λέξις εἰρομένη, the "strung-on"
+ * style whose clauses are simply added, and λέξις κατεστραμμένη, the periodic style whose
+ * clauses are folded into one another. It is measured as the share of clause-linking that is
+ * done by subordination rather than by coordination:
+ *
+ *     (participles + infinitives + ὅτι + ἵνα) / (that + καί + δέ)
+ *
+ * It is a share, not a count, so length does not enter. The obvious objection is that καί
+ * coordinates nouns as well as clauses and so is overcounted — true, and it inflates the
+ * denominator uniformly, which shifts every text the same way and leaves the ORDER, which is
+ * what anyone reads this for, intact.
+ *
+ * CLASSICAL LEAN — where a text sits on the line between the average Classical profile and the
+ * average Koine one, projected onto the axis between the two centroids: +1 is the Classical
+ * mean, −1 the Koine mean, and a text can fall outside both.
+ *
+ * IT IS NOT CALLED ATTICISM, deliberately, and the two anomalies are the reason. The Classical
+ * pool is 123 forensic speeches against 2 histories, so it is really a measure of distance from
+ * Attic ORATORY, and Thucydides — idiosyncratic by any standard — scores well below Plato on it.
+ * And it disagrees with periodicity: Hebrews is the most periodic book in the New Testament and
+ * yet leans less Classical than John, because it writes in the vocabulary of the Septuagint.
+ * That disagreement is informative rather than embarrassing — the two axes are measuring
+ * different things, and a text can be rhetorically wrought in thoroughly Koine words — but a
+ * label reading "Atticism" would have hidden it behind a claim the number cannot support.
+ */
+function centroid(units_: Unit[]): number[] {
+  const n = units_[0]?.delta?.length ?? 0
+  const out = new Array<number>(n).fill(0)
+  for (const u of units_) for (let i = 0; i < n; i++) out[i] += (u.delta![i] ?? 0) / units_.length
+  return out
+}
+const CLASSICAL_CENTROID = centroid(classicalUnits)
+const KOINE_CENTROID = centroid(koineUnits)
+
+function periodicity(rates: Record<string, number>): number {
+  const sub = (rates.participle ?? 0) + (rates.infinitive ?? 0) + (rates.hoti ?? 0) + (rates.hina ?? 0)
+  const co = (rates.kai ?? 0) + (rates.de ?? 0)
+  return sub + co > 0 ? +(sub / (sub + co)).toFixed(4) : 0
+}
+
+/**
+ * Projection onto the Classical−Koine axis, scaled so the two pool means land on +1 and −1.
+ *
+ * Distance to each centroid was tried first and is useless: in 150 z-scored dimensions every
+ * text is far from every centroid, and the difference between the two distances is swamped —
+ * Lucian and Genesis came out within 0.04 of each other. Projecting onto the axis BETWEEN the
+ * centroids throws away the distance nobody asked about and keeps the one component that
+ * separates the periods.
+ */
+const AXIS = CLASSICAL_CENTROID.map((c, i) => c - KOINE_CENTROID[i])
+const AXIS_SQ = AXIS.reduce((a, b) => a + b * b, 0) || 1
+const MIDPOINT = CLASSICAL_CENTROID.map((c, i) => (c + KOINE_CENTROID[i]) / 2)
+
+function classicalLean(delta: number[]): number {
+  let dot = 0
+  for (let i = 0; i < AXIS.length; i++) dot += (delta[i] - MIDPOINT[i]) * AXIS[i]
+  return +((2 * dot) / AXIS_SQ).toFixed(3)
+}
+
+/**
+ * The range each axis actually occupies across the library, so a bar can be drawn against what
+ * Greek does rather than against a made-up nought-to-one. Published for the same reason
+ * barScale is: a position is only readable against a stated scale.
+ */
+const axisRange = {
+  periodicity: [0, 0] as [number, number],
+  classicalLean: [0, 0] as [number, number],
+}
+{
+  const per = workUnits.map(u => periodicity(u.rates))
+  const lean = workUnits.map(u => classicalLean(u.delta!))
+  axisRange.periodicity = [+Math.min(...per).toFixed(3), +Math.max(...per).toFixed(3)]
+  axisRange.classicalLean = [+Math.min(...lean).toFixed(2), +Math.max(...lean).toFixed(2)]
+  console.error(`   axes — periodicity ${axisRange.periodicity.join(' to ')}`
+    + ` · classical lean ${axisRange.classicalLean.join(' to ')}`)
+}
+
 const periods = {
   classical: buildBaseline(classicalUnits),
   koine: buildBaseline(koineUnits),
@@ -597,6 +679,7 @@ const meta = {
   norm: { mu: round(mu, 4), sd: round(sd, 4) },
   spread: round(spread, 4),
   center: round(center, 4),
+  axisRange,
   periods,
   barScale,
   passageCorpora: Array.from(PASSAGE_CORPORA),
@@ -641,6 +724,8 @@ const publicUnits = units.map(u => ({
   reliable: u.n >= RELIABLE,
   rates: round(u.rates, 2),
   delta: u.delta!.map(x => +x.toFixed(2)),
+  periodicity: periodicity(u.rates),
+  classicalLean: classicalLean(u.delta!),
 }))
 
 // The BROWSER gets both in one file, on purpose. A unit's `delta` is positional against

@@ -25,6 +25,7 @@ import {
 import { TargetPicker, type Target } from './TargetPicker'
 import { RegisterReport, REPORT_CITATION_LIMIT, type CitationMap } from './RegisterReport'
 import { PeriodSources } from './PeriodSources'
+import { StyleAxes } from './StyleAxes'
 import { ColumnHint } from './ColumnHint'
 
 const LENSES: { id: Lens; key: string }[] = [
@@ -409,6 +410,10 @@ export function RegisterView() {
           nameOf={nameOf} corpusOf={corpusOf}
         />
       </div>
+
+      {/* What KIND of Greek this is, before any comparison — the question a reader has
+          before they have another text in mind. */}
+      {targetUnit && <StyleAxes meta={meta} unit={targetUnit} name={nameOf(targetUnit)} />}
 
       {/* ── lens ─────────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-center gap-4">

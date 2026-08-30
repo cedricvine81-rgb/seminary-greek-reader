@@ -98,3 +98,19 @@ console.log('\n═══ WHY: the per-feature table the UI would show ═══'
 why('Tob', 'Mark')
 why('Tob', 'josephus/antiquities')
 console.log('\n   ~ = derived from tagger categories, so comparable but not exact')
+
+/* ── 5. the two named axes against the grammars ──────────────────────────── */
+console.log('\n═══ AXES: does the counting reproduce the literary gradation? ═══')
+const axis = (id) => {
+  const u = byName.get(id)
+  return u ? `${u.periodicity.toFixed(3)}   ${(u.classicalLean >= 0 ? '+' : '')}${u.classicalLean.toFixed(2)}` : '—'
+}
+console.log(`   ${'work'.padEnd(30)}periodicity   lean`)
+for (const id of ['Rev', 'Mark', 'Matt', 'Luke', 'John', 'Rom', 'Acts', 'Heb', '1Pet',
+                  'Gen', 'Tob', 'josephus/jewish-war', 'greco/plato-gorgias',
+                  'greco/dio-chrysostom-orations', 'greco/lucian-alexander']) {
+  const u = byName.get(id)
+  if (u) console.log(`   ${u.label.slice(0, 28).padEnd(30)}${axis(id)}`)
+}
+console.log('\n   periodicity: share of clause-linking done by subordination (Aristotle 3.9)')
+console.log('   lean: +1 = the Classical average profile, -1 = the Koine average')

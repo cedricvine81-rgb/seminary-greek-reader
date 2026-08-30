@@ -274,6 +274,10 @@ export const PAGE_GUIDES: PageGuide[] = [
         body: 'The last two columns say what the same feature does in Classical Attic prose and in the Greek of the Hellenistic era, so you can judge whether a figure is remarkable. They default to the genre of the text you are comparing — a Gospel against narrative, a letter against letters — and you can pin any other pool to see whether a habit belongs to the genre or to the Greek at large. Where the library holds nothing of a genre in a period, the column says so rather than substituting an average: there is no Classical epistolography here at all.',
       },
       {
+        heading: 'Two named axes',
+        body: 'Above the ranking, the text you are comparing is placed on two scales that the scholarship already argued over. Periodicity is Aristotle’s distinction between the "strung-on" style whose clauses are simply added and the periodic style whose clauses are folded together; Classical lean is where the text sits between the average Classical profile and the average Koine one. They disagree in useful ways — Hebrews is the most periodic book in the New Testament and yet leans further from Attic than John — and the note behind them explains why.',
+      },
+      {
         heading: 'Taking it away',
         body: 'Print / save as PDF produces a document rather than a screenshot: the full ranking, the evidence for the leading parallels with verse references for every shared trait, the method, and the edition and morphology behind every text cited. The web address carries whatever you are looking at, so a comparison can be sent to a class.',
       },
@@ -284,6 +288,7 @@ export const PAGE_GUIDES: PageGuide[] = [
       { does: 'Tap a column heading', gets: 'Explains what that column is' },
     ],
     related: [
+      { label: 'Where these measurements come from', href: '/tools/register/background' },
       { label: 'Texts — read the works being compared', href: '/texts' },
       { label: 'Construct search — find the constructions this counts', href: '/search/construct' },
     ],

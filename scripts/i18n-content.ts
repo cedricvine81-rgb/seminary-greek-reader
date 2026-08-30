@@ -26,6 +26,7 @@ import * as React from 'react'
 ;(globalThis as unknown as { React: typeof React }).React = React
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS } from '../src/lib/themes'
 import { PAGE_GUIDES } from '../src/lib/page-guides'
+import { BACKGROUND, BACKGROUND_LEDE } from '../src/lib/register-background'
 import { workDate } from '../src/lib/work-dates'
 import { DEVICES, GROUP_LABEL, GROUP_DESC } from '../src/lib/rhetoric-devices'
 import { getTextSummary } from '../src/lib/texts-summaries'
@@ -582,12 +583,23 @@ export function pageGuideItems(): Item[] {
   return items
 }
 
+/** The scholarly note behind the Register tool (src/lib/register-background.ts). */
+export function registerBackgroundItems(): Item[] {
+  const items: Item[] = [{ key: 'regbg.lede', english: BACKGROUND_LEDE }]
+  for (const sec of BACKGROUND) {
+    items.push({ key: `regbg.${sec.id}.h`, english: sec.heading })
+    sec.paragraphs.forEach((p, i) => items.push({ key: `regbg.${sec.id}.p${i}`, english: p }))
+  }
+  return items
+}
+
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
   rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems, hebrewMorphology: hebrewMorphologyItems, vocab: vocabItems,
   constructPresets: constructPresetItems,
   lexiconGlosses: lexiconGlossItems,
   pageGuides: pageGuideItems,
+  registerBackground: registerBackgroundItems,
 }
 /**
  * Sources emitted as per-bucket JSON under public/ and fetched by the client, instead of as one

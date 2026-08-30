@@ -59,7 +59,8 @@ describe('page guides', () => {
   })
 
   it('points its onward links at routes that exist', () => {
-    const known = new Set([...STUDY_ROUTES, '/tools', '/exegesis/diagramming-guide'])
+    const known = new Set([...STUDY_ROUTES, '/tools', '/exegesis/diagramming-guide',
+      '/tools/register/background'])
     for (const g of PAGE_GUIDES) {
       for (const r of g.related ?? []) {
         // Strip any query string: /exegesis?tab=notes is a real destination.

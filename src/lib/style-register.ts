@@ -42,6 +42,8 @@ export interface StyleMeta {
   /** Published so a passage profiled server-side lands on the same scale as the works. */
   norm: { mu: Record<string, number>; sd: Record<string, number> }
   spread: Record<string, number>
+  /** Observed range of each named axis across the library, so a bar can be drawn honestly. */
+  axisRange: { periodicity: [number, number]; classicalLean: [number, number] }
   /** The library's average rate per feature — the norm two texts are both departing from. */
   center: Record<string, number>
   /** Period baselines, so a reader can ask whether a rate is Classical or of its own era. */
@@ -108,6 +110,10 @@ export interface StyleUnit {
   reliable: boolean
   rates: Record<string, number>
   delta: number[]
+  /** Share of clause-linking done by subordination — Aristotle's εἰρομένη against κατεστραμμένη. */
+  periodicity?: number
+  /** Position between the Classical and Koine centroids: +1 Classical mean, −1 Koine mean. */
+  classicalLean?: number
 }
 
 export interface Neighbour {
