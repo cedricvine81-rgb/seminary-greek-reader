@@ -25,6 +25,7 @@ import * as React from 'react'
 // compiled for the app itself.
 ;(globalThis as unknown as { React: typeof React }).React = React
 import { THEME_PAGES, THEME_GROUPS, TRADITIONS } from '../src/lib/themes'
+import { PAGE_GUIDES } from '../src/lib/page-guides'
 import { workDate } from '../src/lib/work-dates'
 import { DEVICES, GROUP_LABEL, GROUP_DESC } from '../src/lib/rhetoric-devices'
 import { getTextSummary } from '../src/lib/texts-summaries'
@@ -547,11 +548,46 @@ export function lexiconGlossItems(): Item[] {
     .map(e => ({ key: `lex.gloss.${e.l.normalize('NFC')}`, english: e.g!.trim(), bucket: 'greek' }))
 }
 
+/**
+ * The "about this page" panels (src/lib/page-guides.ts).
+ *
+ * Keyed by guide id and position rather than by a hash of the text, so a reordered section
+ * keeps its translation and only an EDITED one goes stale — which is what the fingerprint is
+ * for. The Hebrew overlay is extracted too: on the Hebrew track those fields replace their
+ * counterparts wholesale, so a Spanish reader on that track would otherwise drop back to
+ * English mid-panel.
+ */
+export function pageGuideItems(): Item[] {
+  const items: Item[] = []
+  const add = (id: string, part: string, english: string) => {
+    if (english?.trim()) items.push({ key: `guide.${id}.${part}`, english })
+  }
+  for (const g of PAGE_GUIDES) {
+    const faces: [string, typeof g | NonNullable<typeof g.hebrew>][] = [['', g]]
+    if (g.hebrew) faces.push(['hebrew.', g.hebrew])
+    for (const [prefix, face] of faces) {
+      if (face.title) add(g.id, `${prefix}title`, face.title)
+      if (face.lede) add(g.id, `${prefix}lede`, face.lede)
+      face.sections?.forEach((sec, i) => {
+        add(g.id, `${prefix}s${i}.h`, sec.heading)
+        add(g.id, `${prefix}s${i}.b`, sec.body)
+      })
+      face.gestures?.forEach((ge, i) => {
+        add(g.id, `${prefix}g${i}.does`, ge.does)
+        add(g.id, `${prefix}g${i}.gets`, ge.gets)
+      })
+      face.related?.forEach((r, i) => add(g.id, `${prefix}r${i}`, r.label))
+    }
+  }
+  return items
+}
+
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
   rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems, hebrewMorphology: hebrewMorphologyItems, vocab: vocabItems,
   constructPresets: constructPresetItems,
   lexiconGlosses: lexiconGlossItems,
+  pageGuides: pageGuideItems,
 }
 /**
  * Sources emitted as per-bucket JSON under public/ and fetched by the client, instead of as one

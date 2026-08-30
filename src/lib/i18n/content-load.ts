@@ -15,7 +15,7 @@ import { NO_CONTENT, type ContentCatalogue } from './content'
  * An unknown locale or an untranslated surface returns the empty catalogue, which makes
  * content() fall back to English — the same path a partial translation takes.
  */
-export type ContentSource = 'themes' | 'rhetoric' | 'summaries' | 'constructPresets'
+export type ContentSource = 'themes' | 'rhetoric' | 'summaries' | 'constructPresets' | 'pageGuides'
 
 export async function loadContent(
   locale: Locale, source: ContentSource,
@@ -32,6 +32,12 @@ export async function loadContent(
   }
   if (locale === 'es' && source === 'constructPresets') {
     return (await import('./generated/es.constructPresets')).ES_CONSTRUCTPRESETS
+  }
+  // The page guides are the one surface loaded from a CLIENT component — the panel is mounted
+  // app-wide, so there is no server render to hand it a catalogue. The dynamic import does the
+  // same work either way: Next splits it out, and an English reader never fetches the chunk.
+  if (locale === 'es' && source === 'pageGuides') {
+    return (await import('./generated/es.pageGuides')).ES_PAGEGUIDES
   }
   return NO_CONTENT
 }

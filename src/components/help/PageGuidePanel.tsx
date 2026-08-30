@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useT } from '@/lib/i18n/LocaleProvider'
+import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
+import { content, NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
+import { loadContent } from '@/lib/i18n/content-load'
 import Link from 'next/link'
 import { X, HelpCircle, ArrowRight } from 'lucide-react'
 import { PAGE_GUIDES, EXEGESIS_GUIDE_IDS, guideById, type PageGuide , resolveGuide } from '@/lib/page-guides'
@@ -19,7 +21,30 @@ const WIDTH = 420
 
 export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: () => void }) {
   const t = useT()
+  const locale = useLocale()
   const hebrewTrack = useTrackValue() === 'hebrew'
+
+  /**
+   * The guide in the reader's language.
+   *
+   * Fetched when the panel opens rather than with the page: this is prose read once, and an
+   * English reader must not pay for a translation they will never see. Until it arrives — and
+   * for anything not yet translated, or translated against English that has since been
+   * rewritten — `content` returns the English the guide was authored with, so the panel is
+   * never blank and never stale.
+   */
+  const [cat, setCat] = useState<ContentCatalogue>(NO_CONTENT)
+  useEffect(() => {
+    if (locale === 'en') { setCat(NO_CONTENT); return }
+    let live = true
+    loadContent(locale, 'pageGuides').then(c => { if (live) setCat(c) }).catch(() => {})
+    return () => { live = false }
+  }, [locale])
+
+  // Keys mirror scripts/i18n-content.ts: guide id, then the field's position in the guide.
+  const face = hebrewTrack && guide.hebrew ? 'hebrew.' : ''
+  const say = (part: string, english: string) =>
+    content(cat, `guide.${guide.id}.${face}${part}`, english)
   // Which Exegesis sub-guide is being read, when the panel is showing one.
   const [tabPickerOpen, setTabPickerOpen] = useState(false)
 
@@ -57,7 +82,7 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-brand-700">
             <HelpCircle size={13} /> {t('help.aboutThisPage')}
           </p>
-          <h2 className="mt-0.5 text-base font-semibold text-gray-900">{guide.title}</h2>
+          <h2 className="mt-0.5 text-base font-semibold text-gray-900">{say('title', guide.title)}</h2>
         </div>
         <button onClick={onClose} aria-label={t('action.close')} className="mt-0.5 shrink-0 text-gray-400 hover:text-gray-600">
           <X size={16} />
@@ -65,12 +90,12 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-4 space-y-5">
-        <p className="text-sm leading-relaxed text-gray-700">{guide.lede}</p>
+        <p className="text-sm leading-relaxed text-gray-700">{say('lede', guide.lede)}</p>
 
-        {guide.sections.map(s => (
+        {guide.sections.map((s, i) => (
           <div key={s.heading}>
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5">{s.heading}</h3>
-            <p className="text-sm leading-relaxed text-gray-700">{s.body}</p>
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5">{say(`s${i}.h`, s.heading)}</h3>
+            <p className="text-sm leading-relaxed text-gray-700">{say(`s${i}.b`, s.body)}</p>
           </div>
         ))}
 
@@ -80,11 +105,11 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
               {t('help.worthKnowing')}
             </h3>
             <ul className="space-y-2">
-              {guide.gestures.map(g => (
+              {guide.gestures.map((g, i) => (
                 <li key={g.does} className="text-sm leading-snug text-gray-700">
-                  <span className="font-medium text-gray-900">{g.does}</span>
+                  <span className="font-medium text-gray-900">{say(`g${i}.does`, g.does)}</span>
                   <span className="text-gray-400"> — </span>
-                  {g.gets}
+                  {say(`g${i}.gets`, g.gets)}
                 </li>
               ))}
             </ul>
@@ -99,7 +124,7 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
               onClick={() => setTabPickerOpen(o => !o)}
               className="text-xs font-semibold uppercase tracking-wide text-gray-500 hover:text-brand-700"
             >
-              {tabPickerOpen ? 'Hide the other views' : 'About the other views'}
+              {t(tabPickerOpen ? 'help.hideOtherViews' : 'help.otherViews')}
             </button>
             {tabPickerOpen && (
               <div className="mt-2 space-y-0.5">
@@ -107,6 +132,8 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
                   const raw = guideById(id)
                   const g = raw && resolveGuide(raw, hebrewTrack)
                   if (!g) return null
+                  const other = (part: string, english: string) =>
+                    content(cat, `guide.${id}.${hebrewTrack && raw?.hebrew ? 'hebrew.' : ''}${part}`, english)
                   return (
                     <button
                       key={id}
@@ -114,8 +141,8 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
                       onClick={() => openPageGuide(id)}
                       className="block w-full rounded-lg px-2 py-1.5 text-left text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-800"
                     >
-                      {g.title.replace(/^Exegesis · /, '')}
-                      <span className="block text-xs text-gray-400">{g.lede}</span>
+                      {other('title', g.title).replace(/^(Exegesis|Exégesis) · /, '')}
+                      <span className="block text-xs text-gray-400">{other('lede', g.lede)}</span>
                     </button>
                   )
                 })}
@@ -128,14 +155,14 @@ export function PageGuidePanel({ guide, onClose }: { guide: PageGuide; onClose: 
           <div className="border-t border-gray-100 pt-3">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5">{t('action.next')}</h3>
             <div className="space-y-0.5">
-              {guide.related.map(r => (
+              {guide.related.map((r, i) => (
                 <Link
                   key={r.href}
                   href={r.href}
                   onClick={onClose}
                   className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm text-brand-700 hover:bg-brand-50"
                 >
-                  <ArrowRight size={13} className="shrink-0 text-brand-400" /> {r.label}
+                  <ArrowRight size={13} className="shrink-0 text-brand-400" /> {say(`r${i}`, r.label)}
                 </Link>
               ))}
             </div>
