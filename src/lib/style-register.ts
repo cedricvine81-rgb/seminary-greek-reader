@@ -531,3 +531,76 @@ export const CORPUS_KEY: Record<string, string> = {
 
 /** True for the corpora whose work ids are OSIS book ids, so book-names.ts can localize them. */
 export const isBiblical = (corpus: string) => corpus === 'GNT' || corpus === 'LXX'
+
+/* ── reading the table in plain language ──────────────────────────────────────
+ *
+ * The expanded row is evidence, and a student who cannot yet read a table of rates gets
+ * nothing from it. This turns the SAME numbers into a sentence: which way the two texts agree,
+ * against which pool, and by how much. It asserts nothing the row does not already show —
+ * every figure it names is printed in the table beside it — and it says "against Classical
+ * prose" or "against the Koine average" only when both texts fall on the same side of that
+ * baseline, so the direction is a fact about the pair, not about one of them.
+ */
+
+export type Relation = 'farLess' | 'less' | 'about' | 'more' | 'farMore'
+
+export interface ReadingTrait {
+  /** Message key for the feature or the accented word, resolved by the caller. */
+  label: string
+  rel: Relation
+  /** Which baseline the comparison is against. */
+  pool: 'classical' | 'koine'
+  a: number
+  b: number
+  c: number
+}
+
+export interface Reading {
+  traits: ReadingTrait[]
+  /** Both leans, when the pair sits the same side of the Koine average — else null. */
+  lean: { a: number; b: number; side: 'classical' | 'koine' } | null
+}
+
+/** Ratio bands. Deliberately coarse: "far" needs to mean far, or the word is worthless. */
+function relate(a: number, b: number, c: number): Relation | null {
+  if (!(c > 0)) return null
+  const ra = a / c, rb = b / c
+  // Both texts must land on the same side of the pool, or there is no shared statement.
+  if ((ra < 1) !== (rb < 1)) return null
+  const near = Math.max(ra, rb) < 1 ? Math.max(ra, rb) : Math.min(ra, rb)
+  if (near <= 0.4) return 'farLess'
+  if (near <= 0.8) return 'less'
+  if (near >= 2.5) return 'farMore'
+  if (near >= 1.25) return 'more'
+  return 'about'
+}
+
+/**
+ * @param rows the shared traits already on screen, strongest first
+ * @param limit how many to speak about — two carries the argument, more reads as a list
+ */
+export function readingOf(
+  rows: { label: string; target: number; other: number; classical: number; koine: number }[],
+  leans: { a?: number; b?: number },
+  limit = 2,
+): Reading {
+  const traits: ReadingTrait[] = []
+  for (const r of rows) {
+    if (traits.length >= limit) break
+    // Classical first: it is the wider gap in this library, so it is the more telling one.
+    for (const pool of ['classical', 'koine'] as const) {
+      const c = pool === 'classical' ? r.classical : r.koine
+      const rel = Number.isFinite(c) ? relate(r.target, r.other, c) : null
+      if (!rel || rel === 'about') continue
+      traits.push({ label: r.label, rel, pool, a: r.target, b: r.other, c })
+      break
+    }
+  }
+  // Only when BOTH texts are past the same average, which is the claim the sentence makes.
+  const { a, b } = leans
+  const side = a === undefined || b === undefined ? null
+    : a < -1 && b < -1 ? 'koine' as const
+    : a > 1 && b > 1 ? 'classical' as const
+    : null
+  return { traits, lean: side ? { a: a!, b: b!, side } : null }
+}

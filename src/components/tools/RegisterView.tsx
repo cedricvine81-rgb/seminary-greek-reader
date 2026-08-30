@@ -18,7 +18,7 @@ import { bookName } from '@/lib/i18n/book-names'
 import { resolverFor, type GlossResolver } from '@/lib/vocab-gloss-lookup'
 import {
   CORPUS_KEY, chunksOf, explain, explainDelta, explainVocab, featureSpread, isBiblical,
-  neighbours, passageUnit, sharedFeatures, sharedWords, availableGenres, baselinePair,
+  neighbours, passageUnit, sharedFeatures, sharedWords, availableGenres, baselinePair, readingOf,
   ALL_PROSE, STYLE_SHAPE,
   type Lens, type PassageManifest, type PassageProfile, type StyleFeature, type StyleMeta,
   type StyleUnit, type VocabFile,
@@ -167,6 +167,13 @@ export function RegisterView() {
   const corpusOf = (u: StyleUnit) => (CORPUS_KEY[u.corpus] ? t(CORPUS_KEY[u.corpus]) : u.corpus)
   // Keyed off the feature id so the builder stays the single source of the feature set; a
   // feature added there before its message exists shows its English label, not a key.
+  // A rate in the sentence must be the SAME STRING as the rate in the table directly above it:
+  // toFixed and toLocaleString round 1.65 differently, and a sentence that says 1.7 about a row
+  // printing 1.6 reads as a second, disagreeing measurement. The lean values follow the axes
+  // instead, which is where a reader just saw them, and those are locale-formatted.
+  const rate = (n: number) => n.toFixed(1)
+  const lean = (n: number) => n.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+
   const featureLabel = (f: StyleFeature) => {
     const key = `reg.f.${f.key}`
     const hit = t(key)
@@ -613,6 +620,18 @@ export function RegisterView() {
               const shared = allTraits ? sharedAll : sharedAll.slice(0, 5)
               const hiddenTraits = (traitsAll.length - traits.length)
                 + (wordsAll.length - words.length) + (sharedAll.length - shared.length)
+              // Read from the FULL ordered set, not the five shown: cutting the table for
+              // length should not change what the sentence about it says.
+              // Not on the subject-word lens: content words follow what a text is ABOUT, so
+              // "both use Ἰησοῦς far more than Classical prose" would be a true sentence
+              // making a false point — the very trap that lens is captioned to warn about.
+              const reading = readingOf(
+                lens === 'syntax'
+                  ? traitsAll.map(r => ({ label: featureLabel(r.feature), ...r }))
+                  : lens === 'register' ? wordsAll.map(r => ({ label: r.display, ...r }))
+                  : [],
+                { a: targetUnit.classicalLean, b: unit.classicalLean },
+              )
               return (
                 <li key={unit.work}>
                   <button
@@ -740,6 +759,36 @@ export function RegisterView() {
                             .join(' · ')}
                         </p>
                       )}
+                      {/* The table in a sentence, for a reader who cannot yet read a table of
+                          rates. Every figure it names is printed directly above it. */}
+                      {reading.traits.length > 0 && (
+                        <p className="mt-2 text-xs leading-relaxed text-gray-600">
+                          <span className="font-semibold uppercase tracking-wide text-gray-400">
+                            {t('reg.reading')}:{' '}
+                          </span>
+                          {t('reg.readingLead')}
+                          {reading.traits.map((r, i) => (
+                            <span key={r.label + i}>
+                              {i > 0 && t('reg.readingAnd')}
+                              {t(`reg.reading.${r.rel}`, {
+                                // A feature label is a heading elsewhere and a phrase here, so
+                                // it loses its capital — but only a Latin one: γάρ must not be
+                                // touched, and neither must a name.
+                                feature: /^[A-Z][a-z]/.test(r.label)
+                                  ? r.label[0].toLocaleLowerCase(locale) + r.label.slice(1)
+                                  : r.label,
+                                pool: t(r.pool === 'classical' ? 'reg.readingPool.classical' : 'reg.readingPool.koine'),
+                                a: rate(r.a), b: rate(r.b), c: rate(r.c),
+                              })}
+                            </span>
+                          ))}
+                          {'. '}
+                          {reading.lean && t(`reg.readingLean.${reading.lean.side}`, {
+                            a: lean(reading.lean.a), b: lean(reading.lean.b),
+                          })}
+                        </p>
+                      )}
+
                       {lens === 'syntax' && (
                         <p className="mt-2 text-xs text-gray-500">
                           <span className="text-gray-400">~</span> {t('reg.approxTip')}
