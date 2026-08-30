@@ -8,7 +8,9 @@ import { useState } from 'react'
 import { ChevronRight } from 'lucide-react'
 import clsx from 'clsx'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
-import { CORPUS_KEY, type StyleMeta } from '@/lib/style-register'
+import { bookName } from '@/lib/i18n/book-names'
+import { textAuthorLabel } from '@/lib/i18n/text-names'
+import { CORPUS_KEY, isBiblical, type PeriodBaseline, type StyleMeta } from '@/lib/style-register'
 
 export function PeriodSources({ meta }: { meta: StyleMeta }) {
   const t = useT()
@@ -18,6 +20,14 @@ export function PeriodSources({ meta }: { meta: StyleMeta }) {
   if (!periods) return null
 
   const corpusName = (c: string) => (CORPUS_KEY[c] ? t(CORPUS_KEY[c]) : c)
+
+  // A member is either a biblical book, which book-names.ts localizes exactly as the ranking
+  // does, or an author, whose name text-names.ts already carries for the whole Texts library.
+  // A prose work title stays as it is cited, the rule the rest of the app follows.
+  const memberName = (m: PeriodBaseline['members'][number]) =>
+    m.work && isBiblical(m.corpus)
+      ? bookName(m.work, locale, m.author)
+      : textAuthorLabel(m.author, locale, m.author)
 
   return (
     <div className="text-xs text-gray-500">
@@ -45,7 +55,7 @@ export function PeriodSources({ meta }: { meta: StyleMeta }) {
             {periods[open].members.map(m => (
               <li key={`${m.corpus}/${m.author}`} className="flex justify-between gap-3">
                 <span className="truncate text-gray-700">
-                  {m.author}
+                  {memberName(m)}
                   <span className="ml-1.5 text-gray-400">{corpusName(m.corpus)}</span>
                 </span>
                 <span className="shrink-0 tabular-nums text-gray-400">
@@ -57,7 +67,11 @@ export function PeriodSources({ meta }: { meta: StyleMeta }) {
           </ul>
           {open === 'classical' && periods.excluded.length > 0 && (
             <p className="mt-2 border-t border-gray-200 pt-2">
-              {t('reg.epicExcluded', { works: periods.excluded.map(e => e.label).join(', ') })}
+              {t('reg.epicExcluded', {
+                // Separated by a middot: these titles contain their own commas ("Homer,
+                // Iliad"), so a comma-joined list read as one long run of names.
+                works: periods.excluded.map(e => e.label).join(' · '),
+              })}
             </p>
           )}
         </div>

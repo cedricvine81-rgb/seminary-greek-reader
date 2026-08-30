@@ -16,7 +16,7 @@ import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
 import {
   CORPUS_KEY, chunksOf, explain, explainDelta, explainVocab, featureSpread, isBiblical,
-  neighbours, passageUnit, sharedFeatures, sharedWords,
+  neighbours, passageUnit, sharedFeatures, sharedWords, STYLE_SHAPE,
   type Lens, type PassageManifest, type PassageProfile, type StyleFeature, type StyleMeta,
   type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
@@ -142,8 +142,7 @@ export function RegisterView() {
     // checked, and a stale one is refetched past the cache once before giving up.
     const complete = (idx: unknown) => {
       const i = idx as { meta?: StyleMeta; units?: unknown[] } | null
-      return !!i?.meta?.norm?.mu && !!i.meta.center && !!i.meta.spread
-        && Array.isArray(i.units) && i.units.length > 0
+      return i?.meta?.shape === STYLE_SHAPE && Array.isArray(i.units) && i.units.length > 0
     }
 
     const load = async () => {
@@ -171,7 +170,7 @@ export function RegisterView() {
     let live = true
     // Same staleness trap as the index: a vocab file cached from before the period baselines
     // existed still parses, and every Classical and Koine cell silently reads 0.0.
-    const usable = (v: VocabFile | null) => !!v?.works && !!v.periods?.classical
+    const usable = (v: VocabFile | null) => v?.shape === STYLE_SHAPE && !!v.works
     const load = async () => {
       let v: VocabFile = await fetch('/data/style/vocab.json').then(r => r.json())
       if (!usable(v)) v = await fetch('/data/style/vocab.json', { cache: 'reload' }).then(r => r.json())

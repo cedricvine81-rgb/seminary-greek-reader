@@ -136,6 +136,12 @@ const es: Record<string, BookLabel> = {
   Bar: { name: 'Baruc', abbrev: 'Bar' },
   Sus: { name: 'Susana', abbrev: 'Sus' },
   Bel: { name: 'Bel y el dragón', abbrev: 'Bel' },
+  // The Theodotion recensions, which the Septuagint corpus carries beside the Old Greek and
+  // which the Register tool ranks as separate works. Without these three the Spanish list
+  // showed "Susanna (Theodotion)" beside "Susana".
+  SusTh: { name: 'Susana (Teodoción)', abbrev: 'Sus' },
+  BelTh: { name: 'Bel y el dragón (Teodoción)', abbrev: 'Bel' },
+  DanTh: { name: 'Daniel (Teodoción)', abbrev: 'Dn' },
   '1Macc': { name: '1 Macabeos', abbrev: '1 Mac' },
   '2Macc': { name: '2 Macabeos', abbrev: '2 Mac' },
   '3Macc': { name: '3 Macabeos', abbrev: '3 Mac' },

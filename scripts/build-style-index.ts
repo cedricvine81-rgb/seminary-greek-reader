@@ -19,6 +19,8 @@ import {
   profileWords, type Profile, type Word,
 } from '../src/lib/style-features'
 
+import { STYLE_SHAPE } from '../src/lib/style-register'
+
 const SRC = 'public/data/construct'
 const OUT = 'public/data/style'
 const CHUNK = 5000                 // words per chunk; Antiquities is not one style
@@ -377,7 +379,7 @@ interface PeriodBaseline {
   /** The same for each Delta word. */
   words: Record<string, number>
   /** Who is in it: author, how many of their works, how many words. For the reader to check. */
-  members: { author: string; corpus: string; works: number; words: number }[]
+  members: { author: string; corpus: string; work?: string; works: number; words: number }[]
 }
 
 function buildBaseline(members: Unit[]): PeriodBaseline {
@@ -401,8 +403,12 @@ function buildBaseline(members: Unit[]): PeriodBaseline {
       words[l] = works.reduce((a, u) => a + 1000 * ((u.lem.get(l) ?? 0) / u.n), 0) / works.length
     }
     authorMeans.push({ rates, words })
+    // The work id travels with a member that IS one work, so the interface can localize a
+    // biblical book's name the same way the ranking beside it does. Without it the roster
+    // printed "Psalms · Genesis" next to a Spanish list reading "Salmos · Génesis".
     roster.push({
       author, corpus: corpusOf.get(author) ?? '',
+      work: works.length === 1 ? works[0].work : undefined,
       works: works.length, words: works.reduce((a, u) => a + u.n, 0),
     })
   })
@@ -434,7 +440,7 @@ const periods = {
   classical: buildBaseline(classicalUnits),
   koine: buildBaseline(koineUnits),
   excluded: excludedUnits.map(u => ({
-    label: WORK_LABEL.get(u.work) ?? u.work, words: u.n,
+    work: u.work, label: WORK_LABEL.get(u.work) ?? u.work, words: u.n,
   })).sort((a, b) => b.words - a.words),
 }
 console.error(`   baselines: classical ${periods.classical.members.length} authors / `
@@ -448,6 +454,12 @@ const round = (o: Record<string, number>, dp: number) =>
 
 const meta = {
   built: 'see git',
+  // Bump SHAPE whenever a field is added, removed or changed meaning. The interface refuses an
+  // index whose shape it does not recognise and refetches past the cache — public/data is
+  // served with an hour of cache plus stale-while-revalidate, and a file cached from before a
+  // field existed still PARSES, so every reader of that field silently gets a default. Three
+  // separate bugs of exactly that kind reached testing before this stamp existed.
+  shape: STYLE_SHAPE,
   chunkWords: CHUNK,
   minWords: MIN_CHUNK,
   reliableWords: RELIABLE,
@@ -549,7 +561,7 @@ const vocabPeriods = {
   koine: trim(contentBaseline(koineUnits)),
 }
 fs.writeFileSync(path.join(OUT, 'vocab.json'),
-  JSON.stringify({ labels: vocabLabels, works: vocabWorks, periods: vocabPeriods }))
+  JSON.stringify({ shape: STYLE_SHAPE, labels: vocabLabels, works: vocabWorks, periods: vocabPeriods }))
 console.error(`   content baselines: ${Object.keys(vocabPeriods.classical).length} classical / `
   + `${Object.keys(vocabPeriods.koine).length} koine lemmas of ${listed.size} listed`)
 console.error(`   ${Object.keys(vocabLabels).length} of `

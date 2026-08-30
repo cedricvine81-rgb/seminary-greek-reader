@@ -16,6 +16,19 @@
  * "same author", and the caveat is on the page rather than buried here.
  */
 
+/**
+ * The shape of public/data/style. Bumped whenever the built files gain, lose or change a
+ * field; the loader refuses anything else and refetches past the cache.
+ *
+ * This exists because public/data is served with an hour of cache and stale-while-revalidate,
+ * so a reader who was here before a deploy can be handed a file that is internally consistent
+ * and simply OLD. Such a file parses cleanly and every reader of the new field quietly gets a
+ * default — a column of 0.0, a ranking scored against nothing, a roster of untranslated names.
+ * Checking one stamp catches all of that; checking field by field only ever catches the field
+ * someone remembered to add to the check.
+ */
+export const STYLE_SHAPE = 4
+
 export type Lens = 'register' | 'syntax' | 'vocabulary'
 
 export interface StyleFeature {
@@ -29,6 +42,7 @@ export interface StyleFeature {
 }
 
 export interface StyleMeta {
+  shape: number
   chunkWords: number
   minWords: number
   reliableWords: number
@@ -45,7 +59,7 @@ export interface StyleMeta {
     classical: PeriodBaseline
     koine: PeriodBaseline
     /** Epic verse, in neither baseline — an artificial dialect belonging to no prose period. */
-    excluded: { label: string; words: number }[]
+    excluded: { work: string; label: string; words: number }[]
   }
   /** Per lens, [as close as anything gets, no closer than chance] — the result bar's scale. */
   barScale: Record<string, [number, number]>
@@ -140,6 +154,7 @@ export function featureSpread(units: StyleUnit[]): Record<string, number> {
 
 /** public/data/style/vocab.json: the per-work content lists, plus accented forms where known. */
 export interface VocabFile {
+  shape: number
   labels: Record<string, string>
   works: Record<string, [string, number][] | null>
   /** Content-word rates per period. A lemma absent from a map is nought there. */
@@ -273,7 +288,7 @@ const absenceIsMeaningful = (average: number, nA: number, nB: number) =>
 export interface PeriodBaseline {
   features: Record<string, number>
   words: Record<string, number>
-  members: { author: string; corpus: string; works: number; words: number }[]
+  members: { author: string; corpus: string; work?: string; works: number; words: number }[]
 }
 
 export interface SharedTrait {

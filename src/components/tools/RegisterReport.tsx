@@ -15,6 +15,9 @@ import {
   type Lens, type Neighbour, type StyleFeature, type StyleMeta, type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
+import { bookName } from '@/lib/i18n/book-names'
+import { textAuthorLabel } from '@/lib/i18n/text-names'
+import { isBiblical } from '@/lib/style-register'
 import { formatDateLong } from '@/lib/i18n/format'
 
 /** Detail tables are printed for this many parallels; the ranking table lists every one. */
@@ -303,14 +306,19 @@ export function RegisterReport({
               </p>
               <p className="text-[10px] leading-relaxed text-gray-700">
                 {meta.periods[id].members
-                  .map(m => (m.works > 1 ? `${m.author} (${m.works})` : m.author))
+                  .map(m => {
+                    const name = m.work && isBiblical(m.corpus)
+                      ? bookName(m.work, locale, m.author)
+                      : textAuthorLabel(m.author, locale, m.author)
+                    return m.works > 1 ? `${name} (${m.works})` : name
+                  })
                   .join(' · ')}
               </p>
             </div>
           ))}
           {meta.periods.excluded.length > 0 && (
             <p className="text-[10px] leading-relaxed">
-              {t('reg.epicExcluded', { works: meta.periods.excluded.map(e => e.label).join(', ') })}
+              {t('reg.epicExcluded', { works: meta.periods.excluded.map(e => e.label).join(' · ') })}
             </p>
           )}
         </section>
