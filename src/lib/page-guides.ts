@@ -245,6 +245,118 @@ export const PAGE_GUIDES: PageGuide[] = [
   // ── Exegesis: one entry for the page, then one per tab ────────────────────────────────
 
   {
+    id: 'register',
+    title: 'Register',
+    lede: 'Find which works in the library write Greek like the one you are reading — and see exactly what makes them alike.',
+    sections: [
+      {
+        heading: 'What it measures, and what it does not',
+        body: 'Register is the level and texture of the Greek: how often a writer reaches for participles, particles, the article, subordination. It is not authorship. Works of the same genre often score alike whoever wrote them — Hebrews ranks first against Romans here — so read a high ranking as "these read similarly", and let the table under each result tell you why.',
+      },
+      {
+        heading: 'Choosing what to compare',
+        body: 'Type a reference for Scripture — "Mark", "Luke 1-2", "Mark 4:1-9" all work, in English or in your own book names, and the box completes the pericope as you type. For anything else, pick a title from the library list below the box. A whole book is answered instantly; a passage is measured on the spot.',
+      },
+      {
+        heading: 'Passages are the interesting part',
+        body: 'A whole work averages its own variety away. Luke 3-24 ranks with Matthew, Mark and Acts — the synoptic register. Luke 1-2 ranks with 1 Kingdoms, Judith, Tobit and Daniel: the infancy narrative septuagintalizes, and comparing the two halves is how you watch it happen.',
+      },
+      {
+        heading: 'Three ways of measuring',
+        body: 'Common words compares how often each text uses the 150 words the whole library uses most — largely the grammatical ones, so it tracks how a sentence is built. Syntax compares the rate of each construction. Subject words compares the vocabulary that is NOT among those common 150, so it follows what a text is about as much as how it is written. Each result explains itself in the terms of the lens you chose.',
+      },
+      {
+        heading: 'Reading the numbers',
+        body: 'Every figure is a rate per 1,000 words, so texts of very different lengths sit side by side. Distance is the average difference between two profiles: 0 is identical, and about 1.0 is no more alike than two works picked at random. The bar runs on a fixed scale, so a first-placed result with a short bar is telling you the work has no close kin anywhere in the library. Any column heading will explain itself if you tap it.',
+      },
+      {
+        heading: 'Classical and Koine, by genre',
+        body: 'The last two columns say what the same feature does in Classical Attic prose and in the Greek of the Hellenistic era, so you can judge whether a figure is remarkable. They default to the genre of the text you are comparing — a Gospel against narrative, a letter against letters — and you can pin any other pool to see whether a habit belongs to the genre or to the Greek at large. Where the library holds nothing of a genre in a period, the column says so rather than substituting an average: there is no Classical epistolography here at all.',
+      },
+      {
+        heading: 'Taking it away',
+        body: 'Print / save as PDF produces a document rather than a screenshot: the full ranking, the evidence for the leading parallels with verse references for every shared trait, the method, and the edition and morphology behind every text cited. The web address carries whatever you are looking at, so a comparison can be sent to a class.',
+      },
+    ],
+    gestures: [
+      { does: 'Tab or →', gets: 'Accepts the grey completion in the reference box' },
+      { does: 'Tap a result', gets: 'Opens the evidence: what the two texts share, and where they differ' },
+      { does: 'Tap a column heading', gets: 'Explains what that column is' },
+    ],
+    related: [
+      { label: 'Texts — read the works being compared', href: '/texts' },
+      { label: 'Construct search — find the constructions this counts', href: '/search/construct' },
+    ],
+  },
+
+  {
+    id: 'themes',
+    title: 'Themes',
+    lede: 'A subject index over the background library: what the ancient sources actually say about resurrection, purity, the Sabbath and the rest.',
+    sections: [
+      {
+        heading: 'The third way into the library',
+        body: 'The Texts library can be browsed by author and searched by word. This is the axis a seminary question usually starts from: by topic. Pick a theme and you get the passages that bear on it, grouped and summarised, each one opening into the reader.',
+      },
+      {
+        heading: 'Where the passages come from',
+        body: 'Every citation was returned by a real search of the corpus and then checked against the text — none is recalled from memory. The summaries are machine-drafted from the passage itself and hand-checked, and the page says so.',
+      },
+      {
+        heading: 'What the sources do not say',
+        body: 'Each theme ends with the absences: positions you might expect to find and do not. This is the part a word search cannot give you, and for an essay it is often the more useful half.',
+      },
+    ],
+    related: [
+      { label: 'Texts — read the sources in full', href: '/texts' },
+      { label: 'Search — find a word across the library', href: '/search' },
+    ],
+  },
+
+  {
+    id: 'map',
+    title: 'Places',
+    lede: 'Where the library\u2019s authors say things happened — every place they name, on one map.',
+    sections: [
+      {
+        heading: 'What is plotted',
+        body: 'Place names tagged in the Texts library, with the number of times each is mentioned. The dots are sized by how often a place comes up, so the shape of an author\u2019s world is visible before you read a word of them.',
+      },
+      {
+        heading: 'Narrowing it down',
+        body: 'Filter by author to see one writer\u2019s geography on its own — Josephus\u2019s Judaea against Herodotus\u2019s Aegean — or search for a place by name. Zoom and pan to move around; Reset returns to the whole map.',
+      },
+      {
+        heading: 'From a place to the passages',
+        body: 'Tap a place for its mention count and a link that searches the library for it, so you can go straight from the dot to the sentences behind it.',
+      },
+    ],
+    related: [
+      { label: 'Texts — the works these places come from', href: '/texts' },
+    ],
+  },
+
+  {
+    id: 'notes',
+    title: 'Notes',
+    lede: 'Everything you have written, in one notebook: verse notes, highlights and margin notes from every part of the app.',
+    sections: [
+      {
+        heading: 'One notebook, many surfaces',
+        body: 'A note made on a verse in the Reader, in the Exegesis workspace, on a background text or in a Grammar chapter all arrive here. Notes stay in step across open tabs, so a note written in one place shows up in another without a reload.',
+      },
+      {
+        heading: 'Finding a note again',
+        body: 'Notes can be filed in folders and searched. Each one keeps its reference, so opening it takes you back to the passage it was written on.',
+      },
+    ],
+    related: [
+      { label: 'Reader — where most notes are written', href: '/reader' },
+      { label: 'Exegesis — the workspace notebook', href: '/exegesis?tab=notes' },
+    ],
+  },
+
+  {
     id: 'exegesis',
     hebrew: {
       sections: [
@@ -599,6 +711,10 @@ export const EXEGESIS_GUIDE_IDS = PAGE_GUIDES
 export function guideForPath(pathname: string, search: string): PageGuide | undefined {
   const path = pathname.replace(/\/+$/, '') || '/'
 
+  if (path === '/tools/register') return BY_ID.get('register')
+  if (path.startsWith('/themes')) return BY_ID.get('themes')
+  if (path.startsWith('/map')) return BY_ID.get('map')
+  if (path.startsWith('/notes')) return BY_ID.get('notes')
   if (path === '/search/construct') return BY_ID.get('construct')
   if (path.startsWith('/search')) return BY_ID.get('search')
   if (path.startsWith('/reader')) return BY_ID.get('reader')
