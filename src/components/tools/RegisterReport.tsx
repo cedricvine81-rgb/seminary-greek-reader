@@ -11,7 +11,7 @@
 // Rendered always, shown only by the print stylesheet (see @media print in globals.css).
 
 import {
-  explain, explainDelta, explainVocab,
+  explain, explainDelta, explainVocab, sharedFeatures, sharedWords,
   type Lens, type Neighbour, type StyleFeature, type StyleMeta, type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
@@ -19,6 +19,15 @@ import { formatDateLong } from '@/lib/i18n/format'
 
 /** Detail tables are printed for this many parallels; the ranking table lists every one. */
 export const REPORT_DETAIL_LIMIT = 25
+/**
+ * References are gathered for this many, and no further. Each one is a pass over a whole work
+ * — and where the parallel is Strabo or Polybius, over a corpus that has to be read off disk
+ * first — so the report says how far it went rather than quietly running for a minute.
+ */
+export const REPORT_CITATION_LIMIT = 8
+
+/** What /api/register/citations returns, keyed by the work id it was asked about. */
+export type CitationMap = Record<string, { refs: Record<string, string[]>; counts: Record<string, number> }>
 
 /**
  * Which edition and which morphology each corpus rests on.
@@ -42,7 +51,7 @@ const SOURCE_KEY: Record<string, string> = {
 
 export function RegisterReport({
   meta, lens, targetUnit, results, spread, vocab, targetVocab,
-  mode, outsideOnly, includeShort, nameOf, corpusOf, featureLabel,
+  mode, outsideOnly, includeShort, citations, nameOf, corpusOf, featureLabel,
 }: {
   meta: StyleMeta
   lens: Lens
@@ -54,6 +63,8 @@ export function RegisterReport({
   mode: 'work' | 'passage'
   outsideOnly: boolean
   includeShort: boolean
+  /** Keyed by work id, plus 'target' for the text being compared. Null until fetched. */
+  citations: CitationMap | null
   nameOf: (u: StyleUnit) => string
   corpusOf: (u: StyleUnit) => string
   featureLabel: (f: StyleFeature) => string
@@ -148,74 +159,119 @@ export function RegisterReport({
         </table>
       </section>
 
-      {/* ── why, for each parallel ──────────────────────────────────────── */}
+      {/* ── why, for each parallel ────────────────────────────────────────────
+          What they SHARE comes first and gets the space, because that is the claim the
+          ranking is making. The differences follow, smaller, because they are the honest
+          qualification to it rather than the argument. */}
       <section className="mb-5">
-        <h2 className="mb-1 text-sm font-bold uppercase tracking-wide">
-          {t(lens === 'syntax' ? 'reg.why' : lens === 'vocabulary' ? 'reg.whyShared' : 'reg.whyWords')}
-        </h2>
-        <div className="grid grid-cols-2 gap-x-6">
-          {detail.map(({ unit, distance }, i) => {
-            const gaps = lens === 'syntax' ? explain(targetUnit, unit, meta.features, spread) : []
-            const wordGaps = lens === 'register' ? explainDelta(targetUnit, unit, meta) : []
-            const shared = lens === 'vocabulary' && vocab?.works[unit.work]
-              ? explainVocab(targetVocab ?? vocab.works[targetUnit.work] ?? [], vocab.works[unit.work]!)
-              : []
-            return (
-              <div key={unit.work} className="mb-3" style={{ breakInside: 'avoid' }}>
-                <p className="text-xs font-semibold">
-                  {i + 1}. {nameOf(unit)}
-                  <span className="font-normal"> — {corpusOf(unit)}, {t('reg.rep.distance')} {distance.toFixed(3)}</span>
+        <h2 className="mb-1 text-sm font-bold uppercase tracking-wide">{t('reg.rep.evidence')}</h2>
+        <p className="mb-2 text-xs">{t('reg.sharedNote')}</p>
+        {citations && (
+          <p className="mb-2 text-xs">
+            {t('reg.rep.citedTo', { n: Math.min(REPORT_CITATION_LIMIT, detail.length) })}
+          </p>
+        )}
+        {detail.map(({ unit, distance }, i) => {
+          const traits = lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta) : []
+          const words = lens === 'register' ? sharedWords(targetUnit, unit, meta) : []
+          const shared = lens === 'vocabulary' && vocab?.works[unit.work]
+            ? explainVocab(targetVocab ?? vocab.works[targetUnit.work] ?? [], vocab.works[unit.work]!)
+            : []
+          const gaps = lens === 'syntax' ? explain(targetUnit, unit, meta.features, spread, 4) : []
+          const wordGaps = lens === 'register' ? explainDelta(targetUnit, unit, meta, 4) : []
+          const mine = citations?.target
+          const theirs = citations?.[unit.work]
+
+          const refLine = (key: string) => {
+            if (!mine && !theirs) return null
+            const one = (c: typeof mine, label: string) => {
+              const list = c?.refs[key] ?? []
+              const total = c?.counts[key] ?? 0
+              if (!c) return null
+              return `${label}: ${list.length ? list.join(', ') : t('reg.rep.none')}`
+                + (total > list.length ? ` ${t('reg.rep.ofTotal', { n: total })}` : '')
+            }
+            const parts = [one(mine, nameOf(targetUnit)), one(theirs, nameOf(unit))].filter(Boolean)
+            return parts.length ? parts.join('   ·   ') : null
+          }
+
+          return (
+            <div key={unit.work} className="mb-4" style={{ breakInside: 'avoid' }}>
+              <p className="border-b border-black text-xs font-bold">
+                {i + 1}. {nameOf(unit)}
+                <span className="font-normal"> — {corpusOf(unit)}, {t('reg.rep.distance')} {distance.toFixed(3)}</span>
+              </p>
+
+              <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide">{t('reg.shared')}</p>
+              <table className="w-full text-[10px]">
+                <thead>
+                  <tr className="text-left text-[9px]">
+                    <th />
+                    <th colSpan={3} className="text-right font-semibold uppercase tracking-wide">{t('reg.per1000')}</th>
+                  </tr>
+                  <tr className="border-b border-gray-400 text-left">
+                    <th className="py-0.5 pr-2 font-medium">{t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}</th>
+                    <th className="py-0.5 pr-2 text-right font-medium">{nameOf(targetUnit)}</th>
+                    <th className="py-0.5 pr-2 text-right font-medium">{nameOf(unit)}</th>
+                    <th className="py-0.5 text-right font-medium">{t('reg.libraryAvg')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {traits.map(r => (
+                    <tr key={r.feature.key} className="align-top">
+                      <td className="py-0.5 pr-2">
+                        {featureLabel(r.feature)}
+                        {(r.feature.taggerSensitive || r.feature.approx) && <span className="text-gray-500"> ~</span>}
+                        {refLine(r.feature.key) && (
+                          <span className="block text-[9px] text-gray-600">{refLine(r.feature.key)}</span>
+                        )}
+                      </td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.average.toFixed(1)}</td>
+                    </tr>
+                  ))}
+                  {words.map(r => (
+                    <tr key={r.lemma} className="align-top">
+                      <td className="py-0.5 pr-2">
+                        <span className="font-reading">{r.display}</span>
+                        {r.gloss && <span className="text-gray-600"> · {r.gloss}</span>}
+                        {refLine(r.lemma) && (
+                          <span className="block text-[9px] text-gray-600">{refLine(r.lemma)}</span>
+                        )}
+                      </td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.average.toFixed(1)}</td>
+                    </tr>
+                  ))}
+                  {shared.map(r => (
+                    <tr key={r.lemma} className="align-top">
+                      <td className="py-0.5 pr-2">
+                        <span className="font-reading">{vocab?.labels[r.lemma] ?? r.lemma}</span>
+                        {refLine(r.lemma) && (
+                          <span className="block text-[9px] text-gray-600">{refLine(r.lemma)}</span>
+                        )}
+                      </td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">—</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {(gaps.length > 0 || wordGaps.length > 0) && (
+                <p className="mt-1 text-[9px] text-gray-700">
+                  <span className="font-semibold uppercase tracking-wide">{t('reg.differs')}: </span>
+                  {gaps.map(g => `${featureLabel(g.feature)} ${g.target.toFixed(1)}/${g.other.toFixed(1)}`)
+                    .concat(wordGaps.map(g => `${g.display} ${g.target.toFixed(1)}/${g.other.toFixed(1)}`))
+                    .join(' · ')}
                 </p>
-                <table className="w-full text-[10px]">
-                  <thead>
-                    {/* Repeated per table rather than stated once for the section: a reader
-                        who turns to page four of the printout gets the unit with the table. */}
-                    <tr className="text-left text-[10px]">
-                      <th />
-                      <th colSpan={2} className="pb-0.5 text-right font-semibold uppercase tracking-wide">{t('reg.per1000')}</th>
-                    </tr>
-                    <tr className="border-b border-gray-400 text-left">
-                      <th className="py-0.5 pr-2 font-medium">
-                        {t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}
-                      </th>
-                      <th className="py-0.5 pr-2 text-right font-medium">{nameOf(targetUnit)}</th>
-                      <th className="py-0.5 text-right font-medium">{nameOf(unit)}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {gaps.map(g => (
-                      <tr key={g.feature.key}>
-                        <td className="py-0.5 pr-2">
-                          {featureLabel(g.feature)}
-                          {(g.feature.taggerSensitive || g.feature.approx) && <span className="text-gray-500"> ~</span>}
-                        </td>
-                        <td className="py-0.5 pr-2 text-right tabular-nums">{g.target.toFixed(1)}</td>
-                        <td className="py-0.5 text-right tabular-nums">{g.other.toFixed(1)}</td>
-                      </tr>
-                    ))}
-                    {wordGaps.map(g => (
-                      <tr key={g.lemma}>
-                        <td className="py-0.5 pr-2">
-                          <span className="font-reading">{g.display}</span>
-                          {g.gloss && <span className="text-gray-600"> · {g.gloss}</span>}
-                        </td>
-                        <td className="py-0.5 pr-2 text-right tabular-nums">{g.target.toFixed(1)}</td>
-                        <td className="py-0.5 text-right tabular-nums">{g.other.toFixed(1)}</td>
-                      </tr>
-                    ))}
-                    {shared.map(g => (
-                      <tr key={g.lemma}>
-                        <td className="py-0.5 pr-2 font-reading">{vocab?.labels[g.lemma] ?? g.lemma}</td>
-                        <td className="py-0.5 pr-2 text-right tabular-nums">{g.target.toFixed(1)}</td>
-                        <td className="py-0.5 text-right tabular-nums">{g.other.toFixed(1)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )
-          })}
-        </div>
+              )}
+            </div>
+          )
+        })}
         {lens === 'syntax' && <p className="text-[10px]">~ {t('reg.approxTip')}</p>}
       </section>
 

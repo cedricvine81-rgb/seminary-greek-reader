@@ -159,28 +159,38 @@ export const RATE_FEATURES: RateFeature[] = [
  * binding them; without a dependency parse that is the honest best, and it is stable enough to
  * compare LIKE WITH LIKE across corpora even where the absolute count is off.
  */
-export function countConstructions(words: Word[]): Record<string, number> {
-  let genAbs = 0, artInf = 0, periphrastic = 0
+export function constructionIndices(words: Word[]): Record<string, number[]> {
+  const genAbs: number[] = [], artInf: number[] = [], periphrastic: number[] = []
   for (let i = 0; i < words.length; i++) {
     const p = words[i][2]
     // genitive absolute: genitive participle with a genitive neighbour within two words
     if (hasTok(p, 'participle') && hasTok(p, 'genitive')) {
       for (let j = Math.max(0, i - 2); j <= Math.min(words.length - 1, i + 2); j++) {
         if (j === i) continue
-        if (hasTok(words[j][2], 'genitive') && words[j][1] !== 'ο') { genAbs++; break }
+        if (hasTok(words[j][2], 'genitive') && words[j][1] !== 'ο') { genAbs.push(i); break }
       }
     }
     // articular infinitive: the article (any case) immediately before an infinitive,
     // optionally with a preposition in front (διὰ τὸ εἶναι)
-    if (hasTok(p, 'infinitive') && i > 0 && words[i - 1][1] === 'ο') artInf++
+    if (hasTok(p, 'infinitive') && i > 0 && words[i - 1][1] === 'ο') artInf.push(i)
     // periphrastic: εἰμί within three words of a participle
     if (words[i][1] === 'ειμι') {
       for (let j = i + 1; j <= Math.min(words.length - 1, i + 3); j++) {
-        if (hasTok(words[j][2], 'participle')) { periphrastic++; break }
+        if (hasTok(words[j][2], 'participle')) { periphrastic.push(i); break }
       }
     }
   }
   return { genAbs, artInf, periphrastic }
+}
+
+/**
+ * Counts, from the same walk that records WHERE each construction stands. The report cites
+ * references for the traits it claims two texts share, and a second implementation of "is this
+ * a genitive absolute" would eventually cite one thing while counting another.
+ */
+export function countConstructions(words: Word[]): Record<string, number> {
+  const at = constructionIndices(words)
+  return { genAbs: at.genAbs.length, artInf: at.artInf.length, periphrastic: at.periphrastic.length }
 }
 
 export const CONSTRUCTIONS: FeatureDef[] = [

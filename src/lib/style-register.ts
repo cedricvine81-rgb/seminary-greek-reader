@@ -38,6 +38,8 @@ export interface StyleMeta {
   /** Published so a passage profiled server-side lands on the same scale as the works. */
   norm: { mu: Record<string, number>; sd: Record<string, number> }
   spread: Record<string, number>
+  /** The library's average rate per feature — the norm two texts are both departing from. */
+  center: Record<string, number>
   /** Per lens, [as close as anything gets, no closer than chance] — the result bar's scale. */
   barScale: Record<string, [number, number]>
   passageCorpora: string[]
@@ -216,6 +218,108 @@ export function neighbours(
     .filter(u => (lens === 'vocabulary' ? !!vocab?.[u.work] : true))
     .map(u => ({ unit: u, distance: measure(u) }))
     .sort((a, b) => a.distance - b.distance)
+    .slice(0, limit)
+}
+
+/* ── what two texts have in common ───────────────────────────────────────────
+ * The tool's claim is that two texts read alike, and the evidence for that claim is what they
+ * SHARE — yet the feature table led with the biggest differences, which argues the opposite
+ * case. These functions rank agreement instead.
+ *
+ * Agreement alone is not evidence, though: two texts that both use the optative zero times a
+ * thousand words agree perfectly and have told you nothing, because so does most of the
+ * library. What counts is a habit they share AND that sets them both apart — both far above the
+ * library's average, or both far below it, and by about the same amount. So the score is
+ *
+ *     min(|zA|, |zB|)  −  |zA − zB|          when zA and zB fall on the same side of the mean
+ *
+ * — how far the weaker of the two departs from the norm, less how far apart they are. A trait
+ * they both push hard in the same direction scores high; one they merely both possess scores
+ * near zero; one they disagree about is excluded.
+ *
+ * A shared ABSENCE needs one more guard. "Both never use μᾶλλον" is a real observation when the
+ * library averages 1.3 per 1,000 and the text runs 2,000 words — it predicts about two and a
+ * half occurrences, so nought is as likely as not. It is a real observation about μέν, which
+ * the library averages at 11 per 1,000 and which should therefore have turned up twenty-two
+ * times. So a trait scored BELOW the mean is only admitted when the library's own rate predicts
+ * at least EXPECTED_FLOOR occurrences in both texts; otherwise the zero is sampling noise
+ * dressed as evidence, and short passages fill with it.
+ */
+const EXPECTED_FLOOR = 5
+
+/** Would the library's average rate predict enough occurrences here for a zero to mean anything? */
+const absenceIsMeaningful = (average: number, nA: number, nB: number) =>
+  Math.min(average * nA, average * nB) / 1000 >= EXPECTED_FLOOR
+export interface SharedTrait {
+  feature: StyleFeature
+  target: number
+  other: number
+  /** The library's average, so a reader can see which way the pair departs from it. */
+  average: number
+  score: number
+}
+
+export function sharedFeatures(
+  target: StyleUnit, other: StyleUnit, meta: StyleMeta, limit = 8,
+): SharedTrait[] {
+  return meta.features
+    .map(f => {
+      const a = target.rates[f.key] ?? 0
+      const b = other.rates[f.key] ?? 0
+      const mid = meta.center?.[f.key] ?? 0
+      const sd = meta.spread?.[f.key] || 1
+      const za = (a - mid) / sd
+      const zb = (b - mid) / sd
+      const agree = za === 0 || zb === 0 ? false : (za > 0) === (zb > 0)
+      const admissible = agree
+        && (za > 0 || absenceIsMeaningful(mid, target.n, other.n))
+      return {
+        feature: f, target: a, other: b, average: mid,
+        score: admissible ? Math.min(Math.abs(za), Math.abs(zb)) - Math.abs(za - zb) : -Infinity,
+      }
+    })
+    .filter(r => r.score > 0)
+    .sort((x, y) => y.score - x.score)
+    .slice(0, limit)
+}
+
+export interface SharedWordTrait {
+  lemma: string
+  display: string
+  gloss: string
+  target: number
+  other: number
+  average: number
+  score: number
+}
+
+/** The same argument over the function words, whose z-scores the index already carries. */
+export function sharedWords(
+  target: StyleUnit, other: StyleUnit, meta: StyleMeta, limit = 8,
+): SharedWordTrait[] {
+  const { mu } = meta.norm
+  return meta.deltaWords
+    .map((lemma, i) => {
+      const za = target.delta[i] ?? 0
+      const zb = other.delta[i] ?? 0
+      const sd = meta.norm.sd[lemma] ?? 0
+      const label = meta.deltaLabels?.[lemma]
+      const avg = mu[lemma] ?? 0
+      const agree = za === 0 || zb === 0 ? false : (za > 0) === (zb > 0)
+      const admissible = agree
+        && (za > 0 || absenceIsMeaningful(avg, target.n, other.n))
+      return {
+        lemma,
+        display: label?.d || lemma,
+        gloss: label?.g || '',
+        target: Math.max(0, za * sd + avg),
+        other: Math.max(0, zb * sd + avg),
+        average: avg,
+        score: admissible ? Math.min(Math.abs(za), Math.abs(zb)) - Math.abs(za - zb) : -Infinity,
+      }
+    })
+    .filter(r => r.score > 0)
+    .sort((x, y) => y.score - x.score)
     .slice(0, limit)
 }
 

@@ -251,9 +251,14 @@ if (unresolved.length) {
  * server-side, so the scale has to be a published constant rather than a derived one.
  */
 const spread: Record<string, number> = {}
+// The library's own average rate for each feature, published alongside the spread. Without it
+// a reader cannot tell whether "44.3 participles" is a lot: the case that two texts SHARE a
+// habit needs the norm they are both departing from.
+const center: Record<string, number> = {}
 for (const f of FEATURES) {
   const xs = workUnits.map(u => u.rates[f.key] ?? 0)
   const m = xs.reduce((a, b) => a + b, 0) / xs.length
+  center[f.key] = m
   spread[f.key] = Math.sqrt(xs.reduce((a, b) => a + (b - m) ** 2, 0) / xs.length) || 1
 }
 
@@ -329,6 +334,7 @@ const meta = {
   deltaLabels,
   norm: { mu: round(mu, 4), sd: round(sd, 4) },
   spread: round(spread, 4),
+  center: round(center, 4),
   barScale,
   passageCorpora: Array.from(PASSAGE_CORPORA),
   features: [...RATE_FEATURES, ...CONSTRUCTIONS].map(f => ({

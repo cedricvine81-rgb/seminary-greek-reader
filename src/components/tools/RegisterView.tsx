@@ -16,12 +16,12 @@ import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
 import {
   CORPUS_KEY, chunksOf, explain, explainDelta, explainVocab, featureSpread, isBiblical,
-  neighbours, passageUnit,
+  neighbours, passageUnit, sharedFeatures, sharedWords,
   type Lens, type PassageManifest, type PassageProfile, type StyleFeature, type StyleMeta,
   type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
 import { PassagePicker, type PassageSelection } from './PassagePicker'
-import { RegisterReport } from './RegisterReport'
+import { RegisterReport, REPORT_CITATION_LIMIT, type CitationMap } from './RegisterReport'
 
 const LENSES: { id: Lens; key: string }[] = [
   { id: 'register', key: 'reg.lens.register' },
@@ -111,6 +111,8 @@ export function RegisterView() {
   const [passageError, setPassageError] = useState(false)
   const [vocab, setVocab] = useState<VocabFile | null>(null)
   const [passageVocab, setPassageVocab] = useState<[string, number][] | null>(null)
+  const [citations, setCitations] = useState<CitationMap | null>(null)
+  const [preparing, setPreparing] = useState(false)
 
   // The biblical books localize through book-names.ts; a prose title stays as it is cited.
   const nameOf = (u: StyleUnit) => (isBiblical(u.corpus) && !u.work.startsWith('passage:')
@@ -126,21 +128,36 @@ export function RegisterView() {
 
   useEffect(() => {
     let live = true
-    Promise.all([
-      // One file, because a unit's `delta` is positional against meta.deltaWords and scored
-      // against meta.norm — fetched separately, an hour of cache could pair a fresh half with
-      // a stale one after a deploy. The shape is checked rather than trusted for the same
-      // reason: a mismatch should read as "could not load", never as a blank page.
-      fetch('/data/style/index.json').then(r => r.json()),
-      fetch('/data/style/passages.json').then(r => r.json()),
-    ])
-      .then(([idx, p]) => {
+
+    // One file, because a unit's `delta` is positional against meta.deltaWords and scored
+    // against meta.norm — fetched separately, an hour of cache could pair a fresh half with a
+    // stale one after a deploy.
+    //
+    // That leaves the other half of the same problem: public/data is cached for an hour, so a
+    // reader who was here before a deploy gets an index that is internally consistent and
+    // simply OLD. An index missing a field the code now reads does not fail — it silently
+    // computes against a default, and the page shows plausible wrong numbers. So the shape is
+    // checked, and a stale one is refetched past the cache once before giving up.
+    const complete = (idx: unknown) => {
+      const i = idx as { meta?: StyleMeta; units?: unknown[] } | null
+      return !!i?.meta?.norm?.mu && !!i.meta.center && !!i.meta.spread
+        && Array.isArray(i.units) && i.units.length > 0
+    }
+
+    const load = async () => {
+      let idx = await fetch('/data/style/index.json').then(r => r.json())
+      if (!complete(idx)) {
+        idx = await fetch('/data/style/index.json', { cache: 'reload' }).then(r => r.json())
+      }
+      if (!complete(idx)) throw new Error('style index is not usable')
+      const passages = await fetch('/data/style/passages.json').then(r => r.json())
+      return { idx, passages }
+    }
+
+    load()
+      .then(({ idx, passages }) => {
         if (!live) return
-        if (!idx?.meta?.norm?.mu || !Array.isArray(idx.units) || !idx.units.length) {
-          setError(true)
-          return
-        }
-        setMeta(idx.meta); setUnits(idx.units); setManifest(p)
+        setMeta(idx.meta); setUnits(idx.units); setManifest(passages)
       })
       .catch(() => { if (live) setError(true) })
     return () => { live = false }
@@ -210,6 +227,10 @@ export function RegisterView() {
   const missingWork = mode === 'work' && !requested && target !== workUnit?.work
   const targetUnit = mode === 'passage' ? passage : workUnit
 
+  // Any change to the comparison makes the gathered references stale; they are re-fetched on
+  // the next print rather than kept and printed against a different ranking.
+  useEffect(() => { setCitations(null) }, [targetUnit?.work, lens, outsideOnly, includeShort])
+
   const results = useMemo(() => {
     if (!units || !targetUnit) return []
     if (lens === 'vocabulary' && !vocab) return []
@@ -220,6 +241,56 @@ export function RegisterView() {
       targetVocab: mode === 'passage' ? passageVocab : undefined,
     })
   }, [units, targetUnit, lens, spread, outsideOnly, includeShort, showAll, vocab, mode, passageVocab])
+
+  /**
+   * Printing gathers the references first.
+   *
+   * Each one is a pass over a whole work, so this is not something to do on every render or
+   * behind the reader's back — it happens once, when they ask for the document, and the button
+   * says so while it runs. If it fails the report still prints, with rates and no references:
+   * a document short of its citations beats no document.
+   */
+  const printReport = useCallback(async () => {
+    if (!targetUnit || !results.length) return
+    if (citations) { window.print(); return }
+    setPreparing(true)
+    try {
+      const cited = results.slice(0, REPORT_CITATION_LIMIT)
+      const features = new Set<string>()
+      const lemmas = new Set<string>()
+      for (const { unit } of cited) {
+        if (lens === 'syntax') {
+          sharedFeatures(targetUnit, unit, meta!).forEach(r => features.add(r.feature.key))
+          explain(targetUnit, unit, meta!.features, spread, 4).forEach(r => features.add(r.feature.key))
+        } else if (lens === 'register') {
+          sharedWords(targetUnit, unit, meta!).forEach(r => lemmas.add(r.lemma))
+        } else if (vocab?.works[unit.work]) {
+          explainVocab(
+            (mode === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
+            vocab.works[unit.work]!,
+          ).forEach(r => lemmas.add(r.lemma))
+        }
+      }
+      const targetSpec = mode === 'passage' && selection
+        ? { id: 'target', corpus: selection.corpus, book: selection.book, fromCh: selection.fromCh, toCh: selection.toCh }
+        : { id: 'target', corpus: targetUnit.corpus, work: targetUnit.work }
+      const res = await fetch('/api/register/citations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          units: [targetSpec, ...cited.map(({ unit }) => ({ id: unit.work, corpus: unit.corpus, work: unit.work }))],
+          features: Array.from(features), lemmas: Array.from(lemmas), limit: 3,
+        }),
+      })
+      if (res.ok) setCitations(await res.json())
+    } catch {
+      // The report is still worth printing without them.
+    } finally {
+      setPreparing(false)
+    }
+    // Let the state land before the print dialogue freezes the page.
+    setTimeout(() => window.print(), 60)
+  }, [targetUnit, results, citations, lens, meta, spread, vocab, mode, passageVocab, selection])
 
   const filteredWorks = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -244,6 +315,7 @@ export function RegisterView() {
           meta={meta} lens={lens} targetUnit={targetUnit} results={results} spread={spread}
           vocab={vocab} targetVocab={mode === 'passage' ? passageVocab : null}
           mode={mode} outsideOnly={outsideOnly} includeShort={includeShort}
+          citations={citations}
           nameOf={nameOf} corpusOf={corpusOf} featureLabel={featureLabel}
         />
       )}
@@ -337,10 +409,10 @@ export function RegisterView() {
         {/* The browser's own print dialogue, which is where "save as PDF" lives on every
             platform — the same route the Exegesis workspace takes. */}
         <button
-          type="button" onClick={() => window.print()} disabled={!targetUnit || !results.length}
+          type="button" onClick={printReport} disabled={!targetUnit || !results.length || preparing}
           className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1 text-sm font-medium text-gray-700 transition-colors hover:border-brand-300 hover:text-brand-700 disabled:opacity-40"
         >
-          <Printer size={14} /> {t('reg.print')}
+          <Printer size={14} /> {preparing ? t('reg.preparing') : t('reg.print')}
         </button>
       </div>
 
@@ -383,10 +455,15 @@ export function RegisterView() {
               const isOpen = open === unit.work
               // The explanation follows the lens. Ranking on function words and then
               // explaining with syntax would justify one number with another.
+              //
+              // Shared traits lead, because they ARE the claim; the differences follow as its
+              // qualification. Listing the biggest differences first argued the opposite case.
+              const traits = isOpen && lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta) : []
+              const words = isOpen && lens === 'register' ? sharedWords(targetUnit, unit, meta) : []
               const gaps = isOpen && lens === 'syntax'
-                ? explain(targetUnit, unit, meta.features, spread) : []
+                ? explain(targetUnit, unit, meta.features, spread, 4) : []
               const wordGaps = isOpen && lens === 'register'
-                ? explainDelta(targetUnit, unit, meta) : []
+                ? explainDelta(targetUnit, unit, meta, 4) : []
               const shared = isOpen && lens === 'vocabulary' && vocab?.works[unit.work]
                 ? explainVocab(
                     (mode === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
@@ -421,9 +498,9 @@ export function RegisterView() {
                   {isOpen && (
                     <div className="pb-4 pl-9 pr-2">
                       <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700">
-                        {t(lens === 'syntax' ? 'reg.why'
-                          : lens === 'vocabulary' ? 'reg.whyShared' : 'reg.whyWords')}
+                        {t('reg.shared')}
                       </p>
+                      <p className="mb-2 text-xs text-gray-500">{t('reg.sharedNote')}</p>
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[26rem] text-sm">
                           <thead>
@@ -432,50 +509,63 @@ export function RegisterView() {
                                 what "6.9" is. It was a footnote under the table before. */}
                             <tr className="text-xs uppercase tracking-wide text-gray-500">
                               <th />
-                              <th colSpan={2} className="pb-1 text-right font-semibold">{t('reg.per1000')}</th>
+                              <th colSpan={3} className="pb-1 text-right font-semibold">{t('reg.per1000')}</th>
                             </tr>
                             <tr className="text-xs uppercase tracking-wide text-gray-400">
                               <th className="py-1 text-left font-medium">{t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}</th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
-                              <th className="py-1 text-right font-medium">{nameOf(unit)}</th>
+                              <th className="py-1 pr-3 text-right font-medium">{nameOf(unit)}</th>
+                              <th className="py-1 text-right font-medium">{t('reg.libraryAvg')}</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {gaps.map(g => (
-                              <tr key={g.feature.key} className="border-t border-gray-50">
+                            {traits.map(r => (
+                              <tr key={r.feature.key} className="border-t border-gray-50">
                                 <td className="py-1 pr-3">
-                                  <Link href={`/grammar?chapter=${g.feature.chapter}&level=intermediate&track=greek`}
+                                  <Link href={`/grammar?chapter=${r.feature.chapter}&level=intermediate&track=greek`}
                                     className="text-gray-700 hover:text-brand-700 hover:underline">
-                                    {featureLabel(g.feature)}
+                                    {featureLabel(r.feature)}
                                   </Link>
-                                  {(g.feature.taggerSensitive || g.feature.approx) && (
+                                  {(r.feature.taggerSensitive || r.feature.approx) && (
                                     <span className="ml-1 text-gray-300" title={t('reg.approxTip')}>~</span>
                                   )}
                                 </td>
-                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.target.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.other.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{r.average.toFixed(1)}</td>
+                              </tr>
+                            ))}
+                            {words.map(r => (
+                              <tr key={r.lemma} className="border-t border-gray-50">
+                                <td className="py-1 pr-3">
+                                  <span className="font-reading text-gray-900">{r.display}</span>
+                                  {r.gloss && <span className="ml-2 text-xs text-gray-500">{r.gloss}</span>}
+                                </td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.target.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.other.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{r.average.toFixed(1)}</td>
                               </tr>
                             ))}
                             {shared.map(g => (
                               <tr key={g.lemma} className="border-t border-gray-50">
                                 <td className="py-1 pr-3 font-reading text-gray-900">{vocab?.labels[g.lemma] ?? g.lemma}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
-                              </tr>
-                            ))}
-                            {wordGaps.map(g => (
-                              <tr key={g.lemma} className="border-t border-gray-50">
-                                <td className="py-1 pr-3">
-                                  <span className="font-reading text-gray-900">{g.display}</span>
-                                  {g.gloss && <span className="ml-2 text-xs text-gray-500">{g.gloss}</span>}
-                                </td>
-                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">—</td>
                               </tr>
                             ))}
                           </tbody>
                         </table>
                       </div>
+
+                      {(gaps.length > 0 || wordGaps.length > 0) && (
+                        <p className="mt-2 text-xs text-gray-500">
+                          <span className="font-semibold uppercase tracking-wide text-gray-400">{t('reg.differs')}: </span>
+                          {gaps.map(g => `${featureLabel(g.feature)} ${g.target.toFixed(1)}/${g.other.toFixed(1)}`)
+                            .concat(wordGaps.map(g => `${g.display} ${g.target.toFixed(1)}/${g.other.toFixed(1)}`))
+                            .join(' · ')}
+                        </p>
+                      )}
                       {lens === 'syntax' && (
                         <p className="mt-2 text-xs text-gray-500">
                           <span className="text-gray-400">~</span> {t('reg.approxTip')}
