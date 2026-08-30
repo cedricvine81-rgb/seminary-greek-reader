@@ -221,9 +221,9 @@ export function TargetPicker({
   return (
     <div className="space-y-3">
       <div ref={boxRef}>
-        <label htmlFor="reg-ref" className="mb-1 block text-sm font-medium text-gray-700">
-          {t('reg.passageLabel')}
-        </label>
+        {/* The card's heading already says "a passage or a book of the Bible", so a visible
+            label here would say it twice; the field still needs a name for a screen reader. */}
+        <label htmlFor="reg-ref" className="sr-only">{t('reg.passageLabel')}</label>
         <div className="relative">
           {/* The ghost sits under the input, offset by the text already typed. */}
           {ghost && (
