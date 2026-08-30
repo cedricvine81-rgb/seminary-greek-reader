@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { RegisterView } from '@/components/tools/RegisterView'
 import { getServerT } from '@/lib/i18n/server'
@@ -18,7 +19,10 @@ export default function RegisterPage() {
       <div className="mb-5 print:hidden">
         <h1 className="text-lg font-semibold text-gray-800">{t('reg.title')}</h1>
       </div>
-      <RegisterView />
+      {/* useSearchParams needs a boundary; the fallback matches the view's own loading line. */}
+      <Suspense fallback={<p className="py-10 text-sm italic text-gray-400">{t('reg.loading')}</p>}>
+        <RegisterView />
+      </Suspense>
     </main>
   )
 }

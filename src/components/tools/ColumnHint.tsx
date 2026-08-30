@@ -16,6 +16,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { emphasise } from '@/lib/emphasise'
 
 const BUBBLE_WIDTH = 288          // w-72, matched here because the clamp needs the number
 const EDGE = 8
@@ -85,7 +86,7 @@ export function ColumnHint({ label, hint, align = 'right' }: {
           className="z-50 block overflow-y-auto rounded-lg border border-gray-200 bg-popover px-3 py-2 text-left text-xs font-normal normal-case leading-relaxed tracking-normal text-gray-700 shadow-lg print:hidden"
         >
           {(Array.isArray(hint) ? hint : [hint]).map((k, i) => (
-            <span key={k} className={i ? 'mt-2 block' : 'block'}>{t(k)}</span>
+            <span key={k} className={i ? 'mt-2 block' : 'block'}>{emphasise(t(k))}</span>
           ))}
         </span>
       )}

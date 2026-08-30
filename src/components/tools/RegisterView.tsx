@@ -10,6 +10,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { ChevronRight, Info, Printer } from 'lucide-react'
 import clsx from 'clsx'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
@@ -52,10 +53,18 @@ interface UrlState {
   short: boolean
 }
 
-function readUrl(): UrlState {
+/**
+ * Read the opening state from the query string.
+ *
+ * The parameters are PASSED IN rather than read from window.location, and that is the whole
+ * point: on a client-side navigation — the Exegesis "What reads like Mark?" link, or any of
+ * the links in the background note — the component mounts before window.location has caught
+ * up, so reading it there silently returned the defaults and every in-app link into this tool
+ * opened on Mark whatever it asked for. useSearchParams is correct during the transition.
+ */
+function readUrl(q: URLSearchParams | null): UrlState {
   const fallback: UrlState = { ref: 'Mark', work: '', lens: 'register', outside: false, short: false }
-  if (typeof window === 'undefined') return fallback
-  const q = new URLSearchParams(window.location.search)
+  if (!q) return fallback
   const lens: Lens = q.get('lens') === 'syntax' ? 'syntax'
     : q.get('lens') === 'vocabulary' ? 'vocabulary' : 'register'
   const outside = q.get('outside') === '1'
@@ -106,7 +115,10 @@ export function RegisterView() {
   const [units, setUnits] = useState<StyleUnit[] | null>(null)
   const [manifest, setManifest] = useState<PassageManifest | null>(null)
   const [error, setError] = useState(false)
-  const initial = useMemo(readUrl, [])
+  const params = useSearchParams()
+  // Read once, at mount, from the parameters of the page actually being opened.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const initial = useMemo(() => readUrl(params), [])
   const [target, setTarget] = useState<Target | null>(null)
   // Kept alongside the target purely so a shared link carries the reference as written.
   const [refText, setRefText] = useState(initial.ref)

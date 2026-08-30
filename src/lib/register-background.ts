@@ -11,12 +11,38 @@
  * student may cite this, so anything stated flatly here has to be safe to repeat.
  */
 
+/**
+ * One entry in a section's reading list, in SBL form: author, title, reference.
+ *
+ * The title is carried apart from the author so it can be italicised without markup, and
+ * ancient works are named by their SBL abbreviation — the abbreviation IS the citation form,
+ * and a student copying a line out of here should be copying something they can paste into a
+ * paper. `href` is set only where this library actually holds the text, so a link always
+ * leads to the work itself rather than to a search for it.
+ */
+export interface Reading {
+  author?: string
+  /** Italicised. SBL abbreviation for an ancient work, full title for a modern one. */
+  title: string
+  ref?: string
+  href?: string
+}
+
+/** A comparison in the Register tool that demonstrates the section's claim. */
+export interface TryIt {
+  /** Message key for the link's label. */
+  key: string
+  href: string
+}
+
 export interface BackgroundSection {
   id: string
   heading: string
   paragraphs: string[]
-  /** Works named in the section — displayed as a short reading list, not a bibliography. */
-  reading?: string[]
+  /** Works named in the section — a short reading list, not a bibliography. */
+  reading?: Reading[]
+  /** Claims in this section that the tool can be made to show. */
+  tryIt?: TryIt[]
 }
 
 export const BACKGROUND_LEDE =
@@ -31,7 +57,7 @@ export const BACKGROUND: BackgroundSection[] = [
     id: 'ancients',
     heading: 'The ancient critics had names for this',
     paragraphs: [
-      'The distinction the tool measures as PERIODICITY is Aristotle’s. In Rhetoric 3.9 he '
+      'The distinction the tool measures as PERIODICITY is Aristotle’s. In _Rhet._ 3.9 he '
       + 'separates λέξις εἰρομένη — "strung-on" style, whose clauses are simply added one after '
       + 'another and which he says has no end in itself but stops when the subject stops — from '
       + 'λέξις κατεστραμμένη, the periodic style, whose clauses are folded into a whole that can '
@@ -39,10 +65,10 @@ export const BACKGROUND: BackgroundSection[] = [
       + 'Whatever one makes of that judgement, the distinction is real and countable: it is the '
       + 'difference between joining clauses with καί and embedding them as participles, '
       + 'infinitives and ὅτι-clauses.',
-      'Later critics multiplied the categories. Demetrius (On Style) works with four χαρακτῆρες '
-      + '— plain, grand, elegant and forceful. Dionysius of Halicarnassus (On Literary '
-      + 'Composition) gives three ἁρμονίαι: austere, polished, and a blend of the two. Latin '
-      + 'rhetoric’s three genera dicendi — grand, middle, plain — is the same instinct in another '
+      'Later critics multiplied the categories. Demetrius (_Eloc._) works with four χαρακτῆρες '
+      + '— plain, grand, elegant and forceful. Dionysius of Halicarnassus (_Comp._) gives three '
+      + 'ἁρμονίαι: austere, polished, and a blend of the two. Latin rhetoric’s three _genera '
+      + 'dicendi_ — Quintilian sets them out at _Inst._ 12.10 — is the same instinct in another '
       + 'language. None of these is a taxonomy a computer can apply, because each depends on '
       + 'judgements about sound and effect. Aristotle’s is the exception, and that is why it is '
       + 'the one implemented here.',
@@ -54,9 +80,10 @@ export const BACKGROUND: BackgroundSection[] = [
       + 'labels its second axis by direction rather than by period.',
     ],
     reading: [
-      'Aristotle, Rhetoric 3.9',
-      'Demetrius, On Style',
-      'Dionysius of Halicarnassus, On Literary Composition',
+      { author: 'Aristotle', title: 'Rhet.', ref: '3.9', href: '/texts?work=aristotle-rhetoric' },
+      { author: 'Demetrius', title: 'Eloc.' },
+      { author: 'Dionysius of Halicarnassus', title: 'Comp.' },
+      { author: 'Quintilian', title: 'Inst.', ref: '12.10', href: '/texts?work=quintilian-12' },
     ],
   },
   {
@@ -67,7 +94,7 @@ export const BACKGROUND: BackgroundSection[] = [
       + 'thing, usually running from an Atticizing literary extreme (Lucian, Philostratus, Dio '
       + 'Chrysostom) through literary Koine (Polybius, Strabo, Plutarch, Josephus, Philo) to the '
       + 'documentary Greek of the papyri and, below that, writing that is simply substandard. '
-      + 'Geoffrey Horrocks’s Greek: A History of the Language and its Speakers is the usual '
+      + 'Geoffrey Horrocks’s _Greek: A History of the Language and its Speakers_ is the usual '
       + 'reference for the whole sweep.',
       'The Septuagint is treated as its own case, because it is translation. A substantial '
       + 'literature on "translation technique" — Tov, Aejmelaeus, Sollamo and others — asks how '
@@ -81,9 +108,14 @@ export const BACKGROUND: BackgroundSection[] = [
       + 'ranks with Matthew, Mark and Acts.',
     ],
     reading: [
-      'Geoffrey Horrocks, Greek: A History of the Language and its Speakers',
-      'Anneli Aejmelaeus, On the Trail of the Septuagint Translators',
-      'John A. L. Lee, A Lexical Study of the Septuagint Version of the Pentateuch',
+      { author: 'Geoffrey Horrocks', title: 'Greek: A History of the Language and its Speakers' },
+      { author: 'Anneli Aejmelaeus', title: 'On the Trail of the Septuagint Translators' },
+      { author: 'John A. L. Lee', title: 'A Lexical Study of the Septuagint Version of the Pentateuch' },
+    ],
+    tryIt: [
+      { key: 'reg.bg.try.lukeInfancy', href: '/tools/register?ref=Luke+1-2' },
+      { key: 'reg.bg.try.lukeRest', href: '/tools/register?ref=Luke+3-24' },
+      { key: 'reg.bg.try.genesis', href: '/tools/register?ref=Genesis&lens=syntax' },
     ],
   },
   {
@@ -112,9 +144,14 @@ export const BACKGROUND: BackgroundSection[] = [
       + '"Semitizing register" — a way of writing — rather than "Jewish Greek", a separate tongue.',
     ],
     reading: [
-      'F. Blass and A. Debrunner, A Greek Grammar of the New Testament (tr. Funk)',
-      'Adolf Deissmann, Light from the Ancient East',
-      'Chrys C. Caragounis, The Development of Greek and the New Testament',
+      { author: 'F. Blass and A. Debrunner', title: 'A Greek Grammar of the New Testament and Other Early Christian Literature' },
+      { author: 'Adolf Deissmann', title: 'Light from the Ancient East' },
+      { author: 'Chrys C. Caragounis', title: 'The Development of Greek and the New Testament' },
+    ],
+    tryIt: [
+      { key: 'reg.bg.try.hebrews', href: '/tools/register?ref=Hebrews&lens=syntax' },
+      { key: 'reg.bg.try.mark', href: '/tools/register?ref=Mark&lens=syntax' },
+      { key: 'reg.bg.try.revelation', href: '/tools/register?ref=Revelation&lens=syntax' },
     ],
   },
   {
@@ -133,9 +170,9 @@ export const BACKGROUND: BackgroundSection[] = [
       + 'not a description of it.',
     ],
     reading: [
-      'M. A. K. Halliday and Ruqaiya Hasan, Language, Context, and Text',
-      'Stanley E. Porter, Studies in the Greek New Testament',
-      'Jeffrey T. Reed, A Discourse Analysis of Philippians',
+      { author: 'M. A. K. Halliday and Ruqaiya Hasan', title: 'Language, Context, and Text' },
+      { author: 'Stanley E. Porter', title: 'Studies in the Greek New Testament' },
+      { author: 'Jeffrey T. Reed', title: 'A Discourse Analysis of Philippians' },
     ],
   },
   {
