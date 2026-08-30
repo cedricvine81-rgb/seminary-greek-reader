@@ -153,7 +153,6 @@ export function RegisterReport({
         <h2 className="mb-1 text-sm font-bold uppercase tracking-wide">
           {t(lens === 'syntax' ? 'reg.why' : lens === 'vocabulary' ? 'reg.whyShared' : 'reg.whyWords')}
         </h2>
-        <p className="mb-2 text-xs">{t('reg.per1000')}</p>
         <div className="grid grid-cols-2 gap-x-6">
           {detail.map(({ unit, distance }, i) => {
             const gaps = lens === 'syntax' ? explain(targetUnit, unit, meta.features, spread) : []
@@ -169,6 +168,12 @@ export function RegisterReport({
                 </p>
                 <table className="w-full text-[10px]">
                   <thead>
+                    {/* Repeated per table rather than stated once for the section: a reader
+                        who turns to page four of the printout gets the unit with the table. */}
+                    <tr className="text-left text-[10px]">
+                      <th />
+                      <th colSpan={2} className="pb-0.5 text-right font-semibold uppercase tracking-wide">{t('reg.per1000')}</th>
+                    </tr>
                     <tr className="border-b border-gray-400 text-left">
                       <th className="py-0.5 pr-2 font-medium">
                         {t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}

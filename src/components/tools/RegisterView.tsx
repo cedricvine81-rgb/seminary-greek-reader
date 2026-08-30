@@ -427,6 +427,13 @@ export function RegisterView() {
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[26rem] text-sm">
                           <thead>
+                            {/* Two rows: the two right-hand columns are a pair of rates, and
+                                naming the unit over them is the only thing that tells a reader
+                                what "6.9" is. It was a footnote under the table before. */}
+                            <tr className="text-xs uppercase tracking-wide text-gray-500">
+                              <th />
+                              <th colSpan={2} className="pb-1 text-right font-semibold">{t('reg.per1000')}</th>
+                            </tr>
                             <tr className="text-xs uppercase tracking-wide text-gray-400">
                               <th className="py-1 text-left font-medium">{t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}</th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
@@ -469,10 +476,11 @@ export function RegisterView() {
                           </tbody>
                         </table>
                       </div>
-                      <p className="mt-2 text-xs text-gray-500">
-                        {t('reg.per1000')}
-                        {lens === 'syntax' && <> · <span className="text-gray-400">~</span> {t('reg.approxTip')}</>}
-                      </p>
+                      {lens === 'syntax' && (
+                        <p className="mt-2 text-xs text-gray-500">
+                          <span className="text-gray-400">~</span> {t('reg.approxTip')}
+                        </p>
+                      )}
                     </div>
                   )}
                 </li>
