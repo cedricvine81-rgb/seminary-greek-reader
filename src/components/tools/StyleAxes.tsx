@@ -21,8 +21,10 @@ function Axis({ label, hint, value, range, low, high, format }: {
   high: string
   format: (n: number) => string
 }) {
-  const [min, max] = range
-  const pct = max > min ? Math.min(1, Math.max(0, (value - min) / (max - min))) : 0.5
+  // The range may run high-to-low: the Classical-lean scale reads chronologically, Classical
+  // on the left because Classical came first, so its axis is passed reversed.
+  const [from, to] = range
+  const pct = from !== to ? Math.min(1, Math.max(0, (value - from) / (to - from))) : 0.5
   return (
     <div>
       <div className="mb-1 flex items-baseline justify-between gap-3">
@@ -75,8 +77,9 @@ export function StyleAxes({ meta, unit, name }: {
         <Axis
           label={t('reg.axis.lean')}
           hint={['reg.hint.lean', 'reg.hint.leanHow']}
-          value={unit.classicalLean} range={range.classicalLean}
-          low={t('reg.axis.towardKoine')} high={t('reg.axis.towardClassical')}
+          value={unit.classicalLean}
+          range={[range.classicalLean[1], range.classicalLean[0]]}
+          low={t('reg.axis.towardClassical')} high={t('reg.axis.towardKoine')}
           format={n => `${n >= 0 ? '+' : ''}${n.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
         />
       </div>

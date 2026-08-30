@@ -1,5 +1,8 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { usePericopeTitles } from '@/lib/pericope-titles'
+import { bookName } from '@/lib/i18n/book-names'
 import { createPortal } from 'react-dom'
 
 // Reusable passage input with the same predictive behaviour as the shared Exegesis passage
@@ -32,10 +35,16 @@ function loadData(): Promise<{ books: Book[]; pericopes: Pericopes }> {
   return inflight
 }
 
-function findBook(books: Book[], bookStr: string): Book | undefined {
-  return books.find(b =>
-    norm(b.osisId) === bookStr || (b.abbrev && norm(b.abbrev) === bookStr) || norm(b.name) === bookStr ||
-    norm(b.name).startsWith(bookStr) || norm(b.osisId).startsWith(bookStr))
+function findBook(books: Book[], bookStr: string, locale: string): Book | undefined {
+  // The reader's own book names match too: a Spanish placeholder invites "Marcos 1:9-11",
+  // and an example the box itself rejects is worse than no example.
+  return books.find(b => {
+    const localName = norm(bookName(b.osisId, locale, b.name))
+    return norm(b.osisId) === bookStr || (b.abbrev && norm(b.abbrev) === bookStr)
+      || norm(b.name) === bookStr || localName === bookStr
+      || norm(b.name).startsWith(bookStr) || localName.startsWith(bookStr)
+      || norm(b.osisId).startsWith(bookStr)
+  })
 }
 
 export function PassageAutocomplete({
@@ -49,6 +58,8 @@ export function PassageAutocomplete({
   error?: boolean
   commitOnBlur?: boolean
 }) {
+  const locale = useLocale()
+  const pericopeTitle = usePericopeTitles(locale)
   const dataRef = useRef<{ books: Book[]; pericopes: Pericopes } | null>(cache)
   const [, force] = useState(0)
   const [ghost, setGhost] = useState('')
@@ -86,7 +97,7 @@ export function PassageAutocomplete({
     const startVerse = parseInt(m[3], 10)
     const bookStr = norm(prefix.slice(0, prefix.lastIndexOf(m[2] + ':' + m[3])))
     if (!bookStr) return setGhost('')
-    const book = findBook(data.books, bookStr)
+    const book = findBook(data.books, bookStr, locale)
     const sections = book && data.pericopes[book.osisId]
     if (!sections) return setGhost('')
     const sec = sections.find(s =>
@@ -103,11 +114,11 @@ export function PassageAutocomplete({
     const m = data && v.match(/^\s*(.+?)\s+(\d+)(?::\d+)?\s*(?:-.*)?$/)
     if (!m) return setChapterSecs([])
     const chapter = parseInt(m[2], 10)
-    const book = findBook(data!.books, norm(m[1]))
+    const book = findBook(data!.books, norm(m[1]), locale)
     if (!book) return setChapterSecs([])
     setChapterSecs((data!.pericopes[book.osisId] ?? [])
       .filter(s => s.c <= chapter && chapter <= s.ec)
-      .map(s => ({ ref: `${book.name} ${s.c}:${s.v}${s.c === s.ec ? `-${s.ev}` : `-${s.ec}:${s.ev}`}`, title: s.t })))
+      .map(s => ({ ref: `${book.name} ${s.c}:${s.v}${s.c === s.ec ? `-${s.ev}` : `-${s.ec}:${s.ev}`}`, title: pericopeTitle(s.t) })))
   }
 
   function handleChange(v: string) { onChange(v); computeGhost(v); computeSections(v); setOpen(true) }

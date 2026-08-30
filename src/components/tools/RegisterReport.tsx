@@ -135,7 +135,7 @@ export function RegisterReport({
               <dt className="font-semibold">{t('reg.axis.lean')}</dt>
               <dd>
                 {targetUnit.classicalLean >= 0 ? '+' : ''}{targetUnit.classicalLean.toFixed(2)}
-                {' '}(−1 {t('reg.axis.towardKoine')} · +1 {t('reg.axis.towardClassical')})
+                {' '}(+1 {t('reg.axis.towardClassical')} · −1 {t('reg.axis.towardKoine')})
               </dd>
             </>
           )}

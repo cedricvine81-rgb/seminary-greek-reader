@@ -20,6 +20,9 @@ import { usePref } from '@/lib/use-pref'
 import { useCommentaryFontScale, useCommentaryLineSpacing, useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
 import { SBL_ABBREVIATIONS } from '@/lib/sbl-abbreviations'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+import { usePericopeTitles } from '@/lib/pericope-titles'
+import { bookName } from '@/lib/i18n/book-names'
 import { useNarrowScreen } from '@/lib/use-narrow-screen'
 import { useTrackValue } from '@/lib/track-client'
 
@@ -28,6 +31,19 @@ type Pericopes = Record<string, Section[]>
 type Book = { osisId: string; name: string; abbrev?: string }
 
 const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
+
+/**
+ * Does the typed book name mean this book? Matches the OSIS id, the abbreviation, the English
+ * name — and the name in the reader's own language, because the Spanish placeholder invites
+ * "Mateo 3:1-3" and a box whose own example does not work is worse than no example.
+ */
+function bookMatches(b: { osisId: string; name: string; abbrev?: string }, bookStr: string, locale: string): boolean {
+  const localName = norm(bookName(b.osisId, locale, b.name))
+  return norm(b.osisId) === bookStr || (!!b.abbrev && norm(b.abbrev) === bookStr)
+    || norm(b.name) === bookStr || localName === bookStr
+    || norm(b.name).startsWith(bookStr) || localName.startsWith(bookStr)
+    || norm(b.osisId).startsWith(bookStr)
+}
 
 /**
  * Standalone Exegesis page: one shared Passage box drives three tabs — the annotation
@@ -70,6 +86,8 @@ const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
 export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string; initialRef?: string }) {
   const t = useT()
+  const locale = useLocale()
+  const pericopeTitle = usePericopeTitles(locale)
   const router = useRouter()
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
   // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
@@ -202,9 +220,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
     const m = value.trim().match(/^(.+?)\s+(\d+):(\d+)(?:\s*-\s*(\d+))?$/)
     if (!m) return null
     const bookStr = norm(m[1])
-    const book = bks.find(b =>
-      norm(b.osisId) === bookStr || (b.abbrev && norm(b.abbrev) === bookStr) || norm(b.name) === bookStr ||
-      norm(b.name).startsWith(bookStr) || norm(b.osisId).startsWith(bookStr))
+    const book = bks.find(b => bookMatches(b, bookStr, locale))
     if (!book) return null
     const chapter = parseInt(m[2], 10), vs = parseInt(m[3], 10), ve = m[4] ? parseInt(m[4], 10) : vs
     return { book: book.osisId, name: book.name, chapter, verseStart: vs, verseEnd: Math.max(vs, ve) }
@@ -226,9 +242,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
     const startVerse = parseInt(m[3], 10)
     const bookStr = norm(prefix.slice(0, prefix.lastIndexOf(m[2] + ':' + m[3])))
     if (!bookStr) { setGhost(''); return }
-    const book = data.books.find(b =>
-      norm(b.osisId) === bookStr || (b.abbrev && norm(b.abbrev) === bookStr) || norm(b.name) === bookStr ||
-      norm(b.name).startsWith(bookStr) || norm(b.osisId).startsWith(bookStr))
+    const book = data.books.find(b => bookMatches(b, bookStr, locale))
     if (!book) { setGhost(''); return }
     const sections = data.pericopes[book.osisId]
     if (!sections) { setGhost(''); return }
@@ -254,15 +268,13 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
     if (!m) { setChapterSecs([]); return }
     const bookStr = norm(m[1])
     const chapter = parseInt(m[2], 10)
-    const book = data!.books.find(b =>
-      norm(b.osisId) === bookStr || (b.abbrev && norm(b.abbrev) === bookStr) || norm(b.name) === bookStr ||
-      norm(b.name).startsWith(bookStr) || norm(b.osisId).startsWith(bookStr))
+    const book = data!.books.find(b => bookMatches(b, bookStr, locale))
     if (!book) { setChapterSecs([]); return }
     const secs = (data!.pericopes[book.osisId] ?? [])
       .filter(s => s.c <= chapter && chapter <= s.ec)
       .map(s => ({
         ref: `${book.name} ${s.c}:${s.v}${s.c === s.ec ? `-${s.ev}` : `-${s.ec}:${s.ev}`}`,
-        title: s.t,
+        title: pericopeTitle(s.t),
       }))
     setChapterSecs(secs)
   }

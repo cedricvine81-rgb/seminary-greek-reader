@@ -593,6 +593,31 @@ export function registerBackgroundItems(): Item[] {
   return items
 }
 
+/**
+ * The pericope headings (public/data/pericopes.json) — the section titles the passage boxes
+ * predict with ("The Parable of the Sower"), shown verbatim in every language until now.
+ *
+ * Keyed by a FINGERPRINT OF THE TITLE ITSELF rather than by book and position, for two
+ * reasons: the same heading recurs across the synoptics (2,975 sections share 2,564 distinct
+ * titles) and should be translated once; and a retitled section then simply misses the
+ * catalogue and falls back to English — the key is its own staleness check.
+ */
+export function pericopeTitleItems(): Item[] {
+  const data = JSON.parse(fs.readFileSync('public/data/pericopes.json', 'utf8')) as
+    Record<string, { t: string }[]>
+  const seen = new Set<string>()
+  const items: Item[] = []
+  for (const sections of Object.values(data)) {
+    for (const sec of sections) {
+      const t = (sec.t ?? '').trim()
+      if (!t || seen.has(t)) continue
+      seen.add(t)
+      items.push({ key: `peri.${fingerprint(t)}`, english: t, bucket: 'titles' })
+    }
+  }
+  return items
+}
+
 const SOURCES: Record<string, () => Item[]> = {
   themes: themeItems, rhetoric: rhetoricItems, summaries: summaryItems,
   rhetoricNotes: rhetoricNoteItems, morphology: morphologyItems, hebrewMorphology: hebrewMorphologyItems, vocab: vocabItems,
@@ -600,6 +625,7 @@ const SOURCES: Record<string, () => Item[]> = {
   lexiconGlosses: lexiconGlossItems,
   pageGuides: pageGuideItems,
   registerBackground: registerBackgroundItems,
+  pericopeTitles: pericopeTitleItems,
 }
 /**
  * Sources emitted as per-bucket JSON under public/ and fetched by the client, instead of as one
@@ -622,6 +648,8 @@ const SPLIT: Record<string, SplitPath | undefined> = {
   // ~4,300 short glosses. Too many for a page payload, and only the reader needs them, so it
   // fetches this the same way it fetches the deck.
   lexiconGlosses: (loc, deck) => `public/data/lexicon-gloss/${loc}/${deck}.json`,
+  // One file, fetched only by a Spanish reader alongside pericopes.json itself.
+  pericopeTitles: loc => `public/data/pericope-titles/${loc}.json`,
 }
 /** Sources whose generated catalogue is expanded from the translated one. */
 const FAN_OUT: Record<string, (t: Record<string, string>) => { key: string; english: string; text: string }[]> = {

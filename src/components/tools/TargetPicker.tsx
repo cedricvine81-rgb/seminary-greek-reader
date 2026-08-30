@@ -16,6 +16,7 @@ import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
 import { CORPUS_KEY, type PassageManifest, type StyleUnit } from '@/lib/style-register'
 import { formatReference, normRef, parseReference, type ParsedRef, type RefBook } from '@/lib/style-reference'
+import { usePericopeTitles } from '@/lib/pericope-titles'
 
 /** A labelled section of a book, from public/data/pericopes.json. */
 interface Section { c: number; v: number; ec: number; ev: number; t: string }
@@ -52,6 +53,7 @@ export function TargetPicker({
 }) {
   const t = useT()
   const locale = useLocale()
+  const pericopeTitle = usePericopeTitles(locale)
 
   const [books, setBooks] = useState<RefBook[]>([])
   const [pericopes, setPericopes] = useState<Pericopes>({})
@@ -169,7 +171,7 @@ export function TargetPicker({
       .filter(s => s.c <= chapter && chapter <= s.ec)
       .map(s => ({
         ref: `${label} ${s.c}:${s.v}${s.c === s.ec ? `-${s.ev}` : `-${s.ec}:${s.ev}`}`,
-        title: s.t,
+        title: pericopeTitle(s.t),
       })))
   }
 
