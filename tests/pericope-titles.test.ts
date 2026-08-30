@@ -23,17 +23,17 @@ for (const secs of Object.values(pericopes)) for (const s of secs) if (s.t?.trim
 
 describe('pericope titles in Spanish', () => {
   it('covers every distinct heading', () => {
-    const missing = [...titles].filter(t => !es[`peri.${fingerprint(t)}`])
+    const missing = Array.from(titles).filter(t => !es[`peri.${fingerprint(t)}`])
     expect(missing).toEqual([])
   })
 
   it('carries no entry for a heading that no longer exists', () => {
-    const live = new Set([...titles].map(t => `peri.${fingerprint(t)}`))
+    const live = new Set(Array.from(titles).map(t => `peri.${fingerprint(t)}`))
     expect(Object.keys(es).filter(k => !live.has(k))).toEqual([])
   })
 
   it('actually translates rather than echoing', () => {
-    const echoed = [...titles].filter(t => {
+    const echoed = Array.from(titles).filter(t => {
       const e = es[`peri.${fingerprint(t)}`]
       return e && e.text === t && t.split(' ').length > 1 && !t.startsWith('(')
     })

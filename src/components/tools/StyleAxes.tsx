@@ -59,9 +59,9 @@ export function StyleAxes({ meta, unit, name }: {
   if (!range || unit.periodicity === undefined || unit.classicalLean === undefined) return null
 
   return (
-    <div className="rounded-xl border border-gray-200 px-4 py-3.5">
+    <div className="mt-3 border-t border-gray-100 pt-3">
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        <h2 className="text-sm font-semibold text-gray-800">{t('reg.axes', { work: name })}</h2>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('reg.axes', { work: name })}</h3>
         <Link href="/tools/register/background" className="text-xs font-medium text-brand-700 hover:underline">
           {t('reg.axesMore')}
         </Link>

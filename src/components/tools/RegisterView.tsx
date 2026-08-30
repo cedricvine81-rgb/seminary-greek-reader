@@ -126,6 +126,10 @@ export function RegisterView() {
   const [outsideOnly, setOutsideOnly] = useState(initial.outside)
   const [includeShort, setIncludeShort] = useState(initial.short)
   const [showAll, setShowAll] = useState(false)
+  const [aboutOpen, setAboutOpen] = useState(false)
+  const [optionsOpen, setOptionsOpen] = useState(false)
+  // The expanded row shows its five strongest shared traits; this opens the rest.
+  const [allTraits, setAllTraits] = useState(false)
   // '' follows the text being compared; anything else pins the comparison to that pool.
   const [genreChoice, setGenreChoice] = useState('')
   const [open, setOpen] = useState<string | null>(null)
@@ -367,6 +371,35 @@ export function RegisterView() {
     setTimeout(() => window.print(), 60)
   }, [targetUnit, results, citations, lens, meta, spread, vocab, target, passageVocab, base])
 
+  /**
+   * One plain-language sentence above the ranking, computed from the data on screen.
+   *
+   * Students read the conclusion first and the numbers as confirmation — which is how every
+   * other kind of evidence is presented to them. Everything in it is restatement: the top
+   * three names ARE rows one to three, and the lean clause is the axis value in words, with
+   * thresholds at ±0.5 (within half a unit of an average) and −1.5 (past the Koine mean by
+   * more than the two means are apart). It claims nothing the table does not.
+   */
+  const takeaway = useMemo(() => {
+    if (!targetUnit || results.length < 3) return null
+    const names = results.slice(0, 3).map(r => nameOf(r.unit))
+    const list = typeof Intl.ListFormat === 'function'
+      ? new Intl.ListFormat(locale, { type: 'conjunction' }).format(names)
+      : names.join(', ')
+    const lean = targetUnit.classicalLean
+    const leanKey = lean === undefined ? null
+      : lean > 0.5 ? 'reg.take.lean.classical'
+      : lean > -0.5 ? 'reg.take.lean.between'
+      : lean > -1.5 ? 'reg.take.lean.koine'
+      : 'reg.take.lean.far'
+    return t(`reg.takeaway.${lens}`, {
+      work: nameOf(targetUnit), list,
+      lean: leanKey ? t(leanKey) : '',
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetUnit, results, lens, locale])
+
+
   if (error) return <p className="py-10 text-sm text-red-600">{t('reg.loadFailed')}</p>
   if (!meta || !units || !manifest) {
     return <p className="py-10 text-sm italic text-gray-400">{t('reg.loading')}</p>
@@ -395,15 +428,22 @@ export function RegisterView() {
           document. Controls and a ranking truncated to what fits a screen are not what
           belongs on paper. */}
       <div className="space-y-6 print:hidden">
-      {/* ── what this is, and what it is not ─────────────────────────────── */}
-      <div className="rounded-xl border border-brand-100 bg-brand-50/60 px-4 py-3">
-        <div className="mb-1.5 flex items-center gap-1.5">
+      {/* ── what this is, and what it is not ─────────────────────────────────
+          Folded by default: the paragraph is true and worth reading once, and it was also the
+          largest thing on the page, standing between a reader and the answer. The same prose
+          is a tap away here, in the page guide, and in the background note. */}
+      <div className="rounded-xl border border-brand-100 bg-brand-50/60 px-4 py-2.5">
+        <button
+          type="button" onClick={() => setAboutOpen(o => !o)} aria-expanded={aboutOpen}
+          className="flex w-full items-center gap-1.5 text-left"
+        >
           <Info size={15} className="shrink-0 text-brand-600" />
           <span className="text-xs font-semibold uppercase tracking-wide text-brand-700">
             {t('reg.whatItMeasures')}
           </span>
-        </div>
-        <p className="text-sm leading-relaxed text-gray-700">{t('reg.blurb')}</p>
+          <ChevronRight size={13} className={clsx('text-brand-400 transition-transform', aboutOpen && 'rotate-90')} />
+        </button>
+        {aboutOpen && <p className="mt-1.5 text-sm leading-relaxed text-gray-700">{t('reg.blurb')}</p>}
       </div>
 
       {/* ── what to compare ────────────────────────────────────────────────
@@ -424,11 +464,19 @@ export function RegisterView() {
           }}
           nameOf={nameOf} corpusOf={corpusOf}
         />
+        {/* What was chosen, and what KIND of Greek it is — one card, so the page reads
+            "choose → here is your text → here are its kin" without a third box between. */}
+        {targetUnit && (
+          <>
+            <p className="mt-3 text-xs text-gray-500">
+              <span className="font-medium text-gray-700">{nameOf(targetUnit)}</span>
+              {ownGenre && ownGenre !== 'other' && <> — {t(`reg.genre.${ownGenre}`)}</>}
+              {' · '}{targetUnit.n.toLocaleString(locale)} {t('reg.words')}
+            </p>
+            <StyleAxes meta={meta} unit={targetUnit} name={nameOf(targetUnit)} />
+          </>
+        )}
       </div>
-
-      {/* What KIND of Greek this is, before any comparison — the question a reader has
-          before they have another text in mind. */}
-      {targetUnit && <StyleAxes meta={meta} unit={targetUnit} name={nameOf(targetUnit)} />}
 
       {/* ── lens ─────────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-center gap-4">
@@ -448,14 +496,16 @@ export function RegisterView() {
           </div>
         </div>
 
-        <label className="flex items-center gap-2 text-sm text-gray-700">
-          <input type="checkbox" checked={outsideOnly} onChange={e => setOutsideOnly(e.target.checked)} />
-          {t('reg.outsideOnly')}
-        </label>
-        <label className="flex items-center gap-2 text-sm text-gray-700">
-          <input type="checkbox" checked={includeShort} onChange={e => setIncludeShort(e.target.checked)} />
-          {t('reg.includeShort')}
-        </label>
+        {/* The scoping and baseline controls are second-visit tools, and the genre default
+            already does the right thing silently — so they fold, and a first visit shows two
+            decisions: the text and the lens. Print stays, because leaving is not advanced. */}
+        <button
+          type="button" onClick={() => setOptionsOpen(o => !o)} aria-expanded={optionsOpen}
+          className="inline-flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-brand-700"
+        >
+          {t('reg.options')}
+          <ChevronRight size={13} className={clsx('transition-transform', optionsOpen && 'rotate-90')} />
+        </button>
 
         {/* The browser's own print dialogue, which is where "save as PDF" lives on every
             platform — the same route the Exegesis workspace takes. */}
@@ -471,6 +521,51 @@ export function RegisterView() {
           Naming the difference beneath the switch is cheaper than expecting a label to carry
           it. */}
       <p className="-mt-3 text-xs text-gray-500">{t(`reg.lensAbout.${lens}`)}</p>
+
+      {optionsOpen && (
+        <div className="-mt-2 space-y-3 rounded-xl border border-gray-200 px-4 py-3 text-sm">
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <label className="flex items-center gap-2 text-gray-700">
+              <input type="checkbox" checked={outsideOnly} onChange={e => setOutsideOnly(e.target.checked)} />
+              {t('reg.outsideOnly')}
+            </label>
+            <label className="flex items-center gap-2 text-gray-700">
+              <input type="checkbox" checked={includeShort} onChange={e => setIncludeShort(e.target.checked)} />
+              {t('reg.includeShort')}
+            </label>
+          </div>
+          {/* Which pools the Classical and Koine columns come from. Defaulting to the text's
+              own genre gives like with like; switching is how a reader tells a feature of the
+              genre from a feature of the Greek. */}
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <label htmlFor="reg-genre" className="text-gray-500">{t('reg.comparedAgainst')}</label>
+            <select
+              id="reg-genre" value={genreChoice}
+              onChange={e => setGenreChoice(e.target.value)}
+              className="input py-0.5 text-xs"
+            >
+              <option value="">
+                {ownGenre && ownGenre !== 'other'
+                  ? t('reg.ownGenre', { genre: t(`reg.genre.${ownGenre}`) })
+                  : t('reg.allProse')}
+              </option>
+              <option value={ALL_PROSE}>{t('reg.allProse')}</option>
+              {genres.map(g => (
+                <option key={g} value={g}>{t(`reg.genre.${g}`)}</option>
+              ))}
+            </select>
+            {base.genre && (!base.classical || !base.koine) && (
+              <span className="text-amber-700">
+                {t('reg.noPoolFor', {
+                  period: t(!base.classical ? 'reg.classical' : 'reg.koine'),
+                  genre: t(`reg.genre.${base.genre}`),
+                })}
+              </span>
+            )}
+          </div>
+          <PeriodSources meta={meta} base={base} />
+        </div>
+      )}
 
       {missingWork && (
         <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
@@ -500,10 +595,10 @@ export function RegisterView() {
               : lens === 'syntax' ? 'reg.closestSyntax' : 'reg.closestTo',
               { work: nameOf(targetUnit) })}
           </h2>
-          <p className="mb-3 text-xs text-gray-500">
-            {t('reg.scaleNoteAbs')}
-            {lens === 'vocabulary' && <> {t('reg.vocabCaveat')}</>}
-          </p>
+          {takeaway && <p className="mb-1 text-sm leading-relaxed text-gray-700">{takeaway}</p>}
+          {/* One line. The bar's scale and the distance's definition live in the Similarity
+              and Distance bubbles, where the question actually arises. */}
+          <p className="mb-3 text-xs text-gray-500">{t('reg.readNote')}</p>
 
           {/* The distance had no label anywhere — a bare 0.34 beside a bar. */}
           <div className="flex items-center gap-3 pb-1 text-[10px] uppercase tracking-wide text-gray-400">
@@ -526,22 +621,29 @@ export function RegisterView() {
               //
               // Shared traits lead, because they ARE the claim; the differences follow as its
               // qualification. Listing the biggest differences first argued the opposite case.
-              const traits = isOpen && lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta, base) : []
-              const words = isOpen && lens === 'register' ? sharedWords(targetUnit, unit, meta, base) : []
+              // Five rows carry the argument; the full set is one tap away. Nothing about
+              // the method changes — the ordering is the same, merely cut for reading.
+              const traitsAll = isOpen && lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta, base) : []
+              const wordsAll = isOpen && lens === 'register' ? sharedWords(targetUnit, unit, meta, base) : []
+              const traits = allTraits ? traitsAll : traitsAll.slice(0, 5)
+              const words = allTraits ? wordsAll : wordsAll.slice(0, 5)
               const gaps = isOpen && lens === 'syntax'
                 ? explain(targetUnit, unit, meta.features, spread, 4) : []
               const wordGaps = isOpen && lens === 'register'
                 ? explainDelta(targetUnit, unit, meta, 4) : []
-              const shared = isOpen && lens === 'vocabulary' && vocab?.works[unit.work]
+              const sharedAll = isOpen && lens === 'vocabulary' && vocab?.works[unit.work]
                 ? explainVocab(
                     (target?.kind === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
                     vocab.works[unit.work]!, vocab.periods,
                   )
                 : []
+              const shared = allTraits ? sharedAll : sharedAll.slice(0, 5)
+              const hiddenTraits = (traitsAll.length - traits.length)
+                + (wordsAll.length - words.length) + (sharedAll.length - shared.length)
               return (
                 <li key={unit.work}>
                   <button
-                    onClick={() => setOpen(isOpen ? null : unit.work)}
+                    onClick={() => { setOpen(isOpen ? null : unit.work); setAllTraits(false) }}
                     className="group flex w-full items-center gap-3 py-2.5 text-left"
                     aria-expanded={isOpen}
                   >
@@ -567,42 +669,10 @@ export function RegisterView() {
                   {isOpen && (
                     <div className="pb-4 pl-9 pr-2">
                       <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700">
-                        {t('reg.shared')}
+                        <ColumnHint align="left" label={t('reg.shared')}
+                          hint={lens === 'vocabulary'
+                            ? ['reg.sharedNote', 'reg.vocabPeriodNote'] : 'reg.sharedNote'} />
                       </p>
-                      <p className="mb-2 text-xs text-gray-500">{t('reg.sharedNote')}</p>
-                      {lens === 'vocabulary' && (
-                        <p className="mb-2 text-xs text-gray-500">{t('reg.vocabPeriodNote')}</p>
-                      )}
-                      {/* Which pools the last two columns come from. Defaulting to the
-                          text's own genre gives like with like; switching to another is how a
-                          reader tells a feature of the genre from a feature of the Greek. */}
-                      <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
-                        <label htmlFor="reg-genre" className="text-gray-500">{t('reg.comparedAgainst')}</label>
-                        <select
-                          id="reg-genre" value={genreChoice}
-                          onChange={e => setGenreChoice(e.target.value)}
-                          className="input py-0.5 text-xs"
-                        >
-                          <option value="">
-                            {ownGenre && ownGenre !== 'other'
-                              ? t('reg.ownGenre', { genre: t(`reg.genre.${ownGenre}`) })
-                              : t('reg.allProse')}
-                          </option>
-                          <option value={ALL_PROSE}>{t('reg.allProse')}</option>
-                          {genres.map(g => (
-                            <option key={g} value={g}>{t(`reg.genre.${g}`)}</option>
-                          ))}
-                        </select>
-                        {base.genre && (!base.classical || !base.koine) && (
-                          <span className="text-amber-700">
-                            {t('reg.noPoolFor', {
-                              period: t(!base.classical ? 'reg.classical' : 'reg.koine'),
-                              genre: t(`reg.genre.${base.genre}`),
-                            })}
-                          </span>
-                        )}
-                      </div>
-                      <div className="mb-2"><PeriodSources meta={meta} base={base} /></div>
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[26rem] text-sm">
                           <thead>
@@ -680,6 +750,14 @@ export function RegisterView() {
                           </tbody>
                         </table>
                       </div>
+                      {hiddenTraits > 0 && (
+                        <button
+                          type="button" onClick={() => setAllTraits(true)}
+                          className="mt-1 text-xs font-medium text-brand-700 hover:underline"
+                        >
+                          {t('reg.moreTraits', { n: hiddenTraits })}
+                        </button>
+                      )}
 
                       {(gaps.length > 0 || wordGaps.length > 0) && (
                         <p className="mt-2 text-xs text-gray-500">
