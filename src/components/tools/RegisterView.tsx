@@ -599,7 +599,8 @@ export function RegisterView() {
                               <th className="py-1 text-left font-medium">
                                 <ColumnHint align="left"
                                   label={t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}
-                                  hint={lens === 'syntax' ? 'reg.hint.feature'
+                                  hint={lens === 'syntax'
+                                    ? ['reg.hint.feature', 'reg.hint.featureWhy', 'reg.hint.featureVary']
                                     : lens === 'vocabulary' ? 'reg.hint.subjectWord' : 'reg.hint.commonWord'} />
                               </th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
