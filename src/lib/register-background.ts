@@ -54,6 +54,47 @@ export const BACKGROUND_LEDE =
 
 export const BACKGROUND: BackgroundSection[] = [
   {
+    id: 'labels',
+    heading: 'Attic, Koine, Classical — what the words mean',
+    paragraphs: [
+      'Three of the labels on this page name different kinds of thing, and sorting them out '
+      + 'first makes the rest readable. CLASSICAL is a period: roughly the fifth and fourth '
+      + 'centuries BC, the two centuries before Alexander. ATTIC is a dialect: the Greek of '
+      + 'Athens, one local variety among many — alongside it stood IONIC, the dialect of '
+      + 'Herodotus, close enough that the two together make up this library’s "Classical" pool. '
+      + 'KOINE (ἡ κοινὴ διάλεκτος, "the common dialect") is what came next: when Alexander’s '
+      + 'conquests made Greek the working language from Egypt to the Indus, the dialects '
+      + 'levelled into one shared tongue, built mostly on Attic, written by everyone from an '
+      + 'Alexandrian clerk to Paul of Tarsus. The labels tangle because Athens’ fourth-century '
+      + 'prose became the standard all later Greek was measured against.',
+      'What marks Attic prose is partly sound — its shibboleth is ττ where other Greek writes '
+      + 'σσ: θάλαττα against θάλασσα, "sea" — but mostly texture, and the texture is what this '
+      + 'tool counts. The optative, a whole verbal mood for wishes and possibilities (γένοιτο, '
+      + '"may it come to pass"), is in full use: 7.4 per 1,000 words across this library’s '
+      + 'Classical prose. A repertoire of small steering particles tells the reader how each '
+      + 'clause leans — μέν … δέ, "on the one hand … on the other", δή "indeed", γε "at least" — '
+      + 'at 28.7 per 1,000. And clauses fold inside clauses rather than lying end to end. When '
+      + 'Luke opens Ἐπειδήπερ πολλοὶ ἐπεχείρησαν ἀνατάξασθαι διήγησιν, "Inasmuch as many have '
+      + 'undertaken to compile a narrative" (Luke 1:1), he is writing that classical '
+      + 'architecture deliberately.',
+      'Koine is the same language made plainer, more regular, more explicit. Where classical '
+      + 'prose subordinates, Koine strings its clauses on καί, "and": 52.2 per 1,000 words in '
+      + 'the Classical pool against 75.9 in the Koine. The optative dwindles to a fossil — 1.4 '
+      + 'per 1,000 — and Paul’s μὴ γένοιτο, "may it never be!", ten times in Romans, is nearly '
+      + 'all of it that survives in his letters. The particles thin to a handful. ἵνα, '
+      + 'originally "in order that", spreads into places the infinitive used to hold: θέλω ἵνα '
+      + 'δῷς μοι, "I want you to give me" (Mark 6:25), where an Athenian would have used a bare '
+      + 'infinitive. And the New Testament writes θάλασσα every time; θάλαττα, never.',
+      'These are habits, not walls, and the library itself shows the seams. Thucydides, an '
+      + 'Athenian writing at the height of the classical period, uses θάλασσα throughout — his '
+      + 'generation of Attic kept the older spelling. Plutarch, writing under Roman emperors, '
+      + 'reaches for θάλαττα again and again, because by his day the Attic form had become a '
+      + 'mark of cultivation. That is Atticism, and it is why this tool’s second axis reports a '
+      + 'direction — toward the Classical average or the Koine one — rather than presuming to '
+      + 'read off a date.',
+    ],
+  },
+  {
     id: 'ancients',
     heading: 'The ancient critics had names for this',
     paragraphs: [
