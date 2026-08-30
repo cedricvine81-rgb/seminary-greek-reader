@@ -344,7 +344,10 @@ export function RegisterView() {
         }
       }
       const targetSpec = target?.kind === 'passage'
-        ? { id: 'target', corpus: target.corpus, book: target.book, fromCh: target.fromCh, toCh: target.toCh }
+        ? {
+            id: 'target', corpus: target.corpus, book: target.book,
+            fromCh: target.fromCh, toCh: target.toCh, fromV: target.fromV, toV: target.toV,
+          }
         : { id: 'target', corpus: targetUnit.corpus, work: targetUnit.work }
       const res = await fetch('/api/register/citations', {
         method: 'POST',

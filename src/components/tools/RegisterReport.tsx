@@ -123,6 +123,22 @@ export function RegisterReport({
           </dd>
           <dt className="font-semibold">{t('reg.rep.ranked')}</dt>
           <dd>{t('reg.rep.rankedCount', { shown: num(results.length), detail: num(detail.length) })}</dd>
+          {/* The two named axes are the report's most citable numbers; a paper quoting the
+              ranking without them is quoting half the finding. */}
+          {targetUnit.periodicity !== undefined && targetUnit.classicalLean !== undefined && (
+            <>
+              <dt className="font-semibold">{t('reg.axis.periodicity')}</dt>
+              <dd>
+                {targetUnit.periodicity.toFixed(2)}
+                {' '}({t('reg.axis.strungOn')} 0 → 1 {t('reg.axis.periodic')})
+              </dd>
+              <dt className="font-semibold">{t('reg.axis.lean')}</dt>
+              <dd>
+                {targetUnit.classicalLean >= 0 ? '+' : ''}{targetUnit.classicalLean.toFixed(2)}
+                {' '}(−1 {t('reg.axis.towardKoine')} · +1 {t('reg.axis.towardClassical')})
+              </dd>
+            </>
+          )}
           <dt className="font-semibold">{t('reg.rep.printed')}</dt>
           <dd>{formatDateLong(new Date(), locale)}</dd>
           {/* The tool keeps its whole state in the query string, so the paper can say where

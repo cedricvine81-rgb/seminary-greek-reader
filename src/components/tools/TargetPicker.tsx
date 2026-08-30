@@ -209,7 +209,12 @@ export function TargetPicker({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [works, locale, t])
 
-  const parsedWords = parsed && !parsed.wholeBook ? wordsIn(parsed) : 0
+  // The manifest counts by CHAPTER, so for "Mark 4:1-9" it can only report the whole of
+  // chapter 4 — an overstatement dressed as a measurement. A verse-bounded selection shows no
+  // figure here; the server's exact count arrives with the profile and appears with the
+  // results.
+  const verseBounded = !!parsed && (parsed.fromV !== undefined || parsed.toV !== undefined)
+  const parsedWords = parsed && !parsed.wholeBook && !verseBounded ? wordsIn(parsed) : 0
 
   return (
     <div className="space-y-3">

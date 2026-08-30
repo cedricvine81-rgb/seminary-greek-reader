@@ -44,6 +44,8 @@ export interface StyleMeta {
   spread: Record<string, number>
   /** Observed range of each named axis across the library, so a bar can be drawn honestly. */
   axisRange: { periodicity: [number, number]; classicalLean: [number, number] }
+  /** The Classical−Koine projection axis, published so a passage can be placed on it too. */
+  leanAxis: { axis: number[]; midpoint: number[] }
   /** The library's average rate per feature — the norm two texts are both departing from. */
   center: Record<string, number>
   /** Period baselines, so a reader can ask whether a rate is Classical or of its own era. */
@@ -80,6 +82,8 @@ export interface PassageProfile {
   delta: number[]
   /** Content lemmas as rates per 1,000 — the vocabulary lens needs them for a passage too. */
   content: [string, number][]
+  periodicity: number
+  classicalLean: number
   reliable: boolean
   span: { fromCh: number; toCh: number }
 }
@@ -96,6 +100,7 @@ export function passageUnit(
   return {
     corpus, work: `passage:${corpus}/${book}/${p.span.fromCh}-${p.span.toCh}`, label,
     kind: 'work', idx: 0, n: p.n, reliable: p.reliable, rates: p.rates, delta: p.delta,
+    periodicity: p.periodicity, classicalLean: p.classicalLean,
   }
 }
 
@@ -323,6 +328,22 @@ export interface BaselinePair {
 }
 
 export const ALL_PROSE = 'all'
+
+/**
+ * Position on the line between the Classical and Koine centroids: +1 the Classical mean, −1
+ * the Koine mean. One formula for the builder, the passage profiler and any future caller —
+ * the axis itself is baked into meta at build time, so every consumer projects onto the same
+ * line the works were placed on.
+ */
+export function computeLean(delta: number[], leanAxis: { axis: number[]; midpoint: number[] }): number {
+  const { axis, midpoint } = leanAxis
+  let dot = 0, sq = 0
+  for (let i = 0; i < axis.length; i++) {
+    dot += ((delta[i] ?? 0) - midpoint[i]) * axis[i]
+    sq += axis[i] * axis[i]
+  }
+  return sq ? +((2 * dot) / sq).toFixed(3) : 0
+}
 
 export function baselinePair(meta: StyleMeta, genre: string): BaselinePair {
   const p = meta.periods

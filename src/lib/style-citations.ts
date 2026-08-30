@@ -156,16 +156,23 @@ export function citationsFor(
       scan(target.corpus, bookKey, index[bookKey].w as Word[], 0)
     }
   } else {
-    const { corpus, book: bookKey } = target.ref
+    const { corpus, book: bookKey, fromCh, fromV, toCh, toV } = target.ref
     const book = getCorpusIndex(corpus)[bookKey]
     if (book) {
-      // Slice to the requested chapters, keeping the offset so references stay absolute.
+      // Slice to the requested range — VERSES included, with the same bounds the passage
+      // profiler uses. Chapter-only slicing here once cited "Mark 4:39" as evidence for a
+      // comparison of Mark 4:1-9: every reference was real and some were outside the passage,
+      // which in a printed document is worse than none.
       const v = book.v
+      const lower = (c: number, vv: number) =>
+        c > fromCh || (c === fromCh && (fromV === undefined || vv >= fromV))
+      const upper = (c: number, vv: number) =>
+        c > toCh || (c === toCh && toV !== undefined && vv > toV)
       let start = book.w.length, end = book.w.length
       for (let i = 0; i < v.length; i++) {
-        const [c, , at] = v[i]
-        if (start === book.w.length && c >= target.ref.fromCh) start = at
-        if (start !== book.w.length && c > target.ref.toCh) { end = at; break }
+        const [c, vv, at] = v[i]
+        if (start === book.w.length && lower(c, vv)) start = at
+        if (start !== book.w.length && upper(c, vv)) { end = at; break }
       }
       if (start < end) scan(corpus, bookKey, book.w.slice(start, end) as Word[], start)
     }

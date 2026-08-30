@@ -17,8 +17,9 @@ import zlib from 'node:zlib'
 import crypto from 'node:crypto'
 import {
   CONSTRUCTIONS, DELTA_EXCLUDE, FEATURES, LEMMA_CANON, RATE_FEATURES, contentVocab,
-  profileWords, type Profile, type Word,
+  periodicityOf, profileWords, type Profile, type Word,
 } from '../src/lib/style-features'
+import { computeLean } from '../src/lib/style-register'
 
 const SRC = 'public/data/construct'
 const OUT = 'public/data/style'
@@ -605,11 +606,7 @@ function centroid(units_: Unit[]): number[] {
 const CLASSICAL_CENTROID = centroid(classicalUnits)
 const KOINE_CENTROID = centroid(koineUnits)
 
-function periodicity(rates: Record<string, number>): number {
-  const sub = (rates.participle ?? 0) + (rates.infinitive ?? 0) + (rates.hoti ?? 0) + (rates.hina ?? 0)
-  const co = (rates.kai ?? 0) + (rates.de ?? 0)
-  return sub + co > 0 ? +(sub / (sub + co)).toFixed(4) : 0
-}
+const periodicity = periodicityOf
 
 /**
  * Projection onto the Classical−Koine axis, scaled so the two pool means land on +1 and −1.
@@ -620,15 +617,11 @@ function periodicity(rates: Record<string, number>): number {
  * centroids throws away the distance nobody asked about and keeps the one component that
  * separates the periods.
  */
-const AXIS = CLASSICAL_CENTROID.map((c, i) => c - KOINE_CENTROID[i])
-const AXIS_SQ = AXIS.reduce((a, b) => a + b * b, 0) || 1
-const MIDPOINT = CLASSICAL_CENTROID.map((c, i) => (c + KOINE_CENTROID[i]) / 2)
-
-function classicalLean(delta: number[]): number {
-  let dot = 0
-  for (let i = 0; i < AXIS.length; i++) dot += (delta[i] - MIDPOINT[i]) * AXIS[i]
-  return +((2 * dot) / AXIS_SQ).toFixed(3)
+const LEAN_AXIS = {
+  axis: CLASSICAL_CENTROID.map((c, i) => +(c - KOINE_CENTROID[i]).toFixed(4)),
+  midpoint: CLASSICAL_CENTROID.map((c, i) => +((c + KOINE_CENTROID[i]) / 2).toFixed(4)),
 }
+const classicalLean = (delta: number[]) => computeLean(delta, LEAN_AXIS)
 
 /**
  * The range each axis actually occupies across the library, so a bar can be drawn against what
@@ -680,6 +673,7 @@ const meta = {
   spread: round(spread, 4),
   center: round(center, 4),
   axisRange,
+  leanAxis: LEAN_AXIS,
   periods,
   barScale,
   passageCorpora: Array.from(PASSAGE_CORPORA),

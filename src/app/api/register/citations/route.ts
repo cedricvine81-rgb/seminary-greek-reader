@@ -18,6 +18,8 @@ interface UnitSpec {
   book?: string
   fromCh?: number
   toCh?: number
+  fromV?: number
+  toV?: number
 }
 
 export async function POST(req: NextRequest) {
@@ -47,6 +49,8 @@ export async function POST(req: NextRequest) {
               ref: {
                 corpus: u.corpus, book: u.book,
                 fromCh: Number(u.fromCh) || 1, toCh: Number(u.toCh) || 999,
+                fromV: Number.isFinite(Number(u.fromV)) && Number(u.fromV) > 0 ? Number(u.fromV) : undefined,
+                toV: Number.isFinite(Number(u.toV)) && Number(u.toV) > 0 ? Number(u.toV) : undefined,
               },
             }
           : null

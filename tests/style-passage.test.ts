@@ -13,7 +13,10 @@ import fs from 'fs'
 import path from 'path'
 import { profilePassage } from '@/lib/style-passage'
 
-interface Unit { work: string; kind: string; n: number; rates: Record<string, number>; delta: number[] }
+interface Unit {
+  work: string; kind: string; n: number; rates: Record<string, number>; delta: number[]
+  periodicity: number; classicalLean: number
+}
 
 const units: Unit[] = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), 'public/data/style/index.json'), 'utf8'),
@@ -29,6 +32,10 @@ describe('passage profiling', () => {
     expect(p.n).toBe(w.n)
     for (const k of Object.keys(w.rates)) expect(p.rates[k]).toBeCloseTo(w.rates[k], 2)
     p.delta.forEach((z, i) => expect(z).toBeCloseTo(w.delta[i], 2))
+    // The two named axes go through the same shared formulas, or a passage would sit on a
+    // different scale from every work around it.
+    expect(p.periodicity).toBeCloseTo(w.periodicity, 3)
+    expect(p.classicalLean).toBeCloseTo(w.classicalLean, 2)
   })
 
   it('reads a chapter range, and reports the span it actually covered', () => {
@@ -49,6 +56,22 @@ describe('passage profiling', () => {
     const prologue = profilePassage({ corpus: 'GNT', book: 'John', fromCh: 1, toCh: 1, toV: 18 })!
     expect(prologue.n).toBeGreaterThan(0)
     expect(prologue.n).toBeLessThan(whole.n)
+  })
+
+  it('cites within verse bounds, exactly as it profiles them', () => {
+    // Chapter-only slicing here once cited Mark 4:39 as evidence for Mark 4:1-9.
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { citationsFor } = require('@/lib/style-citations')
+    const c = citationsFor(
+      { kind: 'passage', ref: { corpus: 'GNT', book: 'Mark', fromCh: 4, fromV: 1, toCh: 4, toV: 9 } },
+      ['aorist'], ['και'], 6,
+    )
+    for (const ref of [...c.refs.aorist, ...c.refs['και']]) {
+      const [ch, v] = ref.split(':').map(Number)
+      expect(ch).toBe(4)
+      expect(v).toBeGreaterThanOrEqual(1)
+      expect(v).toBeLessThanOrEqual(9)
+    }
   })
 
   it('clamps a range that runs past the end of the book', () => {

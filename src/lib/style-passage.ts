@@ -11,7 +11,8 @@
 import fs from 'fs'
 import path from 'path'
 import { getCorpusIndex } from './construct-search'
-import { contentVocab, deltaVector, profileWords, type Word } from './style-features'
+import { contentVocab, deltaVector, periodicityOf, profileWords, type Word } from './style-features'
+import { computeLean } from './style-register'
 
 export interface StyleIndexMeta {
   deltaWords: string[]
@@ -19,6 +20,7 @@ export interface StyleIndexMeta {
   spread: Record<string, number>
   reliableWords: number
   passageCorpora: string[]
+  leanAxis: { axis: number[]; midpoint: number[] }
 }
 
 let _meta: StyleIndexMeta | null = null
@@ -46,6 +48,9 @@ export interface PassageProfile {
   delta: number[]
   /** Content lemmas as rates per 1,000, so the vocabulary lens works on a passage too. */
   content: [string, number][]
+  /** The two named axes, computed by the same shared formulas the prebuilt works use. */
+  periodicity: number
+  classicalLean: number
   reliable: boolean
   /** The chapters actually covered, which may be narrower than asked if the book is shorter. */
   span: { fromCh: number; toCh: number }
@@ -103,11 +108,14 @@ export function profilePassage(ref: PassageRef): PassageProfile | null {
   if (!words.length) return null
 
   const p = profileWords(words)
+  const delta = deltaVector(p, m.deltaWords, m.norm.mu, m.norm.sd)
   return {
     n: p.n,
     rates: Object.fromEntries(Object.entries(p.rates).map(([k, v]) => [k, +v.toFixed(2)])),
-    delta: deltaVector(p, m.deltaWords, m.norm.mu, m.norm.sd).map(x => +x.toFixed(2)),
+    delta: delta.map(x => +x.toFixed(2)),
     content: contentVocab(p, m.deltaWords),
+    periodicity: periodicityOf(p.rates),
+    classicalLean: m.leanAxis ? computeLean(delta, m.leanAxis) : 0,
     reliable: p.n >= m.reliableWords,
     span,
   }

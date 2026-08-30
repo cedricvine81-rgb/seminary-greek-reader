@@ -271,3 +271,14 @@ export function contentVocab(
     .slice(0, limit)
     .map(([l, c]) => [l, +(1000 * c / p.n).toFixed(2)] as [string, number])
 }
+
+/**
+ * Aristotle’s axis (Rhet. 3.9): the share of clause-linking done by subordination rather than
+ * coordination. Shared for the same reason profileWords is — a passage scored by one formula
+ * and ranked against works scored by another would be silently wrong.
+ */
+export function periodicityOf(rates: Record<string, number>): number {
+  const sub = (rates.participle ?? 0) + (rates.infinitive ?? 0) + (rates.hoti ?? 0) + (rates.hina ?? 0)
+  const co = (rates.kai ?? 0) + (rates.de ?? 0)
+  return sub + co > 0 ? +(sub / (sub + co)).toFixed(4) : 0
+}
