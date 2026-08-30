@@ -445,18 +445,10 @@ export function RegisterView() {
           }}
           nameOf={nameOf} corpusOf={corpusOf}
         />
-        {/* What was chosen, and what KIND of Greek it is — one card, so the page reads
-            "choose → here is your text → here are its kin" without a third box between. */}
-        {targetUnit && (
-          <>
-            <p className="mt-3 text-xs text-gray-500">
-              <span className="font-medium text-gray-700">{nameOf(targetUnit)}</span>
-              {ownGenre && ownGenre !== 'other' && <> — {t(`reg.genre.${ownGenre}`)}</>}
-              {' · '}{targetUnit.n.toLocaleString(locale)} {t('reg.words')}
-            </p>
-            <StyleAxes meta={meta} unit={targetUnit} name={nameOf(targetUnit)} />
-          </>
-        )}
+        {/* The axes live in the same card as the choice, so the page reads "choose → here is
+            what kind of Greek that is → here are its kin" without a box between. The axes
+            heading already names the work, so nothing restates it here. */}
+        {targetUnit && <StyleAxes meta={meta} unit={targetUnit} name={nameOf(targetUnit)} />}
       </div>
 
       {/* ── lens ─────────────────────────────────────────────────────────── */}
