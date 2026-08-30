@@ -11,7 +11,7 @@
 // Rendered always, shown only by the print stylesheet (see @media print in globals.css).
 
 import {
-  explain, explainDelta, explainVocab, sharedFeatures, sharedWords,
+  explain, explainDelta, explainVocab, sharedFeatures, sharedWords, readingOf,
   type BaselinePair, type Lens, type Neighbour, type StyleFeature, type StyleMeta,
   type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
@@ -20,6 +20,7 @@ import { bookName } from '@/lib/i18n/book-names'
 import { textAuthorLabel } from '@/lib/i18n/text-names'
 import { isBiblical } from '@/lib/style-register'
 import { formatDateLong } from '@/lib/i18n/format'
+import { ReadingLine, readingRows } from './ReadingLine'
 
 /** Detail tables are printed for this many parallels; the ranking table lists every one. */
 export const REPORT_DETAIL_LIMIT = 25
@@ -307,6 +308,15 @@ export function RegisterReport({
                     .join(' · ')}
                 </p>
               )}
+              {/* The same sentence the screen gives, because a reader holding the paper is the
+                  one most likely to need it: there is no row to expand and no bubble to open. */}
+              <ReadingLine
+                reading={readingOf(
+                  readingRows(lens, traits, words, featureLabel),
+                  { a: targetUnit.classicalLean, b: unit.classicalLean },
+                )}
+                className="mt-1 text-[9px] leading-relaxed text-gray-700"
+              />
             </div>
           )
         })}
