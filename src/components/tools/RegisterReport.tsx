@@ -166,7 +166,8 @@ export function RegisterReport({
       <section className="mb-5">
         <h2 className="mb-1 text-sm font-bold uppercase tracking-wide">{t('reg.rep.evidence')}</h2>
         <p className="mb-2 text-xs">{t('reg.sharedNote')}</p>
-        {lens !== 'vocabulary' && <p className="mb-2 text-xs">{t('reg.periodNote')}</p>}
+        <p className="mb-2 text-xs">{t('reg.periodNote')}</p>
+        {lens === 'vocabulary' && <p className="mb-2 text-xs">{t('reg.vocabPeriodNote')}</p>}
         {citations && (
           <p className="mb-2 text-xs">
             {t('reg.rep.citedTo', { n: Math.min(REPORT_CITATION_LIMIT, detail.length) })}
@@ -176,7 +177,10 @@ export function RegisterReport({
           const traits = lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta) : []
           const words = lens === 'register' ? sharedWords(targetUnit, unit, meta) : []
           const shared = lens === 'vocabulary' && vocab?.works[unit.work]
-            ? explainVocab(targetVocab ?? vocab.works[targetUnit.work] ?? [], vocab.works[unit.work]!)
+            ? explainVocab(
+                targetVocab ?? vocab.works[targetUnit.work] ?? [],
+                vocab.works[unit.work]!, vocab.periods,
+              )
             : []
           const gaps = lens === 'syntax' ? explain(targetUnit, unit, meta.features, spread, 4) : []
           const wordGaps = lens === 'register' ? explainDelta(targetUnit, unit, meta, 4) : []
@@ -259,8 +263,8 @@ export function RegisterReport({
                       </td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
-                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">—</td>
-                      <td className="py-0.5 text-right tabular-nums text-gray-600">—</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{r.classical.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.koine.toFixed(1)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -283,7 +287,7 @@ export function RegisterReport({
       {/* ── what the two baselines are made of ──────────────────────────────
           Printed in full rather than linked: a reader holding the paper cannot open a
           disclosure, and an average whose composition is unavailable is not checkable. */}
-      {lens !== 'vocabulary' && meta.periods && (
+      {meta.periods && (
         <section className="mb-5" style={{ breakInside: 'avoid' }}>
           <h2 className="mb-1 text-sm font-bold uppercase tracking-wide">{t('reg.rep.baselines')}</h2>
           {(['classical', 'koine'] as const).map(id => (

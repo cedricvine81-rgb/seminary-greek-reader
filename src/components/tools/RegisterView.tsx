@@ -168,8 +168,17 @@ export function RegisterView() {
   useEffect(() => {
     if (lens !== 'vocabulary' || vocab) return
     let live = true
-    fetch('/data/style/vocab.json').then(r => r.json())
-      .then((v: VocabFile) => { if (live && v?.works) setVocab(v) })
+    // Same staleness trap as the index: a vocab file cached from before the period baselines
+    // existed still parses, and every Classical and Koine cell silently reads 0.0.
+    const usable = (v: VocabFile | null) => !!v?.works && !!v.periods?.classical
+    const load = async () => {
+      let v: VocabFile = await fetch('/data/style/vocab.json').then(r => r.json())
+      if (!usable(v)) v = await fetch('/data/style/vocab.json', { cache: 'reload' }).then(r => r.json())
+      if (!usable(v)) throw new Error('vocabulary index is not usable')
+      return v
+    }
+    load()
+      .then(v => { if (live) setVocab(v) })
       .catch(() => { if (live) setError(true) })
     return () => { live = false }
   }, [lens, vocab])
@@ -417,6 +426,11 @@ export function RegisterView() {
         </button>
       </div>
 
+      {/* The three lenses ask three different questions, and two of them are about words.
+          Naming the difference beneath the switch is cheaper than expecting a label to carry
+          it. */}
+      <p className="-mt-3 text-xs text-gray-500">{t(`reg.lensAbout.${lens}`)}</p>
+
       {missingWork && (
         <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
           {t('reg.unknownWork', { work: target })}
@@ -450,6 +464,14 @@ export function RegisterView() {
             {lens === 'vocabulary' && <> {t('reg.vocabCaveat')}</>}
           </p>
 
+          {/* The distance had no label anywhere — a bare 0.34 beside a bar. */}
+          <div className="flex items-center gap-3 pb-1 text-[10px] uppercase tracking-wide text-gray-400">
+            <span className="w-6 shrink-0" />
+            <span className="min-w-0 flex-1" />
+            <span className="hidden w-28 shrink-0 text-right sm:block">{t('reg.colSimilarity')}</span>
+            <span className="w-12 shrink-0 text-right">{t('reg.colDistance')}</span>
+            <span className="w-[14px] shrink-0" />
+          </div>
           <ul className="divide-y divide-gray-100 border-y border-gray-100">
             {results.map(({ unit, distance }, i) => {
               const pct = barFor(distance)
@@ -468,7 +490,7 @@ export function RegisterView() {
               const shared = isOpen && lens === 'vocabulary' && vocab?.works[unit.work]
                 ? explainVocab(
                     (mode === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
-                    vocab.works[unit.work]!,
+                    vocab.works[unit.work]!, vocab.periods,
                   )
                 : []
               return (
@@ -490,7 +512,8 @@ export function RegisterView() {
                     <span className="hidden h-1.5 w-28 shrink-0 overflow-hidden rounded-full bg-gray-100 sm:block">
                       <span className="block h-full rounded-full bg-brand-500" style={{ width: `${Math.max(2, pct * 100)}%` }} />
                     </span>
-                    <span className="w-12 shrink-0 text-right font-mono text-xs tabular-nums text-gray-500">
+                    <span className="w-12 shrink-0 text-right font-mono text-xs tabular-nums text-gray-500"
+                      title={t('reg.distanceTip')}>
                       {distance.toFixed(2)}
                     </span>
                     <ChevronRight size={14} className={clsx('shrink-0 text-gray-300 transition-transform', isOpen && 'rotate-90')} />
@@ -502,9 +525,10 @@ export function RegisterView() {
                         {t('reg.shared')}
                       </p>
                       <p className="mb-2 text-xs text-gray-500">{t('reg.sharedNote')}</p>
-                      {lens !== 'vocabulary' && (
-                        <div className="mb-2"><PeriodSources meta={meta} /></div>
+                      {lens === 'vocabulary' && (
+                        <p className="mb-2 text-xs text-gray-500">{t('reg.vocabPeriodNote')}</p>
                       )}
+                      <div className="mb-2"><PeriodSources meta={meta} /></div>
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[26rem] text-sm">
                           <thead>
@@ -558,8 +582,8 @@ export function RegisterView() {
                                 <td className="py-1 pr-3 font-reading text-gray-900">{vocab?.labels[g.lemma] ?? g.lemma}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
-                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">—</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">—</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{g.classical.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{g.koine.toFixed(1)}</td>
                               </tr>
                             ))}
                           </tbody>

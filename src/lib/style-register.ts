@@ -142,6 +142,8 @@ export function featureSpread(units: StyleUnit[]): Record<string, number> {
 export interface VocabFile {
   labels: Record<string, string>
   works: Record<string, [string, number][] | null>
+  /** Content-word rates per period. A lemma absent from a map is nought there. */
+  periods: { classical: Record<string, number>; koine: Record<string, number> }
 }
 export type VocabIndex = VocabFile['works']
 
@@ -173,18 +175,29 @@ export interface SharedWord {
   other: number
   /** The weaker of the two rates — how much vocabulary they genuinely hold in common. */
   shared: number
+  /**
+   * The same word's rate in each period. A nought here means something different from a nought
+   * in the other two lenses: content words track subject, so Ἰησοῦς is missing from Classical
+   * prose because of what that prose is about, not because of how it is written.
+   */
+  classical: number
+  koine: number
 }
 
-/** The "why" for the vocabulary lens: the content words both texts lean on. */
+/** The "why" for the subject-word lens: the content words both texts lean on. */
 export function explainVocab(
-  a: [string, number][], b: [string, number][], limit = 10,
+  a: [string, number][], b: [string, number][], periods?: VocabFile['periods'], limit = 10,
 ): SharedWord[] {
   const B = new Map(b)
   const out: SharedWord[] = []
   for (const [lemma, x] of a) {
     const y = B.get(lemma)
     if (y === undefined) continue
-    out.push({ lemma, target: x, other: y, shared: Math.min(x, y) })
+    out.push({
+      lemma, target: x, other: y, shared: Math.min(x, y),
+      classical: periods?.classical[lemma] ?? 0,
+      koine: periods?.koine[lemma] ?? 0,
+    })
   }
   return out.sort((p, q) => q.shared - p.shared).slice(0, limit)
 }

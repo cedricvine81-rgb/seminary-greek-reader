@@ -490,6 +490,44 @@ fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify({ meta, units: pub
 const vocabWorks = Object.fromEntries(
   units.filter(u => u.kind === 'work').map(u => [u.work, u.content]),
 )
+/**
+ * The same two baselines for the CONTENT words, so the vocabulary lens does not show a pair of
+ * empty columns. Computed over every lemma that reaches some work's list, one author one vote,
+ * from the full counts rather than the truncated lists — a word absent from a work's top 200
+ * is not absent from the work.
+ *
+ * A zero here means something different from a zero in the other two lenses, and the page says
+ * so: content words track SUBJECT. Ἰησοῦς is nowhere in Classical prose because of what that
+ * prose is about, not because of how it is written.
+ */
+function contentBaseline(members: Unit[]): Record<string, number> {
+  const byAuthor = new Map<string, Unit[]>()
+  for (const u of members) {
+    const a = authorOf(u, WORK_LABEL.get(u.work) ?? u.work)
+    if (!byAuthor.has(a)) byAuthor.set(a, [])
+    byAuthor.get(a)!.push(u)
+  }
+  const authorCount = byAuthor.size
+  const totals = new Map<string, number>()
+  byAuthor.forEach(works => {
+    // This author's mean rate for every lemma they use at all.
+    const mine = new Map<string, number>()
+    for (const u of works) {
+      u.lem.forEach((c, l) => mine.set(l, (mine.get(l) ?? 0) + 1000 * (c / u.n) / works.length))
+    }
+    mine.forEach((r, l) => totals.set(l, (totals.get(l) ?? 0) + r))
+  })
+  const out: Record<string, number> = {}
+  totals.forEach((sum, l) => {
+    const mean = sum / authorCount
+    // Rounded to two places; anything that rounds to nought is left out and read as nought,
+    // which keeps the file from carrying twelve thousand zeroes.
+    const r = +mean.toFixed(2)
+    if (r > 0) out[l] = r
+  })
+  return out
+}
+
 const vocabLabels: Record<string, string> = {}
 for (const list of Object.values(vocabWorks)) {
   for (const [l] of list ?? []) {
@@ -498,8 +536,22 @@ for (const list of Object.values(vocabWorks)) {
     if (d && d !== l) vocabLabels[l] = d
   }
 }
+// Only the lemmas some work actually lists — a baseline for a word the lens can never show
+// would be payload with no reader.
+const listed = new Set(Object.values(vocabWorks).flatMap(v => (v ?? []).map(x => x[0])))
+const trim = (all: Record<string, number>) => {
+  const out: Record<string, number> = {}
+  listed.forEach(l => { if (all[l] !== undefined) out[l] = all[l] })
+  return out
+}
+const vocabPeriods = {
+  classical: trim(contentBaseline(classicalUnits)),
+  koine: trim(contentBaseline(koineUnits)),
+}
 fs.writeFileSync(path.join(OUT, 'vocab.json'),
-  JSON.stringify({ labels: vocabLabels, works: vocabWorks }))
+  JSON.stringify({ labels: vocabLabels, works: vocabWorks, periods: vocabPeriods }))
+console.error(`   content baselines: ${Object.keys(vocabPeriods.classical).length} classical / `
+  + `${Object.keys(vocabPeriods.koine).length} koine lemmas of ${listed.size} listed`)
 console.error(`   ${Object.keys(vocabLabels).length} of `
   + `${new Set(Object.values(vocabWorks).flatMap(v => (v ?? []).map(x => x[0]))).size}`
   + ` content words have an accented form in the biblical lexicons`)
