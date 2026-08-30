@@ -14,6 +14,7 @@ import { ChevronRight, Info, Printer } from 'lucide-react'
 import clsx from 'clsx'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
+import { resolverFor, type GlossResolver } from '@/lib/vocab-gloss-lookup'
 import {
   CORPUS_KEY, chunksOf, explain, explainDelta, explainVocab, featureSpread, isBiblical,
   neighbours, passageUnit, sharedFeatures, sharedWords, STYLE_SHAPE,
@@ -114,7 +115,28 @@ export function RegisterView() {
   const [vocab, setVocab] = useState<VocabFile | null>(null)
   const [passageVocab, setPassageVocab] = useState<[string, number][] | null>(null)
   const [citations, setCitations] = useState<CitationMap | null>(null)
+  const [glossFor, setGlossFor] = useState<GlossResolver | null>(null)
   const [preparing, setPreparing] = useState(false)
+
+  /**
+   * The glosses beside the Greek words came from the biblical lexicon, which is English, so a
+   * Spanish reader met "ἀλλά · but". The app already carries Spanish for these — the deck's
+   * teaching glosses plus a lexicon layer for the tail — behind one resolver that fetches
+   * nothing at all for an English reader. Falls back to the English the index shipped with,
+   * which is the same never-mislead rule the rest of the translated content follows.
+   */
+  useEffect(() => {
+    if (locale === 'en') { setGlossFor(null); return }
+    let live = true
+    // Stored through an updater, or React would call the resolver instead of storing it.
+    resolverFor(locale, 'greek').then(r => { if (live) setGlossFor(() => r) })
+    return () => { live = false }
+  }, [locale])
+
+  const glossed = useCallback(
+    (display: string, english: string) => glossFor?.(display) ?? english,
+    [glossFor],
+  )
 
   // The biblical books localize through book-names.ts; a prose title stays as it is cited.
   const nameOf = (u: StyleUnit) => (isBiblical(u.corpus) && !u.work.startsWith('passage:')
@@ -325,7 +347,7 @@ export function RegisterView() {
           meta={meta} lens={lens} targetUnit={targetUnit} results={results} spread={spread}
           vocab={vocab} targetVocab={mode === 'passage' ? passageVocab : null}
           mode={mode} outsideOnly={outsideOnly} includeShort={includeShort}
-          citations={citations}
+          citations={citations} glossed={glossed}
           nameOf={nameOf} corpusOf={corpusOf} featureLabel={featureLabel}
         />
       )}
@@ -584,7 +606,12 @@ export function RegisterView() {
                               <tr key={r.lemma} className="border-t border-gray-50">
                                 <td className="py-1 pr-3">
                                   <span className="font-reading text-gray-900">{r.display}</span>
-                                  {r.gloss && <span className="ml-2 text-xs text-gray-500">{r.gloss}</span>}
+                                  {/* Asked for even where the index shipped no English gloss:
+                                      λέγω's was dropped at build time as an unclosed fragment,
+                                      and Spanish has a perfectly good one. */}
+                                  {glossed(r.display, r.gloss) && (
+                                    <span className="ml-2 text-xs text-gray-500">{glossed(r.display, r.gloss)}</span>
+                                  )}
                                 </td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.target.toFixed(1)}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.other.toFixed(1)}</td>

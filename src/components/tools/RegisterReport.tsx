@@ -54,7 +54,7 @@ const SOURCE_KEY: Record<string, string> = {
 
 export function RegisterReport({
   meta, lens, targetUnit, results, spread, vocab, targetVocab,
-  mode, outsideOnly, includeShort, citations, nameOf, corpusOf, featureLabel,
+  mode, outsideOnly, includeShort, citations, glossed, nameOf, corpusOf, featureLabel,
 }: {
   meta: StyleMeta
   lens: Lens
@@ -68,6 +68,8 @@ export function RegisterReport({
   includeShort: boolean
   /** Keyed by work id, plus 'target' for the text being compared. Null until fetched. */
   citations: CitationMap | null
+  /** Greek word → gloss in the reader's language, falling back to the index's English. */
+  glossed: (display: string, english: string) => string
   nameOf: (u: StyleUnit) => string
   corpusOf: (u: StyleUnit) => string
   featureLabel: (f: StyleFeature) => string
@@ -245,7 +247,9 @@ export function RegisterReport({
                     <tr key={r.lemma} className="align-top">
                       <td className="py-0.5 pr-2">
                         <span className="font-reading">{r.display}</span>
-                        {r.gloss && <span className="text-gray-600"> · {r.gloss}</span>}
+                        {glossed(r.display, r.gloss) && (
+                          <span className="text-gray-600"> · {glossed(r.display, r.gloss)}</span>
+                        )}
                         {refLine(r.lemma) && (
                           <span className="block text-[9px] text-gray-600">{refLine(r.lemma)}</span>
                         )}
