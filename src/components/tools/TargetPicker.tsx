@@ -33,13 +33,6 @@ export type Target =
     }
 
 /** Splits worth putting in front of a reader: each shows something no whole work can. */
-const PRESETS = [
-  { ref: 'Luke 1-2', key: 'reg.preset.lukeInfancy' },
-  { ref: 'Luke 3-24', key: 'reg.preset.lukeRest' },
-  { ref: 'Acts 1-15', key: 'reg.preset.actsEarly' },
-  { ref: 'Acts 16-28', key: 'reg.preset.actsWe' },
-]
-
 export function TargetPicker({
   manifest, works, initialRef, initialWork, onTarget, nameOf, corpusOf,
 }: {
@@ -253,21 +246,16 @@ export function TargetPicker({
           )}
         </div>
 
-        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-          {text.trim() && !parsed && <span className="text-amber-700">{t('reg.refNotFound')}</span>}
-          {parsedWords > 0 && (
-            <span className="text-gray-500">{t('reg.selectionSize', { n: parsedWords.toLocaleString(locale) })}</span>
-          )}
-          <span className="text-gray-500">{t('reg.try')}</span>
-          {PRESETS.map(p => (
-            <button
-              key={p.key} type="button" onClick={() => change(p.ref)}
-              className="rounded-full border border-gray-200 px-2 py-0.5 text-gray-600 transition-colors hover:border-brand-300 hover:text-brand-700"
-            >
-              {t(p.key)}
-            </button>
-          ))}
-        </div>
+        {/* The placeholder already shows the three shapes a reference can take, so the row
+            below carries only what the box has to say back: a warning, or a size. */}
+        {(text.trim() && !parsed) || parsedWords > 0 ? (
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+            {text.trim() && !parsed && <span className="text-amber-700">{t('reg.refNotFound')}</span>}
+            {parsedWords > 0 && (
+              <span className="text-gray-500">{t('reg.selectionSize', { n: parsedWords.toLocaleString(locale) })}</span>
+            )}
+          </div>
+        ) : null}
       </div>
 
       <div>

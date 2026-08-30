@@ -12,7 +12,7 @@ import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { ColumnHint } from './ColumnHint'
 import type { StyleMeta, StyleUnit } from '@/lib/style-register'
 
-function Axis({ label, hint, value, range, low, high, format }: {
+function Axis({ label, hint, value, range, low, high, format, scale, marks = [] }: {
   label: string
   hint: string[]
   value: number
@@ -20,6 +20,10 @@ function Axis({ label, hint, value, range, low, high, format }: {
   low: string
   high: string
   format: (n: number) => string
+  /** What the number IS, in a few words — a bare 0.43 says nothing on its own. */
+  scale: string
+  /** Named points ON the scale, so a value can be read as past one or short of it. */
+  marks?: { at: number; label: string }[]
 }) {
   // The range may run high-to-low: the Classical-lean scale reads chronologically, Classical
   // on the left because Classical came first, so its axis is passed reversed.
@@ -31,18 +35,33 @@ function Axis({ label, hint, value, range, low, high, format }: {
         <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
           <ColumnHint align="left" label={label} hint={hint} />
         </span>
-        <span className="font-mono text-xs tabular-nums text-gray-900">{format(value)}</span>
+        {/* The number and what it is, on one line — the figure alone was unreadable. */}
+        <span className="shrink-0 text-right leading-tight">
+          <span className="block font-mono text-xs tabular-nums text-gray-900">{format(value)}</span>
+          <span className="block text-[10px] text-gray-400">{scale}</span>
+        </span>
       </div>
       {/* A marker on a stated scale, not a filled bar: the value is a position between two
           named ends, and a bar would suggest "more is better". */}
       <div className="relative h-1.5 rounded-full bg-gray-100">
+        {marks.map(m => {
+          const p = from !== to ? (m.at - from) / (to - from) : 0.5
+          return p < 0 || p > 1 ? null : (
+            <span key={m.label} title={m.label}
+              className="absolute top-0 h-1.5 w-px bg-gray-300"
+              style={{ left: `${p * 100}%` }}
+            />
+          )
+        })}
         <span
           className="absolute top-1/2 h-3 w-[3px] -translate-y-1/2 rounded-full bg-brand-600"
           style={{ left: `calc(${pct * 100}% - 1.5px)` }}
         />
       </div>
-      <div className="mt-1 flex justify-between text-[10px] text-gray-400">
-        <span>{low}</span><span>{high}</span>
+      {/* The ends are where the library ends, so they carry their values: a position is only
+          readable against a stated scale — the same reason meta.barScale is published. */}
+      <div className="mt-1 flex justify-between gap-2 text-[10px] text-gray-400">
+        <span>{format(from)} {low}</span><span className="text-right">{high} {format(to)}</span>
       </div>
     </div>
   )
@@ -72,7 +91,8 @@ export function StyleAxes({ meta, unit, name }: {
           hint={['reg.hint.periodicity', 'reg.hint.periodicityHow']}
           value={unit.periodicity} range={range.periodicity}
           low={t('reg.axis.strungOn')} high={t('reg.axis.periodic')}
-          format={n => n.toFixed(2)}
+          format={n => n.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          scale={t('reg.axis.periodicityScale')}
         />
         <Axis
           label={t('reg.axis.lean')}
@@ -81,6 +101,13 @@ export function StyleAxes({ meta, unit, name }: {
           range={[range.classicalLean[1], range.classicalLean[0]]}
           low={t('reg.axis.towardClassical')} high={t('reg.axis.towardKoine')}
           format={n => `${n >= 0 ? '+' : ''}${n.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+          scale={t('reg.axis.leanScale')}
+          // The two averages ARE +1 and −1 by construction; the ends of the bar are merely
+          // where the library stops. Ticks put the reference points back on the scale.
+          marks={[
+            { at: 1, label: t('reg.axis.classicalAvg') },
+            { at: -1, label: t('reg.axis.koineAvg') },
+          ]}
         />
       </div>
     </div>
