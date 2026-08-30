@@ -394,6 +394,10 @@ export function RegisterView() {
           One box for Scripture, which a reader can simply write down, and one list for the
           library, whose titles they would have to look up. */}
       <div className="rounded-xl border border-gray-200 px-4 py-3.5">
+        {/* The box held two labelled fields and no heading, so nothing said what the box was
+            FOR. A heading rather than a question: "What this measures" sits directly above it,
+            and two interrogatives in a row read as a quiz. */}
+        <h2 className="mb-3 text-sm font-semibold text-gray-800">{t('reg.chooseText')}</h2>
         <TargetPicker
           manifest={manifest} works={works}
           initialRef={initial.ref} initialWork={initial.work}
