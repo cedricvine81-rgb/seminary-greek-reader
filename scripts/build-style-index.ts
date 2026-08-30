@@ -14,12 +14,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import zlib from 'node:zlib'
+import crypto from 'node:crypto'
 import {
   CONSTRUCTIONS, DELTA_EXCLUDE, FEATURES, LEMMA_CANON, RATE_FEATURES, contentVocab,
   profileWords, type Profile, type Word,
 } from '../src/lib/style-features'
-
-import { STYLE_SHAPE } from '../src/lib/style-register'
 
 const SRC = 'public/data/construct'
 const OUT = 'public/data/style'
@@ -323,6 +322,105 @@ const barScale: Record<string, [number, number]> = {}
 }
 
 
+
+/* ── genre ───────────────────────────────────────────────────────────────────
+ * A period average is a blunt comparison. Mark was being measured against a Classical figure
+ * that is 123 speeches of Demosthenes, Lysias and Isocrates — the tool's own blurb admits the
+ * problem when it says works of the same GENRE score alike whoever wrote them, and then offers
+ * a baseline that ignores genre entirely.
+ *
+ * So each work is labelled, and the baselines are computed per genre as well as per period.
+ * Where both pools are big enough the columns say "Classical narrative" and "Koine narrative";
+ * where they are not, the column falls back to the whole period and says so, because the
+ * alternative is a confident number computed from two authors.
+ *
+ * WHAT THIS LIBRARY CAN AND CANNOT SUPPORT, measured rather than assumed:
+ *   narrative   Classical Herodotus + Thucydides only — thin, but they ARE the Classical
+ *               historians, and a Gospel measured against them is a better comparison than a
+ *               Gospel measured against a pile of forensic speeches
+ *   oratory     Classical is rich (123 works); Koine has Dio Chrysostom and little else
+ *   treatise    both sides well populated
+ *   letters     CLASSICAL HAS NONE. Not a gap in the labelling — the library holds no
+ *               classical epistolography at all, so a New Testament letter can never have a
+ *               genre-matched Classical column, and the interface says that rather than
+ *               quietly showing an unmatched one
+ *
+ * Labels are by work, not by author, wherever an author wrote in more than one: Plutarch's
+ * Lives are narrative and his Moralia are treatises, and averaging them together would blur
+ * exactly the distinction this exists to draw.
+ */
+type Genre = 'narrative' | 'letters' | 'oratory' | 'treatise' | 'apocalyptic' | 'poetry' | 'other'
+
+/** Genre by author, for the Greco-Roman authors who wrote in one. */
+const AUTHOR_GENRE: Record<string, Genre> = {
+  Herodotus: 'narrative', Thucydides: 'narrative', Polybius: 'narrative',
+  'Diogenes Laertius': 'narrative', Philostratus: 'narrative', Apollodorus: 'narrative',
+  Lucian: 'narrative',                       // the two we hold are biographical satires
+  Strabo: 'narrative', Pausanias: 'narrative',   // description rather than story, but prose of record
+  Demosthenes: 'oratory', Lysias: 'oratory', Isocrates: 'oratory', 'Dio Chrysostom': 'oratory',
+  Plato: 'treatise', Aristotle: 'treatise', Xenophon: 'treatise',
+  Epictetus: 'treatise', 'Marcus Aurelius': 'treatise', Theon: 'treatise',
+}
+
+/** The Septuagint by book. The Greek prophets are their own kind of prose and stay apart. */
+const LXX_GENRE: Record<string, Genre> = {}
+for (const b of ('Gen Exod Lev Num Deut JoshB JudgB Ruth 1Sam 2Sam 1Kgs 2Kgs 1Chr 2Chr Ezra Neh '
+  + '1Esd Tob Jdt EsthGr 1Macc 2Macc 3Macc Sus SusTh Bel BelTh').split(' ')) LXX_GENRE[b] = 'narrative'
+for (const b of 'Job Ps PsSol Prov Song Wis Sir Lam Odes'.split(' ')) LXX_GENRE[b] = 'poetry'
+for (const b of ('Isa Jer EpJer Bar Ezek DanLXX DanTh Hos Joel Amos Obad Jonah Mic Nah Hab Zeph '
+  + 'Hag Zech Mal').split(' ')) LXX_GENRE[b] = 'apocalyptic'
+LXX_GENRE['4Macc'] = 'treatise'   // a philosophical diatribe wearing a martyr story
+
+const GNT_NARRATIVE = new Set(['Matt', 'Mark', 'Luke', 'John', 'Acts'])
+
+/** Everything else, by work id, where a rule would be guesswork. */
+const WORK_GENRE: Record<string, Genre> = {
+  'josephus/antiquities': 'narrative', 'josephus/jewish-war': 'narrative',
+  'josephus/life': 'narrative', 'josephus/against-apion': 'treatise',
+  'eusebius/he': 'narrative', 'eusebius/pe': 'treatise',
+  'justin/justin-dialogue': 'treatise', 'justin/justin-1apology': 'treatise',
+  'justin/justin-2apology': 'treatise',
+  'apostolic-fathers/1clement': 'letters', 'apostolic-fathers/2clement': 'letters',
+  'apostolic-fathers/barnabas': 'letters', 'apostolic-fathers/diognetus': 'letters',
+  'apostolic-fathers/polycarp': 'letters',
+  'apostolic-fathers/ign-ephesians': 'letters', 'apostolic-fathers/ign-magnesians': 'letters',
+  'apostolic-fathers/ign-philadelphians': 'letters', 'apostolic-fathers/ign-polycarp': 'letters',
+  'apostolic-fathers/ign-romans': 'letters', 'apostolic-fathers/ign-smyrnaeans': 'letters',
+  'apostolic-fathers/ign-trallians': 'letters',
+  'apostolic-fathers/mart-polycarp': 'narrative',
+  'apostolic-fathers/didache': 'other',        // a church manual, like nothing else here
+  'apostolic-fathers/hermas': 'apocalyptic',
+  'pseudepigrapha/aristeas': 'narrative', 'pseudepigrapha/tjob-greek': 'narrative',
+  'pseudepigrapha/testaments': 'other',        // farewell discourse, neither story nor letter
+  'pseudepigrapha/sibylline-greek': 'apocalyptic',
+}
+
+function genreOf(u: Unit, label: string): Genre {
+  if (u.corpus === 'GNT') {
+    if (GNT_NARRATIVE.has(u.work)) return 'narrative'
+    return u.work === 'Rev' ? 'apocalyptic' : 'letters'
+  }
+  if (u.corpus === 'LXX') return LXX_GENRE[u.work] ?? 'other'
+  if (WORK_GENRE[u.work]) return WORK_GENRE[u.work]
+  if (u.corpus === 'philo') return 'treatise'
+  if (u.corpus === 'greco') {
+    const author = label.split(',')[0].trim()
+    // Plutarch is both: the Lives narrate, the Moralia argue.
+    if (author === 'Plutarch') return /,\s*(Life of|Comparison)/.test(label) ? 'narrative' : 'treatise'
+    return AUTHOR_GENRE[author] ?? 'other'
+  }
+  return 'other'
+}
+
+/**
+ * A genre pool needs at least this many distinct voices to be offered at all. Two, not three,
+ * because Herodotus and Thucydides ARE classical narrative — there is no third — and a Gospel
+ * measured against the two of them is a better comparison than a Gospel measured against a
+ * pile of forensic speeches. The count travels with every pool and is shown wherever the pool
+ * is offered, so nobody has to take a two-author average for more than it is.
+ */
+const MIN_GENRE_AUTHORS = 2
+
 /* ── Classical and Koine baselines ───────────────────────────────────────────
  * One average over the whole library answers "is this a lot?" with a number blended from
  * Demosthenes and the Septuagint, which is not a period anyone wrote in. These two baselines
@@ -436,9 +534,44 @@ for (const u of workUnits) {
   else if (period === 'koine') koineUnits.push(u)
   else excludedUnits.push(u)
 }
+/**
+ * Genre pools within each period, offered only where enough distinct voices stand behind them.
+ * A pool that falls short is omitted entirely rather than published thin — the interface then
+ * says the column is not genre-matched, which is true and checkable.
+ */
+function genrePools(members: Unit[]): Record<string, PeriodBaseline> {
+  const byGenre = new Map<string, Unit[]>()
+  for (const u of members) {
+    const g = genreOf(u, WORK_LABEL.get(u.work) ?? u.work)
+    if (g === 'other') continue
+    if (!byGenre.has(g)) byGenre.set(g, [])
+    byGenre.get(g)!.push(u)
+  }
+  const out: Record<string, PeriodBaseline> = {}
+  byGenre.forEach((units_, g) => {
+    const built = buildBaseline(units_)
+    if (built.members.length >= MIN_GENRE_AUTHORS) out[g] = built
+  })
+  return out
+}
+
+const classicalGenres = genrePools(classicalUnits)
+const koineGenres = genrePools(koineUnits)
+console.error('   genre pools — classical: '
+  + (Object.entries(classicalGenres).map(([g, b]) => `${g} ${b.members.length}`).join(', ') || 'none')
+  + ' · koine: '
+  + (Object.entries(koineGenres).map(([g, b]) => `${g} ${b.members.length}`).join(', ') || 'none'))
+
+/** Each work's own genre, so the interface knows which pool to compare it against. */
+const genreOfWork: Record<string, string> = {}
+for (const u of workUnits) genreOfWork[u.work] = genreOf(u, WORK_LABEL.get(u.work) ?? u.work)
+
 const periods = {
   classical: buildBaseline(classicalUnits),
   koine: buildBaseline(koineUnits),
+  classicalGenres,
+  koineGenres,
+  genreOfWork,
   excluded: excludedUnits.map(u => ({
     work: u.work, label: WORK_LABEL.get(u.work) ?? u.work, words: u.n,
   })).sort((a, b) => b.words - a.words),
@@ -454,12 +587,8 @@ const round = (o: Record<string, number>, dp: number) =>
 
 const meta = {
   built: 'see git',
-  // Bump SHAPE whenever a field is added, removed or changed meaning. The interface refuses an
-  // index whose shape it does not recognise and refetches past the cache — public/data is
-  // served with an hour of cache plus stale-while-revalidate, and a file cached from before a
-  // field existed still PARSES, so every reader of that field silently gets a default. Three
-  // separate bugs of exactly that kind reached testing before this stamp existed.
-  shape: STYLE_SHAPE,
+  // Filled in below with a fingerprint of this file's own output shape. See writeShape().
+  shape: '',
   chunkWords: CHUNK,
   minWords: MIN_CHUNK,
   reliableWords: RELIABLE,
@@ -478,7 +607,33 @@ const meta = {
 }
 // meta.json is for the SERVER, which reads it off the filesystem and so always gets the copy
 // that shipped with the running deploy.
-fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify(meta))
+/**
+ * A fingerprint of the SHAPE of what this script emits — the field names, not the numbers.
+ *
+ * public/data is served with an hour of cache and stale-while-revalidate, so a reader who was
+ * here before a deploy can be handed a file that is internally consistent and simply old. It
+ * parses, and every reader of a field added since silently takes a default: a column of 0.0, a
+ * roster of untranslated names, a genre selector with nothing in it. Four bugs of that one
+ * shape reached testing.
+ *
+ * A hand-bumped version number fixes it only when someone remembers to bump it, and the fifth
+ * bug was me forgetting. So the stamp is DERIVED: it hashes the key structure, is written into
+ * src/lib/style-shape.ts for the interface to compile against, and therefore changes by itself
+ * the moment a field is added or removed. Data and interface built together always agree; a
+ * stale file never does.
+ */
+function shapeOf(value: unknown, depth = 0): string {
+  if (Array.isArray(value)) return `[${value.length ? shapeOf(value[0], depth + 1) : ''}]`
+  if (value && typeof value === 'object') {
+    if (depth > 2) return '{}'
+    return `{${Object.keys(value as object).sort().map(k =>
+      `${k}:${shapeOf((value as Record<string, unknown>)[k], depth + 1)}`).join(',')}}`
+  }
+  return typeof value
+}
+function fingerprint(...parts: unknown[]): string {
+  return crypto.createHash('sha1').update(parts.map(p => shapeOf(p)).join('|')).digest('hex').slice(0, 12)
+}
 
 const publicUnits = units.map(u => ({
   corpus: u.corpus, work: u.work, label: WORK_LABEL.get(u.work) ?? u.work,
@@ -493,7 +648,7 @@ const publicUnits = units.map(u => ({
 // and public/data is served with an hour of cache plus stale-while-revalidate, which after a
 // deploy can hand a returning reader a fresh half and a stale half. As one file that cannot
 // happen. It is the same `meta` object written above, so the two copies cannot drift.
-fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify({ meta, units: publicUnits }))
+
 // Content vocabulary, with the accented forms the biblical lexicons can supply. Coverage is
 // partial by nature — those lexicons know the Septuagint and the New Testament, not Strabo —
 // so a word without an entry keeps the normalized form it is stored under, the same
@@ -560,13 +715,29 @@ const vocabPeriods = {
   classical: trim(contentBaseline(classicalUnits)),
   koine: trim(contentBaseline(koineUnits)),
 }
-fs.writeFileSync(path.join(OUT, 'vocab.json'),
-  JSON.stringify({ shape: STYLE_SHAPE, labels: vocabLabels, works: vocabWorks, periods: vocabPeriods }))
 console.error(`   content baselines: ${Object.keys(vocabPeriods.classical).length} classical / `
   + `${Object.keys(vocabPeriods.koine).length} koine lemmas of ${listed.size} listed`)
 console.error(`   ${Object.keys(vocabLabels).length} of `
   + `${new Set(Object.values(vocabWorks).flatMap(v => (v ?? []).map(x => x[0]))).size}`
   + ` content words have an accented form in the biblical lexicons`)
+const vocabFile = { shape: '', labels: vocabLabels, works: vocabWorks, periods: vocabPeriods }
+const SHAPE = fingerprint(meta, publicUnits[0], vocabFile, passageBooks)
+meta.shape = SHAPE
+vocabFile.shape = SHAPE
+// Written for the interface to compile against, so the two can never disagree by oversight.
+fs.writeFileSync('src/lib/style-shape.ts',
+  '// GENERATED by scripts/build-style-index.ts — do not edit.\n'
+  + '// A fingerprint of the shape of public/data/style. The interface refuses an index whose\n'
+  + '// stamp differs from this and refetches past the cache; see the note in the builder.\n'
+  + `export const STYLE_SHAPE = '${SHAPE}'\n`)
+
+fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify(meta))
+// The BROWSER gets meta and units in ONE file, on purpose. A unit's `delta` is positional
+// against meta.deltaWords and is scored against meta.norm, so the two only mean anything
+// together — and public/data is served with an hour of cache plus stale-while-revalidate,
+// which after a deploy can hand a returning reader a fresh half and a stale half.
+fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify({ meta, units: publicUnits }))
+fs.writeFileSync(path.join(OUT, 'vocab.json'), JSON.stringify(vocabFile))
 // The passage picker's manifest: book, its work id, and words per chapter.
 fs.writeFileSync(path.join(OUT, 'passages.json'), JSON.stringify(passageBooks))
 

@@ -10,14 +10,17 @@ import clsx from 'clsx'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
 import { textAuthorLabel } from '@/lib/i18n/text-names'
-import { CORPUS_KEY, isBiblical, type PeriodBaseline, type StyleMeta } from '@/lib/style-register'
+import { CORPUS_KEY, isBiblical, type BaselinePair, type PeriodBaseline, type StyleMeta } from '@/lib/style-register'
 
-export function PeriodSources({ meta }: { meta: StyleMeta }) {
+export function PeriodSources({ meta, base }: { meta: StyleMeta; base: BaselinePair }) {
   const t = useT()
   const locale = useLocale()
   const [open, setOpen] = useState<'classical' | 'koine' | null>(null)
   const periods = meta.periods
   if (!periods) return null
+  // The rosters follow whichever pools the columns are actually drawn from — a membership list
+  // for a pool nobody is being measured against would be the wrong list.
+  const shown = { classical: base.classical ?? periods.classical, koine: base.koine ?? periods.koine }
 
   const corpusName = (c: string) => (CORPUS_KEY[c] ? t(CORPUS_KEY[c]) : c)
 
@@ -41,8 +44,8 @@ export function PeriodSources({ meta }: { meta: StyleMeta }) {
           >
             <ChevronRight size={12} className={clsx('transition-transform', open === id && 'rotate-90')} />
             {t(id === 'classical' ? 'reg.sourcesClassical' : 'reg.sourcesKoine', {
-              authors: periods[id].members.length.toLocaleString(locale),
-              works: periods[id].members.reduce((a, m) => a + m.works, 0).toLocaleString(locale),
+              authors: shown[id].members.length.toLocaleString(locale),
+              works: shown[id].members.reduce((a, m) => a + m.works, 0).toLocaleString(locale),
             })}
           </button>
         ))}
@@ -52,7 +55,7 @@ export function PeriodSources({ meta }: { meta: StyleMeta }) {
         <div className="mt-2 rounded-lg border border-gray-200 bg-gray-50/60 p-3">
           <p className="mb-2">{t(open === 'classical' ? 'reg.classicalIs' : 'reg.koineIs')}</p>
           <ul className="max-h-64 space-y-0.5 overflow-y-auto">
-            {periods[open].members.map(m => (
+            {shown[open].members.map(m => (
               <li key={`${m.corpus}/${m.author}`} className="flex justify-between gap-3">
                 <span className="truncate text-gray-700">
                   {memberName(m)}

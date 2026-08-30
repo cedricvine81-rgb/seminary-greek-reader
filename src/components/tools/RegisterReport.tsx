@@ -12,7 +12,8 @@
 
 import {
   explain, explainDelta, explainVocab, sharedFeatures, sharedWords,
-  type Lens, type Neighbour, type StyleFeature, type StyleMeta, type StyleUnit, type VocabFile,
+  type BaselinePair, type Lens, type Neighbour, type StyleFeature, type StyleMeta,
+  type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
 import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { bookName } from '@/lib/i18n/book-names'
@@ -54,7 +55,8 @@ const SOURCE_KEY: Record<string, string> = {
 
 export function RegisterReport({
   meta, lens, targetUnit, results, spread, vocab, targetVocab,
-  mode, outsideOnly, includeShort, citations, glossed, nameOf, corpusOf, featureLabel,
+  mode, outsideOnly, includeShort, citations, base, classicalLabel, koineLabel,
+  glossed, nameOf, corpusOf, featureLabel,
 }: {
   meta: StyleMeta
   lens: Lens
@@ -68,6 +70,10 @@ export function RegisterReport({
   includeShort: boolean
   /** Keyed by work id, plus 'target' for the text being compared. Null until fetched. */
   citations: CitationMap | null
+  /** Which pools the two baseline columns are drawn from. */
+  base: BaselinePair
+  classicalLabel: string
+  koineLabel: string
   /** Greek word → gloss in the reader's language, falling back to the index's English. */
   glossed: (display: string, english: string) => string
   nameOf: (u: StyleUnit) => string
@@ -179,8 +185,8 @@ export function RegisterReport({
           </p>
         )}
         {detail.map(({ unit, distance }, i) => {
-          const traits = lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta) : []
-          const words = lens === 'register' ? sharedWords(targetUnit, unit, meta) : []
+          const traits = lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta, base) : []
+          const words = lens === 'register' ? sharedWords(targetUnit, unit, meta, base) : []
           const shared = lens === 'vocabulary' && vocab?.works[unit.work]
             ? explainVocab(
                 targetVocab ?? vocab.works[targetUnit.work] ?? [],
@@ -223,8 +229,8 @@ export function RegisterReport({
                     <th className="py-0.5 pr-2 font-medium">{t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}</th>
                     <th className="py-0.5 pr-2 text-right font-medium">{nameOf(targetUnit)}</th>
                     <th className="py-0.5 pr-2 text-right font-medium">{nameOf(unit)}</th>
-                    <th className="py-0.5 pr-2 text-right font-medium">{t('reg.classical')}</th>
-                    <th className="py-0.5 text-right font-medium">{t('reg.koine')}</th>
+                    <th className="py-0.5 pr-2 text-right font-medium">{classicalLabel}</th>
+                    <th className="py-0.5 text-right font-medium">{koineLabel}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -239,8 +245,8 @@ export function RegisterReport({
                       </td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
-                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{r.classical.toFixed(1)}</td>
-                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.koine.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{Number.isNaN(r.classical) ? t('reg.noPool') : r.classical.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">{Number.isNaN(r.koine) ? t('reg.noPool') : r.koine.toFixed(1)}</td>
                     </tr>
                   ))}
                   {words.map(r => (
@@ -256,8 +262,8 @@ export function RegisterReport({
                       </td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
-                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{r.classical.toFixed(1)}</td>
-                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.koine.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{Number.isNaN(r.classical) ? t('reg.noPool') : r.classical.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">{Number.isNaN(r.koine) ? t('reg.noPool') : r.koine.toFixed(1)}</td>
                     </tr>
                   ))}
                   {shared.map(r => (
@@ -270,8 +276,8 @@ export function RegisterReport({
                       </td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
-                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{r.classical.toFixed(1)}</td>
-                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.koine.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{Number.isNaN(r.classical) ? t('reg.noPool') : r.classical.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">{Number.isNaN(r.koine) ? t('reg.noPool') : r.koine.toFixed(1)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -297,19 +303,23 @@ export function RegisterReport({
       {meta.periods && (
         <section className="mb-5" style={{ breakInside: 'avoid' }}>
           <h2 className="mb-1 text-sm font-bold uppercase tracking-wide">{t('reg.rep.baselines')}</h2>
-          {(['classical', 'koine'] as const).map(id => (
+          {/* The rosters follow the pools the columns were actually drawn from. */}
+          {(['classical', 'koine'] as const).map(id => {
+            const pool = base[id] ?? meta.periods[id]
+            return (
             <div key={id} className="mb-2">
               <p className="text-[10px] font-semibold uppercase tracking-wide">
+                {(id === 'classical' ? classicalLabel : koineLabel)}{' — '}
                 {t(id === 'classical' ? 'reg.sourcesClassical' : 'reg.sourcesKoine', {
-                  authors: String(meta.periods[id].members.length),
-                  works: String(meta.periods[id].members.reduce((a, m) => a + m.works, 0)),
+                  authors: String(pool.members.length),
+                  works: String(pool.members.reduce((a, m) => a + m.works, 0)),
                 })}
               </p>
               <p className="text-[10px] leading-relaxed">
                 {t(id === 'classical' ? 'reg.classicalIs' : 'reg.koineIs')}
               </p>
               <p className="text-[10px] leading-relaxed text-gray-700">
-                {meta.periods[id].members
+                {pool.members
                   .map(m => {
                     const name = m.work && isBiblical(m.corpus)
                       ? bookName(m.work, locale, m.author)
@@ -319,7 +329,8 @@ export function RegisterReport({
                   .join(' · ')}
               </p>
             </div>
-          ))}
+            )
+          })}
           {meta.periods.excluded.length > 0 && (
             <p className="text-[10px] leading-relaxed">
               {t('reg.epicExcluded', { works: meta.periods.excluded.map(e => e.label).join(' · ') })}

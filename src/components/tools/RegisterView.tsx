@@ -17,7 +17,8 @@ import { bookName } from '@/lib/i18n/book-names'
 import { resolverFor, type GlossResolver } from '@/lib/vocab-gloss-lookup'
 import {
   CORPUS_KEY, chunksOf, explain, explainDelta, explainVocab, featureSpread, isBiblical,
-  neighbours, passageUnit, sharedFeatures, sharedWords, STYLE_SHAPE,
+  neighbours, passageUnit, sharedFeatures, sharedWords, availableGenres, baselinePair,
+  ALL_PROSE, STYLE_SHAPE,
   type Lens, type PassageManifest, type PassageProfile, type StyleFeature, type StyleMeta,
   type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
@@ -112,6 +113,8 @@ export function RegisterView() {
   const [outsideOnly, setOutsideOnly] = useState(initial.outside)
   const [includeShort, setIncludeShort] = useState(initial.short)
   const [showAll, setShowAll] = useState(false)
+  // '' follows the text being compared; anything else pins the comparison to that pool.
+  const [genreChoice, setGenreChoice] = useState('')
   const [open, setOpen] = useState<string | null>(null)
   const [passage, setPassage] = useState<StyleUnit | null>(null)
   const [loadingPassage, setLoadingPassage] = useState(false)
@@ -279,6 +282,25 @@ export function RegisterView() {
     })
   }, [units, targetUnit, lens, spread, outsideOnly, includeShort, showAll, vocab, target, passageVocab])
 
+  /* ── which pools the two baseline columns are drawn from ────────────────
+   * Like with like by default: a Gospel is measured against narrative, a letter against
+   * letters. The reader can pin any other pool to see whether a figure is characteristic of
+   * the genre or of Greek at large — which is how a number becomes evidence rather than a
+   * curiosity. A pool the period does not have shows as absent, never as the period average
+   * wearing a genre label.
+   */
+  const ownGenre = targetUnit && meta ? meta.periods?.genreOfWork?.[targetUnit.work] ?? '' : ''
+  const effectiveGenre = genreChoice || (ownGenre && ownGenre !== 'other' ? ownGenre : ALL_PROSE)
+  const base = meta ? baselinePair(meta, effectiveGenre) : { genre: null, classical: null, koine: null }
+  const genres = meta ? availableGenres(meta) : []
+  // The heading names the pool that was ASKED for, even when the library has none — a column
+  // of "none" under a heading reading plain "Koine" would look like missing data rather than
+  // a missing genre.
+  const poolLabel = (side: 'classical' | 'koine') => {
+    const period = t(side === 'classical' ? 'reg.classical' : 'reg.koine')
+    return base.genre ? `${period} · ${t(`reg.genre.${base.genre}`)}` : period
+  }
+
   /**
    * Printing gathers the references first.
    *
@@ -297,10 +319,10 @@ export function RegisterView() {
       const lemmas = new Set<string>()
       for (const { unit } of cited) {
         if (lens === 'syntax') {
-          sharedFeatures(targetUnit, unit, meta!).forEach(r => features.add(r.feature.key))
+          sharedFeatures(targetUnit, unit, meta!, base).forEach(r => features.add(r.feature.key))
           explain(targetUnit, unit, meta!.features, spread, 4).forEach(r => features.add(r.feature.key))
         } else if (lens === 'register') {
-          sharedWords(targetUnit, unit, meta!).forEach(r => lemmas.add(r.lemma))
+          sharedWords(targetUnit, unit, meta!, base).forEach(r => lemmas.add(r.lemma))
         } else if (vocab?.works[unit.work]) {
           explainVocab(
             (target?.kind === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
@@ -327,7 +349,7 @@ export function RegisterView() {
     }
     // Let the state land before the print dialogue freezes the page.
     setTimeout(() => window.print(), 60)
-  }, [targetUnit, results, citations, lens, meta, spread, vocab, target, passageVocab])
+  }, [targetUnit, results, citations, lens, meta, spread, vocab, target, passageVocab, base])
 
   if (error) return <p className="py-10 text-sm text-red-600">{t('reg.loadFailed')}</p>
   if (!meta || !units || !manifest) {
@@ -348,6 +370,7 @@ export function RegisterView() {
           mode={target?.kind === 'passage' ? 'passage' : 'work'}
           outsideOnly={outsideOnly} includeShort={includeShort}
           citations={citations} glossed={glossed}
+          base={base} classicalLabel={poolLabel('classical')} koineLabel={poolLabel('koine')}
           nameOf={nameOf} corpusOf={corpusOf} featureLabel={featureLabel}
         />
       )}
@@ -479,8 +502,8 @@ export function RegisterView() {
               //
               // Shared traits lead, because they ARE the claim; the differences follow as its
               // qualification. Listing the biggest differences first argued the opposite case.
-              const traits = isOpen && lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta) : []
-              const words = isOpen && lens === 'register' ? sharedWords(targetUnit, unit, meta) : []
+              const traits = isOpen && lens === 'syntax' ? sharedFeatures(targetUnit, unit, meta, base) : []
+              const words = isOpen && lens === 'register' ? sharedWords(targetUnit, unit, meta, base) : []
               const gaps = isOpen && lens === 'syntax'
                 ? explain(targetUnit, unit, meta.features, spread, 4) : []
               const wordGaps = isOpen && lens === 'register'
@@ -526,7 +549,36 @@ export function RegisterView() {
                       {lens === 'vocabulary' && (
                         <p className="mb-2 text-xs text-gray-500">{t('reg.vocabPeriodNote')}</p>
                       )}
-                      <div className="mb-2"><PeriodSources meta={meta} /></div>
+                      {/* Which pools the last two columns come from. Defaulting to the
+                          text's own genre gives like with like; switching to another is how a
+                          reader tells a feature of the genre from a feature of the Greek. */}
+                      <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
+                        <label htmlFor="reg-genre" className="text-gray-500">{t('reg.comparedAgainst')}</label>
+                        <select
+                          id="reg-genre" value={genreChoice}
+                          onChange={e => setGenreChoice(e.target.value)}
+                          className="input py-0.5 text-xs"
+                        >
+                          <option value="">
+                            {ownGenre && ownGenre !== 'other'
+                              ? t('reg.ownGenre', { genre: t(`reg.genre.${ownGenre}`) })
+                              : t('reg.allProse')}
+                          </option>
+                          <option value={ALL_PROSE}>{t('reg.allProse')}</option>
+                          {genres.map(g => (
+                            <option key={g} value={g}>{t(`reg.genre.${g}`)}</option>
+                          ))}
+                        </select>
+                        {base.genre && (!base.classical || !base.koine) && (
+                          <span className="text-amber-700">
+                            {t('reg.noPoolFor', {
+                              period: t(!base.classical ? 'reg.classical' : 'reg.koine'),
+                              genre: t(`reg.genre.${base.genre}`),
+                            })}
+                          </span>
+                        )}
+                      </div>
+                      <div className="mb-2"><PeriodSources meta={meta} base={base} /></div>
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[26rem] text-sm">
                           <thead>
@@ -549,10 +601,10 @@ export function RegisterView() {
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(unit)}</th>
                               <th className="py-1 pr-3 text-right font-medium">
-                                <ColumnHint label={t('reg.classical')} hint="reg.hint.classical" />
+                                <ColumnHint label={poolLabel('classical')} hint="reg.hint.classical" />
                               </th>
                               <th className="py-1 text-right font-medium">
-                                <ColumnHint label={t('reg.koine')} hint="reg.hint.koine" />
+                                <ColumnHint label={poolLabel('koine')} hint="reg.hint.koine" />
                               </th>
                             </tr>
                           </thead>
@@ -570,8 +622,8 @@ export function RegisterView() {
                                 </td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.target.toFixed(1)}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.other.toFixed(1)}</td>
-                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{r.classical.toFixed(1)}</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{r.koine.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{Number.isNaN(r.classical) ? t('reg.noPool') : r.classical.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{Number.isNaN(r.koine) ? t('reg.noPool') : r.koine.toFixed(1)}</td>
                               </tr>
                             ))}
                             {words.map(r => (
@@ -587,8 +639,8 @@ export function RegisterView() {
                                 </td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.target.toFixed(1)}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.other.toFixed(1)}</td>
-                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{r.classical.toFixed(1)}</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{r.koine.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{Number.isNaN(r.classical) ? t('reg.noPool') : r.classical.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{Number.isNaN(r.koine) ? t('reg.noPool') : r.koine.toFixed(1)}</td>
                               </tr>
                             ))}
                             {shared.map(g => (
@@ -596,8 +648,8 @@ export function RegisterView() {
                                 <td className="py-1 pr-3 font-reading text-gray-900">{vocab?.labels[g.lemma] ?? g.lemma}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
-                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{g.classical.toFixed(1)}</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{g.koine.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{Number.isNaN(g.classical) ? t('reg.noPool') : g.classical.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{Number.isNaN(g.koine) ? t('reg.noPool') : g.koine.toFixed(1)}</td>
                               </tr>
                             ))}
                           </tbody>
