@@ -23,6 +23,7 @@ import {
 import { PassagePicker, type PassageSelection } from './PassagePicker'
 import { RegisterReport, REPORT_CITATION_LIMIT, type CitationMap } from './RegisterReport'
 import { PeriodSources } from './PeriodSources'
+import { ColumnHint } from './ColumnHint'
 
 const LENSES: { id: Lens; key: string }[] = [
   { id: 'register', key: 'reg.lens.register' },
@@ -468,8 +469,12 @@ export function RegisterView() {
           <div className="flex items-center gap-3 pb-1 text-[10px] uppercase tracking-wide text-gray-400">
             <span className="w-6 shrink-0" />
             <span className="min-w-0 flex-1" />
-            <span className="hidden w-28 shrink-0 text-right sm:block">{t('reg.colSimilarity')}</span>
-            <span className="w-12 shrink-0 text-right">{t('reg.colDistance')}</span>
+            <span className="hidden w-28 shrink-0 text-right sm:block">
+              <ColumnHint label={t('reg.colSimilarity')} hint="reg.hint.similarity" />
+            </span>
+            <span className="w-12 shrink-0 text-right">
+              <ColumnHint label={t('reg.colDistance')} hint="reg.hint.distance" />
+            </span>
             <span className="w-[14px] shrink-0" />
           </div>
           <ul className="divide-y divide-gray-100 border-y border-gray-100">
@@ -537,14 +542,25 @@ export function RegisterView() {
                                 what "6.9" is. It was a footnote under the table before. */}
                             <tr className="text-xs uppercase tracking-wide text-gray-500">
                               <th />
-                              <th colSpan={4} className="pb-1 text-right font-semibold">{t('reg.per1000')}</th>
+                              <th colSpan={4} className="pb-1 text-right font-semibold">
+                                <ColumnHint label={t('reg.per1000')} hint="reg.hint.per1000" />
+                              </th>
                             </tr>
                             <tr className="text-xs uppercase tracking-wide text-gray-400">
-                              <th className="py-1 text-left font-medium">{t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}</th>
+                              <th className="py-1 text-left font-medium">
+                                <ColumnHint align="left"
+                                  label={t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}
+                                  hint={lens === 'syntax' ? 'reg.hint.feature'
+                                    : lens === 'vocabulary' ? 'reg.hint.subjectWord' : 'reg.hint.commonWord'} />
+                              </th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(unit)}</th>
-                              <th className="py-1 pr-3 text-right font-medium">{t('reg.classical')}</th>
-                              <th className="py-1 text-right font-medium">{t('reg.koine')}</th>
+                              <th className="py-1 pr-3 text-right font-medium">
+                                <ColumnHint label={t('reg.classical')} hint="reg.hint.classical" />
+                              </th>
+                              <th className="py-1 text-right font-medium">
+                                <ColumnHint label={t('reg.koine')} hint="reg.hint.koine" />
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
