@@ -320,6 +320,127 @@ const barScale: Record<string, [number, number]> = {}
     + Object.entries(barScale).map(([k, v]) => `${k} ${v[0]}–${v[1]}`).join(' · '))
 }
 
+
+/* ── Classical and Koine baselines ───────────────────────────────────────────
+ * One average over the whole library answers "is this a lot?" with a number blended from
+ * Demosthenes and the Septuagint, which is not a period anyone wrote in. These two baselines
+ * let a reader ask the question that actually bears on register: is this text behaving like
+ * fourth-century Attic, or like the Greek of its own era?
+ *
+ * The division is CHRONOLOGICAL, and the labels mean periods, not registers. That distinction
+ * matters here more than anywhere: Plutarch, Lucian, Dio Chrysostom and Philostratus wrote
+ * under the Empire and are counted as Koine, but they are deliberate Atticizers whose prose
+ * imitates the very authors in the other column. A work sitting near the Classical average is
+ * therefore evidence of a classicizing REGISTER, not of an early date.
+ *
+ * EPIC VERSE IS IN NEITHER. Homer, Hesiod and Aratus write an artificial literary dialect that
+ * belongs to no prose period; averaged into either column it would distort it. Six works,
+ * 222,795 words, excluded and declared.
+ *
+ * ONE AUTHOR, ONE VOTE. Averaging over texts would make Demosthenes 46% of the Classical
+ * baseline (63 surviving speeches) and Plutarch 48% of the Koine one (138 works) — an average
+ * of two men. Each author contributes one profile, the mean of their own works. Where a
+ * "corpus" is genuinely many hands — the Septuagint's translators, the New Testament's writers,
+ * the Apostolic Fathers, the pseudepigrapha — each book counts as its own voice, which is what
+ * it is.
+ */
+const CLASSICAL_AUTHORS = [
+  // Attic and Ionic prose of the fifth and fourth centuries BC.
+  'Herodotus', 'Thucydides', 'Plato', 'Xenophon', 'Isocrates', 'Lysias', 'Demosthenes', 'Aristotle',
+]
+const EPIC_AUTHORS = ['Homer', 'Hesiod', 'Aratus']
+/** Corpora that are one author, however many works they left. */
+const SINGLE_AUTHOR_CORPORA: Record<string, string> = {
+  josephus: 'Josephus', philo: 'Philo', justin: 'Justin Martyr', eusebius: 'Eusebius',
+}
+/** Corpora of many hands, where each book is its own voice. */
+const MANY_HANDED = ['GNT', 'LXX', 'apostolic-fathers', 'pseudepigrapha']
+
+type Period = 'classical' | 'koine' | null
+
+const authorOf = (u: Unit, label: string): string => {
+  if (SINGLE_AUTHOR_CORPORA[u.corpus]) return SINGLE_AUTHOR_CORPORA[u.corpus]
+  if (u.corpus === 'greco') return label.split(',')[0].trim()
+  return label            // many-handed: the book is the voice
+}
+
+const periodOf = (u: Unit, label: string): Period => {
+  if (MANY_HANDED.includes(u.corpus) || SINGLE_AUTHOR_CORPORA[u.corpus]) return 'koine'
+  const author = label.split(',')[0].trim()
+  if (EPIC_AUTHORS.includes(author)) return null
+  return CLASSICAL_AUTHORS.includes(author) ? 'classical' : 'koine'
+}
+
+interface PeriodBaseline {
+  /** Mean rate per 1,000 words, per feature, averaged over authors. */
+  features: Record<string, number>
+  /** The same for each Delta word. */
+  words: Record<string, number>
+  /** Who is in it: author, how many of their works, how many words. For the reader to check. */
+  members: { author: string; corpus: string; works: number; words: number }[]
+}
+
+function buildBaseline(members: Unit[]): PeriodBaseline {
+  const byAuthor = new Map<string, Unit[]>()
+  const corpusOf = new Map<string, string>()
+  for (const u of members) {
+    const label = WORK_LABEL.get(u.work) ?? u.work
+    const a = authorOf(u, label)
+    if (!byAuthor.has(a)) { byAuthor.set(a, []); corpusOf.set(a, u.corpus) }
+    byAuthor.get(a)!.push(u)
+  }
+  const authorMeans: { rates: Record<string, number>; words: Record<string, number> }[] = []
+  const roster: PeriodBaseline['members'] = []
+  byAuthor.forEach((works, author) => {
+    const rates: Record<string, number> = {}
+    for (const f of FEATURES) {
+      rates[f.key] = works.reduce((a, u) => a + (u.rates[f.key] ?? 0), 0) / works.length
+    }
+    const words: Record<string, number> = {}
+    for (const l of DELTA_WORDS) {
+      words[l] = works.reduce((a, u) => a + 1000 * ((u.lem.get(l) ?? 0) / u.n), 0) / works.length
+    }
+    authorMeans.push({ rates, words })
+    roster.push({
+      author, corpus: corpusOf.get(author) ?? '',
+      works: works.length, words: works.reduce((a, u) => a + u.n, 0),
+    })
+  })
+  const mean = (pick: (m: (typeof authorMeans)[number]) => Record<string, number>, keys: string[]) => {
+    const out: Record<string, number> = {}
+    for (const k of keys) {
+      out[k] = +(authorMeans.reduce((a, m) => a + (pick(m)[k] ?? 0), 0) / authorMeans.length).toFixed(3)
+    }
+    return out
+  }
+  return {
+    features: mean(m => m.rates, FEATURES.map(f => f.key)),
+    words: mean(m => m.words, DELTA_WORDS),
+    members: roster.sort((a, b) => b.words - a.words),
+  }
+}
+
+const classicalUnits: Unit[] = []
+const koineUnits: Unit[] = []
+const excludedUnits: Unit[] = []
+for (const u of workUnits) {
+  const label = WORK_LABEL.get(u.work) ?? u.work
+  const period = periodOf(u, label)
+  if (period === 'classical') classicalUnits.push(u)
+  else if (period === 'koine') koineUnits.push(u)
+  else excludedUnits.push(u)
+}
+const periods = {
+  classical: buildBaseline(classicalUnits),
+  koine: buildBaseline(koineUnits),
+  excluded: excludedUnits.map(u => ({
+    label: WORK_LABEL.get(u.work) ?? u.work, words: u.n,
+  })).sort((a, b) => b.words - a.words),
+}
+console.error(`   baselines: classical ${periods.classical.members.length} authors / `
+  + `${classicalUnits.length} works · koine ${periods.koine.members.length} authors / `
+  + `${koineUnits.length} works · epic verse excluded: ${excludedUnits.length} works`)
+
 /* ── write ───────────────────────────────────────────────────────────────── */
 fs.mkdirSync(OUT, { recursive: true })
 const round = (o: Record<string, number>, dp: number) =>
@@ -335,6 +456,7 @@ const meta = {
   norm: { mu: round(mu, 4), sd: round(sd, 4) },
   spread: round(spread, 4),
   center: round(center, 4),
+  periods,
   barScale,
   passageCorpora: Array.from(PASSAGE_CORPORA),
   features: [...RATE_FEATURES, ...CONSTRUCTIONS].map(f => ({

@@ -40,6 +40,13 @@ export interface StyleMeta {
   spread: Record<string, number>
   /** The library's average rate per feature — the norm two texts are both departing from. */
   center: Record<string, number>
+  /** Period baselines, so a reader can ask whether a rate is Classical or of its own era. */
+  periods: {
+    classical: PeriodBaseline
+    koine: PeriodBaseline
+    /** Epic verse, in neither baseline — an artificial dialect belonging to no prose period. */
+    excluded: { label: string; words: number }[]
+  }
   /** Per lens, [as close as anything gets, no closer than chance] — the result bar's scale. */
   barScale: Record<string, [number, number]>
   passageCorpora: string[]
@@ -250,12 +257,21 @@ const EXPECTED_FLOOR = 5
 /** Would the library's average rate predict enough occurrences here for a zero to mean anything? */
 const absenceIsMeaningful = (average: number, nA: number, nB: number) =>
   Math.min(average * nA, average * nB) / 1000 >= EXPECTED_FLOOR
+export interface PeriodBaseline {
+  features: Record<string, number>
+  words: Record<string, number>
+  members: { author: string; corpus: string; works: number; words: number }[]
+}
+
 export interface SharedTrait {
   feature: StyleFeature
   target: number
   other: number
   /** The library's average, so a reader can see which way the pair departs from it. */
   average: number
+  /** The same rate in fourth-century Attic prose, and in the Greek of the Hellenistic era. */
+  classical: number
+  koine: number
   score: number
 }
 
@@ -275,6 +291,8 @@ export function sharedFeatures(
         && (za > 0 || absenceIsMeaningful(mid, target.n, other.n))
       return {
         feature: f, target: a, other: b, average: mid,
+        classical: meta.periods?.classical.features[f.key] ?? NaN,
+        koine: meta.periods?.koine.features[f.key] ?? NaN,
         score: admissible ? Math.min(Math.abs(za), Math.abs(zb)) - Math.abs(za - zb) : -Infinity,
       }
     })
@@ -290,6 +308,8 @@ export interface SharedWordTrait {
   target: number
   other: number
   average: number
+  classical: number
+  koine: number
   score: number
 }
 
@@ -315,6 +335,8 @@ export function sharedWords(
         target: Math.max(0, za * sd + avg),
         other: Math.max(0, zb * sd + avg),
         average: avg,
+        classical: meta.periods?.classical.words[lemma] ?? NaN,
+        koine: meta.periods?.koine.words[lemma] ?? NaN,
         score: admissible ? Math.min(Math.abs(za), Math.abs(zb)) - Math.abs(za - zb) : -Infinity,
       }
     })

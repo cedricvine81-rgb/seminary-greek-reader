@@ -22,6 +22,7 @@ import {
 } from '@/lib/style-register'
 import { PassagePicker, type PassageSelection } from './PassagePicker'
 import { RegisterReport, REPORT_CITATION_LIMIT, type CitationMap } from './RegisterReport'
+import { PeriodSources } from './PeriodSources'
 
 const LENSES: { id: Lens; key: string }[] = [
   { id: 'register', key: 'reg.lens.register' },
@@ -501,6 +502,9 @@ export function RegisterView() {
                         {t('reg.shared')}
                       </p>
                       <p className="mb-2 text-xs text-gray-500">{t('reg.sharedNote')}</p>
+                      {lens !== 'vocabulary' && (
+                        <div className="mb-2"><PeriodSources meta={meta} /></div>
+                      )}
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[26rem] text-sm">
                           <thead>
@@ -509,13 +513,14 @@ export function RegisterView() {
                                 what "6.9" is. It was a footnote under the table before. */}
                             <tr className="text-xs uppercase tracking-wide text-gray-500">
                               <th />
-                              <th colSpan={3} className="pb-1 text-right font-semibold">{t('reg.per1000')}</th>
+                              <th colSpan={4} className="pb-1 text-right font-semibold">{t('reg.per1000')}</th>
                             </tr>
                             <tr className="text-xs uppercase tracking-wide text-gray-400">
                               <th className="py-1 text-left font-medium">{t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}</th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(targetUnit)}</th>
                               <th className="py-1 pr-3 text-right font-medium">{nameOf(unit)}</th>
-                              <th className="py-1 text-right font-medium">{t('reg.libraryAvg')}</th>
+                              <th className="py-1 pr-3 text-right font-medium">{t('reg.classical')}</th>
+                              <th className="py-1 text-right font-medium">{t('reg.koine')}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -532,7 +537,8 @@ export function RegisterView() {
                                 </td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.target.toFixed(1)}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.other.toFixed(1)}</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{r.average.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{r.classical.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{r.koine.toFixed(1)}</td>
                               </tr>
                             ))}
                             {words.map(r => (
@@ -543,7 +549,8 @@ export function RegisterView() {
                                 </td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.target.toFixed(1)}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{r.other.toFixed(1)}</td>
-                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{r.average.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">{r.classical.toFixed(1)}</td>
+                                <td className="py-1 text-right font-mono tabular-nums text-gray-400">{r.koine.toFixed(1)}</td>
                               </tr>
                             ))}
                             {shared.map(g => (
@@ -551,6 +558,7 @@ export function RegisterView() {
                                 <td className="py-1 pr-3 font-reading text-gray-900">{vocab?.labels[g.lemma] ?? g.lemma}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.target.toFixed(1)}</td>
                                 <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-900">{g.other.toFixed(1)}</td>
+                                <td className="py-1 pr-3 text-right font-mono tabular-nums text-gray-400">—</td>
                                 <td className="py-1 text-right font-mono tabular-nums text-gray-400">—</td>
                               </tr>
                             ))}

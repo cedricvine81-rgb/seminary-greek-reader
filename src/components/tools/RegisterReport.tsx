@@ -166,6 +166,7 @@ export function RegisterReport({
       <section className="mb-5">
         <h2 className="mb-1 text-sm font-bold uppercase tracking-wide">{t('reg.rep.evidence')}</h2>
         <p className="mb-2 text-xs">{t('reg.sharedNote')}</p>
+        {lens !== 'vocabulary' && <p className="mb-2 text-xs">{t('reg.periodNote')}</p>}
         {citations && (
           <p className="mb-2 text-xs">
             {t('reg.rep.citedTo', { n: Math.min(REPORT_CITATION_LIMIT, detail.length) })}
@@ -207,13 +208,14 @@ export function RegisterReport({
                 <thead>
                   <tr className="text-left text-[9px]">
                     <th />
-                    <th colSpan={3} className="text-right font-semibold uppercase tracking-wide">{t('reg.per1000')}</th>
+                    <th colSpan={4} className="text-right font-semibold uppercase tracking-wide">{t('reg.per1000')}</th>
                   </tr>
                   <tr className="border-b border-gray-400 text-left">
                     <th className="py-0.5 pr-2 font-medium">{t(lens === 'syntax' ? 'reg.feature' : 'reg.word')}</th>
                     <th className="py-0.5 pr-2 text-right font-medium">{nameOf(targetUnit)}</th>
                     <th className="py-0.5 pr-2 text-right font-medium">{nameOf(unit)}</th>
-                    <th className="py-0.5 text-right font-medium">{t('reg.libraryAvg')}</th>
+                    <th className="py-0.5 pr-2 text-right font-medium">{t('reg.classical')}</th>
+                    <th className="py-0.5 text-right font-medium">{t('reg.koine')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -228,7 +230,8 @@ export function RegisterReport({
                       </td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
-                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.average.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{r.classical.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.koine.toFixed(1)}</td>
                     </tr>
                   ))}
                   {words.map(r => (
@@ -242,7 +245,8 @@ export function RegisterReport({
                       </td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
-                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.average.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">{r.classical.toFixed(1)}</td>
+                      <td className="py-0.5 text-right tabular-nums text-gray-600">{r.koine.toFixed(1)}</td>
                     </tr>
                   ))}
                   {shared.map(r => (
@@ -255,6 +259,7 @@ export function RegisterReport({
                       </td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.target.toFixed(1)}</td>
                       <td className="py-0.5 pr-2 text-right tabular-nums">{r.other.toFixed(1)}</td>
+                      <td className="py-0.5 pr-2 text-right tabular-nums text-gray-600">—</td>
                       <td className="py-0.5 text-right tabular-nums text-gray-600">—</td>
                     </tr>
                   ))}
@@ -274,6 +279,38 @@ export function RegisterReport({
         })}
         {lens === 'syntax' && <p className="text-[10px]">~ {t('reg.approxTip')}</p>}
       </section>
+
+      {/* ── what the two baselines are made of ──────────────────────────────
+          Printed in full rather than linked: a reader holding the paper cannot open a
+          disclosure, and an average whose composition is unavailable is not checkable. */}
+      {lens !== 'vocabulary' && meta.periods && (
+        <section className="mb-5" style={{ breakInside: 'avoid' }}>
+          <h2 className="mb-1 text-sm font-bold uppercase tracking-wide">{t('reg.rep.baselines')}</h2>
+          {(['classical', 'koine'] as const).map(id => (
+            <div key={id} className="mb-2">
+              <p className="text-[10px] font-semibold uppercase tracking-wide">
+                {t(id === 'classical' ? 'reg.sourcesClassical' : 'reg.sourcesKoine', {
+                  authors: String(meta.periods[id].members.length),
+                  works: String(meta.periods[id].members.reduce((a, m) => a + m.works, 0)),
+                })}
+              </p>
+              <p className="text-[10px] leading-relaxed">
+                {t(id === 'classical' ? 'reg.classicalIs' : 'reg.koineIs')}
+              </p>
+              <p className="text-[10px] leading-relaxed text-gray-700">
+                {meta.periods[id].members
+                  .map(m => (m.works > 1 ? `${m.author} (${m.works})` : m.author))
+                  .join(' · ')}
+              </p>
+            </div>
+          ))}
+          {meta.periods.excluded.length > 0 && (
+            <p className="text-[10px] leading-relaxed">
+              {t('reg.epicExcluded', { works: meta.periods.excluded.map(e => e.label).join(', ') })}
+            </p>
+          )}
+        </section>
+      )}
 
       {/* ── where the Greek came from ───────────────────────────────────── */}
       <section style={{ breakInside: 'avoid' }}>
