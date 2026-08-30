@@ -21,7 +21,7 @@ import {
   type Lens, type PassageManifest, type PassageProfile, type StyleFeature, type StyleMeta,
   type StyleUnit, type VocabFile,
 } from '@/lib/style-register'
-import { PassagePicker, type PassageSelection } from './PassagePicker'
+import { TargetPicker, type Target } from './TargetPicker'
 import { RegisterReport, REPORT_CITATION_LIMIT, type CitationMap } from './RegisterReport'
 import { PeriodSources } from './PeriodSources'
 import { ColumnHint } from './ColumnHint'
@@ -32,8 +32,6 @@ const LENSES: { id: Lens; key: string }[] = [
   { id: 'vocabulary', key: 'reg.lens.vocabulary' },
 ]
 
-type Mode = 'work' | 'passage'
-
 /* ── the comparison as a link ────────────────────────────────────────────────
  * A ranking nobody can send to anyone is half a tool: the natural next move after finding
  * that Luke 1-2 sits with the Septuagint is to show someone. The state goes in the query
@@ -43,52 +41,59 @@ type Mode = 'work' | 'passage'
  * navigation, and every keystroke in a chapter box should not become a history entry.
  */
 interface UrlState {
-  mode: Mode
+  /** What was typed in the reference box, if anything. */
+  ref: string
+  /** A library work chosen from the list, if any. */
   work: string
   lens: Lens
   outside: boolean
   short: boolean
-  passage: { corpus: string; book: string; fromCh: number; toCh: number } | null
 }
 
 function readUrl(): UrlState {
-  const fallback: UrlState = {
-    mode: 'work', work: 'Mark', lens: 'register', outside: false, short: false, passage: null,
-  }
+  const fallback: UrlState = { ref: 'Mark', work: '', lens: 'register', outside: false, short: false }
   if (typeof window === 'undefined') return fallback
   const q = new URLSearchParams(window.location.search)
+  const lens: Lens = q.get('lens') === 'syntax' ? 'syntax'
+    : q.get('lens') === 'vocabulary' ? 'vocabulary' : 'register'
+  const outside = q.get('outside') === '1'
+  const short = q.get('short') === '1'
+
+  // Links minted before the reference box existed named a book and a chapter range across four
+  // parameters. They still open on the passage they meant, because it reads as a reference now.
   const book = q.get('book')
   const from = Number(q.get('from'))
   const to = Number(q.get('to'))
-  const hasPassage = !!book && Number.isFinite(from) && from > 0 && Number.isFinite(to) && to > 0
-  return {
-    mode: q.get('mode') === 'passage' && hasPassage ? 'passage' : 'work',
-    work: q.get('work') || fallback.work,
-      lens: q.get('lens') === 'syntax' ? 'syntax'
-      : q.get('lens') === 'vocabulary' ? 'vocabulary' : 'register',
-    outside: q.get('outside') === '1',
-    short: q.get('short') === '1',
-    passage: hasPassage
-      ? { corpus: (q.get('corpus') || 'GNT').toUpperCase(), book: book!, fromCh: from, toCh: to }
-      : null,
+  if (book && Number.isFinite(from) && from > 0) {
+    const range = Number.isFinite(to) && to > from ? `${from}-${to}` : `${from}`
+    return { ref: `${book} ${range}`, work: '', lens, outside, short }
   }
+  const work = q.get('work') ?? ''
+  const ref = q.get('ref') ?? ''
+  // A single-segment work id IS a book name, so it belongs in the box rather than the list.
+  if (work && !work.includes('/')) return { ref: work, work: '', lens, outside, short }
+  if (!work && !ref) return { ...fallback, lens, outside, short }
+  return { ref, work, lens, outside, short }
+}
+
+/** The reference a passage target came from, as a shareable string. */
+function refOf(p: Extract<Target, { kind: 'passage' }>): string {
+  const start = p.fromV === undefined ? `${p.fromCh}` : `${p.fromCh}:${p.fromV}`
+  if (p.fromCh === p.toCh && p.fromV === p.toV && p.fromV !== undefined) return `${p.book} ${start}`
+  const end = p.toCh === p.fromCh
+    ? (p.toV === undefined ? `${p.toCh}` : `${p.toV}`)
+    : (p.toV === undefined ? `${p.toCh}` : `${p.toCh}:${p.toV}`)
+  return `${p.book} ${start}-${end}`
 }
 
 function writeUrl(s: UrlState): void {
   if (typeof window === 'undefined') return
   const q = new URLSearchParams()
-  q.set('mode', s.mode)
   q.set('lens', s.lens)
   if (s.outside) q.set('outside', '1')
   if (s.short) q.set('short', '1')
-  if (s.mode === 'passage' && s.passage) {
-    q.set('corpus', s.passage.corpus)
-    q.set('book', s.passage.book)
-    q.set('from', String(s.passage.fromCh))
-    q.set('to', String(s.passage.toCh))
-  } else {
-    q.set('work', s.work)
-  }
+  if (s.work) q.set('work', s.work)
+  else if (s.ref) q.set('ref', s.ref)
   window.history.replaceState(null, '', `${window.location.pathname}?${q}`)
 }
 
@@ -100,15 +105,14 @@ export function RegisterView() {
   const [manifest, setManifest] = useState<PassageManifest | null>(null)
   const [error, setError] = useState(false)
   const initial = useMemo(readUrl, [])
-  const [mode, setMode] = useState<Mode>(initial.mode)
-  const [target, setTarget] = useState(initial.work)
+  const [target, setTarget] = useState<Target | null>(null)
+  // Kept alongside the target purely so a shared link carries the reference as written.
+  const [refText, setRefText] = useState(initial.ref)
   const [lens, setLens] = useState<Lens>(initial.lens)
   const [outsideOnly, setOutsideOnly] = useState(initial.outside)
   const [includeShort, setIncludeShort] = useState(initial.short)
   const [showAll, setShowAll] = useState(false)
   const [open, setOpen] = useState<string | null>(null)
-  const [query, setQuery] = useState('')
-  const [selection, setSelection] = useState<PassageSelection | null>(null)
   const [passage, setPassage] = useState<StyleUnit | null>(null)
   const [loadingPassage, setLoadingPassage] = useState(false)
   const [passageError, setPassageError] = useState(false)
@@ -217,18 +221,18 @@ export function RegisterView() {
    * Debounced, because the chapter inputs fire on every keystroke and profiling is the cheap
    * half — reading the corpus index is not.
    */
-  const fetchPassage = useCallback((s: PassageSelection, alive: () => boolean) => {
+  const fetchPassage = useCallback((s: Extract<Target, { kind: 'passage' }>, alive: () => boolean) => {
     setLoadingPassage(true)
     setPassageError(false)
+    const from = s.fromV === undefined ? `${s.fromCh}` : `${s.fromCh}:${s.fromV}`
+    const to = s.toV === undefined ? `${s.toCh}` : `${s.toCh}:${s.toV}`
     const url = `/api/register/passage?corpus=${encodeURIComponent(s.corpus)}`
-      + `&book=${encodeURIComponent(s.book)}&from=${s.fromCh}&to=${s.toCh}`
+      + `&book=${encodeURIComponent(s.book)}&from=${from}&to=${to}`
     fetch(url)
       .then(r => (r.ok ? r.json() : Promise.reject(new Error('bad'))))
       .then((p: PassageProfile) => {
         if (!alive()) return
-        const range = p.span.toCh === p.span.fromCh
-          ? `${p.span.fromCh}` : `${p.span.fromCh}–${p.span.toCh}`
-        setPassage(passageUnit(p, s.corpus, s.book, `${s.label} ${range}`))
+        setPassage(passageUnit(p, s.corpus, s.book, s.label))
         setPassageVocab(p.content ?? null)
         setOpen(null)
       })
@@ -237,27 +241,28 @@ export function RegisterView() {
   }, [])
 
   useEffect(() => {
-    if (mode !== 'passage' || !selection) return
+    if (target?.kind !== 'passage') { setPassage(null); setPassageVocab(null); setPassageError(false); return }
     let live = true
-    const id = setTimeout(() => fetchPassage(selection, () => live), 250)
+    // Debounced: the reference box fires on every keystroke, and reading the corpus index is
+    // the expensive half.
+    const id = setTimeout(() => fetchPassage(target, () => live), 250)
     return () => { live = false; clearTimeout(id) }
-  }, [mode, selection, fetchPassage])
+  }, [target, fetchPassage])
 
   useEffect(() => {
     writeUrl({
-      mode, work: target, lens, outside: outsideOnly, short: includeShort,
-      passage: selection
-        ? { corpus: selection.corpus, book: selection.book, fromCh: selection.fromCh, toCh: selection.toCh }
-        : null,
+      ref: target?.kind === 'passage' ? refText : '',
+      work: target?.kind === 'work' ? target.work : '',
+      lens, outside: outsideOnly, short: includeShort,
     })
-  }, [mode, target, lens, outsideOnly, includeShort, selection])
+  }, [target, refText, lens, outsideOnly, includeShort])
 
   // A link can name a work the index does not hold — a book under the 400-word floor, or a
   // stale URL. Falling back silently would answer a question nobody asked.
-  const requested = works.find(w => w.work === target)
-  const workUnit = requested ?? works[0]
-  const missingWork = mode === 'work' && !requested && target !== workUnit?.work
-  const targetUnit = mode === 'passage' ? passage : workUnit
+  const wantedWork = target?.kind === 'work' ? target.work : null
+  const requested = wantedWork ? works.find(w => w.work === wantedWork) ?? null : null
+  const missingWork = !!wantedWork && !requested
+  const targetUnit = target?.kind === 'passage' ? passage : requested
 
   // Any change to the comparison makes the gathered references stale; they are re-fetched on
   // the next print rather than kept and printed against a different ranking.
@@ -270,9 +275,9 @@ export function RegisterView() {
       excludeSameCorpus: outsideOnly, reliableOnly: !includeShort,
       limit: showAll ? units.length : 25,
       vocab: vocab?.works,
-      targetVocab: mode === 'passage' ? passageVocab : undefined,
+      targetVocab: target?.kind === 'passage' ? passageVocab : undefined,
     })
-  }, [units, targetUnit, lens, spread, outsideOnly, includeShort, showAll, vocab, mode, passageVocab])
+  }, [units, targetUnit, lens, spread, outsideOnly, includeShort, showAll, vocab, target, passageVocab])
 
   /**
    * Printing gathers the references first.
@@ -298,13 +303,13 @@ export function RegisterView() {
           sharedWords(targetUnit, unit, meta!).forEach(r => lemmas.add(r.lemma))
         } else if (vocab?.works[unit.work]) {
           explainVocab(
-            (mode === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
+            (target?.kind === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
             vocab.works[unit.work]!,
           ).forEach(r => lemmas.add(r.lemma))
         }
       }
-      const targetSpec = mode === 'passage' && selection
-        ? { id: 'target', corpus: selection.corpus, book: selection.book, fromCh: selection.fromCh, toCh: selection.toCh }
+      const targetSpec = target?.kind === 'passage'
+        ? { id: 'target', corpus: target.corpus, book: target.book, fromCh: target.fromCh, toCh: target.toCh }
         : { id: 'target', corpus: targetUnit.corpus, work: targetUnit.work }
       const res = await fetch('/api/register/citations', {
         method: 'POST',
@@ -322,16 +327,10 @@ export function RegisterView() {
     }
     // Let the state land before the print dialogue freezes the page.
     setTimeout(() => window.print(), 60)
-  }, [targetUnit, results, citations, lens, meta, spread, vocab, mode, passageVocab, selection])
-
-  const filteredWorks = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    return q ? works.filter(w => nameOf(w).toLowerCase().includes(q)) : works
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [works, query, locale])
+  }, [targetUnit, results, citations, lens, meta, spread, vocab, target, passageVocab])
 
   if (error) return <p className="py-10 text-sm text-red-600">{t('reg.loadFailed')}</p>
-  if (!meta || !units || !manifest || !workUnit) {
+  if (!meta || !units || !manifest) {
     return <p className="py-10 text-sm italic text-gray-400">{t('reg.loading')}</p>
   }
 
@@ -345,8 +344,9 @@ export function RegisterView() {
       {targetUnit && (
         <RegisterReport
           meta={meta} lens={lens} targetUnit={targetUnit} results={results} spread={spread}
-          vocab={vocab} targetVocab={mode === 'passage' ? passageVocab : null}
-          mode={mode} outsideOnly={outsideOnly} includeShort={includeShort}
+          vocab={vocab} targetVocab={target?.kind === 'passage' ? passageVocab : null}
+          mode={target?.kind === 'passage' ? 'passage' : 'work'}
+          outsideOnly={outsideOnly} includeShort={includeShort}
           citations={citations} glossed={glossed}
           nameOf={nameOf} corpusOf={corpusOf} featureLabel={featureLabel}
         />
@@ -367,48 +367,20 @@ export function RegisterView() {
         <p className="text-sm leading-relaxed text-gray-700">{t('reg.blurb')}</p>
       </div>
 
-      {/* ── what to compare ──────────────────────────────────────────────── */}
-      <div className="space-y-3 rounded-xl border border-gray-200 px-4 py-3.5">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-medium text-gray-700">{t('reg.compare')}</span>
-          <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5" role="tablist">
-            {(['work', 'passage'] as Mode[]).map(m => (
-              <button
-                key={m} role="tab" aria-selected={mode === m}
-                onClick={() => { setMode(m); setOpen(null) }}
-                className={clsx('rounded-md px-3 py-1 text-sm font-medium transition-colors',
-                  mode === m ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900')}
-              >
-                {t(m === 'work' ? 'reg.mode.work' : 'reg.mode.passage')}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {mode === 'work' ? (
-          <div className="max-w-md">
-            <input
-              id="reg-search" value={query} onChange={e => setQuery(e.target.value)}
-              placeholder={t('reg.filterWorks')} className="input mb-1.5 w-full text-sm"
-            />
-            <select
-              id="reg-target" value={workUnit.work}
-              onChange={e => { setTarget(e.target.value); setOpen(null) }}
-              className="input w-full" size={1}
-            >
-              {filteredWorks.map(w => (
-                <option key={w.work} value={w.work}>
-                  {nameOf(w)} — {corpusOf(w)} ({w.n.toLocaleString(locale)})
-                </option>
-              ))}
-            </select>
-            {query.trim() && !filteredWorks.some(w => w.work === workUnit.work) && (
-              <p className="mt-1 text-xs text-amber-700">{t('reg.filterHidesTarget')}</p>
-            )}
-          </div>
-        ) : (
-          <PassagePicker manifest={manifest} initial={initial.passage} onChange={setSelection} />
-        )}
+      {/* ── what to compare ────────────────────────────────────────────────
+          One box for Scripture, which a reader can simply write down, and one list for the
+          library, whose titles they would have to look up. */}
+      <div className="rounded-xl border border-gray-200 px-4 py-3.5">
+        <TargetPicker
+          manifest={manifest} works={works}
+          initialRef={initial.ref} initialWork={initial.work}
+          onTarget={next => {
+            setTarget(next)
+            setOpen(null)
+            if (next?.kind === 'passage') setRefText(refOf(next))
+          }}
+          nameOf={nameOf} corpusOf={corpusOf}
+        />
       </div>
 
       {/* ── lens ─────────────────────────────────────────────────────────── */}
@@ -455,10 +427,10 @@ export function RegisterView() {
 
       {missingWork && (
         <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          {t('reg.unknownWork', { work: target })}
+          {t('reg.unknownWork', { work: wantedWork ?? '' })}
         </p>
       )}
-      {mode === 'passage' && passageError && (
+      {passageError && (
         <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
           {t('reg.passageFailed')}
         </p>
@@ -515,7 +487,7 @@ export function RegisterView() {
                 ? explainDelta(targetUnit, unit, meta, 4) : []
               const shared = isOpen && lens === 'vocabulary' && vocab?.works[unit.work]
                 ? explainVocab(
-                    (mode === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
+                    (target?.kind === 'passage' ? passageVocab : vocab.works[targetUnit.work]) ?? [],
                     vocab.works[unit.work]!, vocab.periods,
                   )
                 : []
@@ -660,7 +632,7 @@ export function RegisterView() {
         </div>
       )}
 
-      {mode === 'work' && targetUnit && chunks.length > 2 && (
+      {target?.kind === 'work' && targetUnit && chunks.length > 2 && (
         <p className="text-xs text-gray-500">
           {t('reg.chunkNote', { n: chunks.length, work: nameOf(targetUnit), size: meta.chunkWords.toLocaleString(locale) })}
         </p>
