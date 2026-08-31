@@ -379,6 +379,21 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-comp-dion-brutus': 'greco/plutarch-comp-dion-brutus',
   'plutarch-comp-agis-cleomenes-gracchi': 'greco/plutarch-comp-agis-cleomenes-gracchi',
   'plutarch-comp-demetrius-antony': 'greco/plutarch-comp-demetrius-antony',
+  // THE LIVES THEMSELVES now begin. CAIUS GRACCHUS and OTHO are narrative, not argument, so the
+  // Spanish keeps Plutarch's long participial chains as Spanish subordination rather than
+  // chopping them into short sentences; the speeches inside them keep their rhetorical shape.
+  // Otho's own inscription at Brixellum is quoted in the Greek as a translation ("if it were
+  // rendered"), and is rendered here the same way.
+  'plutarch-caius-gracchus': 'greco/plutarch-caius-gracchus',
+  'plutarch-otho': 'greco/plutarch-otho',
+  // AGIS and TIBERIUS GRACCHUS are the two halves of a pair Plutarch built to argue one thesis:
+  // that reform undertaken for the people's sake destroys the reformer. Both keep the long
+  // deliberative speeches whole (Agis 15's oracles, Tiberius 15's case against Octavius), since
+  // the argument IS the life. Two proper names in Agis stay Greek because they are cult titles,
+  // not descriptions: the Chalcioecus (Athena "of the bronze house") and the Decas, the room in
+  // the Spartan prison where the condemned were strangled.
+  'plutarch-agis': 'greco/plutarch-agis',
+  'plutarch-tiberius-gracchus': 'greco/plutarch-tiberius-gracchus',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
