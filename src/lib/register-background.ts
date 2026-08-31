@@ -39,6 +39,8 @@ export interface BackgroundSection {
   id: string
   heading: string
   paragraphs: string[]
+  /** Bulleted feature lists, rendered after the paragraphs — each item one trait + example. */
+  lists?: { heading: string; items: string[] }[]
   /** Works named in the section — a short reading list, not a bibliography. */
   reading?: Reading[]
   /** Claims in this section that the tool can be made to show. */
@@ -92,6 +94,49 @@ export const BACKGROUND: BackgroundSection[] = [
       + 'mark of cultivation. That is Atticism, and it is why this tool’s second axis reports a '
       + 'direction — toward the Classical average or the Koine one — rather than presuming to '
       + 'read off a date.',
+    ],
+    lists: [
+      {
+        heading: 'Classical prose tends to …',
+        items: [
+          'fold clauses inside one another — participles, infinitives, ὅτι- and ἵνα-clauses '
+          + 'carry 57% of its clause links, against 43% in the Koine average',
+          'steer every clause with particles — μέν … δέ, "on the one hand … on the other"; δή, '
+          + '"indeed"; γε, "at least": 28.7 per 1,000 words against Koine’s 5.3. Plato’s '
+          + '_Gorgias_ uses bare γε 149 times; Mark, never',
+          'keep the optative in daily use — a whole verbal mood for wishes and possibilities '
+          + '(γένοιτο, "may it come to pass"): 7.4 per 1,000 words against 1.4',
+          'reach for the infinitive — 46.5 per 1,000 words against Koine’s 18.4: βούλομαι '
+          + 'λέγειν, "I wish to speak", where later Greek begins to say θέλω ἵνα, "I want '
+          + 'that …"',
+        ],
+      },
+      {
+        heading: 'Attic in particular …',
+        items: [
+          'writes ττ where other Greek writes σσ — θάλαττα for θάλασσα, "sea": the New '
+          + 'Testament has θάλασσα 48 times and θάλαττα never, while Plutarch, Atticizing '
+          + 'under Rome, writes θάλαττα 171 times',
+          'in its older layer, writes ξύν for σύν, "with" — Thucydides has ξυν- forms more '
+          + 'than 600 times; the New Testament, never',
+        ],
+      },
+      {
+        heading: 'Koine tends to …',
+        items: [
+          'string its clauses on καί, "and" — 75.9 per 1,000 words against Classical prose’s '
+          + '52.2; Septuagintal narrative opens καὶ ἐγένετο, "and it came to pass", 57 times '
+          + 'in Genesis alone',
+          'send ἵνα into the infinitive’s territory — θέλω ἵνα δῷς μοι, "I want you to give '
+          + 'me" (Mark 6:25): ἵνα runs 2.6 per 1,000 words against the Classical 0.8',
+          'let the optative fossilize — 1.4 per 1,000 words, in Paul mostly the set phrase μὴ '
+          + 'γένοιτο, "may it never be!" (ten times in Romans)',
+          'thin the particles to δέ, γάρ and οὖν — the literary set τε, μέν, δή, γε falls to '
+          + '5.3 per 1,000 words',
+          'lean on the aorist as the workhorse narrative tense — 75.8 per 1,000 words against '
+          + '55.9',
+        ],
+      },
     ],
   },
   {

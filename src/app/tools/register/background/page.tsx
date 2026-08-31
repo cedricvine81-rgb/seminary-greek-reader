@@ -40,6 +40,18 @@ export default async function RegisterBackgroundPage() {
               {emphasise(say(`regbg.${sec.id}.p${i}`, p))}
             </p>
           ))}
+          {sec.lists?.map((l, j) => (
+            <div key={j} className="mt-3">
+              <p className="text-sm font-medium text-gray-800">
+                {say(`regbg.${sec.id}.l${j}.h`, l.heading)}
+              </p>
+              <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-gray-700">
+                {l.items.map((it, k) => (
+                  <li key={k}>{emphasise(say(`regbg.${sec.id}.l${j}.i${k}`, it))}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
           {sec.reading && (
             <div className="mt-3 rounded-lg border border-gray-200 bg-gray-50/60 px-3.5 py-2.5">
               <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-gray-500">

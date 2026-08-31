@@ -589,6 +589,10 @@ export function registerBackgroundItems(): Item[] {
   for (const sec of BACKGROUND) {
     items.push({ key: `regbg.${sec.id}.h`, english: sec.heading })
     sec.paragraphs.forEach((p, i) => items.push({ key: `regbg.${sec.id}.p${i}`, english: p }))
+    sec.lists?.forEach((l, j) => {
+      items.push({ key: `regbg.${sec.id}.l${j}.h`, english: l.heading })
+      l.items.forEach((it, k) => items.push({ key: `regbg.${sec.id}.l${j}.i${k}`, english: it }))
+    })
   }
   return items
 }
