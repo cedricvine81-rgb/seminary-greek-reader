@@ -294,6 +294,10 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-having-many-friends': 'greco/plutarch-having-many-friends',
   'plutarch-consolation-to-his-wife': 'greco/plutarch-consolation-to-his-wife',
   'plutarch-love-of-wealth': 'greco/plutarch-love-of-wealth',
+  // On Superstition 10 quotes some verses on Artemis that are CORRUPT IN THE MANUSCRIPTS, not in
+  // the conversion — so, unlike the Latin running titles, that damage IS mirrored: the Spanish
+  // says in brackets that the lines admit no secure sense and reports what they seem to contain.
+  'plutarch-on-superstition': 'greco/plutarch-on-superstition',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
