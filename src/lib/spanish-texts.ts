@@ -416,6 +416,13 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // where the Greek does, with an ellipsis at the resumption; nothing is invented to bridge it.
   'plutarch-table-talk-6': 'greco/plutarch-table-talk-6',
   'plutarch-table-talk-9': 'greco/plutarch-table-talk-9',
+  // EUMENES and ON TALKATIVENESS. The Life is narrative and the essay is argument, but both turn
+  // on the same thing — what a man says and does not say — and On Talkativeness retells the
+  // Eumenes battle (ch. 9) that the Life narrates in full, so they belong together. Two Laconic
+  // one-word answers in the essay are kept as one word in Spanish, because the whole point is
+  // their brevity: the Spartans' «Si» to Philip's threat, and their «NO» written large on a sheet.
+  'plutarch-eumenes': 'greco/plutarch-eumenes',
+  'plutarch-on-talkativeness': 'greco/plutarch-on-talkativeness',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
