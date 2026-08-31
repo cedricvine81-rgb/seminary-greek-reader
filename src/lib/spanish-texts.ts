@@ -319,6 +319,25 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-comp-timoleon-aemilius': 'greco/plutarch-comp-timoleon-aemilius',
   'plutarch-comp-pelopidas-marcellus': 'greco/plutarch-comp-pelopidas-marcellus',
   'plutarch-comp-aristides-cato': 'greco/plutarch-comp-aristides-cato',
+  'plutarch-comp-lycurgus-numa': 'greco/plutarch-comp-lycurgus-numa',
+  // MORALIA, second batch. Three of these carry damage that belongs to the TEXT and is mirrored:
+  // On the Eating of Flesh I ends §3 in mid-sentence and On the Eating of Flesh II opens with a
+  // mutilated clause (both treatises survive as fragments), and Whether Fire or Water Is More
+  // Useful 2 and 11 have short lacunae — each is marked in brackets in the Spanish. What is NOT
+  // mirrored is the conversion scar: On the Eating of Flesh 2.1 and That We Ought Not to Borrow
+  // 1.1 both carry the treatise's LATIN running title transliterated into Greek letters and
+  // dropped mid-word ('de esu carnium', 'de vitando aere alieno'); those are silently removed and
+  // the broken Greek word restored. Aristophanes and Menander 1 turns entirely on Aristophanes'
+  // puns (ταμίας/Λαμίας, καικίας/συκοφαντίας, γέλωτος/Γέλαν, γοργόνωτον/τυρόνωτον), and That We
+  // Ought Not to Borrow 5 on τόκος meaning both 'offspring' and 'interest': in those places the
+  // Greek stays beside the Spanish, because the joke is the argument.
+  'plutarch-aristophanes-and-menander': 'greco/plutarch-aristophanes-and-menander',
+  'plutarch-eating-of-flesh-1': 'greco/plutarch-eating-of-flesh-1',
+  'plutarch-eating-of-flesh-2': 'greco/plutarch-eating-of-flesh-2',
+  'plutarch-fire-or-water': 'greco/plutarch-fire-or-water',
+  'plutarch-love-stories': 'greco/plutarch-love-stories',
+  'plutarch-we-ought-not-to-borrow': 'greco/plutarch-we-ought-not-to-borrow',
+  'plutarch-affection-for-offspring': 'greco/plutarch-affection-for-offspring',
   'plutarch-comp-philopoemen-flamininus': 'greco/plutarch-comp-philopoemen-flamininus',
   'plutarch-comp-lysander-sulla': 'greco/plutarch-comp-lysander-sulla',
   'plutarch-comp-cimon-lucullus': 'greco/plutarch-comp-cimon-lucullus',
