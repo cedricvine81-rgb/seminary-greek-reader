@@ -299,6 +299,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // says in brackets that the lines admit no secure sense and reports what they seem to contain.
   'plutarch-on-superstition': 'greco/plutarch-on-superstition',
   'plutarch-on-being-a-busybody': 'greco/plutarch-on-being-a-busybody',
+  'plutarch-profit-by-enemies': 'greco/plutarch-profit-by-enemies',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
