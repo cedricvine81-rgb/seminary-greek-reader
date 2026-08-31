@@ -76,7 +76,7 @@ export const BACKGROUND: BackgroundSection[] = [
           + 'before Alexander. The prose of those two centuries makes up this library’s '
           + '"Classical" pool — Athenian oratory above all, with Plato, Xenophon, Thucydides '
           + 'and Aristotle, and Herodotus writing Ionic alongside them.',
-          'What marks it is texture, and the texture is what this tool counts. Clauses fold '
+          'Its signature is texture, and texture is what this tool counts. Clauses fold '
           + 'inside one another rather than lying end to end. The optative, a whole verbal mood '
           + 'for wishes and possibilities (γένοιτο, "may it come to pass"), is in daily use. A '
           + 'repertoire of small steering particles tells the reader how each clause leans. '
