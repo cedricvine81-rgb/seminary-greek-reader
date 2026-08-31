@@ -292,6 +292,8 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-philosopher-and-men-in-power': 'greco/plutarch-philosopher-and-men-in-power',
   'plutarch-to-an-uneducated-ruler': 'greco/plutarch-to-an-uneducated-ruler',
   'plutarch-having-many-friends': 'greco/plutarch-having-many-friends',
+  'plutarch-consolation-to-his-wife': 'greco/plutarch-consolation-to-his-wife',
+  'plutarch-love-of-wealth': 'greco/plutarch-love-of-wealth',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
