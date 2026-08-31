@@ -282,6 +282,16 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-soul-or-body': 'greco/plutarch-soul-or-body',
   'plutarch-vice-and-unhappiness': 'greco/plutarch-vice-and-unhappiness',
   'plutarch-envy-and-hate': 'greco/plutarch-envy-and-hate',
+  // Second Moralia tranche. The transliterated-Latin running title recurs and is worse here than
+  // in Stoics and Poets: at To an Uneducated Ruler 1 the title «Ad principem ineruditum» has been
+  // dropped INTO THE MIDDLE OF A GREEK WORD, splitting περιέκοψεν into περιέ + Latin + κοψεν, and
+  // That a Philosopher Ought to Converse 1 carries two fragments of its own title in the same way.
+  // Not mirrored, and the split word is rejoined.
+  'plutarch-on-chance': 'greco/plutarch-on-chance',
+  'plutarch-live-unknown': 'greco/plutarch-live-unknown',
+  'plutarch-philosopher-and-men-in-power': 'greco/plutarch-philosopher-and-men-in-power',
+  'plutarch-to-an-uneducated-ruler': 'greco/plutarch-to-an-uneducated-ruler',
+  'plutarch-having-many-friends': 'greco/plutarch-having-many-friends',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
