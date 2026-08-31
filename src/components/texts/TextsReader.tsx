@@ -117,6 +117,13 @@ function translationsFor(w: CatalogWork | null, t: (k: string, v?: Record<string
     }
     return out
   }
+  // A greekOnly work that has OUR Spanish is no longer greek-only: it has exactly one second
+  // column, ours. It must not fall through to the English-only branch below, which would offer
+  // a published English column that does not exist — Marcus Aurelius has no English here.
+  if (w.greek && w.greekOnly && (ES_PROSE_WORKS[w.id] || ES_ENGLISH_PROSE_WORKS[w.id])) {
+    out.push({ id: 'es', label: t('texts.spanishOurs') })
+    return out
+  }
   // greekOnly works (the Greek Sibylline) have no second column worth offering — its Latin
   // covers one acrostic — so they keep their previous behaviour of no column control at all.
   if (w.greek && !w.greekOnly) {
@@ -432,7 +439,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // left proseMode on 'both' — and its mode selector is hidden, since there is
   // no second column to switch to. Derived so it can never get stuck showing an
   // empty English column.
+  // ...unless our own Spanish has since been written for it, which gives it a real second
+  // column and so a real mode selector. Without this the menu offered Spanish and the reader
+  // silently ignored the choice, snapping back to Greek.
   const greekOnlyWork = !!work?.greekOnly
+    && !(ES_PROSE_WORKS[work!.id] || ES_ENGLISH_PROSE_WORKS[work!.id])
   const proseModeEff = greekOnlyWork ? 'greek' : proseMode
   // The first ("original") column is Greek for almost everything, but Latin for Quintilian.
   // primaryLabel names it in the mode selector and the search box; it also turns off the
