@@ -363,6 +363,12 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // answered about stones and the dog question about wolves); both are transmitted damage and are
   // mirrored, not mended.
   'plutarch-natural-phenomena': 'greco/plutarch-natural-phenomena',
+  'plutarch-principle-of-cold': 'greco/plutarch-principle-of-cold',
+  // PARALLEL STORIES pairs a Greek tale with a Roman one and names a source for each; most of
+  // those sources are almost certainly forged, and the work itself is generally judged spurious.
+  // That is a question about the text, not about the translation: the citations are rendered as
+  // they stand, including 27, where the Greek breaks off before naming the second authority.
+  'plutarch-parallel-stories': 'greco/plutarch-parallel-stories',
   'plutarch-comp-philopoemen-flamininus': 'greco/plutarch-comp-philopoemen-flamininus',
   'plutarch-comp-lysander-sulla': 'greco/plutarch-comp-lysander-sulla',
   'plutarch-comp-cimon-lucullus': 'greco/plutarch-comp-cimon-lucullus',
