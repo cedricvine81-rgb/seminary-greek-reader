@@ -228,9 +228,7 @@ export const BACKGROUND: BackgroundSection[] = [
       'CLASSICAL LEAN places a text on the line between the average Classical profile and the '
       + 'average Koine one, by projecting its word-frequency profile onto the axis between those '
       + 'two centres. +1 is the Classical average and −1 the Koine average; a text can fall '
-      + 'outside both. Measuring the distance to each centre separately was tried first and is '
-      + 'useless — in 150 dimensions everything is far from every average, and Lucian and Genesis '
-      + 'came out indistinguishable.',
+      + 'outside both.',
       'It is not called Atticism, and two results are the reason. The Classical pool in this '
       + 'library is 123 forensic speeches against two histories, so the axis really measures '
       + 'distance from Attic ORATORY: Thucydides, idiosyncratic by any standard, scores well below '
