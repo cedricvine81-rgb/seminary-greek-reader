@@ -300,6 +300,11 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-on-superstition': 'greco/plutarch-on-superstition',
   'plutarch-on-being-a-busybody': 'greco/plutarch-on-being-a-busybody',
   'plutarch-profit-by-enemies': 'greco/plutarch-profit-by-enemies',
+  // On the Control of Anger is a DIALOGUE (Sila y Fundano), and the Perseus text carries the
+  // speaker tags inline; they are kept in Spanish as SILA / FUNDANO so the reader can still see
+  // who is speaking. Fundanus quotes verse constantly — Homer, Sophocles, Pindar, Sappho — and
+  // those quotations are rendered as verse in quotation marks rather than folded into his prose.
+  'plutarch-control-of-anger': 'greco/plutarch-control-of-anger',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
