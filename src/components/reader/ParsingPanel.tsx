@@ -8,6 +8,7 @@ import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { resolverFor, type GlossResolver } from '@/lib/vocab-gloss-lookup'
 import { formGloss } from '@/lib/i18n/form-gloss'
 import { translatable } from '@/lib/i18n/machine-translation'
+import { lsjGlossFor } from '@/lib/lsj-corrections'
 
 function lookupVocabGloss(lexeme: string | undefined): string | null {
   if (!lexeme) return null
@@ -110,7 +111,7 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
     if (isHebrew || !info?.lexeme) { setLsjEntry(null); return }
     const norm = normalizeLemma(info.lexeme)
     loadLsj()
-      .then(dict => setLsjEntry(dict[norm] ?? null))
+      .then(dict => setLsjEntry(lsjGlossFor(norm, dict)))
       .catch(() => setLsjEntry(null))
   }, [info?.lexeme, isHebrew])
 
