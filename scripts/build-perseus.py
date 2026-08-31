@@ -945,6 +945,49 @@ def build_line_parallel(slug, name, urn_dir, urn_base, eng_suffix, per_book, att
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': tot, 'eng': n_eng}]
 
 
+# ── Corrections to the Perseus Greek ──────────────────────────────────────────────────
+# Reserved for places where the Perseus file is DEMONSTRABLY corrupt and the true reading is not
+# recoverable from it — never for a variant we merely prefer. Each entry says what went wrong and
+# what corroborates the restored reading, and each is anchored in enough surrounding words that it
+# cannot fire anywhere else. apply_grc_corrections() reports a correction that stops matching, so
+# if Perseus repairs a file upstream we hear about it instead of carrying a dead rule forever.
+#
+# lucian-peregrinus §1: the file nests <sic><corr> four deep at four points, and every reading in
+# every layer is the word "Λουκιανὸς" — the article ὁ has been overwritten by the author's name and
+# is gone from the source entirely, so no choice among the layers recovers it. Dropping the <sic>
+# subtrees (see chapter_text) correctly leaves one reading; the reading itself is the wrong word.
+# The nonsense is plain — Lucian is not "the wretched Peregrinus", and not the Empedocles who
+# jumped into the crater — and the Fowler English we ship beside it reads "Poor dear Peregrine",
+# "the best of men", "That philosopher", "our high-souled friend" at these four points, none of
+# them a name. The restored ὁ is the reading of the standard editions.
+GRC_CORRECTIONS = {
+    'lucian-peregrinus': [
+        ('Λουκιανὸς κακοδαίμων Περεγρῖνος', 'Ὁ κακοδαίμων Περεγρῖνος'),
+        ('ἀπηνθράκωταί σοι Λουκιανὸς βέλτιστος', 'ἀπηνθράκωταί σοι ὁ βέλτιστος'),
+        ('παρʼ ὅσον Λουκιανὸς μὲν', 'παρʼ ὅσον ὁ μὲν'),
+        ('Λουκιανὸς δὲ γεννάδας οὗτος', 'ὁ δὲ γεννάδας οὗτος'),
+    ],
+}
+
+
+def apply_grc_corrections(slug, grc):
+    """Apply this work's GRC_CORRECTIONS to a {key: text} unit map, in place.
+
+    Each rule must match exactly once across the work: a rule that matches twice is not the
+    anchored edit it claims to be, and a rule that matches nothing has been overtaken by an
+    upstream fix. Both are reported rather than passed over."""
+    for before, after in GRC_CORRECTIONS.get(slug, []):
+        hits = sum(text.count(before) for text in grc.values())
+        if hits != 1:
+            print(f'  !! {slug}: correction matched {hits}x (expected 1): {before[:40]}')
+            if not hits:
+                continue
+        for key, text in grc.items():
+            if before in text:
+                grc[key] = text.replace(before, after)
+    return grc
+
+
 def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache,
                 ref_unit=None, grc_suffix='grc2'):
     """One work with a book→unit or flat-unit TEI (Aristotle treatises, Plutarch Lives/Moralia).
@@ -954,7 +997,7 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
     files its Greek under -grc2, but a handful do not — see PLUTARCH_GRC."""
     base = f'{urn_dir}/{urn_base}'
     grc_bytes = fetch(f'{base}.perseus-{grc_suffix}.xml', no_cache)
-    grc = parse_units(grc_bytes, book_sub, unit_sub)
+    grc = apply_grc_corrections(slug, parse_units(grc_bytes, book_sub, unit_sub))
     # eng_suffix None builds the Greek alone. Used where Perseus' only English translation is
     # still in copyright — most of Demosthenes and two thirds of Isocrates — so the Greek can
     # still be read, searched and parsed rather than the work being left out altogether.
