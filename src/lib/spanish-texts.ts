@@ -268,6 +268,20 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // drill, Ephorus's accidental iambic line, and the etymologies keep their Greek in parentheses
   // with the sense beside it — translating them away would delete the point being made.
   'theon-progymnasmata': 'greco/theon-progymnasmata',
+  // PLUTARCO, Moralia. The moral-philosophy essays, translated from the Perseus Greek, chosen for
+  // the ground they share with NT ethics — envy, anger, wealth, superstition, the passions of the
+  // soul. Short works, so each ships whole rather than leaving a half-translated book in the
+  // reader. Two leaked artifacts are NOT mirrored: a line number sitting mid-sentence in
+  // On Virtue and Vice 1, and — exactly the Apollodorus 2.4.2 defect again — the work's own LATIN
+  // running title transliterated INTO GREEK LETTERS at the end of Stoics and Poets 1
+  // («στοιξος ἀβσιιρδιορα ποετις διξερε» = "Stoicos absurdiora poetis dicere").
+  'plutarch-virtue-and-vice': 'greco/plutarch-virtue-and-vice',
+  'plutarch-can-virtue-be-taught': 'greco/plutarch-can-virtue-be-taught',
+  'plutarch-monarchy-democracy-oligarchy': 'greco/plutarch-monarchy-democracy-oligarchy',
+  'plutarch-stoics-and-poets': 'greco/plutarch-stoics-and-poets',
+  'plutarch-soul-or-body': 'greco/plutarch-soul-or-body',
+  'plutarch-vice-and-unhappiness': 'greco/plutarch-vice-and-unhappiness',
+  'plutarch-envy-and-hate': 'greco/plutarch-envy-and-hate',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
