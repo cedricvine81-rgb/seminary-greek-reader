@@ -394,6 +394,16 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // the Spartan prison where the condemned were strangled.
   'plutarch-agis': 'greco/plutarch-agis',
   'plutarch-tiberius-gracchus': 'greco/plutarch-tiberius-gracchus',
+  // THREE MORALIA ON EDUCATION AND CHARACTER. These are argument, and their chapters are single
+  // enormous periods, so the Spanish keeps the period whole rather than chopping it into short
+  // sentences — the shape of the reasoning is the content. Two things stay Greek in the text
+  // because the argument turns on them: in ON MORAL VIRTUE, ἦθος (character) is derived from
+  // ἔθος (habit), a pun that vanishes in Spanish, so both words are printed; and the verse
+  // quotations (Homer, Sophocles, Simonides, Sappho, Menander) are set as verse in quotation
+  // marks rather than folded into the prose.
+  'plutarch-progress-in-virtue': 'greco/plutarch-progress-in-virtue',
+  'plutarch-listening-to-lectures': 'greco/plutarch-listening-to-lectures',
+  'plutarch-on-moral-virtue': 'greco/plutarch-on-moral-virtue',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
