@@ -338,6 +338,15 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-love-stories': 'greco/plutarch-love-stories',
   'plutarch-we-ought-not-to-borrow': 'greco/plutarch-we-ought-not-to-borrow',
   'plutarch-affection-for-offspring': 'greco/plutarch-affection-for-offspring',
+  // MORALIA, third batch. Two of these are DIALOGUES and keep their speaker tags in Spanish:
+  // Beasts Are Rational is Odiseo / Circe / Grilo, and its Perseus text carries the treatise's
+  // Latin title transliterated into Greek and dropped mid-sentence at 1.1 ('ratione uti') — a
+  // conversion scar, silently removed, like the leaked 'idem' inside On Fate 9. On Fate numbers
+  // its dedication to Piso as chapter 0, and Advice to Bride and Groom its preface likewise.
+  'plutarch-glory-of-athens': 'greco/plutarch-glory-of-athens',
+  'plutarch-on-fate': 'greco/plutarch-on-fate',
+  'plutarch-beasts-are-rational': 'greco/plutarch-beasts-are-rational',
+  'plutarch-advice-to-bride-and-groom': 'greco/plutarch-advice-to-bride-and-groom',
   'plutarch-comp-philopoemen-flamininus': 'greco/plutarch-comp-philopoemen-flamininus',
   'plutarch-comp-lysander-sulla': 'greco/plutarch-comp-lysander-sulla',
   'plutarch-comp-cimon-lucullus': 'greco/plutarch-comp-cimon-lucullus',
