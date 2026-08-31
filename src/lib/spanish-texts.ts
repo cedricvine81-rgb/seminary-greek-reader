@@ -404,6 +404,18 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-progress-in-virtue': 'greco/plutarch-progress-in-virtue',
   'plutarch-listening-to-lectures': 'greco/plutarch-listening-to-lectures',
   'plutarch-on-moral-virtue': 'greco/plutarch-on-moral-virtue',
+  // TABLE TALK VI and IX. Dinner conversation, so the Spanish keeps the speakers' interruptions
+  // and jokes rather than smoothing them into treatise prose. Where an argument turns on a Greek
+  // etymology the Greek is printed beside the Spanish — τροφή/τηροῦν in VI 2, θαλιάζειν and
+  // Σειρῆνας/εἰρούσας in IX 14, the letter names in IX 2 — because the point vanishes otherwise.
+  //
+  // ⚠ BOOK IX IS DAMAGED IN THE SOURCE. The Perseus text jumps from question 6 to question 12:
+  // questions 7-11 are simply not there, chapter 6 breaks off in the middle of a word
+  // (Posidon "was venci-"), and 12 opens mid-sentence on the tail of a proverb. That is a hole in
+  // the transmitted text, not in the translation, so the Spanish breaks off and resumes exactly
+  // where the Greek does, with an ellipsis at the resumption; nothing is invented to bridge it.
+  'plutarch-table-talk-6': 'greco/plutarch-table-talk-6',
+  'plutarch-table-talk-9': 'greco/plutarch-table-talk-9',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
