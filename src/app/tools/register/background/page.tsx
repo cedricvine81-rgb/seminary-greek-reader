@@ -40,16 +40,26 @@ export default async function RegisterBackgroundPage() {
               {emphasise(say(`regbg.${sec.id}.p${i}`, p))}
             </p>
           ))}
-          {sec.lists?.map((l, j) => (
-            <div key={j} className="mt-3">
-              <p className="text-sm font-medium text-gray-800">
-                {say(`regbg.${sec.id}.l${j}.h`, l.heading)}
-              </p>
-              <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-gray-700">
-                {l.items.map((it, k) => (
-                  <li key={k}>{emphasise(say(`regbg.${sec.id}.l${j}.i${k}`, it))}</li>
-                ))}
-              </ul>
+          {/* Sub-sections: a heading a reader can aim at, its prose, then the traits as
+              bullets. Indented against a rule so the three read as parts of one section
+              rather than as three sections of their own. */}
+          {sec.groups?.map((g, j) => (
+            <div key={j} className="mt-5 border-l-2 border-gray-100 pl-4">
+              <h3 className="text-sm font-semibold text-gray-800">
+                {say(`regbg.${sec.id}.g${j}.h`, g.heading)}
+              </h3>
+              {g.paragraphs.map((p, i) => (
+                <p key={i} className="mt-2 text-sm leading-relaxed text-gray-700">
+                  {emphasise(say(`regbg.${sec.id}.g${j}.p${i}`, p))}
+                </p>
+              ))}
+              {g.items && (
+                <ul className="mt-2.5 list-disc space-y-1 pl-5 text-sm leading-relaxed text-gray-700">
+                  {g.items.map((it, k) => (
+                    <li key={k}>{emphasise(say(`regbg.${sec.id}.g${j}.i${k}`, it))}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
           {sec.reading && (
