@@ -254,6 +254,20 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // so unlike Marcus these are not greekOnly and the registry line is the whole change.
   'lucian-peregrinus': 'greco/lucian-peregrinus',
   'lucian-alexander': 'greco/lucian-alexander',
+  // APOLODORO, Biblioteca. Three books, 209 sections, translated straight from the Perseus Greek
+  // (Frazer's Loeb text). The Greek carries a handful of scribal wounds we did NOT silently mend:
+  // the daggers at 3.1.1 and 3.4.4 and the lacuna at 2.5.11 are mirrored, while pure conversion
+  // artifacts (a citation transliterated INTO Greek letters at 2.4.2, a stray bracket, a stray
+  // Greek question mark at 2.6.4) are not. Where a name is explained by its Greek — Telebóas,
+  // Édipo, Alejandro, Aquiles, mirmídones, kíbisis — the Greek word stays in parentheses.
+  'apollodorus-library-1': 'greco/apollodorus-library-1',
+  'apollodorus-library-2': 'greco/apollodorus-library-2',
+  'apollodorus-library-3': 'greco/apollodorus-library-3',
+  // TEÓN, Progymnásmata. A rhetoric handbook, so the Greek IS the argument in dozens of places:
+  // the ambiguity examples (AYΛHTPIΣ, OYKENTAYPOIΣ, the KAINOY pun), the dual-number declension
+  // drill, Ephorus's accidental iambic line, and the etymologies keep their Greek in parentheses
+  // with the sense beside it — translating them away would delete the point being made.
+  'theon-progymnasmata': 'greco/theon-progymnasmata',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
