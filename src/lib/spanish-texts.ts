@@ -305,6 +305,30 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // who is speaking. Fundanus quotes verse constantly — Homer, Sophocles, Pindar, Sappho — and
   // those quotations are rendered as verse in quotation marks rather than folded into his prose.
   'plutarch-control-of-anger': 'greco/plutarch-control-of-anger',
+  // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
+  // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
+  // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
+  // Pindar, Solon, Sappho) as verse in quotation marks rather than folding them into the prose.
+  // The Perseus text of Demosthenes–Cicero 1.5 is visibly OCR-damaged (Μουρήναν printed as
+  // «Ἠίουρήναν», several words unaccented); that is a conversion scar, not a wound in the text,
+  // so the Spanish renders the sense and says nothing about it.
+  'plutarch-comp-theseus-romulus': 'greco/plutarch-comp-theseus-romulus',
+  'plutarch-comp-solon-publicola': 'greco/plutarch-comp-solon-publicola',
+  'plutarch-comp-pericles-fabius': 'greco/plutarch-comp-pericles-fabius',
+  'plutarch-comp-alcibiades-coriolanus': 'greco/plutarch-comp-alcibiades-coriolanus',
+  'plutarch-comp-timoleon-aemilius': 'greco/plutarch-comp-timoleon-aemilius',
+  'plutarch-comp-pelopidas-marcellus': 'greco/plutarch-comp-pelopidas-marcellus',
+  'plutarch-comp-aristides-cato': 'greco/plutarch-comp-aristides-cato',
+  'plutarch-comp-philopoemen-flamininus': 'greco/plutarch-comp-philopoemen-flamininus',
+  'plutarch-comp-lysander-sulla': 'greco/plutarch-comp-lysander-sulla',
+  'plutarch-comp-cimon-lucullus': 'greco/plutarch-comp-cimon-lucullus',
+  'plutarch-comp-nicias-crassus': 'greco/plutarch-comp-nicias-crassus',
+  'plutarch-comp-sertorius-eumenes': 'greco/plutarch-comp-sertorius-eumenes',
+  'plutarch-comp-agesilaus-pompey': 'greco/plutarch-comp-agesilaus-pompey',
+  'plutarch-comp-demosthenes-cicero': 'greco/plutarch-comp-demosthenes-cicero',
+  'plutarch-comp-dion-brutus': 'greco/plutarch-comp-dion-brutus',
+  'plutarch-comp-agis-cleomenes-gracchi': 'greco/plutarch-comp-agis-cleomenes-gracchi',
+  'plutarch-comp-demetrius-antony': 'greco/plutarch-comp-demetrius-antony',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
