@@ -347,6 +347,11 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-on-fate': 'greco/plutarch-on-fate',
   'plutarch-beasts-are-rational': 'greco/plutarch-beasts-are-rational',
   'plutarch-advice-to-bride-and-groom': 'greco/plutarch-advice-to-bride-and-groom',
+  // On Exile 16 argues point by point against verses of Euripides that the Perseus text has LOST:
+  // the quotations themselves are missing from the Greek, so Plutarch's replies answer nothing
+  // visible. That gap belongs to the text as we have it and is marked in brackets, not patched.
+  'plutarch-on-exile': 'greco/plutarch-on-exile',
+  'plutarch-praising-oneself': 'greco/plutarch-praising-oneself',
   'plutarch-comp-philopoemen-flamininus': 'greco/plutarch-comp-philopoemen-flamininus',
   'plutarch-comp-lysander-sulla': 'greco/plutarch-comp-lysander-sulla',
   'plutarch-comp-cimon-lucullus': 'greco/plutarch-comp-cimon-lucullus',
