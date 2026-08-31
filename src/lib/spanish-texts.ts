@@ -352,6 +352,17 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // visible. That gap belongs to the text as we have it and is marked in brackets, not patched.
   'plutarch-on-exile': 'greco/plutarch-on-exile',
   'plutarch-praising-oneself': 'greco/plutarch-praising-oneself',
+  'plutarch-on-compliancy': 'greco/plutarch-on-compliancy',
+  'plutarch-fortune-of-the-romans': 'greco/plutarch-fortune-of-the-romans',
+  'plutarch-the-e-at-delphi': 'greco/plutarch-the-e-at-delphi',
+  // NATURAL PHENOMENA is the first work in this corpus whose GREEK RUNS OUT: questions 1-31 are
+  // Greek, and 32-39 survive only in the Latin translation, which is what Perseus prints. Those
+  // eight are translated FROM THE LATIN and each says so in brackets — the same two-removes rule
+  // used for the Targums and for Against Apion 2.51-113. Question 31 also breaks off mid-sentence
+  // in the Greek, and the answers to 37 and 38 are swapped in the Latin (the wolf question is
+  // answered about stones and the dog question about wolves); both are transmitted damage and are
+  // mirrored, not mended.
+  'plutarch-natural-phenomena': 'greco/plutarch-natural-phenomena',
   'plutarch-comp-philopoemen-flamininus': 'greco/plutarch-comp-philopoemen-flamininus',
   'plutarch-comp-lysander-sulla': 'greco/plutarch-comp-lysander-sulla',
   'plutarch-comp-cimon-lucullus': 'greco/plutarch-comp-cimon-lucullus',
