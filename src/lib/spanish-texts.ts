@@ -696,6 +696,53 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // doctrine and not describing a state of mind, and the Megarian decree keeps Poliarces' joke
   // about turning the tablet around (30.3): the pun is the anecdote.
   'plutarch-pericles': 'greco/plutarch-pericles',
+  // ALCIBÍADES is a Life about a man who could be anything, and Plutarch says so at 23.4-5 with the
+  // chameleon: gymnastic in Sparta, soft in Ionia, a drinker in Thrace, out-Persianing the Persians
+  // with Tissaphernes. That list is kept as a list, in the same shape, because it is the thesis.
+  //
+  // Nothing in it is softened. The Socrates chapters (4-7) are translated as what they are — an
+  // ἔρως, with Alcibiades acquiring «una imagen del amor, un contra-amor» (Plato's ἀντέρως) — and so
+  // are Timaea's child (23.7), who was called Leotychidas outside the house and Alcibiades inside it,
+  // and Alcibiades' own line that he did it so his sons would rule Sparta; the mutilation of the
+  // Hermae and the mock mysteries (18-22), including the full text of Thessalus' indictment, which
+  // is a legal document and is translated as one; and the death (39), Timandra laying out the body.
+  //
+  // The comic verse is kept as verse. Aristophanes' joke about the lisp turns on Alcibiades saying
+  // «Téolo» for «Téoro» and «cuelvo» for «cuervo», so the Spanish lisps in the same two places
+  // rather than explaining the joke in a note.
+  'plutarch-alcibiades': 'greco/plutarch-alcibiades',
+  // ⚠ CAMILO 38 HAS FOUR SPANISH SECTIONS AND THREE GREEK ONES, ON PURPOSE. This is the second of
+  // the two edition differences named in the Solon block above: Perrin cuts the chapter where
+  // Ziegler does not, so the corpus carries a row 38:4 with English and no Greek. The Spanish is
+  // divided the way the ROWS are, not the way the Greek paragraphs are — 38:3 ends at «ni tenían
+  // nada en la conciencia» and 38:4 carries the rest of the one Greek section — so every row has a
+  // Spanish beside it and nothing is invented. Demetrius 33 will need the same treatment.
+  //
+  // The Life is half Roman antiquarianism and it is kept: the Alban lake (3-4), the Praxiergidae and
+  // the Plynteria, Numa's fire read as the ἀρχή of all things (20.3-4), the lituus found in the ash
+  // (32.5), the Caprotine Nones with BOTH explanations Plutarch gives (33) — the maidservants' ruse
+  // and Romulus' disappearance — and the etymology «caprífico» for the wild fig, kept beside the
+  // Spanish because the day's name is the argument.
+  //
+  // Brennus' «¿qué otra cosa sino dolor para los vencidos?» (28.5) is Vae victis in Greek dress, and
+  // it stays a plain sentence: Plutarch says it had already become proverbial, so translating it as
+  // a proverb would flatten the moment where it is being coined.
+  'plutarch-camillus': 'greco/plutarch-camillus',
+  // CRASO is the Life of a vice, and the vice has a name Plutarch repeats — φιλοπλουτία, «codicia» —
+  // used the same way each time so the through-line from the fire brigades (2.4) to Carrhae stays
+  // visible. His inventory of it is translated whole: buying the burning houses, the five hundred
+  // builder-slaves, the maxim that no man is rich who cannot feed an army out of his estate (2.7-8).
+  //
+  // Carrhae (23-31) is given at full length, including what the arrows did to men's bodies (25.5)
+  // and the head of Publius on a pike (26.4). Plutarch built the battle as a tragedy and closes it
+  // with the Bacchae performed over Crassus' actual head (33.2-4); the Euripides is quoted as verse,
+  // and the antiphon «¿Quién lo mató?» / «Mío es el honor» is kept in its dialogue form, because
+  // Pomaxathres' jumping up to claim the line is the whole point of the scene.
+  //
+  // Two Roman terms are kept and glossed in place rather than domesticated: «ovación» for the lesser
+  // triumph (11.8, cross-referring to the Marcellus, as Plutarch does) and the decimation of 10.2,
+  // named for what it is and counted out — one man in ten of five hundred.
+  'plutarch-crassus': 'greco/plutarch-crassus',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
