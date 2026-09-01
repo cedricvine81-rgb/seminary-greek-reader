@@ -621,6 +621,42 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // NOT from the cry evohé, and «dictator», from dicere, because he is named rather than elected.
   // Where his etymology is wrong by modern lights it is still his, and it stands.
   'plutarch-marcellus': 'greco/plutarch-marcellus',
+  // ROMULUS is a Life built almost entirely out of etymologies, and they are its argument: Plutarch
+  // is showing that Rome's institutions can be read backwards out of the words Romans still use.
+  // So «Roma» from ῥώμη, strength; ruminal from «ruma», the teat; the pomerium as post-murum;
+  // lictors from ligare; manípulos from the bundles of hay on poles; Comicio from comire; Quirino
+  // from quiris, the spear. Each is kept as Plutarch gives it, wrong or right by modern philology,
+  // with the Latin or Greek word beside the Spanish where the derivation depends on hearing it.
+  //
+  // The rape of the Sabine women (14-19) is translated in full, and so is Plutarch's own defence of
+  // Romulus's motive and the women's speech at 19.3-5, which is the chapter's moral centre: it is
+  // they, not the armies, who end the war, and softening either half would remove his argument.
+  'plutarch-romulus': 'greco/plutarch-romulus',
+  // ⚠ NICIAS OPENS BY REFUSING TO COMPETE WITH THUCYDIDES, and that preface (1) is kept whole
+  // because it states the method of the whole book: Plutarch will not re-narrate what Thucydides
+  // and Philistus did inimitably, but gather what escapes most readers — inscriptions, decrees,
+  // scattered remarks — for the sake of understanding character. It also carries his sharpest
+  // literary abuse, of Timaeus, quoted verse and all.
+  //
+  // The comic fragments (Telecleides, Eupolis, Aristophanes, Phrynichus, Plato comicus) are kept as
+  // verse and as jokes; Aristophanes' coinage μελλονικιᾶν — dithering, punning on Nicias' name — is
+  // rendered «andemos niciando», since the pun IS the evidence for how Athens saw him.
+  //
+  // The lunar eclipse (23) keeps Plutarch's full digression on Anaxagoras, on why physical
+  // explanations were still dangerous to publish, and on Dion sailing regardless: it is his
+  // explanation of why the army died, and it is an argument about superstition, not a detail.
+  'plutarch-nicias': 'greco/plutarch-nicias',
+  // CLEOMENES continues the Agis, and it opens mid-sentence on «muerto aquel» — Agis. That is the
+  // Life's own beginning, not a truncation; the pair is one book in the manuscripts and the Spanish
+  // keeps the join as it stands rather than supplying a name the Greek does not have.
+  //
+  // Its ending is the reason the Life exists, and it is translated without softening: Cleomenes and
+  // his thirteen killing themselves in the Alexandrian street, Panteo checking each body and dying
+  // on his king's; then Ptolemy flaying and gibbeting the corpse and killing the children, the
+  // mother and the women. Plutarch gives the women the last word — Cratesiclea's «Hijos, ¿adónde os
+  // habéis ido?» and Panteo's wife laying out every other woman before composing herself — and
+  // states outright that Sparta's women matched its men. Cutting any of it would cut his verdict.
+  'plutarch-cleomenes': 'greco/plutarch-cleomenes',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
