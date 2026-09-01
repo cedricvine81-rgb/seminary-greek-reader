@@ -436,6 +436,17 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // rendered as what it is — what Plutarch's characters say — and nothing is softened or cut.
   'plutarch-table-talk-4': 'greco/plutarch-table-talk-4',
   'plutarch-table-talk-5': 'greco/plutarch-table-talk-5',
+  // PHILOPOEMEN and FLAMININUS, the pair — the last great Greek and the Roman who freed Greece,
+  // and each Life is partly about resenting the other. The comparison that closes the pair is
+  // registered separately, above.
+  //
+  // Two documents in Flamininus are quoted as documents and kept as verse: the Isthmian
+  // proclamation of Greek freedom (10.4), which the Spanish keeps as the herald's single
+  // sentence with its list of peoples intact; and the Chalcidian paean still sung in Plutarch's
+  // own day (16.4), whose closing lines he copies because he has cut the rest for length — the
+  // Spanish says so where he says so, rather than silently presenting a whole hymn.
+  'plutarch-philopoemen': 'greco/plutarch-philopoemen',
+  'plutarch-flamininus': 'greco/plutarch-flamininus',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
