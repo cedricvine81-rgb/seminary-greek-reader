@@ -266,7 +266,17 @@ function filterWords(config: StudyConfig, V: VocabData): BgvbWord[] {
 
 // ── Main component ───────────────────────────────────────────────────────────
 
-export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLang; onLangChange?: (l: VocabLang) => void }) {
+export function VocabBuilder({ lang = 'greek', onLangChange, initialSubsections }: {
+  lang?: VocabLang
+  onLangChange?: (l: VocabLang) => void
+  /**
+   * Subsection keys to open already selected, e.g. ["1-A"]. Used when the deck is opened FROM
+   * something that already names its vocabulary — a quiz assignment — so the student lands on
+   * the right words instead of hunting for them. Seeded once, not a controlled prop: the
+   * picker is theirs to change from that starting point.
+   */
+  initialSubsections?: string[]
+}) {
   const t = useT()
   // The active deck. VocabBuilder is remounted (key={lang}) when the language switches, so
   // per-language state (config, session, progress) simply starts fresh — no cross-over.
@@ -278,7 +288,13 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
   const V = useMemo<VocabData>(() => ({ ...base, gloss: deckGloss }), [base, deckGloss])
   const [tab, setTab] = useState<Tab>('study')
   const [progress, setProgress] = useState<ProgressMap>({})
-  const [config, setConfig] = useState<StudyConfig>(() => defaultConfig(V))
+  const [config, setConfig] = useState<StudyConfig>(() => {
+    const base = defaultConfig(V)
+    // Only honour keys this deck actually has: a stale or wrong-language subsection would
+    // otherwise select nothing and look like an empty deck rather than a bad argument.
+    const wanted = (initialSubsections ?? []).filter(k => V.allSubsectionKeys.includes(k))
+    return wanted.length ? { ...base, subsections: wanted } : base
+  })
   const [sessionWords, setSessionWords] = useState<BgvbWord[] | null>(null)
   const [directions, setDirections] = useState<boolean[]>([])
   const [idx, setIdx] = useState(0)

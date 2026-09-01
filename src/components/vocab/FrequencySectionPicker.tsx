@@ -225,7 +225,7 @@ export function FrequencySectionPicker({
                       {bandL.short(band.band)}
                     </span>
                   )}
-                  <span className="text-sm text-gray-500 ml-2">
+                  <span className="text-sm text-gray-600 ml-2">
                     {t('vocab.wordCount', { n: subs.reduce((n, sub) => n + sub.words.length, 0) })}
                     {sectionRange && <> · {sectionRange}</>}
                     {' '}· {t('vocab.upToCoverage', { pct: coverage, corpus: t(deck.lang === 'hebrew' ? 'vocab.corpus.hebrew' : 'vocab.corpus.greek') })}
@@ -257,14 +257,14 @@ export function FrequencySectionPicker({
                               'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
                               isSubSelected
                                 ? 'bg-gray-100 border-gray-300 text-gray-900'
-                                : 'bg-surface border-gray-200 text-gray-600 hover:text-gray-900',
+                                : 'bg-surface border-gray-200 text-gray-800 hover:text-gray-900',
                             )}
                           >
+                            {/* The subsection code (§1-A) is what a student scans for when a quiz
+                                names one, so it is set at full strength rather than muted until
+                                selected — reading it was the reported difficulty. */}
                             <span className="text-base font-semibold leading-none">{sub.label}</span>
-                            <span className={clsx(
-                              'text-xs mt-1 leading-none',
-                              isSubSelected ? 'text-gray-600' : 'text-gray-500',
-                            )}>
+                            <span className="text-xs mt-1 leading-none text-gray-600">
                               {sub.rankRange}
                             </span>
                           </button>

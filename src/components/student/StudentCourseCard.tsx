@@ -1,8 +1,10 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { Card, CardTitle } from '@/components/ui/Card'
-import { ChevronDown, ArrowLeft, AtSign, Check } from 'lucide-react'
+import { ChevronDown, ArrowLeft, AtSign, Check, BookOpen } from 'lucide-react'
+import { SelfStudyPanel } from '@/components/student/SelfStudyPanel'
 import { differenceInCalendarDays } from 'date-fns'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import { StudentGradebook, type GradebookRow } from '@/components/student/StudentGradebook'
@@ -21,7 +23,11 @@ export interface StudentCourse {
   instructorName: string
   /** Comma-separated: a co-taught course mails the whole teaching team. */
   instructorEmail: string
-  assignments: { id: string; title: string; type: string; dueDate: string; weekNumber: number; completed: boolean }[]
+  assignments: {
+    id: string; title: string; type: string; dueDate: string; weekNumber: number; completed: boolean
+    /** Frequency subsections a vocabulary quiz draws on, e.g. ["1-A"]. Empty for other types. */
+    vocabSubsections?: string[]
+  }[]
   gradebookRows: GradebookRow[]
   gradeCategoryWeights: CategoryWeights | null
 }
@@ -45,6 +51,13 @@ function assignmentHref(a: { id: string; type: string }): string {
   return a.type === 'GROUP_PRESENTATION' ? '/student/group-presentations' : `/student/assignments/${a.id}`
 }
 
+// The deck is heavy (it pulls the whole vocabulary) and most students never open it from
+// here, so it stays out of the dashboard bundle until the row's Vocabulary button is pressed.
+const VocabBuilder = dynamic(
+  () => import('@/components/vocab/VocabBuilder').then(m => m.VocabBuilder),
+  { ssr: false },
+)
+
 function DueLabel({ dueDate }: { dueDate: string }) {
   const t = useT()
   const locale = useLocale()
@@ -58,6 +71,9 @@ function DueLabel({ dueDate }: { dueDate: string }) {
 export function StudentCourseCard({ course, studentName }: { course: StudentCourse; studentName: string }) {
   const t = useT()
   const [open, setOpen] = useState(false)
+  // The vocabulary a quiz row has opened beside the list, or null. Held here rather than per
+  // row so opening a second row's words replaces the first rather than stacking panels.
+  const [vocabPanel, setVocabPanel] = useState<{ id: string; title: string; subsections: string[] } | null>(null)
   const status = courseStatus(course.startDate, course.endDate)
   const sortedAssignments = [...course.assignments].sort((a, b) => a.weekNumber - b.weekNumber)
 
@@ -67,6 +83,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
   }
 
   return (
+    <>
     <Card className={open ? 'space-y-4' : ''}>
       {/* Course title toggles the whole course open/closed */}
       <button
@@ -134,28 +151,48 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                 <p className="text-sm text-gray-400 italic">{t('course.noAssignments')}</p>
               ) : (
                 <div className="space-y-1.5">
-                  {sortedAssignments.map(a => (
-                    <Link
-                      key={a.id}
-                      href={assignmentHref(a)}
-                      className="flex items-center justify-between px-3 py-2 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors gap-3"
-                    >
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">
-                          <span className="text-gray-400 mr-1.5 text-xs">Wk {a.weekNumber}</span>{a.title}
-                        </p>
-                        <DueLabel dueDate={a.dueDate} />
+                  {/* The row is a container rather than one big link, because the vocabulary
+                      button sits inside it and an anchor may not contain a button. */}
+                  {sortedAssignments.map(a => {
+                    const vocabSubs = a.vocabSubsections ?? []
+                    return (
+                      <div
+                        key={a.id}
+                        className="flex items-center justify-between px-3 py-2 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors gap-3"
+                      >
+                        <Link
+                          href={assignmentHref(a)}
+                          // Opening the quiz closes the vocabulary pane. Navigating away unmounts
+                          // it anyway, but the rule is stated here because it is the point: the
+                          // word list must not stay readable beside the quiz that tests it.
+                          onClick={() => setVocabPanel(null)}
+                          className="min-w-0 flex-1"
+                        >
+                          <p className="text-sm font-medium text-gray-900 truncate">
+                            <span className="text-gray-400 mr-1.5 text-xs">Wk {a.weekNumber}</span>{a.title}
+                          </p>
+                          <DueLabel dueDate={a.dueDate} />
+                        </Link>
+                        <div className="shrink-0 flex items-center gap-2">
+                          {vocabSubs.length > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => setVocabPanel({ id: a.id, title: a.title, subsections: vocabSubs })}
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border border-brand-200 text-brand-700 hover:bg-brand-50 transition-colors"
+                            >
+                              <BookOpen size={12} /> {t('course.viewVocab')}
+                            </button>
+                          )}
+                          {a.completed && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-200">
+                              <Check size={12} /> {t('course.completed')}
+                            </span>
+                          )}
+                          <span className="text-xs text-gray-500">{TYPE_LABEL_KEYS[a.type] ? t(TYPE_LABEL_KEYS[a.type]) : typeName(a.type)}</span>
+                        </div>
                       </div>
-                      <div className="shrink-0 flex items-center gap-2">
-                        {a.completed && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                            <Check size={12} /> {t('course.completed')}
-                          </span>
-                        )}
-                        <span className="text-xs text-gray-500">{TYPE_LABEL_KEYS[a.type] ? t(TYPE_LABEL_KEYS[a.type]) : typeName(a.type)}</span>
-                      </div>
-                    </Link>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -199,5 +236,23 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
         </div>
       )}
     </Card>
+
+    {/* The quiz's own words, opened beside the course list rather than over it — the same
+        right-hand dock the self-study plan uses, so the list stays visible behind. */}
+    {vocabPanel && (
+      <SelfStudyPanel
+        key={vocabPanel.id}
+        title={t('course.vocabFor', { title: vocabPanel.title })}
+        subtitle={vocabPanel.subsections.map(s => `§${s}`).join(', ')}
+        fullHref="/vocab"
+        fullLabel={t('ss.fullPage')}
+        closeLabel={t('action.close')}
+        resizeLabel={t('ss.resizePanel')}
+        onClose={() => setVocabPanel(null)}
+      >
+        <VocabBuilder initialSubsections={vocabPanel.subsections} />
+      </SelfStudyPanel>
+    )}
+    </>
   )
 }
