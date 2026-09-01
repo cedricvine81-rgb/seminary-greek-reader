@@ -787,6 +787,39 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // (34.2-3); and Sila's own Greek self-styling «Epafrodito», which he says stood on the trophies.
   // His disease (36.2-3) is described exactly as Plutarch describes it, φθειρίασις and all.
   'plutarch-sulla': 'greco/plutarch-sulla',
+  // CICERON is the Life of a man of words, and that is its whole translation problem: Plutarch keeps
+  // the Latin jokes in Greek transliteration and then explains them, so the Spanish keeps them too
+  // and lets the explanation do its work — «Cicerón» from `cicer`, the chickpea, and his answer to
+  // the friends who told him to change his name (1.3-5); «Verres», the boar, and the pun on the
+  // Jewish freedman (7.6-8); the string of retorts collected in 25-27. Where a joke lives entirely
+  // in a Latin word, the word stays beside the Spanish rather than being replaced by a Spanish pun
+  // Plutarch never made.
+  //
+  // The Catilinarian executions (19-22) and Cicero's exile and return (30-33) are given straight,
+  // including Plutarch's own verdict on the self-praise (24) and the proscription and death (47-49),
+  // where the head and hands are nailed to the rostra. Nothing is softened.
+  'plutarch-cicero': 'greco/plutarch-cicero',
+  // ARATO carries one corpus defect worth recording. At 1:3 the Perseus Greek has a transliterated
+  // running title leaked into the sentence — `πλυταρξηʼς λιες`, i.e. *Plutarchi Vitae* — sitting
+  // inside οὐ γὰρ ἰδίων ... ἀπορίᾳ καλῶν. That is conversion noise from the printed page, not damage
+  // belonging to the text, so by the mirror-the-wound-not-the-scar rule it is silently dropped and
+  // the sentence is translated as Plutarch wrote it. Do NOT "restore" it.
+  //
+  // The Life is addressed to Polycrates and his sons, and the second person of the dedication (1)
+  // is kept as second person. Arato's own ὑπομνήματα are quoted against him repeatedly (33, 38);
+  // where Plutarch reports what Arato claimed and then disbelieves it, both halves stand.
+  'plutarch-aratus': 'greco/plutarch-aratus',
+  // MARIO opens on the Roman naming system (1) — praenomen, gentile, cognomen — which Plutarch
+  // discusses in Greek without the Latin terms. The Spanish follows him: it explains what he
+  // explains and does not import the technical vocabulary he chose not to use.
+  //
+  // The Life's hardest pages are translated in full: the Cimbrian women killing their own children
+  // and themselves at the wagons (27.2-3), the proscriptions and the bardieos (43-44), Cátulo's
+  // charcoal, and Mario's death in drink and delirium (45). Two set pieces are kept intact because
+  // Plutarch built them as set pieces — the Trebonio case (14.3-5), where the soldier who killed
+  // his commanding officer rather than be forced is crowned for it, and the slave sent to kill
+  // Mario at Minturnas who cannot (39.2).
+  'plutarch-marius': 'greco/plutarch-marius',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
