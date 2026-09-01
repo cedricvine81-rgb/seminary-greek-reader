@@ -107,8 +107,18 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   // Vocab-quiz auto-generation: count + Generate Questions, moved here from the
   // QuizBuilder panel so the workflow is "configure → generate" in one card.
   const [numQuestions, setNumQuestions] = useState(20)
-  // Vocab word selection (BGVB frequency sections), pre-filled from the saved quiz.
-  const [vocabSubsections, setVocabSubsections] = useState<string[]>(initial.vocabSelection?.subsections ?? [])
+  // Vocab word selection (BGVB frequency sections), pre-filled with the quiz's OWN
+  // section, parsed from the title ("Week 5 — Vocabulary Quiz (§1-E)") — the same
+  // load-bearing convention the series bulk actions and the student word-list button
+  // read. NOT vocabSelection.subsections: the semester builder stores the whole
+  // candidate pool there (all sixteen of §1-A–§2-H on every quiz), so seeding from it
+  // highlighted the entire pool and, worse, armed Generate Questions to rebuild a
+  // 20-word section quiz as a 320-question sweep of everything. Falls back to the
+  // stored selection when the title names nothing.
+  const [vocabSubsections, setVocabSubsections] = useState<string[]>(() => {
+    const fromTitle = Array.from((initial.title ?? '').matchAll(/§\s*(\d+-[A-Z])/g)).map(m => m[1])
+    return fromTitle.length ? fromTitle : (initial.vocabSelection?.subsections ?? [])
+  })
   const [generating, setGenerating] = useState(false)
   const [generatedCount, setGeneratedCount] = useState<number | null>(null)
   const [generateError, setGenerateError] = useState('')

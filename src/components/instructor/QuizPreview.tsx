@@ -15,7 +15,11 @@ interface Question {
   points: number
 }
 
-export function QuizPreview({ questions, provideDefinition }: { questions: Question[]; provideDefinition: boolean }) {
+// No provideDefinition prop: a mixed quiz sets that assignment-level flag for ANY open-ended
+// share, so keying the preview on it rendered a 57/43 mix as 100% typed answers. Each question
+// already knows what it is — the same per-question rule QuizPlayer uses — so the preview must
+// read the question, never the flag.
+export function QuizPreview({ questions }: { questions: Question[] }) {
   const t = useT()
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
 
@@ -76,8 +80,8 @@ export function QuizPreview({ questions, provideDefinition }: { questions: Quest
                 </button>
               </div>
 
-              {/* Multiple choice options */}
-              {!provideDefinition && q.options.length > 0 && (
+              {/* Multiple choice iff the question itself is — same rule as QuizPlayer */}
+              {q.type === 'MULTIPLE_CHOICE' && q.options.length > 0 && (
                 <ul className="grid grid-cols-2 gap-1.5 mt-1">
                   {q.options.map((opt, i) => (
                     <li
@@ -97,8 +101,8 @@ export function QuizPreview({ questions, provideDefinition }: { questions: Quest
                 </ul>
               )}
 
-              {/* Provide-definition: show text box placeholder */}
-              {provideDefinition && (
+              {/* Open-ended: show text box placeholder */}
+              {!(q.type === 'MULTIPLE_CHOICE' && q.options.length > 0) && (
                 <div className="mt-1 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-400 italic">
                   {t('qp.typesAnswer')}
                 </div>

@@ -165,7 +165,6 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
               options: q.options,
               points: q.points,
             }))}
-            provideDefinition={assignment.provideDefinition}
           />
         )}
 
