@@ -447,6 +447,14 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Spanish says so where he says so, rather than silently presenting a whole hymn.
   'plutarch-philopoemen': 'greco/plutarch-philopoemen',
   'plutarch-flamininus': 'greco/plutarch-flamininus',
+  // GALBA completes the pair with OTHO, already registered above — the two surviving Lives of
+  // the Caesars, and the only place Plutarch writes the history of his own lifetime. The Spanish
+  // keeps the Roman military and administrative vocabulary as Plutarch transliterates it rather
+  // than modernising: the «principia» of the camp, the opción and the teserario, the sarmiento
+  // with which a centurion beats his men. Where he glosses a Roman term for his Greek readers
+  // (the calends of January, the eighteenth day before the calends of February), the gloss is
+  // kept, because it is his, not ours.
+  'plutarch-galba': 'greco/plutarch-galba',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
