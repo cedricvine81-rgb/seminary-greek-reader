@@ -27,6 +27,8 @@ export interface StudentCourse {
     id: string; title: string; type: string; dueDate: string; weekNumber: number; completed: boolean
     /** Frequency subsections a vocabulary quiz draws on, e.g. ["1-A"]. Empty for other types. */
     vocabSubsections?: string[]
+    /** Deck the word-list button opens — the keys overlap between decks, so this must be explicit. */
+    vocabLang?: 'greek' | 'hebrew'
   }[]
   gradebookRows: GradebookRow[]
   gradeCategoryWeights: CategoryWeights | null
@@ -73,7 +75,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
   const [open, setOpen] = useState(false)
   // The vocabulary a quiz row has opened beside the list, or null. Held here rather than per
   // row so opening a second row's words replaces the first rather than stacking panels.
-  const [vocabPanel, setVocabPanel] = useState<{ id: string; title: string; subsections: string[] } | null>(null)
+  const [vocabPanel, setVocabPanel] = useState<{ id: string; title: string; subsections: string[]; lang: 'greek' | 'hebrew' } | null>(null)
   const status = courseStatus(course.startDate, course.endDate)
   const sortedAssignments = [...course.assignments].sort((a, b) => a.weekNumber - b.weekNumber)
 
@@ -181,7 +183,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                             {vocabSubs.length > 0 && (
                               <button
                                 type="button"
-                                onClick={() => setVocabPanel({ id: a.id, title: a.title, subsections: vocabSubs })}
+                                onClick={() => setVocabPanel({ id: a.id, title: a.title, subsections: vocabSubs, lang: a.vocabLang ?? 'greek' })}
                                 className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border border-brand-200 text-brand-700 hover:bg-brand-50 transition-colors"
                               >
                                 <BookOpen size={12} /> {t('course.viewVocab')}
@@ -257,7 +259,9 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
         resizeLabel={t('ss.resizePanel')}
         onClose={() => setVocabPanel(null)}
       >
-        <VocabBuilder initialSubsections={vocabPanel.subsections} />
+        {/* No onLangChange: the pane is pinned to the quiz's own language — a toggle here
+            would let a Hebrew quiz's word list wander into the Greek deck and vice versa. */}
+        <VocabBuilder lang={vocabPanel.lang} initialSubsections={vocabPanel.subsections} />
       </SelfStudyPanel>
     )}
     </>
