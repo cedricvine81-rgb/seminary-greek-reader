@@ -855,6 +855,20 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // bedding-sack (49.1), and the epilepsy, which Plutarch treats as a fact of the man's body (17.2,
   // 53.3) and which the Spanish neither hides nor dramatises.
   'plutarch-caesar': 'greco/plutarch-caesar',
+  // ⚠ TIMOLEON STARTS AT CHAPTER 0, AND THAT CHAPTER IS NOT TIMOLEON. Its eight sections are
+  // Plutarch's preface to the Timoleon-Aemilius PAIR — the passage on writing the Lives as a
+  // mirror, and on why these two are set together. It is numbered 0 in the corpus because it
+  // belongs to no chapter of the Life proper. It is translated as the preface it is, addressed
+  // in the second person to Sossius Senecio, and it must not be renumbered into chapter 1.
+  // (The formal comparison of the two men is a separate work, already registered above as
+  // plutarch-comp-timoleon-aemilius.)
+  //
+  // The Life's hinge is the killing of Timoleon's own brother (4.5-8) and the twenty years of
+  // withdrawal it cost him (5-7); it is given straight, including the mother shutting her door
+  // and the attempt to starve himself. Plutarch's long digression on Dionysius reduced to a
+  // private man in Corinth (14-15) is kept whole rather than trimmed, because he says outright
+  // it is not out of place in writing Lives — cutting it would delete his defence of it.
+  'plutarch-timoleon': 'greco/plutarch-timoleon',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
