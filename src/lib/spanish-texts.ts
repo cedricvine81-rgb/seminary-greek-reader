@@ -491,6 +491,37 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // 25.5 — not a quinsy but a silver-quinsy; and the ladrón «de bronce» of 11.5, where the thief's
   // nickname is the joke about bronze thieves and mud walls.
   'plutarch-demosthenes': 'greco/plutarch-demosthenes',
+  // ARTAXERXES is the one Life whose sources Plutarch openly distrusts while using them, and the
+  // Spanish keeps that. Ctesias was the king's own physician and present at Cunaxa, and Plutarch
+  // both leans on him and says he bends the truth toward the theatrical — the line about killing
+  // Cyrus «como con un puñal romo» is a judgement on the historian, not on the man, and is left as
+  // the joke it is. Where Dinon and Ctesias disagree (the date of the poisoning, who held the
+  // knife), both versions stand attributed, unreconciled.
+  //
+  // The scaphe execution of 16.2-4 is translated in full, without softening. Plutarch describes it
+  // at that length to show what the court was; abbreviating it would be editing the argument.
+  'plutarch-artaxerxes': 'greco/plutarch-artaxerxes',
+  // THESEUS is the first pair of the whole work, and its proem is Plutarch drawing the line where
+  // history stops — «lo de más allá es prodigioso y trágico, y lo ocupan poetas y mitógrafos». The
+  // Spanish keeps that map metaphor intact, because the rest of the Life is written under it: every
+  // variant is given as somebody's report, never as fact.
+  //
+  // ⚠ THE PERSEUS TEXT LEAKS ITS OWN APPARATUS INTO THE GREEK: bare citation strings («Hom. Il.
+  // 3.144», «Aesch. Seven 435», «Bergk, Poet. Lyr. Gr. ii.4 p. 254», «Verse 370») sit inline in the
+  // verses that quote poetry. Those are conversion artifacts of the digital edition, not Plutarch's
+  // words and not damage to the transmitted text, so they are dropped from the Spanish — the quoted
+  // verse itself is kept. This is the one place in the Lives where the rule cuts that way; textual
+  // damage is always mirrored, but a scraper's footnote is not textual damage.
+  'plutarch-theseus': 'greco/plutarch-theseus',
+  // NUMA is a Life about religion as statecraft, and its vocabulary is technical Roman: pontífices,
+  // flámines, salios, feciales, ancilia, the Regia, the mes mercedino. Plutarch transliterates these
+  // into Greek and then glosses them for his Greek readers («pontem» is the bridge, «hoc age» means
+  // "haz esto", «maiores» and «iuniores» are the elder and younger); every one of those glosses is
+  // his, so every one is kept, including the ones modern philology rejects.
+  //
+  // The living burial of an unchaste Vestal (10.4-7) is rendered whole, at Plutarch's own pace —
+  // he slows down there deliberately, and the horror is the point he is making about the office.
+  'plutarch-numa': 'greco/plutarch-numa',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
