@@ -551,6 +551,36 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Cartago no debe existir», answered by Nasica's, which is the Greek Plutarch wrote, not the Latin
   // tag it later became.
   'plutarch-cato-the-elder': 'greco/plutarch-cato-the-elder',
+  // PHOCION is the Life of a man who said no for forty-five years, and Plutarch keeps his speech
+  // deliberately bare — the Spanish keeps it bare too, resisting the temptation to smooth the
+  // curtness into politeness. His answers to Demosthenes and to the Assembly are short because
+  // shortness is the character: Plutarch says his speech had the most meaning in the fewest words,
+  // and a fluent Spanish would refute the sentence that describes it.
+  //
+  // The hemlock at the end (36-37) is translated whole, including the detail that he had to pay for
+  // the extra dose because the state's portion ran short — Plutarch puts the Athenians' meanness in
+  // that one accounting fact, and softening it would remove his verdict.
+  'plutarch-phocion': 'greco/plutarch-phocion',
+  // ARISTIDES turns on a nickname, «el Justo», and on the ostracism story where an illiterate
+  // countryman asks Aristides himself to scratch «Aristides» on the sherd because he is tired of
+  // hearing him called that. The pun is on the epithet, not on a Greek word, so it survives into
+  // Spanish intact and is kept exactly where Plutarch sets it.
+  //
+  // The financial vocabulary of the Delian League — φόρος as the assessed tribute — is rendered
+  // «tributo» throughout, and the sums are left in talents, not converted: the assessment of 460
+  // talents is the number the ancient argument is about.
+  'plutarch-aristides': 'greco/plutarch-aristides',
+  // LYSANDER carries two technical descriptions that the Spanish keeps in full rather than
+  // summarising, because Plutarch wrote them as digressions on purpose: the scytale cipher (19.5-7),
+  // where the ciphertext is only readable when re-wound on a matching rod, and the iron currency of
+  // Sparta (17.2-3) with the etymology of «óbolo» from the iron spits and of «dracma» from the
+  // handful of six. Both are explanations, and an explanation that is abridged stops explaining.
+  //
+  // The Perseus Greek here also leaks its own apparatus: a bare «Unknown.» sits at the end of the
+  // verses that quote poetry whose author the digital edition could not identify (18.3, 20.4). That
+  // is a conversion artifact, not Plutarch's word and not damage to the transmitted text, so it is
+  // dropped from the Spanish while the quoted verse itself is kept — the same call made in Theseus.
+  'plutarch-lysander': 'greco/plutarch-lysander',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
