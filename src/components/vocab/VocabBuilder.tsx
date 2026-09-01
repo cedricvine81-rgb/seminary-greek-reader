@@ -1263,13 +1263,18 @@ function StudySettings({
                                 onClick={() => toggleSubsection(sub.key)}
                                 className={clsx(
                                   'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
+                                  // Selected sections carry the brand tint, not a grey one step off
+                                  // the unselected chip: which sections are on is the whole state of
+                                  // this picker, and in grey alone it was easy to misread. The
+                                  // unselected code sits at full strength too — students scanning
+                                  // for the section a quiz names reported it as hard to read.
                                   isSubSelected
-                                    ? 'bg-gray-100 border-gray-300 text-gray-900'
-                                    : 'bg-surface border-gray-200 text-gray-600 hover:text-gray-900'
+                                    ? 'bg-brand-100 border-brand-400 text-brand-900 ring-1 ring-brand-300'
+                                    : 'bg-surface border-gray-200 text-gray-800 hover:text-gray-900'
                                 )}
                               >
                                 <span className="text-base font-semibold leading-none">{sub.label}</span>
-                                <span className={clsx('text-xs mt-1 leading-none', isSubSelected ? 'text-gray-600' : 'text-gray-500')}>
+                                <span className={clsx('text-xs mt-1 leading-none', isSubSelected ? 'text-brand-700' : 'text-gray-600')}>
                                   {sub.rankRange}
                                 </span>
                               </button>
@@ -1412,13 +1417,15 @@ function StudySettings({
                       onClick={() => toggleSubsection(b.key)}
                       className={clsx(
                         'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
+                        // Same treatment as the §-subsection chips above, so the two grids of
+                        // chips cannot disagree about what "selected" looks like.
                         isSelected
-                          ? 'bg-gray-100 border-gray-300 text-gray-900'
-                          : 'bg-surface border-gray-200 text-gray-600 hover:text-gray-900'
+                          ? 'bg-brand-100 border-brand-400 text-brand-900 ring-1 ring-brand-300'
+                          : 'bg-surface border-gray-200 text-gray-800 hover:text-gray-900'
                       )}
                     >
                       <span className="text-base font-semibold leading-none">{b.label}</span>
-                      <span className={clsx('text-xs mt-1 leading-none', isSelected ? 'text-gray-600' : 'text-gray-500')}>
+                      <span className={clsx('text-xs mt-1 leading-none', isSelected ? 'text-brand-700' : 'text-gray-600')}>
                         {b.rankRange}
                       </span>
                     </button>

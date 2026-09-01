@@ -160,32 +160,34 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                         key={a.id}
                         className="flex items-center justify-between px-3 py-2 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors gap-3"
                       >
-                        {/* The word list sits beside the quiz it belongs to, not over with the
-                            status chips: a student scanning the list reads left to right and wants
-                            the words next to the thing that names them. */}
-                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                        {/* Title on its own line, then the due date and the word list together on
+                            the second: the button belongs with the row's small print rather than
+                            beside the title, where it crowded a long name. */}
+                        <div className="min-w-0 flex-1">
                           <Link
                             href={assignmentHref(a)}
                             // Opening the quiz closes the vocabulary pane. Navigating away unmounts
                             // it anyway, but the rule is stated here because it is the point: the
                             // word list must not stay readable beside the quiz that tests it.
                             onClick={() => setVocabPanel(null)}
-                            className="min-w-0"
+                            className="block min-w-0"
                           >
                             <p className="text-sm font-medium text-gray-900 truncate">
                               <span className="text-gray-400 mr-1.5 text-xs">Wk {a.weekNumber}</span>{a.title}
                             </p>
-                            <DueLabel dueDate={a.dueDate} />
                           </Link>
-                          {vocabSubs.length > 0 && (
-                            <button
-                              type="button"
-                              onClick={() => setVocabPanel({ id: a.id, title: a.title, subsections: vocabSubs })}
-                              className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border border-brand-200 text-brand-700 hover:bg-brand-50 transition-colors"
-                            >
-                              <BookOpen size={12} /> {t('course.viewVocab')}
-                            </button>
-                          )}
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <DueLabel dueDate={a.dueDate} />
+                            {vocabSubs.length > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => setVocabPanel({ id: a.id, title: a.title, subsections: vocabSubs })}
+                                className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border border-brand-200 text-brand-700 hover:bg-brand-50 transition-colors"
+                              >
+                                <BookOpen size={12} /> {t('course.viewVocab')}
+                              </button>
+                            )}
+                          </div>
                         </div>
                         <div className="shrink-0 flex items-center gap-2">
                           {a.completed && (

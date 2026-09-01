@@ -117,10 +117,20 @@ export default async function StudentPage() {
         dueDate: effectiveDeadline(a).toISOString(),
         weekNumber: a.weekNumber,
         completed: completedIds.has(a.id),
-        // The frequency subsections a vocabulary quiz draws on (e.g. ["1-A"]). Carried so the
-        // row can offer the words themselves beside the quiz — students were hunting for the
-        // right section by hand after reading it out of the quiz title.
-        vocabSubsections: ((a.vocabSelection ?? null) as { subsections?: string[] } | null)?.subsections ?? [],
+        // The week's OWN new vocabulary, for the row's word-list button.
+        //
+        // NOT `vocabSelection.subsections`: that is the candidate POOL the generator may draw
+        // from, and with cumulative review turned on every quiz in a course stores the same
+        // wide pool — in Beginning Greek FA26 all sixteen of §1-A–§2-H, on week 1 as on week 14.
+        // Opening that pool selected the whole of Beginning Greek and told the student nothing.
+        // The section that is new this week is named in the TITLE ("Week 3 — Vocabulary Quiz
+        // (§1-C)"), which is the only place it is recorded, so that is what the button honours.
+        // Falls back to the stored pool when a title names nothing, which is no worse than before.
+        vocabSubsections: (() => {
+          const fromTitle = Array.from(a.title.matchAll(/§\s*(\d+-[A-Z])/g)).map(m => m[1])
+          if (fromTitle.length) return fromTitle
+          return ((a.vocabSelection ?? null) as { subsections?: string[] } | null)?.subsections ?? []
+        })(),
       })),
       // Class exercises (assessed=false) stay in `assignments` — they are real work with a
       // due date — but never enter the grade book or the course average.

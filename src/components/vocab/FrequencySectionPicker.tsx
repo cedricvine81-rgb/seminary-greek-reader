@@ -255,8 +255,11 @@ export function FrequencySectionPicker({
                             onClick={() => toggleSubsection(sub.key)}
                             className={clsx(
                               'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
+                              // Selected sections carry the brand tint rather than a grey one step
+                              // off the unselected chip: which sections are on is the whole state of
+                              // this picker, and told in grey alone it was easy to misread.
                               isSubSelected
-                                ? 'bg-gray-100 border-gray-300 text-gray-900'
+                                ? 'bg-brand-100 border-brand-400 text-brand-900 ring-1 ring-brand-300'
                                 : 'bg-surface border-gray-200 text-gray-800 hover:text-gray-900',
                             )}
                           >
@@ -264,7 +267,10 @@ export function FrequencySectionPicker({
                                 names one, so it is set at full strength rather than muted until
                                 selected — reading it was the reported difficulty. */}
                             <span className="text-base font-semibold leading-none">{sub.label}</span>
-                            <span className="text-xs mt-1 leading-none text-gray-600">
+                            <span className={clsx(
+                              'text-xs mt-1 leading-none',
+                              isSubSelected ? 'text-brand-700' : 'text-gray-600',
+                            )}>
                               {sub.rankRange}
                             </span>
                           </button>
