@@ -455,6 +455,13 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // (the calends of January, the eighteenth day before the calends of February), the gloss is
   // kept, because it is his, not ours.
   'plutarch-galba': 'greco/plutarch-galba',
+  // PUBLICOLA is the Life most crowded with Roman etymologies, and each is the point of its
+  // sentence, so the Latin is printed beside the Spanish where the derivation lives: the freedman
+  // Vindicio and the «vindicta» that frees a slave; «pecus» and the «peculio» that is still named
+  // for the sheep it was counted in; «capras» and «porcos» behind the family names Caprario and
+  // Porcio. Publicola's own name Plutarch glosses himself — «el que cuida del pueblo» — and the
+  // gloss is kept as his.
+  'plutarch-publicola': 'greco/plutarch-publicola',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
