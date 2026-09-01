@@ -13,6 +13,7 @@ import { ChevronRight } from 'lucide-react'
 import { LocalDeadline } from './LocalDeadline'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { formatDate } from '@/lib/i18n/format'
+import { effectiveDeadline } from '@/lib/assignment-deadline'
 
 interface AssignmentListProps {
   assignments: Assignment[]
@@ -76,9 +77,17 @@ export function AssignmentList({ assignments, completedIds = [], courseNames = {
     <div className="space-y-2">
       {assignments.map(a => {
         const done = completed.has(a.id)
-        // Two-round passage exercises run until the Round 2 deadline, so judge
-        // "overdue"/"due" by that, not their dueDate (the Round 1 cut-off).
-        const finalDue = a.round2Deadline ?? a.round1Deadline ?? a.dueDate
+        // Judge "overdue"/"due" by the shared effective deadline: the Round 2 cut-off
+        // for two-round passage exercises, the LAST weekly deadline for activity logs —
+        // an activity log's dueDate is week 1's anchor, and reading it as final marked a
+        // 15-week report "Overdue" from the moment week 1 passed.
+        const finalDue = effectiveDeadline({
+          dueDate: new Date(a.dueDate),
+          round1Deadline: a.round1Deadline ? new Date(a.round1Deadline) : null,
+          round2Deadline: a.round2Deadline ? new Date(a.round2Deadline) : null,
+          type: a.type,
+          activityConfig: (a as { activityConfig?: unknown }).activityConfig,
+        }).toISOString()
         const overdue = !done && now !== null && new Date(finalDue).getTime() < now
         return (
           <Link

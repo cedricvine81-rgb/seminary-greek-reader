@@ -48,6 +48,9 @@ export function blankFindings(config: ConstructConfig): ConstructFinding[] {
 type WindowSource = {
   dueDate: Date; round1Deadline: Date | null; round2Deadline: Date | null
   allowLate: boolean; lateDaysLimit: number | null
+  // Optional because construct rows never carry them; activity logs must, so their
+  // window closes at the LAST weekly deadline rather than the week-1 anchor.
+  type?: string; activityConfig?: unknown
 }
 
 /**
