@@ -522,6 +522,35 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // The living burial of an unchaste Vestal (10.4-7) is rendered whole, at Plutarch's own pace —
   // he slows down there deliberately, and the horror is the point he is making about the office.
   'plutarch-numa': 'greco/plutarch-numa',
+  // FABIUS MAXIMUS is a Life about the value of doing nothing, and its two nicknames carry the
+  // argument: Cunctador, the delayer, was an insult before it was a title, and Ovícula, "corderito",
+  // was what they called the boy. Both are kept where Plutarch puts them. So is Hannibal's joke
+  // about the cloud on the heights that would one day burst — it is the enemy conceding the strategy.
+  //
+  // The Gisco exchange before Cannas (15.2) is a joke on a man's own name and survives translation
+  // intact; it is kept as the moment of nerve Plutarch means it to be, right before the disaster.
+  'plutarch-fabius-maximus': 'greco/plutarch-fabius-maximus',
+  // ⚠ THEMISTOCLES 13.2-3: THE HUMAN SACRIFICE BEFORE SALAMIS. Plutarch reports, on the authority of
+  // Phanias of Lesbos — whom he names and calls a philosopher and no stranger to historical writing —
+  // that three Persian prisoners were sacrificed to Dionysus Omestes on the seer's orders. It is
+  // translated whole and unsoftened, attributed exactly as he attributes it. Cutting or hedging it
+  // would edit a source-critical judgement Plutarch made on the page.
+  //
+  // Timocreon's two attack poems (21.2-5) are kept as verse and as invective; the second was written
+  // after Themistocles' own conviction, and its bitterness is the historical evidence.
+  'plutarch-themistocles': 'greco/plutarch-themistocles',
+  // CATO THE ELDER is largely a Life made of sayings, and the sayings are the argument: the Spanish
+  // keeps them short and hard, without smoothing the rudeness. Two carry their point in a name and
+  // are glossed as Plutarch glosses them: «catus», the shrewd man, behind Cato; and «Catones al
+  // revés», what Romans called those who imitated him badly.
+  //
+  // Three passages are translated without softening because Plutarch's own judgement is at stake:
+  // Cato selling worn-out slaves, which Plutarch openly calls a hard character and argues against at
+  // length (5.1-6); Lucius Quinctius killing a condemned man at dinner to please a boy (17.2-4), with
+  // Livy's dissenting version kept; and the closing formula on Carthage, «me parece además que
+  // Cartago no debe existir», answered by Nasica's, which is the Greek Plutarch wrote, not the Latin
+  // tag it later became.
+  'plutarch-cato-the-elder': 'greco/plutarch-cato-the-elder',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
