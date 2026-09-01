@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Check, Loader2, AlertCircle } from 'lucide-react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
 import { useApi } from '@/lib/api-client'
+import { Button } from '@/components/ui/Button'
 import type { ActivityLogConfig, ActivityLogEntries } from '@/lib/activity-log'
 
 interface Data {
@@ -163,37 +164,30 @@ function Log({ data, assignmentId, previewMode, onSaved }: {
                 done ? 'border-green-200 bg-green-50/60' : overdue ? 'border-amber-200 bg-amber-50/50' : 'border-gray-200'
               }`}
             >
-              <label className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  className="mt-1 h-4 w-4 accent-brand-600"
-                  checked={done}
-                  disabled={locked || (!done && !written)}
-                  onChange={e => toggleWeek(week, e.target.checked)}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="flex flex-wrap items-baseline gap-x-2">
-                    <span className="text-sm font-semibold text-gray-800">{t('al.week', { n: week })}</span>
-                    {deadline && (
-                      <span className="text-xs text-gray-500">
-                        {t('al.dueBy', { date: dateFmt.format(new Date(deadline)) })}
-                      </span>
-                    )}
-                    {overdue && (
-                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                        {t('al.overdue')}
-                      </span>
-                    )}
+              <div className="flex flex-wrap items-baseline gap-x-2">
+                <span className="text-sm font-semibold text-gray-800">{t('al.week', { n: week })}</span>
+                {deadline && (
+                  <span className="text-xs text-gray-500">
+                    {t('al.dueBy', { date: dateFmt.format(new Date(deadline)) })}
                   </span>
-                  <span className="mt-0.5 block text-xs text-gray-600">
-                    {done ? t('al.reportedOn', { date: dateFmt.format(new Date(entry!.at)) })
-                      : written ? t('al.markDone') : t('al.statementFirst')}
+                )}
+                {overdue && (
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                    {t('al.overdue')}
                   </span>
-                </span>
-              </label>
+                )}
+              </div>
+              <p
+                className={`mt-0.5 text-xs ${
+                  done ? 'font-medium text-green-700' : written ? 'text-amber-700' : 'text-gray-600'
+                }`}
+              >
+                {done ? t('al.reportedOn', { date: dateFmt.format(new Date(entry!.at)) })
+                  : written ? t('al.draft') : t('al.statementFirst')}
+              </p>
 
               {/* The statement of completion. Always available, because it has to be written
-                  before the week can be ticked — it is the report, not a note about it. */}
+                  before the week can be submitted — it is the report, not a note about it. */}
               <label className="mt-2 block">
                 <span className="sr-only">{t('al.statementLabel', { n: week })}</span>
                 <textarea
@@ -206,6 +200,30 @@ function Log({ data, assignmentId, previewMode, onSaved }: {
                   onBlur={() => void persist(entries, notes)}
                 />
               </label>
+
+              {/* Handing the week in is an explicit act with its own button. It was a checkbox,
+                  which students read as ticking off a list rather than as submitting — so a week
+                  could sit written-but-unreported all term, invisible to the instructor, and the
+                  only feedback was a "Saved" that a draft earns too. The button says what it does;
+                  the line above says which of the two states the week is actually in. */}
+              <div className="mt-2 flex items-center gap-2">
+                {done ? (
+                  !locked && (
+                    <Button size="sm" variant="ghost" onClick={() => toggleWeek(week, false)}>
+                      {t('al.undoSubmit')}
+                    </Button>
+                  )
+                ) : (
+                  <Button
+                    size="sm"
+                    variant="primary"
+                    disabled={locked || !written}
+                    onClick={() => toggleWeek(week, true)}
+                  >
+                    {t('al.submitWeek')}
+                  </Button>
+                )}
+              </div>
             </li>
           )
         })}
