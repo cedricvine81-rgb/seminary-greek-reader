@@ -657,6 +657,45 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // habéis ido?» and Panteo's wife laying out every other woman before composing herself — and
   // states outright that Sparta's women matched its men. Cutting any of it would cut his verdict.
   'plutarch-cleomenes': 'greco/plutarch-cleomenes',
+  // CORIOLANO is a Life about a man ruined by his own temper, and the Spanish keeps the temper.
+  // Plutarch's thesis is stated at 1.3-5 and again at 15 and 21: an unmixed nature, brave and
+  // incapable of the give-and-take a city requires, and the word he keeps using of him — αὐθάδεια,
+  // «arrogancia terca» — is translated the same way each time so the argument stays visible.
+  //
+  // Its centre is Volumnia's embassy (33-36), and her speech is translated whole, including the
+  // silence that follows it and Coriolano's «Has vencido, madre, una victoria feliz para la patria,
+  // pero mortal para mí». So is his death at Ancio and the Volscian mob shouting Tulo down. The
+  // grain debate (16-18), where he argues for abolishing the tribunate and starving the people
+  // into obedience, is likewise given in full: Plutarch reports it as what condemned him.
+  'plutarch-coriolanus': 'greco/plutarch-coriolanus',
+  // PELÓPIDAS turns on the liberation of Thebes (7-13), and the whole conspiracy — the dinner, the
+  // women, the letter Arquias will not read («los asuntos serios, para mañana») — is kept scene by
+  // scene, since Plutarch is writing it as a piece of narrative and its detail IS the point.
+  //
+  // The Sacred Band (18-19) carries his defence of an army of lovers, Pammenes' reading of Homer
+  // and Philip weeping at Queronea over the three hundred; it is translated straight, without
+  // euphemism and without commentary, because the argument about ἔρως is Plutarch's own.
+  //
+  // The dream at Leuctra (20-22) and the sacrifice of the virgin daughters is the Life's hardest
+  // passage: the debate among the commanders, Plutarch's own view that no god could want it, and
+  // the mare that runs into the camp and is sacrificed instead. All of it is kept, the objections
+  // included — the refusal is part of the story, not a gloss on it.
+  'plutarch-pelopidas': 'greco/plutarch-pelopidas',
+  // PERICLES is the Life of a style as much as of a man, and Plutarch measures it in the comic
+  // poets: the squill-head jokes, Cratino's «el que reúne cabezas», Telecleides, Hermipo's anapests
+  // calling him «rey de los sátiros». They are kept as verse and as insults; the Spanish does not
+  // soften them, since they are his evidence for what Athens felt about the Olympian.
+  //
+  // The building programme (12-14) and the trial of Fidias (31) are given whole, including the
+  // self-portrait on the shield that helped destroy him. So are the eclipse before the last voyage
+  // (35.2), Elpinice's rebuke and Pericles' line of Archilochus (28.5), and the deathbed speech at
+  // 38.4 — «ningún ateniense de los que viven se ha puesto un manto negro por mi causa» — which is
+  // the sentence the whole Life is built to reach.
+  //
+  // Anaxagoras' νοῦς is «Mente» throughout (4-6, 16, 32), capitalized, because Plutarch is naming a
+  // doctrine and not describing a state of mind, and the Megarian decree keeps Poliarces' joke
+  // about turning the tablet around (30.3): the pun is the anecdote.
+  'plutarch-pericles': 'greco/plutarch-pericles',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
