@@ -869,6 +869,14 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // private man in Corinth (14-15) is kept whole rather than trimmed, because he says outright
   // it is not out of place in writing Lives — cutting it would delete his defence of it.
   'plutarch-timoleon': 'greco/plutarch-timoleon',
+  // Catón el Joven (73 caps / 318 §§). Tres heridas del griego de Perseus, ninguna nuestra:
+  // 10:2 «ὥς τι λιστον ᾑρηκὼς» perdió la primera sílaba de κάλλιστον (el español traduce el
+  // sentido, como en Peregrinus 1); 36:1 abre con «ι δὲ ἐν Κύπρῳ», mutilado el arranque; y
+  // 37:4 repite la última cláusula de 37:3 («χρόνον ἐν ὀργῇ διατελεῖν·») — dittografía del
+  // límite de sección, NO espejada. El «?» suelto de 7:3 y el «?Ὡς» de 32:1 son ruido de
+  // conversión, descartados en silencio. En 73:2 los epigramas juegan con Ψυχή, el NOMBRE
+  // de la mujer de Marfadates — se conserva en griego con «alma» al lado, regla keep-the-Greek.
+  'plutarch-cato-the-younger': 'greco/plutarch-cato-the-younger',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
