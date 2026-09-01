@@ -743,6 +743,50 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // triumph (11.8, cross-referring to the Marcellus, as Plutarch does) and the decimation of 10.2,
   // named for what it is and counted out — one man in ten of five hundred.
   'plutarch-crassus': 'greco/plutarch-crassus',
+  // PIRRO is built around one conversation and one death, and both are kept whole. Cineas' dialogue
+  // (14.2-8) is translated as dialogue, in its own back-and-forth, because the argument only works
+  // as a chain: Italy, then Sicily, then Libya, then Macedonia — and then «tendremos mucho ocio».
+  // Plutarch's point is that Pyrrhus was not persuaded, only saddened, and the last line says so.
+  //
+  // The Ásculo aftermath (21.9) is the pyrrhic victory itself; it is rendered plainly — «si vencemos
+  // a los romanos en otra batalla más, quedaremos del todo perdidos» — with no nod to the modern
+  // idiom, since the sentence is where the idiom comes from.
+  //
+  // The Spartan chapters keep the Doric as Doric jokes rather than smoothing them: Mandroclidas'
+  // «si tú eres un dios… y, si eres un hombre, habrá también otro más fuerte que tú» (26.11), and
+  // the old men shouting after Acrótato (28.3), which is coarse and is left coarse — the elders are
+  // telling him to go bed Chilonis and to make Sparta good sons, and the two halves belong together.
+  'plutarch-pyrrhus': 'greco/plutarch-pyrrhus',
+  // AGESILAO is Plutarch's test case for whether a man can be schooled by obedience, and the whole
+  // Life turns on the recall from Asia (15.4-5), which he calls the finest thing Agesilaus ever did.
+  // The comparison with Hannibal and Alexander that frames it is kept, and so is Alexander's sneer
+  // about «una batalla de ratones» in Arcadia, which is what the passage is measuring him against.
+  //
+  // The Spartan institutions are translated as institutions, not paraphrased: the ἀγωγή stays
+  // «agogé», the common mess a «fidicio», the message-staff a «escítala», the cowards of Leuctra the
+  // τρέσαντες — «temblones» — with Plutarch's description of their half-shaved beards and patched
+  // cloaks intact (30.2-3), because the law Agesilaus suspends for one day is a law about them.
+  //
+  // The ἔρως chapters are given straight, as in the Alcibiades: Lysander's love for the boy (2.1),
+  // the kiss Agesilaus fled and then regretted (11.5-7) with his own Doric line about fighting that
+  // battle again, and his encouragement of Agesipolis' loves (20.6), where Plutarch says outright
+  // that Laconian love has nothing shameful in it.
+  'plutarch-agesilaus': 'greco/plutarch-agesilaus',
+  // SILA is the Life where Plutarch watches a character change under power, and asks at 30.4-5
+  // whether power alters a nature or only uncovers it. He leaves the question open; so does the
+  // Spanish, which keeps the sentence as the suspended question it is.
+  //
+  // The proscriptions (31) are translated in full and without euphemism — the price on each head,
+  // the death penalty for sheltering father or son, the disfranchising of the proscribed men's
+  // children and grandchildren, and Quinto Aurelio finding his own name and saying «me persigue mi
+  // finca del Albano». So are the six thousand butchered within earshot of the senate (30.2-3) and
+  // the twelve thousand at Preneste. This is the passage the whole Life exists to reach.
+  //
+  // Two Roman words are kept and turned in place because Plutarch turns them: «Félix», which he
+  // glosses as εὐτυχής, «Afortunado», and which gave the twins Fausto and Fausta their names
+  // (34.2-3); and Sila's own Greek self-styling «Epafrodito», which he says stood on the trophies.
+  // His disease (36.2-3) is described exactly as Plutarch describes it, φθειρίασις and all.
+  'plutarch-sulla': 'greco/plutarch-sulla',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
