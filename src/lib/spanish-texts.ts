@@ -462,6 +462,35 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Porcio. Publicola's own name Plutarch glosses himself — «el que cuida del pueblo» — and the
   // gloss is kept as his.
   'plutarch-publicola': 'greco/plutarch-publicola',
+  // CIMON opens with a chapter that is not about Cimon at all: the murder of the Roman officer at
+  // Chaeronea, Plutarch's own town, and Lucullus's testimony that saved it. He tells it because
+  // the debt is his, and says so — the Spanish keeps that first person («nuestra patria», «nuestros
+  // padres») rather than flattening it into narration, because the whole proem turns on the fact
+  // that the biographer is a citizen of the town he is describing.
+  //
+  // The three Herm epigrams of 7.4-5 are quoted as inscriptions and kept as verse in Spanish;
+  // the pun of 4.3 (Coálemo, «el bobo») is glossed inline as Plutarch himself glosses it.
+  'plutarch-cimon': 'greco/plutarch-cimon',
+  // SERTORIUS. Two things are load-bearing here and are kept, not smoothed: the white doe, which
+  // Plutarch presents as a deliberate device on Sertorius's part and not as a wonder — the Spanish
+  // keeps his verbs of contrivance («fingía», «urdía») so the reader sees the manipulation the
+  // Greek shows; and the Iberian «consagración» (κατάσπεισις), the vow to die with the fallen
+  // commander, which is named as the institution it is rather than paraphrased away.
+  //
+  // Sertorius's own words at 16.4-5 (the two horses and the two men pulling the tail) are the
+  // set-piece of the Life and are kept as a speech, closing on the sentence that carries it:
+  // that time is a kindly ally to those who take its moment by reckoning.
+  'plutarch-sertorius': 'greco/plutarch-sertorius',
+  // DEMOSTHENES is the Life whose proem Plutarch writes about himself — the small town, the late
+  // and imperfect Latin, the books he cannot get. That confession is the reason the Life exists in
+  // the shape it has, so it is translated straight, in the first person, with nothing softened.
+  //
+  // THREE PUNS ARE THE POINT OF THEIR SENTENCES AND KEEP THE GREEK BESIDE THE SPANISH: the comic
+  // ἀπέλαβεν/ἔλαβεν of 9.5, which is Antiphanes mocking Demosthenes's antitheses and probably his
+  // advice to «recover» rather than «take» Halonnesus; the bribed orator's σύναγχη/ἀργυράγχη of
+  // 25.5 — not a quinsy but a silver-quinsy; and the ladrón «de bronce» of 11.5, where the thief's
+  // nickname is the joke about bronze thieves and mud walls.
+  'plutarch-demosthenes': 'greco/plutarch-demosthenes',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
