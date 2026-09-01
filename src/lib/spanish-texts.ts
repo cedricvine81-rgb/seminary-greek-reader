@@ -423,6 +423,19 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // their brevity: the Spartans' «Si» to Philip's threat, and their «NO» written large on a sheet.
   'plutarch-eumenes': 'greco/plutarch-eumenes',
   'plutarch-on-talkativeness': 'greco/plutarch-on-talkativeness',
+  // TABLE TALK IV and V. Same rules as VI and IX: the Greek is printed beside the Spanish
+  // wherever an argument turns on a word — Homer's ζωρότερον debated in V 4, Empedocles'
+  // ὑπέρφλοια in V 8, the sow (ὗς) and the ploughshare (ὕνις) in IV 5.
+  //
+  // ⚠ BOOK IV BREAKS OFF. The Perseus text stops in the middle of a word during question 5's
+  // account of Jewish custom, and the manuscript's own note — "the rest of the fourth is
+  // missing" — stands where the text stops. The Spanish breaks off at the same syllable and
+  // carries that note in brackets, as the editorial remark it is; nothing is supplied.
+  //
+  // IV 5-6 is the ancient dinner-table speculation that the God of the Jews is Dionysus. It is
+  // rendered as what it is — what Plutarch's characters say — and nothing is softened or cut.
+  'plutarch-table-talk-4': 'greco/plutarch-table-talk-4',
+  'plutarch-table-talk-5': 'greco/plutarch-table-talk-5',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
