@@ -581,6 +581,46 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // is a conversion artifact, not Plutarch's word and not damage to the transmitted text, so it is
   // dropped from the Spanish while the quoted verse itself is kept — the same call made in Theseus.
   'plutarch-lysander': 'greco/plutarch-lysander',
+  // ⚠ SOLON 11 CARRIED A PHANTOM VERSE, AND THE FIX IS UPSTREAM. The Perseus English file numbers
+  // the chapter's opening section "11" instead of "1", so the reader showed the Greek of 11:1 with
+  // no English beside it and a second, Greek-less row 11:11 holding Perrin's English for that same
+  // sentence. The two are demonstrably the same passage. That is a typo in the digital edition, not
+  // a difference between the Greek and English editions, so the English was renumbered onto the
+  // section it translates — in scripts/build-perseus.py (ENG_KEY_CORRECTIONS), so a rebuild keeps
+  // the fix, and in the shipped corpus. Solon therefore has 140 verses, not 141.
+  //
+  // Not the same thing as Camillus 38 and Demetrius 33, which each carry one English section MORE
+  // than the Greek because Perrin divides further than Ziegler. Nothing there is misfiled; those
+  // rows are left alone, and when those two Lives get their Spanish the greekless row has no Greek
+  // to translate from.
+  //
+  // The poems are kept as verse throughout — Solon quotes himself constantly, and Plutarch's
+  // argument is repeatedly that the poems are the evidence. The Croesus interview (27) is
+  // translated in full, including Plutarch's own opening refusal to throw the story out on
+  // chronological grounds; cutting his defence of it would edit the source-critical judgement he
+  // makes on the page.
+  'plutarch-solon': 'greco/plutarch-solon',
+  // LYCURGUS is the Life where Plutarch's Spartan technical vocabulary has to survive: fiditios,
+  // hectemorios, irenes and melirenes, the retra, the cádico ballot, the criptía. Each is kept as
+  // the Greek word and explained where Plutarch explains it, because the chapter IS the gloss.
+  //
+  // Three passages are rendered whole and unsoftened, because each is a judgement Plutarch makes
+  // rather than a detail: the exposure of weak newborns at the Apótetas (16.1-2); the sharing of
+  // wives for the sake of the children (15.6-9), which he defends at length and which cannot be
+  // trimmed without removing his argument; and the criptía (28), the state killing of helots —
+  // which he reports, and then explicitly refuses to attribute to Lycurgus. That refusal is the
+  // point of the chapter and is kept exactly where he puts it.
+  'plutarch-lycurgus': 'greco/plutarch-lycurgus',
+  // MARCELLUS holds the ancient world's best-known account of Archimedes, and its two halves are
+  // kept whole: the siege engines that made the Romans flee from a rope showing over the wall, and
+  // Plutarch's own argument that Archimedes despised the mechanics that made him famous. The
+  // sphere-in-cylinder tomb request closes it and is translated exactly.
+  //
+  // Two Roman terms are glossed as Plutarch glosses them, since he stops to do the etymology
+  // himself: «ovación», which he derives from oves, the sheep sacrificed at the lesser triumph and
+  // NOT from the cry evohé, and «dictator», from dicere, because he is named rather than elected.
+  // Where his etymology is wrong by modern lights it is still his, and it stands.
+  'plutarch-marcellus': 'greco/plutarch-marcellus',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the

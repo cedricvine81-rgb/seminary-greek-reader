@@ -970,6 +970,38 @@ GRC_CORRECTIONS = {
 }
 
 
+# plutarch-solon 11: the Perseus ENGLISH file numbers the first section of the chapter "11"
+# instead of "1". The Greek has 1 and 2; the English has 11 and 2. Keyed by section, that split
+# the chapter's opening into two half-rows — Greek under 1 with no English, Perrin's English
+# under a phantom 11 with no Greek — and the two are demonstrably the same sentence ("ἤδη μὲν οὖν
+# καὶ ἀπὸ τούτων ἔνδοξος ἦν ὁ Σόλων" / "These events, then, presently made Solon famous"). This
+# is a typo in the digital edition, not a difference between the Greek and English editions, so
+# the English is renumbered onto the section it translates.
+#
+# Not to be confused with the real edition differences elsewhere: Camillus 38 and Demetrius 33
+# each carry one English section MORE than the Greek has, because Perrin divides the chapter
+# further than Ziegler does. Those rows are left alone — nothing there is misfiled.
+ENG_KEY_CORRECTIONS = {
+    'plutarch-solon': [(('11', '11'), ('11', '1'))],
+}
+
+
+def apply_eng_key_corrections(slug, eng):
+    """Renumber mis-labelled English sections in place, for works where the Perseus English file
+    files a section under a number the Greek does not have. Each rule must find its source key
+    and find its destination either absent or empty; anything else means the upstream file has
+    changed and the rule no longer describes it."""
+    for src, dest in ENG_KEY_CORRECTIONS.get(slug, []):
+        if src not in eng:
+            print(f'  !! {slug}: english key correction source {src} not found')
+            continue
+        if eng.get(dest, '').strip():
+            print(f'  !! {slug}: english key correction destination {dest} is already occupied')
+            continue
+        eng[dest] = eng.pop(src)
+    return eng
+
+
 def apply_grc_corrections(slug, grc):
     """Apply this work's GRC_CORRECTIONS to a {key: text} unit map, in place.
 
@@ -1001,7 +1033,8 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
     # eng_suffix None builds the Greek alone. Used where Perseus' only English translation is
     # still in copyright — most of Demosthenes and two thirds of Isocrates — so the Greek can
     # still be read, searched and parsed rather than the work being left out altogether.
-    eng = parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), book_sub, unit_sub) \
+    eng = apply_eng_key_corrections(
+        slug, parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), book_sub, unit_sub)) \
         if eng_suffix else {}
     refs = parse_unit_refs(grc_bytes, book_sub, unit_sub, ref_unit) if ref_unit else {}
     if book_sub:
