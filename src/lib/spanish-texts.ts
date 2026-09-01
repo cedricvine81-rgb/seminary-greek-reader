@@ -877,6 +877,12 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // conversión, descartados en silencio. En 73:2 los epigramas juegan con Ψυχή, el NOMBRE
   // de la mujer de Marfadates — se conserva en griego con «alma» al lado, regla keep-the-Greek.
   'plutarch-cato-the-younger': 'greco/plutarch-cato-the-younger',
+  // Emilio Paulo (38 caps / 319 §§). EMPIEZA EN EL CAPÍTULO 2 — el corpus no trae capítulo 1
+  // (cf. el capítulo 0 de Timoleón: la numeración del corpus manda, no se «arregla»).
+  // En 2:2 la etimología del nombre — Mamerco llamado Emilio «διʼ αἱμυλίαν λόγου» — conserva
+  // αἱμυλία en griego con su sentido al lado; en 23:10 el juego κρητίζειν πρὸς Κρῆτας
+  // («hacer de cretense con cretenses») conserva el verbo, regla keep-the-Greek.
+  'plutarch-aemilius-paulus': 'greco/plutarch-aemilius-paulus',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
