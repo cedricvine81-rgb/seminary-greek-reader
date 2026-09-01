@@ -820,6 +820,41 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // his commanding officer rather than be forced is crowned for it, and the slave sent to kill
   // Mario at Minturnas who cannot (39.2).
   'plutarch-marius': 'greco/plutarch-marius',
+  // ⚠ DEMETRIO 33 HAS FIVE SPANISH SECTIONS WHERE THE GREEK STOPS AT FOUR, ON PURPOSE — and it is NOT
+  // the Camillus 38 case. There the corpus split one Greek paragraph across two English rows; here the
+  // rows are OFFSET BY ONE: the Greek of the last section sits at 33:4 with no English, and its English
+  // sits at 33:5 with no Greek (the ratios prove they are the same passage). Since check.py needs every
+  // row filled, the Spanish is divided along the ROW boundary — 33:4 carries the Ptolemaic squadron off
+  // Aegina, 33:5 the ships from Peloponnese and Cyprus and Lachares' flight — so both rows have Spanish
+  // beside them and nothing is invented. Do not "fix" this by moving the Greek.
+  //
+  // The Life is the first half of the Demetrius–Antony pair, and its preface (1.5-8) says outright that
+  // it is included as an example of vice; the Spanish keeps that framing rather than softening it. Two
+  // set pieces are given whole: the boy Democles killing himself in the bath-house rather than be forced
+  // by Demetrius (24.2-3), and the Athenians' flattery — the Parthenon lodging, the renamed month, the
+  // oracle-by-decree — which Plutarch reports as the corruption of a city, not as colour.
+  'plutarch-demetrius': 'greco/plutarch-demetrius',
+  // LUCULO is the Life of a man who wins everything and loses the credit, and it turns on two things the
+  // Spanish keeps sharp: the debt relief in Asia (20), where the one-per-cent cap and the quarter-of-
+  // income rule are given as concrete numbers, since that is what makes Plutarch's point; and the long
+  // collapse of his army's discipline (33-35), where he is left begging tent by tent and the soldiers
+  // throw empty purses at him.
+  //
+  // The dinner-table chapters (39-41) are translated at full length, including the Apollo dining-room
+  // and its fifty thousand drachmas, because Plutarch built the Life as a diptych — «como una comedia
+  // antigua», politics first and banquets after — and cutting them would flatten the design he names.
+  'plutarch-lucullus': 'greco/plutarch-lucullus',
+  // CESAR keeps the Latin where the Greek keeps it. Plutarch transliterates and then explains, so the
+  // Spanish does the same: the three-word dispatch from Zela is rendered «Llegué, vi, vencí» with
+  // Plutarch's own note that in Latin the three words end alike — the remark is about the Latin, so the
+  // Latin has to stay in view. Likewise the die at the Rubicon (32.6) is given as the sentence Plutarch
+  // reports, not as a Spanish proverb.
+  //
+  // The assassination (66) is translated whole and without euphemism, down to the twenty-three wounds
+  // and the conspirators wounding one another; and so are the calendar reform (59), Cleopatra in the
+  // bedding-sack (49.1), and the epilepsy, which Plutarch treats as a fact of the man's body (17.2,
+  // 53.3) and which the Spanish neither hides nor dramatises.
+  'plutarch-caesar': 'greco/plutarch-caesar',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
