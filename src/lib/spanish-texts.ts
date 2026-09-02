@@ -491,6 +491,25 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // code inside the Philiscus epigram (ς1ʼ for ς), and chapters 7 and 8 carry stray digits where
   // an article should stand; all conversion noise, all read through.
   'plutarch-ten-orators': 'greco/plutarch-ten-orators',
+
+  // Fifteenth Moralia tranche. How the Young Man Should Study Poetry — an essay built almost
+  // entirely out of other people's verse, so the Spanish keeps every citation as a citation
+  // (Homer, Hesiod, Euripides, Sophocles, Menander, Pindar, Simonides, Empedocles, Xenophanes,
+  // Archilochus, Bacchylides, Thespis and the rest) rather than paraphrasing it into the argument.
+  //
+  // Keep-the-Greek is heavier here than anywhere since the Platonic Questions, because chapter 6
+  // IS a lesson in Greek vocabulary: the double senses of οἶκος, βίοτος, ἀλύειν, θοάζειν, the
+  // αἰνεῖν that means «decline» and the ἐπαινὴ Περσεφόνεια built on it, and the shifts of ἀρετή,
+  // κακότης and εὐδαιμονία between the philosophers' sense and the poets'. Those stay in Greek
+  // with the sense beside them, along with the dialect glosses that open the chapter (δᾶνον,
+  // καμμονία, πόποι). Chapter 11 keeps two more, both jokes about words: Cleanthes reading
+  // «Ζεῦ ἄνα Δωδωναῖε» as one word ἀναδωδωναῖος from ἀνάδοσις, and Chrysippus forcing
+  // εὐρύοπα Κρονίδην into «far-reaching in argument». And 14 keeps γνῶθι σαυτόν, which is quoted
+  // as the Delphic maxim itself.
+  //
+  // Chapter 2 carries a stray line-number («72») dropped inside a quotation — a conversion scar,
+  // read through. No wounds.
+  'plutarch-study-of-poetry': 'greco/plutarch-study-of-poetry',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
