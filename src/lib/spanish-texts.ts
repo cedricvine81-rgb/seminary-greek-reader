@@ -305,6 +305,21 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // who is speaking. Fundanus quotes verse constantly — Homer, Sophocles, Pindar, Sappho — and
   // those quotations are rendered as verse in quotation marks rather than folded into his prose.
   'plutarch-control-of-anger': 'greco/plutarch-control-of-anger',
+  // Third Moralia tranche — the start of the long tail (35 works still untranslated when this
+  // began). Three Keep-the-Greek clusters here, all of them arguments that die in translation:
+  // Platonic Questions 8:2 turns on the CASE of one word (χρόνου genitive vs χρόνῳ dative), 9:1 on
+  // ὕπατος/νέατος as both musical strings and "highest/lowest", and the whole of 10 on ὄνομα/ῥῆμα
+  // and the syncope of prepositions (ἐμβῆναι < ἐντὸς βῆναι, καθίζειν < κάτω ἵζειν); Education of
+  // Children 4 puns ἦθος ("carácter") on ἔθος ("hábito") and ἠθικαί on ἐθικαί; 17 is the whole
+  // Pythagorean symbola list, where μελάνουρος and κύαμοι only mean what Plutarch says they mean
+  // in Greek. TWO WOUNDS MIRRORED: Platonic Questions 3 ends mid-sentence in the Perseus text
+  // (the Spanish stops the same way, with no final period), and Education of Children 9 has a
+  // lacuna after «τί ἂν τοὺς παῖδας» — marked in brackets rather than smoothed over. A scrambled
+  // word order at Education 4 (the two horse questions folded into one) is a conversion scar, not
+  // a wound, so the Spanish restores the two parallel questions.
+  'plutarch-platonic-questions': 'greco/plutarch-platonic-questions',
+  'plutarch-tranquillity-of-mind': 'greco/plutarch-tranquillity-of-mind',
+  'plutarch-education-of-children': 'greco/plutarch-education-of-children',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
