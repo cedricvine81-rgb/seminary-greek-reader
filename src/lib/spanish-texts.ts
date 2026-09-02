@@ -320,6 +320,19 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'plutarch-platonic-questions': 'greco/plutarch-platonic-questions',
   'plutarch-tranquillity-of-mind': 'greco/plutarch-tranquillity-of-mind',
   'plutarch-education-of-children': 'greco/plutarch-education-of-children',
+  // Fourth Moralia tranche. THE LATIN RUNNING TITLE AGAIN, and worse placed than ever: at
+  // Old Man in Public Affairs 1 the work's own title «An seni respublica gerenda sit» has been
+  // transliterated into Greek letters («ἀν σενι ρεσπιιβλιξα ἐερενδα σιτ») and dropped BETWEEN
+  // «τοῦ ζῆν» and «καὶ τοῦ καλῶς ζῆν» — the same defect as Stoics and Poets 1 and To an
+  // Uneducated Ruler 1. Not mirrored; the phrase is rejoined. Keep-the-Greek in that same work
+  // at 10, where the argument is an etymology (γέρας and γεραίρειν from γέροντες, and the
+  // Spartan πρεσβυγενέες / γέροντες beside the Roman γερουσία), and at 24 for the three grades
+  // of the Ephesian priestesses (Μελλιέρη / Ἱέρη / Παριέρη); and in Brotherly Love at 1 for the
+  // Spartan δόκανα, at 16 for Socrates' Δαρεῖος/δαρεικός pun, and at 19 for συγκρητισμός — the
+  // Cretan word this treatise is the source for. A real lacuna at Old Man 2 is bracketed; a
+  // dittography at Brotherly Love 5 (πλουτοῦντας printed twice) is a scar and is dropped.
+  'plutarch-brotherly-love': 'greco/plutarch-brotherly-love',
+  'plutarch-old-man-in-public-affairs': 'greco/plutarch-old-man-in-public-affairs',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
