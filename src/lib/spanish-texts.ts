@@ -510,6 +510,25 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Chapter 2 carries a stray line-number («72») dropped inside a quotation — a conversion scar,
   // read through. No wounds.
   'plutarch-study-of-poetry': 'greco/plutarch-study-of-poetry',
+
+  // Sixteenth Moralia tranche. The Amatorius — a dialogue, so the Spanish keeps the speaker
+  // labels (AUTÓBULO, FLAVIANO) and the nested reported speech: Autobulus quoting his father
+  // quoting Daphnaeus and Protogenes, which is three deep for most of the work.
+  //
+  // Keep-the-Greek four times, each because the argument is the word. At 5, χάρις — the term the
+  // ancients used for a woman's yielding — and the ἄχαρις χάρις, the «favour without favour»,
+  // that Plutarch coins against the other side. At 13, the Chrysippean etymology Ἄρης from
+  // ἀναιρεῖν. At 21, στέργειν and στέγειν, «to love» and «to endure», one letter apart, which is
+  // the whole point of the sentence. And at 25, the gloss on the Gaulish name Empona as Ἡρωίς.
+  // One pun survives translation intact and is therefore NOT kept in Greek: Pisias's αὐτονομία →
+  // ἀνομία at 11 is «autonomía» → «anomía» in Spanish, with the same hinge.
+  //
+  // The great lacuna of the Amatorius falls inside chapter 20: the Gorgo anecdote breaks off
+  // mid-sentence and 21 resumes on a different subject. That is a genuine wound and the Spanish
+  // mirrors it with an ellipsis. Chapter 1 carries a garbled vocative («ὦ Λύτόβουλε» for
+  // Αὐτόβουλε) and 17 a stray syllable where a name should stand; both are conversion noise,
+  // translated through.
+  'plutarch-dialogue-on-love': 'greco/plutarch-dialogue-on-love',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
