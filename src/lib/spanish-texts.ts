@@ -333,6 +333,22 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // dittography at Brotherly Love 5 (πλουτοῦντας printed twice) is a scar and is dropped.
   'plutarch-brotherly-love': 'greco/plutarch-brotherly-love',
   'plutarch-old-man-in-public-affairs': 'greco/plutarch-old-man-in-public-affairs',
+
+  // Fifth Moralia tranche. A NEW scar class: Perseus BETA CODE that was never converted, left
+  // sitting in the middle of the Greek — «*kuri/as» for Κυρίας at Oracles at Delphi 11 (Epicurus'
+  // Κύριαι Δόξαι) and «*)astrologi/an» for ἀστρολογίαν at 18. Both are digitization damage, not
+  // textual damage, so they are translated through, not mirrored; likewise the doubled-epsilon
+  // artifacts in chapter 1 (ἕετερον, ἐεμόν) and ἀπθδείκνύθυσι at 20. What IS mirrored: the real
+  // lacuna at 23, where the sentence naming Philinus has lost its subject, and the shredded
+  // second Simonides fragment at 17 — both marked with an ellipsis rather than silently mended.
+  // Oracles is a DIALOGUE, so the speakers (BASÍLOCLES, FILINO, Diogeniano, Teón, Sarapión,
+  // Boeto) keep their inline tags in Spanish, as On the Control of Anger already does.
+  // Keep-the-Greek at 14 for the nickname Φρύνη ('sapo') beside the real name Mnesárete, at 24
+  // for the Pythia's discarded vocabulary (πυρικάους / ὀφιοβόρους / ὀρεᾶνας / ὀρεμπότας — the
+  // whole point is that the words themselves were strange), and at 29 for γνῶθι σαυτόν and
+  // μηδὲν ἄγαν, which are quoted as inscriptions and so stay as inscriptions.
+  'plutarch-keeping-well': 'greco/plutarch-keeping-well',
+  'plutarch-oracles-at-delphi': 'greco/plutarch-oracles-at-delphi',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
