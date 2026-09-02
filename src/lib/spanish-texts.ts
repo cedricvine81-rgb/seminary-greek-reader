@@ -457,6 +457,22 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // same edition; the sense is secure from the contrast Hesiod is being made to draw, and that
   // is what the Spanish renders.
   'plutarch-delays-of-divine-vengeance': 'greco/plutarch-delays-of-divine-vengeance',
+
+  // Thirteenth Moralia tranche. On the Malice of Herodotus — a polemic, so the Spanish has to
+  // keep two registers apart: Plutarch's own argument, and the long verbatim quotations from
+  // Herodotus that he is refuting, which stay inside guillemets so the reader can always see
+  // which words are being prosecuted. The verse quotations (Simonides, Pindar, the Salamis and
+  // Isthmus epigrams, the altar of Zeus Eleutherios) are kept as quotations rather than folded
+  // into the prose. Keep-the-Greek once, at 23, where the whole joke is a pun and dies in
+  // translation: Herodotus packs Isagoras off εἰς Κᾶρας, «to the Carians», which is ἐς κόρακας,
+  // «to the crows» — and Plutarch's point is precisely that the sneer is audible.
+  //
+  // Two small textual wounds, both the edition's. At 31 the clause listing how Herodotus wronged
+  // the Thebans breaks off mid-phrase («τὰ μὲν ψευδῶς, τὰ δὲ διὰ , τὰ δὲ ὡς μισῶν»); the Spanish
+  // mirrors that gap with an ellipsis rather than inventing the missing member. At 39 the opening
+  // sentence is garbled by a stray letter in the same way; there the sense is fixed by the
+  // contrast that follows, so it is translated through and only recorded here.
+  'plutarch-malice-of-herodotus': 'greco/plutarch-malice-of-herodotus',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
