@@ -888,6 +888,12 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // τορύνη («el cucharón»); 81:2 conserva πολυκαισαρίη, el calco del verso homérico
   // contra el mando de muchos — traducir cualquiera de los tres borra el chiste.
   'plutarch-antony': 'greco/plutarch-antony',
+  // Alejandro (77 caps / 377 §§). Keep-the-Greek en tres juegos de palabras: 24:5 los adivinos
+  // dividen Σά-τυρος en «σὴ Τύρος» (tuya será Tiro); 27:5 el barbarismo del profeta de Amón
+  // convierte «ὦ παιδίον» en «ὦ παιδίος» ≈ παῖ Διός (hijo de Zeus); 37:1 la Pitia profetiza un
+  // λύκος (lobo) como guía — el guía era Λύκιος (licio). También 65:3: Cálano se llamaba Esfines,
+  // «Cálano» viene de su saludo indio «kalé».
+  'plutarch-alexander': 'greco/plutarch-alexander',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
