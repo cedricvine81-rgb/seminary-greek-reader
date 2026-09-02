@@ -554,6 +554,22 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // neither is mirrored. The quotations of Epicurus and Metrodorus are set in guillemets
   // wherever Plutarch is quoting them verbatim, which is most of the polemic's force.
   'plutarch-epicurus-pleasant-life': 'greco/plutarch-epicurus-pleasant-life',
+  // DE FACIE QUAE IN ORBE LUNAE APPARET, «Sobre el rostro que aparece en el orbe de la luna»:
+  // the dialogue's two halves get two registers. Chapters 1-24 are technical astronomy and
+  // optics, so the Spanish fixes its vocabulary and keeps it: ἀνάκλασις «reflexión», κλάσις
+  // «refracción», ἐπιπρόσθησις «interposición», ἀναθυμίασις «exhalación», εὐστάθεια «buena
+  // constitución». Chapters 25-30 are Sulla's myth of Cronus' island and the two deaths, and
+  // read as narrative.
+  //
+  // This treatise survives in ONE badly damaged manuscript, so its holes are real wounds, not
+  // conversion noise, and the Spanish mirrors each with an ellipsis: one in 4 (a lost vocative
+  // and clause before «pero a muchos no les agrada»), one in 10 (the sentence conceding the
+  // interval), two in 19 (Aristotle's second cause and the tail of Posidonius' definition), one
+  // in 21 (after «al llegar a él»), and one in 26 (before the Titanic passions). A leaked
+  // section number «15.» sits inside chapter 30 of the source; that IS conversion noise and is
+  // dropped. Keep-the-Greek once, at 27: κόρη is both «Core» and the pupil of the eye, and the
+  // etymology is the argument, so both senses stand in the sentence.
+  'plutarch-face-on-the-moon': 'greco/plutarch-face-on-the-moon',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
