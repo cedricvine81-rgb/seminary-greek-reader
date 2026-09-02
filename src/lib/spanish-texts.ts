@@ -401,6 +401,15 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // let the ratio scan be the thing that certifies it; check.py cannot see this class of loss.
   'plutarch-fortune-of-alexander': 'greco/plutarch-fortune-of-alexander',
   'plutarch-table-talk-7': 'greco/plutarch-table-talk-7',
+
+  // Ninth Moralia tranche, and with it THE TABLE TALK IS COMPLETE — all nine books in Spanish.
+  // Book VIII scanned clean and, read in overlapping slices from the start, produced no ratio
+  // outliers on the first pass. Keep-the-Greek at 6.4 for the chain of meal etymologies that the
+  // chapter exists to argue (ἀκράτισμα from ἄκρατος, ὄψον from ὀψέ, ἄριστον, δεῖπνον from
+  // διαναπαύει) and at 6.5 for Lamprias's parody of it, which does the same trick in LATIN
+  // (cena/κοινωνία, prandium, mensa, panem, corona) and only works with both languages visible;
+  // and at 8.1 for ἔλλοπες, the Pythagorean gloss on why fish are the emblem of silence.
+  'plutarch-table-talk-8': 'greco/plutarch-table-talk-8',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
