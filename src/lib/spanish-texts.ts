@@ -473,6 +473,24 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // sentence is garbled by a stray letter in the same way; there the sense is fixed by the
   // contrast that follows, so it is translated through and only recorded here.
   'plutarch-malice-of-herodotus': 'greco/plutarch-malice-of-herodotus',
+
+  // Fourteenth Moralia tranche. Lives of the Ten Orators — thirteen chapters, of which the last
+  // three are not narrative at all but ATHENIAN DECREES quoted verbatim (the honours for
+  // Demosthenes, for Demochares, and for Lycurgus). Those keep the flat, clause-piled formula of
+  // a decree in Spanish rather than being smoothed into prose, because the shape is the evidence.
+  // Keep-the-Greek twice, both times because the argument is the word: at 1, where the sentence
+  // on the razed houses of Archeptolemus and Antiphon quotes the boundary-stone itself
+  // (ΑΡΧΕΠΤΟΛΕΜΟΥ ΚΑΙ ΑΝΤΙΦΩΝΤΟΣ ΤΟΙΝ ΠΡΟΔΟΝΤΟΙΝ); and at 8, where Demosthenes is mocked for
+  // swearing by Ἀσκλήπιον with a proparoxytone accent and defends it from ἤπιος, «gentle» — a
+  // joke that exists only in Greek.
+  //
+  // The Latin running title is transliterated into Greek letters here too, and this time it lands
+  // INSIDE a phrase: 1 reads «περὶ ἑνὸς Χ ορατορυμ Ωιταε. ἑκάστου», which is "X ORATORUM VITAE"
+  // dropped between ἑνὸς and ἑκάστου. The Spanish rejoins the split phrase and says nothing, as
+  // with the same scar in the Generation of the Soul. Chapter 3 also carries un-converted beta
+  // code inside the Philiscus epigram (ς1ʼ for ς), and chapters 7 and 8 carry stray digits where
+  // an article should stand; all conversion noise, all read through.
+  'plutarch-ten-orators': 'greco/plutarch-ten-orators',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
