@@ -385,6 +385,22 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // enigmas are translated with the Greek beside them only where the riddle turns on a Greek word.
   'plutarch-table-talk-1': 'greco/plutarch-table-talk-1',
   'plutarch-dinner-of-the-seven-wise-men': 'greco/plutarch-dinner-of-the-seven-wise-men',
+
+  // Eighth Moralia tranche. Fortune of Alexander is a pair of rhetorical show-pieces and scanned
+  // clean; Table Talk VII leaves only book VIII outstanding of the nine. Wounds mirrored in
+  // Table Talk VII: the sentence at 1.2 that breaks off after λευκανίη, having lost the words that
+  // said what that passage carries. New instances of the scrambled-Greek scar (the same class as
+  // the unconverted beta code, not textual damage, so translated through): the Homeric tag about
+  // the full belly at 2.1, where a run of nonsense letters has been dropped INTO the quotation,
+  // and the mangled clause at 2.2. Keep-the-Greek at 1.2 for ἀσφάραγος / ἐρισφάραγος / λευκανίη —
+  // the whole chapter is an argument about which Homeric word names which pipe — and at 10.1 for
+  // Plato's derivation of οἶνος from οἴεσθαι νοῦν.
+  //
+  // The truncated-read trap struck for the THIRD tranche running (Table Talk VII 6.3 came in at
+  // 0.28, missing about four fifths of its middle). Read a long section in overlapping slices and
+  // let the ratio scan be the thing that certifies it; check.py cannot see this class of loss.
+  'plutarch-fortune-of-alexander': 'greco/plutarch-fortune-of-alexander',
+  'plutarch-table-talk-7': 'greco/plutarch-table-talk-7',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
