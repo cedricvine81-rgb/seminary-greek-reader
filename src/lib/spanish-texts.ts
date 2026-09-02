@@ -349,6 +349,27 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // μηδὲν ἄγαν, which are quoted as inscriptions and so stay as inscriptions.
   'plutarch-keeping-well': 'greco/plutarch-keeping-well',
   'plutarch-oracles-at-delphi': 'greco/plutarch-oracles-at-delphi',
+
+  // Sixth Moralia tranche: two more books of the Table Talk. Both dumps scanned CLEAN — no Latin
+  // running title, no beta-code leak, no NO-GREEK gaps — so the only wounds here are the two real
+  // ones in Book II: the lacuna at 3.1 that swallowed the words before the «as one tests on a
+  // Carian» proverb, and the one at 10.2 before the trireme simile. Both are mirrored with an
+  // ellipsis. Keep-the-Greek is heavier in these books than anywhere else so far, because whole
+  // sections ARE etymologies: Book III 1.3 (καρύα from καρωτικόν, νάρκισσος from ναρκώδεις,
+  // πήγανον from πήγνυσι, ῥόδον from ῥεῦμα, and ὑποθυμίδες — which Plutarch derives from
+  // ὑποθυμίασις and NOT from θυμός, the whole point of the passage), III 7.1 (γλυκύς vs ἡδύς, and
+  // Πιθοίγια), III 8.1 (ἀκροθώραξ), III 9.1 (the «five or three, but not four» mixing rule),
+  // II 4.1 (πάλη from παλεύειν / παλαιστή / παλῦναι / πέλας — four rival derivations in one
+  // paragraph), II 8.1 (λυκοσπάδες) and II 10.2 (δαῖτες / δαιτυμόνες / δαιτροί, κρεοδαῖται).
+  //
+  // PROCESS TRAP found here, and it loses text silently: a batch file must never repeat a chapter
+  // key. Two «"2": {...}» blocks in one heredoc parse as ONE object and the first is DISCARDED —
+  // check.py then reports the section simply missing, but only if you look. Write one section per
+  // file when a chapter spans batches. A second silent-loss trap: an `awk | head -c` read that
+  // stops mid-section will produce a Spanish section that quietly omits the middle. check.py
+  // cannot see it; the RATIO SCAN can, and did (Book II 3.3 came in at 0.73).
+  'plutarch-table-talk-2': 'greco/plutarch-table-talk-2',
+  'plutarch-table-talk-3': 'greco/plutarch-table-talk-3',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
