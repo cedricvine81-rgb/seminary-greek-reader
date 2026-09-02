@@ -898,6 +898,11 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // (hazmerreír) de Sicilia. Ruido de conversión en el griego de origen (19:8 «μ?ὲν», 56:3
   // «ζ?ῆν»): erratas de digitalización, no herida textual — se omiten sin espejo.
   'plutarch-dion': 'greco/plutarch-dion',
+  // Pompeyo (80 caps / 392 §§). HERIDA DEL CORPUS espejada en 52:4: el griego de Perseus se corta
+  // a mitad de palabra («παρέ[σχε]») al final de la sección — el español termina igual en «ofre—».
+  // Dichos conservados en 50:1 («Navegar es necesario; vivir no es necesario»), 77:4 («Un muerto
+  // no muerde»), 60:2 («¡Quede echado el dado!»).
+  'plutarch-pompey': 'greco/plutarch-pompey',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
