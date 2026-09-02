@@ -370,6 +370,21 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // cannot see it; the RATIO SCAN can, and did (Book II 3.3 came in at 0.73).
   'plutarch-table-talk-2': 'greco/plutarch-table-talk-2',
   'plutarch-table-talk-3': 'greco/plutarch-table-talk-3',
+
+  // Seventh Moralia tranche. Table Talk I finishes that half of the Table Talk (only VII and VIII
+  // are left), and brings a THIRD instance of the unconverted-beta-code scar: at 2.3 the title of
+  // Aristotle's Topics is printed «to/pous» in the middle of the Greek. Translated through, like
+  // «*kuri/as» and «*)astrologi/an» in Oracles at Delphi. The genuine wounds ARE mirrored: the
+  // lacunae at Table Talk I 2.3, 4.2 and 9.3, and at 10.2 where the sentence about Neanthes breaks
+  // off mid-clause. Keep-the-Greek in Table Talk I at 1.5 (σκόλιον derived from the zig-zag path of
+  // the myrtle branch, plus αἴσακος) and in the preface's μνάμων; and in the Dinner at 21, where
+  // the three Delphic maxims are quoted AS inscriptions (γνῶθι σαυτόν, μηδὲν ἄγαν, ἐγγύα πάρα δ᾽
+  // ἄτα) and where Cypselus is named for the κυψέλη his mother hid him in.
+  //
+  // The Dinner is a DIALOGUE reported by Diocles, so its speakers keep their names inline. Its
+  // enigmas are translated with the Greek beside them only where the riddle turns on a Greek word.
+  'plutarch-table-talk-1': 'greco/plutarch-table-talk-1',
+  'plutarch-dinner-of-the-seven-wise-men': 'greco/plutarch-dinner-of-the-seven-wise-men',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
