@@ -903,6 +903,10 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Dichos conservados en 50:1 («Navegar es necesario; vivir no es necesario»), 77:4 («Un muerto
   // no muerde»), 60:2 («¡Quede echado el dado!»).
   'plutarch-pompey': 'greco/plutarch-pompey',
+  // Bruto (53 caps / 400 §§) — la última de las 35 Vidas Paralelas. Ruido de digitalización en el
+  // griego (27:5 «δ?»): errata, no herida — se omite sin espejo. El dicho de Teódoto («un muerto
+  // no muerde») aparece dos veces (33:5 y en Pompeyo 77:4) — misma fórmula en ambas.
+  'plutarch-brutus': 'greco/plutarch-brutus',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
