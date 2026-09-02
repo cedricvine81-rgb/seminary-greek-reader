@@ -441,6 +441,22 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // numbering exactly as the Greek has it, so the parallel columns stay aligned. Chapters 3 and
   // 26 end without a full stop; that is only lost punctuation, not lost text, so they are closed.
   'plutarch-generation-of-the-soul': 'greco/plutarch-generation-of-the-soul',
+
+  // Twelfth Moralia tranche. On the Delays of the Divine Vengeance — the dialogue at Delphi that
+  // ends in the myth of Thespesius, so the Spanish has to hold an argumentative half and a
+  // visionary half in one voice. Keep-the-Greek twice, and only where the argument is the word:
+  // at 6, for the pair τρόπος (from turning) and ἦθος (from ἔθος, habit), which is Plutarch's
+  // proof that character is what changes; and at 27, for γένεσις read as νεῦσις ἐπὶ γῆν, the
+  // etymology on which the whole descent of souls into bodies turns.
+  //
+  // One conversion scar: at 11 the Perseus Greek carries a Latin critical note transliterated
+  // into Greek letters and dropped mid-sentence — «ὥσπερ ρ. μαλιμ ἅπερ γὰρ, σεδ ξφ. π. 463 δ»,
+  // which is "r. malim ἅπερ γάρ, sed cf. p. 463 d". It is apparatus, not text, so the Spanish
+  // reads straight through it, exactly as with the Latin running titles in the Generation of the
+  // Soul. The clause at 9 that names Plato («λέγοντος οὐχ Πλάτων ἀκόλουθον…») is garbled in the
+  // same edition; the sense is secure from the contrast Hesiod is being made to draw, and that
+  // is what the Spanish renders.
+  'plutarch-delays-of-divine-vengeance': 'greco/plutarch-delays-of-divine-vengeance',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
