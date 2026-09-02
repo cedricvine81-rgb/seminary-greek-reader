@@ -410,6 +410,15 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // (cena/κοινωνία, prandium, mensa, panem, corona) and only works with both languages visible;
   // and at 8.1 for ἔλλοπες, the Pythagorean gloss on why fish are the emblem of silence.
   'plutarch-table-talk-8': 'greco/plutarch-table-talk-8',
+
+  // Tenth Moralia tranche. The Consolation to Apollonius scanned clean and, read in overlapping
+  // slices, verified on the first pass. It is a chain of quotations more than an argument, so
+  // almost all of the Greek is other people's — Homer, Hesiod, Pindar, Euripides, Menander,
+  // Simonides, Crantor, Aristotle's lost Eudemus (the Silenus answer to Midas), and a long
+  // verbatim stretch of Plato's Gorgias myth — and the Spanish keeps each of those as a quotation.
+  // Keep-the-Greek only at 28, where the two Delphic maxims are named AS inscriptions
+  // (γνῶθι σαυτόν, μηδὲν ἄγαν) and the chapter turns on how each contains the other.
+  'plutarch-consolation-to-apollonius': 'greco/plutarch-consolation-to-apollonius',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
