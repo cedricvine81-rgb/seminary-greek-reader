@@ -14,10 +14,14 @@ export async function GET(req: NextRequest) {
     const p = req.nextUrl.searchParams
     const book = p.get('book')
     if (book) {
-      const chapter = Number(p.get('chapter'))
+      // A preface is chapter 0 — Quintilian's Institutio numbers it that way — so this guard
+      // asks whether a chapter was SUPPLIED, not whether it is truthy. `!chapter` rejected
+      // every note made in a preface, which is why that page appeared to have no notes at all.
+      const chapterParam = p.get('chapter')
+      const chapter = Number(chapterParam)
       const vs = Number(p.get('verseStart') || p.get('verse'))
       const ve = Number(p.get('verseEnd') || p.get('verseStart') || p.get('verse'))
-      if (!chapter || !vs) return NextResponse.json({ error: 'Bad passage' }, { status: 400 })
+      if (chapterParam === null || !Number.isFinite(chapter) || !vs) return NextResponse.json({ error: 'Bad passage' }, { status: 400 })
       const notes = await notesForPassage(payload.sub, book, chapter, vs, ve)
       return NextResponse.json({ notes })
     }
@@ -41,7 +45,8 @@ export async function POST(req: NextRequest) {
       })
       return NextResponse.json({ note }, { status: 201 })
     }
-    if (!b.book || !b.chapter || !b.verse) return NextResponse.json({ error: 'Missing verse' }, { status: 400 })
+    // b.chapter == null, not !b.chapter: chapter 0 is a preface, not a missing field.
+    if (!b.book || b.chapter == null || !b.verse) return NextResponse.json({ error: 'Missing verse' }, { status: 400 })
     const note = await createNote(payload.sub, {
       book: b.book, chapter: Number(b.chapter), verse: Number(b.verse),
       verseEnd: b.verseEnd ? Number(b.verseEnd) : null, title: b.title ?? null,

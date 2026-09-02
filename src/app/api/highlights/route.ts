@@ -12,10 +12,13 @@ export async function GET(req: NextRequest) {
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const p = req.nextUrl.searchParams
     const book = p.get('book')
-    const chapter = Number(p.get('chapter'))
+    // Chapter 0 is a preface (Quintilian), so the guard asks whether a chapter was supplied
+    // rather than whether it is truthy — see the same fix in api/notes.
+    const chapterParam = p.get('chapter')
+    const chapter = Number(chapterParam)
     const vs = Number(p.get('verseStart') || p.get('verse'))
     const ve = Number(p.get('verseEnd') || p.get('verseStart') || p.get('verse'))
-    if (!book || !chapter || !vs) return NextResponse.json({ error: 'Bad passage' }, { status: 400 })
+    if (!book || chapterParam === null || !Number.isFinite(chapter) || !vs) return NextResponse.json({ error: 'Bad passage' }, { status: 400 })
     const highlights = await highlightsForPassage(payload.sub, book, chapter, vs, ve)
     return NextResponse.json({ highlights })
   } catch (err) {
@@ -30,7 +33,7 @@ export async function POST(req: NextRequest) {
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const b = await req.json()
-    if (!b.book || !b.chapter || !b.verse || b.startOffset == null || b.endOffset == null) {
+    if (!b.book || b.chapter == null || !b.verse || b.startOffset == null || b.endOffset == null) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
     }
     const highlight = await createHighlight(payload.sub, {

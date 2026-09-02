@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState, type RefObject } from 'react'
 import { offsetWithin, clipRangeToElement } from './range-utils'
+import { DEFAULT_HIGHLIGHT_COLOR } from '@/lib/highlight-colors'
 
 export interface HighlightSplit { book: string; chapter: number; verse: number; start: number; end: number; layer: string }
 
 export type HighlightPopupState =
   | { kind: 'new'; x: number; y: number; splits: HighlightSplit[]; text: string }
   | { kind: 'edit'; x: number; y: number; id: string; book: string; chapter: number; color: string; text: string }
+
+/** The colour a mark is painted in, for surfaces that carry it only as the `hl-<colour>`
+ *  class rather than as a data attribute. Decides which swatch shows as the active one. */
+function markColorFromClass(el: HTMLElement): string {
+  const cls = Array.from(el.classList).find(c => c.startsWith('hl-') && c !== 'hl-mark')
+  return cls ? cls.slice(3) : DEFAULT_HIGHLIGHT_COLOR
+}
 
 /**
  * Captures drag-selections within `containerRef` and turns them into per-verse character
@@ -109,10 +117,19 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
       const mark = (e.target as HTMLElement).closest<HTMLElement>('[data-highlight-id]')
       if (!mark || !container.contains(mark)) return
       if (!window.getSelection()?.isCollapsed) return
+      // Word-by-word surfaces (TransWords) mark the word itself and leave the passage identity
+      // on the verse anchor around it, so fall back to that anchor. Without a book and chapter
+      // the recolour and remove below still reach the server but miss the client's per-chapter
+      // cache, so the highlight sits there in its old colour — or stays painted after Remove —
+      // until the page is reloaded.
+      const anchor = mark.closest<HTMLElement>('[data-hl-verse]')
+      const book = mark.dataset.hlBook ?? anchor?.dataset.hlBook
+      const chapter = Number(mark.dataset.hlChapter ?? anchor?.dataset.hlChapter)
+      if (!book || !Number.isFinite(chapter)) return
       const rect = mark.getBoundingClientRect()
       setPopup({
         kind: 'edit', x: rect.left + rect.width / 2, y: rect.top,
-        id: mark.dataset.highlightId!, book: mark.dataset.hlBook!, chapter: Number(mark.dataset.hlChapter), color: mark.dataset.hlColor!,
+        id: mark.dataset.highlightId!, book, chapter, color: mark.dataset.hlColor ?? markColorFromClass(mark),
         text: mark.textContent ?? '',
       })
     }
