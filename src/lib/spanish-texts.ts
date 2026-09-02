@@ -894,6 +894,10 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // λύκος (lobo) como guía — el guía era Λύκιος (licio). También 65:3: Cálano se llamaba Esfines,
   // «Cálano» viene de su saludo indio «kalé».
   'plutarch-alexander': 'greco/plutarch-alexander',
+  // Dión (58 caps / 388 §§). Keep-the-Greek en 5:9: Dionisio hace de Γέλων (Gelón) el γέλως
+  // (hazmerreír) de Sicilia. Ruido de conversión en el griego de origen (19:8 «μ?ὲν», 56:3
+  // «ζ?ῆν»): erratas de digitalización, no herida textual — se omiten sin espejo.
+  'plutarch-dion': 'greco/plutarch-dion',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
