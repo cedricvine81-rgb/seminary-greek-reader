@@ -529,6 +529,18 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Αὐτόβουλε) and 17 a stray syllable where a name should stand; both are conversion noise,
   // translated through.
   'plutarch-dialogue-on-love': 'greco/plutarch-dialogue-on-love',
+  // MULIERUM VIRTUTES, «Virtudes de mujeres»: the letter to Clea (chapter 0, a preface) and
+  // twenty-seven stories, translated from the Perseus Greek. Fifteen of them are city-scale
+  // narratives — the Trojan women, the Argive women under Telesilla, Aretaphila of Cyrene — and
+  // the rest are single scenes; the Spanish keeps Plutarch's long paratactic chain, because in
+  // this work the piling-up of clauses IS the pace of the story.
+  //
+  // Keep-the-Greek once, at 26: Aristodemus's nickname Μαλακός is explained BY Plutarch as
+  // «zagalón», not «blando» — the sentence exists to correct a mistranslation, so the Greek word
+  // stands and the gloss follows it. Chapter 24 carries an unmarked verse fragment (the «odiosa
+  // Cloto vengadora» line); it is rendered as the prose of the sentence it sits in, which is how
+  // Plutarch has set it. The dump scanned clean: no gaps, no beta code, no Latin leakage.
+  'plutarch-bravery-of-women': 'greco/plutarch-bravery-of-women',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
