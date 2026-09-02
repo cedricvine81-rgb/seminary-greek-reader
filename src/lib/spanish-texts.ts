@@ -419,6 +419,28 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Keep-the-Greek only at 28, where the two Delphic maxims are named AS inscriptions
   // (γνῶθι σαυτόν, μηδὲν ἄγαν) and the chapter turns on how each contains the other.
   'plutarch-consolation-to-apollonius': 'greco/plutarch-consolation-to-apollonius',
+
+  // Eleventh Moralia tranche. On the Generation of the Soul in the Timaeus, Plutarch's hardest
+  // technical treatise: half Platonic exegesis, half harmonic arithmetic. The Spanish keeps
+  // τὸ ταὐτόν / τὸ θάτερον as «lo mismo» / «lo otro» throughout, because the whole argument is
+  // built on that pair, and keeps the musical vocabulary in its Spanish forms (hipate, mese,
+  // nete, proslambanómeno, licanos, parhípatas) rather than glossing it away. Keep-the-Greek at
+  // 33, where the argument IS about the words: the poets' ἄρθμια for what is dear and ἀνάρσιοι
+  // for enemies, and the ἄρμενος of Pindar's epitaph, all turn on «well-fitted», which is the
+  // chapter's point about harmony being virtue.
+  //
+  // Two scar classes, both the source's and neither ours. (i) The Latin running title has been
+  // transliterated INTO GREEK LETTERS and dropped mid-sentence — 1:1 carries «δε ἀνιμαε
+  // προξρεατιονε ἰν τιμαεο» and 3:1 «Ἰν τιμαεο πλατονις», which are simply "De animae
+  // procreatione in Timaeo" and "In Timaeo Platonis". They are digitization noise, so the
+  // Spanish translates through them and says nothing. (ii) The Perseus chapter division is out
+  // of order, and this is measurable rather than inferred: 30 ends «…ἡ τοῦ ἑνὸς καὶ τῶν δυεῖν,
+  // δευτέρα.» and 11 opens «δʼ ἡ τῶν τριῶν καὶ τεττάρων» — one sentence split across two
+  // chapters that are nineteen apart, so the text runs 30 → 11. 21 likewise opens mid-clause.
+  // The Spanish mirrors those three joins with an ellipsis at the broken edge and leaves the
+  // numbering exactly as the Greek has it, so the parallel columns stay aligned. Chapters 3 and
+  // 26 end without a full stop; that is only lost punctuation, not lost text, so they are closed.
+  'plutarch-generation-of-the-soul': 'greco/plutarch-generation-of-the-soul',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
