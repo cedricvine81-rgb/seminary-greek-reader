@@ -570,6 +570,21 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // dropped. Keep-the-Greek once, at 27: κόρη is both «Core» and the pupil of the eye, and the
   // etymology is the argument, so both senses stand in the sentence.
   'plutarch-face-on-the-moon': 'greco/plutarch-face-on-the-moon',
+  // PRAECEPTA GERENDAE REIPUBLICAE, «Preceptos políticos»: 32 sections of advice to a young man
+  // entering public life in a Greek city under Rome. The register is the letter's own — a senior
+  // colleague talking to a junior — and the Spanish keeps Plutarch's vocabulary of office fixed
+  // (προαίρεσις «decisión», παρρησία «franqueza», φιλοτιμία «ambición», λειτουργία «liturgia»,
+  // δημαγωγία «demagogia»), because the treatise is built on distinguishing them from their
+  // counterfeits.
+  //
+  // Four conversion scars, all translated through and none mirrored: the LATIN RUNNING TITLE
+  // transliterated into Greek letters lands INSIDE the sentence at 2 — «ὑποκείσθω πολιτείᾳ
+  // καθάπερ [praecepta gerendae reipublicae] ἔδαφος βέβαιον» — and the split phrase is rejoined,
+  // which is the same defect already recorded at Old Man 1; and stray section numerals are
+  // dropped from 14, 23 and 30. Chapter 1 opens on a garbled clause; the sense is intact and it
+  // is rendered straight. Chapter 17's warning about «the boots above your head» is Plutarch's
+  // own image for Roman power and is kept literal.
+  'plutarch-precepts-of-statecraft': 'greco/plutarch-precepts-of-statecraft',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
