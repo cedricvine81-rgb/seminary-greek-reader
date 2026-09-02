@@ -883,6 +883,11 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // αἱμυλία en griego con su sentido al lado; en 23:10 el juego κρητίζειν πρὸς Κρῆτας
   // («hacer de cretense con cretenses») conserva el verbo, regla keep-the-Greek.
   'plutarch-aemilius-paulus': 'greco/plutarch-aemilius-paulus',
+  // Antonio (87 caps / 359 §§). Keep-the-Greek en tres sitios: 4:4 conserva «decies» (el
+  // latín de las 250.000 dracmas); 62:3 el chiste de Cleopatra sobre Torine conserva
+  // τορύνη («el cucharón»); 81:2 conserva πολυκαισαρίη, el calco del verso homérico
+  // contra el mando de muchos — traducir cualquiera de los tres borra el chiste.
+  'plutarch-antony': 'greco/plutarch-antony',
   // TARGUM ISAIAH. The targum is in ARAMAIC, but the reader does not show that Aramaic: it shows
   // C. W. H. Pauli's 1871 English ("The Chaldee Paraphrase on the Prophet Isaiah"), and the
   // Spanish comes off that English, exactly as Philo's came off Yonge — at TWO REMOVES from the
