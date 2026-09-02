@@ -585,6 +585,18 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // is rendered straight. Chapter 17's warning about «the boots above your head» is Plutarch's
   // own image for Roman power and is kept literal.
   'plutarch-precepts-of-statecraft': 'greco/plutarch-precepts-of-statecraft',
+  // ADVERSUS COLOTEM, «Contra Colotes»: the companion polemic to That Epicurus Makes a Pleasant
+  // Life Impossible, and the same vocabulary discipline carries over — φαντασία «representación»,
+  // ἐποχή «suspensión del juicio», συγκατάθεσις «asentimiento», ὁρμή «impulso», πρόληψις
+  // «anticipación» — because Plutarch's method here is to show that Colotes' charges fall on
+  // Epicurus first. Keep-the-Greek once, at 4: Democritus' δέν and μηδέν, «algo» and «nada», are
+  // the whole of the sentence Colotes misread, so both words stand with the sense beside them.
+  //
+  // Two damaged places are mirrored with an ellipsis: the truncated clause at the end of 27
+  // («…el no padecer»), and the break in 30 where the sentence about beasts expressing doctrines
+  // by roaring loses its verb. Chapter 2's garbled phrase about the fodder thrown at Socrates
+  // and chapter 11's missing «just as neither» are conversion noise and are read through.
+  'plutarch-reply-to-colotes': 'greco/plutarch-reply-to-colotes',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
