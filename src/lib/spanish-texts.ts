@@ -541,6 +541,19 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Cloto vengadora» line); it is rendered as the prose of the sentence it sits in, which is how
   // Plutarch has set it. The dump scanned clean: no gaps, no beta code, no Latin leakage.
   'plutarch-bravery-of-women': 'greco/plutarch-bravery-of-women',
+  // NON POSSE SUAVITER VIVI SECUNDUM EPICURUM, «Que no es posible vivir con placer según
+  // Epicuro»: the companion dialogue to the Reply to Colotes, 31 sections of sustained polemic
+  // rather than narrative. The Spanish keeps the technical vocabulary fixed across the whole
+  // work — ἀπονία «ausencia de dolor», εὐστάθεια «buena constitución», ἀταραξία «imperturbabilidad»,
+  // πρόληψις «anticipación» — because Plutarch's case is built by turning the Epicureans' own
+  // terms back on them, and a term that drifts breaks the argument.
+  //
+  // Two conversion scars, both translated through: at 4 a fragment of the preceding sentence is
+  // spliced in twice mid-clause (the «trasvase del cuerpo» image), and the source's own text of
+  // the treatise's opening word gives Colotes' name garbled. Neither is textual damage, so
+  // neither is mirrored. The quotations of Epicurus and Metrodorus are set in guillemets
+  // wherever Plutarch is quoting them verbatim, which is most of the polemic's force.
+  'plutarch-epicurus-pleasant-life': 'greco/plutarch-epicurus-pleasant-life',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
