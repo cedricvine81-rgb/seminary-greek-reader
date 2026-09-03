@@ -678,6 +678,21 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // en mitad de la enumeración («ni de premisas verdaderas ni de falsas ni de …»): la sección
   // 39 arranca ya otro asunto, de modo que la pérdida es del texto, no del volcado.
   'plutarch-common-conceptions': 'greco/plutarch-common-conceptions',
+  // SOBRE LA DESAPARICIÓN DE LOS ORÁCULOS (De defectu oraculorum), 52 secciones. Diálogo en
+  // Delfos: Lamprias, Amonio, Cleómbroto, Demetrio, Heracleón, Filipo y el cínico Planetíades
+  // buscan por qué han callado los oráculos, y la respuesta pasa por los démones, por la
+  // pluralidad de mundos y por el soplo de la tierra. Aquí está el relato del «gran Pan ha
+  // muerto» (§17), traducido sin adorno, como lo cuenta Filipo.
+  //
+  // Vocabulario fijo: δαίμων es siempre «démon» —nunca «demonio», que en castellano ya es
+  // otra cosa—; ἐνθουσιασμός «entusiasmo» en su sentido antiguo de posesión; ἀναθυμίασις
+  // «exhalación»; μαντική «adivinación»; ὅσιοι, los cinco funcionarios délficos, «los santos»
+  // entre comillas.
+  //
+  // El dump escaneó limpio de lagunas y de beta code. Dos cicatrices de conversión traducidas
+  // de largo: letras revueltas con ditografía en la sección 23 y una palabra rota con un
+  // carácter filtrado en la 36 (la lista de las cinco partes del alma).
+  'plutarch-obsolescence-of-oracles': 'greco/plutarch-obsolescence-of-oracles',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
