@@ -744,6 +744,35 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // ἀρχικλά por el cargo de Clea en §35; el punto doble de §79. §56 termina en coma: la frase
   // sigue en §57, y el corte es del texto de Perseus, no nuestro — se espeja tal cual.
   'plutarch-isis-osiris': 'greco/plutarch-isis-osiris',
+  // DICHOS DE REYES Y GENERALES (Regum et imperatorum apophthegmata), 92 secciones. La
+  // colección hermana de Dichos de espartanos, pero de alcance imperial: se abre con la carta
+  // dedicatoria a Trajano (§1) y recorre a los reyes persas, los tiranos sicilianos, Filipo y
+  // Alejandro, los diádocos, los generales atenienses y tebanos, los reyes de Esparta y, en su
+  // último tercio, a los romanos, de Manio Curio a Augusto.
+  //
+  // Mismo registro seco que Dichos de espartanos: el apotegma vive de la brevedad, y el
+  // participio de encabezamiento («preguntado…», «viendo…», «diciéndole alguien…») se conserva
+  // como marca de género. Cuatro secciones son pequeños libros y no apotegmas sueltos —26
+  // (Filipo), 27 (Alejandro), 71 (Epaminondas), 82 (Escipión el joven)—, y la 81 (Catón el
+  // viejo) es una ristra de máximas sin anécdota: el plan de lotes NO puede suponer que una
+  // sección equivale a un párrafo.
+  //
+  // Los nombres romanos van en su forma castellana (Fabricio, Escipión, Emilio Paulo, Catón),
+  // y los cargos también: αὐτοκράτωρ es «general en jefe» donde es aclamación militar y
+  // «emperador» sólo en el encabezamiento a Trajano; τιμητής «censor»; ἀγορανομία «edilidad».
+  // Se guarda el griego donde el dicho ES la palabra: la carta de Menécrates «Zeus» a Agesilao
+  // (§61) repite el chiste de χαίρειν por ὑγιαίνειν que ya está en Dichos de espartanos, y se
+  // traduce igual, «que sanes», para que las dos colecciones no se contradigan.
+  //
+  // El dump escaneó limpio de lagunas, de beta code y de latín filtrado. DOS heridas del texto,
+  // espejadas con «…»: el nombre del dios perdido en el tratado de Gelón (§19, «dejarían de
+  // sacrificar a sus hijos a …»), y el final truncado de la sección 81, que se corta en mitad
+  // de la frase sobre Postumio Albino —el griego termina en coma, y la 82 arranca ya con otro
+  // personaje, de modo que la pérdida es del texto—. Cicatrices de conversión traducidas de
+  // largo: la frase de Catón que empieza en «δὲ βούλεσθαι» sin verbo principal (§81), el «μὴ
+  // σύ» intruso del consejo de Polibio (§82) y la ditografía «τῆς τῆς Ῥώμης» del último dicho
+  // de Augusto (§92).
+  'plutarch-sayings-of-kings': 'greco/plutarch-sayings-of-kings',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
