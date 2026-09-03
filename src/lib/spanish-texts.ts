@@ -693,6 +693,33 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // de largo: letras revueltas con ditografía en la sección 23 y una palabra rota con un
   // carácter filtrado en la 36 (la lista de las cinco partes del alma).
   'plutarch-obsolescence-of-oracles': 'greco/plutarch-obsolescence-of-oracles',
+  // DICHOS DE ESPARTANOS (Apophthegmata Laconica), 69 secciones. La gran colección de
+  // apotegmas lacónicos: sesenta y ocho espartiatas nombrados, de Agasicles a Pausanias, y una
+  // sección final de dichos anónimos. Dos secciones son ellas mismas pequeños libros —la 2,
+  // la vida entera de Agesilao el Grande en dichos, y la 53, las máximas de Licurgo— y la 69
+  // reúne el resto sin atribución.
+  //
+  // El registro es deliberadamente seco. El apotegma lacónico vive de la brevedad, y el
+  // español lo respeta: nada de perífrasis explicativas, y el participio de corte griego
+  // («preguntado…», «viendo…», «diciéndole alguien…») se conserva como marca de género en
+  // lugar de deshacerse en oraciones completas.
+  //
+  // Vocabulario fijo: εἵλωτες «ilotas»; ἔφοροι «éforos»; γέροντες «ancianos» (nunca
+  // «senadores»); ἀγωγή «disciplina»; ξένος en boca de un espartano a un forastero es siempre
+  // «extranjero»; νὴ τὼ θεώ, el juramento por los Dioscuros, «¡por los dos dioses!»; y la
+  // fórmula lacónica de la despedida militar se deja como la trae el griego.
+  //
+  // Se guarda el griego donde el dicho ES la palabra griega: δεικηλίκτας en la sección 2 —el
+  // término espartano para los mimos, sin el cual la réplica a Calípides no significa nada— y
+  // el chiste de la carta a Menécrates «Zeus» (§2), donde Agesilao cambia el χαίρειν de la
+  // salutación por ὑγιαίνειν y se traduce por su sentido, «que sanes».
+  //
+  // El dump escaneó limpio: sin lagunas, sin beta code, sin latín filtrado. Una sola herida
+  // del texto, espejada con «…»: la daga de la sección 69 en la anécdota del camino a Esparta
+  // (ὁποῖος †καθίσῃς). En la sección 2 quedan dos cicatrices de conversión traducidas de
+  // largo: la ditografía «ὑπὲρ τῶν τῶν τοιοῦτος» y la frase revuelta del beso de Megabates,
+  // que se vierte por el sentido que la sintaxis dañada todavía deja ver.
+  'plutarch-sayings-of-spartans': 'greco/plutarch-sayings-of-spartans',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
