@@ -720,6 +720,30 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // largo: la ditografía «ὑπὲρ τῶν τῶν τοιοῦτος» y la frase revuelta del beso de Megabates,
   // que se vierte por el sentido que la sintaxis dañada todavía deja ver.
   'plutarch-sayings-of-spartans': 'greco/plutarch-sayings-of-spartans',
+  // SOBRE ISIS Y OSIRIS (De Iside et Osiride), 80 secciones. El tratado más largo y más
+  // ambicioso de la cola de Moralia: dedicado a Clea, sacerdotisa de Delfos, va del ritual
+  // egipcio (el lino, la sal, el pescado, la cebolla) al mito de Osiris, Isis, Tifón y Horus,
+  // y de ahí a una lectura filosófica de ese mito —démones, dualismo persa, el triángulo
+  // rectángulo, la materia platónica— que termina en el incienso del kifi.
+  //
+  // Vocabulario fijo: δαίμων es siempre «démon», nunca «demonio»; ἱερὸς λόγος «el relato
+  // sagrado»; περίττωμα «residuo»; ἁγνεία «purificación»; ἀναθυμίασις «exhalación»; ὅσιος
+  // «santo» y ἱερός «sagrado» se mantienen distintos en toda la obra, porque §61 hace
+  // depender de esa distinción la etimología misma del nombre de Osiris.
+  //
+  // Se guarda el griego —o la palabra egipcia tal como Plutarco la transcribe— allí donde el
+  // argumento ES la palabra: Amún (§9), Sarapis y «sairein» (§29), Set/Bebón/Smu (§49, §62),
+  // «bal» por mirra (§79). Las etimologías griegas de §60 se traducen por su sentido y se deja
+  // ver la operación, porque el texto griego que las sostiene está ahí dañado.
+  //
+  // El dump escaneó limpio de lagunas, de beta code y de latín filtrado. DOS heridas del texto,
+  // espejadas con «…»: el topónimo daggerado junto a Filas (§20, «†νιστιτάνην») y la frase
+  // rota del huevo horadado por los de Arimanio (§47). Cicatrices de conversión traducidas de
+  // largo: la ditografía «ὑπὲρ τῶν τῶν» del tipo ya visto en Dichos de espartanos aparece aquí
+  // como «Ἶσιν μὲν ἡμεῖς, Ἶσιν δʼ Αἰγύπτιοι» (§60) y como el «Ὄσιριν … Ὄσιριν» de §34;
+  // ἀρχικλά por el cargo de Clea en §35; el punto doble de §79. §56 termina en coma: la frase
+  // sigue en §57, y el corte es del texto de Perseus, no nuestro — se espeja tal cual.
+  'plutarch-isis-osiris': 'greco/plutarch-isis-osiris',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
