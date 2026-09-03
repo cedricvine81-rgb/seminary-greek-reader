@@ -597,6 +597,18 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // by roaring loses its verb. Chapter 2's garbled phrase about the fodder thrown at Socrates
   // and chapter 11's missing «just as neither» are conversion noise and are read through.
   'plutarch-reply-to-colotes': 'greco/plutarch-reply-to-colotes',
+  // DE GENIO SOCRATIS, «Sobre el daimon de Sócrates»: a dialogue with two interleaved strands —
+  // the conspiracy that freed Thebes from the Spartan garrison in 379 BC, and a philosophical
+  // inquiry into what Socrates' sign actually was — so the Spanish keeps two registers and lets
+  // the narrative chapters run at the pace of the plot. Keep-the-Greek throughout for δαιμόνιον
+  // and δαίμων: the whole dispute is over what that word names, and «demonio» would decide it
+  // wrongly, so the terms stand as «daimonion» and «daimon».
+  //
+  // Three damaged places are mirrored with an ellipsis: the broken end of 5 (the magistrates who
+  // receive the spear and the seal «sin saber nada ni …»), the missing verb at the head of 4, and
+  // the truncated excuse in 34 («Porque … de aquel día»). Scars translated through: the speaker
+  // heading at 1 gives Archidamus' name garbled, and 28 miscopies Cephisodorus' patronymic.
+  'plutarch-sign-of-socrates': 'greco/plutarch-sign-of-socrates',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
