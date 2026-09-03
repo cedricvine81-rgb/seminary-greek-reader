@@ -6,7 +6,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { sendEmail, escapeHtml, emailConfigured } from '@/lib/email'
 import { createHash, randomBytes } from 'node:crypto'
 import { instructorNotifyRecipients } from '@/lib/app-settings'
-import { logError } from '@/lib/logger'
+import { logError, logWarn, persist } from '@/lib/logger'
 import type { Role } from '@/types/auth'
 
 // Bump whenever /terms is materially revised, so we know whose consent is stale.
@@ -146,12 +146,34 @@ export async function POST(req: NextRequest) {
       }
 
       const addr = email.trim().toLowerCase()
-      // Two limits: one stops a scan across many addresses, one stops mailbox-flooding a
-      // single victim. Both answer 200 so neither can be used to probe.
-      const ipRl = rateLimit(`reset-ip:${ip}`, 10, 3_600_000)
+      // Two limits, deliberately answering differently:
+      //   per-address — SILENT (200, like success). A distinguishable answer here would turn
+      //     the endpoint into an oracle for "does this account exist?".
+      //   per-IP — LOUD (429). It describes the caller's network, not any account, so saying
+      //     so plainly leaks nothing. It is also the one a classroom trips: a campus behind
+      //     one NAT shares this budget, so it is sized for a whole cohort resetting at once.
+      //     It used to be 10/hour and silent, which showed students "check your email" when
+      //     nothing had been sent.
+      const ipRl = rateLimit(`reset-ip:${ip}`, 200, 3_600_000)
       const emailRl = rateLimit(`reset-email:${addr}`, 4, 3_600_000)
 
-      if (ipRl.ok && emailRl.ok) {
+      if (!ipRl.ok) {
+        logWarn('api/auth:request-password-reset', {
+          reason: 'ip_rate_limited', ip, retryAfter: ipRl.retryAfter,
+        })
+        // Durable copy: logWarn only reaches the console, and /admin/errors reads ErrorLog.
+        // persist() de-duplicates on scope+message for a minute, so a whole class tripping
+        // this at once reads as one row per minute rather than one per student.
+        void persist('server', 'api/auth:request-password-reset',
+          { message: 'reset dropped: per-IP rate limit' },
+          { ip, retryAfter: ipRl.retryAfter })
+        return NextResponse.json(
+          { error: 'rate_limited' },
+          { status: 429, headers: { 'Retry-After': String(ipRl.retryAfter) } },
+        )
+      }
+
+      if (emailRl.ok) {
         const user = await prisma.user.findUnique({
           where: { email: addr },
           select: { id: true, firstName: true, deletedAt: true },
@@ -182,8 +204,17 @@ export async function POST(req: NextRequest) {
               + `If that was not you, you can ignore this message - your password has not changed.\n`,
           })
         }
+      } else {
+        // Stays silent on the wire (see above), but recorded so a swallowed request can be
+        // found in /admin/errors instead of vanishing without trace.
+        logWarn('api/auth:request-password-reset', {
+          reason: 'address_rate_limited', address: addr, retryAfter: emailRl.retryAfter,
+        })
+        void persist('server', 'api/auth:request-password-reset',
+          { message: 'reset dropped: per-address rate limit' },
+          { address: addr, retryAfter: emailRl.retryAfter })
       }
-      // Same answer either way.
+      // Same answer whether or not the address exists.
       return NextResponse.json({ ok: true })
     }
 

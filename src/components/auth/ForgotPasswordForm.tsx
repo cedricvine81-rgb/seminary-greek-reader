@@ -26,8 +26,10 @@ export function ForgotPasswordForm() {
       })
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
-        setError(body?.error === 'email_not_configured'
-          ? t('auth.forgot.unavailableBody')
+        const code = body?.error
+        setError(
+          code === 'email_not_configured' ? t('auth.forgot.unavailableBody')
+          : code === 'rate_limited' ? t('auth.forgot.rateLimitedBody')
           : t('auth.error.generic'))
         setState('idle')
         return
