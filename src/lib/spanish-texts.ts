@@ -609,6 +609,23 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // the truncated excuse in 34 («Porque … de aquel día»). Scars translated through: the speaker
   // heading at 1 gives Archidamus' name garbled, and 28 miscopies Cephisodorus' patronymic.
   'plutarch-sign-of-socrates': 'greco/plutarch-sign-of-socrates',
+  // SOBRE LA INTELIGENCIA DE LOS ANIMALES (De sollertia animalium), 37 secciones. Un diálogo
+  // judicial: tras el proemio de Autobulo contra los estoicos, Aristótimo aboga por los animales
+  // de tierra y Fédimo por los de mar, y Soclaro se niega a votar. El registro es el del alegato
+  // forense —«varones jueces», «abogar», «el defensor de los acuáticos»—, y los nombres de los
+  // hablantes encabezan cada sección como en el griego.
+  //
+  // HERIDAS del texto, espejadas con «…»: la cabeza dañada de la sección 9, la laguna de la 5
+  // (tras «por la fuerza de su vista»), la de la 13 (el ladrón del templo de Asclepio) y la de
+  // la 35, donde el griego se rompe en plena burla sobre Apolo y el salmonete y sólo quedan
+  // palabras sueltas. CICATRICES de digitalización, traducidas de largo y sin marca: los
+  // números de línea filtrados dentro de las palabras en 2, 4 (dos), 18, 33 («20» delante de
+  // «cuadragésimo»), 34 y 36.
+  //
+  // Se conserva el griego donde el argumento ES la palabra: el juego de ἱερός «sagrado/grande»
+  // se traduce con la explicación al lado, y la etimología de ἔλαφος por la ἕλξις de la serpiente
+  // se dice en castellano porque el griego la lleva ya glosada dentro.
+  'plutarch-cleverness-of-animals': 'greco/plutarch-cleverness-of-animals',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
