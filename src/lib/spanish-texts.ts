@@ -773,6 +773,30 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // σύ» intruso del consejo de Polibio (§82) y la ditografía «τῆς τῆς Ῥώμης» del último dicho
   // de Augusto (§92).
   'plutarch-sayings-of-kings': 'greco/plutarch-sayings-of-kings',
+  // ── HESÍODO ──────────────────────────────────────────────────────────────────────────────
+  // El primer VERSO del corpus en español. Todo lo anterior era prosa vertida como prosa; aquí
+  // el griego es hexámetro y se cita POR VERSO, de modo que la traducción es línea a línea:
+  // cada línea griega tiene exactamente una línea española, separadas por \n dentro del grupo.
+  // No hay metro ni rima —eso sería otra obra—, pero el recuento de líneas es exacto y
+  // verificable, y ésa es la garantía que la prosa nunca tuvo: en verso una línea perdida se
+  // cuenta. El lector actual junta las líneas al mostrarlas, igual que hace con el griego.
+  //
+  // ESCUDO DE HERACLES (Scutum), 480 versos en 99 grupos. Poema de catálogo y de écfrasis: la
+  // noche de Alcmena, el duelo con Cicno y, en el centro, la larguísima descripción del escudo
+  // —el Espanto, las Keres, las Gorgonas, la ciudad en guerra y la ciudad en paz—.
+  //
+  // Vocabulario fijo: los epítetos se mantienen constantes en toda la obra (γλαυκῶπις «de ojos
+  // glaucos», βίη Ἡρακληείη «la fuerza de Heracles», λαοσσόος «que arrastra a los pueblos»,
+  // Ἀμφιτρυωνιάδης «el Anfitrioníada»); las personificaciones van con mayúscula y en español
+  // —Φόβος «Espanto», Δεῖμος «Terror», Ἔρις «Discordia», Ἀχλύς «Tiniebla», Κῆρες «Keres»,
+  // que se deja en griego por no tener equivalente que no mienta—.
+  //
+  // El dump escaneó limpio: sin beta code, sin latín filtrado, sin dagas. UNA anomalía de
+  // numeración, que NO es daño nuestro: el verso 298 no existe en el texto de Perseus —los
+  // editores lo atetizan por duplicar al 299—, de modo que la obra tiene 479 versos y no 480.
+  // La numeración se espeja tal cual: el grupo 297 tiene un solo verso y el siguiente empieza
+  // en 299. Nunca renumerar para cerrar el hueco.
+  'hesiod-shield': 'greco/hesiod-shield',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
