@@ -626,6 +626,22 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // se traduce con la explicación al lado, y la etimología de ἔλαφος por la ἕλξις de la serpiente
   // se dice en castellano porque el griego la lleva ya glosada dentro.
   'plutarch-cleverness-of-animals': 'greco/plutarch-cleverness-of-animals',
+  // CÓMO DISTINGUIR A UN ADULADOR DE UN AMIGO (Quomodo adulator ab amico internoscatur),
+  // 37 secciones, dirigido a Antíoco Filópapo. Un tratado de diagnóstico: la primera mitad
+  // enseña a reconocer al adulador, la segunda a usar la παρρησία que él sólo sabe fingir.
+  // Ese término se traduce siempre «franqueza» —nunca «libertad de palabra»— porque aquí
+  // nombra una virtud del trato entre amigos, no un derecho político; y κόλαξ es siempre
+  // «adulador», nunca «lisonjero», para que la palabra suene tan dura en castellano como
+  // en griego.
+  //
+  // El dump escaneó LIMPIO: sin lagunas, sin beta code, sin títulos latinos. Los únicos
+  // defectos son números de línea filtrados DENTRO de una palabra (secciones 12, 24 y 37):
+  // cicatrices de digitalización, traducidas de largo y sin marca.
+  //
+  // Las citas —Homero, Eurípides, Sófocles, Píndaro, Simónides, Tucídides, Menandro y los
+  // cómicos— se mantienen entre comillas como verso o como cita, según lo son en el griego,
+  // y no se funden en la prosa.
+  'plutarch-flatterer-and-friend': 'greco/plutarch-flatterer-and-friend',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
