@@ -642,6 +642,24 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // cómicos— se mantienen entre comillas como verso o como cita, según lo son en el griego,
   // y no se funden en la prosa.
   'plutarch-flatterer-and-friend': 'greco/plutarch-flatterer-and-friend',
+  // SOBRE LAS CONTRADICCIONES DE LOS ESTOICOS (De Stoicorum repugnantiis), 47 secciones.
+  // Polémica técnica: Plutarco cita a Crisipo obra por obra y lo enfrenta consigo mismo. El
+  // vocabulario estoico se mantiene fijo de principio a fin: φαντασία «representación»,
+  // συγκατάθεσις «asentimiento», ὁρμή «impulso», οἰκείωσις «apropiación», προηγμένον
+  // «preferido», κατόρθωμα «acción recta», καθῆκον «deber», ἡγεμονικόν «parte rectora»,
+  // εἱμαρμένη «destino» y ἐκπύρωσις «conflagración». Los títulos de los tratados de Crisipo
+  // se traducen («Sobre los modos de vida», «Sobre la naturaleza»), porque en el griego son
+  // ya descriptivos y el lector los necesita para seguir la acusación.
+  //
+  // TRES defectos de conversión, todos cicatrices traducidas de largo: (1) el título latino
+  // corriente transliterado a letras griegas DENTRO de la frase en la sección 2 («δε
+  // στοιξορυμ ρεπυγναντιις» partiendo «οὐ βραχὺν … ἀλλὰ παμμήκη») — el mismo defecto ya visto
+  // en Viejo en la política y en Preceptos políticos; (2) beta code sin convertir en tres
+  // títulos de libro (secciones 9, 10 y 13: `peri\ lo/gou xrh/sews`, `fili/as`) — OJO: el
+  // escaneo estándar de beta code NO lo detecta, porque carece del marcador `[*]`; hay que
+  // buscar además letras latinas sueltas; (3) letras revueltas en la sección 23 («Ο φη Ὀφ ο»
+  // dentro de la pregunta sobre la palma del árbitro).
+  'plutarch-stoic-self-contradictions': 'greco/plutarch-stoic-self-contradictions',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
