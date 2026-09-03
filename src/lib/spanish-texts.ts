@@ -818,6 +818,29 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // que mentiría diciendo que falta texto. La regla que queda para el resto del verso: daga
   // sobre palabra legible se traduce y se anota; laguna se espeja.
   'hesiod-works-and-days': 'greco/hesiod-works-and-days',
+  // TEOGONÍA (Theogonia), 1.022 versos en 211 grupos. El poema del origen de los dioses: el
+  // proemio de las Musas en el Helicón —donde ellas mismas declaran que saben decir mentiras
+  // semejantes a verdades—, Caos y Tierra, la castración de Urano y el nacimiento de Afrodita,
+  // el catálogo de las Nereidas y de los Ríos, el himno a Hécate, Prometeo y Pandora, la
+  // Titanomaquia, la topografía del Tártaro y el combate con Tifoeo.
+  //
+  // Vocabulario fijo: los nombres divinos van en su forma castellana consagrada (Crono, Rea,
+  // Ceo, Jápeto, Tetis para Τηθύς y Tetis para Θέτις, que el griego distingue y el castellano
+  // no —el contexto las separa siempre—); las abstracciones personificadas se traducen y se
+  // capitalizan (Caos, Amor, Discordia, Espanto, Terror, Justicia, Némesis), salvo las KERES,
+  // que se dejan en griego porque no hay equivalente castellano que no mienta; los epítetos se
+  // mantienen constantes en toda la obra (γλαυκῶπις «de ojos glaucos», ἀγκυλομήτης «de
+  // retorcidos designios», νεφεληγερέτα «que amontona las nubes», ἀμφιγυήεις «Cojo de ambos
+  // pies», αἰγίοχος «portador de la égida»).
+  //
+  // El dump escaneó limpio de lagunas, de beta code y de latín filtrado, y la numeración está
+  // COMPLETA: 1.022 versos sin huecos, a diferencia del Escudo y de Trabajos y días. Una daga,
+  // en el verso 659 («ἄψορρον δʼ† ἐξαῦτις»): la palabra se lee y lo que los editores marcan es
+  // la duda, no una pérdida, de modo que se traduce y se anota, según la regla fijada en
+  // Trabajos y días. Los grupos de esta obra son MUY irregulares donde los editores atetizan
+  // —el himno a Hécate (425-434) y el catálogo de la Noche (210-214) bajan a grupos de uno,
+  // dos y tres versos—: la traducción los espeja tal cual y nunca los reagrupa.
+  'hesiod-theogony': 'greco/hesiod-theogony',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
