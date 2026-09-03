@@ -797,6 +797,27 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // La numeración se espeja tal cual: el grupo 297 tiene un solo verso y el siguiente empieza
   // en 299. Nunca renumerar para cerrar el hueco.
   'hesiod-shield': 'greco/hesiod-shield',
+  // TRABAJOS Y DÍAS (Opera et dies), 828 versos en 174 grupos. El poema didáctico dirigido al
+  // hermano Perses: las dos Discordias, Prometeo y Pandora, las cinco razas, la fábula del
+  // halcón y el ruiseñor, el calendario del labrador y del navegante, y el catálogo final de
+  // los días fastos y nefastos.
+  //
+  // Vocabulario fijo: Ἔρις «Discordia» (las DOS, y la distinción entre ellas es el argumento
+  // del proemio), Δίκη «Justicia» y Ὕβρις «Violencia» con mayúscula donde están
+  // personificadas y en minúscula donde no; αἰδώς «pudor» siempre —nunca «vergüenza», que en
+  // español ya es lo contrario—; βίος en el sentido campesino es «sustento», no «vida»;
+  // ἀεργός «ocioso»; los meses y días del calendario final se dan en números, no en nombres
+  // modernos, porque el poema cuenta por días del mes creciente y menguante.
+  //
+  // El dump escaneó limpio de beta code y de latín filtrado. DOS cosas que anotar, ninguna
+  // nuestra: (1) el verso 310 no existe en el texto de Perseus —atetizado, igual que el 298
+  // del Escudo—, de modo que la obra tiene 827 versos y no 828; el grupo 309 tiene un solo
+  // verso y el siguiente empieza en 311, y no se renumera. (2) el verso 263 lleva daga en
+  // «ἰθύνετε †δίκας»: la palabra está ahí y se lee, y lo que los editores marcan es la duda,
+  // no una pérdida; por eso se traduce («enderezad las sentencias») y NO se espeja con «…»,
+  // que mentiría diciendo que falta texto. La regla que queda para el resto del verso: daga
+  // sobre palabra legible se traduce y se anota; laguna se espeja.
+  'hesiod-works-and-days': 'greco/hesiod-works-and-days',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
