@@ -660,6 +660,24 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // buscar además letras latinas sueltas; (3) letras revueltas en la sección 23 («Ο φη Ὀφ ο»
   // dentro de la pregunta sobre la palma del árbitro).
   'plutarch-stoic-self-contradictions': 'greco/plutarch-stoic-self-contradictions',
+  // SOBRE LAS NOCIONES COMUNES, CONTRA LOS ESTOICOS (De communibus notitiis), 50 secciones.
+  // Diálogo: Lamprias llega escocido por unos amigos estoicos y Diadúmeno le devuelve el
+  // ataque sección por sección. κοιναὶ ἔννοιαι es siempre «nociones comunes» y πρόληψις
+  // «noción previa» —la acusación entera se juega en esos dos términos—; y el vocabulario
+  // estoico va fijo como en Contradicciones de los estoicos: ἀδιάφορον «indiferente»,
+  // προηγμένον «preferido», ἐκλογή «selección», οἰκείωσις «apropiación», ἡγεμονικόν «parte
+  // rectora», ἐκπύρωσις «conflagración», φαντασία «representación».
+  //
+  // DOS defectos de conversión, cicatrices traducidas de largo: el título latino corriente
+  // transliterado a letras griegas DENTRO de la frase de la sección 1 («δε ξομμιινιβης
+  // νοτιτιις», partiendo «ὁδῷ βαδιζόντων» de «ἀνατροπέας») —el mismo defecto de Contradicciones
+  // de los estoicos, sección 2— y letras sueltas filtradas en 10, 34 y 37.
+  //
+  // TRES heridas del texto, espejadas con «…»: la frase rota de la sección 3, la serie de
+  // negaciones truncadas de la 21 («οὐδʼ πάσχουσιν … οὐδʼ»), y el final de la 38, que se corta
+  // en mitad de la enumeración («ni de premisas verdaderas ni de falsas ni de …»): la sección
+  // 39 arranca ya otro asunto, de modo que la pérdida es del texto, no del volcado.
+  'plutarch-common-conceptions': 'greco/plutarch-common-conceptions',
   // THE SYNKRISEIS. Seventeen of the short comparisons that close the paired Lives, translated
   // straight from the Perseus Greek. They are argument, not narrative: the Spanish keeps the
   // μὲν…δέ balance as «el uno… el otro», and keeps the verse quotations (Homer, Sophocles,
