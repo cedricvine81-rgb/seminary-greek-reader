@@ -1495,6 +1495,25 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'tg-psj-leviticus': 'targums/tg-psj-leviticus',
   'tg-psj-numbers': 'targums/tg-psj-numbers',
   'tg-psj-deuteronomy': 'targums/tg-psj-deuteronomy',
+
+  // HOMERO, ILÍADA — traducción propia, hecha verso a verso directamente del griego de Perseus
+  // (Monro y Allen), no del inglés ni de ninguna versión española anterior. La invariante dura es
+  // UNA LÍNEA ESPAÑOLA POR CADA LÍNEA GRIEGA: los 15.687 versos del poema tienen su correspondencia
+  // exacta, y los grupos de versos son los de la fuente y nunca se reagrupan, porque las dos
+  // columnas se leen en paralelo.
+  //
+  // Homero repite versos enteros de un canto a otro, de modo que un epíteto que se desvía es el
+  // error que de verdad importa y que un recuento de líneas no puede ver. Las fórmulas están
+  // fijadas y verificadas: ποδάρκης δῖος Ἀχιλλεύς «el divino Aquiles, de pies infatigables» frente
+  // a πόδας ὠκὺς Ἀχιλλεύς «Aquiles, el de los pies veloces» —son epítetos DISTINTOS y Homero usa
+  // los dos a pocos versos de distancia—; ἀρήϊος «guerrero» frente a δαΐφρων «belicoso»;
+  // κορυθαίολος Ἕκτωρ «Héctor de tremolante penacho»; ὑπόδρα ἰδών «mirándolo con torva mirada».
+  // Ker y Keres se quedan en griego («la Ker», «las Keres»), nunca «la Parca».
+  //
+  // ⚠ EL GRIEGO DE PERSEUS TIENE HUECOS QUE NO SON NUESTROS: faltan 9.488-491, 11.574 y 14.269, de
+  // modo que el canto 11 tiene 847 versos y el 14 tiene 521. La traducción sigue la numeración de
+  // la fuente y no rellena esos huecos.
+  'homer-iliad': 'greco/homer-iliad',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit
