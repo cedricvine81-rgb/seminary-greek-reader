@@ -52,6 +52,7 @@ const studentNav: NavItem[] = [
   { label: 'nav.selfStudy',   href: '/student/self-study',       icon: <GraduationCap size={16} />,   desc: 'nav.desc.selfStudy' },
   { label: 'nav.calendar',    href: '/student/calendar',         icon: <Calendar size={16} />,        desc: 'nav.desc.calendar' },
   { label: 'nav.assignments', href: '/student/assignments',      icon: <ClipboardList size={16} />,   desc: 'nav.desc.assignments' },
+  { label: 'nav.appeals',     href: '/student/appeals',          icon: <Gavel size={16} />,           desc: 'nav.desc.appeals' },
   { label: 'nav.messages',    href: '/student/messages',         icon: <Mail size={16} />,            desc: 'nav.desc.messages' },
   { label: 'nav.materials',   href: '/student/materials',        icon: <BookMarked size={16} />,      desc: 'nav.desc.materials' },
 ]

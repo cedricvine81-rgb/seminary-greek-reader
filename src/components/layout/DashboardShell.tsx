@@ -22,7 +22,7 @@ const TITLE_KEYS: Record<string, string> = {
   'Vocab Synonyms': 'nav.vocabSynonyms', 'Accuracy': 'nav.accuracy',
   'Admin Dashboard': 'page.adminDashboard', 'Course Archive': 'page.courseArchive',
   'Create Course': 'page.createCourse', 'Edit Course': 'page.editCourse',
-  'Enrollment Requests': 'page.enrollmentRequests', 'Exegesis Workspace': 'page.exegesisWorkspace',
+  'Appeals': 'nav.appeals', 'Enrollment Requests': 'page.enrollmentRequests', 'Exegesis Workspace': 'page.exegesisWorkspace',
   'Flashcards': 'page.flashcards', 'Group Presentations': 'page.groupPresentations',
   'My Courses': 'page.myCourses', 'New Assignment': 'page.newAssignment',
   'Students': 'page.students', 'Submission': 'page.submission',
