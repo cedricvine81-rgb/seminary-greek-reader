@@ -3200,7 +3200,7 @@ const en: Catalogue = {
   // ── Settings: reading language (existing card) ──
   'settings.reading.auto': 'Follow interface language',
   'settings.reading.autoSub': 'Currently {lang}',
-  'settings.reading.desc': 'The translation shown beside the Greek and Hebrew. The original text itself never changes — this is the language you read it with. Applies to the Reader and the Phrase explorer, and is remembered on this device.',
+  'settings.reading.desc': 'The translation shown beside the Greek and Hebrew. The original text itself never changes — this is the language you read it with. Applies to the Reader, the Phrase explorer and Texts, and is remembered on this device.',
   'settings.reading.licenceNote': 'These are the freely licensed editions available to us, so they are older translations — Reina-Valera 1909 rather than 1960, for instance. The Berean Standard Bible is the only one shown word-by-word beside the Greek New Testament; the rest appear verse by verse.',
   'settings.reading.title': 'Reading language',
   'settings.reading.greekOnly': 'Greek only',
@@ -6220,7 +6220,7 @@ const es: Catalogue = {
 
   'settings.reading.auto': 'Seguir el idioma de la interfaz',
   'settings.reading.autoSub': 'Actualmente: {lang}',
-  'settings.reading.desc': 'La traducción que se muestra junto al griego y al hebreo. El texto original nunca cambia: este es el idioma con el que lo lees. Se aplica al Lector y al Explorador de frases, y se recuerda en este dispositivo.',
+  'settings.reading.desc': 'La traducción que se muestra junto al griego y al hebreo. El texto original nunca cambia: este es el idioma con el que lo lees. Se aplica al Lector, al Explorador de frases y a Textos, y se recuerda en este dispositivo.',
   'settings.reading.licenceNote': 'Estas son las ediciones de licencia libre a nuestro alcance, por lo que son traducciones antiguas: Reina-Valera 1909 en lugar de 1960, por ejemplo. La Berean Standard Bible es la única que se muestra palabra por palabra junto al Nuevo Testamento griego; las demás aparecen versículo por versículo.',
   'settings.reading.title': 'Idioma de lectura',
   'settings.reading.greekOnly': 'Solo griego',
@@ -6536,7 +6536,7 @@ const ru: Catalogue = {
 
   'settings.reading.auto': 'Следовать языку интерфейса',
   'settings.reading.autoSub': 'Сейчас: {lang}',
-  'settings.reading.desc': 'Перевод, показываемый рядом с греческим и еврейским текстом. Сам оригинальный текст не меняется — это язык, на котором вы его читаете. Применяется к Читателю и Обозревателю фраз и запоминается на этом устройстве.',
+  'settings.reading.desc': 'Перевод, показываемый рядом с греческим и еврейским текстом. Сам оригинальный текст не меняется — это язык, на котором вы его читаете. Применяется к Читателю, Обозревателю фраз и Текстам и запоминается на этом устройстве.',
   'settings.reading.licenceNote': 'Это доступные нам издания со свободной лицензией, поэтому переводы старые. Berean Standard Bible — единственный перевод, показываемый пословно рядом с греческим Новым Заветом; остальные отображаются по стихам.',
   'settings.reading.title': 'Язык чтения',
   'settings.reading.greekOnly': 'Только греческий',
@@ -6850,7 +6850,7 @@ const zh: Catalogue = {
 
   'settings.reading.auto': '跟隨介面語言',
   'settings.reading.autoSub': '目前為{lang}',
-  'settings.reading.desc': '顯示在希臘文和希伯來文旁邊的譯本。原文本身不會改變——這是你用來閱讀原文的語言。適用於閱讀器和片語瀏覽器，並會記在此裝置上。',
+  'settings.reading.desc': '顯示在希臘文和希伯來文旁邊的譯本。原文本身不會改變——這是你用來閱讀原文的語言。適用於閱讀器、片語瀏覽器和文獻，並會記在此裝置上。',
   'settings.reading.licenceNote': '這些是我們可取得的自由授權版本，因此都是較舊的譯本。只有 Berean Standard Bible 會逐字對照希臘文新約顯示；其餘則逐節顯示。',
   'settings.reading.title': '閱讀語言',
   'settings.reading.greekOnly': '僅希臘文',
