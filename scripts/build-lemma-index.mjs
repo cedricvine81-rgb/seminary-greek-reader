@@ -40,7 +40,11 @@ for (const osis of GNT) {
     if (n.t === 'w' && n.id && n.lemma) {
       const verseId = n.id.split('.').slice(0, 3).join('.')
       const norm = normalize(String(n.lemma).replace(LETTERS, ''))
-      if (norm.length < 2) return
+      // Reject only what the punctuation strip emptied. A length floor of 2 also discarded the
+      // three genuine one-letter lemmas — ὁ, ἤ, ὦ — because normalize() removes the breathing,
+      // leaving a single character. ὁ alone is 19,783 tokens across 6,965 verses, so the article
+      // was absent from lemma search, from search suggestions, and from the vocab drill.
+      if (!norm) return
       let e = byNorm.get(norm)
       if (!e) { e = { lemmas: new Map(), glosses: new Map(), verses: new Set(), total: 0 }; byNorm.set(norm, e) }
       e.lemmas.set(n.lemma, (e.lemmas.get(n.lemma) ?? 0) + 1)
@@ -72,7 +76,7 @@ for (const file of fs.readdirSync(LXX_DIR).filter(f => f.endsWith('.json'))) {
     for (const w of verse.words) {
       if (!w.lemma) continue
       const norm = normalize(String(w.lemma).replace(LETTERS, ''))
-      if (norm.length < 2) continue
+      if (!norm) continue        // same reasoning as the New Testament pass above
       let e = byNorm.get(norm)
       if (!e) { e = { lemmas: new Map(), glosses: new Map(), verses: new Set(), total: 0 }; byNorm.set(norm, e) }
       if (!e.lxx) { e.lxx = new Set(); e.lxxTotal = 0 }
