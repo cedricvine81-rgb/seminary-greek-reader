@@ -1919,8 +1919,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               (Greek hidden) it's the sole column and carries the note button. */}
                           {englishColShown && (
                             <p className={`font-reading leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
-                              {...translatable}
-                              {...verseAnchorProps(noteBook, section.chapter, row.num, transLayer)}>
+                              {...translatable}>
                               {isAuthenticated && greekHidden && (
                                 <span className="font-sans align-middle mr-0.5">
                                   <VerseNoteButton book={noteBook} chapter={section.chapter} verse={row.num} noted={notedKeys.has(row.num)}
@@ -1928,6 +1927,15 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                 </span>
                               )}
                               <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.ref ?? row.num}</sup>
+                              {/* The anchor goes on this inner span, NOT on the <p>, so it holds
+                                  the verse's text and nothing else — the shape the Greek column
+                                  next door already uses. On the <p> it also enclosed the <sup>
+                                  reference, whose characters count toward a DOM offset but not
+                                  toward the stored string offset, so every highlight in this
+                                  column was saved a few characters off: measured 4, 5, 6 and 7
+                                  on consecutive Odyssey groups as the label grew from "1–43" to
+                                  "125–169". */}
+                              <span {...verseAnchorProps(noteBook, section.chapter, row.num, transLayer)}>
                               {greekProse
                                 ? (<TransWords text={row.english ?? ''} lang={transLang} reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
@@ -1948,6 +1956,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                       ?? 'No English translation is available for this chapter.'}
                                   </span>)
                                 : null}
+                              </span>
                             </p>
                           )}
                         </div>
