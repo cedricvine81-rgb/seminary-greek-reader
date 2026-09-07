@@ -1517,6 +1517,9 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Odisea: COMPLETA. Los 24 cantos, 288 grupos, 12.107 versos, uno a uno contra el griego
   // de Perseus (mismas convenciones que la Ilíada, arriba).
   'homer-odyssey': 'greco/homer-odyssey',
+  // Himnos homéricos: COMPLETOS. Los 33 himnos, 494 grupos, 2.326 versos. Cierra el Homero
+  // en español: los dos poemas épicos y, con éstos, el resto del corpus homérico.
+  'homeric-hymns': 'greco/homeric-hymns',
 }
 
 // Both translation ids mean "the Spanish we made ourselves" and both must carry the same credit

@@ -393,6 +393,7 @@ const ES: TextNames = {
     'hesiod-works-and-days': 'Los trabajos y los días',
     'homer-iliad': 'Ilíada',
     'homer-odyssey': 'Odisea',
+    'homeric-hymns': 'Himnos homéricos',
     'isoc-aegineticus': 'Eginético',
     'isoc-against-callimachus': 'Contra Calímaco',
     'isoc-against-euthynus': 'Contra Eutino',
