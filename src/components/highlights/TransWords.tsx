@@ -1,7 +1,7 @@
 'use client'
 import type { MouseEvent } from 'react'
 import { openWordSearch } from '@/lib/word-search-bus'
-import { highlightAt } from '@/components/highlights/render'
+import { highlightAt, splitVerseLines } from '@/components/highlights/render'
 import { highlightMarkClass, type HighlightColor } from '@/lib/highlight-colors'
 import { findTermRanges, SEARCH_MARK } from '@/lib/highlight-terms'
 import type { HighlightRecord } from '@/components/highlights/useHighlights'
@@ -74,27 +74,23 @@ export function TransWords({ text, lang, reference, book, bgCollection, hl, term
   const termRanges = terms?.length ? findTermRanges(text, terms) : []
   const inTerm = (start: number, end: number) =>
     termRanges.some(([rs, re]) => start < re && end > rs)
+  // Verse texts (Homer, Hesiod, the Sibyllines) join a group's lines with "\n"; everything else
+  // in the corpus is prose with no newline at all, and renders as one line exactly as before.
+  // See splitVerseLines for why each line becomes its own block.
+  const verse = text.includes('\n')
   let pos = 0
   return (
     <>
-      {text.split(/(\s+)/).map((tok, i) => {
+      {splitVerseLines(verse, text.split(/(\s+)/).map((tok, i) => {
         const start = pos
         pos += tok.length
         if (!tok) return tok
         const end = start + tok.length
         if (/\s/.test(tok)) {
-          // A newline is a real line break in verse texts (Homer, Hesiod, the Sibyllines: the
-          // group's lines are joined with "\n"), so a verse translation keeps its lines beside
-          // the original instead of reflowing as prose. Our line-for-line Spanish Homer was
-          // invisible without this: 12,107 Spanish lines set against 12,107 Greek ones, and only
-          // the Greek column showed where the lines fell. Inert everywhere else — measured across
-          // the whole data tree, no prose work and no Bible translation has a newline in its text.
-          // See .verse-break for why this is not a <br>.
           // Paint whitespace that sits INSIDE a highlight so consecutive highlighted words read
           // as one continuous stroke rather than separate marks with a gap between them.
           const sp = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
-          const cls = `${tok.includes('\n') ? 'verse-break' : ''}${sp ? ` ${highlightMarkClass(sp.color)}` : ''}`.trim()
-          return cls ? <span key={i} className={cls}>{tok}</span> : tok
+          return sp ? <span key={i} className={highlightMarkClass(sp.color)}>{tok}</span> : tok
         }
         const mark = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
         return (
@@ -121,7 +117,7 @@ export function TransWords({ text, lang, reference, book, bgCollection, hl, term
             {tok}
           </span>
         )
-      })}
+      }), text.split(/(\s+)/))}
     </>
   )
 }

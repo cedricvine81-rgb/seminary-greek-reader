@@ -731,16 +731,33 @@ body.exam-lockdown nav.fixed.bottom-0 {
   }
 }
 
-/* The line break inside a verse group. Verse works (Homer, Hesiod, the Sibyllines) join a
-   group's lines with "\n"; GreekWords and TransWords wrap that newline in this class.
+/* One line of a verse work (Homer, Hesiod, the Sibyllines), as split by splitVerseLines.
  *
- * It is a span holding the literal newline rather than a <br> ON PURPOSE. A <br> breaks the
- * line but contributes NOTHING to the DOM's text, while the highlight offsets stored against
- * a verse are offsets into the plain string, newline included — so every <br> puts the two a
- * character further out of step. Measured on Odyssey 1.1–43: 42 breaks, and the DOM range came
- * back 38 characters shorter than the string, which is where a highlight dragged near the end
- * of that group would have landed. Keeping the newline as text and letting `pre-line` break on
- * it renders identically and keeps the two measurements equal. */
-.verse-break {
-  white-space: pre-line;
+ * A block per line, so a line longer than its column wraps with a HANGING INDENT — the printed
+ * convention for verse, and the thing that makes the break legible. Without it the continuation
+ * sits flush left and cannot be told apart from the next line of the poem, which defeats the
+ * point of breaking at all; the Spanish runs about a quarter longer than the Greek it faces, so
+ * it is the column that wraps most.
+ *
+ * `padding-inline-start` rather than `padding-left` so a right-to-left column (the Hebrew
+ * reader) hangs from the correct side.
+ *
+ * Note the newline itself stays in the DOM as text at the end of each line — invisible, being
+ * trailing whitespace in a block, but counted by `range.toString()`, which is what keeps stored
+ * highlight offsets in step. See splitVerseLines for the measurement. */
+.verse-line {
+  display: block;
+  text-indent: -1.15em;
+  padding-inline-start: 1.15em;
+}
+
+/* The first line stays inline so it still flows after the verse reference that precedes it in
+   the paragraph. As a block it pushed the reference onto a line of its own and cost every verse
+   group a blank-looking header row. The next line is a block, so it breaks below as normal. */
+.verse-line:first-child {
+  display: inline;
+  /* An inline box takes the start padding once, at its start, which would have shown as a gap
+     between the reference and the first word; and text-indent does not apply to it at all. */
+  padding-inline-start: 0;
+  text-indent: 0;
 }

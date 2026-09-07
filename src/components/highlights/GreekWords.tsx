@@ -1,6 +1,6 @@
 'use client'
 import { openWordSearch } from '@/lib/word-search-bus'
-import { highlightAt } from '@/components/highlights/render'
+import { highlightAt, splitVerseLines } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { findTermRanges, SEARCH_MARK } from '@/lib/highlight-terms'
 import type { TransHl } from '@/components/highlights/TransWords'
@@ -43,22 +43,20 @@ export function GreekWords({ text, reference, analyses, onPick, selectedKey, key
     termRanges.some(([rs, re]) => start < re && end > rs)
   let wi = -1  // running index over words only (whitespace tokens don't advance it)
   let pos = 0  // running character offset into `text` (for highlight anchors)
+  // Verse texts (Homer, Hesiod, the Sibyllines) join a group's lines with "\n"; prose has none
+  // and renders as one line exactly as before. See splitVerseLines.
+  const verse = text.includes('\n')
   return (
     <>
-      {text.split(/(\s+)/).map((tok, i) => {
+      {splitVerseLines(verse, text.split(/(\s+)/).map((tok, i) => {
         const start = pos
         pos += tok.length
         if (!tok) return tok
         const end = start + tok.length
         if (/\s/.test(tok)) {
-          // A newline is a real line break in verse texts (Homer, Hesiod: the group's lines are
-          // joined with "\n") so poetry keeps its lines beside the translation. This used to be a
-          // <br>, which broke the line but dropped the character from the DOM and so walked every
-          // highlight offset in the group out of step — see .verse-break.
           // Paint whitespace inside a highlight so consecutive words read as one continuous stroke.
           const sp = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
-          const cls = `${tok.includes('\n') ? 'verse-break' : ''}${sp ? ` ${highlightMarkClass(sp.color)}` : ''}`.trim()
-          return cls ? <span key={i} className={cls}>{tok}</span> : tok
+          return sp ? <span key={i} className={highlightMarkClass(sp.color)}>{tok}</span> : tok
         }
         wi += 1
         const entry = analyses?.[wi]
@@ -90,7 +88,7 @@ export function GreekWords({ text, reference, analyses, onPick, selectedKey, key
             {tok}
           </span>
         )
-      })}
+      }), text.split(/(\s+)/))}
     </>
   )
 }
