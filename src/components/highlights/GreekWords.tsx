@@ -52,11 +52,13 @@ export function GreekWords({ text, reference, analyses, onPick, selectedKey, key
         const end = start + tok.length
         if (/\s/.test(tok)) {
           // A newline is a real line break in verse texts (Homer, Hesiod: the group's lines are
-          // joined with "\n") — render it as <br/> so poetry keeps its lines beside the English.
-          if (tok.includes('\n')) return <br key={i} />
+          // joined with "\n") so poetry keeps its lines beside the translation. This used to be a
+          // <br>, which broke the line but dropped the character from the DOM and so walked every
+          // highlight offset in the group out of step — see .verse-break.
           // Paint whitespace inside a highlight so consecutive words read as one continuous stroke.
           const sp = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
-          return sp ? <span key={i} className={highlightMarkClass(sp.color)}>{tok}</span> : tok
+          const cls = `${tok.includes('\n') ? 'verse-break' : ''}${sp ? ` ${highlightMarkClass(sp.color)}` : ''}`.trim()
+          return cls ? <span key={i} className={cls}>{tok}</span> : tok
         }
         wi += 1
         const entry = analyses?.[wi]

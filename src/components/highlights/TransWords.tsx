@@ -83,10 +83,18 @@ export function TransWords({ text, lang, reference, book, bgCollection, hl, term
         if (!tok) return tok
         const end = start + tok.length
         if (/\s/.test(tok)) {
+          // A newline is a real line break in verse texts (Homer, Hesiod, the Sibyllines: the
+          // group's lines are joined with "\n"), so a verse translation keeps its lines beside
+          // the original instead of reflowing as prose. Our line-for-line Spanish Homer was
+          // invisible without this: 12,107 Spanish lines set against 12,107 Greek ones, and only
+          // the Greek column showed where the lines fell. Inert everywhere else — measured across
+          // the whole data tree, no prose work and no Bible translation has a newline in its text.
+          // See .verse-break for why this is not a <br>.
           // Paint whitespace that sits INSIDE a highlight so consecutive highlighted words read
           // as one continuous stroke rather than separate marks with a gap between them.
           const sp = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
-          return sp ? <span key={i} className={highlightMarkClass(sp.color)}>{tok}</span> : tok
+          const cls = `${tok.includes('\n') ? 'verse-break' : ''}${sp ? ` ${highlightMarkClass(sp.color)}` : ''}`.trim()
+          return cls ? <span key={i} className={cls}>{tok}</span> : tok
         }
         const mark = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
         return (

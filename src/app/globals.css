@@ -730,3 +730,17 @@ body.exam-lockdown nav.fixed.bottom-0 {
     user-select: none;
   }
 }
+
+/* The line break inside a verse group. Verse works (Homer, Hesiod, the Sibyllines) join a
+   group's lines with "\n"; GreekWords and TransWords wrap that newline in this class.
+ *
+ * It is a span holding the literal newline rather than a <br> ON PURPOSE. A <br> breaks the
+ * line but contributes NOTHING to the DOM's text, while the highlight offsets stored against
+ * a verse are offsets into the plain string, newline included — so every <br> puts the two a
+ * character further out of step. Measured on Odyssey 1.1–43: 42 breaks, and the DOM range came
+ * back 38 characters shorter than the string, which is where a highlight dragged near the end
+ * of that group would have landed. Keeping the newline as text and letting `pre-line` break on
+ * it renders identically and keeps the two measurements equal. */
+.verse-break {
+  white-space: pre-line;
+}
