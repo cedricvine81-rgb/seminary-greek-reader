@@ -552,7 +552,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                 const verseHls = highlights.forVerse(parsed!.osis, parsed!.chapter, v.verse, layer)
                 const refStr = `${parsed!.name} ${parsed!.chapter}:${v.verse}`
                 return (
-                  <p key={v.verse} className={has ? 'rounded px-1 -mx-1 bg-amber-50/40' : ''}>
+                  <p key={v.verse} className={`border-s-2 ps-2 ${has ? 'border-brand-300' : 'border-transparent'}`}>
                     {isAuthenticated && (
                       <span dir="ltr" className="mr-0.5 align-middle font-sans print:hidden" onClick={e => e.stopPropagation()}>
                         <VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={v.verse}
