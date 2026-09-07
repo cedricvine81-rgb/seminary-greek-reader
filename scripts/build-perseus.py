@@ -887,6 +887,56 @@ def parse_eng_chunks(xml_bytes, per_book):
     return out
 
 
+def group_lines(gl, el):
+    """[(start_line, end_line, greek_block, english)] — each English chunk paired with the Greek
+    lines that fall in its range (start <= line < next start). `gl` and `el` are {line: text} for
+    one book (or one whole poem). The Greek lines of a group are joined with newlines, which the
+    reader renders as one line per line (see splitVerseLines)."""
+    import bisect
+    from collections import defaultdict
+    starts = sorted(el)
+    buckets = defaultdict(list)
+    for ln in sorted(gl):
+        i = bisect.bisect_right(starts, ln) - 1 if starts else -1
+        key = starts[i] if i >= 0 else ln   # lines before the first chunk get their own group
+        buckets[key].append(ln)
+    out = []
+    for start in sorted(buckets):
+        lns = buckets[start]
+        out.append((start, lns[-1], '\n'.join(gl[x] for x in lns), el.get(start, '')))
+    return out
+
+
+def build_hymns(slug, name, attrib, no_cache):
+    """The Homeric Hymns as ONE work: chapter = hymn number, verse = Evelyn-White's chunk.
+
+    Perseus keeps the 33 hymns as 33 separate files (tlg0013.tlg001-tlg033), each a bare run of
+    lines with no book division, so this fetches them one at a time and makes each the chapter it
+    is cited as: "h.Hom. 4.1" is Hymn 4, line 1. Same English as Hesiod already uses here —
+    Evelyn-White's Loeb, the very same volume — so the pairing is `build_line_parallel`'s, and the
+    grouping is literally the same function.
+
+    The hymns are wildly uneven (Hermes 586 lines, Hymn 13 three), which is the point of not
+    chunking them into fixed-size chapters the way the Hesiod poems are: a three-line hymn is a
+    chapter, exactly as an editor numbers it."""
+    chapters = []
+    for i in range(1, 34):
+        w = f'tlg{i:03d}'
+        base = f'tlg0013/{w}/tlg0013.{w}'
+        gl = {ln: t for (b, ln), t in parse_lines(fetch(f'{base}.perseus-grc2.xml', no_cache), False).items()}
+        el = {ln: t for (b, ln), t in parse_eng_chunks(fetch(f'{base}.perseus-eng2.xml', no_cache), False).items()}
+        if not gl:
+            continue
+        chapters.append({'number': i, 'verses': [
+            {'number': s, 'ref': (str(s) if s == e else f'{s}\u2013{e}'), 'text': en, 'greek': g}
+            for (s, e, g, en) in group_lines(gl, el)]})
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': drop_empty(chapters)}
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    tot = sum(len(c['verses']) for c in doc['chapters'])
+    n_eng = sum(1 for c in doc['chapters'] for v in c['verses'] if v['text'])
+    return [{'slug': slug, 'doc': doc, 'chapters': len(doc['chapters']), 'verses': tot, 'eng': n_eng}]
+
+
 def build_line_parallel(slug, name, urn_dir, urn_base, eng_suffix, per_book, attrib, no_cache, chunk=150):
     """A verse work addressed by line (Homer, Hesiod). Murray's / Evelyn-White's Loeb English is
     not line-aligned — it comes in card / ~5-line groups — so each VERSE is that group: the group's
@@ -906,20 +956,7 @@ def build_line_parallel(slug, name, urn_dir, urn_base, eng_suffix, per_book, att
         elane[b][ln] = t
 
     def group(book):
-        """[(start_line, end_line, greek_block, english)] — each English chunk with the Greek
-        lines that fall in its range (start ≤ line < next start)."""
-        starts = sorted(elane.get(book, {}))
-        buckets = defaultdict(list)
-        for ln in sorted(glane[book]):
-            i = bisect.bisect_right(starts, ln) - 1 if starts else -1
-            key = starts[i] if i >= 0 else ln   # lines before the first chunk get their own group
-            buckets[key].append(ln)
-        out = []
-        for start in sorted(buckets):
-            lns = buckets[start]
-            out.append((start, lns[-1], '\n'.join(glane[book][x] for x in lns),
-                        elane.get(book, {}).get(start, '')))
-        return out
+        return group_lines(glane[book], elane.get(book, {}))
 
     chapters = []
     if per_book:
@@ -1113,6 +1150,10 @@ THUCYDIDES_ATTRIB = ('Text: Thucydides, tr. Richard Crawley (1914), public domai
 HERODOTUS_ATTRIB = ('Text: Herodotus, The Histories, tr. A. D. Godley (Loeb, 1920–1925), public '
                     'domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
                     'CC-BY-SA 4.0 (perseus.tufts.edu).')
+
+HYMNS_ATTRIB = ('Greek: Homeric Hymns (Perseus). English: Hugh G. Evelyn-White (Loeb, 1914), '
+                'public domain \u2014 the same volume as the Hesiod above, \u201cHesiod, the Homeric '
+                'Hymns and Homerica\u201d. CC BY-SA 3.0 (Perseus).')
 
 
 def parse_bcs(xml_bytes):
@@ -1480,6 +1521,7 @@ build_coarse_english = _gate(build_coarse_english)
 build_greek_only = _gate(build_greek_only)
 build_line_poem = _gate(build_line_poem)
 build_line_parallel = _gate(build_line_parallel)
+build_hymns = _gate(build_hymns)
 build_bcs = _gate(build_bcs)
 build_bcs_chapter_pair = _gate(build_bcs_chapter_pair)
 
@@ -1605,6 +1647,8 @@ def main():
                                    'tlg0020/tlg002', 'tlg0020.tlg002', 'eng2', False, HESIOD_ATTRIB, no_cache)
     results += build_line_parallel('hesiod-shield', 'Hesiod, Shield of Heracles',
                                    'tlg0020/tlg003', 'tlg0020.tlg003', 'eng2', False, HESIOD_ATTRIB, no_cache)
+    # The Homeric Hymns — all 33, one chapter per hymn (cited "h.Hom. 4.1" = Hymn 4, line 1).
+    results += build_hymns('homeric-hymns', 'Homeric Hymns', HYMNS_ATTRIB, no_cache)
     # The Attic orators — one work per speech, Greek always, English where it is free.
     for author, rows, attrib, label in (('tlg0014', DEM_WORKS, DEMOSTHENES_ATTRIB, 'Demosthenes'),
                                         ('tlg0010', ISOC_WORKS, ISOCRATES_ATTRIB, 'Isocrates'),

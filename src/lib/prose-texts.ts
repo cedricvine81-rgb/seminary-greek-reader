@@ -26,7 +26,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'testament-of-abraham-a' | 'testament-of-abraham-b' | 'testament-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `tert-${string}` | `theophilus-${string}` | `origen-principles-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'testament-of-abraham-a' | 'testament-of-abraham-b' | 'testament-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `tert-${string}` | `theophilus-${string}` | `origen-principles-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'homeric-hymns' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -944,6 +944,33 @@ const HOMER_WORKS: ProseWork[] = [
     chapters: 24, attribution: HOMER_ATTRIB, parseCitation: homerCite('Od'), chapterLabel: (ch: number) => `Book ${ch}` },
 ]
 
+// The Homeric Hymns — 33 hymns, chapter = hymn, verse = Evelyn-White's chunk. Filed under Homer
+// by convention and by the manuscripts, not by authorship: they are anonymous, later than the
+// epics, and the Loeb prints them with Hesiod, which is also where their English comes from.
+//
+// Every hymn is its own chapter however short — Hymn 13 is three lines, Hymn 4 is 586 — because
+// that is how they are cited. Chunking them into fixed-size chapters the way the Hesiod poems are
+// would put a citation in a chapter no editor recognises.
+const HYMNS_ATTRIB = 'Greek: Homeric Hymns (Perseus). English: Hugh G. Evelyn-White (Loeb, 1914), public domain — the same volume as the Hesiod here, “Hesiod, the Homeric Hymns and Homerica”; given per group beside the Greek. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+const HYMN_TITLES = ['Dionysus', 'Demeter', 'Apollo', 'Hermes', 'Aphrodite', 'Aphrodite', 'Dionysus',
+  'Ares', 'Artemis', 'Aphrodite', 'Athena', 'Hera', 'Demeter', 'the Mother of the Gods',
+  'Heracles the Lion-Hearted', 'Asclepius', 'the Dioscuri', 'Hermes', 'Pan', 'Hephaestus', 'Apollo',
+  'Poseidon', 'Zeus', 'Hestia', 'the Muses and Apollo', 'Dionysus', 'Artemis', 'Athena', 'Hestia',
+  'Earth', 'Helios', 'Selene', 'the Dioscuri']
+const HOMERIC_HYMNS: ProseWork = {
+  source: 'homeric-hymns', name: 'Homeric Hymns', noteBook: 'HomHym',
+  dataUrl: '/data/greco/homeric-hymns.json', chapters: 33, attribution: HYMNS_ATTRIB,
+  // "h.Hom. 4.1", "Hom. Hymn 4.1", "h.Merc. 1" — the first two forms give hymn and line; the
+  // abbreviation-by-god form is left alone, being ambiguous across the four doubled dedications
+  // (two to Aphrodite, two to Dionysus, two to the Dioscuri, two to Hermes).
+  parseCitation: (text: string) => {
+    const m = text.replace(/^cf\.\s*/, '')
+      .match(/^(?:h\.\s*Hom\.?|Hom(?:er)?\.?\s*Hymns?|Homeric\s+Hymns?)\s*(\d+)\.(\d+)/i)
+    return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null
+  },
+  chapterLabel: (ch: number) => `Hymn ${ch} — To ${HYMN_TITLES[ch - 1] ?? '?'}`,
+}
+
 // A Hesiod poem addressed by line, chunked into 150-line chapters (the Aratus model, with English).
 const HESIOD_CHUNK = 150
 function hesiodWork(source: EmbeddedProseSource, name: string, noteBook: string, slug: string, lineCount: number, abbr: string): ProseWork {
@@ -1332,6 +1359,7 @@ export const ORATOR_CATALOG = ORATORS.map(w => ({
 
 // Catalog ids/names, with the book-8 gap declared so the reader doesn't stall on chapter 140.
 export const HOMER_CATALOG = HOMER_WORKS.map(w => ({ id: w.source, source: w.source, name: w.name, chapters: 24, greek: true }))
+export const HYMNS_CATALOG = [{ id: HOMERIC_HYMNS.source, source: HOMERIC_HYMNS.source, name: HOMERIC_HYMNS.name, chapters: 33, greek: true }]
 export const HESIOD_CATALOG = HESIOD_WORKS.map(w => ({ id: w.source, source: w.source, name: w.name, chapters: w.chapters, greek: true }))
 export const HERODOTUS_CATALOG = HERODOTUS_BOOKS.map(b => ({
   id: `herodotus-histories-${b.book}`,
@@ -2515,6 +2543,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...ATHANASIUS_WORKS,
   ...QUINTILIAN_WORKS,
   ...HOMER_WORKS,
+  HOMERIC_HYMNS,
   ...HESIOD_WORKS,
   ...HERODOTUS_WORKS,
   ...THUCYDIDES_WORKS,
