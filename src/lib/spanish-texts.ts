@@ -1514,10 +1514,10 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // modo que el canto 11 tiene 847 versos y el 14 tiene 521. La traducción sigue la numeración de
   // la fuente y no rellena esos huecos.
   'homer-iliad': 'greco/homer-iliad',
-  // Odisea: TRADUCCIÓN EN CURSO. Cantos 1-15 traducidos; 16-24 todavía no. Un canto sin
+  // Odisea: TRADUCCIÓN EN CURSO. Cantos 1-17 traducidos; 18-24 todavía no. Un canto sin
   // archivo cae en silencio al inglés (véase el aviso al principio de este registro), así
-  // que mientras la obra esté incompleta el lector muestra español hasta el canto 15 e
-  // inglés a partir del 16 sin decirlo. Es deliberado y es temporal: se registra ahora a
+  // que mientras la obra esté incompleta el lector muestra español hasta el canto 17 e
+  // inglés a partir del 18 sin decirlo. Es deliberado y es temporal: se registra ahora a
   // petición expresa. Al completarse los 24 cantos esta nota sobra.
   'homer-odyssey': 'greco/homer-odyssey',
 }
