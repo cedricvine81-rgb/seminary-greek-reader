@@ -19,6 +19,9 @@ interface NavItem {
   icon: React.ReactNode
   /** i18n key for the hover info bubble explaining what the page holds (optional). */
   desc?: string
+  /** Render a plain <a>, not a <Link>: the href is a route handler (it sets a cookie and
+      redirects), so it needs a real navigation rather than a client-side one. */
+  hard?: boolean
 }
 
 const instructorNav: NavItem[] = [
@@ -28,6 +31,11 @@ const instructorNav: NavItem[] = [
   { label: 'nav.assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
   { label: 'nav.appeals',     href: '/instructor/appeals',       icon: <Gavel size={16} /> },
   { label: 'nav.materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
+  // Instructors asked to see the self-study tracks their students see. Rather than a
+  // second way into those pages, this uses the preview mode that already exists — so
+  // they land in the student view proper, with the amber banner and its way back.
+  { label: 'nav.selfStudy',   href: '/api/preview?mode=enter&redirect=/student/self-study',
+    icon: <GraduationCap size={16} />, desc: 'nav.desc.selfStudyInstructor', hard: true },
   { label: 'nav.reports',     href: '/instructor/reports',       icon: <BarChart2 size={16} /> },
   { label: 'nav.archive',     href: '/instructor/archive',       icon: <Archive size={16} /> },
 ]
@@ -108,8 +116,9 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
           const isMessages = item.href === '/student/messages' || item.href === '/instructor/messages'
           const isAppeals = item.href === '/instructor/appeals'
           const isAdminAppeals = item.href === '/admin/appeals'
+          const Anchor: React.ElementType = item.hard ? 'a' : Link
           return (
-            <Link
+            <Anchor
               key={item.href}
               href={item.href}
               className={clsx(
@@ -148,7 +157,7 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
                   {pendingAdminAppeals}
                 </span>
               )}
-            </Link>
+            </Anchor>
           )
         })}
       </nav>
