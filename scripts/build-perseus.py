@@ -327,9 +327,18 @@ def build_plato(slug, name, urn_dir, urn_base, no_cache):
     return build_stephanus(slug, name, urn_dir, urn_base, 'eng2', 'section', PLATO_ATTRIB, no_cache)
 
 
-ARISTOTLE_ATTRIB = ('Text: the Loeb Classical Library translation (public domain); Greek: the '
-                    'Bekker/Perseus edition. Digital edition: Perseus Digital Library, '
-                    'CC-BY-SA 4.0 (perseus.tufts.edu).')
+# Aristotle — one constant per work: Perseus ships a DIFFERENT Greek editor for each, and two of
+# the three are modern Clarendon texts, so a shared 'public domain' line would be false. (The old
+# shared string credited 'the Bekker/Perseus edition'; Bekker is the pagination, not the text.)
+ARISTOTLE_NE_ATTRIB = ('Text: Aristotle, Nicomachean Ethics, tr. H. Rackham (Loeb, 1926), public '
+                       'domain; Greek ed. I. Bywater (Clarendon, 1894), public domain. '
+                       'Digital edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+ARISTOTLE_RHET_ATTRIB = ('Text: Aristotle, Rhetoric, tr. J. H. Freese (Loeb, 1926), public domain; '
+                         'Greek ed. W. D. Ross (Clarendon, 1959). '
+                         'Digital edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+ARISTOTLE_POET_ATTRIB = ('Text: Aristotle, Poetics, tr. W. H. Fyfe (Loeb, 1939); Greek ed. '
+                         'R. Kassel (Clarendon, 1965). '
+                         'Digital edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
 PLUTARCH_ATTRIB = ('Text: Plutarch’s Lives, tr. Bernadotte Perrin (Loeb, 1914–1926), public '
                    'domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
                    'CC-BY-SA 4.0 (perseus.tufts.edu).')
@@ -1116,13 +1125,17 @@ ARATUS_ATTRIB = ('Greek: Aratus, Phaenomena. Digital edition: Perseus Digital Li
                  'the “Pagan Sources Quoted in the New Testament” collection for the proem with a '
                  'translation.')
 XENOPHON_ATTRIB = ('Text: Xenophon, Memorabilia, tr. E. C. Marchant (Loeb, 1923), public domain; '
-                   'Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0 '
-                   '(perseus.tufts.edu).')
-LUCIAN_ATTRIB = ('Text: The Works of Lucian, tr. H. W. Fowler & F. G. Fowler (Oxford, 1905), '
-                 'public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
-                 'CC-BY-SA 4.0 (perseus.tufts.edu). The Fowlers leave Alexander 41-42 '
-                 'untranslated — a Victorian omission of the passage on Alexander\u2019s sexual '
-                 'conduct — so those two chapters appear in Greek only.')
+                   'Greek ed. E. C. Marchant (OCT, 1921), public domain. Digital edition: Perseus '
+                   'Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+# Lucian — the Greek is Harmon's Loeb, and the two works come from different volumes with
+# different dates (Vol. 4, 1925; Vol. 5, 1936), so they cannot share one attribution.
+LUCIAN_ALEX_ATTRIB = ('Text: Lucian, Alexander the False Prophet, tr. H. W. Fowler & F. G. Fowler '
+                      '(Oxford, 1905), public domain; Greek ed. A. M. Harmon (Loeb, Vol. 4, 1925), '
+                      'public domain. Digital edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu). ' 
+                      'The Fowlers leave Alexander 41-42 untranslated — a Victorian omission of the passage on Alexander’s sexual conduct — so those two chapters appear in Greek only.')
+LUCIAN_PEREG_ATTRIB = ('Text: Lucian, The Passing of Peregrinus, tr. H. W. Fowler & F. G. Fowler '
+                       '(Oxford, 1905), public domain; Greek ed. A. M. Harmon (Loeb, Vol. 5, 1936). '
+                       'Digital edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
 APOLLODORUS_ATTRIB = ('Text: Apollodorus, The Library, tr. Sir James George Frazer (Loeb, '
                       '1921), public domain; Greek ed. Perseus. Digital edition: Perseus Digital '
                       'Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
@@ -1555,11 +1568,11 @@ def main():
     # Aristotle — book→section (Ethics), book→chapter (Rhetoric), or flat chapters (Poetics),
     # each verse tagged with its Bekker number (the standard reference) from the "page" milestone.
     results += build_units('aristotle-nicomachean-ethics', 'Aristotle, Nicomachean Ethics',
-                           'tlg0086/tlg010', 'tlg0086.tlg010', 'eng2', 'book', 'section', ARISTOTLE_ATTRIB, no_cache, ref_unit='page')
+                           'tlg0086/tlg010', 'tlg0086.tlg010', 'eng2', 'book', 'section', ARISTOTLE_NE_ATTRIB, no_cache, ref_unit='page')
     results += build_units('aristotle-rhetoric', 'Aristotle, Rhetoric',
-                           'tlg0086/tlg038', 'tlg0086.tlg038', 'eng2', 'book', 'chapter', ARISTOTLE_ATTRIB, no_cache, ref_unit='page')
+                           'tlg0086/tlg038', 'tlg0086.tlg038', 'eng2', 'book', 'chapter', ARISTOTLE_RHET_ATTRIB, no_cache, ref_unit='page')
     results += build_units('aristotle-poetics', 'Aristotle, Poetics',
-                           'tlg0086/tlg034', 'tlg0086.tlg034', 'eng2', None, 'chapter', ARISTOTLE_ATTRIB, no_cache, ref_unit='page')
+                           'tlg0086/tlg034', 'tlg0086.tlg034', 'eng2', None, 'chapter', ARISTOTLE_POET_ATTRIB, no_cache, ref_unit='page')
     # Plutarch — the Lives (Perrin's public-domain Loeb, chapter→section), including the
     # synkriseis, the paired comparisons that close most of the pairs.
     check_licence(no_cache)
@@ -1613,9 +1626,9 @@ def main():
     # Lucian — the two works bearing on early Christianity (Fowler's public-domain English,
     # flat sections; cited by section). Alexander has 61 Greek but 59 English sections.
     results += build_units('lucian-peregrinus', 'Lucian, The Passing of Peregrinus',
-                           'tlg0062/tlg042', 'tlg0062.tlg042', 'eng4', None, 'section', LUCIAN_ATTRIB, no_cache)
+                           'tlg0062/tlg042', 'tlg0062.tlg042', 'eng4', None, 'section', LUCIAN_PEREG_ATTRIB, no_cache)
     results += build_units('lucian-alexander', 'Lucian, Alexander the False Prophet',
-                           'tlg0062/tlg038', 'tlg0062.tlg038', 'eng4', None, 'section', LUCIAN_ATTRIB, no_cache)
+                           'tlg0062/tlg038', 'tlg0062.tlg038', 'eng4', None, 'section', LUCIAN_ALEX_ATTRIB, no_cache)
     # Apollodorus, The Library — the mythographic handbook (one work per book).
     results += build_bcs('apollodorus-library', lambda b: f'Apollodorus, The Library (Book {b})',
                          'tlg0548/tlg001', 'tlg0548.tlg001', 'eng2', APOLLODORUS_ATTRIB, no_cache)
