@@ -337,7 +337,7 @@ ARISTOTLE_RHET_ATTRIB = ('Text: Aristotle, Rhetoric, tr. J. H. Freese (Loeb, 192
                          'Greek ed. W. D. Ross (Clarendon, 1959). '
                          'Digital edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
 ARISTOTLE_POET_ATTRIB = ('Text: Aristotle, Poetics, tr. W. H. Fyfe (Loeb, 1939); Greek ed. '
-                         'R. Kassel (Clarendon, 1965). '
+                         'I. Bekker (Aristotelis Opera, Vol. 11, Oxford, 1837), public domain. '
                          'Digital edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
 PLUTARCH_ATTRIB = ('Text: Plutarch’s Lives, tr. Bernadotte Perrin (Loeb, 1914–1926), public '
                    'domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
@@ -1068,14 +1068,17 @@ def apply_grc_corrections(slug, grc):
 
 
 def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache,
-                ref_unit=None, grc_suffix='grc2'):
+                ref_unit=None, grc_suffix='grc2', grc_provider='perseus'):
     """One work with a book→unit or flat-unit TEI (Aristotle treatises, Plutarch Lives/Moralia).
     With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7; Plut. Ant. 25.2 → ch. 25
     §2). Without books: chapter = unit, one verse (Poet. 6). `ref_unit` attaches the standard
     reference milestone (Aristotle's Bekker number) to each verse. Nearly every Perseus text
-    files its Greek under -grc2, but a handful do not — see PLUTARCH_GRC."""
+    files its Greek under -grc2, but a handful do not — see PLUTARCH_GRC.
+    `grc_provider` selects the publisher prefix of the Greek file: Perseus' own text is
+    `.perseus-`, but some directories also carry a `.digicorpus-` edition, which is how the
+    Poetics gets Bekker's public-domain 1837 text instead of Kassel's 1965 Clarendon one."""
     base = f'{urn_dir}/{urn_base}'
-    grc_bytes = fetch(f'{base}.perseus-{grc_suffix}.xml', no_cache)
+    grc_bytes = fetch(f'{base}.{grc_provider}-{grc_suffix}.xml', no_cache)
     grc = apply_grc_corrections(slug, parse_units(grc_bytes, book_sub, unit_sub))
     # eng_suffix None builds the Greek alone. Used where Perseus' only English translation is
     # still in copyright — most of Demosthenes and two thirds of Isocrates — so the Greek can
@@ -1572,7 +1575,7 @@ def main():
     results += build_units('aristotle-rhetoric', 'Aristotle, Rhetoric',
                            'tlg0086/tlg038', 'tlg0086.tlg038', 'eng2', 'book', 'chapter', ARISTOTLE_RHET_ATTRIB, no_cache, ref_unit='page')
     results += build_units('aristotle-poetics', 'Aristotle, Poetics',
-                           'tlg0086/tlg034', 'tlg0086.tlg034', 'eng2', None, 'chapter', ARISTOTLE_POET_ATTRIB, no_cache, ref_unit='page')
+                           'tlg0086/tlg034', 'tlg0086.tlg034', 'eng2', None, 'chapter', ARISTOTLE_POET_ATTRIB, no_cache, ref_unit='page', grc_provider='digicorpus')
     # Plutarch — the Lives (Perrin's public-domain Loeb, chapter→section), including the
     # synkriseis, the paired comparisons that close most of the pairs.
     check_licence(no_cache)
