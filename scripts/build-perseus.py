@@ -31,8 +31,9 @@ UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
 NS = {'t': 'http://www.tei-c.org/ns/1.0'}
 ATTRIB = ('Text: Epictetus, tr. George Long (1877); Greek ed. H. Schenkl. Digital edition: '
           'Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
-ATTRIB_DL = ('Text: Diogenes Laertius, Lives of Eminent Philosophers, tr. R. D. Hicks (1925); '
-             'Greek ed. Long. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.')
+ATTRIB_DL = ('Text: Diogenes Laertius, Lives of Eminent Philosophers, Greek and English '
+             'ed./tr. R. D. Hicks (Loeb, 1925; public domain). Digital edition: Perseus '
+             'Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
 
 try:
     _ctx = ssl.create_default_context(cafile='/etc/ssl/cert.pem')
