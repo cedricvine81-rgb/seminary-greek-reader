@@ -247,6 +247,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'aristotle-poetics': 'greco/aristotle-poetics',
   'aristotle-rhetoric': 'greco/aristotle-rhetoric',
   'aristotle-nicomachean-ethics': 'greco/aristotle-nicomachean-ethics',
+  'greco-diogenes-laertius': 'greco/diogenes-laertius',
   // MARCO AURELIO. Greek-only in the reader — there is no English column to lean on, so the
   // Spanish is translated straight from the Perseus Greek, as Plato's and Aristotle's were.
   'marcus-aurelius-meditations': 'greco/marcus-aurelius-meditations',
