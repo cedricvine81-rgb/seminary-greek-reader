@@ -83,16 +83,20 @@ function Note({ children }: { children: React.ReactNode }) {
 /** One syntax category: bold name — short gloss (optional simple example),
  *  then two real NT examples (Greek clause + English translation below).
  *  Exported: the per-level chapter pages build their case sections from these. */
-export function Cat({ id, name, children, eg, ex }: {
+export function Cat({ id, name, children, eg, ex, how }: {
   id?: string
   name: React.ReactNode
   children: React.ReactNode
   eg?: React.ReactNode
   ex?: { g: string; e: string; r: string }[]
+  /** The diagnostic: how a reader decides this category rather than a neighbouring one.
+   *  JSX like the description, so the chapter wraps it in its own <T> (key suffix `.h`). */
+  how?: React.ReactNode
 }) {
   // Same contract as MorphTable: an `id` means "translate my string props". The description is
   // JSX, so the chapter wraps it in <T> itself; everything reachable from props is handled here.
   const tm = useTm()
+  const t = useT()
   const locale = useLocale()
   if (id) {
     if (typeof name === 'string') name = tm(K.catName(id), name)
@@ -108,8 +112,17 @@ export function Cat({ id, name, children, eg, ex }: {
     <li className="text-sm leading-snug text-gray-700 max-w-[68ch]">
       <span className="font-semibold text-gray-900">{name}</span> — {children}
       {eg && <span className="text-gray-500"> — <em>{eg}</em></span>}
+      {/* The test that separates this category from the one next to it — the thing a student
+          actually needs when two readings both look possible. Its own line, quieter than the
+          definition, and above the examples so it is read before them rather than as a note. */}
+      {how && (
+        <span className="mt-1 block text-[13px] leading-snug text-gray-600">
+          <span className="mr-1 text-[11px] font-semibold uppercase tracking-wide text-brand-700">{t('morph.howToTell')}</span>
+          {how}
+        </span>
+      )}
       {ex && ex.length > 0 && (
-        <ul className="mt-1.5 mb-1 space-y-1.5 list-none pl-0">
+        <ul className="mt-1.5 space-y-1.5 list-none pl-0">
           {ex.map((x, i) => (
             <li key={i} className="border-l-2 border-brand-200 pl-2.5 leading-snug">
               <span className="normal-case font-reading text-[15px] text-gray-800">{x.g}</span>
@@ -127,7 +140,7 @@ export function Cat({ id, name, children, eg, ex }: {
  *  group renders as a plain list. */
 export function CatGroup({ label, children }: { label?: React.ReactNode; children: React.ReactNode }) {
   if (!label) {
-    return <ul className="space-y-1 list-disc list-outside pl-5 marker:text-brand-300">{children}</ul>
+    return <ul className="space-y-4 list-disc list-outside pl-5 marker:text-brand-300">{children}</ul>
   }
   return (
     <details className="group border-t border-brand-100 pt-1.5">
@@ -136,7 +149,7 @@ export function CatGroup({ label, children }: { label?: React.ReactNode; childre
         {label}
         <span className="ml-1 normal-case font-normal text-gray-400">({React.Children.count(children)})</span>
       </summary>
-      <ul className="mt-1.5 space-y-1 list-disc list-outside pl-5 marker:text-brand-300">{children}</ul>
+      <ul className="mt-1.5 space-y-4 list-disc list-outside pl-5 marker:text-brand-300">{children}</ul>
     </details>
   )
 }
