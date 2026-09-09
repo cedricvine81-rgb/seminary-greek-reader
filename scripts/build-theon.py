@@ -33,6 +33,7 @@ RAW = ('https://raw.githubusercontent.com/OpenGreekAndLatin/First1KGreek/master/
        'tlg0607/tlg001/tlg0607.tlg001.1st1K-grc1.xml')
 CACHE = Path('/tmp/first1k-theon.xml')
 OUT = Path('public/data/greco/theon-progymnasmata.json')
+MORPH = Path('public/data/greco/theon-progymnasmata.morph.json')
 ENGLISH = Path('scripts/theon-english.json')
 NS = {'t': 'http://www.tei-c.org/ns/1.0'}
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
@@ -67,6 +68,65 @@ def txt(el):
     return re.sub(r'\s+', ' ', ''.join(el.itertext())).strip()
 
 
+def strip_footnote_markers(text):
+    """Drop Walz's footnote-reference numbers, and say which token positions went.
+
+    The First1K transcription carries Walz's apparatus markers as BARE DIGITS in the text
+    stream — not in a <note>, not in any element, just a loose "1" sitting mid-sentence
+    ("...οἱ εὐδοκιμηκότες, 1 οὐκ ᾤοντο..."). Stripping <note> elements therefore misses them.
+    Theon's Greek has no Arabic numerals of its own (ancient numbers are letter-numerals or
+    spelled out), so a token that is nothing but digits is always one of these markers.
+
+    Returns (clean_text, dropped_indices) — the indices are into the ORIGINAL whitespace-split
+    token list, which is what the morphology sidecar is aligned to. See realign_morph.
+    """
+    tokens = text.split()
+    dropped = [i for i, tok in enumerate(tokens) if tok.isdigit()]
+    if not dropped:
+        return text, []
+    return ' '.join(tok for i, tok in enumerate(tokens) if i not in set(dropped)), dropped
+
+
+def realign_morph(dropped_by_key):
+    """Keep the parsing pane aligned after tokens are removed from the Greek.
+
+    theon-progymnasmata.morph.json is a POSITIONAL array per paragraph: entry i parses word i
+    of the whitespace-split Greek. Removing a token from the text without removing its entry
+    would shift every parse after it in that paragraph — so the two files have to move together.
+
+    Idempotent, and deliberately so: it only edits a paragraph whose entry count still matches
+    the pre-strip token count. Once the sidecar matches the clean text, re-running does nothing,
+    and a sidecar regenerated from the clean text by build-texts-morph.py is left alone.
+    """
+    if not MORPH.exists():
+        return 'no sidecar to realign'
+    morph = json.loads(MORPH.read_text(encoding='utf-8'))
+    fixed, already, skipped = [], [], []
+    for key, (dropped, clean_len) in sorted(dropped_by_key.items()):
+        entries = morph.get(key)
+        if entries is None:
+            continue
+        if len(entries) == clean_len:
+            already.append(key)
+        elif len(entries) == clean_len + len(dropped):
+            drop = set(dropped)
+            morph[key] = [e for i, e in enumerate(entries) if i not in drop]
+            fixed.append(key)
+        else:
+            skipped.append(f'{key} ({len(entries)} entries, expected {clean_len}'
+                           f' or {clean_len + len(dropped)})')
+    if fixed:
+        MORPH.write_text(json.dumps(morph, ensure_ascii=False), encoding='utf-8')
+    parts = []
+    if fixed:
+        parts.append('realigned ' + ', '.join(fixed))
+    if already:
+        parts.append('already aligned: ' + ', '.join(already))
+    if skipped:
+        parts.append('LEFT ALONE, count unexpected: ' + '; '.join(skipped))
+    return '; '.join(parts) or 'nothing to do'
+
+
 def main():
     no_cache = '--no-cache' in sys.argv
     xml = re.sub(r'(?is)<note\b.*?</note>', '', fetch(no_cache).decode('utf-8', 'replace'))
@@ -74,6 +134,7 @@ def main():
 
     chapters = []
     titles = {}
+    dropped_by_key = {}
     for div in body.iter('{http://www.tei-c.org/ns/1.0}div'):
         if div.get('subtype') != 'chapter':
             continue
@@ -84,7 +145,13 @@ def main():
             titles[n] = txt(head).rstrip('.,·').strip()
         paras = [txt(p) for p in div.findall('t:p', NS)]
         paras = [p for p in paras if p]
-        verses = [{'number': i + 1, 'text': '', 'greek': p} for i, p in enumerate(paras)]
+        verses = []
+        for i, p in enumerate(paras):
+            # Walz's footnote numbers come through as bare digits in the running text.
+            clean, dropped = strip_footnote_markers(p)
+            if dropped:
+                dropped_by_key[f'{n}.{i + 1}'] = (dropped, len(clean.split()))
+            verses.append({'number': i + 1, 'text': '', 'greek': clean})
         chapters.append({'number': n, 'verses': verses})
 
     # Merge our own English (see module docstring). Keys are 'chapter.paragraph'; entries
@@ -128,6 +195,10 @@ def main():
     print(f'English: {done}/{total} paragraphs translated'
           + ('  → COMPLETE, parallel columns enabled.'
              if complete else '  → still greekOnly (English hidden until all are done).'))
+    n_markers = sum(len(d) for d, _ in dropped_by_key.values())
+    print(f'Footnote markers stripped from the Greek: {n_markers}'
+          + (f' ({", ".join(sorted(dropped_by_key))})' if dropped_by_key else ''))
+    print(f'Morphology sidecar: {realign_morph(dropped_by_key)}')
     for c in chapters:
         print(f'  ch {c["number"]}: {len(c["verses"])} ¶  — {titles.get(c["number"], "(proem)")}')
     print('\nGreek chapter titles (for prose-texts.ts chapterLabel map):')

@@ -2364,7 +2364,12 @@ const THEON_WORK: ProseWork = {
   noteBook: 'TheonProg',
   dataUrl: '/data/greco/theon-progymnasmata.json',
   chapters: 5,
-  attribution: 'Greek: Aelius Theon, Progymnasmata, ed. C. Walz. Digital edition: First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. Greek only — the modern English (Kennedy, 2003) is under copyright.',
+  // Kept in step with ATTRIBUTION_TRANSLATED in scripts/build-theon.py, which writes the same
+  // sentence into the work's JSON. Two surfaces read two different copies of it: the Texts
+  // reader's sources menu takes ProseWork.attribution (here), the cited-passage panel takes the
+  // JSON's. A change belongs in both, or they contradict each other — as they did while this
+  // still said "Greek only … Kennedy is under copyright" after our own English had shipped.
+  attribution: 'Greek: Aelius Theon, Progymnasmata, ed. C. Walz (Rhetores Graeci). Digital edition: First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. English: a working translation made for Seminary Greek directly from this Greek text — not a substitute for the standard scholarly translation (G. A. Kennedy, Progymnasmata, SBL 2003). The Greek breaks off in the chapter on law; the closing chapters (including On Paraphrase) survive only in Armenian and are not included.',
   parseCitation: (text: string) => {
     const m = text.replace(/^cf\.\s*/, '').match(/^Theon,?\s+(?:Progymn?(?:asmata|\.)?\s+)?(\d+)(?:\.(\d+))?/)
     return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : 1 } : null
