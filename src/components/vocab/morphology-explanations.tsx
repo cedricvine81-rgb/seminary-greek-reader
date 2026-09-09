@@ -100,8 +100,12 @@ export function Cat({ id, name, children, eg, ex }: {
     if (ex) ex = ex.map((x, i) => (x.e ? { ...x, e: tm(K.catEx(id, i), x.e) } : x))
   }
   if (ex) ex = ex.map(x => ({ ...x, r: localizeRef(x.r, locale) }))
+  // Held to a reading measure, like P and the callout boxes — this list was the one block in
+  // the chapter running the full width of the pane, which on a wide window turned a two-line
+  // definition into a single 150-character line. Expressed in `ch` rather than the `max-w-3xl`
+  // those use: this text is text-sm, so 3xl would still be ~110 characters across.
   return (
-    <li className="text-sm leading-snug text-gray-700">
+    <li className="text-sm leading-snug text-gray-700 max-w-[68ch]">
       <span className="font-semibold text-gray-900">{name}</span> — {children}
       {eg && <span className="text-gray-500"> — <em>{eg}</em></span>}
       {ex && ex.length > 0 && (

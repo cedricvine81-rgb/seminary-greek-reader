@@ -41,14 +41,14 @@ export const NOUNS_INTERMEDIATE_CONTENT = (
     </P>
 
     {/* ── 2–5 · The cases, by syntax ─────────────────────── */}
-    <SectionHeading id="nouns.cg.nominative-the-naming">Nominative — the naming case</SectionHeading>
+    <SectionHeading id="nouns.cg.nominative-the-naming">Nominative</SectionHeading>
     <CatGroup>
             <Cat id="nouns.cat.subject"name="Subject" ex={[{ g: "ὁ λόγος σὰρξ ἐγένετο", e: "the Word became flesh", r: "John 1:14" }, { g: "ὁ θεὸς ἀγάπη ἐστίν", e: "God is love", r: "1 John 4:8" }]}><T id="nouns.cat.subject.d">the doer of a finite verb</T></Cat>
             <Cat id="nouns.cat.predicate-nominative"name="Predicate Nominative" eg="“the Word was God,” John 1:1" ex={[{ g: "θεὸς ἦν ὁ λόγος", e: "the Word was God", r: "John 1:1" }, { g: "ὑμεῖς ἐστε τὸ φῶς τοῦ κόσμου", e: "you are the light of the world", r: "Matt 5:14" }]}><T id="nouns.cat.predicate-nominative.d">renames the subject through an equative verb (<G>εἰμί, γίνομαι</G>)</T></Cat>
             <Cat id="nouns.cat.nominative-absolute"name="Nominative Absolute" ex={[{ g: "Ἀρχὴ τοῦ εὐαγγελίου Ἰησοῦ Χριστοῦ", e: "The beginning of the gospel of Jesus Christ", r: "Mark 1:1" }, { g: "Παῦλος ἀπόστολος Χριστοῦ Ἰησοῦ", e: "Paul, an apostle of Christ Jesus", r: "Eph 1:1" }]}><T id="nouns.cat.nominative-absolute.d">a naming nominative in titles / salutations (not in a full sentence)</T></Cat>
             <Cat id="nouns.cat.nominative-for-vocative"name="Nominative for Vocative" eg="“O foolish Galatians!”" ex={[{ g: "ὁ κύριός μου καὶ ὁ θεός μου", e: "My Lord and my God!", r: "John 20:28" }, { g: "ναί, ὁ πατήρ", e: "Yes, Father", r: "Matt 11:26" }]}><T id="nouns.cat.nominative-for-vocative.d">a nominative used for direct address</T></Cat>
     </CatGroup>
-    <SectionHeading id="nouns.cg.genitive-description-separation">Genitive — description & separation (“of”)</SectionHeading>
+    <SectionHeading id="nouns.cg.genitive-description-separation">Genitive</SectionHeading>
     <CatGroup>
             <Cat id="nouns.cat.possessive"name="Possessive" eg="“his ear”" ex={[{ g: "τὸν οἶκον τοῦ πατρός μου", e: "my Father’s house", r: "John 2:16" }, { g: "βιβλίον τοῦ προφήτου Ἡσαΐου", e: "the scroll of the prophet Isaiah", r: "Luke 4:17" }]}><T id="nouns.cat.possessive.d">the head noun belongs to the genitive</T></Cat>
             <Cat id="nouns.cat.descriptive"name="Descriptive" ex={[{ g: "βάπτισμα μετανοίας", e: "a baptism of repentance", r: "Mark 1:4" }, { g: "τὸν οἰκονόμον τῆς ἀδικίας", e: "the dishonest steward", r: "Luke 16:8" }]}><T id="nouns.cat.descriptive.d">a loose “characterized by” quality (the catch-all genitive)</T></Cat>
@@ -62,7 +62,7 @@ export const NOUNS_INTERMEDIATE_CONTENT = (
             <Cat id="nouns.cat.genitive-absolute"name="Genitive Absolute" ex={[{ g: "ὀψίας δὲ γενομένης", e: "when evening had come", r: "Matt 8:16" }, { g: "ἔτι αὐτοῦ λαλοῦντος", e: "while he was still speaking", r: "Mark 5:35" }]}><T id="nouns.cat.genitive-absolute.d">a detached genitive noun + participle giving background (see Participles)</T></Cat>
             <Cat id="nouns.cat.after-certain-verbs"name="After certain verbs / prepositions" ex={[{ g: "ἥψατο τῆς χειρὸς αὐτῆς", e: "he touched her hand", r: "Matt 8:15" }, { g: "ἀκούσουσιν τῆς φωνῆς τοῦ υἱοῦ τοῦ θεοῦ", e: "they will hear the voice of the Son of God", r: "John 5:25" }]}><T id="nouns.cat.after-certain-verbs.d">as a direct object (sensation, sharing, ruling…) or governed by a preposition</T></Cat>
     </CatGroup>
-    <SectionHeading id="nouns.cg.dative-the-to">Dative — the “to / for / with / by” case</SectionHeading>
+    <SectionHeading id="nouns.cg.dative-the-to">Dative</SectionHeading>
     <CatGroup>
             <Cat id="nouns.cat.indirect-object"name="Indirect Object" eg="“he gave the book to me”" ex={[{ g: "δός μοι τὴν κεφαλὴν Ἰωάννου", e: "give me the head of John", r: "Matt 14:8" }, { g: "λέγει αὐτῇ ὁ Ἰησοῦς", e: "Jesus says to her", r: "John 11:23" }]}><T id="nouns.cat.indirect-object.d">the person to/for whom</T></Cat>
             <Cat id="nouns.cat.interest"name="Interest" ex={[{ g: "μαρτυρεῖτε ἑαυτοῖς", e: "you testify against yourselves", r: "Matt 23:31" }, { g: "τῷ κυρίῳ ζῶμεν", e: "we live for the Lord", r: "Rom 14:8" }]}><T id="nouns.cat.interest.d">advantage (“for” someone) or disadvantage (“against” someone)</T></Cat>
@@ -73,7 +73,7 @@ export const NOUNS_INTERMEDIATE_CONTENT = (
             <Cat id="nouns.cat.means-instrument"name="Means / Instrument" eg="“with a word”" ex={[{ g: "ἐξέβαλεν τὰ πνεύματα λόγῳ", e: "he cast out the spirits with a word", r: "Matt 8:16" }, { g: "χάριτί ἐστε σεσῳσμένοι", e: "by grace you have been saved", r: "Eph 2:8" }]}><T id="nouns.cat.means-instrument.d">the plain dative = “by/with”</T></Cat>
             <Cat id="nouns.cat.direct-object-after"name="Direct Object / after prepositions" ex={[{ g: "ἠκολούθησαν αὐτῷ", e: "they followed him", r: "Matt 4:20" }, { g: "ἐπίστευσεν Ἀβραὰμ τῷ θεῷ", e: "Abraham believed God", r: "Rom 4:3" }]}><T id="nouns.cat.direct-object-after.d">verbs and prepositions that govern the dative</T></Cat>
     </CatGroup>
-    <SectionHeading id="nouns.cg.accusative-extent-limitation">Accusative — extent & limitation</SectionHeading>
+    <SectionHeading id="nouns.cg.accusative-extent-limitation">Accusative</SectionHeading>
     <CatGroup>
             <Cat id="nouns.cat.direct-object"name="Direct Object" eg="“God loved the world”" ex={[{ g: "ἠγάπησεν ὁ θεὸς τὸν κόσμον", e: "God loved the world", r: "John 3:16" }, { g: "λύσατε τὸν ναὸν τοῦτον", e: "destroy this temple", r: "John 2:19" }]}><T id="nouns.cat.direct-object.d">what receives a transitive verb's action</T></Cat>
             <Cat id="nouns.cat.double-accusative"name="Double Accusative" ex={[{ g: "ἐκεῖνος ὑμᾶς διδάξει πάντα", e: "he will teach you all things", r: "John 14:26" }, { g: "ὑμᾶς εἴρηκα φίλους", e: "I have called you friends", r: "John 15:15" }]}><T id="nouns.cat.double-accusative.d">two objects: person + thing (“he teaches you Greek”), or object + complement (“they called him Lord”)</T></Cat>
