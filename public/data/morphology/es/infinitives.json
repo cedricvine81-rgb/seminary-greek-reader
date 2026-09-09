@@ -43,6 +43,10 @@
     "fp": "1v5ach",
     "text": "«porque no tenía raíz»"
   },
+  "infinitives.cat.causal.h": {
+    "fp": "17zrhih",
+    "text": "{διὰ τό}, y el sentido mira hacia atrás, a una razón ya dada. La finalidad mira adelante; la causa, atrás."
+  },
   "infinitives.cat.causal.name": {
     "fp": "rr4co0",
     "text": "Causal"
@@ -62,6 +66,10 @@
   "infinitives.cat.complementary.eg": {
     "fp": "1u657wd",
     "text": "«no pueden servir a Dios y a las riquezas»"
+  },
+  "infinitives.cat.complementary.h": {
+    "fp": "1sfhg2u",
+    "text": "El verbo principal no se sostiene solo: {δύναμαι}, {θέλω}, {μέλλω} y {ἄρχομαι} piden complemento. Si al quitar el infinitivo la oración queda incompleta, es complementario."
   },
   "infinitives.cat.complementary.name": {
     "fp": "11xhnld",
@@ -83,6 +91,10 @@
     "fp": "18qqd9d",
     "text": "«autoridad para pisar serpientes»"
   },
+  "infinitives.cat.epexegetical.h": {
+    "fp": "1kdeetg",
+    "text": "Explica el sustantivo o adjetivo que tiene al lado: autoridad, libertad, necesidad, digno. Pregunta «¿autoridad para qué?» y el infinitivo responde."
+  },
   "infinitives.cat.epexegetical.name": {
     "fp": "ppg6gp",
     "text": "Epexegético"
@@ -102,6 +114,10 @@
   "infinitives.cat.indirect-discourse.eg": {
     "fp": "1qeecwp",
     "text": "«dicen que no hay resurrección»"
+  },
+  "infinitives.cat.indirect-discourse.h": {
+    "fp": "1nvauw3",
+    "text": "Primero viene un verbo de decir, pensar o percibir, y el infinitivo lleva lo dicho o pensado. Su propio sujeto, cuando se expresa, va en acusativo."
   },
   "infinitives.cat.indirect-discourse.name": {
     "fp": "1by1tyq",
@@ -123,6 +139,10 @@
     "fp": "19urfwb",
     "text": "«vine a abolir la ley»"
   },
+  "infinitives.cat.purpose.h": {
+    "fp": "zieexk",
+    "text": "Pregunta «¿para qué?» mirando hacia adelante y prueba «para». {τοῦ}, {εἰς τό} y {πρὸς τό} apuntan aquí, pero un infinitivo desnudo tras un verbo de movimiento también suele ser final."
+  },
   "infinitives.cat.purpose.name": {
     "fp": "4cofj5",
     "text": "Finalidad"
@@ -142,6 +162,10 @@
   "infinitives.cat.result.eg": {
     "fp": "1upylyu",
     "text": "«…de modo que la multitud se asombró»"
+  },
+  "infinitives.cat.result.h": {
+    "fp": "fc4tmb",
+    "text": "{ὥστε} es la marca habitual. La prueba frente a la finalidad es si el desenlace se pretendía: la finalidad se busca, el resultado simplemente ocurre."
   },
   "infinitives.cat.result.name": {
     "fp": "ma0s3o",
@@ -163,6 +187,10 @@
     "fp": "bhqhlk",
     "text": "«el vivir es Cristo» (Fil 1:21)"
   },
+  "infinitives.cat.subject.h": {
+    "fp": "x12ozy",
+    "text": "Prueba «hacer X es…». Los verbos impersonales —{δεῖ}, {ἔξεστιν}— llevan un infinitivo sujeto casi por definición."
+  },
   "infinitives.cat.subject.name": {
     "fp": "18ix78v",
     "text": "Sujeto"
@@ -178,6 +206,10 @@
   "infinitives.cat.time.e1": {
     "fp": "jdv0ki",
     "text": "después de que yo haya resucitado"
+  },
+  "infinitives.cat.time.h": {
+    "fp": "17ajqqi",
+    "text": "Una preposición con artículo fija la relación: {μετὰ τό} después, {ἐν τῷ} mientras, {πρὸ τοῦ} antes. Lee la preposición, no el infinitivo."
   },
   "infinitives.cat.time.name": {
     "fp": "1q4eyv8",

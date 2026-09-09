@@ -247,6 +247,10 @@
     "fp": "qwwo6a",
     "text": "μενῶ (fut.) frente a μένω (pres.)"
   },
+  "parsing.cat.contract-lookalikes.h": {
+    "fp": "620fim",
+    "text": "Fíjate en la última consonante de la raíz. Raíz líquida con circunflejo es un futuro; cualquier otra cosa de esa forma es un presente contracto."
+  },
   "parsing.cat.contract-lookalikes.name": {
     "fp": "1sc4o3w",
     "text": "Parecidos de los contractos"
@@ -262,6 +266,10 @@
   "parsing.cat.first-decl-gen-acc.eg": {
     "fp": "1o82jgy",
     "text": "τῆς ἡμέρας / τὰς ἡμέρας"
+  },
+  "parsing.cat.first-decl-gen-acc.h": {
+    "fp": "iqyozi",
+    "text": "Analiza primero el artículo. {τῆς} te da el genitivo singular y {τάς} el acusativo plural; la desinencia del sustantivo por sí sola no puede."
   },
   "parsing.cat.first-decl-gen-acc.name": {
     "fp": "16i80v9",
@@ -279,6 +287,10 @@
     "fp": "rtj1k3",
     "text": "γράφεται: «se escribe» o «escribe para sí»"
   },
+  "parsing.cat.middle-passive.h": {
+    "fp": "nfnswd",
+    "text": "Busca un agente: {ὑπό} con genitivo lo resuelve como pasiva. Si no, deciden los hábitos del propio verbo, así que mira si el diccionario lo registra como medio."
+  },
   "parsing.cat.middle-passive.name": {
     "fp": "1sk9pbg",
     "text": "Media y pasiva"
@@ -294,6 +306,10 @@
   "parsing.cat.neuter-nom-acc.eg": {
     "fp": "1bec449",
     "text": "τὰ δαιμόνια, ¿sujeto o complemento?"
+  },
+  "parsing.cat.neuter-nom-acc.h": {
+    "fp": "1vs67mb",
+    "text": "La forma nunca te lo dirá: busca el verbo. Si el neutro realiza la acción es nominativo, y si la recibe, acusativo; y recuerda que un sujeto neutro plural lleva verbo en singular."
   },
   "parsing.cat.neuter-nom-acc.name": {
     "fp": "a9g9x",

@@ -35,6 +35,10 @@
     "fp": "cn3k3t",
     "text": "ποιῶν (contracto) frente a un hipotético ποίων"
   },
+  "contract-verbs.cat.circumflex-witness.h": {
+    "fp": "1s5quq1",
+    "text": "Pregúntate dónde habría caído el acento si no hubiera habido contracción, y compara. Un circunflejo en la última sílaba de un presente es la fusión que se deja ver."
+  },
   "contract-verbs.cat.circumflex-witness.name": {
     "fp": "s5nbul",
     "text": "El circunflejo como testigo"
@@ -50,6 +54,10 @@
   "contract-verbs.cat.lexical-form.eg": {
     "fp": "1bnwu94",
     "text": "ποιέω → ποιεῖ"
+  },
+  "contract-verbs.cat.lexical-form.h": {
+    "fp": "19pb3gd",
+    "text": "Deshaz la contracción antes de buscar. Un {-ῶ} puede venir de {-άω}, {-έω} u {-όω}, así que prueba las tres raíces en vez de la forma que ves en la página."
   },
   "contract-verbs.cat.lexical-form.name": {
     "fp": "1jnu0va",
@@ -67,6 +75,10 @@
     "fp": "1vep7u5",
     "text": "μενῶ / μένω"
   },
+  "contract-verbs.cat.liquid-future.h": {
+    "fp": "glp97x",
+    "text": "Consulta en el diccionario si la raíz es líquida: {λ μ ν ρ}. Si el verbo lo es, algo con aspecto de presente en {-έω} puede ser un futuro, y solo el acento lo dirá."
+  },
   "contract-verbs.cat.liquid-future.name": {
     "fp": "1harj38",
     "text": "Frente al futuro líquido"
@@ -82,6 +94,10 @@
   "contract-verbs.cat.outside-present.eg": {
     "fp": "w1f5nr",
     "text": "ποιῶ pero ἐποίησα"
+  },
+  "contract-verbs.cat.outside-present.h": {
+    "fp": "blso9x",
+    "text": "Si la forma lleva una marca temporal —una {σ}, una {θη}, reduplicación—, la cuestión ni se plantea. Solo el presente y el imperfecto contraen."
   },
   "contract-verbs.cat.outside-present.name": {
     "fp": "15pr57b",

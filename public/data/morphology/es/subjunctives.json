@@ -199,6 +199,10 @@
     "fp": "tngmf",
     "text": "«si piden…»"
   },
+  "subjunctives.cat.conditional.h": {
+    "fp": "1csnnpe",
+    "text": "{ἐάν} en vez de {εἰ}, con un subjuntivo detrás. Esa combinación es la condición de tercera clase y ninguna otra."
+  },
   "subjunctives.cat.conditional.name": {
     "fp": "p6nakz",
     "text": "Condicional"
@@ -218,6 +222,10 @@
   "subjunctives.cat.deliberative.eg": {
     "fp": "ob9iby",
     "text": "«¿qué diremos?»"
+  },
+  "subjunctives.cat.deliberative.h": {
+    "fp": "17uc3zx",
+    "text": "Es una pregunta y el modo es subjuntivo. Quien habla pregunta qué se debe hacer, no qué va a suceder."
   },
   "subjunctives.cat.deliberative.name": {
     "fp": "anogy3",
@@ -239,6 +247,10 @@
     "fp": "vjuvn1",
     "text": "«jamás perecerán»"
   },
+  "subjunctives.cat.emphatic-negation.h": {
+    "fp": "1qd1sn1",
+    "text": "La doble negación {οὐ μή} con subjuntivo aoristo: la negación más fuerte que puede hacer el griego. Afirma, no prohíbe."
+  },
   "subjunctives.cat.emphatic-negation.name": {
     "fp": "xmqkfd",
     "text": "Negación enfática"
@@ -258,6 +270,10 @@
   "subjunctives.cat.hortatory.eg": {
     "fp": "1vdr7ge",
     "text": "«amémonos unos a otros»"
+  },
+  "subjunctives.cat.hortatory.h": {
+    "fp": "15sppdj",
+    "text": "Primera persona del plural, sin palabra introductoria, y el hablante se incluye en lo que exhorta. La traducción es «vamos a» o «que» con subjuntivo."
   },
   "subjunctives.cat.hortatory.name": {
     "fp": "hf6i6x",
@@ -279,6 +295,10 @@
     "fp": "9brmc8",
     "text": "ὃς ἄν «cualquiera que», ὅταν «cuando quiera que»"
   },
+  "subjunctives.cat.indefinite.h": {
+    "fp": "11t3nge",
+    "text": "{ἄν} u {ὅταν} unidos a una palabra relativa o temporal, con subjuntivo detrás. La oración abarca entonces cualquier caso, no uno concreto."
+  },
   "subjunctives.cat.indefinite.name": {
     "fp": "1kpo9rm",
     "text": "Indefinido"
@@ -299,6 +319,10 @@
     "fp": "1elar3a",
     "text": "«no temas»"
   },
+  "subjunctives.cat.prohibitive.h": {
+    "fp": "1vnsjye",
+    "text": "{μή} con subjuntivo aoristo, en lugar del imperativo aoristo de segunda persona que el griego no tiene. Léelo como una orden."
+  },
   "subjunctives.cat.prohibitive.name": {
     "fp": "zb6g4c",
     "text": "Prohibitivo"
@@ -314,6 +338,10 @@
   "subjunctives.cat.subjunctive.e1": {
     "fp": "32vg0",
     "text": "vino para dar testimonio de la luz"
+  },
+  "subjunctives.cat.subjunctive.h": {
+    "fp": "1y2ui0y",
+    "text": "Lo introduce {ἵνα}. La finalidad se pretende y el resultado simplemente ocurre, aunque en Juan {ἵνα} se ha desplazado lo bastante como para significar poco más que «que»."
   },
   "subjunctives.cat.subjunctive.name": {
     "fp": "wkegm1",

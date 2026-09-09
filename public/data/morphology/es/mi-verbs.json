@@ -35,6 +35,10 @@
     "fp": "1urbibt",
     "text": "παραδίδωμι, ἀφίημι, ἀνίστημι"
   },
+  "mi-verbs.cat.compounds.h": {
+    "fp": "6a6cjm",
+    "text": "Quita la preposición antes de analizar o de buscar en el diccionario. {παραδίδωμι} es {δίδωμι} con un prefijo, y de ahí sale todo el paradigma."
+  },
   "mi-verbs.cat.compounds.name": {
     "fp": "1kunslv",
     "text": "Casi toda la frecuencia está en los compuestos"
@@ -50,6 +54,10 @@
   "mi-verbs.cat.kappa-aorist.eg": {
     "fp": "lx45jf",
     "text": "ἔδωκα, ἔθηκα"
+  },
+  "mi-verbs.cat.kappa-aorist.h": {
+    "fp": "1p780vm",
+    "text": "La reduplicación ha desaparecido y hay una {κ} donde estaría una {σ}. Por lo demás, el aumento y las desinencias son los del aoristo primero de siempre."
   },
   "mi-verbs.cat.kappa-aorist.name": {
     "fp": "1jsd95i",
@@ -67,6 +75,10 @@
     "fp": "ad7z61",
     "text": "δίδωμι, τίθημι, ἵστημι"
   },
+  "mi-verbs.cat.reduplication.h": {
+    "fp": "1nktfsx",
+    "text": "Una primera consonante doblada con una {ι} en medio: {δι-δο}, {τι-θε}, {ἱ-στα}. Verlo te sitúa en el sistema de presente y en ningún otro."
+  },
   "mi-verbs.cat.reduplication.name": {
     "fp": "j64xow",
     "text": "Reduplicación de presente con iota"
@@ -82,6 +94,10 @@
   "mi-verbs.cat.vowel-gradation.eg": {
     "fp": "g35s6s",
     "text": "δίδωσι / δίδομεν"
+  },
+  "mi-verbs.cat.vowel-gradation.h": {
+    "fp": "11kgbsd",
+    "text": "Compara el singular con el plural. Vocal larga en el singular y breve en el plural es la señal más segura después de la reduplicación."
   },
   "mi-verbs.cat.vowel-gradation.name": {
     "fp": "1r8fxoa",

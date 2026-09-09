@@ -27,6 +27,10 @@
     "fp": "1xnbtsx",
     "text": "«Vayan y hagan discípulos»"
   },
+  "imperatives.cat.command.h": {
+    "fp": "1vm8enl",
+    "text": "El hablante tiene autoridad para exigirlo y nada lo suaviza. Después lee el aspecto: aoristo para el acto como un todo, presente para una conducta que debe mantenerse."
+  },
   "imperatives.cat.command.name": {
     "fp": "1j2mkia",
     "text": "Mandato"
@@ -43,6 +47,10 @@
     "fp": "3w73y4",
     "text": "acérquense a Dios, y él se acercará a ustedes"
   },
+  "imperatives.cat.conditional.h": {
+    "fp": "1cypq3",
+    "text": "Dos órdenes seguidas, o un imperativo seguido de un futuro, donde el primero es en realidad la condición del segundo: «haz esto, y esto ocurrirá»."
+  },
   "imperatives.cat.conditional.name": {
     "fp": "p6nakz",
     "text": "Condicional"
@@ -58,6 +66,10 @@
   "imperatives.cat.permissive.e1": {
     "fp": "9rz683",
     "text": "si el incrédulo se separa, que se separe"
+  },
+  "imperatives.cat.permissive.h": {
+    "fp": "aejrae",
+    "text": "El hablante concede la acción en vez de exigirla, y casi siempre va en tercera persona; por eso el español recurre a «que» con subjuntivo."
   },
   "imperatives.cat.permissive.name": {
     "fp": "wz8ab6",
@@ -79,6 +91,10 @@
     "fp": "pg0il1",
     "text": "μὴ νομίσητε «no piensen»"
   },
+  "imperatives.cat.proh-aorist-subj.h": {
+    "fp": "bmb2su",
+    "text": "{μή} con subjuntivo aoristo en vez de imperativo, porque en segunda persona no existe el imperativo aoristo. Léelo como una orden normal, no como una más suave."
+  },
   "imperatives.cat.proh-aorist-subj.name": {
     "fp": "1egqpfu",
     "text": "μή + subjuntivo de aoristo"
@@ -98,6 +114,10 @@
   "imperatives.cat.proh-compound.eg": {
     "fp": "1811m7",
     "text": "μηδενὶ εἴπῃς «no se lo digas a nadie»"
+  },
+  "imperatives.cat.proh-compound.h": {
+    "fp": "1u3h441",
+    "text": "{μηδέ} o {μηδείς} continúan una prohibición que {μή} ya ha abierto. Es la misma construcción que sigue, no una nueva que empieza."
   },
   "imperatives.cat.proh-compound.name": {
     "fp": "1g3vh89",
@@ -119,6 +139,10 @@
     "fp": "j1297x",
     "text": "οὐ φονεύσεις «no matarás»"
   },
+  "imperatives.cat.proh-future.h": {
+    "fp": "1qvfo9",
+    "text": "{οὐ} con indicativo futuro donde el sentido es claramente de ley y no de predicción. Es la manera en que la Septuaginta vierte los mandamientos hebreos, y conserva ese sabor."
+  },
   "imperatives.cat.proh-future.name": {
     "fp": "y7ysu8",
     "text": "οὐ + futuro de indicativo"
@@ -134,6 +158,10 @@
   "imperatives.cat.proh-ou-me.eg": {
     "fp": "140bnu4",
     "text": "οὐ μὴ εἰσέλθητε «de ningún modo entrarán»"
+  },
+  "imperatives.cat.proh-ou-me.h": {
+    "fp": "c742vy",
+    "text": "Las dos negaciones juntas, {οὐ μή}, con subjuntivo aoristo. Afirma lo que no sucederá en vez de prohibirlo: «ciertamente no», nunca «no hagas»."
   },
   "imperatives.cat.proh-ou-me.name": {
     "fp": "1kgcmqr",
@@ -155,6 +183,10 @@
     "fp": "10ge5x0",
     "text": "μὴ κρίνετε «no juzguen»"
   },
+  "imperatives.cat.proh-present-imv.h": {
+    "fp": "1vl584w",
+    "text": "{μή} con imperativo presente. Pregúntate si los oyentes ya lo están haciendo: si es así, «deja de»; si no, «no acostumbres a»."
+  },
   "imperatives.cat.proh-present-imv.name": {
     "fp": "qjibm1",
     "text": "μή + imperativo de presente"
@@ -170,6 +202,10 @@
   "imperatives.cat.proh-third-person.eg": {
     "fp": "1aiqojr",
     "text": "μὴ καταβάτω «que no baje»"
+  },
+  "imperatives.cat.proh-third-person.h": {
+    "fp": "1m42czv",
+    "text": "Tercera persona e imperativo aoristo juntos: el único lugar donde el imperativo aoristo sobrevive en una prohibición, porque ningún giro con subjuntivo le disputa el puesto."
   },
   "imperatives.cat.proh-third-person.name": {
     "fp": "347svj",
@@ -191,6 +227,10 @@
     "fp": "1elar3a",
     "text": "«no temas»"
   },
+  "imperatives.cat.prohibition.h": {
+    "fp": "19uap3g",
+    "text": "{μή}, nunca {οὐ}: la negación misma indica que el modo no es indicativo. Después lee el aspecto: presente para detener algo ya en curso, aoristo para excluirlo."
+  },
   "imperatives.cat.prohibition.name": {
     "fp": "11tr5go",
     "text": "Prohibición"
@@ -210,6 +250,10 @@
   "imperatives.cat.request-entreaty.eg": {
     "fp": "1ugqe30",
     "text": "«danos hoy nuestro pan de cada día»"
+  },
+  "imperatives.cat.request-entreaty.h": {
+    "fp": "1fadf0q",
+    "text": "La dirección es ascendente: un inferior que se dirige a un superior, y muy a menudo la oración. La forma es un imperativo corriente; solo la relación lo convierte en ruego."
   },
   "imperatives.cat.request-entreaty.name": {
     "fp": "1xcgtmt",

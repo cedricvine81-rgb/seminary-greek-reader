@@ -19,6 +19,10 @@
     "fp": "39f6t4",
     "text": "«se ahorcó»"
   },
+  "deponents.cat.direct-middle.h": {
+    "fp": "14negn7",
+    "text": "El sujeto y el objeto son la misma persona, y «a sí mismo» funcionaría como objeto directo. Es raro, así que comprueba si encaja el medio indirecto antes de quedarte aquí."
+  },
   "deponents.cat.direct-middle.name": {
     "fp": "1555jh8",
     "text": "Media directa (reflexiva)"
@@ -39,6 +43,10 @@
     "fp": "uoaomd",
     "text": "«escogiendo para sí»"
   },
+  "deponents.cat.indirect-middle.h": {
+    "fp": "19w63q4",
+    "text": "Añade «para sí» y observa si el sentido se afina. Es el medio por defecto, así que pruébalo antes que ningún otro."
+  },
   "deponents.cat.indirect-middle.name": {
     "fp": "19xnago",
     "text": "Media indirecta"
@@ -55,6 +63,10 @@
     "fp": "1otuhlp",
     "text": "«hazte bautizar»"
   },
+  "deponents.cat.permissive-middle.h": {
+    "fp": "gaojxf",
+    "text": "El sujeto no realiza la acción, sino que deja que le ocurra. En español suele expresarse con «hacerse» o «dejarse»: «hacerse bautizar», no «bautizarse a sí mismo»."
+  },
   "deponents.cat.permissive-middle.name": {
     "fp": "1nr0d43",
     "text": "Media permisiva"
@@ -70,6 +82,10 @@
   "deponents.cat.reciprocal-middle.eg": {
     "fp": "11aazai",
     "text": "«se pusieron de acuerdo»"
+  },
+  "deponents.cat.reciprocal-middle.h": {
+    "fp": "1h4grll",
+    "text": "El sujeto tiene que ser plural y la acción mutua. «Unos a otros» es recíproco; «cada uno a sí mismo» es el medio directo."
   },
   "deponents.cat.reciprocal-middle.name": {
     "fp": "1vfifaa",

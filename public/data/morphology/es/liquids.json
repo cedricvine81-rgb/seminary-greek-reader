@@ -51,6 +51,10 @@
     "fp": "njifvu",
     "text": "μένω → ἔμεινα"
   },
+  "liquids.cat.aorist-no-sigma.h": {
+    "fp": "132nly3",
+    "text": "Aumento y desinencias en {α}, pero sin {σ}. Busca la compensación en la raíz: una vocal alargada, o una consonante doble simplificada."
+  },
   "liquids.cat.aorist-no-sigma.name": {
     "fp": "ut5u23",
     "text": "El aoristo sin σ"
@@ -71,6 +75,10 @@
     "fp": "qovnc3",
     "text": "μένω, ἀποστέλλω, ἐγείρω, κρίνω"
   },
+  "liquids.cat.frequency.h": {
+    "fp": "17xc3on",
+    "text": "Vale la pena aprenderlos como clase y no como excepciones: solo {μένω}, {ἀποστέλλω}, {ἐγείρω} y {κρίνω} te saldrán al paso en casi cada página."
+  },
   "liquids.cat.frequency.name": {
     "fp": "1nesnpv",
     "text": "No son marginales"
@@ -86,6 +94,10 @@
   "liquids.cat.future-contract.eg": {
     "fp": "uqnvvn",
     "text": "μενῶ «permaneceré»"
+  },
+  "liquids.cat.future-contract.h": {
+    "fp": "o07srr",
+    "text": "Comprueba si la raíz termina en {λ μ ν ρ}. Si es así, una forma con aspecto de presente en {-έω} puede ser el futuro, y el circunflejo es su única marca."
   },
   "liquids.cat.future-contract.name": {
     "fp": "eh1x77",

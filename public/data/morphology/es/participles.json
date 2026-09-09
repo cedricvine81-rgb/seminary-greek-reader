@@ -247,6 +247,10 @@
     "fp": "1xnbtsx",
     "text": "«Vayan y hagan discípulos»"
   },
+  "participles.cat.attendant-circumstance.h": {
+    "fp": "nvm29f",
+    "text": "Participio aoristo, verbo principal aoristo, el participio delante, y ambos haciendo avanzar la narración. Tradúcelo como un verbo finito unido con «y»."
+  },
   "participles.cat.attendant-circumstance.name": {
     "fp": "tfec3j",
     "text": "Circunstancia concomitante"
@@ -266,6 +270,10 @@
   "participles.cat.attributive.eg": {
     "fp": "1hy4bfm",
     "text": "«el hombre que desata…»"
+  },
+  "participles.cat.attributive.h": {
+    "fp": "fnyjot",
+    "text": "El artículo está inmediatamente delante del participio, y hay un sustantivo al que modificar. Tradúcelo con una oración de relativo: «el que…»."
   },
   "participles.cat.attributive.name": {
     "fp": "vuc1iu",
@@ -287,6 +295,10 @@
     "fp": "1j2rnga",
     "text": "«porque era justo»"
   },
+  "participles.cat.cause.h": {
+    "fp": "1x0n1i9",
+    "text": "Prueba a anteponerle «porque». Si el participio da la razón de que ocurriera el verbo principal, esa es la categoría."
+  },
   "participles.cat.cause.name": {
     "fp": "vbnqgw",
     "text": "Causa"
@@ -306,6 +318,10 @@
   "participles.cat.concession.eg": {
     "fp": "3ju2ud",
     "text": "«aunque conocieron a Dios…»"
+  },
+  "participles.cat.concession.h": {
+    "fp": "13aaj2z",
+    "text": "Prueba «aunque». Lo que lo marca es que el verbo principal ocurre a pesar de lo que dice el participio, no a causa de ello."
   },
   "participles.cat.concession.name": {
     "fp": "1lant1",
@@ -327,6 +343,10 @@
     "fp": "147tjr5",
     "text": "«si haces esto…»"
   },
+  "participles.cat.condition.h": {
+    "fp": "117itfw",
+    "text": "Prueba a anteponerle «si». El verbo principal depende de él, y la oración que rige suele llevar un futuro o un imperativo."
+  },
   "participles.cat.condition.name": {
     "fp": "1ks2b1a",
     "text": "Condición"
@@ -343,6 +363,10 @@
     "fp": "v333un",
     "text": "mientras todavía hablaba, he aquí, llegó Judas"
   },
+  "participles.cat.genitive-absolute.h": {
+    "fp": "wa2twa",
+    "text": "Sustantivo y participio los dos en genitivo, y el sustantivo sin ninguna función gramatical en la oración principal. Si la tiene, es un participio adverbial corriente."
+  },
   "participles.cat.genitive-absolute.name": {
     "fp": "1x5qgiz",
     "text": "Genitivo absoluto"
@@ -358,6 +382,10 @@
   "participles.cat.imperatival.e1": {
     "fp": "1magzla",
     "text": "aborrezcan lo malo, aférrense a lo bueno"
+  },
+  "participles.cat.imperatival.h": {
+    "fp": "s2kacl",
+    "text": "Un participio donde iría un imperativo finito, sin verbo principal del que depender. Romanos 12 es el pasaje clásico."
   },
   "participles.cat.imperatival.name": {
     "fp": "yc1twh",
@@ -379,6 +407,10 @@
     "fp": "uvv0xq",
     "text": "«haciendo esto…»"
   },
+  "participles.cat.means-manner.h": {
+    "fp": "lydaw3",
+    "text": "Responde a «¿cómo?». El medio dice mediante qué se realizó la acción; el modo, de qué manera. Prueba «al» más infinitivo."
+  },
   "participles.cat.means-manner.name": {
     "fp": "1vwjyc9",
     "text": "Medio / modo"
@@ -394,6 +426,10 @@
   "participles.cat.periphrastic.e1": {
     "fp": "13wa5h9",
     "text": "el pueblo estaba esperando a Zacarías"
+  },
+  "participles.cat.periphrastic.h": {
+    "fp": "1yu6tht",
+    "text": "Una forma de {εἰμί} junto con un participio formando una sola idea verbal. El participio va sin artículo y detrás del verbo."
   },
   "participles.cat.periphrastic.name": {
     "fp": "13s38e5",
@@ -411,6 +447,10 @@
     "fp": "1hw8phz",
     "text": "encontrarán a un bebé envuelto en pañales en un pesebre"
   },
+  "participles.cat.predicate.h": {
+    "fp": "10x5t6a",
+    "text": "Sin artículo pero adjetival: afirma algo del sustantivo en vez de describirlo. Es raro, así que descarta antes los usos adverbiales."
+  },
   "participles.cat.predicate.name": {
     "fp": "182fxdq",
     "text": "Predicativo"
@@ -426,6 +466,10 @@
   "participles.cat.purpose.e1": {
     "fp": "1f3cv1u",
     "text": "veamos si viene Elías a salvarlo"
+  },
+  "participles.cat.purpose.h": {
+    "fp": "m5o6pv",
+    "text": "Un «¿para qué?» que mira hacia adelante, normalmente con participio futuro, o presente tras un verbo de movimiento. La finalidad se pretende; el resultado, no."
   },
   "participles.cat.purpose.name": {
     "fp": "4cofj5",
@@ -447,6 +491,10 @@
     "fp": "uwfn6",
     "text": "ὁ πιστεύων, «el creyente»"
   },
+  "participles.cat.substantival.h": {
+    "fp": "nymjta",
+    "text": "Lleva artículo, pero no hay sustantivo al que modificar: el participio es él mismo el sustantivo. Suple «el que» y no falta nada."
+  },
   "participles.cat.substantival.name": {
     "fp": "1n3vqd1",
     "text": "Sustantivado"
@@ -466,6 +514,10 @@
   "participles.cat.temporal.eg": {
     "fp": "pxut0b",
     "text": "«mientras comía…»"
+  },
+  "participles.cat.temporal.h": {
+    "fp": "j89jf",
+    "text": "Sin artículo, y la pregunta que responde es «¿cuándo?». Un participio aoristo suele preceder en el tiempo al verbo principal; uno presente lo acompaña."
   },
   "participles.cat.temporal.name": {
     "fp": "7dmwgj",

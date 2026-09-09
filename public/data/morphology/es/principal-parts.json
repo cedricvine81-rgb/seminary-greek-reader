@@ -207,6 +207,10 @@
     "fp": "1e5ppez",
     "text": "ἐλύθην · ἐγράφη"
   },
+  "principal-parts.cat.aorist-passive.h": {
+    "fp": "1hzfcdi",
+    "text": "Una {θη}, o una {η} sola en el aoristo pasivo segundo. Es la menos previsible de las seis, así que búscala en el diccionario en vez de deducirla."
+  },
   "principal-parts.cat.aorist-passive.name": {
     "fp": "swi620",
     "text": "6. Aoristo pasivo"
@@ -222,6 +226,10 @@
   "principal-parts.cat.aorist-system.eg": {
     "fp": "k5e7x5",
     "text": "ἔλυσα → λύσας, λῦσαι"
+  },
+  "principal-parts.cat.aorist-system.h": {
+    "fp": "oruuxr",
+    "text": "{σα} con aumento da el indicativo; la misma raíz sin aumento da el participio, el infinitivo, el subjuntivo y el imperativo."
   },
   "principal-parts.cat.aorist-system.name": {
     "fp": "12okqj4",
@@ -239,6 +247,10 @@
     "fp": "1vjaixk",
     "text": "λύσω · μενῶ"
   },
+  "principal-parts.cat.future-system.h": {
+    "fp": "vgc113",
+    "text": "Una {σ} antes de la desinencia, sin aumento. Si la raíz es líquida no habrá {σ}, así que busca en su lugar el circunflejo."
+  },
   "principal-parts.cat.future-system.name": {
     "fp": "10oqzj2",
     "text": "2. Futuro activo/medio"
@@ -254,6 +266,10 @@
   "principal-parts.cat.perfect-active.eg": {
     "fp": "ap7auk",
     "text": "λέλυκα · γέγραπται"
+  },
+  "principal-parts.cat.perfect-active.h": {
+    "fp": "cd20d3",
+    "text": "Reduplicación al principio y {κα} en la desinencia. La reduplicación es la marca que hay que buscar: ningún otro sistema la lleva en la activa."
   },
   "principal-parts.cat.perfect-active.name": {
     "fp": "1n6eiz0",
@@ -271,6 +287,10 @@
     "fp": "1ac16zx",
     "text": "λέλυμαι"
   },
+  "principal-parts.cat.perfect-middle.h": {
+    "fp": "192pu9l",
+    "text": "De nuevo reduplicación, pero las desinencias se pegan directamente a la raíz sin vocal de unión, y por eso la consonante del punto de contacto cambia tan a menudo."
+  },
   "principal-parts.cat.perfect-middle.name": {
     "fp": "9h9gzu",
     "text": "5. Perfecto medio/pasivo"
@@ -286,6 +306,10 @@
   "principal-parts.cat.present-system.eg": {
     "fp": "1rohut6",
     "text": "λύω → ἔλυον"
+  },
+  "principal-parts.cat.present-system.h": {
+    "fp": "1m0uqu1",
+    "text": "Sin marca temporal y sin aumento fuera del imperfecto. Toda contracción, reduplicación o {ν} añadida pertenece solo a esta raíz, y por eso suele ser la que desentona."
   },
   "principal-parts.cat.present-system.name": {
     "fp": "1bdhwql",

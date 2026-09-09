@@ -143,6 +143,10 @@
     "fp": "1g81jih",
     "text": "querían ponerle por nombre Zacarías"
   },
+  "indicatives.cat.conative-2.h": {
+    "fp": "b9qbt7",
+    "text": "El intento fracasa, y el contexto lo dice. Contrástalo con el incoativo: el incoativo empieza y continúa; el conativo empieza y no llega."
+  },
   "indicatives.cat.conative-2.name": {
     "fp": "bdhq8k",
     "text": "Conativo"
@@ -158,6 +162,10 @@
   "indicatives.cat.conative.e1": {
     "fp": "1qtm439",
     "text": "estás intentando persuadirme de que me haga cristiano"
+  },
+  "indicatives.cat.conative.h": {
+    "fp": "13jbwhv",
+    "text": "La acción no se logra. Intercala «intenta» y observa si el contexto lo sostiene: suele ser un apedreamiento o una persuasión que fracasa."
   },
   "indicatives.cat.conative.name": {
     "fp": "bdhq8k",
@@ -175,6 +183,10 @@
     "fp": "1l7ngwi",
     "text": "la muerte reinó desde Adán"
   },
+  "indicatives.cat.constative.h": {
+    "fp": "1nz3pdf",
+    "text": "El aoristo por defecto. Si nada en el contexto subraya el comienzo ni el final, llámalo constativo y sigue adelante."
+  },
   "indicatives.cat.constative.name": {
     "fp": "17n32n1",
     "text": "Constativo"
@@ -190,6 +202,10 @@
   "indicatives.cat.culminative.e1": {
     "fp": "nzg5xb",
     "text": "el León de la tribu de Judá ha vencido"
+  },
+  "indicatives.cat.culminative.h": {
+    "fp": "erckn1",
+    "text": "Lo que al contexto le importa es el punto final: una tarea terminada, una carrera corrida. El español suele pedir aquí un perfecto."
   },
   "indicatives.cat.culminative.name": {
     "fp": "1vjvjt2",
@@ -207,6 +223,10 @@
     "fp": "drho28",
     "text": "¿cómo viviremos aún en él?"
   },
+  "indicatives.cat.deliberative-future.h": {
+    "fp": "1xq86kz",
+    "text": "Es una pregunta, y quien habla pregunta qué se debe hacer, no qué va a ocurrir. Normalmente en primera persona."
+  },
   "indicatives.cat.deliberative-future.name": {
     "fp": "1mzv21m",
     "text": "Futuro deliberativo"
@@ -222,6 +242,10 @@
   "indicatives.cat.dramatic.e1": {
     "fp": "tfw53t",
     "text": "mi hija acaba de morir"
+  },
+  "indicatives.cat.dramatic.h": {
+    "fp": "pu6isc",
+    "text": "Un estado recién alcanzado, puesto en aoristo para dar viveza. Es raro, y lo delata un contexto en presente alrededor de una forma en pasado."
   },
   "indicatives.cat.dramatic.name": {
     "fp": "1i9rhes",
@@ -239,6 +263,10 @@
     "fp": "19fgs3o",
     "text": "les escribo"
   },
+  "indicatives.cat.epistolary.h": {
+    "fp": "1i0u6t",
+    "text": "Solo en las cartas, y solo donde el presente del que escribe es pasado para el que lee. «Escribí» significa «estoy escribiendo, tal como tú lo leerás»."
+  },
   "indicatives.cat.epistolary.name": {
     "fp": "vdr6kb",
     "text": "Epistolar"
@@ -254,6 +282,10 @@
   "indicatives.cat.extending-from-past.e1": {
     "fp": "1aygrn2",
     "text": "han estado conmigo desde el principio"
+  },
+  "indicatives.cat.extending-from-past.h": {
+    "fp": "8me7m0",
+    "text": "Hay una expresión de duración —tantos años, desde el principio— y la acción todavía continúa. El español pide «llevo… haciendo»."
   },
   "indicatives.cat.extending-from-past.name": {
     "fp": "fc3cl9",
@@ -271,6 +303,10 @@
     "fp": "dbmorv",
     "text": "he llegado a creer que tú eres el Cristo"
   },
+  "indicatives.cat.extensive-perfect.h": {
+    "fp": "udqma0",
+    "text": "Lo que se afirma es el acto pasado, dando por supuesto el estado: «ha hecho». Si hace falta un perfecto español, es extensivo."
+  },
   "indicatives.cat.extensive-perfect.name": {
     "fp": "1i0swa3",
     "text": "Perfecto extensivo"
@@ -287,6 +323,10 @@
     "fp": "vpnlu7",
     "text": "dentro de dos días se celebra la Pascua"
   },
+  "indicatives.cat.futuristic.h": {
+    "fp": "rr6691",
+    "text": "Cerca hay una marca de tiempo futuro y el presente presenta el hecho como cosa hecha. Eso es lo que importa: la certeza, no el momento."
+  },
   "indicatives.cat.futuristic.name": {
     "fp": "ybjghp",
     "text": "Futurista"
@@ -302,6 +342,10 @@
   "indicatives.cat.gnomic.e1": {
     "fp": "xsg2c2",
     "text": "la sabiduría es justificada por sus hijos"
+  },
+  "indicatives.cat.gnomic.h": {
+    "fp": "ucpz6b",
+    "text": "No hay una ocasión concreta a la vista: la afirmación vale siempre. Vive en los proverbios, las parábolas y las ilustraciones tomadas de la naturaleza."
   },
   "indicatives.cat.gnomic.name": {
     "fp": "1s0f0i8",
@@ -323,6 +367,10 @@
     "fp": "bonx25",
     "text": "«Jesús les dice…»"
   },
+  "indicatives.cat.historical.h": {
+    "fp": "lhqjdt",
+    "text": "Un verbo en presente dentro de una narración claramente pasada, casi siempre un verbo de decir o de venir. Marcos lo usa constantemente; tradúcelo en pasado."
+  },
   "indicatives.cat.historical.name": {
     "fp": "vw6ft5",
     "text": "Histórico"
@@ -338,6 +386,10 @@
   "indicatives.cat.imperatival-future.e1": {
     "fp": "1qen71a",
     "text": "no matarás"
+  },
+  "indicatives.cat.imperatival-future.h": {
+    "fp": "l8o0ax",
+    "text": "Un futuro de segunda persona, normalmente con {οὐ}, donde el sentido es de ley y no de predicción. Los Diez Mandamientos son el modelo."
   },
   "indicatives.cat.imperatival-future.name": {
     "fp": "3apwf8",
@@ -359,6 +411,10 @@
     "fp": "mjv5k3",
     "text": "«empezó a hablar»"
   },
+  "indicatives.cat.ingressive-inceptive.h": {
+    "fp": "opbckd",
+    "text": "El verbo marca un comienzo que la narración continúa: «se puso a». Frecuente con verbos de decir una vez montada la escena."
+  },
   "indicatives.cat.ingressive-inceptive.name": {
     "fp": "petu2g",
     "text": "Ingresivo / incoativo"
@@ -378,6 +434,10 @@
   "indicatives.cat.ingressive.eg": {
     "fp": "1hjpkki",
     "text": "«se hizo rico»"
+  },
+  "indicatives.cat.ingressive.h": {
+    "fp": "1bfa75",
+    "text": "El verbo es estativo en presente —ser rico, callar, saber—, de modo que el aoristo marca la entrada en ese estado: «llegó a ser»."
   },
   "indicatives.cat.ingressive.name": {
     "fp": "1uoluta",
@@ -399,6 +459,10 @@
     "fp": "akyp4i",
     "text": "«queda consumado»"
   },
+  "indicatives.cat.intensive-perfect.h": {
+    "fp": "1p8kuwv",
+    "text": "Lo que se afirma es el resultado presente: «está escrito». Si un presente español lo traduce bien, es intensivo."
+  },
   "indicatives.cat.intensive-perfect.name": {
     "fp": "hapnt9",
     "text": "Perfecto intensivo"
@@ -415,6 +479,10 @@
     "fp": "cqpiau",
     "text": "eran bautizados en el río Jordán"
   },
+  "indicatives.cat.iterative-2.h": {
+    "fp": "1al2x2v",
+    "text": "Repetición en el pasado: «seguía», «solía». Busca en el contexto un objeto plural o una ocasión repetida."
+  },
   "indicatives.cat.iterative-2.name": {
     "fp": "zqc434",
     "text": "Iterativo"
@@ -430,6 +498,10 @@
   "indicatives.cat.iterative.e1": {
     "fp": "k6ty1v",
     "text": "cada día muero"
+  },
+  "indicatives.cat.iterative.h": {
+    "fp": "nwxkv6",
+    "text": "El contexto aporta una frecuencia: cada día, siempre, cuando sea. La acción no está ocurriendo ahora: se repite."
   },
   "indicatives.cat.iterative.name": {
     "fp": "zqc434",
@@ -451,6 +523,10 @@
     "fp": "ilpetb",
     "text": "«vendrá»"
   },
+  "indicatives.cat.predictive-future.h": {
+    "fp": "16no4i7",
+    "text": "El futuro por defecto: una afirmación simple sobre lo que ocurrirá. Supónlo salvo que el sentido sea de orden o de pregunta."
+  },
   "indicatives.cat.predictive-future.name": {
     "fp": "11tp407",
     "text": "Futuro predictivo"
@@ -471,6 +547,10 @@
     "fp": "1bhcs7j",
     "text": "«enseñaba»"
   },
+  "indicatives.cat.progressive-2.h": {
+    "fp": "3wsyuy",
+    "text": "El imperfecto por defecto: «estaba —ndo». Aporta el trasfondo narrativo, no los hechos que hacen avanzar el relato."
+  },
   "indicatives.cat.progressive-2.name": {
     "fp": "uh943g",
     "text": "Progresivo"
@@ -490,6 +570,10 @@
   "indicatives.cat.progressive.eg": {
     "fp": "1wzf2q8",
     "text": "«está escribiendo»"
+  },
+  "indicatives.cat.progressive.h": {
+    "fp": "l4hqkj",
+    "text": "Pregúntate si el español pide «está —ndo» en este momento. Es el presente por defecto, así que nombra otra categoría solo si el contexto te obliga."
   },
   "indicatives.cat.progressive.name": {
     "fp": "uh943g",
