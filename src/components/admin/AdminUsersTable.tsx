@@ -4,7 +4,8 @@ import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Badge } from '@/components/ui/Badge'
-import { Pencil, Trash2, X, Check, Mail, RotateCcw } from 'lucide-react'
+import { Pencil, Trash2, X, Check, Mail, RotateCcw, Copy, AlertTriangle } from 'lucide-react'
+import { Modal } from '@/components/ui/Modal'
 import { StudentImportPanel } from './StudentImportPanel'
 
 interface User {
@@ -82,6 +83,12 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
   // signs up sits invisible among ninety-odd users otherwise, and the sign-up is dead until
   // someone approves it — so the banner turns this on rather than saying "look below".
   const [pendingOnly, setPendingOnly] = useState(initialPendingOnly)
+  // The one and only copy of a temporary password, held until the admin dismisses it. The
+  // server stores no plaintext, so closing this dialog is the last chance to read it.
+  const [issued, setIssued] = useState<{
+    name: string; email: string; tempPassword: string; emailSent: boolean; emailConfigured: boolean
+  } | null>(null)
+  const [copied, setCopied] = useState('')
 
   // Reset to page 1 whenever the filters change so we don't land on an empty page.
   useEffect(() => { setPage(1) }, [search, firstLetter, lastLetter, showDeleted, pendingOnly])
@@ -141,9 +148,34 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
     load()
   }
 
+  /** The message the student receives — also what the admin copies if the send failed. */
+  function credentialsMessage(c: { name: string; email: string; tempPassword: string }) {
+    return `Hello ${c.name},
+
+Your Seminary Greek password has been reset. Please sign in with the temporary password below — you will be asked to choose your own password straight away.
+
+  Sign-in page:  https://seminarygreek.app/auth/sign-in
+  Email:         ${c.email}
+  Temp password: ${c.tempPassword}
+
+This temporary password is for one use only.
+
+Best wishes,`
+  }
+
+  async function copy(text: string, what: string) {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(what)
+      window.setTimeout(() => setCopied(''), 2000)
+    } catch {
+      // Clipboard access can be refused; the password is on screen to be read either way.
+    }
+  }
+
   async function sendCredentials(u: User) {
     const ok = confirm(
-      `Reset password for ${u.firstName} ${u.surname} and open an email with the new temporary password?\n\n` +
+      `Reset password for ${u.firstName} ${u.surname} and email them the new temporary password?\n\n` +
       `Their current password will be replaced and they will be forced to set a new one when they sign in.`
     )
     if (!ok) return
@@ -154,25 +186,15 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
         alert(data.error ?? 'Failed to reset password.')
         return
       }
-      // Build a mailto: link with the temporary credentials pre-filled.
-      const subject = 'Your Seminary Greek account — sign-in details'
-      const body =
-`Hello ${u.firstName},
-
-Your Seminary Greek account is ready. Please sign in with the temporary password below — you will be asked to choose your own password on first sign-in.
-
-  Sign-in page:  https://seminarygreek.app/auth/sign-in
-  Email:         ${u.email}
-  Temp password: ${data.tempPassword}
-
-This temporary password is for one use only; please change it as soon as you sign in.
-
-If you have any questions, just reply to this email.
-
-Best wishes,`
-      const url = `mailto:${encodeURIComponent(u.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-      // Open the user's default email client with the message pre-filled
-      window.location.href = url
+      // Always shown, sent or not: the password has already been changed and this response is
+      // the only place the plaintext will ever appear.
+      setIssued({
+        name: u.firstName,
+        email: u.email,
+        tempPassword: data.tempPassword,
+        emailSent: !!data.emailSent,
+        emailConfigured: !!data.emailConfigured,
+      })
       // Refresh so the "must change password" badge reflects the new state
       load()
     } catch {
@@ -241,6 +263,82 @@ Best wishes,`
 
   return (
     <Card>
+      {/* What happened to the reset, and the temporary password itself. Shown whether or not
+          the email went: the password has already been changed by this point, and nothing
+          stores the plaintext, so this dialog is the last place it exists. */}
+      <Modal
+        open={!!issued}
+        onClose={() => { setIssued(null); setCopied('') }}
+        title="Temporary password issued"
+        size="lg"
+      >
+        {issued && (
+          <div className="space-y-4">
+            {issued.emailSent ? (
+              <p className="flex items-start gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+                <Check size={16} className="mt-0.5 shrink-0" />
+                <span>Emailed to <strong>{issued.email}</strong>. Ask them to check spam if it
+                  has not arrived in a few minutes.</span>
+              </p>
+            ) : (
+              <p className="flex items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+                <span>
+                  <strong>Not emailed.</strong>{' '}
+                  {issued.emailConfigured
+                    ? 'The message could not be sent just now — send it yourself with the details below.'
+                    : 'Email is not configured on this deployment, so nothing was sent. Send the details below yourself.'}
+                </span>
+              </p>
+            )}
+
+            <p className="text-sm text-gray-600">
+              The password has already been changed, and this is the only time it is shown.
+              {' '}<strong>{issued.name}</strong> will be asked to choose a new one at sign-in.
+            </p>
+
+            <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+                Temporary password
+              </p>
+              <div className="mt-1 flex flex-wrap items-center gap-3">
+                <code className="rounded-lg border border-gray-300 bg-surface px-3 py-1.5 font-mono text-base text-gray-900">
+                  {issued.tempPassword}
+                </code>
+                <Button
+                  variant="secondary"
+                  onClick={() => copy(issued.tempPassword, 'password')}
+                  className="inline-flex items-center gap-1.5"
+                >
+                  <Copy size={14} /> {copied === 'password' ? 'Copied' : 'Copy password'}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => copy(credentialsMessage(issued), 'message')}
+                  className="inline-flex items-center gap-1.5"
+                >
+                  <Copy size={14} /> {copied === 'message' ? 'Copied' : 'Copy whole message'}
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              {/* The old behaviour, kept as a fallback rather than the only route: it opens
+                  whatever mail client this machine has, which may be none. */}
+              <a
+                href={`mailto:${encodeURIComponent(issued.email)}`
+                  + `?subject=${encodeURIComponent('Your Seminary Greek account — sign-in details')}`
+                  + `&body=${encodeURIComponent(credentialsMessage(issued))}`}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800"
+              >
+                <Mail size={14} /> Open in my mail app
+              </a>
+              <Button onClick={() => { setIssued(null); setCopied('') }}>Done</Button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
       <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
         <CardTitle>All Users ({users.length}{showDeleted ? ' incl. deleted' : ''})</CardTitle>
         <div className="flex items-center gap-3 flex-wrap">
