@@ -32,9 +32,9 @@ export const NOUNS_INTERMEDIATE_CONTENT = (
     {/* ── 1 · Form before function ───────────────────────── */}
     <SectionHeading id="nouns.h.int-form-function">The case system: form before function</SectionHeading>
     <P id="nouns.p.int-case-form-function">
-      Five case <em>forms</em>, and more case <em>functions</em> than five. The five-case system
-      is the set of endings that are actually distinct — that is what you parse, and the paradigms
-      live on the Beginning page, one toggle away. The older eight-case scheme splits the genitive into genitive and ablative and the dative
+      Greek has five case <em>forms</em>, but many more case <em>functions</em>. The five-case
+      system is the set of endings that are actually distinct — that is what you parse, and the
+      paradigms live on the Beginning page, one toggle away. The older eight-case scheme splits the genitive into genitive and ablative and the dative
       into dative, locative and instrumental; it is describing function, not form, and the same
       distinctions survive in Wallace as syntactic categories under the five. Parse the form,
       then argue for the function.
