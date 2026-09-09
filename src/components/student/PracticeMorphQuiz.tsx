@@ -10,6 +10,7 @@ import { drillFilter, type ValueMiss, type PracticeAnswer } from '@/lib/morph-pr
 import {
   fieldsFor, isParsePool, normaliseSubtype, type CustomMorphSpec,
 } from '@/lib/morph-practice-custom'
+import { acceptableParses, bestReading } from '@/lib/morph-ambiguity'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
 import { MorphPracticeReport } from '@/components/student/MorphPracticeReport'
 import {
@@ -111,6 +112,11 @@ export function PracticeMorphQuiz({
     subtype?: string; fields?: string[]
     vocabThruLesson?: number | null; vocabThruBand?: string | null
   } | null>(null)
+  // Which READING the answer was graded against. A form is often several parses at once —
+  // πνεῦμα is nominative or accusative, a plural nominative is also the vocative — so the marks,
+  // the green hint under a select and the end-of-session report all have to speak about the
+  // reading the student was actually credited for, not the one the corpus happened to store.
+  const [reading, setReading] = useState<Record<string, string | null> | null>(null)
   const [checked, setChecked] = useState(false)
   const [earned, setEarned] = useState(0)
   const [possible, setPossible] = useState(0)
@@ -139,9 +145,12 @@ export function PracticeMorphQuiz({
     setDraft({})
     setAnswers([])
     setChecked(false)
+    setReading(null)
     setEarned(0)
     setPossible(0)
     setMeta(null)
+    setDrilling(false)
+    setDrillEmpty(false)
     const req: Promise<Response> = spec
       ? fetch('/api/practice/morph', {
           method: 'POST',
@@ -291,12 +300,20 @@ export function PracticeMorphQuiz({
 
   function checkParse() {
     if (!q || checked) return
-    const right = activeFields.filter(([f]) => draft[f] === correctObj[f]).length
+    // Grade against whichever reading of the form fits the answer best — the same rule, from
+    // the same module, that the server's grader and the graded quiz's instant feedback use.
+    const fields = activeFields.map(([f]) => f)
+    const graded = bestReading(acceptableParses(q.prompt, correctObj), draft, fields).reading as
+      Record<string, string | null>
+    const right = fields.filter(f => draft[f] === graded[f]).length
     if (formative) {
-      setAnswers(a => [...a, { prompt: q.prompt, correct: { ...correctObj }, given: { ...draft } }])
+      // The transcript records the reading credited, so the report never says "you missed
+      // Accusative" about an answer it just marked right.
+      setAnswers(a => [...a, { prompt: q.prompt, correct: { ...graded }, given: { ...draft } }])
     }
+    setReading(graded)
     setEarned(e => e + right)
-    setPossible(p => p + activeFields.length)
+    setPossible(p => p + fields.length)
     setChecked(true)
   }
 
@@ -314,6 +331,7 @@ export function PracticeMorphQuiz({
     setIdx(n)
     setDraft({})
     setChecked(false)
+    setReading(null)
     // Grade on the last answer: pass records the step; a fail records nothing. Practice
     // records nothing either way — it is formative by definition.
     if (!formative && n >= questions.length && possible > 0
@@ -466,7 +484,8 @@ export function PracticeMorphQuiz({
 
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {activeFields.map(([field, { label, opts }]) => {
-                  const right = checked && draft[field] === correctObj[field]
+                  const expected = checked && reading ? reading[field] : correctObj[field]
+                  const right = checked && draft[field] === expected
                   const wrong = checked && !right
                   return (
                     <label key={field} className="block">
@@ -491,7 +510,7 @@ export function PracticeMorphQuiz({
                         {opts.map(o => <option key={o} value={o}>{o}</option>)}
                       </select>
                       {wrong && (
-                        <span className="mt-0.5 block text-xs font-medium text-green-700">{correctObj[field]}</span>
+                        <span className="mt-0.5 block text-xs font-medium text-green-700">{expected}</span>
                       )}
                     </label>
                   )

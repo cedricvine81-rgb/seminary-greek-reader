@@ -1,7 +1,7 @@
 import { prisma } from './db'
 import type { QuestionType } from '@/types/assignment'
 import { isAnswerCorrect, isMultipleChoiceCorrect, fuzzyMatch, normalise } from './answer-matching'
-import { alternativeParses } from '@/lib/morph-ambiguity'
+import { acceptableParses, bestReading } from '@/lib/morph-ambiguity'
 
 /**
  * Look up curated English synonyms for a Greek lemma. Returns [] if the lemma
@@ -98,20 +98,17 @@ export async function gradeResponse(
       }
       // ACCEPT ANY VALID READING OF THE FORM. A parsing question shows the word on its own,
       // and Greek forms frequently do not determine their own parse — παντί is masculine and
-      // neuter dative singular, πολλῶν is genitive plural in all three genders. The pool holds
-      // each reading separately, so one of them became "the" answer and a student who gave
-      // another was marked down for something entirely correct. Grade against whichever reading
-      // suits the student best; an unambiguous form has no alternatives and is unaffected.
+      // neuter dative singular, πολλῶν is genitive plural in all three genders, and a neuter is
+      // spelled alike in the nominative, accusative and vocative. One reading became "the"
+      // answer, and a student who gave another was marked down for something entirely correct.
+      // Grade against whichever reading suits the student best; an unambiguous form has one.
       //
       // Partial credit follows the same rule, scored from the single best-fitting reading rather
       // than by taking the best field from each — mixing readings would credit a parse no form
       // actually has.
-      const readings = [correct, ...alternativeParses(question.prompt)]
-      const agreeing = (reading: Record<string, string | undefined>) =>
-        fields.filter(k => student[k]?.toLowerCase() === reading[k]?.toLowerCase()).length
-      const best = Math.max(...readings.map(agreeing))
-      const score = (best / fields.length) * question.points
-      isCorrect = best === fields.length
+      const { matches } = bestReading(acceptableParses(question.prompt, correct), student, fields)
+      const score = (matches / fields.length) * question.points
+      isCorrect = matches === fields.length
       return { isCorrect, score, correctAnswer: question.correctAnswer }
     } catch {
       return { isCorrect: false, score: 0, correctAnswer: question.correctAnswer }

@@ -36,6 +36,39 @@ describe('morphology grading accepts every valid reading', () => {
     expect(r.score).toBe(3)
   })
 
+  it('marks a neuter parsed nominative correct when the key says accusative', async () => {
+    // Reported from a real practice run: πνεῦμα in 1 Cor 12:8. The table cannot help here —
+    // the corpus attests this form in one case only — so the grader applies the rule that a
+    // neuter is spelled alike in the nominative, accusative and vocative.
+    const question = q('πνεῦμα  (πνεῦμα — Spirit)',
+      { partOfSpeech: 'Noun', number: 'Singular', casus: 'Accusative', gender: 'Neuter' })
+    const r = await gradeResponse('q1',
+      answer({ partOfSpeech: 'Noun', number: 'Singular', casus: 'Nominative', gender: 'Neuter' }),
+      false, question as never)
+    expect(r.isCorrect).toBe(true)
+    expect(r.score).toBe(3)
+  })
+
+  it('marks a plural nominative parsed vocative correct', async () => {
+    const question = q('ἀδελφοὶ  (ἀδελφός — brother)',
+      { partOfSpeech: 'Noun', number: 'Plural', casus: 'Nominative', gender: 'Masculine' })
+    const r = await gradeResponse('q1',
+      answer({ partOfSpeech: 'Noun', number: 'Plural', casus: 'Vocative', gender: 'Masculine' }),
+      false, question as never)
+    expect(r.isCorrect).toBe(true)
+  })
+
+  it('still marks a SINGULAR vocative apart from the nominative', async () => {
+    // υἱὲ is not υἱός. Accepting one for the other would credit the very mistake the
+    // vocative chapter exists to correct.
+    const question = q('υἱὲ  (υἱός — son)',
+      { partOfSpeech: 'Noun', number: 'Singular', casus: 'Vocative', gender: 'Masculine' })
+    const r = await gradeResponse('q1',
+      answer({ partOfSpeech: 'Noun', number: 'Singular', casus: 'Nominative', gender: 'Masculine' }),
+      false, question as never)
+    expect(r.isCorrect).toBe(false)
+  })
+
   it('still marks the stored reading correct', async () => {
     const question = q('παντὶ  (πᾶς — all)',
       { partOfSpeech: 'Adjective', number: 'Singular', casus: 'Dative', gender: 'Masculine' })

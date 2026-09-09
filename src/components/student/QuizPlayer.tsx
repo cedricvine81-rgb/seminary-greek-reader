@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Select } from '@/components/ui/Select'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
 import { isAnswerCorrect, isMultipleChoiceCorrect } from '@/lib/answer-matching'
+import { acceptableParses, bestReading } from '@/lib/morph-ambiguity'
 import { hasGreek, hasHebrew, scriptProps } from '@/lib/script-detect'
 import {
   HEBREW_STEMS, HEBREW_CONJUGATIONS, HEBREW_PERSONS, HEBREW_GENDERS,
@@ -189,9 +190,13 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           const correctObj = JSON.parse(q.correctAnswer ?? '{}')
           const studentObj = JSON.parse(answer)
           const fields = Object.keys(correctObj).filter(k => correctObj[k])
-          correct = fields.length > 0 && fields.every(
-            k => studentObj[k]?.toLowerCase() === correctObj[k]?.toLowerCase()
-          )
+          // Any valid reading of the form counts, exactly as the server's grader counts it —
+          // πνεῦμα is nominative or accusative and no form of it can say which. Comparing
+          // against the answer key alone put a red cross on an answer the mark then counted
+          // as right.
+          const { matches } = bestReading(
+            acceptableParses(q.prompt, correctObj), studentObj, fields)
+          correct = fields.length > 0 && matches === fields.length
         } catch { correct = false }
       } else if (q.type === 'MULTIPLE_CHOICE') {
         // Whole-option match — never comma-split (a gloss may contain a comma)
