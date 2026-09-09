@@ -26,7 +26,10 @@ async function upsertUser({ email, role, firstName, surname, password, extra = {
   const hashed = await hash(password, 12)
   return prisma.user.upsert({
     where: { email },
-    update: { password: hashed, approved: true, deletedAt: null, ...extra },
+    // mustChangePassword is cleared deliberately: an admin password-reset sets it, and a
+    // standing test account left on the forced-change screen cannot be used to test anything
+    // else until someone works out why every page redirects.
+    update: { password: hashed, approved: true, deletedAt: null, mustChangePassword: false, ...extra },
     create: {
       email, role, firstName, surname, password: hashed, approved: true,
       institution: 'TEST', termsAcceptedAt: new Date(), termsVersion: 'test',

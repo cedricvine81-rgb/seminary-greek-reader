@@ -5,9 +5,10 @@ import { useEffect } from 'react'
 // admin Errors page reads. Mounted once in the root layout.
 //
 // Deliberately conservative: at most 5 reports per page load, each error signature sent
-// once, and the two classic non-errors are ignored — "Script error." (an opaque signal
-// from a cross-origin script, carrying no information) and ResizeObserver's benign loop
-// warning. `keepalive` lets a report survive the navigation that often follows a crash.
+// once, and the known non-errors are ignored — "Script error." (an opaque signal from a
+// cross-origin script, carrying no information), ResizeObserver's benign loop warning, and
+// Next's own control-flow throws (see below). `keepalive` lets a report survive the
+// navigation that often follows a crash.
 export function ClientErrorReporter() {
   useEffect(() => {
     let sent = 0
@@ -17,6 +18,10 @@ export function ClientErrorReporter() {
       if (sent >= 5) return
       if (!message || message === 'Script error.') return
       if (message.includes('ResizeObserver loop')) return
+      // Next's control flow, not failures: redirect() and notFound() work by THROWING these,
+      // so every gated page a student is bounced from would file an error report. They arrive
+      // here because the throw happens while a server component is streaming.
+      if (/NEXT_REDIRECT|NEXT_NOT_FOUND|NEXT_HTTP_ERROR_FALLBACK/.test(message)) return
       const key = `${scope}|${message}`
       if (seen.has(key)) return
       seen.add(key)

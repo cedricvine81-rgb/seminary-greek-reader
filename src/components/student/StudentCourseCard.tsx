@@ -13,6 +13,7 @@ import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 import { clsx } from 'clsx'
 import { courseStatus, courseTiming } from '@/lib/course-status'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { useMounted } from '@/lib/useMounted'
 import { formatDateShort } from '@/lib/i18n/format'
 
 export interface StudentCourse {
@@ -60,13 +61,20 @@ const VocabBuilder = dynamic(
   { ssr: false },
 )
 
-function DueLabel({ dueDate }: { dueDate: string }) {
+export function DueLabel({ dueDate }: { dueDate: string }) {
   const t = useT()
   const locale = useLocale()
-  const days = differenceInCalendarDays(new Date(dueDate), new Date())
-  if (days === 0) return <span className="text-xs text-red-500 font-semibold">{t('course.dueToday')}</span>
-  if (days === 1) return <span className="text-xs text-amber-600 font-medium">{t('course.dueTomorrow')}</span>
-  if (days > 1 && days <= 3) return <span className="text-xs text-amber-500 font-medium">{t('course.dueInDays', { count: days, n: days })}</span>
+  // "Due today" depends on the reader's clock and zone, which the server does not have: it
+  // could render "in 3 days" into the HTML while the browser makes it 2, and the mismatch
+  // costs the whole boundary. Until mounted, fall back to the plain date below — which is
+  // pinned to the course timezone and therefore identical everywhere.
+  const mounted = useMounted()
+  const days = mounted ? differenceInCalendarDays(new Date(dueDate), new Date()) : null
+  if (days !== null) {
+    if (days === 0) return <span className="text-xs text-red-500 font-semibold">{t('course.dueToday')}</span>
+    if (days === 1) return <span className="text-xs text-amber-600 font-medium">{t('course.dueTomorrow')}</span>
+    if (days > 1 && days <= 3) return <span className="text-xs text-amber-500 font-medium">{t('course.dueInDays', { count: days, n: days })}</span>
+  }
   return <span className="text-xs text-gray-400">{t('student.dueOn', { date: formatDateShort(dueDate, locale) })}</span>
 }
 
