@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
+import { requireStudentAccess } from '@/lib/subscription'
 import { getPayload } from '@/lib/auth'
 import { morphQuizFor, MORPH_QUIZ_QUESTIONS } from '@/lib/self-study-morph'
 import {
@@ -22,6 +23,9 @@ export async function GET(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Practice is a paywalled student surface like every other: the pages redirect a lapsed
+    // student to /subscribe, and without this the endpoint behind them would still answer.
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const track = req.nextUrl.searchParams.get('track') ?? ''
     const lesson = Number(req.nextUrl.searchParams.get('lesson'))

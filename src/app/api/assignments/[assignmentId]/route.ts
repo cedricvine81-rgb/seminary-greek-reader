@@ -36,12 +36,15 @@ export async function GET(
     })
     if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-    // Students can only see published assignments they are enrolled in
+    // Students can only see published assignments they are enrolled in. Note the OR: the old
+    // rule (`!enrollment && !isPublished`) refused only when BOTH failed, so every published
+    // assignment in the database was readable by any signed-in student.
     if (payload.role === 'STUDENT') {
       const enrollment = await prisma.enrollment.findFirst({
         where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
+        select: { id: true },
       })
-      if (!enrollment && !assignment.isPublished) {
+      if (!enrollment || !assignment.isPublished) {
         return NextResponse.json({ error: 'Not found' }, { status: 404 })
       }
     }

@@ -27,14 +27,21 @@ export interface ChapterPractice {
   def: MorphQuizDef
 }
 
-/** The lesson whose READ steps include this chapter, if any. */
-function lessonOfChapter(trackId: string, chapterId: string): number | null {
+/**
+ * The lesson this chapter NAMES, if any.
+ *
+ * The lesson's last grammar step is the one it is named for, and that is the only chapter the
+ * lesson's drill can honestly be offered on. One lesson reads two chapters: `basic-verbs` is a
+ * remedial verb chapter read inside the NOUNS lesson, so matching any grammar step would put
+ * "Drill what this chapter teaches (Parsing quiz — nouns & adjectives)" at the foot of a
+ * chapter about verbs. It says nothing there instead.
+ */
+function lessonNamedByChapter(trackId: string, chapterId: string): number | null {
   const lessons = selfStudyTrack(trackId)?.lessons ?? []
   for (let i = 0; i < lessons.length; i++) {
-    for (const s of lessons[i].steps) {
-      if (s.kind !== 'grammar') continue
-      if (s.href.match(/chapter=([^&]+)/)?.[1] === chapterId) return i + 1
-    }
+    const grammar = lessons[i].steps.filter(s => s.kind === 'grammar')
+    const last = grammar[grammar.length - 1]
+    if (last && last.href.match(/chapter=([^&]+)/)?.[1] === chapterId) return i + 1
   }
   return null
 }
@@ -43,7 +50,7 @@ function lessonOfChapter(trackId: string, chapterId: string): number | null {
  *  (pronunciation, the parsing overview, prepositions, syntax…). */
 export function practiceForChapter(lang: MorphLang, chapterId: string): ChapterPractice | null {
   const trackId = TRACK_FOR[lang]
-  const lesson = lessonOfChapter(trackId, chapterId)
+  const lesson = lessonNamedByChapter(trackId, chapterId)
   if (lesson == null) return null
   const def = morphQuizFor(trackId, lesson)
   return def ? { trackId, lesson, def } : null

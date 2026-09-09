@@ -14,15 +14,17 @@ import { practiceForChapter, practiceHref } from '@/lib/morph-practice-links'
 import { selfStudyTrack } from '@/lib/self-study'
 import { morphQuizFor } from '@/lib/self-study-morph'
 
-/** Every chapter the track reads, paired with the lesson number that reads it. */
-function chapterLessons(trackId: string): [string, number][] {
-  const out: [string, number][] = []
+/** Every chapter the track reads: [chapter, lesson, is it the chapter the lesson is named
+ *  for (its LAST grammar step)]. */
+function chapterLessons(trackId: string): [string, number, boolean][] {
+  const out: [string, number, boolean][] = []
   const lessons = selfStudyTrack(trackId)?.lessons ?? []
   lessons.forEach((l, i) => {
-    for (const s of l.steps) {
-      const c = s.kind === 'grammar' ? s.href.match(/chapter=([^&]+)/)?.[1] : null
-      if (c) out.push([c, i + 1])
-    }
+    const grammar = l.steps.filter(s => s.kind === 'grammar')
+    grammar.forEach((s, j) => {
+      const c = s.href.match(/chapter=([^&]+)/)?.[1]
+      if (c) out.push([c, i + 1, j === grammar.length - 1])
+    })
   })
   return out
 }
@@ -32,8 +34,9 @@ describe('practiceForChapter', () => {
     '%s: every chapter resolves to its own lesson’s drill, and only where one exists',
     (lang, trackId) => {
       let withDrill = 0
-      for (const [chapter, lesson] of chapterLessons(trackId)) {
-        const expected = morphQuizFor(trackId, lesson)
+      for (const [chapter, lesson, named] of chapterLessons(trackId)) {
+        // Only the chapter a lesson is NAMED for may advertise that lesson's drill.
+        const expected = named ? morphQuizFor(trackId, lesson) : null
         const got = practiceForChapter(lang, chapter)
         expect(`${chapter} -> ${got ? got.lesson : 'none'}`)
           .toBe(`${chapter} -> ${expected ? lesson : 'none'}`)
@@ -46,11 +49,12 @@ describe('practiceForChapter', () => {
       expect(withDrill).toBeGreaterThanOrEqual(8)
     })
 
-  it('sends basic-verbs to the nouns lesson it is read in, not to a lesson of its own', () => {
-    const basic = practiceForChapter('greek', 'basic-verbs')
-    const nouns = practiceForChapter('greek', 'nouns')
-    expect(basic).not.toBeNull()
-    expect(basic!.lesson).toBe(nouns!.lesson)
+  it('offers nothing on basic-verbs, which is read inside the NOUNS lesson', () => {
+    // The lesson's drill is nouns & adjectives, so offering it at the foot of a verb chapter
+    // would advertise "drill what this chapter teaches" and then drill something else. The
+    // chapter the lesson is NAMED for still gets it.
+    expect(practiceForChapter('greek', 'basic-verbs')).toBeNull()
+    expect(practiceForChapter('greek', 'nouns')).not.toBeNull()
   })
 
   it('has nothing to offer for a chapter with no form pool', () => {

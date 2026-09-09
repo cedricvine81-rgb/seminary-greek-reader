@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
 import { logError } from '@/lib/logger'
+import { requireStudentAccess } from '@/lib/subscription'
 import {
   countMorphForms, generateMorphQuestionsFromConfig, type MorphGenConfig,
   countHebrewMorphForms, generateHebrewMorphologyQuestions,
@@ -62,6 +63,9 @@ export async function POST(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Practice is a paywalled student surface like every other: the pages redirect a lapsed
+    // student to /subscribe, and without this the endpoint behind them would still answer.
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     // Generous: the builder counts on every toggle (debounced), and a student rebuilding a
     // drill a dozen times in a minute is using it exactly as intended.

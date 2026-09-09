@@ -56,6 +56,22 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   ])
   if (!assignment) notFound()
 
+  // A student may open an assignment only if it is PUBLISHED to a course they are APPROVED in
+  // — the same predicate the assignments list uses to decide what to show them.
+  //
+  // Without this the page checked the ROLE and nothing else: anyone signed in as a student who
+  // had an assignment id could open any course's assignment, and the quiz questions it renders
+  // carry their correctAnswer, so the answer key travelled with it. Ids are cuids, so this was
+  // never browsable — but a shared link or a screenshot was enough. Instructors previewing are
+  // unaffected: they carry their INSTRUCTOR role here.
+  if (payload.role === 'STUDENT') {
+    const enrolled = await prisma.enrollment.findFirst({
+      where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
+      select: { id: true },
+    })
+    if (!enrolled || !assignment.isPublished) notFound()
+  }
+
   // Group presentations have their own page (per-member sections + attestation) — this generic
   // quiz/exercise page can't render them. Reachable here via a course-link that doesn't special-
   // case the type, so send them to the right place instead of an empty quiz.

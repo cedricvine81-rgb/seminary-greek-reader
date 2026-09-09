@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { ArrowLeft, Check, RotateCcw, X } from 'lucide-react'
@@ -22,6 +22,9 @@ import {
 // every attempt — and graded here, field by field. Scoring is per parsing field, not per
 // form (four of five fields right is 80%, not zero); reaching MORPH_PASS_PCT of the
 // fields records the lesson's morph-step key in the shared progress store.
+
+/** Thrown to abandon a load whose result is no longer the one being waited for. */
+class StaleLoad extends Error {}
 
 interface MorphQ {
   position: number
@@ -115,9 +118,21 @@ export function PracticeMorphQuiz({
   // every mode can end in one: the report's output IS a filter the generator accepts.
   const [drill, setDrill] = useState<CustomMorphSpec | null>(null)
   const [drilling, setDrilling] = useState(false)
-  const spec = drill ?? custom ?? null
+  // No forms matched even the widest narrowing — say so rather than start a quiz of nothing.
+  const [drillEmpty, setDrillEmpty] = useState(false)
+
+  // Keyed by CONTENT, not identity: `custom` is a prop, and a caller passing an object literal
+  // would otherwise hand `load` a new dependency on every render and refetch for ever.
+  const specKey = JSON.stringify(drill ?? custom ?? null)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const spec = useMemo(() => drill ?? custom ?? null, [specKey])
+
+  // Only the newest load may write: "Try again" and a drill both reload, and a slow earlier
+  // response must not land on top of the quiz the student is now answering.
+  const loadSeq = useRef(0)
 
   const load = useCallback(() => {
+    const mine = ++loadSeq.current
     setQuestions(null)
     setFailed(false)
     setIdx(0)
@@ -138,6 +153,7 @@ export function PracticeMorphQuiz({
           : `/api/self-study/morph?track=${trackId}&lesson=${lessonNo}`)
     req
       .then(r => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then(data => { if (mine !== loadSeq.current) throw new StaleLoad(); return data })
       .then((data: { questions?: MorphQ[]; lang?: 'greek' | 'hebrew'; title?: string;
         vocabCapped?: boolean; approximate?: boolean; subtype?: string; fields?: string[]
         vocabThruLesson?: number | null; vocabThruBand?: string | null }) => {
@@ -156,7 +172,7 @@ export function PracticeMorphQuiz({
           }
         } else setFailed(true)
       })
-      .catch(() => setFailed(true))
+      .catch(e => { if (!(e instanceof StaleLoad)) setFailed(true) })
   }, [trackId, lessonNo, assignmentId, spec])
 
   useEffect(() => { load() }, [load])
@@ -169,7 +185,7 @@ export function PracticeMorphQuiz({
   const backLabel = backTo
     ? t(backTo.labelKey)
     : fromAssignment ? t('assign.backToAssignment') : t('ss.q.backToTrack')
-  const alreadyDone = !fromAssignment && !spec && !!def && completed.has(stepKey)
+  const alreadyDone = !practice && !fromAssignment && !spec && !!def && completed.has(stepKey)
   const hasVocabCap = spec
     ? !!spec.vocabThruLesson
     : fromAssignment
@@ -233,6 +249,8 @@ export function PracticeMorphQuiz({
     const base = drillBase()
     if (!base || drilling) return
     setDrilling(true)
+    setDrillEmpty(false)
+    let widest: { spec: CustomMorphSpec; count: number } | null = null
     for (const depth of [3, 2, 1]) {
       const candidate = { ...base, parseFilter: drillFilter(misses, depth) }
       try {
@@ -241,18 +259,21 @@ export function PracticeMorphQuiz({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...candidate, count: 0 }),
         })
+        if (!r.ok) throw new Error(String(r.status))
         const { count } = (await r.json()) as { count?: number }
-        if ((count ?? 0) >= 5 || depth === 1) {
-          setDrilling(false)
-          setDrill(candidate)
-          return
-        }
+        if ((count ?? 0) > 0) widest = { spec: candidate, count: count! }
+        // Wide enough to be worth drilling, or as wide as this can get.
+        if ((count ?? 0) >= 5) break
       } catch {
-        setDrilling(false)
-        return
+        break
       }
     }
     setDrilling(false)
+    // A count of zero at every depth means the fields this quiz asks for and the missed value
+    // do not co-occur in the corpus. Starting anyway would deal a quiz of nothing and show
+    // "couldn't load", so the report simply says there is not enough to drill.
+    if (widest) setDrill(widest.spec)
+    else setDrillEmpty(true)
   }
 
   const finished = questions !== null && idx >= questions.length
@@ -351,6 +372,7 @@ export function PracticeMorphQuiz({
             lang={lang}
             onDrill={drillBase() ? startDrill : undefined}
             drilling={drilling}
+            drillEmpty={drillEmpty}
           />
           <div className="flex items-center justify-center gap-3">
             <button onClick={load} className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">

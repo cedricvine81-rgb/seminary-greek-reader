@@ -13,6 +13,7 @@ import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz
 import { isHebrewLevel } from '@/lib/constants'
 import { normaliseSubtype } from '@/lib/morph-practice-custom'
 import { logError } from '@/lib/logger'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // FORMATIVE practice for a morphology quiz a student has been set: the same recipe the
 // instructor configured, regenerated into DIFFERENT forms so rehearsing is not memorising the
@@ -34,6 +35,9 @@ export async function GET(req: NextRequest, { params }: { params: { assignmentId
     const token = getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Practice is a paywalled student surface like every other: the pages redirect a lapsed
+    // student to /subscribe, and without this the endpoint behind them would still answer.
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const assignment = await prisma.assignment.findUnique({
       where: { id: params.assignmentId },

@@ -35,6 +35,26 @@ export function probeProgress(): Promise<ProgressProbe> {
   return cached
 }
 
+/**
+ * Record a completion change against the cached answer.
+ *
+ * The cache is what makes the probe one request per page — but a cached chapter LIST goes
+ * stale the moment the student ticks something, and useCourseProgress merges the server list
+ * with the local one (union). So a stale cache resurrects an un-ticked chapter on the next
+ * mount, and the merge then pushes it back to the server on the following page load: the
+ * un-tick silently undoes itself. Keeping the cached list in step is enough, and it costs no
+ * request — the write has already gone up.
+ */
+export function noteChapterChange(chapterId: string, done: boolean): void {
+  if (!cached) return
+  cached = cached.then(p => {
+    if (!p.signedIn) return p
+    const chapters = p.chapters.filter(c => c !== chapterId)
+    if (done) chapters.push(chapterId)
+    return { ...p, chapters }
+  })
+}
+
 /** null while unknown — render neither state until the answer arrives, or a signed-in student
  *  sees the call to action flicker in. */
 export function useSignedIn(): boolean | null {

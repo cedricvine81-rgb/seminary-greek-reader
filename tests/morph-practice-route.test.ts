@@ -17,6 +17,7 @@
 const assignmentFindUnique = jest.fn()
 const enrollmentFindFirst = jest.fn()
 const verifyToken = jest.fn()
+const requireStudentAccess = jest.fn()
 const fromConfig = jest.fn()
 const hebrewGen = jest.fn()
 const nounGen = jest.fn()
@@ -43,6 +44,9 @@ jest.mock('@/lib/quiz-generation', () => ({
   generateSubjunctiveQuestions: jest.fn(() => []),
 }))
 jest.mock('@/lib/logger', () => ({ logError: jest.fn() }))
+jest.mock('@/lib/subscription', () => ({
+  requireStudentAccess: (...a: unknown[]) => requireStudentAccess(...a),
+}))
 
 import { GET } from '@/app/api/assignments/[assignmentId]/practice/route'
 
@@ -61,6 +65,7 @@ const call = () => GET({} as never, { params: { assignmentId: 'a1' } })
 function setup(assignment: unknown = GREEK) {
   jest.clearAllMocks()
   verifyToken.mockReturnValue({ sub: 'student1', role: 'STUDENT' })
+  requireStudentAccess.mockResolvedValue(null)
   enrollmentFindFirst.mockResolvedValue({ id: 'e1' })
   assignmentFindUnique.mockResolvedValue(assignment)
   fromConfig.mockResolvedValue([{ position: 1, prompt: 'λύει' }])
@@ -147,5 +152,16 @@ describe('GET /api/assignments/[id]/practice', () => {
     setup()
     verifyToken.mockReturnValue(null)
     expect((await call()).status).toBe(401)
+  })
+
+  it('honours the subscription gate', async () => {
+    // The pages redirect a lapsed student to /subscribe; without this the endpoint behind
+    // them would still hand out questions to anyone with a session.
+    setup()
+    const { NextResponse } = await import('next/server')
+    requireStudentAccess.mockResolvedValue(
+      NextResponse.json({ error: 'subscription_required' }, { status: 402 }))
+    expect((await call()).status).toBe(402)
+    expect(assignmentFindUnique).not.toHaveBeenCalled()
   })
 })

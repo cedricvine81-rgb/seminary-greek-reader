@@ -15,7 +15,7 @@
 ───────────────────────────────────────────── */
 
 import { useState, useEffect, useCallback } from 'react'
-import { probeProgress } from './session-probe'
+import { probeProgress, noteChapterChange } from './session-probe'
 
 const LS_KEY = 'morph-progress'
 
@@ -88,6 +88,9 @@ export function useCourseProgress() {
       return next
     })
     postChapter(chapterId, done)
+    // Keep the shared probe's cached list in step, or the next mount of this hook merges a
+    // stale server list and puts an un-ticked chapter back.
+    noteChapterChange(chapterId, done)
     window.dispatchEvent(new CustomEvent(SYNC_EVENT, { detail: { chapterId, done } }))
   }, [])
 

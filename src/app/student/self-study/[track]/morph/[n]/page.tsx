@@ -4,6 +4,7 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { PracticeMorphQuiz } from '@/components/student/PracticeMorphQuiz'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, studentPageEntry } from '@/lib/preview'
+import { safeInternalPath } from '@/lib/safe-path'
 import { selfStudyTrack } from '@/lib/self-study'
 import { morphQuizFor } from '@/lib/self-study-morph'
 import { getServerT } from '@/lib/i18n/server'
@@ -27,12 +28,11 @@ export default function SelfStudyMorphQuizPage(
   const payload = token ? verifyToken(token) : null
 
   // ?back= lets a drill opened from a grammar chapter return there instead of to a self-study
-  // track the student may not be following. Same-site paths only: it is rendered as a link, so
-  // a protocol-relative "//evil.example" would be an off-site jump wearing our chrome.
-  const back = searchParams?.back
-  const backTo = back && back.startsWith('/') && !back.startsWith('//')
-    ? { href: back, labelKey: 'ss.pr.backToChapter' }
-    : undefined
+  // track the student may not be following. Same-site paths only, and checked by resolving
+  // rather than by pattern: it is rendered as a link, and "/\evil.example" would otherwise be
+  // an off-site jump wearing our chrome (see safeInternalPath).
+  const back = safeInternalPath(searchParams?.back)
+  const backTo = back ? { href: back, labelKey: 'ss.pr.backToChapter' } : undefined
 
   // An instructor arriving from a Grammar chapter's "Practise these forms" is signed in but
   // not in preview mode; send them through it and back, not to a sign-in screen.

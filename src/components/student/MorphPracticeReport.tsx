@@ -1,4 +1,5 @@
 'use client'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { BookOpen, Check, Dumbbell, X } from 'lucide-react'
@@ -23,16 +24,30 @@ function surfaceOf(prompt: string): string {
   return prompt.match(/^(\S+)\s\s\(/)?.[1] ?? prompt
 }
 
-export function MorphPracticeReport({ answers, lang, level = 'beginning', onDrill, drilling }: {
+export function MorphPracticeReport({ answers, lang, level, onDrill, drilling, drillEmpty }: {
   answers: PracticeAnswer[]
   lang: MorphLang
+  /** Which level's grammar to link to. Defaults to whichever the student was last reading. */
   level?: 'beginning' | 'intermediate'
   /** Start a new session narrowed to these misses. Absent when the caller cannot rebuild the
    *  quiz (a legacy assignment with no stored recipe, say). */
   onDrill?: (misses: ValueMiss[]) => void
   drilling?: boolean
+  /** The narrowing matched no forms at all — say so instead of leaving the button dead. */
+  drillEmpty?: boolean
 }) {
   const t = useT()
+  // The Grammar page remembers the level being read for the browser session; following a
+  // "read the chapter" link at Beginning when the student is working through Intermediate
+  // would drop them a level. Read after mount — sessionStorage does not exist on the server.
+  const [readingLevel, setReadingLevel] = useState<'beginning' | 'intermediate'>('beginning')
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem('morph-level')
+      if (saved === 'beginning' || saved === 'intermediate') setReadingLevel(saved)
+    } catch { /* private mode — Beginning is the app's own default */ }
+  }, [])
+  const linkLevel = level ?? readingLevel
   const report = summarisePractice(answers)
   const hebrew = lang === 'hebrew'
   const pct = report.asked > 0 ? Math.round((report.right / report.asked) * 100) : 0
@@ -54,7 +69,7 @@ export function MorphPracticeReport({ answers, lang, level = 'beginning', onDril
             <h3 className="text-sm font-semibold text-amber-900">{t('ss.pr.workOn')}</h3>
             {/* The list IS a filter the generator accepts, so "drill these" is a regeneration
                 of the same quiz narrowed to what was missed — not a different exercise. */}
-            {onDrill && (
+            {onDrill && !drillEmpty && (
               <button
                 onClick={() => onDrill(report.misses)}
                 disabled={drilling}
@@ -63,13 +78,14 @@ export function MorphPracticeReport({ answers, lang, level = 'beginning', onDril
                 <Dumbbell size={13} /> {drilling ? t('ss.pr.drilling') : t('ss.pr.drillThese')}
               </button>
             )}
+            {drillEmpty && <span className="text-xs text-amber-800">{t('ss.pr.drillNone')}</span>}
           </div>
           <ul className="mt-2 space-y-1.5">
             {report.misses.map(m => {
               // Context = a form from this session that actually carried the missed value, so
               // "Plural" on a subjunctive resolves to the verb chapter, not the noun one.
               const ctx = answers.find(a => a.correct[m.field] === m.value)?.correct
-              const href = grammarHref(lang, m.field, m.value, level, ctx)
+              const href = grammarHref(lang, m.field, m.value, linkLevel, ctx)
               return (
                 <li key={`${m.field}-${m.value}`} className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
                   <span className="font-medium text-amber-900">{m.value}</span>
@@ -105,7 +121,7 @@ export function MorphPracticeReport({ answers, lang, level = 'beginning', onDril
               const wrong = fields.filter(f => a.given[f] !== a.correct[f])
               // Link on the first thing they got wrong: one clear next step per row beats four.
               const href = wrong.length
-                ? grammarHref(lang, wrong[0], a.correct[wrong[0]] as string, level, a.correct)
+                ? grammarHref(lang, wrong[0], a.correct[wrong[0]] as string, linkLevel, a.correct)
                 : null
               return (
                 <tr key={i} className="border-b border-gray-100 last:border-0 align-top">

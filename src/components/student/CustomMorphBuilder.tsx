@@ -77,6 +77,9 @@ export function CustomMorphBuilder({ defaultLang = 'greek' }: { defaultLang?: Mo
   const [spec, setSpec] = useState<CustomMorphSpec>(() => defaultSpec(defaultLang, 'VERB_PARSING'))
   const [count, setCount] = useState<number | null>(null)
   const [counting, setCounting] = useState(false)
+  // A failed count is NOT "still counting": null means both, so without this a rate-limited or
+  // offline student watches "Counting the forms…" for ever with Start disabled and no reason.
+  const [countFailed, setCountFailed] = useState(false)
   const [running, setRunning] = useState<CustomMorphSpec | null>(null)
 
   const axes = useMemo(() => axesFor(spec.lang, spec.subtype), [spec.lang, spec.subtype])
@@ -90,6 +93,7 @@ export function CustomMorphBuilder({ defaultLang = 'greek' }: { defaultLang?: Mo
     const mine = ++seq.current
     const ctl = new AbortController()
     setCounting(true)
+    setCountFailed(false)
     const timer = setTimeout(() => {
       fetch('/api/practice/morph', {
         method: 'POST',
@@ -101,7 +105,11 @@ export function CustomMorphBuilder({ defaultLang = 'greek' }: { defaultLang?: Mo
         .then((d: { count: number }) => {
           if (mine === seq.current) { setCount(d.count); setCounting(false) }
         })
-        .catch(() => { if (mine === seq.current) { setCount(null); setCounting(false) } })
+        .catch((e: Error) => {
+          // An abort is this effect being superseded, not a failure — the next run reports.
+          if (e.name === 'AbortError' || mine !== seq.current) return
+          setCount(null); setCounting(false); setCountFailed(true)
+        })
     }, DEBOUNCE_MS)
     return () => { clearTimeout(timer); ctl.abort() }
   }, [spec, running])
@@ -222,6 +230,9 @@ export function CustomMorphBuilder({ defaultLang = 'greek' }: { defaultLang?: Mo
               </button>
             ))}
           </div>
+          {spec.fields.length === 0 && (
+            <p className="text-xs text-gray-500">{t('pr.b.allFields')}</p>
+          )}
         </div>
 
         {/* Which forms to draw from */}
@@ -264,15 +275,17 @@ export function CustomMorphBuilder({ defaultLang = 'greek' }: { defaultLang?: Mo
 
       {/* The live count, and the only way to start. */}
       <div className={clsx('flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-4 py-3',
-        empty ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50')}>
-        <p className={clsx('text-sm', empty ? 'text-amber-800' : 'text-gray-600')}>
-          {counting || count === null
-            ? t('pr.b.counting')
-            : empty
-              ? t('pr.b.noForms')
-              : thin
-                ? t('pr.b.formsThin', { count })
-                : t('pr.b.forms', { count })}
+        empty || countFailed ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50')}>
+        <p className={clsx('text-sm', empty || countFailed ? 'text-amber-800' : 'text-gray-600')}>
+          {countFailed
+            ? t('pr.b.countFailed')
+            : counting || count === null
+              ? t('pr.b.counting')
+              : empty
+                ? t('pr.b.noForms')
+                : thin
+                  ? t('pr.b.formsThin', { count })
+                  : t('pr.b.forms', { count })}
         </p>
         <button
           onClick={() => setRunning(spec)}
