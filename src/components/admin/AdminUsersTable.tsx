@@ -86,6 +86,9 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
   // signs up sits invisible among ninety-odd users otherwise, and the sign-up is dead until
   // someone approves it — so the banner turns this on rather than saying "look below".
   const [pendingOnly, setPendingOnly] = useState(initialPendingOnly)
+  // Which kind of account to show. Every role in one alphabetical list meant looking for an
+  // instructor among a hundred and thirty-five students.
+  const [roleFilter, setRoleFilter] = useState<'All' | 'STUDENT' | 'INSTRUCTOR' | 'ADMIN'>('All')
   // The one and only copy of a temporary password, held until the admin dismisses it. The
   // server stores no plaintext, so closing this dialog is the last chance to read it.
   const [issued, setIssued] = useState<{
@@ -101,7 +104,7 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
   } | null>(null)
 
   // Reset to page 1 whenever the filters change so we don't land on an empty page.
-  useEffect(() => { setPage(1) }, [search, firstLetter, lastLetter, showDeleted, pendingOnly])
+  useEffect(() => { setPage(1) }, [search, firstLetter, lastLetter, showDeleted, pendingOnly, roleFilter])
 
   async function load() {
     try {
@@ -248,7 +251,17 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
     const q = search.toLowerCase()
     return !q || `${u.firstName} ${u.surname} ${u.email} ${u.role} ${u.institution ?? ''}`.toLowerCase().includes(q)
   }
-  const searched = users.filter(matchSearch).filter(u => !pendingOnly || isPendingInstructor(u))
+  // Counted before the role filter is applied, so each chip can say how many it would show.
+  const searchedAnyRole = users.filter(matchSearch).filter(u => !pendingOnly || isPendingInstructor(u))
+  const roleCounts = {
+    All: searchedAnyRole.length,
+    STUDENT: searchedAnyRole.filter(u => u.role === 'STUDENT').length,
+    INSTRUCTOR: searchedAnyRole.filter(u => u.role === 'INSTRUCTOR').length,
+    ADMIN: searchedAnyRole.filter(u => u.role === 'ADMIN').length,
+  }
+  // Applied BEFORE the letter strips, so a student-only view never offers an initial that
+  // only an instructor has.
+  const searched = searchedAnyRole.filter(u => roleFilter === 'All' || u.role === roleFilter)
 
   // Which first/last initials actually have users (so empty letters can be dimmed).
   // Cross-aware: the First-name strip reflects the chosen Last-name letter and vice versa.
@@ -463,8 +476,38 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
       )}
       {error && <p className="text-sm text-red-600 mb-3 bg-red-50 rounded px-3 py-1">{error}</p>}
 
-      {/* Alphabetical picker — jump to users by first- or last-name initial. */}
+      {/* Kind of account first, then the alphabet: the question is nearly always "which
+          instructor?" or "which student?", and answering it first shortens every list below. */}
       <div className="mb-4 space-y-2">
+        <div className="flex flex-wrap items-center gap-1.5">
+          {([
+            ['All', 'Everyone'],
+            ['INSTRUCTOR', 'Instructors'],
+            ['STUDENT', 'Students'],
+            ['ADMIN', 'Admins'],
+          ] as const).map(([value, label]) => {
+            const count = roleCounts[value]
+            const active = roleFilter === value
+            return (
+              <button
+                key={value}
+                onClick={() => setRoleFilter(value)}
+                aria-pressed={active}
+                disabled={count === 0 && !active}
+                className={clsx(
+                  'rounded-lg border px-3 py-1 text-sm font-medium transition-colors',
+                  active
+                    ? 'border-brand-600 bg-brand-600 text-white'
+                    : count === 0
+                      ? 'border-gray-200 bg-gray-50 text-gray-300'
+                      : 'border-gray-200 bg-surface text-gray-600 hover:border-brand-300 hover:text-gray-900',
+                )}
+              >
+                {label} <span className={clsx('tabular-nums', active ? 'opacity-80' : 'text-gray-400')}>{count}</span>
+              </button>
+            )
+          })}
+        </div>
         <p className="text-sm text-gray-600">{matched.length} user{matched.length === 1 ? '' : 's'} found</p>
         <LetterStrip label="First name" value={firstLetter} onChange={setFirstLetter} available={availableFirst} />
         <LetterStrip label="Last name" value={lastLetter} onChange={setLastLetter} available={availableLast} />
