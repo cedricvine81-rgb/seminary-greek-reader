@@ -11,6 +11,7 @@ import {
 import type { MorphologySubtype } from '@/lib/quiz-fields'
 import type { HebrewMorphologySubtype, HebrewMorphParseFilter } from '@/lib/quiz-fields-hebrew'
 import { isHebrewLevel } from '@/lib/constants'
+import { normaliseSubtype } from '@/lib/morph-practice-custom'
 import { logError } from '@/lib/logger'
 
 // FORMATIVE practice for a morphology quiz a student has been set: the same recipe the
@@ -59,33 +60,38 @@ export async function GET(req: NextRequest, { params }: { params: { assignmentId
     }
 
     const hebrew = isHebrewLevel(String(assignment.level))
+    // Live rows carry VERB_PARSING…; the schema's comment advertised VERB… Accept both, or an
+    // unrecognised name falls through the generator's switch to the verb pool and a noun quiz
+    // quietly practises verbs.
+    const subtype = normaliseSubtype(assignment.morphSubtype)
     const cfg = (assignment.morphConfig ?? null) as
       ({ fields?: string[]; parseFilter?: HebrewMorphParseFilter; vocabThruBand?: string | null } & MorphGenConfig) | null
 
     let questions
     if (hebrew) {
       questions = generateHebrewMorphologyQuestions(
-        (assignment.morphSubtype as HebrewMorphologySubtype) ?? 'VERB_PARSING',
+        subtype as HebrewMorphologySubtype,
         PRACTICE_QUESTIONS, cfg?.fields, cfg?.parseFilter,
         await resolveHebrewVocabCap(
           assignment.courseId, assignment.dueDate, assignment.weekNumber, cfg?.vocabThruBand ?? null),
       )
     } else if (cfg) {
       questions = await generateMorphQuestionsFromConfig(
-        (assignment.morphSubtype ?? 'MIXED') as MorphologySubtype,
+        subtype as MorphologySubtype,
         PRACTICE_QUESTIONS, assignment.vocabThruLesson, cfg as MorphGenConfig)
     } else {
       // Assignments that predate stored recipes carry only a subtype. The graded quiz falls
       // back to the subtype-only generators in that case and so does practice — a rehearsal of
       // the right part of speech beats refusing to open.
-      switch (assignment.morphSubtype) {
-        case 'VERB':        questions = generateVerbParseQuestions(PRACTICE_QUESTIONS); break
-        case 'NOUN':        questions = generateNounParseQuestions(PRACTICE_QUESTIONS); break
-        case 'ADJECTIVE':   questions = generateAdjectiveParseQuestions(PRACTICE_QUESTIONS); break
-        case 'PRONOUN':     questions = generatePronounParseQuestions(PRACTICE_QUESTIONS); break
-        case 'CONDITIONAL': questions = generateConditionalQuestions(PRACTICE_QUESTIONS); break
-        case 'SUBJUNCTIVE': questions = generateSubjunctiveQuestions(PRACTICE_QUESTIONS); break
-        default:            questions = generateVerbParseQuestions(PRACTICE_QUESTIONS); break
+      switch (subtype) {
+        case 'NOUN_PARSING':      questions = generateNounParseQuestions(PRACTICE_QUESTIONS); break
+        case 'ADJECTIVE_PARSING': questions = generateAdjectiveParseQuestions(PRACTICE_QUESTIONS); break
+        case 'PRONOUN_PARSING':   questions = generatePronounParseQuestions(PRACTICE_QUESTIONS); break
+        case 'CONDITIONALS':      questions = generateConditionalQuestions(PRACTICE_QUESTIONS); break
+        case 'SUBJUNCTIVES':      questions = generateSubjunctiveQuestions(PRACTICE_QUESTIONS); break
+        case 'MIXED':             questions = await generateMorphQuestionsFromConfig(
+                                    'MIXED', PRACTICE_QUESTIONS, null, null); break
+        default:                  questions = generateVerbParseQuestions(PRACTICE_QUESTIONS); break
       }
     }
 
@@ -98,6 +104,12 @@ export async function GET(req: NextRequest, { params }: { params: { assignmentId
       vocabCapped: hebrew ? !!cfg?.vocabThruBand : assignment.vocabThruLesson != null,
       // No stored recipe means the practice is by part of speech only, not the exact filter.
       approximate: !hebrew && !cfg,
+      // Enough of the recipe for the end-of-session "drill these" to rebuild the same KIND of
+      // quiz narrowed to what was missed. Not the parse filter: the drill supplies its own.
+      subtype,
+      fields: cfg?.fields,
+      vocabThruLesson: assignment.vocabThruLesson,
+      vocabThruBand: cfg?.vocabThruBand ?? null,
     })
   } catch (err) {
     logError('api/assignments/[assignmentId]/practice', err)

@@ -16,7 +16,8 @@ import { GREEK_MORPH_QUIZZES, HEBREW_MORPH_QUIZZES, morphKeyFor } from './self-s
 // BGVB lesson facts we need are fully derivable: lesson n (1–16) covers the 20 consecutive
 // frequency ranks 20n-19..20n, printed as Section I A–H (lessons 1–8) then II A–H (9–16),
 // stored under the subsection key "1-A"…"2-H" (see src/lib/vocab-lesson-map.ts).
-const BGVB_LESSON_COUNT = 16
+/** BGVB has sixteen vocabulary lessons; lessons 17-20 review rather than add. */
+export const BGVB_LESSON_COUNT = 16
 // `section` is the printed code alone ("I-C"), never "Section I-C": the word in front of it
 // is part of the label's sentence and belongs to the catalogue, not to this function.
 function bgvbSection(lesson: number): { section: string; key: string } {

@@ -5,10 +5,13 @@ import clsx from 'clsx'
 import { ArrowLeft, Check, RotateCcw, X } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
-import { morphQuizFor, morphKeyFor, MORPH_PASS_PCT } from '@/lib/self-study-morph'
+import { morphQuizFor, morphKeyFor, MORPH_PASS_PCT, MORPH_QUIZ_QUESTIONS } from '@/lib/self-study-morph'
+import { drillFilter, type ValueMiss, type PracticeAnswer } from '@/lib/morph-practice-report'
+import {
+  fieldsFor, isParsePool, normaliseSubtype, type CustomMorphSpec,
+} from '@/lib/morph-practice-custom'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
 import { MorphPracticeReport } from '@/components/student/MorphPracticeReport'
-import type { PracticeAnswer } from '@/lib/morph-practice-report'
 import {
   POOL_STEMS, POOL_CONJUGATIONS, POOL_PERSONS, POOL_GENDERS, POOL_NUMBERS,
   POOL_STATES, POOL_PRONOUN_TYPES,
@@ -60,18 +63,25 @@ function splitPrompt(prompt: string): { surface: string; note: string | null } {
   return m ? { surface: m[1], note: m[2] } : { surface: prompt, note: null }
 }
 
-// Two sources, one quiz. Self-study passes `trackId`/`lessonNo` and the ladder in
+// Three sources, one quiz. Self-study passes `trackId`/`lessonNo` and the ladder in
 // self-study-morph.ts supplies the recipe; an enrolled student passes `assignmentId` and the
-// recipe is the one their instructor stored on the assignment. In both cases the forms are
-// generated fresh server-side, so practice is never a rehearsal of the answer key.
+// recipe is the one their instructor stored on the assignment; the custom builder passes a
+// `custom` spec the student wrote themselves. In every case the forms are generated fresh
+// server-side, so practice is never a rehearsal of the answer key.
 //
 // `practice` runs the same questions FORMATIVELY: nothing is recorded, and the end of the
 // session shows the per-question report with links into the grammar instead of a bare score.
 // Assignment practice is always formative — there is no lesson step for it to record.
-export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, practice = false, backTo }: {
+export function PracticeMorphQuiz({
+  trackId, lessonNo, assignmentId, custom, onExit, embedded, practice = false, backTo,
+}: {
   trackId?: string
   lessonNo?: number
   assignmentId?: string
+  /** A drill the student built (or a "drill these" narrowing of one they just ran). */
+  custom?: CustomMorphSpec
+  /** Custom mode's way back — there is no page to link to, the builder is right here. */
+  onExit?: () => void
   embedded?: boolean
   practice?: boolean
   /** Where "back" goes when the student arrived from somewhere other than their own track —
@@ -92,11 +102,20 @@ export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, p
   const [answers, setAnswers] = useState<PracticeAnswer[]>([])
   // Assignment mode: language, title and caveats come back with the questions, since there is
   // no lesson definition to read them from.
-  const [meta, setMeta] = useState<
-    { lang: 'greek' | 'hebrew'; title: string; vocabCapped: boolean; approximate: boolean } | null>(null)
+  const [meta, setMeta] = useState<{
+    lang: 'greek' | 'hebrew'; title: string; vocabCapped: boolean; approximate: boolean
+    /** Enough of the recipe for "drill these" to rebuild the same KIND of quiz. */
+    subtype?: string; fields?: string[]
+    vocabThruLesson?: number | null; vocabThruBand?: string | null
+  } | null>(null)
   const [checked, setChecked] = useState(false)
   const [earned, setEarned] = useState(0)
   const [possible, setPossible] = useState(0)
+  // "Drill these" narrows the session that just ended into a new custom spec — which is why
+  // every mode can end in one: the report's output IS a filter the generator accepts.
+  const [drill, setDrill] = useState<CustomMorphSpec | null>(null)
+  const [drilling, setDrilling] = useState(false)
+  const spec = drill ?? custom ?? null
 
   const load = useCallback(() => {
     setQuestions(null)
@@ -108,38 +127,133 @@ export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, p
     setEarned(0)
     setPossible(0)
     setMeta(null)
-    const url = assignmentId
-      ? `/api/assignments/${assignmentId}/practice`
-      : `/api/self-study/morph?track=${trackId}&lesson=${lessonNo}`
-    fetch(url)
+    const req: Promise<Response> = spec
+      ? fetch('/api/practice/morph', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...spec, count: MORPH_QUIZ_QUESTIONS }),
+        })
+      : fetch(assignmentId
+          ? `/api/assignments/${assignmentId}/practice`
+          : `/api/self-study/morph?track=${trackId}&lesson=${lessonNo}`)
+    req
       .then(r => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((data: { questions: MorphQ[]; lang?: 'greek' | 'hebrew'; title?: string;
-        vocabCapped?: boolean; approximate?: boolean }) => {
+      .then((data: { questions?: MorphQ[]; lang?: 'greek' | 'hebrew'; title?: string;
+        vocabCapped?: boolean; approximate?: boolean; subtype?: string; fields?: string[]
+        vocabThruLesson?: number | null; vocabThruBand?: string | null }) => {
         if (data.questions?.length) {
           setQuestions(data.questions)
-          if (data.lang) setMeta({
-            lang: data.lang, title: data.title ?? '',
-            vocabCapped: !!data.vocabCapped, approximate: !!data.approximate,
-          })
+          if (spec) {
+            setMeta({ lang: spec.lang, title: '', vocabCapped: !!spec.vocabThruLesson, approximate: false })
+          } else if (data.lang) {
+            setMeta({
+              lang: data.lang, title: data.title ?? '',
+              vocabCapped: !!data.vocabCapped, approximate: !!data.approximate,
+              subtype: data.subtype, fields: data.fields,
+              vocabThruLesson: data.vocabThruLesson ?? null,
+              vocabThruBand: data.vocabThruBand ?? null,
+            })
+          }
         } else setFailed(true)
       })
       .catch(() => setFailed(true))
-  }, [trackId, lessonNo, assignmentId])
+  }, [trackId, lessonNo, assignmentId, spec])
 
   useEffect(() => { load() }, [load])
 
-  if (!def && !fromAssignment) return null
-  const lang = fromAssignment ? (meta?.lang ?? 'greek') : def!.lang
+  if (!def && !fromAssignment && !spec) return null
+  const lang = spec?.lang ?? (fromAssignment ? (meta?.lang ?? 'greek') : def!.lang)
   const hebrew = lang === 'hebrew'
   const backHref = backTo?.href
     ?? (fromAssignment ? `/student/assignments/${assignmentId}` : `/student/self-study/${trackId}`)
   const backLabel = backTo
     ? t(backTo.labelKey)
     : fromAssignment ? t('assign.backToAssignment') : t('ss.q.backToTrack')
-  const alreadyDone = !fromAssignment && completed.has(stepKey)
-  const hasVocabCap = fromAssignment
-    ? !!meta?.vocabCapped
-    : def!.lang === 'greek' ? def!.vocabThruLesson != null : !!def!.vocabThruBand
+  const alreadyDone = !fromAssignment && !spec && !!def && completed.has(stepKey)
+  const hasVocabCap = spec
+    ? !!spec.vocabThruLesson
+    : fromAssignment
+      ? !!meta?.vocabCapped
+      : def!.lang === 'greek' ? def!.vocabThruLesson != null : !!def!.vocabThruBand
+
+  // Every source but a graded self-study attempt is formative: nothing is recorded and the
+  // session ends in the report rather than a mark.
+  const formative = practice || fromAssignment || !!spec
+
+  /**
+   * What a "drill these" session should be: the same kind of quiz, narrowed to what was just
+   * missed. The subtype and fields come from whichever source is running — the student's own
+   * spec, the assignment's stored recipe, or the self-study ladder — so the drill asks the
+   * same questions about harder forms, rather than becoming a different quiz.
+   */
+  function drillBase(): CustomMorphSpec | null {
+    if (spec) return { ...spec, parseFilter: {} }
+    if (fromAssignment) {
+      // Conditionals and subjunctive-use quizzes are sentence sets, not parse pools: there is
+      // no filter to narrow them by, so they simply do not offer a drill.
+      if (!meta?.subtype || !isParsePool(meta.subtype)) return null
+      const subtype = normaliseSubtype(meta.subtype)
+      return {
+        lang, subtype,
+        fields: meta.fields?.length ? meta.fields : fieldsFor(lang, subtype),
+        parseFilter: {},
+        vocabThruLesson: meta.vocabThruLesson ?? null,
+        vocabThruBand: meta.vocabThruBand ?? null,
+      }
+    }
+    if (!def) return null
+    if (def.lang === 'hebrew') {
+      return {
+        lang: 'hebrew', subtype: def.subtype, fields: def.fields, parseFilter: {},
+        vocabThruBand: def.vocabThruBand ?? null,
+      }
+    }
+    // A Greek lesson quiz may draw on several pools (nouns + adjectives); MIXED is the one
+    // subtype that covers them all. The lexeme restriction of the contract/μι quizzes cannot
+    // be reproduced here, and the drill does not pretend to: it is about the missed features.
+    const subtype = def.subtypes.length === 1 ? def.subtypes[0].subtype : 'MIXED'
+    return {
+      lang: 'greek', subtype,
+      fields: def.fields?.length ? def.fields : fieldsFor('greek', subtype),
+      parseFilter: {},
+      vocabThruLesson: def.vocabThruLesson,
+    }
+  }
+
+  /**
+   * Narrow to the misses, widening until there is enough to drill.
+   *
+   * A full miss signature is usually far too narrow — aorist + passive + participle +
+   * feminine + genitive + plural may match three forms in the whole pool — so this asks for
+   * the three worst misses, counts, and drops to two and then one until the pool is usable.
+   * The count endpoint is the same one the builder uses, and it never falls back, so what it
+   * says is what the drill will be.
+   */
+  async function startDrill(misses: ValueMiss[]) {
+    const base = drillBase()
+    if (!base || drilling) return
+    setDrilling(true)
+    for (const depth of [3, 2, 1]) {
+      const candidate = { ...base, parseFilter: drillFilter(misses, depth) }
+      try {
+        const r = await fetch('/api/practice/morph', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...candidate, count: 0 }),
+        })
+        const { count } = (await r.json()) as { count?: number }
+        if ((count ?? 0) >= 5 || depth === 1) {
+          setDrilling(false)
+          setDrill(candidate)
+          return
+        }
+      } catch {
+        setDrilling(false)
+        return
+      }
+    }
+    setDrilling(false)
+  }
 
   const finished = questions !== null && idx >= questions.length
   const pct = possible > 0 ? Math.round((earned / possible) * 100) : 0
@@ -157,7 +271,7 @@ export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, p
   function checkParse() {
     if (!q || checked) return
     const right = activeFields.filter(([f]) => draft[f] === correctObj[f]).length
-    if (practice || fromAssignment) {
+    if (formative) {
       setAnswers(a => [...a, { prompt: q.prompt, correct: { ...correctObj }, given: { ...draft } }])
     }
     setEarned(e => e + right)
@@ -181,7 +295,7 @@ export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, p
     setChecked(false)
     // Grade on the last answer: pass records the step; a fail records nothing. Practice
     // records nothing either way — it is formative by definition.
-    if (!practice && !fromAssignment && n >= questions.length && possible > 0
+    if (!formative && n >= questions.length && possible > 0
         && Math.round((earned / possible) * 100) >= MORPH_PASS_PCT) {
       setChapter(stepKey, true)
     }
@@ -191,22 +305,28 @@ export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, p
 
   return (
     <div className="max-w-xl space-y-5">
-      {!embedded && (
+      {!embedded && (onExit ? (
+        <button onClick={onExit} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
+          <ArrowLeft size={14} /> {t('pr.b.backToBuilder')}
+        </button>
+      ) : (
         <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
           <ArrowLeft size={14} /> {backLabel}
         </Link>
-      )}
+      ))}
 
       <div>
         <h1 className="text-lg font-bold text-gray-900">
           {/* The assignment's own title is already the page title above; repeating it here
               would say the same thing twice, so the heading names the MODE instead. */}
-          {fromAssignment
-            ? t('ss.pr.practise')
-            : `${t(def!.labelKey)} · ${t('ss.lessonN', { n: lessonNo! })}`}
+          {spec
+            ? t(`morph.subtype.${spec.subtype}`)
+            : fromAssignment
+              ? t('ss.pr.practise')
+              : `${t(def!.labelKey)} · ${t('ss.lessonN', { n: lessonNo! })}`}
         </h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          {practice || fromAssignment ? t('ss.pr.practiceNote') : t('ss.q.parseNote', { pass: MORPH_PASS_PCT })}
+          {formative ? t('ss.pr.practiceNote') : t('ss.q.parseNote', { pass: MORPH_PASS_PCT })}
           {hasVocabCap && <span> {t('ss.q.vocabCapNote')}</span>}
           {/* Legacy assignments stored only a part of speech, so say so rather than imply
               the practice matches the quiz filter for filter. */}
@@ -224,18 +344,27 @@ export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, p
         </div>
       ) : questions === null ? (
         <p className="py-8 text-sm italic text-gray-400">{t('hw.loading')}</p>
-      ) : finished && (practice || fromAssignment) ? (
+      ) : finished && formative ? (
         <div className="space-y-4">
-          <MorphPracticeReport answers={answers} lang={lang} />
+          <MorphPracticeReport
+            answers={answers}
+            lang={lang}
+            onDrill={drillBase() ? startDrill : undefined}
+            drilling={drilling}
+          />
           <div className="flex items-center justify-center gap-3">
             <button onClick={load} className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
               <RotateCcw size={14} /> {t('ss.q.tryAgain')}
             </button>
-            {!embedded && (
+            {!embedded && (onExit ? (
+              <button onClick={onExit} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
+                {t('pr.b.backToBuilder')}
+              </button>
+            ) : (
               <Link href={backHref} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
                 {backLabel}
               </Link>
-            )}
+            ))}
           </div>
         </div>
       ) : finished ? (

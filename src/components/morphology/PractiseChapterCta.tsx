@@ -36,12 +36,19 @@ export function PractiseChapterCta({ lang, chapterId, level }: {
         <p className="text-sm font-semibold text-brand-900">{t('morph.practiseTitle')}</p>
         <p className="text-sm text-brand-800">{t('morph.practiseBody', { quiz: t(practice.def.labelKey) })}</p>
       </div>
-      <Link
-        href={href}
-        className="btn btn-primary inline-flex shrink-0 items-center gap-1.5 px-3.5 py-1.5 text-sm"
-      >
-        <Dumbbell size={15} /> {t('morph.practiseCta')}
-      </Link>
+      <div className="flex shrink-0 flex-col items-end gap-1">
+        <Link
+          href={href}
+          className="btn btn-primary inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm"
+        >
+          <Dumbbell size={15} /> {t('morph.practiseCta')}
+        </Link>
+        {/* The chapter's drill is the common case; the builder is for the student who wants
+            something narrower ("only aorist passives") or wider than one chapter. */}
+        <Link href="/student/practice/morphology" className="text-xs font-medium text-brand-700 hover:text-brand-900">
+          {t('pr.b.buildYourOwn')} →
+        </Link>
+      </div>
     </div>
   )
 }

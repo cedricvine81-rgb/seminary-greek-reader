@@ -3,11 +3,10 @@
 // Practice is FORMATIVE — nothing here is written to the progress store or to a grade. The
 // transcript lives for the length of the session; this module only turns it into a report.
 //
-// The useful property is that the report's output IS a MorphParseFilter: "you missed aorist
+// The useful property is that the report's output IS a parse filter: "you missed aorist
 // passives" is { tenses: ['Aorist'], voices: ['Passive'] }, which is exactly what
 // generateMorphQuestionsFromConfig already takes. So "what needs practising" and "drill that"
 // are the same object, and the [Drill these] button is a regeneration, not new machinery.
-import type { MorphParseFilter } from '@/lib/quiz-fields'
 
 /** One graded question: the form shown, the right parse, and what the student picked. */
 export interface PracticeAnswer {
@@ -65,10 +64,15 @@ export function summarisePractice(answers: PracticeAnswer[]): PracticeReport {
   return { fields: Array.from(fields.values()), misses, right, asked }
 }
 
-/** Parse field to the MorphParseFilter key that whitelists its values. */
-const FILTER_KEY: Record<string, keyof MorphParseFilter> = {
+/**
+ * Parse field to the filter key that whitelists its values — both languages. Person, number
+ * and gender are spelled the same in MorphParseFilter and HebrewMorphParseFilter, which is why
+ * one map serves: the remaining keys simply never occur in the other language's report.
+ */
+const FILTER_KEY: Record<string, string> = {
   tense: 'tenses', voice: 'voices', mood: 'moods', person: 'persons',
   number: 'numbers', casus: 'cases', gender: 'genders', pronounType: 'pronounTypes',
+  stem: 'stems', conjugation: 'conjugations', state: 'states', type: 'types',
 }
 
 /**
@@ -81,14 +85,14 @@ const FILTER_KEY: Record<string, keyof MorphParseFilter> = {
  * few, retry at depth 2, then 1. Values for the SAME field are OR-ed (they widen the pool);
  * different fields are AND-ed (they narrow it), which is how MorphParseFilter already reads.
  */
-export function drillFilter(misses: ValueMiss[], depth = 2): MorphParseFilter {
-  const out: MorphParseFilter = {}
+export function drillFilter(misses: ValueMiss[], depth = 2): Record<string, string[]> {
+  const out: Record<string, string[]> = {}
   for (const m of misses.slice(0, Math.max(1, depth))) {
     const key = FILTER_KEY[m.field]
     if (!key) continue
-    const list = (out[key] as string[] | undefined) ?? []
+    const list = out[key] ?? []
     if (!list.includes(m.value)) list.push(m.value)
-    out[key] = list as never
+    out[key] = list
   }
   return out
 }

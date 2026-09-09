@@ -83,14 +83,14 @@ if (!assignment) {
 // the recipe, never the graded questions.
 for (const [title, extra] of [
   ['TEST — Morphology Quiz (practice check)', {
-    morphSubtype: 'VERB', vocabThruLesson: 8,
+    morphSubtype: 'VERB_PARSING', vocabThruLesson: 8,
     morphConfig: {
       fields: ['tense', 'voice', 'mood', 'person', 'number'],
       parseFilter: { tenses: ['Present', 'Aorist'], moods: ['Indicative', 'Subjunctive'] },
       numQuestions: 10,
     },
   }],
-  ['TEST — Morphology Quiz (legacy, no recipe)', { morphSubtype: 'NOUN', morphConfig: null }],
+  ['TEST — Morphology Quiz (legacy, no recipe)', { morphSubtype: 'NOUN_PARSING', morphConfig: null }],
 ]) {
   const data = {
     courseId: course.id, createdById: instructor.id, title, type: 'MORPHOLOGY_QUIZ',

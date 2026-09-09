@@ -534,7 +534,11 @@ model Assignment {
   // Vocab quizzes: max number of student appeals per attempt. Null/0 = appeals disabled.
   maxAppeals            Int?
   maxRetakes            Int?
-  morphSubtype          String? // For MORPHOLOGY_QUIZ: VERB | NOUN | ADJECTIVE | PRONOUN | CONDITIONAL | SUBJUNCTIVE
+  // For MORPHOLOGY_QUIZ, the generator's own subtype name: VERB_PARSING | NOUN_PARSING |
+  // ADJECTIVE_PARSING | PRONOUN_PARSING | MIXED | CONDITIONALS | SUBJUNCTIVES. (This comment
+  // used to name short forms — VERB, NOUN — that nothing writes; a reader who trusted it got
+  // a subtype the generator's switch does not know, which falls through to the verb pool.)
+  morphSubtype          String?
   // MORPHOLOGY_QUIZ: BGVB vocab lesson this quiz's words are capped at (usually its week),
   // so "only vocabulary taught so far" is stored and visible, not just applied and lost.
   vocabThruLesson       Int?

@@ -428,6 +428,31 @@ export type {
 } from '@/lib/quiz-fields'
 import type { MorphologySubtype, MorphParseFilter } from '@/lib/quiz-fields'
 
+/** One question per distinct form: the key the dedupe below (and countMorphForms) uses. */
+const formKey = (e: GreekParseEntry) => `${e.surface}|${e.lexeme}`
+
+/**
+ * Keep only forms that actually carry every tested field, so a student is never asked for
+ * a value the form doesn't have. This is what makes the verb subtype mood-aware:
+ * ticking Case+Gender yields a participle-only quiz; ticking Person excludes participles
+ * (they have none) and infinitives.
+ *
+ * EXCEPTION — pronoun gender is a SOFT field: within the one pronoun pool some forms
+ * are marked for gender and some are not (the corpus keeps none for ego/su/the
+ * reflexives), and the course still parses the marked ones by it. So testing gender
+ * must not silently drop the unmarked pronouns; those questions just skip the gender
+ * select (both quiz players only render non-null fields). Verbs keep the hard rule —
+ * there the field list deliberately selects the mood.
+ */
+function testableEntries(entries: GreekParseEntry[], fields?: string[]): GreekParseEntry[] {
+  const soft = (e: GreekParseEntry, f: string) => f === 'gender' && e.partOfSpeech === 'Pronoun'
+  return fields?.length
+    ? entries.filter(e => fields.every(f =>
+        f === 'partOfSpeech' || soft(e, f)
+        || (e as unknown as Record<string, unknown>)[f] != null))
+    : entries
+}
+
 function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fields?: string[]) {
   // Keep only forms that actually carry every tested field, so a student is never asked for
   // a value the form doesn't have. This is what makes the verb subtype mood-aware:
@@ -440,12 +465,7 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
   // must not silently drop the unmarked pronouns; those questions just skip the gender
   // select (both quiz players only render non-null fields). Verbs keep the hard rule —
   // there the field list deliberately selects the mood.
-  const soft = (e: GreekParseEntry, f: string) => f === 'gender' && e.partOfSpeech === 'Pronoun'
-  const testable = fields?.length
-    ? entries.filter(e => fields.every(f =>
-        f === 'partOfSpeech' || soft(e, f)
-        || (e as unknown as Record<string, unknown>)[f] != null))
-    : entries
+  const testable = testableEntries(entries, fields)
   // ONE QUESTION PER FORM. Greek forms are routinely identical across parses — παντί is both
   // masculine and neuter dative singular, πολλῶν is genitive plural in all three genders — and
   // the pool holds each reading as its own entry. Drawn twice, the same word appeared twice in
@@ -458,7 +478,7 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
   // declension path has always deduped this way; this is the rule the other path was missing.
   const seenForm = new Set<string>()
   const distinct = shuffle(testable).filter(e => {
-    const key = `${e.surface}|${e.lexeme}`
+    const key = formKey(e)
     if (seenForm.has(key)) return false
     seenForm.add(key)
     return true
@@ -523,6 +543,23 @@ function applyParseFilter(entries: GreekParseEntry[], filter?: MorphParseFilter)
     has(filter.genders, e.gender) &&
     has(filter.pronounTypes, e.pronounType)
   )
+}
+
+/**
+ * Keep only lexemes taught in lessons 1..vocabThruLesson, so a morphology quiz never asks
+ * about a word the vocabulary schedule hasn't reached. Word lists come from the static BGVB
+ * data — the same source as the vocab quizzes.
+ *
+ * The cap is explicit intent, so it is NEVER silently relaxed: a thin early-lesson pool
+ * yields a shorter quiz (the caller sees the count), not a quiz that quietly tests words the
+ * schedule hasn't reached.
+ */
+function applyVocabCap(entries: GreekParseEntry[], vocabThruLesson?: number | null): GreekParseEntry[] {
+  if (vocabThruLesson == null || vocabThruLesson <= 0) return entries
+  const keys = lessonSubsectionKeysThrough(vocabThruLesson)
+  if (keys.length === 0) return entries
+  const knownLexemes = new Set(wordsForSelection(keys, []).map(w => w.word))
+  return entries.filter(e => knownLexemes.has(e.lexeme))
 }
 
 function getEntriesForSubtype(subtype: MorphologySubtype): GreekParseEntry[] {
@@ -672,19 +709,7 @@ export async function generateMorphologyQuestionsBySubtype(
     if (filtered.length >= Math.min(count, 3)) entries = filtered
   }
 
-  // Apply vocab filter: keep only lexemes taught in lessons 1..vocabThruLesson, so a
-  // morphology quiz never asks about a word the vocabulary schedule hasn't reached.
-  // Word lists come from the static BGVB data — the same source as the vocab quizzes.
-  if (vocabThruLesson != null && vocabThruLesson > 0) {
-    const keys = lessonSubsectionKeysThrough(vocabThruLesson)
-    if (keys.length > 0) {
-      const knownLexemes = new Set(wordsForSelection(keys, []).map(w => w.word))
-      // The cap is explicit instructor intent, so it is NEVER silently relaxed: a thin
-      // early-lesson pool yields a shorter quiz (the caller sees the count), not a quiz
-      // that quietly tests words the schedule hasn't reached.
-      entries = entries.filter(e => knownLexemes.has(e.lexeme))
-    }
-  }
+  entries = applyVocabCap(entries, vocabThruLesson)
 
   return parseEntriesToQuestions(entries, count, fields)
 }
@@ -794,4 +819,59 @@ export function generateSubjunctiveQuestions(count: number) {
       reference: ex.reference,
     }
   })
+}
+
+// ─── How many forms match? (the custom practice builder) ──────────────────────
+//
+// A student building their own drill can ask for a combination the corpus does not contain
+// — "pluperfect middle imperative" has no forms at all. The generators deliberately FALL
+// BACK when a filter is too narrow (an instructor's over-tight quiz should still run), which
+// for a builder would be the worst possible answer: the student would be shown a quiz that
+// silently ignored what they asked for. So the builder counts first, with no fallback, and
+// says plainly how many forms match before anything is generated.
+//
+// These count exactly what the matching generator would draw from — same pool, same filter,
+// same vocabulary cap, same tested-fields rule, same one-question-per-form dedupe — because
+// they call the same helpers it does.
+
+/** Forms a Greek drill with this recipe could ask about. Never falls back. */
+export async function countMorphForms(
+  subtype: MorphologySubtype,
+  vocabThruLesson: number | null,
+  config: MorphGenConfig | null,
+): Promise<number> {
+  // Sentence-based sets are not built from the parse pool; their size is fixed.
+  if (subtype === 'CONDITIONALS') return CONDITIONAL_EXAMPLES.length
+  if (subtype === 'SUBJUNCTIVES') return SUBJUNCTIVE_EXAMPLES.length
+
+  const fields = config?.fields?.length ? config.fields : undefined
+  let entries = applyParseFilter(getEntriesForSubtype(subtype), config?.parseFilter)
+  entries = applyVocabCap(entries, vocabThruLesson)
+  entries = testableEntries(entries, fields)
+
+  const declensions = config?.declensions?.length ? new Set(config.declensions) : null
+  const seen = new Set<string>()
+  for (const e of entries) {
+    if (declensions && !declensions.has(nounDeclension(e.lexeme, e.gender ?? null))) continue
+    seen.add(formKey(e))
+  }
+  return seen.size
+}
+
+/** The Hebrew twin. No dedupe: the Hebrew generator draws from the entries as they are. */
+export function countHebrewMorphForms(
+  subtype: HebrewMorphologySubtype,
+  fields?: string[],
+  parseFilter?: HebrewMorphParseFilter,
+  vocabCap?: string | Set<string> | null,
+): number {
+  let entries = applyHebrewParseFilter(hebrewEntriesForSubtype(subtype), parseFilter)
+  if (vocabCap) {
+    const known = typeof vocabCap === 'string' ? strongsThroughBand(HEBREW_DECK, vocabCap) : vocabCap
+    if (known.size > 0) entries = entries.filter(e => known.has(e.strongs))
+  }
+  return fields?.length
+    ? entries.filter(e => fields.every(f =>
+        f === 'partOfSpeech' || (e as unknown as Record<string, unknown>)[f] != null)).length
+    : entries.length
 }

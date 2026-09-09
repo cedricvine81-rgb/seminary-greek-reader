@@ -53,7 +53,7 @@ const RECIPE = {
 const GREEK = {
   id: 'a1', title: 'Week 4 — Morphology', type: 'MORPHOLOGY_QUIZ', level: 'BEGINNING',
   courseId: 'c1', weekNumber: 4, dueDate: new Date('2040-01-01'), isPublished: true,
-  morphSubtype: 'VERB', morphConfig: RECIPE, vocabThruLesson: 8,
+  morphSubtype: 'VERB_PARSING', morphConfig: RECIPE, vocabThruLesson: 8,
 }
 
 const call = () => GET({} as never, { params: { assignmentId: 'a1' } })
@@ -79,7 +79,11 @@ describe('GET /api/assignments/[id]/practice', () => {
     expect(body.vocabCapped).toBe(true)
     expect(body.approximate).toBe(false)
     // subtype, count, vocab cap, recipe — the same four the series regenerator passes.
-    expect(fromConfig).toHaveBeenCalledWith('VERB', expect.any(Number), 8, RECIPE)
+    expect(fromConfig).toHaveBeenCalledWith('VERB_PARSING', expect.any(Number), 8, RECIPE)
+    // Enough of the recipe travels back for the end-of-session "drill these".
+    expect(body.subtype).toBe('VERB_PARSING')
+    expect(body.fields).toEqual(RECIPE.fields)
+    expect(body.vocabThruLesson).toBe(8)
   })
 
   it('refuses a student who is not enrolled in the course', async () => {
@@ -108,13 +112,22 @@ describe('GET /api/assignments/[id]/practice', () => {
   })
 
   it('falls back to the part of speech when the assignment predates stored recipes', async () => {
-    setup({ ...GREEK, morphSubtype: 'NOUN', morphConfig: null, vocabThruLesson: null })
+    setup({ ...GREEK, morphSubtype: 'NOUN_PARSING', morphConfig: null, vocabThruLesson: null })
     const body = await (await call()).json()
     expect(nounGen).toHaveBeenCalled()
     expect(fromConfig).not.toHaveBeenCalled()
     // Said out loud in the response, so the UI can warn that the filter is not the quiz's.
     expect(body.approximate).toBe(true)
     expect(body.vocabCapped).toBe(false)
+  })
+
+  it('accepts the short subtype names the schema comment used to advertise', async () => {
+    // Nothing writes these, but a row carrying one must not fall through the generator's
+    // switch to the verb pool — which is exactly what a NOUN (not NOUN_PARSING) quiz did.
+    setup({ ...GREEK, morphSubtype: 'NOUN', morphConfig: null, vocabThruLesson: null })
+    const body = await (await call()).json()
+    expect(nounGen).toHaveBeenCalled()
+    expect(body.subtype).toBe('NOUN_PARSING')
   })
 
   it('uses the Hebrew generator and its own vocabulary band for a Hebrew course', async () => {

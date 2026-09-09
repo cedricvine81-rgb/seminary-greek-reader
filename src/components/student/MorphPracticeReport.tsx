@@ -1,9 +1,9 @@
 'use client'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { BookOpen, Check, X } from 'lucide-react'
+import { BookOpen, Check, Dumbbell, X } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
-import { summarisePractice, type PracticeAnswer } from '@/lib/morph-practice-report'
+import { summarisePractice, type PracticeAnswer, type ValueMiss } from '@/lib/morph-practice-report'
 import { grammarHref, type MorphLang } from '@/lib/morph-grammar-links'
 
 // What the student sees when a PRACTICE session ends: every form they parsed, what they said,
@@ -23,10 +23,14 @@ function surfaceOf(prompt: string): string {
   return prompt.match(/^(\S+)\s\s\(/)?.[1] ?? prompt
 }
 
-export function MorphPracticeReport({ answers, lang, level = 'beginning' }: {
+export function MorphPracticeReport({ answers, lang, level = 'beginning', onDrill, drilling }: {
   answers: PracticeAnswer[]
   lang: MorphLang
   level?: 'beginning' | 'intermediate'
+  /** Start a new session narrowed to these misses. Absent when the caller cannot rebuild the
+   *  quiz (a legacy assignment with no stored recipe, say). */
+  onDrill?: (misses: ValueMiss[]) => void
+  drilling?: boolean
 }) {
   const t = useT()
   const report = summarisePractice(answers)
@@ -46,7 +50,20 @@ export function MorphPracticeReport({ answers, lang, level = 'beginning' }: {
       {/* What to work on — the actionable half. Absent when they got everything right. */}
       {report.misses.length > 0 && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-          <h3 className="text-sm font-semibold text-amber-900">{t('ss.pr.workOn')}</h3>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-sm font-semibold text-amber-900">{t('ss.pr.workOn')}</h3>
+            {/* The list IS a filter the generator accepts, so "drill these" is a regeneration
+                of the same quiz narrowed to what was missed — not a different exercise. */}
+            {onDrill && (
+              <button
+                onClick={() => onDrill(report.misses)}
+                disabled={drilling}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-700 disabled:opacity-50"
+              >
+                <Dumbbell size={13} /> {drilling ? t('ss.pr.drilling') : t('ss.pr.drillThese')}
+              </button>
+            )}
+          </div>
           <ul className="mt-2 space-y-1.5">
             {report.misses.map(m => {
               // Context = a form from this session that actually carried the missed value, so
