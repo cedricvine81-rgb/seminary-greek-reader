@@ -11,7 +11,7 @@ import { normalizeCategoryWeights } from '@/lib/grade-weights'
 import { completedAssignmentIds } from '@/lib/assignment-completion'
 import { teachingTeamName, teachingTeamEmails } from '@/lib/teaching-team'
 import { getServerLocale } from '@/lib/i18n/server'
-import { isHebrewLevel } from '@/lib/constants'
+import { vocabSubsectionsFor, vocabLangFor } from '@/lib/assignment-vocab'
 
 export const metadata: Metadata = { title: 'Student Dashboard' }
 
@@ -118,26 +118,10 @@ export default async function StudentPage() {
         dueDate: effectiveDeadline(a).toISOString(),
         weekNumber: a.weekNumber,
         completed: completedIds.has(a.id),
-        // The week's OWN new vocabulary, for the row's word-list button. Vocabulary
-        // quizzes only: the title regex must never grow a word-list button on a grammar
-        // homework that happens to cite a section.
-        //
-        // NOT `vocabSelection.subsections`: that is the candidate POOL the generator may draw
-        // from, and with cumulative review turned on every quiz in a course stores the same
-        // wide pool — in Beginning Greek FA26 all sixteen of §1-A–§2-H, on week 1 as on week 14.
-        // Opening that pool selected the whole of Beginning Greek and told the student nothing.
-        // The section that is new this week is named in the TITLE ("Week 3 — Vocabulary Quiz
-        // (§1-C)"), which is the only place it is recorded, so that is what the button honours.
-        // Falls back to the stored pool when a title names nothing, which is no worse than before.
-        vocabSubsections: a.type === 'VOCABULARY_QUIZ' ? (() => {
-          const fromTitle = Array.from(a.title.matchAll(/§\s*(\d+-[A-Z])/g)).map(m => m[1])
-          if (fromTitle.length) return fromTitle
-          return ((a.vocabSelection ?? null) as { subsections?: string[] } | null)?.subsections ?? []
-        })() : [],
-        // Which deck the button opens. The section keys alone cannot decide this: the Greek
-        // and Hebrew decks BOTH have a "1-C", so a Hebrew quiz handed to the default deck
-        // would open the Greek §1-C without a single key being dropped.
-        vocabLang: (isHebrewLevel(a.level) ? 'hebrew' : 'greek') as 'greek' | 'hebrew',
+        // The week's OWN new vocabulary, for the row's word-list button — see
+        // assignment-vocab.ts, which the Assignments page shares so the two lists agree.
+        vocabSubsections: vocabSubsectionsFor(a),
+        vocabLang: vocabLangFor(a.level),
       })),
       // Class exercises (assessed=false) stay in `assignments` — they are real work with a
       // due date — but never enter the grade book or the course average.

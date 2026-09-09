@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { Card, CardTitle } from '@/components/ui/Card'
-import { ChevronDown, ArrowLeft, AtSign, Check, BookOpen } from 'lucide-react'
+import { ChevronDown, ArrowLeft, AtSign, Check, BookOpen, Dumbbell } from 'lucide-react'
 import { SelfStudyPanel } from '@/components/student/SelfStudyPanel'
 import { differenceInCalendarDays } from 'date-fns'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
@@ -196,6 +196,18 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                               >
                                 <BookOpen size={12} /> {t('course.viewVocab')}
                               </button>
+                            )}
+                            {/* Formative practice, in the same pill as the vocabulary quiz's word
+                                list: the rehearsal offer belongs beside the assignment in the list,
+                                where a student decides what to do next, rather than inside the quiz
+                                page they have already opened. Nothing is recorded. */}
+                            {a.type === 'MORPHOLOGY_QUIZ' && (
+                              <Link
+                                href={`/student/assignments/${a.id}/practice`}
+                                className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border border-brand-200 text-brand-700 hover:bg-brand-50 transition-colors"
+                              >
+                                <Dumbbell size={12} /> {t('course.practise')}
+                              </Link>
                             )}
                           </div>
                         </div>

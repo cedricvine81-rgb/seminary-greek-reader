@@ -7,6 +7,7 @@ import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { completedAssignmentIds } from '@/lib/assignment-completion'
 import { getServerT } from '@/lib/i18n/server'
+import { vocabSubsectionsFor, vocabLangFor } from '@/lib/assignment-vocab'
 
 export const metadata: Metadata = { title: 'Assignments' }
 
@@ -51,6 +52,12 @@ export default async function StudentAssignmentsPage() {
     round2Deadline: a.round2Deadline ? a.round2Deadline.toISOString() : null,
     reference: a.reference ?? undefined,
     instructions: a.instructions ?? undefined,
+    // The row's inline shortcuts — the week's own word list, and the practice drill for a
+    // parsing quiz. Derived here rather than in the client so `vocabSelection` (a raw Json
+    // column) never crosses the boundary, and shared with the dashboard's course card via
+    // assignment-vocab.ts so the two assignment lists offer the same links.
+    vocabSubsections: vocabSubsectionsFor(a),
+    vocabLang: vocabLangFor(a.level),
   }))
 
   // Keep each course's existing week/due-date order, but split live-course assignments
