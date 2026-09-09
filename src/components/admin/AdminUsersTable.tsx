@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Badge } from '@/components/ui/Badge'
 import { Pencil, Trash2, X, Check, Mail, RotateCcw, Copy, AlertTriangle } from 'lucide-react'
+import { clsx } from 'clsx'
 import { Modal } from '@/components/ui/Modal'
 import { StudentImportPanel } from './StudentImportPanel'
 import { credentialsText, CREDENTIALS_SUBJECT } from '@/lib/credentials-email'
+import { emailChangeTextNew, emailChangeTextOld } from '@/lib/email-change-notice'
 
 interface User {
   id: string
@@ -91,6 +93,12 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
     emailSent: boolean; emailConfigured: boolean
   } | null>(null)
   const [copied, setCopied] = useState('')
+  // What happened to the two notices after a sign-in email was changed. Kept until dismissed:
+  // when one fails, the admin is the only one who can pass the message on.
+  const [emailMoved, setEmailMoved] = useState<{
+    name: string; oldEmail: string; newEmail: string; signInUrl: string
+    newAddress: boolean; oldAddress: boolean
+  } | null>(null)
 
   // Reset to page 1 whenever the filters change so we don't land on an empty page.
   useEffect(() => { setPage(1) }, [search, firstLetter, lastLetter, showDeleted, pendingOnly])
@@ -120,6 +128,7 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
   async function saveEdit(id: string) {
     setSaving(true)
     setError('')
+    const previous = users.find(u => u.id === id)
     const res = await fetch(`/api/admin/users/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -130,6 +139,19 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
       setError(d.error ?? 'Save failed')
       setSaving(false)
       return
+    }
+    const data = await res.json().catch(() => ({}))
+    // Changing the sign-in email notifies both addresses; say what became of each, because a
+    // silent failure here leaves someone unable to sign in and nobody aware of it.
+    if (data.notified && previous && data.user) {
+      setEmailMoved({
+        name: data.user.firstName ?? previous.firstName,
+        oldEmail: previous.email,
+        newEmail: data.user.email,
+        signInUrl: 'https://seminarygreek.app/auth/sign-in',
+        newAddress: !!data.notified.newAddress,
+        oldAddress: !!data.notified.oldAddress,
+      })
     }
     setSaving(false)
     setEditId(null)
@@ -327,6 +349,63 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
               </a>
               <Button onClick={() => { setIssued(null); setCopied('') }}>
                 {issued.emailSent ? 'Done' : 'I have saved the password — close'}
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* What became of the two notices sent when a sign-in email changes. Not dismissible by
+          Escape while one of them failed: the admin is then the only route to that person. */}
+      <Modal
+        open={!!emailMoved}
+        onClose={() => { setEmailMoved(null); setCopied('') }}
+        title="Sign-in email changed"
+        size="lg"
+        dismissible={!emailMoved || (emailMoved.newAddress && emailMoved.oldAddress)}
+      >
+        {emailMoved && (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">
+              <strong>{emailMoved.name}</strong> now signs in with{' '}
+              <strong>{emailMoved.newEmail}</strong>. Both addresses were told — the new one so
+              they know what to use, the old one so an unexpected change can be challenged.
+            </p>
+
+            {([
+              ['new', emailMoved.newEmail, emailMoved.newAddress, emailChangeTextNew],
+              ['old', emailMoved.oldEmail, emailMoved.oldAddress, emailChangeTextOld],
+            ] as const).map(([which, address, ok, text]) => (
+              <div
+                key={which}
+                className={clsx('rounded-xl border px-4 py-3 text-sm',
+                  ok ? 'border-green-200 bg-green-50 text-green-800'
+                     : 'border-amber-300 bg-amber-50 text-amber-900')}
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  {ok ? <Check size={15} className="shrink-0" /> : <AlertTriangle size={15} className="shrink-0" />}
+                  <span>
+                    {which === 'new' ? 'New address' : 'Old address'}: <strong>{address}</strong>{' '}
+                    {ok ? '— notified.' : '— NOT notified; send this on yourself.'}
+                  </span>
+                  {!ok && (
+                    <Button
+                      variant="secondary"
+                      onClick={() => copy(text(emailMoved), `moved-${which}`)}
+                      className="inline-flex items-center gap-1.5"
+                    >
+                      <Copy size={14} /> {copied === `moved-${which}` ? 'Copied' : 'Copy message'}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            <div className="flex justify-end">
+              <Button onClick={() => { setEmailMoved(null); setCopied('') }}>
+                {emailMoved.newAddress && emailMoved.oldAddress
+                  ? 'Done'
+                  : 'I will pass the message on — close'}
               </Button>
             </div>
           </div>
