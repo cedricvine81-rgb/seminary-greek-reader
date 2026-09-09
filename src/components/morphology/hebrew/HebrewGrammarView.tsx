@@ -19,6 +19,7 @@ import { Menu } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { FoldDefaultContext, XlitContext, XLIT_STORAGE_KEY, MorphContentProvider } from '../shared'
 import { ChapterSidebar, FoldAllControls, useSectionToc } from '../ChapterSidebar'
+import { PractiseChapterCta } from '../PractiseChapterCta'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
 import { HB_ALPHABET } from './alphabet'
@@ -238,6 +239,9 @@ export function HebrewGrammarView({ embedded = false, initialChapter }: {
               </div>
             </div>
             <div ref={contentRef}>{active.content}</div>
+            {/* The Hebrew half of "follow my lesson" — same component, same drills ladder.
+                Full page only, for the reason the Greek view gives. */}
+            {!embedded && <PractiseChapterCta lang="hebrew" chapterId={tab} />}
           </div>
         </div>
       </div>

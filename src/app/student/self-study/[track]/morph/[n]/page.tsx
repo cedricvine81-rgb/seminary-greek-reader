@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { PracticeMorphQuiz } from '@/components/student/PracticeMorphQuiz'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { canViewStudentPages } from '@/lib/preview'
+import { canViewStudentPages, studentPageEntry } from '@/lib/preview'
 import { selfStudyTrack } from '@/lib/self-study'
 import { morphQuizFor } from '@/lib/self-study-morph'
 import { getServerT } from '@/lib/i18n/server'
@@ -19,13 +19,28 @@ export const metadata: Metadata = { title: 'Parsing Quiz' }
 export default function SelfStudyMorphQuizPage(
   { params, searchParams }: {
     params: { track: string; n: string }
-    searchParams?: { practice?: string }
+    searchParams?: { practice?: string; back?: string }
   },
 ) {
   const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+
+  // ?back= lets a drill opened from a grammar chapter return there instead of to a self-study
+  // track the student may not be following. Same-site paths only: it is rendered as a link, so
+  // a protocol-relative "//evil.example" would be an off-site jump wearing our chrome.
+  const back = searchParams?.back
+  const backTo = back && back.startsWith('/') && !back.startsWith('//')
+    ? { href: back, labelKey: 'ss.pr.backToChapter' }
+    : undefined
+
+  // An instructor arriving from a Grammar chapter's "Practise these forms" is signed in but
+  // not in preview mode; send them through it and back, not to a sign-in screen.
+  if (!canViewStudentPages(payload)) {
+    redirect(studentPageEntry(payload,
+      `/student/self-study/${params.track}/morph/${params.n}?practice=1`
+      + (backTo ? `&back=${encodeURIComponent(backTo.href)}` : '')))
+  }
   if (!payload) redirect('/auth/sign-in')
 
   const def = selfStudyTrack(params.track)
@@ -34,7 +49,12 @@ export default function SelfStudyMorphQuizPage(
 
   return (
     <DashboardShell role="STUDENT" pageTitle={t(def.levelKey)}>
-      <PracticeMorphQuiz trackId={def.id} lessonNo={lessonNo} practice={searchParams?.practice === '1'} />
+      <PracticeMorphQuiz
+        trackId={def.id}
+        lessonNo={lessonNo}
+        practice={searchParams?.practice === '1'}
+        backTo={backTo}
+      />
     </DashboardShell>
   )
 }

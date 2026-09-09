@@ -20,6 +20,7 @@ import { useLocale, useT } from '@/lib/i18n/LocaleProvider'
 import { NO_CONTENT, type ContentCatalogue } from '@/lib/i18n/content'
 import { TranslationWorkbench } from '@/components/morphology/TranslationWorkbench'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
+import { PractiseChapterCta } from '@/components/morphology/PractiseChapterCta'
 import { ESS_SECTIONS } from '@/components/morphology/chapters/essentials'
 import { PRONUNCIATION_CONTENT } from '@/components/morphology/chapters/pronunciation'
 import { PARSING_CONTENT } from '@/components/morphology/chapters/parsing'
@@ -607,6 +608,11 @@ export function MorphologyView({
               {contentFor(mainTab, level)}
             </AnnotationLayer>
             </div>
+            {/* Read the chapter, then drill its forms. Renders itself away for chapters with
+                no distinct pool (pronunciation, prepositions…) and for signed-out readers.
+                Not in the side panel: from there it would navigate the whole page away from
+                the reader (or the self-study plan, which offers its own Practise link). */}
+            {!embedded && <PractiseChapterCta lang="greek" chapterId={mainTab} level={level} />}
             {courseMode && chapterIndex >= 0 && (
               <CourseNav index={chapterIndex} completed={completed} onComplete={setChapter} goTo={goToChapter} />
             )}

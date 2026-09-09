@@ -15,8 +15,12 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL('/auth/sign-in', req.url))
     }
     const redirectTo = req.nextUrl.searchParams.get('redirect') ?? '/student'
-    // Validate redirect is a relative path (prevent open redirect)
-    const safePath = redirectTo.startsWith('/') ? redirectTo : '/student'
+    // Validate redirect is a relative path (prevent open redirect). "//host" has to be
+    // excluded too: it starts with a slash but resolves to another ORIGIN, so it would send an
+    // instructor off-site wearing our chrome.
+    const safePath = redirectTo.startsWith('/') && !redirectTo.startsWith('//')
+      ? redirectTo
+      : '/student'
     const res = NextResponse.redirect(new URL(safePath, req.url))
     res.cookies.set(PREVIEW_COOKIE, '1', { httpOnly: true, sameSite: 'lax', path: '/' })
     return res

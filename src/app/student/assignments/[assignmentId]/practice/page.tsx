@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { PracticeMorphQuiz } from '@/components/student/PracticeMorphQuiz'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { canViewStudentPages } from '@/lib/preview'
+import { canViewStudentPages, studentPageEntry } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 
 export const metadata: Metadata = { title: 'Practice' }
@@ -18,7 +18,9 @@ export const metadata: Metadata = { title: 'Practice' }
 export default async function AssignmentPracticePage({ params }: { params: { assignmentId: string } }) {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!canViewStudentPages(payload)) {
+    redirect(studentPageEntry(payload, `/student/assignments/${params.assignmentId}/practice`))
+  }
   if (!payload) redirect('/auth/sign-in')
 
   // Only the existence and type are checked here; the API route does the enrollment check,

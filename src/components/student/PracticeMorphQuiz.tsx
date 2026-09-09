@@ -68,12 +68,15 @@ function splitPrompt(prompt: string): { surface: string; note: string | null } {
 // `practice` runs the same questions FORMATIVELY: nothing is recorded, and the end of the
 // session shows the per-question report with links into the grammar instead of a bare score.
 // Assignment practice is always formative — there is no lesson step for it to record.
-export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, practice = false }: {
+export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, practice = false, backTo }: {
   trackId?: string
   lessonNo?: number
   assignmentId?: string
   embedded?: boolean
   practice?: boolean
+  /** Where "back" goes when the student arrived from somewhere other than their own track —
+   *  a grammar chapter, say. Validated by the page; this component only renders it. */
+  backTo?: { href: string; labelKey: string }
 }) {
   const t = useT()
   const fromAssignment = !!assignmentId
@@ -128,10 +131,11 @@ export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, p
   if (!def && !fromAssignment) return null
   const lang = fromAssignment ? (meta?.lang ?? 'greek') : def!.lang
   const hebrew = lang === 'hebrew'
-  const backHref = fromAssignment
-    ? `/student/assignments/${assignmentId}`
-    : `/student/self-study/${trackId}`
-  const backLabel = fromAssignment ? t('assign.backToAssignment') : t('ss.q.backToTrack')
+  const backHref = backTo?.href
+    ?? (fromAssignment ? `/student/assignments/${assignmentId}` : `/student/self-study/${trackId}`)
+  const backLabel = backTo
+    ? t(backTo.labelKey)
+    : fromAssignment ? t('assign.backToAssignment') : t('ss.q.backToTrack')
   const alreadyDone = !fromAssignment && completed.has(stepKey)
   const hasVocabCap = fromAssignment
     ? !!meta?.vocabCapped

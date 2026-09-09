@@ -15,6 +15,7 @@
 ───────────────────────────────────────────── */
 
 import { useState, useEffect, useCallback } from 'react'
+import { probeProgress } from './session-probe'
 
 const LS_KEY = 'morph-progress'
 
@@ -53,12 +54,11 @@ export function useCourseProgress() {
     const local = readLocal()
     if (local.length) setCompleted(new Set(local))
 
-    fetch('/api/morphology/progress')
-      .then(r => (r.ok ? r.json() : null))
-      .catch(() => null)
-      .then((data: { chapters?: string[] } | null) => {
-        if (cancelled || !data) return
-        const server = data.chapters ?? []
+    // Shared with the Grammar pages' "Practise these forms" probe — one request per page.
+    probeProgress()
+      .then(({ signedIn, chapters }) => {
+        if (cancelled || !signedIn) return
+        const server = chapters
         const merged = new Set([...server, ...local])
         setCompleted(merged)
         writeLocal(merged)
