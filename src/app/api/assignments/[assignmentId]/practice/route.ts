@@ -14,6 +14,7 @@ import { isHebrewLevel } from '@/lib/constants'
 import { normaliseSubtype } from '@/lib/morph-practice-custom'
 import { logError } from '@/lib/logger'
 import { requireStudentAccess } from '@/lib/subscription'
+import { isInstructorOfCourse } from '@/lib/course-auth'
 
 // FORMATIVE practice for a morphology quiz a student has been set: the same recipe the
 // instructor configured, regenerated into DIFFERENT forms so rehearsing is not memorising the
@@ -48,19 +49,26 @@ export async function GET(req: NextRequest, { params }: { params: { assignmentId
       },
     })
     if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
+    // AUTHORISE BEFORE ANYTHING ELSE IS SAID ABOUT THE ROW. The type check below used to come
+    // first, so a caller with no access could tell an id that exists (400 "not a morphology
+    // quiz") from one that does not (404) — a small enumeration oracle, and free to close.
+    //
+    // Practice is a study aid for the class it was set to: an enrolled student, or an
+    // instructor OF THAT COURSE looking at what their students get. Any instructor used to
+    // pass, which handed one instructor another's title and generation recipe.
+    const allowed = payload.role === 'STUDENT'
+      ? assignment.isPublished && !!await prisma.enrollment.findFirst({
+          where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
+          select: { id: true },
+        })
+      : payload.role === 'INSTRUCTOR'
+        ? await isInstructorOfCourse(assignment.courseId, payload.sub)
+        : payload.role === 'ADMIN'
+    if (!allowed) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
     if (assignment.type !== 'MORPHOLOGY_QUIZ') {
       return NextResponse.json({ error: 'Not a morphology quiz' }, { status: 400 })
-    }
-
-    // Practice is a study aid for the class it was set to: an enrolled student, or the
-    // instructor looking at what their students get. Same shape as the assignment read route.
-    if (payload.role === 'STUDENT') {
-      const enrolled = await prisma.enrollment.findFirst({
-        where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
-      })
-      if (!enrolled || !assignment.isPublished) {
-        return NextResponse.json({ error: 'Not found' }, { status: 404 })
-      }
     }
 
     const hebrew = isHebrewLevel(String(assignment.level))

@@ -18,6 +18,7 @@ const assignmentFindUnique = jest.fn()
 const enrollmentFindFirst = jest.fn()
 const verifyToken = jest.fn()
 const requireStudentAccess = jest.fn()
+const isInstructorOfCourse = jest.fn()
 const fromConfig = jest.fn()
 const hebrewGen = jest.fn()
 const nounGen = jest.fn()
@@ -47,6 +48,9 @@ jest.mock('@/lib/logger', () => ({ logError: jest.fn() }))
 jest.mock('@/lib/subscription', () => ({
   requireStudentAccess: (...a: unknown[]) => requireStudentAccess(...a),
 }))
+jest.mock('@/lib/course-auth', () => ({
+  isInstructorOfCourse: (...a: unknown[]) => isInstructorOfCourse(...a),
+}))
 
 import { GET } from '@/app/api/assignments/[assignmentId]/practice/route'
 
@@ -66,6 +70,7 @@ function setup(assignment: unknown = GREEK) {
   jest.clearAllMocks()
   verifyToken.mockReturnValue({ sub: 'student1', role: 'STUDENT' })
   requireStudentAccess.mockResolvedValue(null)
+  isInstructorOfCourse.mockResolvedValue(true)
   enrollmentFindFirst.mockResolvedValue({ id: 'e1' })
   assignmentFindUnique.mockResolvedValue(assignment)
   fromConfig.mockResolvedValue([{ position: 1, prompt: 'λύει' }])
@@ -104,16 +109,34 @@ describe('GET /api/assignments/[id]/practice', () => {
     expect((await call()).status).toBe(404)
   })
 
-  it('lets an instructor open it without an enrollment', async () => {
+  it('lets the course’s own instructor open it without an enrollment', async () => {
     setup()
     verifyToken.mockReturnValue({ sub: 'instructor1', role: 'INSTRUCTOR' })
     enrollmentFindFirst.mockResolvedValue(null)
     expect((await call()).status).toBe(200)
+    expect(isInstructorOfCourse).toHaveBeenCalledWith('c1', 'instructor1')
+  })
+
+  it('refuses an instructor who does not teach the course', async () => {
+    // Any instructor used to pass, which handed one another's title and generation recipe.
+    setup()
+    verifyToken.mockReturnValue({ sub: 'instructor2', role: 'INSTRUCTOR' })
+    isInstructorOfCourse.mockResolvedValue(false)
+    expect((await call()).status).toBe(404)
+    expect(fromConfig).not.toHaveBeenCalled()
   })
 
   it('turns away anything that is not a parsing quiz', async () => {
     setup({ ...GREEK, type: 'VOCABULARY_QUIZ' })
     expect((await call()).status).toBe(400)
+  })
+
+  it('does not let the type check reveal that an id exists', async () => {
+    // Authorisation runs first: a caller with no access gets the same 404 for a real
+    // assignment of the wrong type as for an id that does not exist at all.
+    setup({ ...GREEK, type: 'VOCABULARY_QUIZ' })
+    enrollmentFindFirst.mockResolvedValue(null)
+    expect((await call()).status).toBe(404)
   })
 
   it('falls back to the part of speech when the assignment predates stored recipes', async () => {

@@ -276,7 +276,13 @@ export function CustomMorphBuilder({ defaultLang = 'greek' }: { defaultLang?: Mo
       {/* The live count, and the only way to start. */}
       <div className={clsx('flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-4 py-3',
         empty || countFailed ? 'border-amber-300 bg-amber-50' : 'border-gray-200 bg-gray-50')}>
-        <p className={clsx('text-sm', empty || countFailed ? 'text-amber-800' : 'text-gray-600')}>
+        {/* The count is the feedback for every chip pressed, so it has to be spoken as well as
+            shown — otherwise a screen-reader user toggles values and hears nothing change. */}
+        <p
+          aria-live="polite"
+          aria-atomic="true"
+          className={clsx('text-sm', empty || countFailed ? 'text-amber-800' : 'text-gray-600')}
+        >
           {countFailed
             ? t('pr.b.countFailed')
             : counting || count === null

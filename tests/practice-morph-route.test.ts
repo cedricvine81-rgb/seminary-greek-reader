@@ -123,6 +123,12 @@ describe('POST /api/practice/morph', () => {
     expect(res.headers.get('Retry-After')).toBe('30')
   })
 
+  it('answers a malformed body with 400, not 500', async () => {
+    // A 500 also logs to the error log, so junk requests would fill it with other people's noise.
+    const bad = { json: async () => { throw new SyntaxError('unexpected token') } } as unknown as import('next/server').NextRequest
+    expect((await POST(bad)).status).toBe(400)
+  })
+
   it('writes nothing', async () => {
     // There is no prisma import in this route at all; if one appears, this mock makes the
     // suite fail loudly rather than let a practice run start recording.

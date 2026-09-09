@@ -75,9 +75,16 @@ export async function POST(req: NextRequest) {
         { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } })
     }
 
-    const body = await req.json() as {
+    // A malformed body is a bad request, not a server fault — and logging it as one would
+    // fill the error log with other people's junk.
+    let body: {
       lang?: string; subtype?: string; fields?: unknown; parseFilter?: unknown
       vocabThruLesson?: unknown; vocabThruBand?: unknown; count?: unknown
+    }
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json({ error: 'Malformed request' }, { status: 400 })
     }
     const hebrew = body.lang === 'hebrew'
     const fields = cleanFields(body.fields)

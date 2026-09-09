@@ -4,6 +4,7 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { PracticeMorphQuiz } from '@/components/student/PracticeMorphQuiz'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, studentPageEntry } from '@/lib/preview'
+import { isInstructorOfCourse } from '@/lib/course-auth'
 import { prisma } from '@/lib/db'
 
 export const metadata: Metadata = { title: 'Practice' }
@@ -23,13 +24,23 @@ export default async function AssignmentPracticePage({ params }: { params: { ass
   }
   if (!payload) redirect('/auth/sign-in')
 
-  // Only the existence and type are checked here; the API route does the enrollment check,
-  // and it has to, since it is the thing that returns the questions.
+  // The same gate as the assignment page beside it. The API does its own check — it is the
+  // thing that hands out questions — but this page shows the assignment's TITLE, so leaving it
+  // to the API meant another course's title was readable by anyone with the id.
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { title: true, type: true },
+    select: { title: true, type: true, courseId: true, isPublished: true },
   })
   if (!assignment || assignment.type !== 'MORPHOLOGY_QUIZ') notFound()
+  const allowed = payload.role === 'STUDENT'
+    ? assignment.isPublished && !!await prisma.enrollment.findFirst({
+        where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
+        select: { id: true },
+      })
+    : payload.role === 'INSTRUCTOR'
+      ? await isInstructorOfCourse(assignment.courseId, payload.sub)
+      : payload.role === 'ADMIN'
+  if (!allowed) notFound()
 
   return (
     <DashboardShell role="STUDENT" pageTitle={assignment.title}>
