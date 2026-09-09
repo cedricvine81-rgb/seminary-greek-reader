@@ -77,6 +77,31 @@ if (!assignment) {
   assignment = null
 }
 
+// Two standing MORPHOLOGY_QUIZ assignments, so "Practise this quiz" is walkable end to end:
+// one carrying a stored recipe (the normal case) and one without (the legacy fallback, which
+// generates by part of speech alone). Neither needs generated Question rows — practice reads
+// the recipe, never the graded questions.
+for (const [title, extra] of [
+  ['TEST — Morphology Quiz (practice check)', {
+    morphSubtype: 'VERB', vocabThruLesson: 8,
+    morphConfig: {
+      fields: ['tense', 'voice', 'mood', 'person', 'number'],
+      parseFilter: { tenses: ['Present', 'Aorist'], moods: ['Indicative', 'Subjunctive'] },
+      numQuestions: 10,
+    },
+  }],
+  ['TEST — Morphology Quiz (legacy, no recipe)', { morphSubtype: 'NOUN', morphConfig: null }],
+]) {
+  const data = {
+    courseId: course.id, createdById: instructor.id, title, type: 'MORPHOLOGY_QUIZ',
+    weekNumber: 4, dueDate: new Date('2040-01-01'), level: course.level, isPublished: true,
+    ...extra,
+  }
+  const existing = await prisma.assignment.findFirst({ where: { courseId: course.id, title } })
+  if (existing) await prisma.assignment.update({ where: { id: existing.id }, data })
+  else await prisma.assignment.create({ data })
+}
+
 const creds = [
   'Seminary Greek — standing TEST accounts (safe to share with Claude, rotate by rerunning the seed script)',
   '',

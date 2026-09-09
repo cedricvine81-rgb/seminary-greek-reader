@@ -348,6 +348,22 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           <ActivityLogWorkspace assignmentId={assignment.id} previewMode={previewMode} />
         )}
 
+        {/* Formative practice for a parsing quiz: the same recipe the instructor configured,
+            regenerated into different forms, with an end-of-session report linking into the
+            grammar. Nothing is recorded. Shown even once the assignment closes — rehearsing
+            parsing stays useful for the next quiz and for the exam. */}
+        {assignment.type === 'MORPHOLOGY_QUIZ' && (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+            <p className="text-sm text-gray-600">{t('assign.practiseBody')}</p>
+            <Link
+              href={`/student/assignments/${assignment.id}/practice`}
+              className="btn btn-secondary inline-flex shrink-0 items-center gap-1.5 px-3.5 py-1.5 text-sm"
+            >
+              {t('assign.practiseCta')} →
+            </Link>
+          </div>
+        )}
+
         {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'CONSTRUCT_SEARCH' && assignment.type !== 'DIAGRAM' && assignment.type !== 'ACTIVITY_LOG' && (
           <QuizPlayer
             assignmentId={assignment.id}

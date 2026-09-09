@@ -60,17 +60,25 @@ function splitPrompt(prompt: string): { surface: string; note: string | null } {
   return m ? { surface: m[1], note: m[2] } : { surface: prompt, note: null }
 }
 
+// Two sources, one quiz. Self-study passes `trackId`/`lessonNo` and the ladder in
+// self-study-morph.ts supplies the recipe; an enrolled student passes `assignmentId` and the
+// recipe is the one their instructor stored on the assignment. In both cases the forms are
+// generated fresh server-side, so practice is never a rehearsal of the answer key.
+//
 // `practice` runs the same questions FORMATIVELY: nothing is recorded, and the end of the
 // session shows the per-question report with links into the grammar instead of a bare score.
-export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = false }: {
-  trackId: string
-  lessonNo: number
+// Assignment practice is always formative — there is no lesson step for it to record.
+export function PracticeMorphQuiz({ trackId, lessonNo, assignmentId, embedded, practice = false }: {
+  trackId?: string
+  lessonNo?: number
+  assignmentId?: string
   embedded?: boolean
   practice?: boolean
 }) {
   const t = useT()
-  const def = morphQuizFor(trackId, lessonNo)
-  const stepKey = morphKeyFor(trackId, lessonNo)
+  const fromAssignment = !!assignmentId
+  const def = trackId && lessonNo != null ? morphQuizFor(trackId, lessonNo) : null
+  const stepKey = trackId && lessonNo != null ? morphKeyFor(trackId, lessonNo) : ''
   const { completed, setChapter } = useCourseProgress()
 
   const [questions, setQuestions] = useState<MorphQ[] | null>(null)
@@ -79,6 +87,10 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = fals
   const [draft, setDraft] = useState<Record<string, string>>({})
   // Practice transcript: one entry per graded question, used only for the end report.
   const [answers, setAnswers] = useState<PracticeAnswer[]>([])
+  // Assignment mode: language, title and caveats come back with the questions, since there is
+  // no lesson definition to read them from.
+  const [meta, setMeta] = useState<
+    { lang: 'greek' | 'hebrew'; title: string; vocabCapped: boolean; approximate: boolean } | null>(null)
   const [checked, setChecked] = useState(false)
   const [earned, setEarned] = useState(0)
   const [possible, setPossible] = useState(0)
@@ -92,22 +104,38 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = fals
     setChecked(false)
     setEarned(0)
     setPossible(0)
-    fetch(`/api/self-study/morph?track=${trackId}&lesson=${lessonNo}`)
+    setMeta(null)
+    const url = assignmentId
+      ? `/api/assignments/${assignmentId}/practice`
+      : `/api/self-study/morph?track=${trackId}&lesson=${lessonNo}`
+    fetch(url)
       .then(r => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((data: { questions: MorphQ[] }) => {
-        if (data.questions?.length) setQuestions(data.questions)
-        else setFailed(true)
+      .then((data: { questions: MorphQ[]; lang?: 'greek' | 'hebrew'; title?: string;
+        vocabCapped?: boolean; approximate?: boolean }) => {
+        if (data.questions?.length) {
+          setQuestions(data.questions)
+          if (data.lang) setMeta({
+            lang: data.lang, title: data.title ?? '',
+            vocabCapped: !!data.vocabCapped, approximate: !!data.approximate,
+          })
+        } else setFailed(true)
       })
       .catch(() => setFailed(true))
-  }, [trackId, lessonNo])
+  }, [trackId, lessonNo, assignmentId])
 
   useEffect(() => { load() }, [load])
 
-  if (!def) return null
-  const hebrew = def.lang === 'hebrew'
-  const trackHref = `/student/self-study/${trackId}`
-  const alreadyDone = completed.has(stepKey)
-  const hasVocabCap = def.lang === 'greek' ? def.vocabThruLesson != null : !!def.vocabThruBand
+  if (!def && !fromAssignment) return null
+  const lang = fromAssignment ? (meta?.lang ?? 'greek') : def!.lang
+  const hebrew = lang === 'hebrew'
+  const backHref = fromAssignment
+    ? `/student/assignments/${assignmentId}`
+    : `/student/self-study/${trackId}`
+  const backLabel = fromAssignment ? t('assign.backToAssignment') : t('ss.q.backToTrack')
+  const alreadyDone = !fromAssignment && completed.has(stepKey)
+  const hasVocabCap = fromAssignment
+    ? !!meta?.vocabCapped
+    : def!.lang === 'greek' ? def!.vocabThruLesson != null : !!def!.vocabThruBand
 
   const finished = questions !== null && idx >= questions.length
   const pct = possible > 0 ? Math.round((earned / possible) * 100) : 0
@@ -125,7 +153,7 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = fals
   function checkParse() {
     if (!q || checked) return
     const right = activeFields.filter(([f]) => draft[f] === correctObj[f]).length
-    if (practice) {
+    if (practice || fromAssignment) {
       setAnswers(a => [...a, { prompt: q.prompt, correct: { ...correctObj }, given: { ...draft } }])
     }
     setEarned(e => e + right)
@@ -149,7 +177,7 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = fals
     setChecked(false)
     // Grade on the last answer: pass records the step; a fail records nothing. Practice
     // records nothing either way — it is formative by definition.
-    if (!practice && n >= questions.length && possible > 0
+    if (!practice && !fromAssignment && n >= questions.length && possible > 0
         && Math.round((earned / possible) * 100) >= MORPH_PASS_PCT) {
       setChapter(stepKey, true)
     }
@@ -160,16 +188,25 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = fals
   return (
     <div className="max-w-xl space-y-5">
       {!embedded && (
-        <Link href={trackHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
-          <ArrowLeft size={14} /> {t('ss.q.backToTrack')}
+        <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800 transition-colors">
+          <ArrowLeft size={14} /> {backLabel}
         </Link>
       )}
 
       <div>
-        <h1 className="text-lg font-bold text-gray-900">{t(def.labelKey)} · {t('ss.lessonN', { n: lessonNo })}</h1>
+        <h1 className="text-lg font-bold text-gray-900">
+          {/* The assignment's own title is already the page title above; repeating it here
+              would say the same thing twice, so the heading names the MODE instead. */}
+          {fromAssignment
+            ? t('ss.pr.practise')
+            : `${t(def!.labelKey)} · ${t('ss.lessonN', { n: lessonNo! })}`}
+        </h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          {practice ? t('ss.pr.practiceNote') : t('ss.q.parseNote', { pass: MORPH_PASS_PCT })}
+          {practice || fromAssignment ? t('ss.pr.practiceNote') : t('ss.q.parseNote', { pass: MORPH_PASS_PCT })}
           {hasVocabCap && <span> {t('ss.q.vocabCapNote')}</span>}
+          {/* Legacy assignments stored only a part of speech, so say so rather than imply
+              the practice matches the quiz filter for filter. */}
+          {meta?.approximate && <span> {t('ss.pr.approxNote')}</span>}
           {alreadyDone && <span className="ml-1 text-green-600 font-medium">{t('ss.q.alreadyPassed')}</span>}
         </p>
       </div>
@@ -183,16 +220,16 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = fals
         </div>
       ) : questions === null ? (
         <p className="py-8 text-sm italic text-gray-400">{t('hw.loading')}</p>
-      ) : finished && practice ? (
+      ) : finished && (practice || fromAssignment) ? (
         <div className="space-y-4">
-          <MorphPracticeReport answers={answers} lang={def.lang} />
+          <MorphPracticeReport answers={answers} lang={lang} />
           <div className="flex items-center justify-center gap-3">
             <button onClick={load} className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
               <RotateCcw size={14} /> {t('ss.q.tryAgain')}
             </button>
             {!embedded && (
-              <Link href={trackHref} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
-                {t('ss.q.backToTrack')}
+              <Link href={backHref} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
+                {backLabel}
               </Link>
             )}
           </div>
@@ -209,8 +246,8 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = fals
               <RotateCcw size={14} /> {t('ss.q.tryAgain')}
             </button>
             {!embedded && (
-              <Link href={trackHref} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
-                {t('ss.q.backToTrack')}
+              <Link href={backHref} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
+                {backLabel}
               </Link>
             )}
           </div>
