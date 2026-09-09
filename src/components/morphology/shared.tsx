@@ -867,7 +867,12 @@ export function SectionHeading({ n, id, children }: { n?: number; id?: string; c
       {...(id ? { id } : {})}
       {...(n != null ? { 'data-hasn': '1' } : {})}
       onClick={() => applyFold(!collapsedRef.current)}
-      className="mt-8 mb-3 flex items-center gap-2 text-lg font-semibold text-gray-900 cursor-pointer select-none group"
+      // A section break has to outrank the gaps inside a section, and on the Intermediate pages
+      // it had stopped doing so: the syntax categories sit 16px apart against this 32px, and at
+      // only twice the size the chapter read as one continuous list. About a line of extra air
+      // restores the hierarchy. Beginning keeps 32px — its sections hold prose and tables, with
+      // nothing inside them competing at 16px.
+      className={`${level === 'intermediate' ? 'mt-14' : 'mt-8'} mb-3 flex items-center gap-2 text-lg font-semibold text-gray-900 cursor-pointer select-none group`}
     >
       {n != null && (
         <span className="w-5 h-5 rounded-full bg-brand-600 text-white text-[11px] font-bold flex items-center justify-center shrink-0">
