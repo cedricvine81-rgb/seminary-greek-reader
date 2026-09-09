@@ -4,7 +4,10 @@ import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken, hashPassword } from '@/lib/auth'
 import { recordAudit } from '@/lib/audit'
 import { rateLimit } from '@/lib/rate-limit'
-import { sendEmail, escapeHtml, emailConfigured } from '@/lib/email'
+import { sendEmail, emailConfigured } from '@/lib/email'
+import {
+  CREDENTIALS_SUBJECT, credentialsText, credentialsHtml, type Credentials,
+} from '@/lib/credentials-email'
 
 function getAdmin() {
   const token = getTokenFromCookies()
@@ -81,30 +84,22 @@ export async function POST(
       data: { password: hashed, mustChangePassword: true },
     })
 
-    const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ?? 'https://seminarygreek.app'
-    const signIn = `${base}/auth/sign-in`
-    const name = target.firstName ?? ''
+    // An absolute URL always: a relative one is unusable in an email, and the fallback keeps
+    // the message correct on a deployment where NEXT_PUBLIC_APP_URL was never set.
+    const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || 'https://seminarygreek.app'
+    const credentials: Credentials = {
+      name: target.firstName,
+      email: target.email,
+      tempPassword,
+      signInUrl: `${base}/auth/sign-in`,
+    }
     // Sent AFTER the password is changed, never before: an email quoting a password that a
     // failed update never applied would be worse than no email at all.
     const { sent } = await sendEmail({
       to: [target.email],
-      subject: 'Your Seminary Greek account — sign-in details',
-      html: `<p>Hello ${escapeHtml(name)},</p>`
-        + `<p>Your Seminary Greek password has been reset. Sign in with the temporary password `
-        + `below — you will be asked to choose your own password straight away.</p>`
-        + `<p>Sign-in page: <a href="${escapeHtml(signIn)}">${escapeHtml(signIn)}</a><br>`
-        + `Email: ${escapeHtml(target.email)}<br>`
-        + `Temporary password: <strong>${escapeHtml(tempPassword)}</strong></p>`
-        + `<p>This temporary password is for one use only. If you did not expect this message, `
-        + `please reply and let us know.</p>`,
-      text: `Hello ${name},\n\n`
-        + `Your Seminary Greek password has been reset. Sign in with the temporary password `
-        + `below - you will be asked to choose your own password straight away.\n\n`
-        + `  Sign-in page:  ${signIn}\n`
-        + `  Email:         ${target.email}\n`
-        + `  Temp password: ${tempPassword}\n\n`
-        + `This temporary password is for one use only. If you did not expect this message, `
-        + `please reply and let us know.\n`,
+      subject: CREDENTIALS_SUBJECT,
+      html: credentialsHtml(credentials),
+      text: credentialsText(credentials),
     })
 
     await recordAudit({
@@ -126,6 +121,9 @@ export async function POST(
       ok: true,
       tempPassword,
       emailSent: sent,
+      // Handed back so the admin's "copy whole message" quotes the same address this email
+      // did — the two used to disagree, one hard-coded and one configured.
+      signInUrl: credentials.signInUrl,
       // Distinguishes "mail is switched off here" from "mail is on and this send failed" — the
       // admin's next move differs.
       emailConfigured: emailConfigured(),

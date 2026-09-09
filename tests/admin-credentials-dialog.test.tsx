@@ -73,11 +73,39 @@ describe('temporary password dialog', () => {
   })
 
   it('offers the whole message, with the password in it, for sending by hand', async () => {
-    await resetFor({ ok: true, tempPassword: 'Kp7mRt4xVw2n', emailSent: false, emailConfigured: true })
+    await resetFor({
+      ok: true, tempPassword: 'Kp7mRt4xVw2n', emailSent: false, emailConfigured: true,
+      signInUrl: 'https://example.test/auth/sign-in',
+    })
     await waitFor(() => expect(screen.getByText('Kp7mRt4xVw2n')).toBeInTheDocument())
     await user.click(screen.getByRole('button', { name: /copy whole message/i }))
     const text = await window.navigator.clipboard.readText()
     expect(text).toContain('Kp7mRt4xVw2n')
     expect(text).toContain('sam@example.edu')
+    // The address the SERVER used, not one the client invented: they used to disagree.
+    expect(text).toContain('https://example.test/auth/sign-in')
+    // Every language the app speaks, because nothing tells us which one this person reads.
+    expect(text).toContain('choose your own password')      // English
+    expect(text).toContain('contraseña temporal')            // Spanish
+    expect(text).toContain('временного пароля')              // Russian
+    expect(text).toContain('臨時密碼')                        // Chinese
+  })
+
+  it('cannot be dismissed by Escape when the email did not go', async () => {
+    // The dialog holds the only copy: a stray keypress must not take it away.
+    await resetFor({ ok: true, tempPassword: 'Kp7mRt4xVw2n', emailSent: false, emailConfigured: true })
+    await waitFor(() => expect(screen.getByText('Kp7mRt4xVw2n')).toBeInTheDocument())
+    await user.keyboard('{Escape}')
+    expect(screen.getByText('Kp7mRt4xVw2n')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^close$/i })).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /saved the password/i }))
+    await waitFor(() => expect(screen.queryByText('Kp7mRt4xVw2n')).not.toBeInTheDocument())
+  })
+
+  it('closes normally once the email HAS gone', async () => {
+    await resetFor({ ok: true, tempPassword: 'Kp7mRt4xVw2n', emailSent: true, emailConfigured: true })
+    await waitFor(() => expect(screen.getByText('Kp7mRt4xVw2n')).toBeInTheDocument())
+    await user.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByText('Kp7mRt4xVw2n')).not.toBeInTheDocument())
   })
 })

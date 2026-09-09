@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Pencil, Trash2, X, Check, Mail, RotateCcw, Copy, AlertTriangle } from 'lucide-react'
 import { Modal } from '@/components/ui/Modal'
 import { StudentImportPanel } from './StudentImportPanel'
+import { credentialsText, CREDENTIALS_SUBJECT } from '@/lib/credentials-email'
 
 interface User {
   id: string
@@ -86,7 +87,8 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
   // The one and only copy of a temporary password, held until the admin dismisses it. The
   // server stores no plaintext, so closing this dialog is the last chance to read it.
   const [issued, setIssued] = useState<{
-    name: string; email: string; tempPassword: string; emailSent: boolean; emailConfigured: boolean
+    name: string; email: string; tempPassword: string; signInUrl: string
+    emailSent: boolean; emailConfigured: boolean
   } | null>(null)
   const [copied, setCopied] = useState('')
 
@@ -148,21 +150,6 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
     load()
   }
 
-  /** The message the student receives — also what the admin copies if the send failed. */
-  function credentialsMessage(c: { name: string; email: string; tempPassword: string }) {
-    return `Hello ${c.name},
-
-Your Seminary Greek password has been reset. Please sign in with the temporary password below — you will be asked to choose your own password straight away.
-
-  Sign-in page:  https://seminarygreek.app/auth/sign-in
-  Email:         ${c.email}
-  Temp password: ${c.tempPassword}
-
-This temporary password is for one use only.
-
-Best wishes,`
-  }
-
   async function copy(text: string, what: string) {
     try {
       await navigator.clipboard.writeText(text)
@@ -192,6 +179,8 @@ Best wishes,`
         name: u.firstName,
         email: u.email,
         tempPassword: data.tempPassword,
+        // The server's own address, so a copied message can never quote a different one.
+        signInUrl: data.signInUrl ?? 'https://seminarygreek.app/auth/sign-in',
         emailSent: !!data.emailSent,
         emailConfigured: !!data.emailConfigured,
       })
@@ -271,6 +260,9 @@ Best wishes,`
         onClose={() => { setIssued(null); setCopied('') }}
         title="Temporary password issued"
         size="lg"
+        // When the email did not go, this dialog holds the ONLY copy of the password: no
+        // stray Escape or backdrop click may take it away, only the explicit button below.
+        dismissible={!issued || issued.emailSent}
       >
         {issued && (
           <div className="space-y-4">
@@ -314,7 +306,7 @@ Best wishes,`
                 </Button>
                 <Button
                   variant="secondary"
-                  onClick={() => copy(credentialsMessage(issued), 'message')}
+                  onClick={() => copy(credentialsText(issued), 'message')}
                   className="inline-flex items-center gap-1.5"
                 >
                   <Copy size={14} /> {copied === 'message' ? 'Copied' : 'Copy whole message'}
@@ -327,13 +319,15 @@ Best wishes,`
                   whatever mail client this machine has, which may be none. */}
               <a
                 href={`mailto:${encodeURIComponent(issued.email)}`
-                  + `?subject=${encodeURIComponent('Your Seminary Greek account — sign-in details')}`
-                  + `&body=${encodeURIComponent(credentialsMessage(issued))}`}
+                  + `?subject=${encodeURIComponent(CREDENTIALS_SUBJECT)}`
+                  + `&body=${encodeURIComponent(credentialsText(issued))}`}
                 className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800"
               >
                 <Mail size={14} /> Open in my mail app
               </a>
-              <Button onClick={() => { setIssued(null); setCopied('') }}>Done</Button>
+              <Button onClick={() => { setIssued(null); setCopied('') }}>
+                {issued.emailSent ? 'Done' : 'I have saved the password — close'}
+              </Button>
             </div>
           </div>
         )}

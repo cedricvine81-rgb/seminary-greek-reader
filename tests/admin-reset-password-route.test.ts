@@ -125,3 +125,35 @@ describe('admin reset-password', () => {
     expect(userUpdate).not.toHaveBeenCalled()
   })
 })
+
+describe('the message itself', () => {
+  it('speaks every language the app speaks, and quotes the credentials once', async () => {
+    const body = await (await call()).json()
+    const [opts] = sendEmail.mock.calls[0] as [{ text: string; html: string; subject: string }]
+    for (const phrase of ['choose your own password', 'contraseña temporal', 'временного пароля', '臨時密碼']) {
+      expect(opts.text).toContain(phrase)
+    }
+    // Nothing in the data says which language this person reads — there is no per-user locale,
+    // and Course.language is the language a course is ASSESSED in — so the credentials appear
+    // once, language-neutral, and only the instruction repeats.
+    expect(opts.text.match(new RegExp(body.tempPassword, 'g'))).toHaveLength(1)
+    expect(opts.subject).toContain('Datos de acceso')
+  })
+
+  it('always quotes an ABSOLUTE sign-in URL, even with no app URL configured', async () => {
+    const saved = process.env.NEXT_PUBLIC_APP_URL
+    process.env.NEXT_PUBLIC_APP_URL = ''
+    const body = await (await call()).json()
+    expect(body.signInUrl).toBe('https://seminarygreek.app/auth/sign-in')
+    process.env.NEXT_PUBLIC_APP_URL = saved
+  })
+
+  it('hands the admin the same address it emailed', async () => {
+    process.env.NEXT_PUBLIC_APP_URL = 'https://example.test'
+    const body = await (await call()).json()
+    const [opts] = sendEmail.mock.calls[0] as [{ text: string }]
+    expect(body.signInUrl).toBe('https://example.test/auth/sign-in')
+    expect(opts.text).toContain('https://example.test/auth/sign-in')
+    delete process.env.NEXT_PUBLIC_APP_URL
+  })
+})

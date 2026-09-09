@@ -9,6 +9,12 @@ interface ModalProps {
   title?: string
   children: ReactNode
   size?: 'sm' | 'md' | 'lg' | 'xl'
+  /**
+   * false = a stray Escape or backdrop click will not close this. For dialogs whose content
+   * cannot be recovered once dismissed — a one-time password the server does not store — the
+   * casual ways out are the dangerous ones; the content supplies its own explicit button.
+   */
+  dismissible?: boolean
 }
 
 const sizeClasses = {
@@ -18,7 +24,7 @@ const sizeClasses = {
   xl: 'max-w-2xl',
 }
 
-export function Modal({ open, onClose, title, children, size = 'md' }: ModalProps) {
+export function Modal({ open, onClose, title, children, size = 'md', dismissible = true }: ModalProps) {
   useEffect(() => {
     if (open) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = ''
@@ -27,9 +33,9 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
-    if (open) window.addEventListener('keydown', onKey)
+    if (open && dismissible) window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
+  }, [open, onClose, dismissible])
 
   if (!open) return null
 
@@ -39,7 +45,10 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
       aria-modal="true"
       role="dialog"
     >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={dismissible ? onClose : undefined}
+      />
       <div
         className={clsx(
           // Cap height and scroll internally so tall dialogs stay usable on short
@@ -50,13 +59,15 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
       >
         <div className="flex items-center justify-between mb-4">
           {title && <h2 className="text-lg font-semibold text-gray-900">{title}</h2>}
-          <button
-            onClick={onClose}
-            className="ml-auto p-1 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-            aria-label="Close"
-          >
-            <X size={18} />
-          </button>
+          {dismissible && (
+            <button
+              onClick={onClose}
+              className="ml-auto p-1 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
+          )}
         </div>
         {children}
       </div>
