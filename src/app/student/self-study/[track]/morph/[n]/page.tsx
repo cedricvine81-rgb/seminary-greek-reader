@@ -12,7 +12,16 @@ export const metadata: Metadata = { title: 'Parsing Quiz' }
 
 // A self-study lesson's morphology (parsing) practice quiz — the deep-link/full-page twin
 // of the track page's embedded panel. Questions come from /api/self-study/morph.
-export default function SelfStudyMorphQuizPage({ params }: { params: { track: string; n: string } }) {
+//
+// ?practice=1 runs the same quiz FORMATIVELY: identical questions, nothing recorded, and an
+// end-of-session report naming what to work on with links into the grammar. It is the same
+// recipe as the graded attempt, which is the point — students asked to rehearse the real thing.
+export default function SelfStudyMorphQuizPage(
+  { params, searchParams }: {
+    params: { track: string; n: string }
+    searchParams?: { practice?: string }
+  },
+) {
   const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
@@ -25,7 +34,7 @@ export default function SelfStudyMorphQuizPage({ params }: { params: { track: st
 
   return (
     <DashboardShell role="STUDENT" pageTitle={t(def.levelKey)}>
-      <PracticeMorphQuiz trackId={def.id} lessonNo={lessonNo} />
+      <PracticeMorphQuiz trackId={def.id} lessonNo={lessonNo} practice={searchParams?.practice === '1'} />
     </DashboardShell>
   )
 }

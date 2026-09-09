@@ -7,6 +7,8 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { morphQuizFor, morphKeyFor, MORPH_PASS_PCT } from '@/lib/self-study-morph'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
+import { MorphPracticeReport } from '@/components/student/MorphPracticeReport'
+import type { PracticeAnswer } from '@/lib/morph-practice-report'
 import {
   POOL_STEMS, POOL_CONJUGATIONS, POOL_PERSONS, POOL_GENDERS, POOL_NUMBERS,
   POOL_STATES, POOL_PRONOUN_TYPES,
@@ -58,10 +60,13 @@ function splitPrompt(prompt: string): { surface: string; note: string | null } {
   return m ? { surface: m[1], note: m[2] } : { surface: prompt, note: null }
 }
 
-export function PracticeMorphQuiz({ trackId, lessonNo, embedded }: {
+// `practice` runs the same questions FORMATIVELY: nothing is recorded, and the end of the
+// session shows the per-question report with links into the grammar instead of a bare score.
+export function PracticeMorphQuiz({ trackId, lessonNo, embedded, practice = false }: {
   trackId: string
   lessonNo: number
   embedded?: boolean
+  practice?: boolean
 }) {
   const t = useT()
   const def = morphQuizFor(trackId, lessonNo)
@@ -72,6 +77,8 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded }: {
   const [failed, setFailed] = useState(false)
   const [idx, setIdx] = useState(0)
   const [draft, setDraft] = useState<Record<string, string>>({})
+  // Practice transcript: one entry per graded question, used only for the end report.
+  const [answers, setAnswers] = useState<PracticeAnswer[]>([])
   const [checked, setChecked] = useState(false)
   const [earned, setEarned] = useState(0)
   const [possible, setPossible] = useState(0)
@@ -81,6 +88,7 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded }: {
     setFailed(false)
     setIdx(0)
     setDraft({})
+    setAnswers([])
     setChecked(false)
     setEarned(0)
     setPossible(0)
@@ -117,6 +125,9 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded }: {
   function checkParse() {
     if (!q || checked) return
     const right = activeFields.filter(([f]) => draft[f] === correctObj[f]).length
+    if (practice) {
+      setAnswers(a => [...a, { prompt: q.prompt, correct: { ...correctObj }, given: { ...draft } }])
+    }
     setEarned(e => e + right)
     setPossible(p => p + activeFields.length)
     setChecked(true)
@@ -136,8 +147,9 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded }: {
     setIdx(n)
     setDraft({})
     setChecked(false)
-    // Grade on the last answer: pass records the step; a fail records nothing.
-    if (n >= questions.length && possible > 0
+    // Grade on the last answer: pass records the step; a fail records nothing. Practice
+    // records nothing either way — it is formative by definition.
+    if (!practice && n >= questions.length && possible > 0
         && Math.round((earned / possible) * 100) >= MORPH_PASS_PCT) {
       setChapter(stepKey, true)
     }
@@ -156,7 +168,7 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded }: {
       <div>
         <h1 className="text-lg font-bold text-gray-900">{t(def.labelKey)} · {t('ss.lessonN', { n: lessonNo })}</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          {t('ss.q.parseNote', { pass: MORPH_PASS_PCT })}
+          {practice ? t('ss.pr.practiceNote') : t('ss.q.parseNote', { pass: MORPH_PASS_PCT })}
           {hasVocabCap && <span> {t('ss.q.vocabCapNote')}</span>}
           {alreadyDone && <span className="ml-1 text-green-600 font-medium">{t('ss.q.alreadyPassed')}</span>}
         </p>
@@ -171,6 +183,20 @@ export function PracticeMorphQuiz({ trackId, lessonNo, embedded }: {
         </div>
       ) : questions === null ? (
         <p className="py-8 text-sm italic text-gray-400">{t('hw.loading')}</p>
+      ) : finished && practice ? (
+        <div className="space-y-4">
+          <MorphPracticeReport answers={answers} lang={def.lang} />
+          <div className="flex items-center justify-center gap-3">
+            <button onClick={load} className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              <RotateCcw size={14} /> {t('ss.q.tryAgain')}
+            </button>
+            {!embedded && (
+              <Link href={trackHref} className="inline-flex items-center rounded-lg bg-brand-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
+                {t('ss.q.backToTrack')}
+              </Link>
+            )}
+          </div>
+        </div>
       ) : finished ? (
         <div className="space-y-4 rounded-2xl border border-gray-200 bg-surface p-6 text-center">
           <p className="text-5xl font-bold text-gray-900">{pct}%</p>

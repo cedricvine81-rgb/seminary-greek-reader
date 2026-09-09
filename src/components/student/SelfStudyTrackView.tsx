@@ -183,6 +183,22 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
                           {stepLabel(step, t)}
                         </span>
                       </Link>
+
+                      {/* Morph steps get a formative twin: same questions, nothing recorded,
+                          and a report at the end naming what to work on with links into the
+                          grammar. Students asked to rehearse before the graded attempt. */}
+                      {step.morph && step.lesson != null && (
+                        <Link
+                          href={`${step.href}?practice=1`}
+                          onClick={inPanel ? e => {
+                            e.preventDefault()
+                            setPanel({ ...step, key: `${step.key}-practice`, practice: true })
+                          } : undefined}
+                          className="shrink-0 rounded-md border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-500 transition-colors hover:border-brand-300 hover:text-brand-700"
+                        >
+                          {t('ss.pr.practise')}
+                        </Link>
+                      )}
                     </li>
                   )
                 })}
@@ -220,7 +236,7 @@ export function SelfStudyTrackView({ trackId }: { trackId: string }) {
                   initialLevel={grammarTarget(panel.href).level}
                 />
           ) : panel.morph && panel.lesson != null ? (
-            <PracticeMorphQuiz trackId={def.id} lessonNo={panel.lesson} embedded />
+            <PracticeMorphQuiz trackId={def.id} lessonNo={panel.lesson} embedded practice={panel.practice} />
           ) : panel.quiz && panel.lesson != null ? (
             <PracticeVocabQuiz trackId={def.id} lessonNo={panel.lesson} embedded />
           ) : (

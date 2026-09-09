@@ -45,6 +45,10 @@ export interface SelfStudyStep {
   quiz?: { deck: 'greek' | 'hebrew'; selection: string | string[]; sample?: number }
   /** Morphology (parsing) quiz steps — the recipe lives in self-study-morph.ts. */
   morph?: boolean
+  /** Set on the PRACTICE variant of a morph step: same recipe, nothing recorded, and an
+      end-of-session report instead of a score. Carried on the step so the panel can be
+      keyed by it — a practice run must remount rather than reuse the graded instance. */
+  practice?: boolean
   /** Quiz and morph steps: the 1-based lesson number, for embedded players. */
   lesson?: number
 }
