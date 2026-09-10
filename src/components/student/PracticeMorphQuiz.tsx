@@ -2,7 +2,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { ArrowLeft, Check, RotateCcw, X } from 'lucide-react'
+import { ArrowLeft, BookOpen, Check, RotateCcw, X } from 'lucide-react'
+import { MorphTable } from '@/components/morphology/shared'
+import { paradigmFor, PARADIGM_TABLE_DATA } from '@/lib/morph-paradigm-tables'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { morphQuizFor, morphKeyFor, MORPH_PASS_PCT, MORPH_QUIZ_QUESTIONS } from '@/lib/self-study-morph'
@@ -35,6 +37,11 @@ interface MorphQ {
   options: string[]
   points: number
   reference: string | null
+  /** Set by the generator for parsing questions. Used to name the paradigm table a wrong
+   *  parse belongs to — see lib/morph-paradigm-tables.ts. Absent on question types that are
+   *  built from example sentences rather than a pool entry (conditionals, subjunctives). */
+  lexeme?: string
+  partOfSpeech?: string
 }
 
 /** Display order + option lists for every field a generated answer can carry. */
@@ -118,6 +125,9 @@ export function PracticeMorphQuiz({
   // reading the student was actually credited for, not the one the corpus happened to store.
   const [reading, setReading] = useState<Record<string, string | null> | null>(null)
   const [checked, setChecked] = useState(false)
+  // Collapsed by default and reset on every question: the table is an explanation of the
+  // mistake just made, not a reference left open across the run.
+  const [showTable, setShowTable] = useState(false)
   const [earned, setEarned] = useState(0)
   const [possible, setPossible] = useState(0)
   // "Drill these" narrows the session that just ended into a new custom spec — which is why
@@ -297,6 +307,11 @@ export function PracticeMorphQuiz({
     ? fieldMap(hebrew, t).filter(([f]) => correctObj[f])
     : []
   const requiredFilled = isMC || activeFields.every(([f]) => draft[f])
+  // Same test the per-field feedback uses (draft vs the credited reading), so the table offer
+  // appears exactly when at least one field is shown with a red ✗.
+  const anyWrong = checked && activeFields.some(([f]) => draft[f] !== (reading ? reading[f] : correctObj[f]))
+  const paradigm = q ? paradigmFor({ partOfSpeech: q.partOfSpeech, lexeme: q.lexeme }) : null
+  const paradigmData = paradigm ? PARADIGM_TABLE_DATA[paradigm.tableId] : undefined
 
   function checkParse() {
     if (!q || checked) return
@@ -331,6 +346,7 @@ export function PracticeMorphQuiz({
     setIdx(n)
     setDraft({})
     setChecked(false)
+    setShowTable(false)
     setReading(null)
     // Grade on the last answer: pass records the step; a fail records nothing. Practice
     // records nothing either way — it is formative by definition.
@@ -517,6 +533,48 @@ export function PracticeMorphQuiz({
                 })}
               </div>
             </>
+          )}
+
+          {/* The paradigm behind a wrong parse. Shown only once the answer is checked and only
+              when something was actually missed: the point is to explain the mistake, not to
+              hand out the table before the attempt. Nouns and adjectives resolve to one of the
+              two endings paradigms and open it right here, so the student never leaves the run;
+              pronouns each have their own full table, so those link into the chapter instead.
+              Verbs resolve to nothing — see morph-paradigm-tables.ts. */}
+          {checked && anyWrong && paradigm && (
+            <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+              <button
+                type="button"
+                onClick={() => setShowTable(v => !v)}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-800"
+              >
+                <BookOpen size={14} />
+                {showTable ? t('morph.par.close') : t('morph.par.seeTable')}
+              </button>
+              {showTable && (paradigmData ? (
+                <div className="mt-3 overflow-x-auto">
+                  <MorphTable
+                    id={paradigm.tableId}
+                    title={paradigmData.title}
+                    headers={paradigmData.headers}
+                    rows={paradigmData.rows}
+                    tCols={paradigmData.tCols}
+                    dividerRows={paradigmData.dividerRows}
+                    note={paradigmData.note}
+                    flush
+                  />
+                </div>
+              ) : (
+                <p className="mt-2 text-sm">
+                  <Link
+                    href={`/grammar?chapter=${paradigm.chapter}&level=beginning&track=greek#table-${paradigm.tableId.replace(/\./g, '-')}`}
+                    className="text-brand-600 hover:text-brand-800 underline"
+                  >
+                    {t('morph.par.seeTable')}
+                  </Link>
+                </p>
+              ))}
+            </div>
           )}
 
           <div className="flex justify-end">

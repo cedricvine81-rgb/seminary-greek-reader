@@ -19,6 +19,13 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, GuidedExample, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
+import { PARADIGM_TABLE_DATA } from '@/lib/morph-paradigm-tables'
+
+// The two endings paradigms live in lib so the practice panel and this chapter render
+// one copy rather than two that drift. Title and note stay literal here: they are
+// fingerprinted translation sources, and moving them would strand their Spanish.
+const T3 = PARADIGM_TABLE_DATA['nouns.t3']
+const T5 = PARADIGM_TABLE_DATA['nouns.t5']
 
 export const NOUNS_CONTENT = (
   <>
@@ -148,15 +155,8 @@ export const NOUNS_CONTENT = (
         <Ex grc="ὁ ἀπόστολος λέγει τὸν λόγον τοῦ θεοῦ" en={<Tr id="nouns.ex.apostle-speaks-word">the apostle speaks the word of God</Tr>} />
       </>}
     >
-      <MorphTable id="nouns.t3" tCols={[0, 4]} flush title="1st & 2nd Declension Endings" headers={['','Masc.','Neut.','Fem.','Sense']} dividerRows={[0,5]}
-        rows={[
-          ['Singular','','','',''],
-          ['Nom.','‒ος','‒ον','‒η','subject'],['Gen.','‒ου →','‒ου','‒ης','of'],
-          ['Dat.','‒ῳ →','‒ῳ','‒ῃ','to / for'],['Acc.','‒ον','= Nom.','‒ην','object'],
-          ['Plural','','','',''],
-          ['Nom.','‒οι','‒α','‒αι','subject'],['Gen.','‒ων →','‒ων','‒ων','of'],
-          ['Dat.','‒οις →','‒οις','‒αις','to / for'],['Acc.','‒ους','= Nom.','‒ας','object'],
-        ]}
+      <MorphTable id="nouns.t3" tCols={T3.tCols} flush title="1st & 2nd Declension Endings" headers={T3.headers} dividerRows={T3.dividerRows}
+        rows={T3.rows}
         note="→ neuter takes the same ending as masculine  ·  Neuter Acc. = Neuter Nom."
       />
     </TableAside>
@@ -369,14 +369,8 @@ export const NOUNS_CONTENT = (
         and aorist: <Gk>σαρκ + σί → σαρξί</Gk>.</Tr></p>
       </>}
     >
-      <MorphTable id="nouns.t5" tCols={[0, 1, 2, 3]} flush title="3rd Declension Endings" headers={['','Masc./Fem.','Neuter','Sense']} dividerRows={[0,5]}
-        rows={[
-          ['Singular','','',''],
-          ['Nom.','‒ς  or  ‒(none)','‒(none)','subject'],['Gen.','‒ος →','‒ος','of'],
-          ['Dat.','‒ι →','‒ι','to / for'],['Acc.','‒α  or  ‒ν','= Nom.','object'],
-          ['Plural','','',''],
-          ['Nom.','‒ες','‒α','subject'],['Gen.','‒ων →','‒ων','of'],['Dat.','‒σι →','‒σι','to / for'],['Acc.','‒ας','= Nom.','object'],
-        ]}
+      <MorphTable id="nouns.t5" tCols={T5.tCols} flush title="3rd Declension Endings" headers={T5.headers} dividerRows={T5.dividerRows}
+        rows={T5.rows}
         note="→ neuter takes the same ending as Masc./Fem.  ·  Neuter Acc. = Neuter Nom."
       />
     </TableAside>

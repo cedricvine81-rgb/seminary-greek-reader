@@ -63,6 +63,12 @@ export interface GeneratedQuestion {
   correctAnswer: string
   options: string[]
   points: number
+  /** Parsing questions only. The lexeme and part of speech are already inside `prompt` as
+   *  display text ("κυρίου  (κύριος — Lord)"), but a UI that needs them — the practice drill,
+   *  to name the paradigm table a wrong parse belongs to — must not have to parse that string
+   *  back apart. See morph-paradigm-tables.ts. */
+  lexeme?: string
+  partOfSpeech?: string
 }
 
 /**
@@ -513,6 +519,8 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
       position: idx + 1,
       type: 'MORPHOLOGY_IDENTIFY' as QuestionType,
       prompt: `${entry.surface}  (${entry.lexeme} — ${entry.gloss})`,
+      lexeme: entry.lexeme,
+      partOfSpeech: entry.partOfSpeech,
       correctAnswer: JSON.stringify(answer),
       options: [],
       points: Math.max(1, testedCount),
@@ -682,6 +690,8 @@ export function generateHebrewMorphologyQuestions(
       position: idx + 1,
       type: 'MORPHOLOGY_IDENTIFY' as QuestionType,
       prompt: `${entry.surface}  (${entry.lexeme} — ${entry.gloss})`,
+      lexeme: entry.lexeme,
+      partOfSpeech: entry.partOfSpeech,
       correctAnswer: JSON.stringify(answer),
       options: [],
       points: Math.max(1, testedCount),
@@ -785,7 +795,7 @@ export function generatePronounParseQuestions(count: number) {
   return parseEntriesToQuestions(PRONOUN_POOL, count)
 }
 
-export function generateConditionalQuestions(count: number) {
+export function generateConditionalQuestions(count: number): GeneratedQuestion[] {
   const allTypes = [...CONDITIONAL_TYPES]
   const picked = shuffle(CONDITIONAL_EXAMPLES).slice(0, count)
   return picked.map((ex, idx) => {
@@ -803,7 +813,7 @@ export function generateConditionalQuestions(count: number) {
   })
 }
 
-export function generateSubjunctiveQuestions(count: number) {
+export function generateSubjunctiveQuestions(count: number): GeneratedQuestion[] {
   const allTypes = [...SUBJUNCTIVE_TYPES]
   const picked = shuffle(SUBJUNCTIVE_EXAMPLES).slice(0, count)
   return picked.map((ex, idx) => {

@@ -484,7 +484,12 @@ export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows
     }
   }
   return (
-    <div className={flush ? '' : 'mb-5'}>
+    // The table's `id` is otherwise only a translation-key namespace. Rendering it as a DOM
+    // anchor too is what lets a practice drill send a student to the ONE paradigm he misread
+    // (see morph-paradigm-tables.ts). Dots are legal in an id but awkward in a CSS selector,
+    // so the anchor is the dotted key with dashes: nouns.t3 -> table-nouns-t3.
+    <div className={flush ? '' : 'mb-5'} id={id ? `table-${id.replace(/\./g, '-')}` : undefined}
+      style={id ? { scrollMarginTop: '5rem' } : undefined}>
       {title && (
         <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide mb-1.5">
           {title}

@@ -14,8 +14,6 @@ import {
 // self-study-morph registry; this route exists because the pools are server-only.
 // Gated on login only, like the progress store: no course, no Assignment row.
 
-/** Lexeme from a generated prompt ("surface  (lexeme — gloss)"). */
-const lemmaOf = (prompt: string) => prompt.match(/\(([^\s—)]+)\s*—/)?.[1] ?? ''
 const stripAccents = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 const ENDINGS: Record<'contract' | 'mi', RegExp> = { contract: /[εαο]ω$/, mi: /μι$/ }
 
@@ -40,12 +38,13 @@ export async function GET(req: NextRequest) {
     } else {
       const parts = await Promise.all(def.subtypes.map(({ subtype, count }) =>
         // Lexeme-ending quizzes (contract / μι verbs) over-generate and post-filter by the
-        // lemma in the prompt — the generator has no lexeme hook, and at 200 the request
-        // comfortably covers the measured pool sizes (70 contract / 153 μι forms).
+        // question's own lexeme; at 200 the request comfortably covers the measured pool
+        // sizes (70 contract / 153 μι forms). This used to dig the lemma back out of the
+        // display prompt with a regex because the generator exposed no lexeme — it does now.
         generateMorphologyQuestionsBySubtype(
           subtype, def.lexemeEnding ? 200 : count, def.vocabThruLesson, def.fields, def.parseFilter,
         ).then(qs => def.lexemeEnding
-          ? qs.filter(q => ENDINGS[def.lexemeEnding!].test(stripAccents(lemmaOf(q.prompt)))).slice(0, count)
+          ? qs.filter(q => ENDINGS[def.lexemeEnding!].test(stripAccents(q.lexeme ?? ''))).slice(0, count)
           : qs),
       ))
       questions = parts.flat().map((q, i) => ({ ...q, position: i + 1 }))
