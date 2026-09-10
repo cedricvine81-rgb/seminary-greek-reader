@@ -18,18 +18,18 @@ export const LIQUIDS_CONTENT = (
     <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
-      <SectionHeading id="liquids.h.english-first">Start with English: sounds that won't take an -s</SectionHeading>
+      <SectionHeading id="liquids.h.english-first">Start with English: sounds that will not take an -s</SectionHeading>
       <P id="liquids.p.flow">
         Say "λ, μ, ν, ρ" out loud — <em>l, m, n, r</em>. They flow; ancient grammarians called them
         <strong> liquid</strong> consonants. Now try pronouncing a Greek future built the normal way:
         <Gk> μεν + σω</Gk> — "men-so." Greek ears refused the combination: liquids simply
-        <strong> won't sit next to σ</strong>. English has quirks like this too — think how "goose" makes
+        <strong> will not sit next to σ</strong>. English has quirks like this too — think how "goose" makes
         its plural <em>geese</em> rather than accepting a clunky "gooses."
       </P>
       <P id="liquids.p.no-sigma">
         So verbs whose stems end in a liquid — <Gk>μένω</Gk> "remain," <Gk>κρίνω</Gk> "judge,"
         <Gk> ἐγείρω</Gk> "raise," <Gk>ἀποστέλλω</Gk> "send" — form their future and aorist
-        <em> without the σ</em>, compensating in two clever ways you're about to recognize instantly.
+        <em> without the σ</em>, compensating in two clever ways you are about to recognize instantly.
       </P>
     </LevelOnly>
 
@@ -125,7 +125,7 @@ export const LIQUIDS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="liquids.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="liquids.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="liquids.wo.0"><Gk>μένω / μενῶ</Gk>, <Gk>κρίνει / κρινεῖ</Gk> — present vs. future by accent alone. In unaccented contexts (or fast reading), the surrounding tense-logic decides.</Tr></li>
@@ -137,7 +137,7 @@ export const LIQUIDS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="liquids.h.try-it">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="liquids.h.try-it">Practice</SectionHeading></LevelOnly>
     <Practice
       id="liquids.pr"
       title="Practice — parse and translate"

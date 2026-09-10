@@ -20,7 +20,7 @@ export const PRONOUNS_CONTENT = (
         "Mary saw Mary's brother and Mary waved to Mary's brother." Unbearable — which is why every language
         has <Term t="pronoun">pronouns</Term>: "Mary saw her brother and waved to him."
         A pronoun stands in for a noun already mentioned (its <strong>antecedent</strong>), so you
-        don't have to keep repeating it.
+        do not have to keep repeating it.
       </P>
       <P id="pronouns.p.already-know-key">
         You already know the key fact about Greek pronouns from the Nouns chapter: English pronouns are the
@@ -33,7 +33,7 @@ export const PRONOUNS_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · αὐτός ──────────────────────────────────────── */}
-    <SectionHeading id="pronouns.h.workhorse-she">The workhorse: αὐτός ("he, she, it")</SectionHeading>
+    <SectionHeading id="pronouns.h.workhorse-she">The principal pronoun: αὐτός ("he, she, it")</SectionHeading>
     <P id="pronouns.p.far-most-common">
       By far the most common Greek pronoun is <Gk>αὐτός</Gk> — the everyday "he / she / it / they." Its endings
       are the familiar 1st/2nd-declension set, and its genitive doubles as "his / her / its / their":
@@ -163,7 +163,7 @@ export const PRONOUNS_CONTENT = (
     <LevelOnly level="beginning">
       <P id="pronouns.p.little-genitives-how">
         The little genitives <Gk>μου</Gk> and <Gk>σου</Gk> are how Greek says "my" and "your":
-        <Gk> ὁ πατήρ μου</Gk>, "my father" (literally "the father of me"). Note that English spelling can't
+        <Gk> ὁ πατήρ μου</Gk>, "my father" (literally "the father of me"). Note that English spelling cannot
         tell "you" singular from "you" plural — Greek always can: <Gk>σύ</Gk> is one person,
         <Gk> ὑμεῖς</Gk> is "you all."
       </P>
@@ -334,7 +334,7 @@ export const PRONOUNS_CONTENT = (
     </TableAside>
 
     {/* ── 6 · Watch out ──────────────────────────────────── */}
-    <SectionHeading id="pronouns.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="pronouns.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="pronouns.wo.she-woman-breathing"><Gk>αὐτή</Gk> ("she") vs. <Gk>αὕτη</Gk> ("this woman," from <Gk>οὗτος</Gk>) — the breathing mark and accent are the only visible difference.</Tr></li>
@@ -345,7 +345,7 @@ export const PRONOUNS_CONTENT = (
     </InfoBox>
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="pronouns.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="pronouns.h.try">Practice</SectionHeading></LevelOnly>
     <DropdownPractice id="pronouns.d3"
       title="Practice — τις or τίς?"
       intro={<Tr id="pronouns.intro.read-accent-first">Read the accent first — it is the only difference between "someone" and "who?"</Tr>}

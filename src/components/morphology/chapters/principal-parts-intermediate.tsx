@@ -38,7 +38,7 @@ export const PRINCIPAL_PARTS_INTERMEDIATE_CONTENT = (
     <P id="principal-parts.p.int-caution">
       <strong>Why lexicons print them.</strong> A form you cannot place is a form whose system you have not identified. Find the marker — reduplication, <Gk>σ</Gk>, <Gk>θη</Gk>, an augment — and it names the part; the part names the entry; and only then does the lexicon help. Working the other way round, from a guessed present, is how a reader ends up inventing a verb.
     </P>
-    <SectionHeading id="principal-parts.h.deeper">Going deeper: systems, not tenses</SectionHeading>
+    <SectionHeading id="principal-parts.h.deeper">Further study: systems, not tenses</SectionHeading>
     <P id="principal-parts.p.systems">
       <strong>Think in tense-systems.</strong> The six parts reveal Greek's real architecture: not
       "tenses" but <em>systems</em> — present, future, aorist, perfect active, perfect middle/passive,

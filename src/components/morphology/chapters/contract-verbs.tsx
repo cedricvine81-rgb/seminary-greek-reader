@@ -143,7 +143,7 @@ export const CONTRACT_VERBS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="contract-verbs.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="contract-verbs.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="contract-verbs.wo.does-middle-infinitive"><Gk>ποιεῖ</Gk> is 3rd sg. ("he does") <em>and</em> the 2nd sg. middle; <Gk>ποιεῖν</Gk> is the infinitive — small differences, big meaning shifts.</Tr></li>
@@ -155,7 +155,7 @@ export const CONTRACT_VERBS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="contract-verbs.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="contract-verbs.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="contract-verbs.pr1"
       title="Practice — parse and translate"
       intro={<Tr id="contract-verbs.intro.name-family-then">Name the family (-έω / -άω / -όω), then the form.</Tr>}

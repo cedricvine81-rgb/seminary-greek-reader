@@ -232,7 +232,7 @@ export const ESS_SECTIONS: EssSection[] = [
       <TableAside
         beginning={<>
           <AsideLabel><Tr id="essentials.al.what-makes-them">What makes them look strange</Tr></AsideLabel>
-          <p><Tr id="essentials.as.iota-reduplication-present"><strong>Iota reduplication:</strong> in the present &amp; imperfect the first consonant repeats with an iota (<Gk>δι‒δω‒μι</Gk>). See an iota → it's present or imperfect.</Tr></p>
+          <p><Tr id="essentials.as.iota-reduplication-present"><strong>Iota reduplication:</strong> in the present &amp; imperfect the first consonant repeats with an iota (<Gk>δι‒δω‒μι</Gk>). See an iota → it is present or imperfect.</Tr></p>
           <p><Tr id="essentials.as.every-other-tense">Every <em>other</em> tense drops the iota and follows the regular <Gk>λύω</Gk> pattern, and the aorist marker is <Gk>‒κα</Gk> (not <Gk>‒σα</Gk>).</Tr></p>
           <Ex grc="δίδωμί σοι" en={<Tr id="essentials.ex.give">I give to you</Tr>} />
           <Ex grc="ἔδωκα" en={<Tr id="essentials.ex.gave-aorist">I gave (aorist ‒κα)</Tr>} />

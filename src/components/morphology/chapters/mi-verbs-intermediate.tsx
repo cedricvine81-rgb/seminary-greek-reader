@@ -26,7 +26,7 @@ export const MI_VERBS_INTERMEDIATE_CONTENT = (
     <P id="mi-verbs.p.int-lead">
       The <Gk>-μι</Gk> verbs are the older layer of the language. They attach their endings straight to the stem with no connecting vowel — which is what “athematic” means — and the club is small enough to learn by name, but its members are so frequent, and so theologically loaded, that they repay it several times over.
     </P>
-    <SectionHeading id="mi-verbs.cg.int-habits">The habits that identify them</SectionHeading>
+    <SectionHeading id="mi-verbs.cg.int-habits">Identifying features</SectionHeading>
     <CatGroup>
       <Cat id="mi-verbs.cat.reduplication" name="Present reduplication with iota" eg="δίδωμι, τίθημι, ἵστημι" ex={[{ g: "οὕτως γὰρ ἠγάπησεν ὁ Θεὸς τὸν κόσμον ὥστε τὸν Υἱὸν τὸν μονογενῆ ἔδωκεν", e: "for God so loved the world that he gave his only Son", r: "John 3:16" }]} how={<T id="mi-verbs.cat.reduplication.h">A doubled first consonant with an <G>ι</G> between — <G>δι-δο</G>, <G>τι-θε</G>, <G>ἱ-στα</G>. Seeing it puts you in the present system and nowhere else.</T>}><T id="mi-verbs.cat.reduplication.d">the present stem doubles its first consonant with an <G>ι</G>: <G>δι-δο</G>, <G>τι-θε</G>, <G>ἱ-στα</G>. See that pattern and you are in the present system, nowhere else</T></Cat>
       <Cat id="mi-verbs.cat.vowel-gradation" name="Long in the singular, short in the plural" eg="δίδωσι / δίδομεν" ex={[{ g: "κἀγὼ δίδωμι αὐτοῖς ζωὴν αἰώνιον", e: "I give them eternal life", r: "John 10:28" }]} how={<T id="mi-verbs.cat.vowel-gradation.h">Compare the singular against the plural. A long stem vowel in the singular and a short one in the plural is the surest tell after reduplication.</T>}><T id="mi-verbs.cat.vowel-gradation.d">the stem vowel alternates by number — <G>δίδωμι, δίδως, δίδωσι</G> against <G>δίδομεν, δίδοτε</G>. The alternation is the surest tell after reduplication</T></Cat>
@@ -36,7 +36,7 @@ export const MI_VERBS_INTERMEDIATE_CONTENT = (
     <P id="mi-verbs.p.int-caution">
       <strong>Where it bites.</strong> <Gk>παραδίδωμι</Gk> — “hand over” — is the verb of the betrayal and of the delivering up of the Son, and it is the same word in both. Reading the <Gk>-μι</Gk> forms fluently is the difference between noticing that and not.
     </P>
-    <SectionHeading id="mi-verbs.h.going-deeper-small">Going deeper: a small group of high theological weight</SectionHeading>
+    <SectionHeading id="mi-verbs.h.going-deeper-small">Further study: a small group of high theological weight</SectionHeading>
     <P id="mi-verbs.p.stative-perfect-because">
       <strong>ἵστημι's stative perfect.</strong> Because its perfect <Gk>ἕστηκα</Gk> denotes the
       <em> state</em> of standing, it translates as an English present: <Gk>ἰδοὺ ἕστηκα ἐπὶ τὴν θύραν</Gk>,

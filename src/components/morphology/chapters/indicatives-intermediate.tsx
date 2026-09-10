@@ -59,7 +59,7 @@ export const INDICATIVES_INTERMEDIATE_CONTENT = (
             <Cat id="indicatives.cat.imperatival-future"name="Imperatival Future" ex={[{ g: "ἀγαπήσεις τὸν πλησίον σου", e: "you shall love your neighbor", r: "Matt 22:39" }, { g: "οὐ φονεύσεις", e: "you shall not murder", r: "Matt 5:21" }]} how={<T id="indicatives.cat.imperatival-future.h">A second-person future, usually with <G>οὐ</G>, where the sense is law rather than prediction. The Ten Commandments are the model.</T>}><T id="indicatives.cat.imperatival-future.d">a future used as a command ("you shall not…")</T></Cat>
             <Cat id="indicatives.cat.deliberative-future"name="Deliberative Future" ex={[{ g: "κύριε, πρὸς τίνα ἀπελευσόμεθα;", e: "Lord, to whom shall we go?", r: "John 6:68" }, { g: "πῶς ἔτι ζήσομεν ἐν αὐτῇ;", e: "how shall we still live in it?", r: "Rom 6:2" }]} how={<T id="indicatives.cat.deliberative-future.h">It is a question, and the speaker is asking what ought to be done rather than what will happen. Usually first person.</T>}><T id="indicatives.cat.deliberative-future.d">a real or rhetorical question ("what shall we do?")</T></Cat>
     </CatGroup>
-    <SectionHeading id="indicatives.h.going-deeper-tense">Going deeper: tense as interpretation</SectionHeading>
+    <SectionHeading id="indicatives.h.going-deeper-tense">Further study: tense as interpretation</SectionHeading>
     <P id="indicatives.p.aspect-over-time">
       <strong>Aspect over time.</strong> In the indicative Greek tense marks both time and
       {' '}<Term t="aspect">aspect</Term>, but aspect is the deeper category: the imperfect paints a process,
@@ -81,7 +81,7 @@ export const INDICATIVES_INTERMEDIATE_CONTENT = (
     <P id="indicatives.p.caution-tense-choices">
       <strong>A caution.</strong> Tense choices are only exegetically loaded where the author had a live
       choice. Much aorist usage is simply default narration — resist sermons built on "the aorist means
-      once-for-all." It doesn't; it means the author viewed the action as a whole.
+      once-for-all." It does not; it means the author viewed the action as a whole.
     </P>
   </>
 )

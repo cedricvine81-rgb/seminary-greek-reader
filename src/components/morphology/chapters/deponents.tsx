@@ -23,10 +23,10 @@ export const DEPONENTS_CONTENT = (
     <ParseFrame />
     {/* ── 1 · English first (Beginning only) ─────────────── */}
     <LevelOnly level="beginning">
-      <SectionHeading id="deponents.h.start-english-forms">Start with English: forms that don't mean what they look like</SectionHeading>
+      <SectionHeading id="deponents.h.start-english-forms">Start with English: forms that do not mean what they look like</SectionHeading>
       <P id="deponents.p.english-verbs-whose">
         English has verbs whose form and meaning part company. "I <em>was born</em> in June" — passive in
-        form, but you aren't picturing anyone doing the "borning"; it just tells what happened to you.
+        form, but you are not picturing anyone doing the "borning"; it just tells what happened to you.
         Nobody is misled, because you learned the expression whole.
       </P>
       <P id="deponents.p.greek-whole-club">
@@ -171,11 +171,11 @@ export const DEPONENTS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="deponents.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="deponents.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
-        <li><Tr id="deponents.wo.every-form-deponent">Not every <Gk>‑ομαι</Gk> form is deponent! <Gk>λύομαι</Gk> is the genuine middle/passive of <Gk>λύω</Gk>. The test is the <em>lexicon</em>: if no active form exists, it's deponent.</Tr></li>
-        <li><Tr id="deponents.wo.aorist-passive-deponent">A <Gk>θη</Gk> aorist from a passive deponent means <em>active</em>: <Gk>ἀπεκρίθη</Gk> "he answered." Don't force "was answered."</Tr></li>
+        <li><Tr id="deponents.wo.every-form-deponent">Not every <Gk>‑ομαι</Gk> form is deponent! <Gk>λύομαι</Gk> is the genuine middle/passive of <Gk>λύω</Gk>. The test is the <em>lexicon</em>: if no active form exists, it is deponent.</Tr></li>
+        <li><Tr id="deponents.wo.aorist-passive-deponent">A <Gk>θη</Gk> aorist from a passive deponent means <em>active</em>: <Gk>ἀπεκρίθη</Gk> "he answered." Do not force "was answered."</Tr></li>
         <li><Tr id="deponents.wo.everywhere-became-happened"><Gk>ἐγένετο</Gk> (from <Gk>γίνομαι</Gk>) is everywhere: "became, happened, came to be, was." Small verb, wide range.</Tr></li>
         <li><Tr id="deponents.wo.deponent-participles-keep">Deponent participles keep the <Gk>‑μεν‑</Gk>/middle look with active meaning: <Gk>ἐρχόμενος</Gk> "coming," <Gk>πορευθέντες</Gk> "having gone" (Matt 28:19!).</Tr></li>
         <li><Tr id="deponents.wo.semi-deponents-change">Semi-deponents change club mid-career: active present, deponent future (<Gk>λαμβάνω → λήμψομαι</Gk>; <Gk>γινώσκω → γνώσομαι</Gk>).</Tr></li>
@@ -183,7 +183,7 @@ export const DEPONENTS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="deponents.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="deponents.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="deponents.pr1"
       title="Practice — parse and translate"
       intro={<Tr id="deponents.intro.parse-form-honestly">Parse the form honestly (middle/passive!), then translate actively.</Tr>}
@@ -241,10 +241,10 @@ export const DEPONENTS_CONTENT = (
       ]}
     />
 
-    {/* Syntax is a relation between words, which the one-word morphology search can't express;
+    {/* Syntax is a relation between words, which the one-word morphology search cannot express;
         these open Construct search instead. */}
     <LiveExamples
-      intro={<Tr id="deponents.intro.deponency-itself-can't">Deponency itself can't be searched — the corpus records the form (middle or passive), not the category — so these show the forms of verbs that are deponent:</Tr>}
+      intro={<Tr id="deponents.intro.deponency-itself-can't">Deponency itself cannot be searched — the corpus records the form (middle or passive), not the category — so these show the forms of verbs that are deponent:</Tr>}
       links={DEPONENT_SEARCHES.map(pr => ({
         label: <>{pr.label} <span className="text-gray-400">— {pr.approx.toLocaleString()} in the NT</span></>,
         construct: pr.query,

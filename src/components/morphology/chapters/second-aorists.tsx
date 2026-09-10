@@ -124,7 +124,7 @@ export const SECOND_AORISTS_CONTENT = (
 
     <SectionHeading id="second-aorists.h.changed-stem-travels">The changed stem travels everywhere</SectionHeading>
     <P id="second-aorists.p.aorist-stem-isn't">
-      The 2nd-aorist stem isn't only for the indicative — it powers the verb's aorist participles,
+      The 2nd-aorist stem is not only for the indicative — it powers the verb's aorist participles,
       infinitives, subjunctives, and imperatives too, all <em>without the augment</em> (augments belong to
       the indicative alone). So from <Gk>λαβ‑</Gk>: participle <Gk>λαβών</Gk> "having taken," infinitive
       <Gk> λαβεῖν</Gk> "to take," imperative <Gk>λάβε</Gk> "take!" Learn one changed stem, unlock five moods.
@@ -167,7 +167,7 @@ export const SECOND_AORISTS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="second-aorists.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="second-aorists.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="second-aorists.wo.identical-took-took">1st sg. and 3rd pl. are identical (<Gk>ἔλαβον</Gk> = "I took" or "they took") — exactly like the imperfect. Context decides.</Tr></li>
@@ -179,7 +179,7 @@ export const SECOND_AORISTS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="second-aorists.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="second-aorists.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="second-aorists.pr1"
       title="Practice — parse and translate"
       intro={<Tr id="second-aorists.intro.ask-augment-changed">Ask: augment? σα? changed stem? Then check the table above.</Tr>}
@@ -225,10 +225,10 @@ export const SECOND_AORISTS_CONTENT = (
 
     <HomeworkAssignments chapter="second-aorists" />
 
-    {/* Syntax is a relation between words, which the one-word morphology search can't express;
+    {/* Syntax is a relation between words, which the one-word morphology search cannot express;
         these open Construct search instead. */}
     <LiveExamples
-      intro={<Tr id="second-aorists.intro.second-aorist-can't">The second aorist can't be searched as a category — the corpus records the tense simply as aorist — so these show every aorist of verbs that form one:</Tr>}
+      intro={<Tr id="second-aorists.intro.second-aorist-can't">The second aorist cannot be searched as a category — the corpus records the tense simply as aorist — so these show every aorist of verbs that form one:</Tr>}
       links={SECOND_AORIST_SEARCHES.map(pr => ({
         label: <>{pr.label} <span className="text-gray-400">— {pr.approx.toLocaleString()} in the NT</span></>,
         construct: pr.query,

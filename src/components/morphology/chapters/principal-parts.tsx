@@ -19,7 +19,7 @@ export const PRINCIPAL_PARTS_CONTENT = (
     <LevelOnly level="beginning">
       <SectionHeading id="principal-parts.h.english-first">Start with English: sing, sang, sung</SectionHeading>
       <P id="principal-parts.p.dict">
-        How does an English dictionary handle an irregular verb? It lists the forms you can't predict:
+        How does an English dictionary handle an irregular verb? It lists the forms you cannot predict:
         <em> sing, sang, sung</em> — <em>go, went, gone</em>. Give an English speaker those "principal
         parts" and they can build everything else ("had sung," "will go") by rule.
       </P>
@@ -79,7 +79,7 @@ export const PRINCIPAL_PARTS_CONTENT = (
     <TableAside
       sticky
       beginning={<>
-        <p><Tr id="principal-parts.a2.chant">Don't memorize the grid in one sitting — take a row a day, and always as a chant: <Gk>λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην</Gk>.</Tr></p>
+        <p><Tr id="principal-parts.a2.chant">Do not memorize the grid in one sitting — take a row a day, and always as a chant: <Gk>λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην</Gk>.</Tr></p>
         <p><Tr id="principal-parts.a2.clubs">Notice the clubs you know: 2nd aorists in part 3 (<Gk>ἔλαβον</Gk>), deponents' middle futures (<Gk>λήμψομαι</Gk>), liquid futures (<Gk>βαλῶ</Gk>).</Tr></p>
       </>}
       intermediate={<>
@@ -128,7 +128,7 @@ export const PRINCIPAL_PARTS_CONTENT = (
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="principal-parts.a3.label">Worked example</Tr></AsideLabel>
-        <p><Tr id="principal-parts.a3.eg">You meet <Gk>ὄψεσθε</Gk>. Endings say future middle 2nd pl. — so it's a part-2 form. Scan the future column… <Gk>ὄψομαι</Gk> → row <Gk>ὁράω</Gk>: "you will see."</Tr></p>
+        <p><Tr id="principal-parts.a3.eg">You meet <Gk>ὄψεσθε</Gk>. Endings say future middle 2nd pl. — so it is a part-2 form. Scan the future column… <Gk>ὄψομαι</Gk> → row <Gk>ὁράω</Gk>: "you will see."</Tr></p>
       </>}
       intermediate={<>
         <p><Tr id="principal-parts.a3.int">This is why lexica cite verbs by principal parts — and why time memorizing the grid repays itself every reading session. The alternative is looking up <Gk>ἤνεγκα</Gk> alphabetically and finding nothing near <Gk>φέρω</Gk>.</Tr></p>
@@ -145,7 +145,7 @@ export const PRINCIPAL_PARTS_CONTENT = (
     </TableAside>
 
     {/* ── 5 · Watch out ──────────────────────────────────── */}
-    <SectionHeading id="principal-parts.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="principal-parts.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="principal-parts.wo.0">The future passive grows from part <strong>6</strong>, not part 2: <Gk>λυθήσομαι</Gk> from <Gk>ἐλύθην</Gk>. A missing part 6 usually means no passive future either.</Tr></li>
@@ -157,7 +157,7 @@ export const PRINCIPAL_PARTS_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="principal-parts.h.try-it">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="principal-parts.h.try-it">Practice</SectionHeading></LevelOnly>
     <Practice
       id="principal-parts.pr"
       title="Practice — trace the form to its row"

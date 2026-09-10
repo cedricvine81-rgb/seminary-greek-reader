@@ -1,6 +1,6 @@
 /* ─────────────────────────────────────────────
    Chapter: Conjunctions & Adverbs
-   (after David Alan Black, It's Still Greek to Me, 1998)
+   (after David Alan Black, It is Still Greek to Me, 1998)
 
    Textbook chapter (see chapters/nouns.tsx for the template).
 ───────────────────────────────────────────── */
@@ -167,7 +167,7 @@ export const CONJ_ADV_CONTENT = (
       ]}
     />
 
-    <LevelOnly level="beginning"><SectionHeading id="conj-adv.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="conj-adv.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="conj-adv.pr1"
       title="Practice — name the sign's function"
       intro={<Tr id="conj-adv.intro.each-connective-coordinating">For each connective: coordinating or subordinating? And what logical move does it make?</Tr>}

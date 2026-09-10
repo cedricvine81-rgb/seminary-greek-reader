@@ -151,7 +151,7 @@ export const RELATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="relatives.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="relatives.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="relatives.wo.article-relative-breathing">Article vs. relative: <Gk>ἡ / ἥ</Gk>, <Gk>οἱ / οἵ</Gk>, <Gk>ὁ / ὅ</Gk> — breathing + accent decide. Slow down on one-letter words.</Tr></li>
@@ -162,7 +162,7 @@ export const RELATIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="relatives.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="relatives.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="relatives.pr1"
       title="Practice — parse the relative and translate"
       intro={<Tr id="relatives.intro.each-relative-gender">For each relative: gender/number (from what antecedent?) and case (what job?).</Tr>}

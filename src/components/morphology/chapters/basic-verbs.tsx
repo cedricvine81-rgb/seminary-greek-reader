@@ -206,7 +206,7 @@ export const BASIC_VERBS_CONTENT = (
     </LevelOnly>
 
     {/* ── 4 · εἰμί, the odd one out ───────────────────────── */}
-    <SectionHeading id="basic-verbs.h.eimi">εἰμί — the one that breaks the pattern</SectionHeading>
+    <SectionHeading id="basic-verbs.h.eimi">A different verb paradigm</SectionHeading>
     <P id="basic-verbs.p.eimi-irregular">
       One verb has to be learned separately, and it is the commonest of all: <Gk>εἰμί</Gk> "I am." It takes no
       object, because it does not act on anything — it <em>links</em>, joining a subject to whatever is said

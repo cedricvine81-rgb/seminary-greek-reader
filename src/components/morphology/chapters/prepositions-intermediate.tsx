@@ -50,7 +50,7 @@ export const PREPOSITIONS_INTERMEDIATE_CONTENT = (
       though in Koine some compounds have faded to near-synonyms of the simple verb; check usage before
       building an argument on the prefix.
     </P>
-    <SectionHeading id="prepositions.h.going-deeper-theology">Going deeper: theology in small words</SectionHeading>
+    <SectionHeading id="prepositions.h.going-deeper-theology">Further study: theology in small words</SectionHeading>
     <P id="prepositions.p.paul's-signature-phrase">
       <strong>ἐν Χριστῷ.</strong> Paul's signature phrase — "in Christ," some 80+ times with its variants —
       rides on the dative of sphere: believers live and act <em>within the realm defined by</em> Christ.
@@ -64,7 +64,7 @@ export const PREPOSITIONS_INTERMEDIATE_CONTENT = (
       doctrine of inspiration in two prepositions.
     </P>
     <P id="prepositions.p.don't-over-press">
-      <strong>Don't over-press εἰς.</strong> In classical Greek <Gk>εἰς</Gk> (motion) and
+      <strong>Do not over-press εἰς.</strong> In classical Greek <Gk>εἰς</Gk> (motion) and
       <Gk> ἐν</Gk> (rest) were kept apart; in Koine they had begun to blur, and Mark can write
       <Gk> εἰς</Gk> where John writes <Gk>ἐν</Gk> with no difference intended. Arguments that lean hard on
       "εἰς must mean <em>into</em>" (e.g., in baptism texts) need corroboration from context, not just the

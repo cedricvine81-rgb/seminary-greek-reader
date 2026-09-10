@@ -36,7 +36,7 @@ export const PRONUNCIATION_INTERMEDIATE_CONTENT = (
     <P id="pronunciation.p.int-caution">
       <strong>What follows for exegesis.</strong> When an apparatus lists a variant that differs by one vowel, ask whether the two readings ever sounded different. If they did not, the variant is likely to be a hearing or spelling event rather than a theological one — which does not settle which reading is original, but does tell you what kind of argument the case will take.
     </P>
-    <SectionHeading id="pronunciation.h.going-deeper-sound">Going deeper: sound history you can use</SectionHeading>
+    <SectionHeading id="pronunciation.h.going-deeper-sound">Further study: sound history you can use</SectionHeading>
     <P id="pronunciation.p.itacism-manuscripts-converged">
       <strong>Itacism and the manuscripts.</strong> As <Gk>η, ι, υ, ει, οι</Gk> converged on "ee,"
       scribes taking dictation — or sounding out their exemplar — swapped those spellings freely. Most

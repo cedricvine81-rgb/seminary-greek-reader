@@ -30,7 +30,7 @@ export const SUBJUNCTIVES_INTERMEDIATE_CONTENT = (
             <Cat id="subjunctives.cat.conditional"name="Conditional" eg="“if you ask…”" ex={[{ g: "ἐάν τι αἰτήσητέ με, ἐγὼ ποιήσω", e: "if you ask me anything, I will do it", r: "John 14:14" }, { g: "ἐὰν ὁμολογῶμεν τὰς ἁμαρτίας ἡμῶν", e: "if we confess our sins", r: "1 John 1:9" }]} how={<T id="subjunctives.cat.conditional.h"><G>ἐάν</G> rather than <G>εἰ</G>, with a subjunctive after it. That pairing is the third-class condition and nothing else.</T>}><T id="subjunctives.cat.conditional.d"><G>ἐάν</G> + subjunctive — the 3rd-class condition</T></Cat>
             <Cat id="subjunctives.cat.indefinite"name="Indefinite" eg="ὃς ἄν “whoever,” ὅταν “whenever”" ex={[{ g: "ὃς ἂν ποιήσῃ τὸ θέλημα τοῦ θεοῦ", e: "whoever does the will of God", r: "Mark 3:35" }, { g: "ὅταν προσεύχησθε, λέγετε", e: "whenever you pray, say", r: "Luke 11:2" }]} how={<T id="subjunctives.cat.indefinite.h"><G>ἄν</G> or <G>ὅταν</G> attached to a relative or temporal word, with the subjunctive following. The clause then covers any instance rather than a particular one.</T>}><T id="subjunctives.cat.indefinite.d">relative or temporal clauses with <G>ἄν</G></T></Cat>
     </CatGroup>
-    <SectionHeading id="subjunctives.h.going-deeper-purpose">Going deeper: purpose, promise, and the strongest no</SectionHeading>
+    <SectionHeading id="subjunctives.h.going-deeper-purpose">Further study: purpose, promise, and the strongest no</SectionHeading>
     <P id="subjunctives.p.beyond-purpose-classical">
       <strong>ἵνα beyond purpose.</strong> Classical ἵνα meant "in order that"; Koine stretched it. It can
       mark <em>result</em> ("so that"), <em>content</em> (answering "what?" after verbs of asking —
@@ -46,7 +46,7 @@ export const SUBJUNCTIVES_INTERMEDIATE_CONTENT = (
     </P>
     <P id="subjunctives.p.prohibition-aspect-aorist">
       <strong>Prohibition aspect.</strong> <Gk>μή</Gk> + <em>aorist</em> subjunctive forbids as a whole
-      ("don't do it / don't start"); <Gk>μή</Gk> + <em>present</em> imperative leans "stop doing / don't
+      ("don't do it / don't start"); <Gk>μή</Gk> + <em>present</em> imperative leans "stop doing / do not
       keep doing." The distinction is a tendency, not a law — check context before preaching it — but it
       often illuminates: <Gk>μὴ φοβοῦ</Gk> (pres.) to the fearing disciple, "stop being afraid."
     </P>

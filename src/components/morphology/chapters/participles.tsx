@@ -14,7 +14,7 @@ import { ParseFrame } from '../ParseFrame'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 
 // The participle's uses from Construct search — drawn from the preset list rather than
-// restated, so the chapter and the search can't drift apart.
+// restated, so the chapter and the search cannot drift apart.
 const PARTICIPLE_USES = CONSTRUCT_PRESETS.find(g => g.heading === 'Uses of the participle')!.presets
 
 export const PARTICIPLES_CONTENT = (
@@ -59,7 +59,7 @@ export const PARTICIPLES_CONTENT = (
         <Ex grc="ὁ ὢν ἐν τῷ οὐρανῷ" en={<Tr id="participles.ex.one-who-heaven">the one who is in heaven</Tr>} />
       </>}
       intermediate={<>
-        <p><Tr id="participles.as.only-present-participle"><Gk>εἰμί</Gk> has only a present participle — the building block of the <em>periphrastic</em> tenses covered in "Going deeper" below.</Tr></p>
+        <p><Tr id="participles.as.only-present-participle"><Gk>εἰμί</Gk> has only a present participle — the building block of the <em>periphrastic</em> tenses covered in "Further study" below.</Tr></p>
       </>}
     >
       <MorphTable id="participles.t1" tCols={[0]} flush title="Present Participle of εἰμί (ὤν, οὖσα, ὄν)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
@@ -242,7 +242,7 @@ export const PARTICIPLES_CONTENT = (
     <P id="participles.p.article-noun-substantival">
       <strong>Article, no noun → substantival.</strong> The participle <em>becomes</em> the noun:
       <Gk> ὁ λύων</Gk>, "the one loosing"; <Gk>ὁ πιστεύων</Gk>, "the one who believes — the believer."
-      Don't be shy about supplying "who" or "the one who"; the goal is good English.
+      Do not be shy about supplying "who" or "the one who"; the goal is good English.
     </P>
     <TableAside
       beginning={<>
@@ -348,12 +348,12 @@ export const PARTICIPLES_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="participles.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="participles.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="participles.wo.double-booked-plural"><Gk>λύουσι(ν)</Gk> is double-booked: 3rd plural present indicative ("they loose") <em>and</em> dative plural masc./neut. participle ("to those loosing"). The context — is there another main verb? — decides.</Tr></li>
         <li><Tr id="participles.wo.augment-participles-ever">No augment on participles, ever: <Gk>λύσας</Gk>, not <Gk>ἐλύσας</Gk>. Past-looking meaning, no <Gk>ἐ‑</Gk>.</Tr></li>
-        <li><Tr id="participles.wo.feminine-participles-run">Feminine participles run on 1st-declension endings (<Gk>λυούσης</Gk>, like <Gk>δόξης</Gk>) — don't hunt for <Gk>‑ντ‑</Gk> there.</Tr></li>
+        <li><Tr id="participles.wo.feminine-participles-run">Feminine participles run on 1st-declension endings (<Gk>λυούσης</Gk>, like <Gk>δόξης</Gk>) — do not hunt for <Gk>‑ντ‑</Gk> there.</Tr></li>
         <li><Tr id="participles.wo.deponent-verbs-make">Deponent verbs make middle-form participles with active meaning: <Gk>ἐρχόμενος</Gk> = "coming," not "being come."</Tr></li>
         <li><Tr id="participles.wo.string-aorist-participles">A string of aorist participles before a main verb often reads best as parallel English verbs: "she heard, came, and touched…" — not "having heard, having come, having touched."</Tr></li>
       </ul>
@@ -361,7 +361,7 @@ export const PARTICIPLES_CONTENT = (
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
     <LevelOnly level="beginning">
-    <SectionHeading id="participles.h.try">Try it</SectionHeading>
+    <SectionHeading id="participles.h.try">Practice</SectionHeading>
     <Practice id="participles.pr1"
       title="Practice A — parse the participle"
       intro={<Tr id="participles.intro.give-tense-voice">Give tense, voice, gender/case/number, and a default translation.</Tr>}
@@ -471,7 +471,7 @@ export const PARTICIPLES_CONTENT = (
     </LevelOnly>
     <HomeworkAssignments chapter="participles" />
 
-    {/* Syntax is a relation between words, which the one-word morphology search can't express;
+    {/* Syntax is a relation between words, which the one-word morphology search cannot express;
         these open Construct search instead. */}
     <LiveExamples
       intro={<Tr id="participles.intro.now-uses-each">Now the uses, each as a search you can open and adjust:</Tr>}

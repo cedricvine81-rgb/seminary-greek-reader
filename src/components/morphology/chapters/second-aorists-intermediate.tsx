@@ -26,7 +26,7 @@ export const SECOND_AORISTS_INTERMEDIATE_CONTENT = (
     <P id="2nd-aorists.p.int-lead">
       The single most important fact about the second aorist is negative: it does not mean anything a first aorist does not. The two are alternative ways of building the same tense, the way “walked” and “ran” are alternative English pasts. A verb has one or the other because of its history, not because the author chose a nuance.
     </P>
-    <SectionHeading id="2nd-aorists.cg.int-uses">What the stem is really telling you</SectionHeading>
+    <SectionHeading id="2nd-aorists.cg.int-uses">What the stem indicates</SectionHeading>
     <CatGroup>
       <Cat id="2nd-aorists.cat.lexical" name="It is a lexical fact" eg="λαμβάνω → ἔλαβον" ex={[{ g: "ὅσοι δὲ ἔλαβον αὐτόν", e: "but as many as received him", r: "John 1:12" }]} how={<T id="2nd-aorists.cat.lexical.h">Nothing here is a syntactic choice. If the third principal part is a second aorist, that is simply what the verb does — do not read meaning into it.</T>}><T id="2nd-aorists.cat.lexical.d">the second-aorist stem belongs to the dictionary entry, not to the syntax. <G>λαμβάνω</G> takes <G>ἔλαβον</G> because that is its principal part — there is nothing to interpret</T></Cat>
       <Cat id="2nd-aorists.cat.suppletive" name="Suppletion" eg="λέγω → εἶπον · ὁράω → εἶδον" ex={[{ g: "εἶπεν οὖν αὐτοῖς ὁ Ἰησοῦς", e: "so Jesus said to them", r: "John 6:32" }, { g: "καὶ εἶδεν πνεῦμα θεοῦ καταβαῖνον", e: "and he saw the Spirit of God descending", r: "Matt 3:16" }]} how={<T id="2nd-aorists.cat.suppletive.h">The aorist stem has no visible link to the present, so it cannot be derived — it has to be learnt or looked up. <G>λέγω</G> / <G>εἶπον</G> is the one to know.</T>}><T id="2nd-aorists.cat.suppletive.d">some verbs borrow a wholly unrelated root for the aorist, exactly as English does with go/went. The lexical form of the aorist is not predictable from the present</T></Cat>
@@ -36,7 +36,7 @@ export const SECOND_AORISTS_INTERMEDIATE_CONTENT = (
     <P id="2nd-aorists.p.int-caution">
       <strong>The exegetical caution.</strong> Because the choice is lexical, nothing follows from “the author used a second aorist.” What <em>does</em> follow is aspect: it is an aorist, and therefore presents the action as a whole. Argue from the tense, never from which conjugation the tense happened to be built with.
     </P>
-    <SectionHeading id="second-aorists.h.going-deeper-narrative's">Going deeper: narrative's engine room</SectionHeading>
+    <SectionHeading id="second-aorists.h.going-deeper-narrative's">Further study: the aorist in narrative</SectionHeading>
     <P id="second-aorists.p.narrative-glue-luke">
       <strong>ἐγένετο as narrative glue.</strong> Luke especially loves opening scenes with
       <Gk> καὶ ἐγένετο</Gk> — the King James' "and it came to pass" — a Septuagintalism echoing Hebrew

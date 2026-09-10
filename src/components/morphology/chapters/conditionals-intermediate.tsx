@@ -36,7 +36,7 @@ export const CONJUNCTIONS_INTERMEDIATE_CONTENT = (
     <P id="conditionals.p.int-caution">
       <strong>The caution that matters.</strong> A first-class condition does not mean “since.” The grammar presents the condition as true <em>for the sake of the argument</em>, and the same construction carries a taunt at the cross — <Gk>εἰ Υἱὸς εἶ τοῦ Θεοῦ, κατάβηθι</Gk>, “if you are the Son of God, come down” (Matt 27:40) — where the speakers plainly do not believe it. Read the class as a rhetorical posture, and let the context say whether the speaker means it.
     </P>
-    <SectionHeading id="conditionals.h.going-deeper-conditions">Going deeper: conditions as rhetoric</SectionHeading>
+    <SectionHeading id="conditionals.h.going-deeper-conditions">Further study: conditions as rhetoric</SectionHeading>
     <P id="conditionals.p.class-lever-because">
       <strong>The 1st class as a lever.</strong> Because it assumes rather than asserts, the 1st class is
       a rhetorical instrument. Paul uses it to argue from shared ground (Gal 3:29); Satan uses it to
@@ -55,7 +55,7 @@ export const CONJUNCTIONS_INTERMEDIATE_CONTENT = (
       <strong>Conditions without εἰ.</strong> Greek can smuggle conditions into other clothing: the
       conditional participle (<Gk>θερίσομεν μὴ ἐκλυόμενοι</Gk>, "we will reap, <em>if we do not give
       up</em>," Gal 6:9) and the conditional imperative (John 2:19). When a "then" seems to follow from a
-      phrase that isn't an "if," suspect a hidden protasis.
+      phrase that is not an "if," suspect a hidden protasis.
     </P>
   </>
 )

@@ -109,7 +109,7 @@ export const NOUNS_INTERMEDIATE_CONTENT = (
     </P>
 
     {/* ── 7 · Method ─────────────────────────────────────── */}
-    <SectionHeading id="nouns.h.going-deeper-when">Going deeper: when the default translation isn't enough</SectionHeading>
+    <SectionHeading id="nouns.h.going-deeper-when">Further study: when the default translation is not enough</SectionHeading>
     <P id="nouns.p.glosses-training-wheels">
       The glosses "of" and "to/for" are training wheels. Interpretation begins when you ask <em>which kind</em> of
       genitive or dative you are looking at — the full catalogue is the case sections above. Three

@@ -45,7 +45,7 @@ export const DEMONSTRATIVES_CONTENT = (
         <Ex grc="οὗτος ὁ ἄνθρωπος" en={<Tr id="demonstratives.ex.man">this man</Tr>} />
         <Ex grc="ταῦτα" en={<Tr id="demonstratives.ex.these-things-very">these things (very common!)</Tr>} />
         <Ex grc="μετὰ τοῦτο" en={<Tr id="demonstratives.ex.after">after this</Tr>} />
-        <p><Tr id="demonstratives.as.standing-alone-it's">Standing alone, it's a pronoun: <Gk>οὗτος</Gk> "this one / he."</Tr></p>
+        <p><Tr id="demonstratives.as.standing-alone-it's">Standing alone, it is a pronoun: <Gk>οὗτος</Gk> "this one / he."</Tr></p>
       </>}
       intermediate={<>
         <p><Tr id="demonstratives.as.neuter-plural-may">The neuter plural <Gk>ταῦτα</Gk> may be the most common demonstrative form in the NT — "these things."</Tr></p>
@@ -172,7 +172,7 @@ export const DEMONSTRATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="demonstratives.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="demonstratives.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="demonstratives.wo.woman-she-rough"><Gk>αὕτη</Gk> ("this woman/she", rough breathing) vs. <Gk>αὐτή</Gk> ("she", smooth) — the breathing mark is the whole difference. Likewise <Gk>αὗται</Gk> vs. <Gk>αὐταί</Gk>.</Tr></li>
@@ -183,7 +183,7 @@ export const DEMONSTRATIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="demonstratives.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="demonstratives.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="demonstratives.pr1"
       title="Practice — parse and translate"
       intro={<Tr id="demonstratives.intro.vocabulary-sheep-gather">Vocabulary: <span className="normal-case">πρόβατον</span> "sheep" · <span className="normal-case">συνάγω</span> "gather" · <span className="normal-case">παραβολή</span> "parable."</Tr>}

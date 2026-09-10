@@ -308,8 +308,8 @@
     "text": "Analiza un deponente exactamente como analizarías cualquier forma media o pasiva (tiempo, persona, número), pero traduce con la glosa _activa_ que da tu léxico. Unos son medios en futuro y aoristo; otros son pasivos en el aoristo ({ἀποκρίνομαι → ἀπεκρίθην})."
   },
   "deponents.h.going-deeper-deponent": {
-    "fp": "xrybx2",
-    "text": "Más a fondo: ¿es «deponente» el nombre adecuado?"
+    "fp": "esz4c8",
+    "text": "Estudio adicional: ¿es «deponente» el nombre adecuado?"
   },
   "deponents.h.how-spot-one": {
     "fp": "5ptr2e",
@@ -320,27 +320,27 @@
     "text": "¿Es «deponente» la palabra adecuada?"
   },
   "deponents.h.int-middle-uses": {
-    "fp": "1j2gbp7",
-    "text": "Qué hace realmente la voz media"
+    "fp": "22x9ut",
+    "text": "La función de la voz media"
   },
   "deponents.h.start-english-forms": {
-    "fp": "vocseg",
+    "fp": "1m8tc0g",
     "text": "Empecemos por el español: formas que no significan lo que parecen"
   },
   "deponents.h.try": {
-    "fp": "1c7r8bb",
-    "text": "Practiquemos"
+    "fp": "1tlbcsw",
+    "text": "Práctica"
   },
   "deponents.h.two-sub-clubs": {
     "fp": "1kf4qaq",
     "text": "Dos subgrupos: deponentes medios y pasivos"
   },
   "deponents.h.watch-out": {
-    "fp": "sg44kc",
-    "text": "Ojo"
+    "fp": "1524phz",
+    "text": "Puntos de confusión"
   },
   "deponents.intro.deponency-itself-can't": {
-    "fp": "149gblf",
+    "fp": "29o96n",
     "text": "La deponencia en sí no se puede buscar — el corpus registra la forma (media o pasiva), no la categoría —, así que estas muestran las formas de verbos que son deponentes:"
   },
   "deponents.intro.four-deponents-cannot": {
@@ -392,7 +392,7 @@
     "text": "Te lo dice la forma de diccionario. La forma léxica de un verbo normal termina en {‑ω} ({λύω}); la de un deponente, en {‑ομαι} ({ἔρχομαι, γίνομαι, δύναμαι}). Y la frecuencia juega a tu favor: un puñado de deponentes está entre los verbos más comunes de todo el Nuevo Testamento:"
   },
   "deponents.p.english-verbs-whose": {
-    "fp": "1b5vsg0",
+    "fp": "1pz22j6",
     "text": "El español tiene verbos cuya forma y cuyo significado van cada uno por su lado. «Me _arrepentí_», «se _atrevió_», «nos _quejamos_»: parecen reflexivos, pero nadie se arrepiente *a sí mismo*. Y lo decisivo: no existe un «arrepentir» ni un «atrever» sueltos. Esos verbos han dejado de lado la forma sencilla. Nadie se confunde, porque aprendiste la expresión entera."
   },
   "deponents.p.full-stretch-one": {
@@ -676,7 +676,7 @@
     "text": "Los dos subgrupos"
   },
   "deponents.wo.aorist-passive-deponent": {
-    "fp": "160sxol",
+    "fp": "1a84a0j",
     "text": "Un aoristo en {θη} de un deponente pasivo significa en _activa_: {ἀπεκρίθη} «respondió». No fuerces «fue respondido»."
   },
   "deponents.wo.deponent-participles-keep": {
@@ -684,7 +684,7 @@
     "text": "Los participios deponentes conservan el aspecto en {‑μεν‑} o medio con significado activo: {ἐρχόμενος} «que viene», {πορευθέντες} «habiendo ido» (¡Mateo 28:19!)."
   },
   "deponents.wo.every-form-deponent": {
-    "fp": "6h9oph",
+    "fp": "1vjcl7n",
     "text": "¡No toda forma en {‑ομαι} es deponente! {λύομαι} es la media o pasiva auténtica de {λύω}. La prueba es el _léxico_: si no existe forma activa, es deponente."
   },
   "deponents.wo.everywhere-became-happened": {

@@ -516,7 +516,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P><T id="demonstratives.exp.p.follows-article's-front"><G>οὗτος</G> follows the article's front-end pattern (rough breathing in the nom. masc./fem., <G>τ‑</G> elsewhere) with 1st/2nd-declension endings. Standing alone it is a full pronoun (<G>οὗτός ἐστιν ὁ υἱός μου</G>).</T></P>
-        <P><T id="demonstratives.exp.p.interpretive-interest-how">The interpretive interest is in <em>how</em> it points — backward, forward, or with attitude ("Going deeper" below walks through the options). The reflexive <G>ἑαυτοῦ</G> and reciprocal <G>ἀλλήλων</G> complete the pointing family.</T></P>
+        <P><T id="demonstratives.exp.p.interpretive-interest-how">The interpretive interest is in <em>how</em> it points — backward, forward, or with attitude ("Further study" below walks through the options). The reflexive <G>ἑαυτοῦ</G> and reciprocal <G>ἀλλήλων</G> complete the pointing family.</T></P>
       </Note>
     ),
   },
@@ -530,7 +530,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     ),
     intermediate: (
       <Note>
-        <P><T id="relatives.exp.p.agreement-rule-gender">The agreement rule ("gender/number backward, case inward") bends under <strong>attraction</strong> — a genitive or dative antecedent often pulls the relative into its own case ("Going deeper" below shows it in action). <G>ὃς ἄν</G> + subjunctive generalizes: "whoever."</T></P>
+        <P><T id="relatives.exp.p.agreement-rule-gender">The agreement rule ("gender/number backward, case inward") bends under <strong>attraction</strong> — a genitive or dative antecedent often pulls the relative into its own case ("Further study" below shows it in action). <G>ὃς ἄν</G> + subjunctive generalizes: "whoever."</T></P>
       </Note>
     ),
   },
@@ -573,7 +573,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     ),
     intermediate: (
       <Note>
-        <P><T id="principal-parts.exp.i.main">Think in <strong>tense-systems</strong>, not tenses: each part's stem serves every mood of its system. The asides beside the grid map which endings and moods belong to which part, and "Going deeper" below follows the idea further.</T></P>
+        <P><T id="principal-parts.exp.i.main">Think in <strong>tense-systems</strong>, not tenses: each part's stem serves every mood of its system. The asides beside the grid map which endings and moods belong to which part, and "Further study" below follows the idea further.</T></P>
       </Note>
     ),
   },
@@ -587,7 +587,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     ),
     intermediate: (
       <Note>
-        <P><T id="pronunciation.exp.i.intro">Three schemes coexist: <strong>Erasmian</strong> (classroom convention — maximally distinct), <strong>reconstructed Koine</strong> (closest to first-century speech), and <strong>Modern Greek</strong> (the living tradition, with <em>itacism</em>: <G>η ι υ ει οι υι</G> all sounding "ee"). Why the mergers matter for the manuscripts is the story of "Going deeper" below.</T></P>
+        <P><T id="pronunciation.exp.i.intro">Three schemes coexist: <strong>Erasmian</strong> (classroom convention — maximally distinct), <strong>reconstructed Koine</strong> (closest to first-century speech), and <strong>Modern Greek</strong> (the living tradition, with <em>itacism</em>: <G>η ι υ ει οι υι</G> all sounding "ee"). Why the mergers matter for the manuscripts is the story of "Further study" below.</T></P>
       </Note>
     ),
   },

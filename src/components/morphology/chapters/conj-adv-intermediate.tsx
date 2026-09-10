@@ -26,7 +26,7 @@ export const CONJ_ADV_INTERMEDIATE_CONTENT = (
     <P id="conj-adv.p.int-lead">
       Koine narrative and argument are held together by a small set of connectives, and almost every sentence has one. Their glosses are nearly useless on their own — <Gk>δέ</Gk> is not simply “but” — because what they mark is the <em>relation</em> between what came before and what comes next. Reading them well is most of reading an argument well.
     </P>
-    <SectionHeading id="conj-adv.cg.int-connectives">The workhorses</SectionHeading>
+    <SectionHeading id="conj-adv.cg.int-connectives">The principal connectives</SectionHeading>
     <CatGroup>
       <Cat id="conj-adv.cat.kai" name="καί" eg="“even the winds obey him”" ex={[{ g: "καὶ οἱ ἄνεμοι καὶ ἡ θάλασσα αὐτῷ ὑπακούουσιν", e: "even the winds and the sea obey him", r: "Matt 8:27" }]} how={<T id="conj-adv.cat.kai.h">Ask what it joins. Between two like things it is “and”; attached to one word being added to a list, “also”; and where that word is the surprising member, “even”.</T>}><T id="conj-adv.cat.kai.d">connective “and,” but also adjunctive “also” and ascensive “even.” Position and sense decide; in narrative, strings of <G>καί</G> mark pace rather than logic</T></Cat>
       <Cat id="conj-adv.cat.de" name="δέ" eg="“and/but he said”" ex={[{ g: "ὁ δὲ ἔφη αὐτῷ ἀγαπήσεις Κύριον τὸν Θεόν σου", e: "and he said to him, you shall love the Lord your God", r: "Matt 22:37" }]} how={<T id="conj-adv.cat.de.h">Default to “and”, or leave it untranslated, and reach for “but” only when the two clauses actually oppose one another. In narrative it is doing paragraphing, not logic.</T>}><T id="conj-adv.cat.de.d">marks a new step, not necessarily a contrast — the writer is moving the discourse on. Translate as “but” only when the context supplies the opposition</T></Cat>
@@ -58,7 +58,7 @@ export const CONJ_ADV_INTERMEDIATE_CONTENT = (
         ['– Question – Answer', 'Illustration / Example', 'Verification'],
       ]}
     />
-    <SectionHeading id="conj-adv.h.going-deeper-reading">Going deeper: reading by the signs</SectionHeading>
+    <SectionHeading id="conj-adv.h.going-deeper-reading">Further study: reading by the signs</SectionHeading>
     <P id="conj-adv.p.both-translate-twins">
       <strong>δέ vs. καί.</strong> Both translate "and," but they are not twins: <Gk>καί</Gk> simply
       adds; <Gk>δέ</Gk> marks a new development — a step forward in the story or argument. Mark strings

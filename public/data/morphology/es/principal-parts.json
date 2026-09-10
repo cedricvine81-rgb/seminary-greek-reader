@@ -172,7 +172,7 @@
     "text": "Toda forma que llegues a encontrar desciende de una de estas seis. Analizar una forma desconocida = preguntar «¿de qué parte viene?»."
   },
   "principal-parts.a2.chant": {
-    "fp": "y4ecsx",
+    "fp": "v54se9",
     "text": "No memorices la tabla de una sentada: una fila al día, y siempre como una cantinela: {λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην}."
   },
   "principal-parts.a2.clubs": {
@@ -184,7 +184,7 @@
     "text": "Cuando las partes vienen de raíces distintas ({λέγω/ἐρῶ/εἶπον}; {ὁράω/ὄψομαι/εἶδον}; {φέρω/οἴσω/ἤνεγκα}), estás ante una _supleción_: verbos antiguos fundidos en un solo paradigma, como el español ir/voy/fui."
   },
   "principal-parts.a3.eg": {
-    "fp": "1u6wery",
+    "fp": "npdrgw",
     "text": "Te encuentras {ὄψεσθε}. Las desinencias dicen futuro medio, 2.ª pl., así que es una forma de la parte 2. Recorre la columna del futuro… {ὄψομαι} → fila {ὁράω}: «veréis»."
   },
   "principal-parts.a3.int": {
@@ -396,12 +396,12 @@
     "text": "Los diccionarios de griego describen un verbo por sus seis *partes principales* — como el español «hago, hice, hecho», pero con seis casillas: presente, futuro, aoristo, perfecto activo, perfecto medio/pasivo, aoristo pasivo ({λύω, λύσω, ἔλυσα, λέλυκα, λέλυμαι, ἐλύθην}). Toda forma que llegues a encontrar desciende de una de las seis."
   },
   "principal-parts.exp.i.main": {
-    "fp": "ia380w",
-    "text": "Piensa en *sistemas temporales*, no en tiempos: la raíz de cada parte sirve a todos los modos de su sistema. Los apuntes al lado de la tabla indican qué desinencias y modos pertenecen a cada parte, y «Más a fondo», abajo, sigue la idea más lejos."
+    "fp": "rvp2i0",
+    "text": "Piensa en *sistemas temporales*, no en tiempos: la raíz de cada parte sirve a todos los modos de su sistema. Los apuntes al lado de la tabla indican qué desinencias y modos pertenecen a cada parte, y «Estudio adicional», abajo, sigue la idea más lejos."
   },
   "principal-parts.h.deeper": {
-    "fp": "11mc3kh",
-    "text": "Más a fondo: sistemas, no tiempos"
+    "fp": "e1yryb",
+    "text": "Estudio adicional: sistemas, no tiempos"
   },
   "principal-parts.h.english-first": {
     "fp": "11ud8oo",
@@ -424,12 +424,12 @@
     "text": "Las seis llaves"
   },
   "principal-parts.h.try-it": {
-    "fp": "1c7r8bb",
-    "text": "Practiquemos"
+    "fp": "1tlbcsw",
+    "text": "Práctica"
   },
   "principal-parts.h.watch-out": {
-    "fp": "sg44kc",
-    "text": "Ojo"
+    "fp": "1524phz",
+    "text": "Puntos de confusión"
   },
   "principal-parts.le.intro": {
     "fp": "ngt3ct",
@@ -448,7 +448,7 @@
     "text": "Todas las formas de {εὑρίσκω} — de εὗρον a εὕρηκα («¡eureka!»)"
   },
   "principal-parts.p.dict": {
-    "fp": "13ojvb7",
+    "fp": "korm9l",
     "text": "¿Cómo trata un diccionario español un verbo irregular? Enumera las formas que no se pueden predecir: _hago, hice, hecho_ — _voy, fui, ido_. Dale a un hispanohablante esas «partes principales» y construirá todo lo demás («había hecho», «iré») por regla."
   },
   "principal-parts.p.int-caution": {

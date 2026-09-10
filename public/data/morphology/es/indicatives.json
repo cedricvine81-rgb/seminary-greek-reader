@@ -108,7 +108,7 @@
     "text": "Reconoce la _familia_, no una cadena exacta: un grupo con {σ} = aoristo/futuro, un grupo con {θ} = pasivo. Ante ciertas terminaciones aparecen formas reducidas."
   },
   "indicatives.as.run-backwards-parse": {
-    "fp": "172y9j8",
+    "fp": "1rshw5i",
     "text": "Recórrelo al revés para analizar una forma desconocida: quita la terminación, localiza la marca, réstala, y te queda la raíz léxica que hay que buscar."
   },
   "indicatives.as.same-scan-reverse": {
@@ -968,8 +968,8 @@
     "text": "La terminación es el sujeto"
   },
   "indicatives.h.going-deeper-tense": {
-    "fp": "bwzt91",
-    "text": "Un paso más: el tiempo como interpretación"
+    "fp": "5ekoov",
+    "text": "Estudio adicional: el tiempo como interpretación"
   },
   "indicatives.h.int-aspect": {
     "fp": "odvmgl",
@@ -996,16 +996,16 @@
     "text": "La máquina de los tiempos: los identificadores"
   },
   "indicatives.h.try": {
-    "fp": "1c7r8bb",
-    "text": "Inténtalo"
+    "fp": "1tlbcsw",
+    "text": "Práctica"
   },
   "indicatives.h.voice-who-does": {
     "fp": "b742b0",
     "text": "La voz: quién hace, quién recibe"
   },
   "indicatives.h.watch-out": {
-    "fp": "sg44kc",
-    "text": "Ojo con esto"
+    "fp": "1524phz",
+    "text": "Puntos de confusión"
   },
   "indicatives.ib.augment-quirks": {
     "fp": "1v7qpd5",
@@ -1064,7 +1064,7 @@
     "text": "*El aspecto por encima del tiempo.* En el indicativo, el tiempo griego marca a la vez momento y [aspect:aspecto], pero el aspecto es la categoría más profunda: el imperfecto pinta un proceso, el aoristo informa de un todo, el perfecto afirma un resultado que permanece. Cuando Marcos escribe {ἐδίδασκεν} («enseñaba»), está montando una escena; cuando cambia a aoristos, los sucesos avanzan a paso de marcha. Ver a un autor alternar imperfecto y aoristo es verlo dirigir tu atención — y tú ya haces esa distinción cada vez que eliges entre «enseñaba» y «enseñó»."
   },
   "indicatives.p.caution-tense-choices": {
-    "fp": "1o9xuwu",
+    "fp": "1gtxxu2",
     "text": "*Una advertencia.* Las elecciones de tiempo solo tienen carga exegética donde el autor tenía una opción real. Buena parte del uso del aoristo es simple narración por defecto — resiste los sermones construidos sobre «el aoristo significa de una vez para siempre». No es así; significa que el autor vio la acción como un todo."
   },
   "indicatives.p.divine-passive-passive": {

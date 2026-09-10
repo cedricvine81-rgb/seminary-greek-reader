@@ -17,8 +17,8 @@ export const CONJUNCTIONS_CONTENT = (
     <LevelOnly level="beginning">
       <SectionHeading id="conditionals.h.start-english-three">Start with English: three flavours of "if"</SectionHeading>
       <P id="conditionals.p.compare-three-english">
-        Compare three English sentences. "If it's raining, the game is off" — you're reasoning from a
-        supposition. "If you had studied, you would have passed" — you didn't, and both of you know it.
+        Compare three English sentences. "If it's raining, the game is off" — you are reasoning from a
+        supposition. "If you had studied, you would have passed" — you did not, and both of you know it.
         "If you ask her, she'll help" — an open possibility, still in the future. One little word "if,"
         three different relationships to reality, and English signals the difference entirely through
         helper verbs (<em>had… would have…; will</em>).
@@ -96,7 +96,7 @@ export const CONJUNCTIONS_CONTENT = (
     <TableAside
       beginning={<>
         <Ex grc="εἰ γὰρ ἐπιστεύετε Μωϋσεῖ, ἐπιστεύετε ἂν ἐμοί" en={<Tr id="conditionals.ex.believed-moses-would">if you believed Moses, you would believe me (John 5:46)</Tr>} />
-        <p><Tr id="conditionals.as.implication-don't-believe">Implication: they don't believe Moses — and so don't believe Jesus.</Tr></p>
+        <p><Tr id="conditionals.as.implication-don't-believe">Implication: they do not believe Moses — and so do not believe Jesus.</Tr></p>
       </>}
       intermediate={<>
         <p><Tr id="conditionals.as.tense-refines-counterfactual">Tense refines the counterfactual: imperfects for present-time ("if you believed [now]…"), aorists for past-time ("if they had known, they would not have crucified the Lord of glory," 1 Cor 2:8). Martha's <Gk>εἰ ἦς ὧδε</Gk> (John 11:21) wraps grief in grammar: "if you had been here…"</Tr></p>
@@ -151,19 +151,19 @@ export const CONJUNCTIONS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="conditionals.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="conditionals.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="conditionals.wo.first-class-since">First class ≠ "since." The devil's <Gk>εἰ υἱὸς εἶ τοῦ θεοῦ</Gk> (Matt 4:3) assumes it for the argument's sake — translating "since you are" flattens the taunt.</Tr></li>
         <li><Tr id="conditionals.wo.unless-unless-one"><Gk>ἐὰν μή</Gk> = "unless" (<Gk>ἐὰν μή τις γεννηθῇ ἄνωθεν</Gk>, "unless one is born again," John 3:3).</Tr></li>
         <li><Tr id="conditionals.wo.unaccented-looking-circumflexed"><Gk>εἰ</Gk> vs. <Gk>εἶ</Gk>: unaccented-looking <Gk>εἰ</Gk> "if" vs. circumflexed <Gk>εἶ</Gk> "you are" — they even co-star in the same clause (<Gk>εἰ σὺ εἶ…</Gk> "if you are…").</Tr></li>
-        <li><Tr id="conditionals.wo.untranslatable-alone-colours"><Gk>ἄν</Gk> is untranslatable alone — it colours the clause ("would," "-ever"). Spot it, don't gloss it.</Tr></li>
+        <li><Tr id="conditionals.wo.untranslatable-alone-colours"><Gk>ἄν</Gk> is untranslatable alone — it colours the clause ("would," "-ever"). Spot it, do not gloss it.</Tr></li>
         <li><Tr id="conditionals.wo.even"><Gk>κἄν</Gk> = <Gk>καὶ ἐάν</Gk>, "even if."</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="conditionals.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="conditionals.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="conditionals.pr1"
       title="Practice — classify and translate"
       intro={<Tr id="conditionals.intro.name-class-first">Name the class first (count the words!), then translate.</Tr>}
@@ -171,7 +171,7 @@ export const CONJUNCTIONS_CONTENT = (
         { q: <span className="normal-case">εἰ φιλεῖς τὸν θεόν, σοφὸς εἶ.</span>,
           a: <Tr id="conditionals.pa.class-love-god">1st class — "If you love God, you are wise." Assumed true for the argument.</Tr>},
         { q: <span className="normal-case">εἰ ἤκουσεν, οὐκ ἂν ἀπέθανεν.</span>,
-          a: <Tr id="conditionals.pa.class-had-listened">2nd class (the ἄν!) — "If he had listened, he would not have died." He didn't listen.</Tr>},
+          a: <Tr id="conditionals.pa.class-had-listened">2nd class (the ἄν!) — "If he had listened, he would not have died." He did not listen.</Tr>},
         { q: <span className="normal-case">ἐὰν ὁ βασιλεὺς ἐξέλθῃ, οἱ δοῦλοι ἀπολυθήσονται.</span>,
           a: <Tr id="conditionals.pa.class-king-goes">3rd class — "If the king goes out, the slaves will be released." Open future.</Tr>},
         { q: <span className="normal-case">ἐὰν εἴπωμεν ὅτι ἁμαρτίαν οὐκ ἔχομεν, ἑαυτοὺς πλανῶμεν.</span>,

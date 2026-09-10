@@ -72,7 +72,7 @@ export const NOUNS_CONTENT = (
       <P id="nouns.p.three-more-words">
         Three more words you need, all with everyday meanings. A <Term t="noun">noun</Term> names a person,
         place, thing, or idea. <Term t="gender">Gender</Term> is the grammatical class a Greek noun belongs to —
-        masculine, feminine, or neuter. Don't read biology into it: the Greek word for <em>child</em> (τέκνον)
+        masculine, feminine, or neuter. Do not read biology into it: the Greek word for <em>child</em> (τέκνον)
         is neuter, and <em>desert</em> (ἔρημος) is feminine. It is simply each word's family membership, learned
         with the word. And <Term t="number">number</Term> is just singular versus plural — "cat" versus "cats."
       </P>
@@ -101,7 +101,7 @@ export const NOUNS_CONTENT = (
       </>}
       intermediate={<>
         <p><Tr id="nouns.as.these-default-glosses">These are the <em>default</em> glosses. Each case has a family of further uses — the full
-        catalogue is in the "Going deeper" card above, and the highlights are in the last section below.</Tr></p>
+        catalogue is in the "Further study" card above, and the highlights are in the last section below.</Tr></p>
       </>}
     >
       <MorphTable id="nouns.t2" tCols={[0, 1, 2]} flush headers={['Case', 'Job', 'Default translation']} firstColIsData
@@ -640,7 +640,7 @@ export const NOUNS_CONTENT = (
     />
 
     {/* ── 6 · Watch out ──────────────────────────────────── */}
-    <SectionHeading id="nouns.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="nouns.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="nouns.wo.genitive-plural-everything"><Gk>‒ων</Gk> is the genitive plural of <em>everything</em> — every gender, every declension. Use the article (<Gk>τῶν</Gk>) and context to identify the noun.</Tr></li>
@@ -652,7 +652,7 @@ export const NOUNS_CONTENT = (
 
     {/* ── 7 · Together (guided practice) ─────────────────── */}
     <LevelOnly level="beginning">
-    <SectionHeading id="nouns.h.together-let's-work">Practice examples</SectionHeading>
+    <SectionHeading id="nouns.h.together-let's-work">Worked examples</SectionHeading>
     <P id="nouns.p.before-fly-solo">
       Work through these examples before attempting the exercises below. Answer each prompt first —
       aloud where possible, since this is a spoken language — then tap <em>Show</em> to check the
@@ -680,7 +680,7 @@ export const NOUNS_CONTENT = (
       steps={[
         { prompt: <Tr id="nouns.gp.find-the-subject">Find the subject. What are <span className="normal-case">σύ</span> and <span className="normal-case">εἶ</span>?</Tr>,
           answer: <Tr id="nouns.ga.the-pronoun-you">The pronoun "you" + <span className="normal-case">εἰμί</span>'s 2nd singular: "you are." The spelled-out σύ adds emphasis — <em>you</em>.</Tr> },
-        { prompt: <Tr id="nouns.gp.what-case-and">What case is <span className="normal-case">ὁ υἱός</span> — and why isn't it the object?</Tr>,
+        { prompt: <Tr id="nouns.gp.what-case-and">What case is <span className="normal-case">ὁ υἱός</span> — and why is not it the object?</Tr>,
           answer: <Tr id="nouns.ga.nominative-with-the">Nominative! With the equative verb "to be" there is no object — <span className="normal-case">ὁ υἱός</span> is a <strong>predicate nominative</strong>, renaming the subject: "you are <em>the Son</em>."</Tr> },
         { prompt: <Tr id="nouns.gp.and">And <span className="normal-case">τοῦ θεοῦ</span>?</Tr>,
           answer: <Tr id="nouns.ga.genitive-again-attached">Genitive again, attached to υἱός: "the Son <em>of God</em>."</Tr> },
@@ -691,7 +691,7 @@ export const NOUNS_CONTENT = (
     </LevelOnly>
     {/* ── 8 · Try it ─────────────────────────────────────── */}
     <LevelOnly level="beginning">
-    <SectionHeading id="nouns.h.try">Try it</SectionHeading>
+    <SectionHeading id="nouns.h.try">Practice</SectionHeading>
     <Practice id="nouns.pr1"
       title="Practice A — parse the form"
       intro={<Tr id="nouns.intro.give-case-number">Give the case, number, and default translation. (Tap for the answer.)</Tr>}
@@ -732,7 +732,7 @@ export const NOUNS_CONTENT = (
     <HomeworkAssignments chapter="nouns" />
 
     <LiveExamples
-      intro={<Tr id="nouns.intro.don't-take-textbook's">Don't take the textbook's word for it — these links search the tagged Greek New Testament itself.</Tr>}
+      intro={<Tr id="nouns.intro.don't-take-textbook's">Do not take the textbook's word for it — these links search the tagged Greek New Testament itself.</Tr>}
       links={[
         { label: <Tr id="nouns.le.every-form-watch">Every form of <span className="normal-case">λόγος</span> in the NT — watch the endings change with the job</Tr>, lemma: 'λόγος', features: ['noun'] },
         { label: <Tr id="nouns.le.genitive">Genitive nouns — hundreds of real "of …" phrases</Tr>, features: ['noun', 'genitive'] },

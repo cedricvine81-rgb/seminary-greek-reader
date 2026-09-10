@@ -52,7 +52,7 @@ export const INFINITIVES_CONTENT = (
         As always outside the indicative: the aorist infinitive has the <Gk>σ</Gk> but <strong>no
         augment</strong>, and its "tense" is aspect — <Gk>λύειν</Gk> pictures ongoing loosing,
         <Gk> λῦσαι</Gk> the act as a whole. Middle/passive forms end in <Gk>‑εσθαι</Gk> (present m/p:
-        <Gk> λύεσθαι</Gk>) and <Gk>‑θῆναι</Gk> (aorist passive: <Gk>λυθῆναι</Gk>) — recognize them; don't
+        <Gk> λύεσθαι</Gk>) and <Gk>‑θῆναι</Gk> (aorist passive: <Gk>λυθῆναι</Gk>) — recognize them; do not
         agonize over producing them.
       </P>
     </LevelOnly>
@@ -191,7 +191,7 @@ export const INFINITIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="infinitives.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="infinitives.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="infinitives.wo.aorist-active-infinitive">Aorist active infinitive <Gk>λῦσαι</Gk> vs. aorist middle imperative <Gk>λῦσαι</Gk> — identical spelling; the sentence frame decides.</Tr></li>
@@ -204,7 +204,7 @@ export const INFINITIVES_CONTENT = (
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
     <LevelOnly level="beginning">
-    <SectionHeading id="infinitives.h.try">Try it</SectionHeading>
+    <SectionHeading id="infinitives.h.try">Practice</SectionHeading>
     <Practice id="infinitives.pr1"
       title="Practice — translate"
       intro={<Tr id="infinitives.intro.vocabulary-eat-pray">Vocabulary: <span className="normal-case">ἐσθίω / φαγεῖν</span> "eat" · <span className="normal-case">προσεύχομαι</span> "pray" · <span className="normal-case">βαπτισθῆναι</span> "to be baptized."</Tr>}

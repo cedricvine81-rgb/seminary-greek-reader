@@ -36,7 +36,7 @@ export const CONTRACT_VERBS_INTERMEDIATE_CONTENT = (
     <P id="contract-verbs.p.int-caution">
       <strong>The reflex to build.</strong> When an accent looks wrong, suspect contraction before suspecting the editor. And when two readings of a form are possible — present or future, indicative or subjunctive — check whether the accent is doing the deciding, because in this class of verb it frequently is.
     </P>
-    <SectionHeading id="contract-verbs.h.going-deeper-love">Going deeper: love verbs and formula verbs</SectionHeading>
+    <SectionHeading id="contract-verbs.h.going-deeper-love">Further study: love verbs and formula verbs</SectionHeading>
     <P id="contract-verbs.p.john-alternates-two">
       <strong>ἀγαπάω and φιλέω.</strong> John 21:15–17 alternates the two love verbs ("do you
       <Gk> ἀγαπᾷς</Gk> me?" … "I <Gk>φιλῶ</Gk> you"), and preachers have built mountains on the switch.

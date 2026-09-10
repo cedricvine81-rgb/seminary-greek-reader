@@ -54,7 +54,7 @@ export const PRONUNCIATION_CONTENT = (
       </>}
       intermediate={<>
         <p><Tr id="pronunciation.as.handwriting-notes-class">Handwriting notes from class: <Gk>β δ ζ θ λ ξ</Gk> reach above the line; <Gk>β γ ζ η μ ξ ρ ς φ χ ψ</Gk> hang tails below it — unlike English, <Gk>κ</Gk> and <Gk>τ</Gk> stay small.</Tr></p>
-        <p><Tr id="pronunciation.as.consonant-grid-dentals">The consonant grid (dentals τ δ θ · palatals κ γ χ · labials π β φ, plus sibilants and liquids) is worth absorbing now — it drives the consonant + σ mergers you'll meet in the Indicatives chapter.</Tr></p>
+        <p><Tr id="pronunciation.as.consonant-grid-dentals">The consonant grid (dentals τ δ θ · palatals κ γ χ · labials π β φ, plus sibilants and liquids) is worth absorbing now — it drives the consonant + σ mergers you will meet in the Indicatives chapter.</Tr></p>
       </>}
     >
       <MorphTable id="pronunciation.t1" tCols={[1, 2]} speakCols={[0]} flush title="The Greek alphabet (Erasmian sounds)" headers={['Letter', 'Name', 'Sound', 'Transliteration']} firstColIsData
@@ -93,7 +93,7 @@ export const PRONUNCIATION_CONTENT = (
     <LevelOnly level="beginning">
       <P id="pronunciation.p.most-mistakes-first">
         Most mistakes in the first weeks come from six <strong>false friends</strong> — Greek letters that
-        look like English letters but aren't. Drill these until the reflex dies:
+        look like English letters but are not. Drill these until the reflex dies:
       </P>
     </LevelOnly>
     <TableAside
@@ -141,7 +141,7 @@ export const PRONUNCIATION_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Breathings ─────────────────────────────────── */}
-    <SectionHeading id="pronunciation.h.breathings-invisible">Breathings: the invisible h</SectionHeading>
+    <SectionHeading id="pronunciation.h.breathings-invisible">Breathings: rough and smooth</SectionHeading>
     <P id="pronunciation.p.greek-letter-instead">
       Greek has no letter "h." Instead, every word that begins with a vowel carries a small mark called a
       <strong> breathing</strong>: a <strong>rough</strong> breathing (<Gk>ἁ</Gk>) adds an h-sound; a
@@ -207,7 +207,7 @@ export const PRONUNCIATION_CONTENT = (
       <P id="pronunciation.p.greek-words-carry">
         Greek words carry accent marks — acute (<Gk>ά</Gk>), grave (<Gk>ὰ</Gk>), circumflex (<Gk>ᾶ</Gk>).
         For now, the class rule is blunt: <strong>breathings are essential; accents are unimportant</strong>.
-        Read the accent as a stress mark ("say this syllable louder") and move on. Later you'll meet the
+        Read the accent as a stress mark ("say this syllable louder") and move on. Later you will meet the
         handful of places where an accent is the only difference between words (<Gk>τις</Gk> "someone" vs.
         <Gk> τίς</Gk> "who?"; present <Gk>μένω</Gk> vs. future <Gk>μενῶ</Gk>) — the Pronouns and Liquid
         Verbs chapters flag them when they matter.
@@ -219,7 +219,7 @@ export const PRONUNCIATION_CONTENT = (
         <Ex grc="τίς εἶ;" en={<Tr id="pronunciation.ex.who">Who are you?</Tr>} />
       </>}
       intermediate={<>
-        <p><Tr id="pronunciation.as.raised-dot-our">The raised dot <Gk>·</Gk> ≈ our colon/semicolon — you've seen it dividing clauses in every chapter's examples. Ancient manuscripts had none of this (nor spaces, nor lowercase); all punctuation in your printed text is editorial.</Tr></p>
+        <p><Tr id="pronunciation.as.raised-dot-our">The raised dot <Gk>·</Gk> ≈ our colon/semicolon — you have seen it dividing clauses in every chapter's examples. Ancient manuscripts had none of this (nor spaces, nor lowercase); all punctuation in your printed text is editorial.</Tr></p>
       </>}
     >
       <MorphTable id="pronunciation.t6" tCols={[1, 2]} flush title="Punctuation" headers={['Greek', 'English equivalent', 'Use']} firstColIsData
@@ -274,7 +274,7 @@ export const PRONUNCIATION_CONTENT = (
     </TableAside>
 
     {/* ── 8 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="pronunciation.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="pronunciation.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="pronunciation.pr1"
       title="Practice A — sound out the Greek"
       intro={<Tr id="pronunciation.intro.write-say-each">Write (or say) each word in English letters, then guess the meaning — these all became English words.</Tr>}
@@ -299,14 +299,14 @@ export const PRONUNCIATION_CONTENT = (
       items={[
         { q: <Tr id="pronunciation.q.h-sound">Which has the h-sound: <span className="normal-case">ἅγιος</span> or <span className="normal-case">ἄγγελος</span>?</Tr>,
           a: <Tr id="pronunciation.pa.rough-breathing-hagios"><span className="normal-case">ἅγιος</span> (rough breathing) = <em>hagios</em>; <span className="normal-case">ἄγγελος</span> (smooth) = <em>angelos</em> — and note γγ = "ng."</Tr>},
-        { q: <Tr id="pronunciation.q.writing-ago">What's wrong with writing <span className="normal-case">αγω</span>?</Tr>,
+        { q: <Tr id="pronunciation.q.writing-ago">What is wrong with writing <span className="normal-case">αγω</span>?</Tr>,
           a: <Tr id="pronunciation.pa.vowel-initial-word">A vowel-initial word must carry a breathing: <span className="normal-case">ἄγω</span>. Smooth breathings are not optional.</Tr>},
         { q: <span className="normal-case">Παῦλος</span>,
           a: <Tr id="pronunciation.pa.paulos-paul-diphthong">Paulos — Paul. The diphthong αυ = "ow."</Tr>},
         { q: <span className="normal-case">Ἰερουσαλήμ</span>,
           a: <Tr id="pronunciation.pa.ierousalem-jerusalem-smooth">Ierousalēm — Jerusalem (smooth breathing on the Ι, ου = "oo").</Tr>},
         { q: <Tr id="pronunciation.q.nu-is-v">Is <span className="normal-case">ν</span> the English v?</Tr>,
-          a: <Tr id="pronunciation.pa.false-friend-it's">No — false friend: it's n. (And ρ is r, not p.)</Tr>},
+          a: <Tr id="pronunciation.pa.false-friend-it's">No — false friend: it is n. (And ρ is r, not p.)</Tr>},
       ]}
     />
 

@@ -22,7 +22,7 @@ import { Cat, CatGroup, T, G } from '@/components/vocab/morphology-explanations'
 
 export const DEPONENTS_INTERMEDIATE_CONTENT = (
   <>
-    <SectionHeading id="deponents.h.int-middle-uses">What the middle actually does</SectionHeading>
+    <SectionHeading id="deponents.h.int-middle-uses">The function of the middle voice</SectionHeading>
     <P id="deponents.p.int-middle-lead">
       English has two voices and Greek has three, so the middle is the one with no English slot to fall into. Its common thread is that the subject is somehow <em>involved</em> in the action beyond simply performing it. The categories below are ways of naming that involvement; the form is identical in each, and only the verb and its context decide.
     </P>
@@ -40,7 +40,7 @@ export const DEPONENTS_INTERMEDIATE_CONTENT = (
     <P id="deponents.p.int-deponency-practice">
       <strong>What to do with that in practice.</strong> Parse the form you see — middle or passive, as the ending says — and translate the sense the verb actually has. Where the middle idea is visible, let it show: <Gk>ἀπεκρίθη</Gk> is not merely “he answered” but a response the subject is invested in. Where it is not visible, do not manufacture it; some of these verbs really have flattened into plain lexical items, and a theology built on a middle ending that the author was not thinking about is a theology built on nothing.
     </P>
-    <SectionHeading id="deponents.h.going-deeper-deponent">Going deeper: is "deponent" the right name?</SectionHeading>
+    <SectionHeading id="deponents.h.going-deeper-deponent">Further study: is "deponent" the right name?</SectionHeading>
     <P id="deponents.p.middle-voice-reappraisal">
       <strong>The middle-voice reappraisal.</strong> A growing consensus in Greek linguistics holds that
       most "deponents" never laid anything aside — their middle form fits their meaning. Verbs of motion

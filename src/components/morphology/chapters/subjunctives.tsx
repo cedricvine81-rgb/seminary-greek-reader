@@ -13,7 +13,7 @@ import {
 import { ParseFrame } from '../ParseFrame'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 
-// The subjunctive presets from Construct search, so the chapter and the search can't drift apart.
+// The subjunctive presets from Construct search, so the chapter and the search cannot drift apart.
 const SUBJUNCTIVE_USES = CONSTRUCT_PRESETS.find(g => g.heading === 'Uses of the subjunctive')!.presets
 
 export const SUBJUNCTIVES_CONTENT = (
@@ -143,7 +143,7 @@ export const SUBJUNCTIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="subjunctives.h.when-does-walk">When it does walk alone</SectionHeading>
+    <SectionHeading id="subjunctives.h.when-does-walk">When it stands alone</SectionHeading>
     <P id="subjunctives.p.four-uses-need">
       Four uses need no flag word — the subjunctive itself carries the meaning:
     </P>
@@ -177,7 +177,7 @@ export const SUBJUNCTIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="subjunctives.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="subjunctives.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="subjunctives.wo.aorist-subjunctive-future">Aorist subjunctive vs. future indicative: <Gk>λύσητε</Gk> vs. <Gk>λύσετε</Gk> — the long vowel decides, so read vowels carefully after a <Gk>σ</Gk>.</Tr></li>
@@ -189,7 +189,7 @@ export const SUBJUNCTIVES_CONTENT = (
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
     <LevelOnly level="beginning">
-    <SectionHeading id="subjunctives.h.try">Try it</SectionHeading>
+    <SectionHeading id="subjunctives.h.try">Practice</SectionHeading>
     <Practice id="subjunctives.pr1"
       title="Practice — parse and translate"
       intro={<Tr id="subjunctives.intro.watch-flag-word">Watch for the flag word and the long vowel. Vocabulary: <span className="normal-case">πιστεύω</span> "believe" · <span className="normal-case">φάγωμεν</span> (aor. subj. of "eat") · <span className="normal-case">σωθῇ</span> (aor. pass. subj. of "save").</Tr>}

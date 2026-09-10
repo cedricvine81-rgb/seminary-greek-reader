@@ -36,7 +36,7 @@ export const RELATIVES_INTERMEDIATE_CONTENT = (
     <P id="relatives.p.int-caution">
       <strong>Why it is worth noticing.</strong> An attracted relative can disguise the syntax of a whole clause: a genitive <Gk>οὗ</Gk> may be functioning as the object of its own verb, not as a genitive at all. When a relative’s case makes no sense in its clause, look at the word immediately before it before concluding the author has written something unusual.
     </P>
-    <SectionHeading id="relatives.h.going-deeper-attraction">Going deeper: attraction and the hymnic relative</SectionHeading>
+    <SectionHeading id="relatives.h.going-deeper-attraction">Further study: attraction and the hymnic relative</SectionHeading>
     <P id="relatives.p.case-attraction-greek">
       <strong>Case attraction.</strong> Greek sometimes lets the antecedent pull the relative into its
       own case, especially genitive/dative: <Gk>περὶ πάντων ὧν ἐποίησεν</Gk> — "concerning all

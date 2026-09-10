@@ -61,7 +61,7 @@ export const IMPERATIVES_INTERMEDIATE_CONTENT = (
       or “don’t start” on its own. Let the context, not the paradigm, decide whether “stop” is
       warranted.
     </P>
-    <SectionHeading id="imperatives.h.going-deeper-commands">Going deeper: commands with manners</SectionHeading>
+    <SectionHeading id="imperatives.h.going-deeper-commands">Further study: commands with manners</SectionHeading>
     <P id="imperatives.p.request-just-order">
       <strong>Request, not just order.</strong> Direction of rank matters: an imperative from an inferior
       to a superior is an entreaty. Every petition of the Lord's Prayer is an aorist imperative —

@@ -39,7 +39,7 @@ export const PARTICIPLES_INTERMEDIATE_CONTENT = (
             <Cat id="participles.cat.imperatival"name="Imperatival" ex={[{ g: "τῇ ἐλπίδι χαίροντες, τῇ θλίψει ὑπομένοντες", e: "rejoice in hope, be patient in tribulation", r: "Rom 12:12" }, { g: "ἀποστυγοῦντες τὸ πονηρόν, κολλώμενοι τῷ ἀγαθῷ", e: "abhor what is evil, cling to what is good", r: "Rom 12:9" }]} how={<T id="participles.cat.imperatival.h">A participle standing where a finite imperative would, with no main verb for it to depend on. Romans 12 is the classic stretch.</T>}><T id="participles.cat.imperatival.d">a participle functioning as a command</T></Cat>
             <Cat id="participles.cat.genitive-absolute"name="Genitive Absolute" ex={[{ g: "ὀψίας δὲ γενομένης", e: "when evening had come", r: "Matt 8:16" }, { g: "ἔτι αὐτοῦ λαλοῦντος ἰδοὺ Ἰούδας ἦλθεν", e: "while he was still speaking, behold, Judas came", r: "Matt 26:47" }]} how={<T id="participles.cat.genitive-absolute.h">Noun and participle both genitive, and the noun has no grammatical role in the main clause. If it does have one, it is an ordinary adverbial participle.</T>}><T id="participles.cat.genitive-absolute.d">detached participle + noun, both genitive — usually background/time</T></Cat>
     </CatGroup>
-    <SectionHeading id="participles.h.going-deeper-adverbial">Going deeper: the adverbial flavours</SectionHeading>
+    <SectionHeading id="participles.h.going-deeper-adverbial">Further study: the adverbial flavours</SectionHeading>
     <P id="participles.p.calling-participle-adverbial">
       Calling a participle "adverbial" only starts the conversation; the exegetical question
       is <em>which</em> circumstance it adds. The main flavours (full catalogue in the sections above):

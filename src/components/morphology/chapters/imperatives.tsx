@@ -39,7 +39,7 @@ export const IMPERATIVES_CONTENT = (
     </LevelOnly>
 
     {/* ── 2 · The forms ──────────────────────────────────── */}
-    <SectionHeading id="imperatives.h.forms-you'll-meet">The forms you'll meet most</SectionHeading>
+    <SectionHeading id="imperatives.h.forms-you'll-meet">The commonest forms</SectionHeading>
     <TableAside
       beginning={<>
         <p><Tr id="imperatives.as.imperative-gives-command">The imperative gives a command. Learn the 2nd-person forms first.</Tr></p>
@@ -133,18 +133,18 @@ export const IMPERATIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="imperatives.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="imperatives.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="imperatives.wo.aorist-imperative-future">Aorist imperative vs. future indicative: both carry <Gk>σ</Gk> and no augment — the <em>endings</em> decide: <Gk>πίστευσον</Gk> "believe!" vs. <Gk>πιστεύσομεν</Gk> "we will believe."</Tr></li>
         <li><Tr id="imperatives.wo.plural-present-imperative">2nd plural present imperative = 2nd plural present indicative (<Gk>λύετε</Gk> = "loose!" or "you are loosing"). Context — especially a vocative or a μή — decides.</Tr></li>
-        <li><Tr id="imperatives.wo.augment-imperatives-that's">No augment on imperatives: <Gk>λύσατε</Gk>, not <Gk>ἐλύσατε</Gk> (that's the indicative "you loosed").</Tr></li>
+        <li><Tr id="imperatives.wo.augment-imperatives-that's">No augment on imperatives: <Gk>λύσατε</Gk>, not <Gk>ἐλύσατε</Gk> (that is the indicative "you loosed").</Tr></li>
         <li><Tr id="imperatives.wo.middle-passive-imperatives">Middle/passive imperatives exist too: <Gk>λύου</Gk> "be loosed!", <Gk>προσεύχου</Gk> "pray!" (deponent — active meaning).</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="imperatives.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="imperatives.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="imperatives.pr1"
       title="Practice — parse and translate"
       intro={<Tr id="imperatives.intro.identify-person-number">Identify person, number, tense — then feel the aspect. Vocabulary: <span className="normal-case">ἀκούω</span> "hear" · <span className="normal-case">ἔγειρε</span> "rise" · <span className="normal-case">δός</span> (aor. impv. of δίδωμι, "give").</Tr>}
@@ -156,7 +156,7 @@ export const IMPERATIVES_CONTENT = (
         { q: <span className="normal-case">ὁ ἔχων ὦτα ἀκουέτω.</span>,
           a: <Tr id="imperatives.pa.let-one-who">"Let the one who has ears hear" — 3rd sg. imperative in ‑τω.</Tr>},
         { q: <span className="normal-case">μὴ κρίνετε.</span>,
-          a: <Tr id="imperatives.pa.judge-stop-judging">"Do not judge / stop judging" — μή + present imperative (Matt 7:1): don't make judging your habit.</Tr>},
+          a: <Tr id="imperatives.pa.judge-stop-judging">"Do not judge / stop judging" — μή + present imperative (Matt 7:1): do not make judging your habit.</Tr>},
         { q: <span className="normal-case">δὸς ἡμῖν σήμερον.</span>,
           a: <Tr id="imperatives.pa.give-today-aorist">"Give us today" — aorist imperative of δίδωμι: the Lord's Prayer asks in whole, specific acts.</Tr>},
       ]}

@@ -249,7 +249,7 @@ export const INDICATIVES_CONTENT = (
         <Ex grc="λύω → λύσω" en={<Tr id="indicatives.ex.future-will-loose">+ σ = future “I will loose”</Tr>} />
       </>}
       intermediate={<>
-        <p><Tr id="indicatives.as.run-backwards-parse">Run it backwards to parse an unknown form: strip the ending, spot the marker, subtract it, and you're left with the lexical stem to look up.</Tr></p>
+        <p><Tr id="indicatives.as.run-backwards-parse">Run it backwards to parse an unknown form: strip the ending, spot the marker, subtract it, and you are left with the lexical stem to look up.</Tr></p>
       </>}
     >
       <MorphTable id="indicatives.t5" tCols={[0, 1]} flush title="Applying Tense Identifiers to Endings" headers={['Tense','Modification to Base Endings']}
@@ -414,7 +414,7 @@ export const INDICATIVES_CONTENT = (
 
     </LevelOnly>
     {/* ── 8 · Watch out ──────────────────────────────────── */}
-    <SectionHeading id="indicatives.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="indicatives.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="indicatives.wo.imperfect-identical-was">The 1st sg. and 3rd pl. imperfect are identical (<Gk>ἔλυον</Gk> = "I was loosing" <em>or</em> "they were loosing") — context decides.</Tr></li>
@@ -427,7 +427,7 @@ export const INDICATIVES_CONTENT = (
 
     {/* ── 9 · Try it ─────────────────────────────────────── */}
     <LevelOnly level="beginning">
-    <SectionHeading id="indicatives.h.try">Try it</SectionHeading>
+    <SectionHeading id="indicatives.h.try">Practice</SectionHeading>
     <Practice id="indicatives.pr1"
       title="Practice A — parse the verb"
       intro={<Tr id="indicatives.intro.give-tense-voice">Give the tense, voice, person, and a translation. Ask the three questions: front? middle? end?</Tr>}

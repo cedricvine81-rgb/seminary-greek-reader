@@ -22,7 +22,7 @@ import { Cat, CatGroup, T, G } from '@/components/vocab/morphology-explanations'
 
 export const DEMONSTRATIVES_INTERMEDIATE_CONTENT = (
   <>
-    <SectionHeading id="demonstratives.h.int-pointing">Which way is it pointing?</SectionHeading>
+    <SectionHeading id="demonstratives.h.int-pointing">Direction of reference</SectionHeading>
     <P id="demonstratives.p.int-lead">
       A demonstrative is a finger. The exegetical question is never what it means — “this,” “that” — but what it is pointing at, and Greek lets it point in both directions, and sometimes at nothing in the text at all.
     </P>
@@ -41,10 +41,10 @@ export const DEMONSTRATIVES_INTERMEDIATE_CONTENT = (
       from the Pronouns chapter: delete "himself," and if the meaning collapses it was reflexive
       (<Gk>σῴζει ἑαυτόν</Gk>), if unchanged it was intensive (<Gk>αὐτὸς ὁ κύριος σῴζει</Gk>).
     </P>
-    <SectionHeading id="demonstratives.h.going-deeper-pointing">Going deeper: pointing with attitude</SectionHeading>
+    <SectionHeading id="demonstratives.h.going-deeper-pointing">Further study: pointing with attitude</SectionHeading>
     <P id="demonstratives.p.backward-forward-demonstrative">
       <strong>Backward or forward?</strong> A demonstrative usually points back at what was just said
-      (anaphoric: <Gk>μετὰ ταῦτα</Gk>), but it can point forward to what's coming (cataphoric):
+      (anaphoric: <Gk>μετὰ ταῦτα</Gk>), but it can point forward to what is coming (cataphoric):
       <Gk> αὕτη ἐστὶν ἡ ἐντολὴ ἡ ἐμή, ἵνα…</Gk> — "<em>this</em> is my commandment: that you love…"
       (John 15:12). John especially uses forward-pointing οὗτος to headline a definition before giving it.
     </P>

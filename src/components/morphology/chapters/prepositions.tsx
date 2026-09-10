@@ -218,18 +218,18 @@ export const PREPOSITIONS_CONTENT = (
     </P>
 
     {/* ── 6 · Watch out ──────────────────────────────────── */}
-    <SectionHeading id="prepositions.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="prepositions.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="prepositions.wo.final-vowels-elide">Final vowels elide before a following vowel: <Gk>διὰ αὐτοῦ → δι᾿ αὐτοῦ</Gk>, <Gk>ἀπὸ αὐτοῦ → ἀπ᾿ αὐτοῦ</Gk>. The apostrophe marks the lost vowel.</Tr></li>
         <li><Tr id="prepositions.wo.becomes-before-vowel"><Gk>ἐκ</Gk> becomes <Gk>ἐξ</Gk> before a vowel: <Gk>ἐξ οἴκου</Gk>.</Tr></li>
-        <li><Tr id="prepositions.wo.instrument-usually-needs">Instrument usually needs <em>no</em> preposition at all — the plain dative does it: <Gk>τῷ λόγῳ</Gk> "by a word." Don't hunt for a missing ἐν.</Tr></li>
+        <li><Tr id="prepositions.wo.instrument-usually-needs">Instrument usually needs <em>no</em> preposition at all — the plain dative does it: <Gk>τῷ λόγῳ</Gk> "by a word." Do not hunt for a missing ἐν.</Tr></li>
         <li><Tr id="prepositions.wo.breathings-again-one">Breathings again: <Gk>ἐν</Gk> "in" vs. <Gk>ἕν</Gk> "one"; <Gk>εἰς</Gk> "into" vs. <Gk>εἷς</Gk> "one."</Tr></li>
       </ul>
     </InfoBox>
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="prepositions.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="prepositions.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="prepositions.pr1"
       title="Practice — translate the phrase"
       intro={<Tr id="prepositions.intro.read-case-first">Read the case first, then choose the meaning. Vocabulary: <span className="normal-case">οἶκος</span> "house" · <span className="normal-case">σάββατον</span> "Sabbath" · <span className="normal-case">νόμος</span> "law" · <span className="normal-case">μαθητής</span> "disciple."</Tr>}
@@ -304,7 +304,7 @@ export const PREPOSITIONS_CONTENT = (
 
     <HomeworkAssignments chapter="prepositions" />
 
-    {/* Syntax is a relation between words, which the one-word morphology search can't express;
+    {/* Syntax is a relation between words, which the one-word morphology search cannot express;
         these open Construct search instead. */}
     <LiveExamples
       intro={<Tr id="prepositions.intro.same-preposition-different">The same preposition in different cases — see how the sense turns on the case:</Tr>}

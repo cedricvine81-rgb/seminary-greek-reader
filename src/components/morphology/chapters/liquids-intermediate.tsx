@@ -35,7 +35,7 @@ export const LIQUIDS_INTERMEDIATE_CONTENT = (
     <P id="liquids.p.int-caution">
       <strong>The practical upshot.</strong> Meeting <Gk>μενεῖ</Gk> and reading it as a present is the standard liquid mistake, and it turns a promise about the future into a statement about now. When a stem ends in a liquid, let the accent decide the tense before the sense does.
     </P>
-    <SectionHeading id="liquids.h.deeper">Going deeper: theology in liquid forms</SectionHeading>
+    <SectionHeading id="liquids.h.deeper">Further study: theology in liquid forms</SectionHeading>
     <P id="liquids.p.meno">
       <strong>μένω in John.</strong> "Abide in me" — John's theology of union runs on this liquid verb
       (40 times in the Gospel, 27 in the letters). John 15 alone plays present forms ("keep abiding")

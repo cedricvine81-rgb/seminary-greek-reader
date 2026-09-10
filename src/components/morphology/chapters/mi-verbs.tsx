@@ -147,7 +147,7 @@ export const MI_VERBS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="mi-verbs.h.family-you'll-actually">The family you'll actually read: compounds</SectionHeading>
+    <SectionHeading id="mi-verbs.h.family-you'll-actually">Compound verbs in practice</SectionHeading>
     <P id="mi-verbs.p.much-club's-frequency">
       Much of the μι-club's NT frequency comes through compounds — preposition + μι-verb — and several are
       theological heavyweights:
@@ -186,7 +186,7 @@ export const MI_VERBS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="mi-verbs.h.watch-out">Watch out</SectionHeading>
+    <SectionHeading id="mi-verbs.h.watch-out">Points of confusion</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
         <li><Tr id="mi-verbs.wo.aorist-perfect-aorist"><Gk>‑κα</Gk> aorist vs. perfect: <Gk>ἔδωκα</Gk> (aorist — augment, no reduplication) vs. <Gk>δέδωκα</Gk> (perfect — reduplication). Front of the word decides.</Tr></li>
@@ -197,7 +197,7 @@ export const MI_VERBS_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <LevelOnly level="beginning"><SectionHeading id="mi-verbs.h.try">Try it</SectionHeading></LevelOnly>
+    <LevelOnly level="beginning"><SectionHeading id="mi-verbs.h.try">Practice</SectionHeading></LevelOnly>
     <Practice id="mi-verbs.pr1"
       title="Practice — parse and translate"
       intro={<Tr id="mi-verbs.intro.front-word-first">Front of the word first: iota? augment? reduplication?</Tr>}
