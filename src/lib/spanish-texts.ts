@@ -248,6 +248,13 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'aristotle-rhetoric': 'greco/aristotle-rhetoric',
   'aristotle-nicomachean-ethics': 'greco/aristotle-nicomachean-ethics',
   'greco-diogenes-laertius': 'greco/diogenes-laertius',
+  // JENOFONTE, Recuerdos de Sócrates. Four separate works, one per book, and the catalogue id
+  // is the BARE slug here — no `greco-` prefix, unlike Diogenes above (see XENOPHON_CATALOG in
+  // prose-texts.ts, which builds its id from the book number alone).
+  'xenophon-memorabilia-1': 'greco/xenophon-memorabilia-1',
+  'xenophon-memorabilia-2': 'greco/xenophon-memorabilia-2',
+  'xenophon-memorabilia-3': 'greco/xenophon-memorabilia-3',
+  'xenophon-memorabilia-4': 'greco/xenophon-memorabilia-4',
   // MARCO AURELIO. Greek-only in the reader — there is no English column to lean on, so the
   // Spanish is translated straight from the Perseus Greek, as Plato's and Aristotle's were.
   'marcus-aurelius-meditations': 'greco/marcus-aurelius-meditations',
