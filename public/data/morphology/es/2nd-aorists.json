@@ -13,7 +13,7 @@
   },
   "2nd-aorists.cat.imperfect-clash.h": {
     "fp": "198pia8",
-    "text": "Las desinencias no te ayudarán: compara las raíces. Una consonante doble, o las letras que añade el presente, indican imperfecto; la raíz desnuda, aoristo."
+    "text": "Las desinencias no le ayudarán: compare las raíces. Una consonante doble, o las letras que añade el presente, indican imperfecto; la raíz desnuda, aoristo."
   },
   "2nd-aorists.cat.imperfect-clash.name": {
     "fp": "1gy3r3x",
@@ -53,7 +53,7 @@
   },
   "2nd-aorists.cat.stem-elsewhere.h": {
     "fp": "vpth6p",
-    "text": "Reconoce la raíz de aoristo y comprueba después si hay aumento. Con aumento, indicativo; sin aumento, participio, infinitivo, subjuntivo o imperativo."
+    "text": "Reconozca la raíz de aoristo y compruebe después si hay aumento. Con aumento, indicativo; sin aumento, participio, infinitivo, subjuntivo o imperativo."
   },
   "2nd-aorists.cat.stem-elsewhere.name": {
     "fp": "1xdcndl",
@@ -101,7 +101,7 @@
   },
   "2nd-aorists.exp.p.some-verbs-suppletive": {
     "fp": "j39b4k",
-    "text": "Algunos verbos son *supletivos* y toman prestada una raíz totalmente distinta para el aoristo ({λέγω → εἶπον}, {ὁράω → εἶδον}). Aprende la raíz del aoristo como una de las _partes principales_ del verbo para poder rastrear una forma desconocida hasta su forma léxica."
+    "text": "Algunos verbos son *supletivos* y toman prestada una raíz totalmente distinta para el aoristo ({λέγω → εἶπον}, {ὁράω → εἶδον}). Aprenda la raíz del aoristo como una de las _partes principales_ del verbo para poder rastrear una forma desconocida hasta su forma léxica."
   },
   "2nd-aorists.h.int-form-not-meaning": {
     "fp": "19pn47n",
@@ -285,11 +285,11 @@
   },
   "second-aorists.as.uses-imperfect's-endings": {
     "fp": "qp2k4s",
-    "text": "Usa las desinencias del imperfecto, pero con la raíz cambiada: lee la fila de izquierda a derecha: presente → aoristo → significado."
+    "text": "Usa las desinencias del imperfecto, pero con la raíz cambiada: lea la fila de izquierda a derecha: presente → aoristo → significado."
   },
   "second-aorists.as.why-recognizing-bare": {
     "fp": "1qelr11",
-    "text": "Por esto reconocer las raíces desnudas importa más que memorizar paradigmas completos: {ἐλθών, ἰδών, εἰπών} abren frases constantemente, y ninguno lleva aumento que te ayude."
+    "text": "Por esto reconocer las raíces desnudas importa más que memorizar paradigmas completos: {ἐλθών, ἰδών, εἰπών} abren frases constantemente, y ninguno lleva aumento que le ayude."
   },
   "second-aorists.cs1.lesson": {
     "fp": "1990ejx",
@@ -457,7 +457,7 @@
   },
   "second-aorists.intro.ask-augment-changed": {
     "fp": "hcwive",
-    "text": "Pregúntate: ¿aumento? ¿σα? ¿raíz cambiada? Luego consulta la tabla de arriba."
+    "text": "Pregúntese: ¿aumento? ¿σα? ¿raíz cambiada? Luego consulte la tabla de arriba."
   },
   "second-aorists.intro.changed-stem-keeps": {
     "fp": "1x84vnw",
@@ -485,7 +485,7 @@
   },
   "second-aorists.p.aorist-stem-isn't": {
     "fp": "1hxjybc",
-    "text": "La raíz del aoristo segundo no es solo para el indicativo: alimenta también los participios, infinitivos, subjuntivos e imperativos de aoristo del verbo, todos ellos _sin aumento_ (el aumento pertenece únicamente al indicativo). Así, a partir de {λαβ‑}: participio {λαβών} «habiendo tomado», infinitivo {λαβεῖν} «tomar», imperativo {λάβε} «¡toma!». Aprende una raíz cambiada y desbloquearás cinco modos."
+    "text": "La raíz del aoristo segundo no es solo para el indicativo: alimenta también los participios, infinitivos, subjuntivos e imperativos de aoristo del verbo, todos ellos _sin aumento_ (el aumento pertenece únicamente al indicativo). Así, a partir de {λαβ‑}: participio {λαβών} «habiendo tomado», infinitivo {λαβεῖν} «tomar», imperativo {λάβε} «¡toma!». Aprenda una raíz cambiada y desbloqueará cinco modos."
   },
   "second-aorists.p.first-second-forms": {
     "fp": "1j3a2ki",
@@ -501,7 +501,7 @@
   },
   "second-aorists.p.narrative-glue-luke": {
     "fp": "y6pww4",
-    "text": "*ἐγένετο como argamasa narrativa.* Lucas en especial adora abrir escenas con {καὶ ἐγένετο} — el «y aconteció» de las versiones clásicas —, un septuagintismo que refleja el estilo narrativo hebreo ({וַיְהִי}). Rara vez hace falta traducirlo como un suceso: es un telón que se levanta. Detectarlo afina tu oído para el registro deliberadamente bíblico de Lucas."
+    "text": "*ἐγένετο como argamasa narrativa.* Lucas en especial adora abrir escenas con {καὶ ἐγένετο} — el «y aconteció» de las versiones clásicas —, un septuagintismo que refleja el estilo narrativo hebreo ({וַיְהִי}). Rara vez hace falta traducirlo como un suceso: es un telón que se levanta. Detectarlo afina su oído para el registro deliberadamente bíblico de Lucas."
   },
   "second-aorists.p.suppletion-information-when": {
     "fp": "1wdieum",

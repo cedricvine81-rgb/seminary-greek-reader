@@ -177,15 +177,15 @@
   },
   "principal-parts.a2.clubs": {
     "fp": "1fkdu3q",
-    "text": "Reconoce los grupos que ya conoces: aoristos segundos en la parte 3 ({ἔλαβον}), futuros medios de los deponentes ({λήμψομαι}), futuros líquidos ({βαλῶ})."
+    "text": "Reconozca los grupos que ya conoce: aoristos segundos en la parte 3 ({ἔλαβον}), futuros medios de los deponentes ({λήμψομαι}), futuros líquidos ({βαλῶ})."
   },
   "principal-parts.a2.int": {
     "fp": "1snkaeh",
-    "text": "Cuando las partes vienen de raíces distintas ({λέγω/ἐρῶ/εἶπον}; {ὁράω/ὄψομαι/εἶδον}; {φέρω/οἴσω/ἤνεγκα}), estás ante una _supleción_: verbos antiguos fundidos en un solo paradigma, como el español ir/voy/fui."
+    "text": "Cuando las partes vienen de raíces distintas ({λέγω/ἐρῶ/εἶπον}; {ὁράω/ὄψομαι/εἶδον}; {φέρω/οἴσω/ἤνεγκα}), está ante una _supleción_: verbos antiguos fundidos en un solo paradigma, como el español ir/voy/fui."
   },
   "principal-parts.a3.eg": {
     "fp": "npdrgw",
-    "text": "Te encuentras {ὄψεσθε}. Las desinencias dicen futuro medio, 2.ª pl., así que es una forma de la parte 2. Recorre la columna del futuro… {ὄψομαι} → fila {ὁράω}: «veréis»."
+    "text": "Se encuentra {ὄψεσθε}. Las desinencias dicen futuro medio, 2.ª pl., así que es una forma de la parte 2. Recorra la columna del futuro… {ὄψομαι} → fila {ὁράω}: «verán»."
   },
   "principal-parts.a3.int": {
     "fp": "1ie47ei",
@@ -209,7 +209,7 @@
   },
   "principal-parts.cat.aorist-passive.h": {
     "fp": "1hzfcdi",
-    "text": "Una {θη}, o una {η} sola en el aoristo pasivo segundo. Es la menos previsible de las seis, así que búscala en el diccionario en vez de deducirla."
+    "text": "Una {θη}, o una {η} sola en el aoristo pasivo segundo. Es la menos previsible de las seis, así que búsquela en el diccionario en vez de deducirla."
   },
   "principal-parts.cat.aorist-passive.name": {
     "fp": "swi620",
@@ -389,7 +389,7 @@
   },
   "principal-parts.exp.b.hook": {
     "fp": "2n19c7",
-    "text": "Aprende la fila de un verbo rebelde como una *cantinela*, de izquierda a derecha — {λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην} — exactamente como aprendiste _hago, hice, hecho_."
+    "text": "Aprenda la fila de un verbo rebelde como una *cantinela*, de izquierda a derecha — {λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην} — exactamente como aprendió _hago, hice, hecho_."
   },
   "principal-parts.exp.b.intro": {
     "fp": "1ln04c6",
@@ -397,7 +397,7 @@
   },
   "principal-parts.exp.i.main": {
     "fp": "rvp2i0",
-    "text": "Piensa en *sistemas temporales*, no en tiempos: la raíz de cada parte sirve a todos los modos de su sistema. Los apuntes al lado de la tabla indican qué desinencias y modos pertenecen a cada parte, y «Estudio adicional», abajo, sigue la idea más lejos."
+    "text": "Piense en *sistemas temporales*, no en tiempos: la raíz de cada parte sirve a todos los modos de su sistema. Los apuntes al lado de la tabla indican qué desinencias y modos pertenecen a cada parte, y «Estudio adicional», abajo, sigue la idea más lejos."
   },
   "principal-parts.h.deeper": {
     "fp": "e1yryb",
@@ -433,7 +433,7 @@
   },
   "principal-parts.le.intro": {
     "fp": "ngt3ct",
-    "text": "Elige un verbo rebelde y observa cómo sus seis caras aparecen en texto real."
+    "text": "Elija un verbo rebelde y observe cómo sus seis caras aparecen en texto real."
   },
   "principal-parts.le.l0": {
     "fp": "16s3eyj",
@@ -453,11 +453,11 @@
   },
   "principal-parts.p.int-caution": {
     "fp": "1a12kpf",
-    "text": "*Por qué los diccionarios las imprimen.* Una forma que no logras situar es una forma cuyo sistema no has identificado. Encuentra la marca —reduplicación, {σ}, {θη}, un aumento— y esa marca nombra la parte; la parte nombra la entrada; y solo entonces el léxico sirve de algo. Trabajar al revés, a partir de un presente adivinado, es como un lector acaba inventándose un verbo."
+    "text": "*Por qué los diccionarios las imprimen.* Una forma que no logra situar es una forma cuyo sistema no ha identificado. Encuentre la marca —reduplicación, {σ}, {θη}, un aumento— y esa marca nombra la parte; la parte nombra la entrada; y solo entonces el léxico sirve de algo. Trabajar al revés, a partir de un presente adivinado, es como un lector acaba inventándose un verbo."
   },
   "principal-parts.p.int-lead": {
     "fp": "ktkolk",
-    "text": "Las partes principales no son una lista que recitar sino un mapa de dónde cambian las raíces de un verbo. Cada parte encabeza un _sistema_ —un grupo de formas construidas a partir de ella—, de modo que conocer una parte te da todas las formas de su sistema, y saber a qué sistema pertenece una forma te dice qué parte buscar."
+    "text": "Las partes principales no son una lista que recitar sino un mapa de dónde cambian las raíces de un verbo. Cada parte encabeza un _sistema_ —un grupo de formas construidas a partir de ella—, de modo que conocer una parte le da todas las formas de su sistema, y saber a qué sistema pertenece una forma le dice qué parte buscar."
   },
   "principal-parts.p.part6": {
     "fp": "jxbet6",
@@ -469,15 +469,15 @@
   },
   "principal-parts.p.rows": {
     "fp": "ph3n1q",
-    "text": "Estos son los conjuntos irregulares de mayor frecuencia en el Nuevo Testamento. Lee cada fila en voz alta, de izquierda a derecha, como _hago–hice–hecho_. Una raya indica que la parte falta o es rara en el NT."
+    "text": "Estos son los conjuntos irregulares de mayor frecuencia en el Nuevo Testamento. Lea cada fila en voz alta, de izquierda a derecha, como _hago–hice–hecho_. Una raya indica que la parte falta o es rara en el NT."
   },
   "principal-parts.p.six": {
     "fp": "ylq02c",
-    "text": "El griego hace exactamente esto, con *seis* partes principales por verbo: seis llaves, una para cada ala de la casa del verbo. Sabe en qué ala vive una forma y su llave te dirá qué raíz esperar. En los verbos regulares como {λύω} las seis partes son aburridamente predecibles, y ahí está la gracia: solo memorizas las partes de los rebeldes ({ἔρχομαι, λέγω, ὁράω, φέρω}…), y esos rebeldes son justamente los verbos que aparecen en cada página."
+    "text": "El griego hace exactamente esto, con *seis* partes principales por verbo: seis llaves, una para cada ala de la casa del verbo. Sepa en qué ala vive una forma y su llave le dirá qué raíz esperar. En los verbos regulares como {λύω} las seis partes son aburridamente predecibles, y ahí está la gracia: solo memoriza las partes de los rebeldes ({ἔρχομαι, λέγω, ὁράω, φέρω}…), y esos rebeldes son justamente los verbos que aparecen en cada página."
   },
   "principal-parts.p.systems": {
     "fp": "j3cce1",
-    "text": "*Piensa en sistemas temporales.* Las seis partes revelan la verdadera arquitectura del griego: no «tiempos», sino _sistemas_ — presente, futuro, aoristo, perfecto activo, perfecto medio/pasivo, aoristo pasivo —, cada uno con una raíz que sirve a todos los modos. Por eso el subjuntivo, el infinitivo, el imperativo y el participio de aoristo comparten todos la raíz de la parte 3 menos el aumento. Domina los sistemas y los cientos de «formas» se reducen a seis raíces más reglas que ya conoces."
+    "text": "*Piensa en sistemas temporales.* Las seis partes revelan la verdadera arquitectura del griego: no «tiempos», sino _sistemas_ — presente, futuro, aoristo, perfecto activo, perfecto medio/pasivo, aoristo pasivo —, cada uno con una raíz que sirve a todos los modos. Por eso el subjuntivo, el infinitivo, el imperativo y el participio de aoristo comparten todos la raíz de la parte 3 menos el aumento. Domine los sistemas y los cientos de «formas» se reducen a seis raíces más reglas que ya conoce."
   },
   "principal-parts.pr.a0": {
     "fp": "m7g5ae",
@@ -501,7 +501,7 @@
   },
   "principal-parts.pr.intro": {
     "fp": "9l6lqh",
-    "text": "Di de qué parte principal viene, cuál es el verbo de diccionario, y traduce."
+    "text": "Diga de qué parte principal viene, cuál es el verbo de diccionario, y traduzca."
   },
   "principal-parts.pr.title": {
     "fp": "ea5o8b",
@@ -601,7 +601,7 @@
   },
   "principal-parts.t2.note": {
     "fp": "1m5mxg1",
-    "text": "La raya (—) = no atestiguado o raro en el NT. Aprende cada fila como una cantinela, de izquierda a derecha."
+    "text": "La raya (—) = no atestiguado o raro en el NT. Aprenda cada fila como una cantinela, de izquierda a derecha."
   },
   "principal-parts.t2.title": {
     "fp": "18kede1",

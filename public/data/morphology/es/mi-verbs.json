@@ -5,7 +5,7 @@
   },
   "mi-verbs.as.aorist-can-look": {
     "fp": "1cbqvry",
-    "text": "El aoristo en {‑κα} puede parecer un perfecto: distínguelos por la reduplicación (perfecto) y por el contexto. {ἵστημι} conserva su {‑σα} ({ἔστησα}) y aquí es transitivo («puse en pie»)."
+    "text": "El aoristo en {‑κα} puede parecer un perfecto: distíngalos por la reduplicación (perfecto) y por el contexto. {ἵστημι} conserva su {‑σα} ({ἔστησα}) y aquí es transitivo («puse en pie»)."
   },
   "mi-verbs.as.each-two-stems": {
     "fp": "11788x4",
@@ -21,7 +21,7 @@
   },
   "mi-verbs.as.iota-reduplication-marks": {
     "fp": "10lzyg0",
-    "text": "La reduplicación con iota ({δι‑, τι‑, ἱ‑}) marca el presente. Si la ves, el verbo está en presente o imperfecto."
+    "text": "La reduplicación con iota ({δι‑, τι‑, ἱ‑}) marca el presente. Si la ve, el verbo está en presente o imperfecto."
   },
   "mi-verbs.cat.compounds.d": {
     "fp": "1lvy4qb",
@@ -65,7 +65,7 @@
   },
   "mi-verbs.cat.reduplication.d": {
     "fp": "2yi58m",
-    "text": "la raíz de presente dobla su primera consonante con una {ι}: {δι-δο}, {τι-θε}, {ἱ-στα}. Si ves ese patrón, estás en el sistema de presente y en ningún otro"
+    "text": "la raíz de presente dobla su primera consonante con una {ι}: {δι-δο}, {τι-θε}, {ἱ-στα}. Si ve ese patrón, está en el sistema de presente y en ningún otro"
   },
   "mi-verbs.cat.reduplication.e0": {
     "fp": "v15ruy",
@@ -77,7 +77,7 @@
   },
   "mi-verbs.cat.reduplication.h": {
     "fp": "1nktfsx",
-    "text": "Una primera consonante doblada con una {ι} en medio: {δι-δο}, {τι-θε}, {ἱ-στα}. Verlo te sitúa en el sistema de presente y en ningún otro."
+    "text": "Una primera consonante doblada con una {ι} en medio: {δι-δο}, {τι-θε}, {ἱ-στα}. Verlo lo sitúa en el sistema de presente y en ningún otro."
   },
   "mi-verbs.cat.reduplication.name": {
     "fp": "j64xow",
@@ -97,7 +97,7 @@
   },
   "mi-verbs.cat.vowel-gradation.h": {
     "fp": "11kgbsd",
-    "text": "Compara el singular con el plural. Vocal larga en el singular y breve en el plural es la señal más segura después de la reduplicación."
+    "text": "Compare el singular con el plural. Vocal larga en el singular y breve en el plural es la señal más segura después de la reduplicación."
   },
   "mi-verbs.cat.vowel-gradation.name": {
     "fp": "1r8fxoa",
@@ -373,7 +373,7 @@
   },
   "mi-verbs.exp.p.most-greek-verbs": {
     "fp": "148wndb",
-    "text": "La mayoría de los verbos griegos terminan en {‑ω}, pero un puñado de los más comunes termina en {‑μι}: {δίδωμι} («doy»), {τίθημι} («pongo»), {ἵστημι} («estoy en pie»). Parecen raros porque en el presente y el imperfecto doblan su primer sonido con una iota ({δι‑δωμι}) y su vocal temática alterna breve y larga ({δο/δω}). Aprende estos pocos verbos como personajes de alta frecuencia."
+    "text": "La mayoría de los verbos griegos terminan en {‑ω}, pero un puñado de los más comunes termina en {‑μι}: {δίδωμι} («doy»), {τίθημι} («pongo»), {ἵστημι} («estoy en pie»). Parecen raros porque en el presente y el imperfecto doblan su primer sonido con una iota ({δι‑δωμι}) y su vocal temática alterna breve y larga ({δο/δω}). Aprenda estos pocos verbos como personajes de alta frecuencia."
   },
   "mi-verbs.h.family-you'll-actually": {
     "fp": "o0c8km",
@@ -445,19 +445,19 @@
   },
   "mi-verbs.p.each-verb-keeps": {
     "fp": "1t89jmi",
-    "text": "Cada verbo en μι conserva dos [stem:raíces]. La *raíz verbal* breve ({δο‑}, {θε‑}, {στα‑}) alimenta el futuro, el aoristo y el perfecto. La *raíz de presente*, más larga, dobla la primera consonante con una iota — {δι‑δο}, {τι‑θε}, {ἱ‑στα} — y alimenta solo el presente y el imperfecto. Esa iota es tu diagnóstico: *si ves reduplicación con iota → presente o imperfecto. Sin iota → cualquier otro tiempo.*"
+    "text": "Cada verbo en μι conserva dos [stem:raíces]. La *raíz verbal* breve ({δο‑}, {θε‑}, {στα‑}) alimenta el futuro, el aoristo y el perfecto. La *raíz de presente*, más larga, dobla la primera consonante con una iota — {δι‑δο}, {τι‑θε}, {ἱ‑στα} — y alimenta solo el presente y el imperfecto. Esa iota es su diagnóstico: *si ve reduplicación con iota → presente o imperfecto. Sin iota → cualquier otro tiempo.*"
   },
   "mi-verbs.p.every-language-keeps": {
     "fp": "a4xq9h",
-    "text": "Toda lengua conserva sus verbos más usados en formas viejas y raras. El español «ser» (soy, era, fui), «ir» (¡voy, fui!), «haber» (he, hubo): el principiante simplemente tiene que aprendérselos, porque salen en cada página. El griego hace lo mismo: un club pequeño de verbos termina en {‑μι} en lugar de {‑ω}, conserva algunas costumbres arcaicas e incluye palabras sin las cuales no puedes leer un capítulo: {δίδωμι} «doy», {τίθημι} «pongo», {ἵστημι} «estoy en pie», {ἀφίημι} «perdono / dejo»."
+    "text": "Toda lengua conserva sus verbos más usados en formas viejas y raras. El español «ser» (soy, era, fui), «ir» (¡voy, fui!), «haber» (he, hubo): el principiante simplemente tiene que aprendérselos, porque salen en cada página. El griego hace lo mismo: un club pequeño de verbos termina en {‑μι} en lugar de {‑ω}, conserva algunas costumbres arcaicas e incluye palabras sin las cuales no se puede leer un capítulo: {δίδωμι} «doy», {τίθημι} «pongo», {ἵστημι} «estoy en pie», {ἀφίημι} «perdono / dejo»."
   },
   "mi-verbs.p.good-news-strangeness": {
     "fp": "q19tcz",
-    "text": "La buena noticia: la rareza está concentrada. En el presente y el imperfecto, los verbos en μι parecen extraterrestres; en todo lo demás se comportan casi como {λύω}. Aprende dos costumbres y una marca, aquí abajo, y el club deja de intimidar."
+    "text": "La buena noticia: la rareza está concentrada. En el presente y el imperfecto, los verbos en μι parecen extraterrestres; en todo lo demás se comportan casi como {λύω}. Aprenda dos costumbres y una marca, aquí abajo, y el club deja de intimidar."
   },
   "mi-verbs.p.habit-two-hides": {
     "fp": "j7wbec",
-    "text": "La segunda costumbre se esconde en esa nota: la vocal de la raíz juega a *breve / larga*: larga en el singular ({δίδωμι, δίδως, δίδωσι}), breve en el plural ({δίδομεν, δίδοτε}). Observa el patrón recorriendo el presente:"
+    "text": "La segunda costumbre se esconde en esa nota: la vocal de la raíz juega a *breve / larga*: larga en el singular ({δίδωμι, δίδως, δίδωσι}), breve en el plural ({δίδομεν, δίδοτε}). Observe el patrón recorriendo el presente:"
   },
   "mi-verbs.p.int-caution": {
     "fp": "18wt3mp",

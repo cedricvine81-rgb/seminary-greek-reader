@@ -21,11 +21,11 @@
   },
   "contract-verbs.as.see-present-tense": {
     "fp": "1gpyswt",
-    "text": "¿Ves un verbo en presente con *circunflejo* en la desinencia ({ποιεῖ, ἀγαπᾷ, πληροῖ})? Es un verbo contracto. Vuelve a la forma de diccionario preguntándote a qué familia apuntan las vocales."
+    "text": "¿Ve un verbo en presente con *circunflejo* en la desinencia ({ποιεῖ, ἀγαπᾷ, πληροῖ})? Es un verbo contracto. Vuelva a la forma de diccionario preguntándose a qué familia apuntan las vocales."
   },
   "contract-verbs.cat.circumflex-witness.d": {
     "fp": "1twcma4",
-    "text": "dónde se sitúa el acento de un verbo contracto te dice que hubo contracción; el acento de la forma sin contraer suele sobrevivir a la fusión, y por eso puede caer donde un verbo no contracto nunca lo pondría"
+    "text": "dónde se sitúa el acento de un verbo contracto le dice que hubo contracción; el acento de la forma sin contraer suele sobrevivir a la fusión, y por eso puede caer donde un verbo no contracto nunca lo pondría"
   },
   "contract-verbs.cat.circumflex-witness.e0": {
     "fp": "1dpbioo",
@@ -37,7 +37,7 @@
   },
   "contract-verbs.cat.circumflex-witness.h": {
     "fp": "1s5quq1",
-    "text": "Pregúntate dónde habría caído el acento si no hubiera habido contracción, y compara. Un circunflejo en la última sílaba de un presente es la fusión que se deja ver."
+    "text": "Pregúntese dónde habría caído el acento si no hubiera habido contracción, y compare. Un circunflejo en la última sílaba de un presente es la fusión que se deja ver."
   },
   "contract-verbs.cat.circumflex-witness.name": {
     "fp": "s5nbul",
@@ -45,7 +45,7 @@
   },
   "contract-verbs.cat.lexical-form.d": {
     "fp": "151dxo7",
-    "text": "los diccionarios registran {ποιέω} y la página muestra {ποιεῖ}. Buscar lo que ves fracasará: hay que restituir la vocal temática antes de poder consultar nada"
+    "text": "los diccionarios registran {ποιέω} y la página muestra {ποιεῖ}. Buscar lo que se ve fracasará: hay que restituir la vocal temática antes de poder consultar nada"
   },
   "contract-verbs.cat.lexical-form.e0": {
     "fp": "2evct",
@@ -57,7 +57,7 @@
   },
   "contract-verbs.cat.lexical-form.h": {
     "fp": "19pb3gd",
-    "text": "Deshaz la contracción antes de buscar. Un {-ῶ} puede venir de {-άω}, {-έω} u {-όω}, así que prueba las tres raíces en vez de la forma que ves en la página."
+    "text": "Deshaga la contracción antes de buscar. Un {-ῶ} puede venir de {-άω}, {-έω} u {-όω}, así que pruebe las tres raíces en vez de la forma que ve en la página."
   },
   "contract-verbs.cat.lexical-form.name": {
     "fp": "1jnu0va",
@@ -193,7 +193,7 @@
   },
   "contract-verbs.exp.hook.circumflex-present-tense": {
     "fp": "nrxzvh",
-    "text": "Un *circunflejo* en una desinencia de presente ({ποιεῖ, ἀγαπᾷ, πληροῖ}) es la cicatriz de la contracción: estás ante un verbo contracto."
+    "text": "Un *circunflejo* en una desinencia de presente ({ποιεῖ, ἀγαπᾷ, πληροῖ}) es la cicatriz de la contracción: está ante un verbo contracto."
   },
   "contract-verbs.exp.p.contract-verbs-stems": {
     "fp": "1f1gr56",
@@ -245,7 +245,7 @@
   },
   "contract-verbs.intro.name-family-then": {
     "fp": "1181rlj",
-    "text": "Di la familia (-έω / -άω / -όω) y luego la forma."
+    "text": "Diga la familia (-έω / -άω / -όω) y luego la forma."
   },
   "contract-verbs.intro.outside-present-stem": {
     "fp": "1ln9l90",
@@ -253,7 +253,7 @@
   },
   "contract-verbs.intro.parse-drill-classroom": {
     "fp": "qde1ga",
-    "text": "El ejercicio de análisis del mazo de clase. Di el análisis completo en voz alta antes de revelar."
+    "text": "El ejercicio de análisis del mazo de clase. Diga el análisis completo en voz alta antes de revelar."
   },
   "contract-verbs.le.every-form-fulfill": {
     "fp": "1uwqca1",
@@ -277,11 +277,11 @@
   },
   "contract-verbs.p.dictionaries-list-uncontracted": {
     "fp": "1akomj6",
-    "text": "Los diccionarios recogen la forma sin contraer ({φιλέω}) para que se vea la raíz, pero _nunca_ encontrarás esa grafía en un texto real: siempre aparece contraída ({φιλῶ}). Estos «verbos contractos» incluyen algunas de las palabras más importantes del Nuevo Testamento: {ἀγαπάω} «amar», {ποιέω} «hacer», {λαλέω} «hablar», {ζητέω} «buscar», {πληρόω} «cumplir»."
+    "text": "Los diccionarios recogen la forma sin contraer ({φιλέω}) para que se vea la raíz, pero _nunca_ encontrará esa grafía en un texto real: siempre aparece contraída ({φιλῶ}). Estos «verbos contractos» incluyen algunas de las palabras más importantes del Nuevo Testamento: {ἀγαπάω} «amar», {ποιέω} «hacer», {λαλέω} «hablar», {ζητέω} «buscar», {πληρόω} «cumplir»."
   },
   "contract-verbs.p.each-stem-vowel": {
     "fp": "cytwnh",
-    "text": "Cada familia de vocal temática tiene su propio juego de reglas. No necesitas producirlas desde cero: necesitas _reconocer_ los resultados y el acento circunflejo ({ῶ, εῖ, οῦ, ᾷ}) que la contracción suele dejar detrás, como una cicatriz que marca dónde se fundieron dos vocales."
+    "text": "Cada familia de vocal temática tiene su propio juego de reglas. No necesita producirlas desde cero: necesita _reconocer_ los resultados y el acento circunflejo ({ῶ, εῖ, οῦ, ᾷ}) que la contracción suele dejar detrás, como una cicatriz que marca dónde se fundieron dos vocales."
   },
   "contract-verbs.p.here-all-three": {
     "fp": "hgxsz4",
@@ -297,7 +297,7 @@
   },
   "contract-verbs.p.john-alternates-two": {
     "fp": "f6wswr",
-    "text": "*ἀγαπάω y φιλέω.* Juan 21:15-17 alterna los dos verbos del amor («¿me {ἀγαπᾷς}?» … «te {φιλῶ}»), y los predicadores han levantado montañas sobre el cambio. Trátalo con cuidado: Juan usa los dos indistintamente en otros lugares (ambos describen el amor del Padre por el Hijo), y los autores en koiné variaban con libertad entre cuasi sinónimos. La alternancia puede ser estilística; si se pretende una distinción, hay que argumentarla desde el contexto, no darla por supuesta desde el léxico."
+    "text": "*ἀγαπάω y φιλέω.* Juan 21:15-17 alterna los dos verbos del amor («¿me {ἀγαπᾷς}?» … «te {φιλῶ}»), y los predicadores han levantado montañas sobre el cambio. Trátelo con cuidado: Juan usa los dos indistintamente en otros lugares (ambos describen el amor del Padre por el Hijo), y los autores en koiné variaban con libertad entre cuasi sinónimos. La alternancia puede ser estilística; si se pretende una distinción, hay que argumentarla desde el contexto, no darla por supuesta desde el léxico."
   },
   "contract-verbs.p.matthew's-hinge-matthew's": {
     "fp": "1m3j4rs",

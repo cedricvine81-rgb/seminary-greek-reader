@@ -321,7 +321,7 @@
   },
   "subjunctives.cat.prohibitive.h": {
     "fp": "1vnsjye",
-    "text": "{μή} con subjuntivo aoristo, en lugar del imperativo aoristo de segunda persona que el griego no tiene. Léelo como una orden."
+    "text": "{μή} con subjuntivo aoristo, en lugar del imperativo aoristo de segunda persona que el griego no tiene. Léalo como una orden."
   },
   "subjunctives.cat.prohibitive.name": {
     "fp": "zb6g4c",
@@ -629,7 +629,7 @@
   },
   "subjunctives.exp.hook.each-common-use": {
     "fp": "1ntrygq",
-    "text": "Cada uso frecuente tiene una «*palabra indicadora*» que te avisa de que viene el subjuntivo: {ἵνα} / {ὅπως} (finalidad) o {ἄν} / {ἐάν} (indefinido / condicional)."
+    "text": "Cada uso frecuente tiene una «*palabra indicadora*» que le avisa de que viene el subjuntivo: {ἵνα} / {ὅπως} (finalidad) o {ἄν} / {ἐάν} (indefinido / condicional)."
   },
   "subjunctives.exp.p.because-subjunctive-carries": {
     "fp": "15ojoyn",
@@ -657,7 +657,7 @@
   },
   "subjunctives.h.start-english-maybe": {
     "fp": "ly4i76",
-    "text": "Empecemos por el español: el modo que ya tienes"
+    "text": "Empecemos por el español: el modo que ya tiene"
   },
   "subjunctives.h.try": {
     "fp": "1tlbcsw",
@@ -673,7 +673,7 @@
   },
   "subjunctives.intro.now-uses-each": {
     "fp": "1jhglyx",
-    "text": "Ahora los usos, cada uno como una búsqueda que puedes abrir y ajustar:"
+    "text": "Ahora los usos, cada uno como una búsqueda que puede abrir y ajustar:"
   },
   "subjunctives.intro.track-flag-words": {
     "fp": "mb6tuq",
@@ -681,7 +681,7 @@
   },
   "subjunctives.intro.watch-flag-word": {
     "fp": "4idd6l",
-    "text": "Busca la palabra indicadora y la vocal larga. Vocabulario: {πιστεύω} «creer» · {φάγωμεν} (subj. aor. de «comer») · {σωθῇ} (subj. aor. pas. de «salvar»)."
+    "text": "Busque la palabra indicadora y la vocal larga. Vocabulario: {πιστεύω} «creer» · {φάγωμεν} (subj. aor. de «comer») · {σωθῇ} (subj. aor. pas. de «salvar»)."
   },
   "subjunctives.le.aorist-subjunctives-prohibitions": {
     "fp": "169n2dc",
@@ -697,7 +697,7 @@
   },
   "subjunctives.p.beyond-purpose-classical": {
     "fp": "1ubgo2r",
-    "text": "*ἵνα más allá de la finalidad.* En griego clásico ἵνα significaba «para que»; la koiné lo estiró. Puede marcar _resultado_ («de modo que»), _contenido_ (respondiendo a «¿qué?» tras verbos de pedir: «pido que…») e incluso ocupar el lugar de un infinitivo. Cuando Juan escribe {αὕτη ἐστὶν ἡ ἐντολή, ἵνα ἀγαπᾶτε} (Juan 15:12), la cláusula con ἵνα no es la finalidad del mandamiento: _es_ su contenido. Pregúntate siempre qué trabajo está haciendo ἵνα."
+    "text": "*ἵνα más allá de la finalidad.* En griego clásico ἵνα significaba «para que»; la koiné lo estiró. Puede marcar _resultado_ («de modo que»), _contenido_ (respondiendo a «¿qué?» tras verbos de pedir: «pido que…») e incluso ocupar el lugar de un infinitivo. Cuando Juan escribe {αὕτη ἐστὶν ἡ ἐντολή, ἵνα ἀγαπᾶτε} (Juan 15:12), la cláusula con ἵνα no es la finalidad del mandamiento: _es_ su contenido. Pregúntese siempre qué trabajo está haciendo ἵνα."
   },
   "subjunctives.p.emphatic-piling-both": {
     "fp": "11hbsgi",
@@ -705,7 +705,7 @@
   },
   "subjunctives.p.everything-say-statement": {
     "fp": "l9cd4k",
-    "text": "No todo lo que decimos es una afirmación de hecho. «Quizá _venga_.» «_Vayamos_.» «¿Qué _hagamos_?» «…para que _aprenda_.» Cada una de estas frases se retira de la afirmación llana hacia la posibilidad, la intención o la finalidad. Y fíjate en lo que hace el español para marcarlo: no añade palabras auxiliares, sino que *cambia la desinencia del verbo* — viene → _venga_, aprende → _aprenda_."
+    "text": "No todo lo que decimos es una afirmación de hecho. «Quizá _venga_.» «_Vayamos_.» «¿Qué _hagamos_?» «…para que _aprenda_.» Cada una de estas frases se retira de la afirmación llana hacia la posibilidad, la intención o la finalidad. Y fíjese en lo que hace el español para marcarlo: no añade palabras auxiliares, sino que *cambia la desinencia del verbo* — viene → _venga_, aprende → _aprenda_."
   },
   "subjunctives.p.four-uses-need": {
     "fp": "ounu3t",
@@ -713,7 +713,7 @@
   },
   "subjunctives.p.greek-marks-mood": {
     "fp": "15ka2s1",
-    "text": "Aquí partes con ventaja: eso es un [mood:modo], y se llama *subjuntivo*, y ya lo usas todos los días. El griego hace exactamente lo mismo, y del modo más sencillo imaginable: *alarga la vocal de unión*. Donde el indicativo tiene {ο/ε}, el subjuntivo tiene {ω/η}: indicativo {λύομεν} «soltamos» → subjuntivo {λύωμεν} «soltemos / podamos soltar». Una vocal larga es todo el disfraz."
+    "text": "Aquí parte con ventaja: eso es un [mood:modo], y se llama *subjuntivo*, y ya lo usa todos los días. El griego hace exactamente lo mismo, y del modo más sencillo imaginable: *alarga la vocal de unión*. Donde el indicativo tiene {ο/ε}, el subjuntivo tiene {ω/η}: indicativo {λύομεν} «soltamos» → subjuntivo {λύωμεν} «soltemos / podamos soltar». Una vocal larga es todo el disfraz."
   },
   "subjunctives.p.note-family-resemblance": {
     "fp": "1pcfihr",
@@ -725,11 +725,11 @@
   },
   "subjunctives.p.prohibition-aspect-aorist": {
     "fp": "1hwrly9",
-    "text": "*El aspecto en la prohibición.* {μή} + subjuntivo _aoristo_ prohíbe la acción como un todo («no lo hagas / no empieces»); {μή} + imperativo _presente_ tira hacia «deja de hacer / no sigas haciendo». La distinción es una tendencia, no una ley — compruébala en el contexto antes de predicarla —, pero a menudo ilumina: {μὴ φοβοῦ} (pres.) al discípulo que ya teme, «deja de tener miedo»."
+    "text": "*El aspecto en la prohibición.* {μή} + subjuntivo _aoristo_ prohíbe la acción como un todo («no lo hagas / no empieces»); {μή} + imperativo _presente_ tira hacia «deja de hacer / no sigas haciendo». La distinción es una tendencia, no una ley — compruébela en el contexto antes de predicarla —, pero a menudo ilumina: {μὴ φοβοῦ} (pres.) al discípulo que ya teme, «deja de tener miedo»."
   },
   "subjunctives.p.subjunctive-rarely-walks": {
     "fp": "3n10zl",
-    "text": "El subjuntivo rara vez va solo. En la práctica, un pequeño conjunto de «palabras indicadoras» lo anuncia con una o dos palabras de antelación: ve una de estas y espera un verbo en subjuntivo a continuación:"
+    "text": "El subjuntivo rara vez va solo. En la práctica, un pequeño conjunto de «palabras indicadoras» lo anuncia con una o dos palabras de antelación: vea una de estas y espere un verbo en subjuntivo a continuación:"
   },
   "subjunctives.pa.let-eat-drink": {
     "fp": "uoyrcv",
@@ -885,7 +885,7 @@
   },
   "subjunctives.wo.identical-indicative-subjunctive": {
     "fp": "51s3yd",
-    "text": "La 1.ª sg. {λύω} es idéntica en indicativo y en subjuntivo: deja que lo decidan la palabra indicadora o el contexto."
+    "text": "La 1.ª sg. {λύω} es idéntica en indicativo y en subjuntivo: deje que lo decidan la palabra indicadora o el contexto."
   },
   "subjunctives.wo.prohibition-aorist-subjunctive": {
     "fp": "vm3kqo",

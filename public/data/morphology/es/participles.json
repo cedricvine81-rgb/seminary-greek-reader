@@ -177,15 +177,15 @@
   },
   "participles.as.because-participle-tense": {
     "fp": "zjaqrd",
-    "text": "Como el tiempo del participio es _relativo_, elige el enlace castellano del par: presente → «mientras… / al…»; aoristo → «después de… / cuando… / habiendo…». Luego ajústalo para que suene natural."
+    "text": "Como el tiempo del participio es _relativo_, elija el enlace castellano del par: presente → «mientras… / al…»; aoristo → «después de… / cuando… / habiendo…». Luego ajústelo para que suene natural."
   },
   "participles.as.being-translate-article": {
     "fp": "1q2qhwi",
-    "text": "{ὤν, οὖσα, ὄν} = «siendo». Traduce artículo + participio como «el que está…»"
+    "text": "{ὤν, οὖσα, ὄν} = «siendo». Traduzca artículo + participio como «el que está…»"
   },
   "participles.as.build-middle-passive": {
     "fp": "h96nxm",
-    "text": "Arma un participio medio/pasivo con marca de tiempo + {‑μεν‑}. La vocal de unión te dice el tiempo."
+    "text": "Arme un participio medio/pasivo con marca de tiempo + {‑μεν‑}. La vocal de unión le dice el tiempo."
   },
   "participles.as.chunk-marks-middle": {
     "fp": "1aighxh",
@@ -193,7 +193,7 @@
   },
   "participles.as.declines-declension-pattern": {
     "fp": "6dcjw1",
-    "text": "Se declina según el patrón de la 3.ª declinación para masc./neut. (fíjate en la {‑ντ‑}) más la 1.ª declinación para el femenino — el mismo reparto que {πᾶς}."
+    "text": "Se declina según el patrón de la 3.ª declinación para masc./neut. (fíjese en la {‑ντ‑}) más la 1.ª declinación para el femenino — el mismo reparto que {πᾶς}."
   },
   "participles.as.having-eaten-man": {
     "fp": "1c5jl6a",
@@ -201,15 +201,15 @@
   },
   "participles.as.literally-evening-having": {
     "fp": "1hikvnv",
-    "text": "Literalmente «habiendo llegado la tarde» — suavízalo a una cláusula con «cuando / mientras»."
+    "text": "Literalmente «habiendo llegado la tarde» — suavícelo a una cláusula con «cuando / mientras»."
   },
   "participles.as.note-there-augment": {
     "fp": "12pkvu3",
-    "text": "Fíjate en que *no hay aumento* (los aumentos viven solo en el indicativo). El participio aoristo marca tiempo relativo, no pasado absoluto."
+    "text": "Fíjese en que *no hay aumento* (los aumentos viven solo en el indicativo). El participio aoristo marca tiempo relativo, no pasado absoluto."
   },
   "participles.as.only-present-participle": {
     "fp": "lkv901",
-    "text": "{εἰμί} solo tiene participio de presente — la pieza con la que se arman los tiempos _perifrásticos_ que verás abajo en «Estudio adicional»."
+    "text": "{εἰμί} solo tiene participio de presente — la pieza con la que se arman los tiempos _perifrásticos_ que verá abajo en «Estudio adicional»."
   },
   "participles.as.present-active-participle-2": {
     "fp": "wq4dri",
@@ -221,7 +221,7 @@
   },
   "participles.as.then-cross-timing": {
     "fp": "1r2vrpk",
-    "text": "Después crúzalo con la regla del tiempo: {ὁ λύων} «el que desata» frente a {ὁ λύσας} «el que desató»; adverbial {λύων} «mientras desata» frente a {λύσας} «habiendo desatado». Dos preguntas — ¿artículo? ¿tiempo? — descifran la mayoría de los participios a simple vista."
+    "text": "Después crúcelo con la regla del tiempo: {ὁ λύων} «el que desata» frente a {ὁ λύσας} «el que desató»; adverbial {λύων} «mientras desata» frente a {λύσας} «habiendo desatado». Dos preguntas — ¿artículo? ¿tiempo? — descifran la mayoría de los participios a simple vista."
   },
   "participles.as.these-take-regular": {
     "fp": "1dwrawd",
@@ -233,7 +233,7 @@
   },
   "participles.cat.attendant-circumstance.d": {
     "fp": "108gzhy",
-    "text": "tradúcelo como verbo conjugado + «y»; se apoya en el verbo principal"
+    "text": "tradúzcalo como verbo conjugado + «y»; se apoya en el verbo principal"
   },
   "participles.cat.attendant-circumstance.e0": {
     "fp": "13dp9zq",
@@ -249,7 +249,7 @@
   },
   "participles.cat.attendant-circumstance.h": {
     "fp": "nvm29f",
-    "text": "Participio aoristo, verbo principal aoristo, el participio delante, y ambos haciendo avanzar la narración. Tradúcelo como un verbo finito unido con «y»."
+    "text": "Participio aoristo, verbo principal aoristo, el participio delante, y ambos haciendo avanzar la narración. Tradúzcalo como un verbo finito unido con «y»."
   },
   "participles.cat.attendant-circumstance.name": {
     "fp": "tfec3j",
@@ -273,7 +273,7 @@
   },
   "participles.cat.attributive.h": {
     "fp": "fnyjot",
-    "text": "El artículo está inmediatamente delante del participio, y hay un sustantivo al que modificar. Tradúcelo con una oración de relativo: «el que…»."
+    "text": "El artículo está inmediatamente delante del participio, y hay un sustantivo al que modificar. Tradúzcalo con una oración de relativo: «el que…»."
   },
   "participles.cat.attributive.name": {
     "fp": "vuc1iu",
@@ -297,7 +297,7 @@
   },
   "participles.cat.cause.h": {
     "fp": "1x0n1i9",
-    "text": "Prueba a anteponerle «porque». Si el participio da la razón de que ocurriera el verbo principal, esa es la categoría."
+    "text": "Pruebe a anteponerle «porque». Si el participio da la razón de que ocurriera el verbo principal, esa es la categoría."
   },
   "participles.cat.cause.name": {
     "fp": "vbnqgw",
@@ -321,7 +321,7 @@
   },
   "participles.cat.concession.h": {
     "fp": "13aaj2z",
-    "text": "Prueba «aunque». Lo que lo marca es que el verbo principal ocurre a pesar de lo que dice el participio, no a causa de ello."
+    "text": "Pruebe «aunque». Lo que lo marca es que el verbo principal ocurre a pesar de lo que dice el participio, no a causa de ello."
   },
   "participles.cat.concession.name": {
     "fp": "1lant1",
@@ -345,7 +345,7 @@
   },
   "participles.cat.condition.h": {
     "fp": "117itfw",
-    "text": "Prueba a anteponerle «si». El verbo principal depende de él, y la oración que rige suele llevar un futuro o un imperativo."
+    "text": "Pruebe a anteponerle «si». El verbo principal depende de él, y la oración que rige suele llevar un futuro o un imperativo."
   },
   "participles.cat.condition.name": {
     "fp": "1ks2b1a",
@@ -409,7 +409,7 @@
   },
   "participles.cat.means-manner.h": {
     "fp": "lydaw3",
-    "text": "Responde a «¿cómo?». El medio dice mediante qué se realizó la acción; el modo, de qué manera. Prueba «al» más infinitivo."
+    "text": "Responde a «¿cómo?». El medio dice mediante qué se realizó la acción; el modo, de qué manera. Pruebe «al» más infinitivo."
   },
   "participles.cat.means-manner.name": {
     "fp": "1vwjyc9",
@@ -705,7 +705,7 @@
   },
   "participles.cs2.s2.note": {
     "fp": "11o34cw",
-    "text": "Artículo + participio detrás del sustantivo = atributivo: tradúcelo como una cláusula relativa."
+    "text": "Artículo + participio detrás del sustantivo = atributivo: tradúzcalo como una cláusula relativa."
   },
   "participles.cs2.s2.w0.gloss": {
     "fp": "1dyjk0s",
@@ -945,7 +945,7 @@
   },
   "participles.exp.b.eg": {
     "fp": "oe9wqp",
-    "text": "Presente: «_Mientras comía_, el hombre leía el periódico.» Aoristo: «_Habiendo comido_, el hombre leyó el periódico.» Las mismas acciones — el tiempo del participio solo te dice el orden."
+    "text": "Presente: «_Mientras comía_, el hombre leía el periódico.» Aoristo: «_Habiendo comido_, el hombre leyó el periódico.» Las mismas acciones — el tiempo del participio solo le dice el orden."
   },
   "participles.exp.b.hook": {
     "fp": "10fdea9",
@@ -953,7 +953,7 @@
   },
   "participles.exp.b.intro": {
     "fp": "o218kf",
-    "text": "El *participio* es un adjetivo verbal — en parte verbo (tiempo, voz), en parte adjetivo (género, caso, número). Tradúcelo con el gerundio «‑ando/‑iendo» (activo: {λύων} «desatando») o con «‑ado/‑ido / siendo» (medio/pasivo: {λυόμενος} «siendo desatado»). Concuerda con el sustantivo al que describe, y la forma media/pasiva siempre muestra el trozo {‑μεν‑}."
+    "text": "El *participio* es un adjetivo verbal — en parte verbo (tiempo, voz), en parte adjetivo (género, caso, número). Tradúzcalo con el gerundio «‑ando/‑iendo» (activo: {λύων} «desatando») o con «‑ado/‑ido / siendo» (medio/pasivo: {λυόμενος} «siendo desatado»). Concuerda con el sustantivo al que describe, y la forma media/pasiva siempre muestra el trozo {‑μεν‑}."
   },
   "participles.exp.i.intro": {
     "fp": "l55cdu",
@@ -961,7 +961,7 @@
   },
   "participles.exp.x.b1": {
     "fp": "kdqin3",
-    "text": "No te dé apuro añadir un «*que*» para un participio sustantivado, y si la primera palabra de una oración va en *genitivo*, _piensa en genitivo absoluto_ — su sujeto es distinto del del verbo principal ({ὀψίας γενομένης}… = «cuando llegó la tarde…»)."
+    "text": "No le dé apuro añadir un «*que*» para un participio sustantivado, y si la primera palabra de una oración va en *genitivo*, _piense en genitivo absoluto_ — su sujeto es distinto del del verbo principal ({ὀψίας γενομένης}… = «cuando llegó la tarde…»)."
   },
   "participles.h.first-question-there": {
     "fp": "r6ehk",
@@ -981,7 +981,7 @@
   },
   "participles.h.start-english-verbs": {
     "fp": "1ks0z19",
-    "text": "Empieza por el español: verbos vestidos de adjetivo"
+    "text": "Empiece por el español: verbos vestidos de adjetivo"
   },
   "participles.h.timing-simultaneous-sequence": {
     "fp": "1ubkffm",
@@ -1001,7 +1001,7 @@
   },
   "participles.intro.ask-two-questions": {
     "fp": "14ehmrh",
-    "text": "Hazte las dos preguntas — ¿artículo? ¿tiempo? Vocabulario: {κράζω} «gritar» · {σπείρω} «sembrar» · {θεωρέω} «ver/contemplar» · {ὄχλος} «multitud»."
+    "text": "Hágase las dos preguntas — ¿artículo? ¿tiempo? Vocabulario: {κράζω} «gritar» · {σπείρω} «sembrar» · {θεωρέω} «ver/contemplar» · {ὄχλος} «multitud»."
   },
   "participles.intro.first-question-there-2": {
     "fp": "j27ntm",
@@ -1009,15 +1009,15 @@
   },
   "participles.intro.give-tense-voice": {
     "fp": "djr1tb",
-    "text": "Da el tiempo, la voz, el género/caso/número y una traducción por defecto."
+    "text": "Dé el tiempo, la voz, el género/caso/número y una traducción por defecto."
   },
   "participles.intro.now-uses-each": {
     "fp": "1jhglyx",
-    "text": "Ahora los usos, cada uno como una búsqueda que puedes abrir y ajustar:"
+    "text": "Ahora los usos, cada uno como una búsqueda que puede abrir y ajustar:"
   },
   "participles.intro.participles-everywhere-roughly": {
     "fp": "1om4qfz",
-    "text": "Los participios están por todas partes — más o menos una palabra de cada veinte en el NT. Observa cómo se repiten los patrones."
+    "text": "Los participios están por todas partes — más o menos una palabra de cada veinte en el NT. Observe cómo se repiten los patrones."
   },
   "participles.intro.present-participle-same": {
     "fp": "6pm2bm",
@@ -1053,7 +1053,7 @@
   },
   "participles.p.article-noun-substantival": {
     "fp": "nw6pcg",
-    "text": "*Artículo, sin sustantivo → sustantivado.* El participio _se convierte_ en el sustantivo: {ὁ λύων}, «el que desata»; {ὁ πιστεύων}, «el que cree — el creyente». No te dé apuro añadir «el que» o «quien»; la meta es un castellano que suene bien."
+    "text": "*Artículo, sin sustantivo → sustantivado.* El participio _se convierte_ en el sustantivo: {ὁ λύων}, «el que desata»; {ὁ πιστεύων}, «el que cree — el creyente». No le dé apuro añadir «el que» o «quien»; la meta es un castellano que suene bien."
   },
   "participles.p.attendant-circumstance-sometimes": {
     "fp": "17puqfl",
@@ -1065,15 +1065,15 @@
   },
   "participles.p.every-participle-meet": {
     "fp": "1o9kple",
-    "text": "A todo participio que te encuentres le haces la misma pregunta de entrada: *¿lo acompaña un artículo?* La respuesta clasifica su uso."
+    "text": "A todo participio que se encuentre le hace la misma pregunta de entrada: *¿lo acompaña un artículo?* La respuesta clasifica su uso."
   },
   "participles.p.middle-passive-participles": {
     "fp": "1kbohhb",
-    "text": "Los participios medios y pasivos son todavía más amables: el trozo delator {‑μεν‑} más las terminaciones perfectamente regulares de {ἀγαθός}. Ves {‑μεν‑} y sabes al instante que tienes delante un participio medio/pasivo."
+    "text": "Los participios medios y pasivos son todavía más amables: el trozo delator {‑μεν‑} más las terminaciones perfectamente regulares de {ἀγαθός}. Ve {‑μεν‑} y sabe al instante que tiene delante un participio medio/pasivo."
   },
   "participles.p.now-bolt-those": {
     "fp": "150xci5",
-    "text": "Ahora atornilla esas terminaciones a una raíz verbal y ya tienes el *participio presente activo* — «desatando». Fíjate en que es literalmente {λύ‑} + el patrón de {ὤν}:"
+    "text": "Ahora atornille esas terminaciones a una raíz verbal y ya tiene el *participio presente activo* — «desatando». Fíjese en que es literalmente {λύ‑} + el patrón de {ὤν}:"
   },
   "participles.p.one-special-pattern": {
     "fp": "1y09hrp",
@@ -1093,19 +1093,19 @@
   },
   "participles.p.redundant-participle-narrative": {
     "fp": "hxh1k3",
-    "text": "*Participio redundante.* Al griego narrativo le encanta {ἀποκριθεὶς εἶπεν} — literalmente «habiendo respondido, dijo», que funcionalmente es solo «respondió». Es un modismo de sabor semítico; tradúcelo una vez, no dos."
+    "text": "*Participio redundante.* Al griego narrativo le encanta {ἀποκριθεὶς εἶπεν} — literalmente «habiendo respondido, dijo», que funcionalmente es solo «respondió». Es un modismo de sabor semítico; tradúzcalo una vez, no dos."
   },
   "participles.p.running-water-broken": {
     "fp": "1b4k7v7",
-    "text": "«El agua _corriente_.» «Una taza _rota_.» «El hombre _sentado_ junto a la puerta.» Cada palabra en cursiva está construida sobre un verbo (correr, romper, sentarse) pero hace el trabajo de un adjetivo: describe a un sustantivo. El español reparte esa tarea entre dos formas — el *participio* (_-ado / -ido_: «roto», «sentado») y el *gerundio* (_-ando / -iendo_: «corriendo», «caminando») — y las usas a todas horas: «_Terminado_ el desayuno, salió.» «_Caminando_ a casa, lo vi.»"
+    "text": "«El agua _corriente_.» «Una taza _rota_.» «El hombre _sentado_ junto a la puerta.» Cada palabra en cursiva está construida sobre un verbo (correr, romper, sentarse) pero hace el trabajo de un adjetivo: describe a un sustantivo. El español reparte esa tarea entre dos formas — el *participio* (_-ado / -ido_: «roto», «sentado») y el *gerundio* (_-ando / -iendo_: «corriendo», «caminando») — y se usan a todas horas: «_Terminado_ el desayuno, salió.» «_Caminando_ a casa, lo vi.»"
   },
   "participles.p.start-simplest-participle": {
     "fp": "g83umh",
-    "text": "Empieza por el participio más sencillo: {ὤν, οὖσα, ὄν}, «siendo», de {εἰμί}. Vale la pena mirar sus terminaciones con lupa, porque las columnas del masculino y el neutro (3.ª declinación, con la {‑ντ‑} característica) y la del femenino (1.ª declinación) son el esqueleto mismo que usa todo participio _activo_."
+    "text": "Empiece por el participio más sencillo: {ὤν, οὖσα, ὄν}, «siendo», de {εἰμί}. Vale la pena mirar sus terminaciones con lupa, porque las columnas del masculino y el neutro (3.ª declinación, con la {‑ντ‑} característica) y la del femenino (1.ª declinación) son el esqueleto mismo que usa todo participio _activo_."
   },
   "participles.p.why-give-participles": {
     "fp": "1llpq57",
-    "text": "¿Por qué dedicarles un capítulo entero a los participios? Por frecuencia. Al griego del Nuevo Testamento le encantan: más o menos una palabra de cada veinte es un participio. Aprende a leerlos y se te abren oraciones enteras; sáltatelos y cada versículo te planta cara."
+    "text": "¿Por qué dedicarles un capítulo entero a los participios? Por frecuencia. Al griego del Nuevo Testamento le encantan: más o menos una palabra de cada veinte es un participio. Aprenda a leerlos y se le abren oraciones enteras; sáltelos y cada versículo le planta cara."
   },
   "participles.pa.aorist-active-fem": {
     "fp": "149fktd",
@@ -1497,7 +1497,7 @@
   },
   "participles.t8.c0.1": {
     "fp": "m8h9qf",
-    "text": "piensa en genitivo absoluto"
+    "text": "piense en genitivo absoluto"
   },
   "participles.t8.c1.0": {
     "fp": "1wi6ayd",
@@ -1505,7 +1505,7 @@
   },
   "participles.t8.c1.1": {
     "fp": "t2idws",
-    "text": "aísla la frase entre corchetes"
+    "text": "aísle la frase entre corchetes"
   },
   "participles.t8.c2.0": {
     "fp": "1n8hts",
@@ -1513,7 +1513,7 @@
   },
   "participles.t8.c2.1": {
     "fp": "1o1j3ms",
-    "text": "tradúcelo como una cláusula de «cuando / mientras»"
+    "text": "tradúzcalo como una cláusula de «cuando / mientras»"
   },
   "participles.t8.h0": {
     "fp": "1rveu94",

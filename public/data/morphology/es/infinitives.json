@@ -21,7 +21,7 @@
   },
   "infinitives.as.method-translate-preposition": {
     "fp": "6exaj7",
-    "text": "Método: traduce la preposición, convierte el infinitivo en verbo conjugado y haz sujeto suyo cualquier acusativo — {μετὰ τὸ ἐγερθῆναί με} = «después del [hecho de] ser yo resucitado» → «después de que yo resucite»."
+    "text": "Método: traduzca la preposición, convierta el infinitivo en verbo conjugado y haga sujeto suyo cualquier acusativo — {μετὰ τὸ ἐγερθῆναί με} = «después del [hecho de] ser yo resucitado» → «después de que yo resucite»."
   },
   "infinitives.as.when-two-accusatives": {
     "fp": "14b8ov2",
@@ -93,7 +93,7 @@
   },
   "infinitives.cat.epexegetical.h": {
     "fp": "1kdeetg",
-    "text": "Explica el sustantivo o adjetivo que tiene al lado: autoridad, libertad, necesidad, digno. Pregunta «¿autoridad para qué?» y el infinitivo responde."
+    "text": "Explica el sustantivo o adjetivo que tiene al lado: autoridad, libertad, necesidad, digno. Pregunte «¿autoridad para qué?» y el infinitivo responde."
   },
   "infinitives.cat.epexegetical.name": {
     "fp": "ppg6gp",
@@ -141,7 +141,7 @@
   },
   "infinitives.cat.purpose.h": {
     "fp": "zieexk",
-    "text": "Pregunta «¿para qué?» mirando hacia adelante y prueba «para». {τοῦ}, {εἰς τό} y {πρὸς τό} apuntan aquí, pero un infinitivo desnudo tras un verbo de movimiento también suele ser final."
+    "text": "Pregunte «¿para qué?» mirando hacia adelante y pruebe «para». {τοῦ}, {εἰς τό} y {πρὸς τό} apuntan aquí, pero un infinitivo desnudo tras un verbo de movimiento también suele ser final."
   },
   "infinitives.cat.purpose.name": {
     "fp": "4cofj5",
@@ -189,7 +189,7 @@
   },
   "infinitives.cat.subject.h": {
     "fp": "x12ozy",
-    "text": "Prueba «hacer X es…». Los verbos impersonales —{δεῖ}, {ἔξεστιν}— llevan un infinitivo sujeto casi por definición."
+    "text": "Pruebe «hacer X es…». Los verbos impersonales —{δεῖ}, {ἔξεστιν}— llevan un infinitivo sujeto casi por definición."
   },
   "infinitives.cat.subject.name": {
     "fp": "18ix78v",
@@ -209,7 +209,7 @@
   },
   "infinitives.cat.time.h": {
     "fp": "17ajqqi",
-    "text": "Una preposición con artículo fija la relación: {μετὰ τό} después, {ἐν τῷ} mientras, {πρὸ τοῦ} antes. Lee la preposición, no el infinitivo."
+    "text": "Una preposición con artículo fija la relación: {μετὰ τό} después, {ἐν τῷ} mientras, {πρὸ τοῦ} antes. Lea la preposición, no el infinitivo."
   },
   "infinitives.cat.time.name": {
     "fp": "1q4eyv8",
@@ -501,7 +501,7 @@
   },
   "infinitives.intro.watch-patterns-helper": {
     "fp": "ztjmiq",
-    "text": "Observa cómo los patrones — auxiliar + infinitivo, preposición + infinitivo con artículo — se repiten página tras página."
+    "text": "Observe cómo los patrones — auxiliar + infinitivo, preposición + infinitivo con artículo — se repiten página tras página."
   },
   "infinitives.le.aorist-infinitives-whole": {
     "fp": "x8xh9o",
@@ -521,7 +521,7 @@
   },
   "infinitives.p.always-outside-indicative": {
     "fp": "5bewf2",
-    "text": "Como siempre fuera del indicativo: el infinitivo aoristo lleva la {σ} pero *ningún aumento*, y su «tiempo» es aspecto: {λύειν} presenta un soltar en curso; {λῦσαι}, el acto como un todo. Las formas medias y pasivas terminan en {‑εσθαι} (pres. m/p: {λύεσθαι}) y {‑θῆναι} (aor. pas.: {λυθῆναι}): reconócelas, no te angusties por producirlas."
+    "text": "Como siempre fuera del indicativo: el infinitivo aoristo lleva la {σ} pero *ningún aumento*, y su «tiempo» es aspecto: {λύειν} presenta un soltar en curso; {λῦσαι}, el acto como un todo. Las formas medias y pasivas terminan en {‑εσθαι} (pres. m/p: {λύεσθαι}) y {‑θῆναι} (aor. pas.: {λυθῆναι}): reconózcalas, no se angustie por producirlas."
   },
   "infinitives.p.because-infinitive-noun": {
     "fp": "80ny2n",
@@ -529,7 +529,7 @@
   },
   "infinitives.p.exactly-english-set": {
     "fp": "mcryo6",
-    "text": "Exactamente como en español, un conjunto de verbos «auxiliares» queda incompleto sin un infinitivo: «_puedo_… (¿hacer qué?)». Aprende estas parejas como una unidad:"
+    "text": "Exactamente como en español, un conjunto de verbos «auxiliares» queda incompleto sin un infinitivo: «_puedo_… (¿hacer qué?)». Aprenda estas parejas como una unidad:"
   },
   "infinitives.p.indirect-discourse-after": {
     "fp": "2fe458",
@@ -537,7 +537,7 @@
   },
   "infinitives.p.notice-something-about": {
     "fp": "6nzmmh",
-    "text": "Fíjate en algo de «_Errar_ es humano»: el infinitivo funciona como _sustantivo_, es el sujeto de «es». Esa doble vida es la clave del infinitivo griego: es un *sustantivo verbal*. Bastante verbo como para tener [tense:tiempo] y [voice:voz] y llevar complementos («comer _pan_»); bastante sustantivo como para hacer de sujeto, llevar el artículo {τό} y hasta seguir a preposiciones. Y aquí el español tiene ventaja sobre el inglés: tú ya dices «_el vivir_», «_el andar_», que es exactamente lo que hace el griego."
+    "text": "Fíjese en algo de «_Errar_ es humano»: el infinitivo funciona como _sustantivo_, es el sujeto de «es». Esa doble vida es la clave del infinitivo griego: es un *sustantivo verbal*. Bastante verbo como para tener [tense:tiempo] y [voice:voz] y llevar complementos («comer _pan_»); bastante sustantivo como para hacer de sujeto, llevar el artículo {τό} y hasta seguir a preposiciones. Y aquí el español tiene ventaja sobre el inglés: usted ya dice «_el vivir_», «_el andar_», que es exactamente lo que hace el griego."
   },
   "infinitives.p.purpose-result-infinitive": {
     "fp": "10h5wh4",

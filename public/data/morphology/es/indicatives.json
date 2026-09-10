@@ -5,7 +5,7 @@
   },
   "indicatives.al.read-across-voices": {
     "fp": "1t753pc",
-    "text": "Lee a lo ancho de las voces"
+    "text": "Lea a lo ancho de las voces"
   },
   "indicatives.al.step-step": {
     "fp": "14rk8au",
@@ -21,7 +21,7 @@
   },
   "indicatives.as.assemble-loosed-every": {
     "fp": "1wlcnpw",
-    "text": "Ármalo: «*desatamos*». Todo verbo regular del indicativo se rinde ante estas tres preguntas: ¿delante? ¿en medio? ¿al final?"
+    "text": "Ármelo: «*desatamos*». Todo verbo regular del indicativo se rinde ante estas tres preguntas: ¿delante? ¿en medio? ¿al final?"
   },
   "indicatives.as.build-any-tense": {
     "fp": "17n71h7",
@@ -57,11 +57,11 @@
   },
   "indicatives.as.imperfect-past-imperfective": {
     "fp": "15ujooi",
-    "text": "El imperfecto es _pasado imperfectivo_ — acción en curso o repetida en el pasado («seguía…, empezaba a…»), frente a la acción única y completa del aoristo. Es exactamente tu imperfecto castellano: «desataba» frente a «desató»."
+    "text": "El imperfecto es _pasado imperfectivo_ — acción en curso o repetida en el pasado («seguía…, empezaba a…»), frente a la acción única y completa del aoristo. Es exactamente su imperfecto castellano: «desataba» frente a «desató»."
   },
   "indicatives.as.irregular-very-common": {
     "fp": "9c152v",
-    "text": "{εἰμί} es irregular y muy frecuente — memorízalo. No tiene voz."
+    "text": "{εἰμί} es irregular y muy frecuente — memorícelo. No tiene voz."
   },
   "indicatives.as.many-middle-looking": {
     "fp": "t9h0iv",
@@ -105,15 +105,15 @@
   },
   "indicatives.as.recognize-family-exact": {
     "fp": "7fc429",
-    "text": "Reconoce la _familia_, no una cadena exacta: un grupo con {σ} = aoristo/futuro, un grupo con {θ} = pasivo. Ante ciertas terminaciones aparecen formas reducidas."
+    "text": "Reconozca la _familia_, no una cadena exacta: un grupo con {σ} = aoristo/futuro, un grupo con {θ} = pasivo. Ante ciertas terminaciones aparecen formas reducidas."
   },
   "indicatives.as.run-backwards-parse": {
     "fp": "1rshw5i",
-    "text": "Recórrelo al revés para analizar una forma desconocida: quita la terminación, localiza la marca, réstala, y te queda la raíz léxica que hay que buscar."
+    "text": "Recórralo al revés para analizar una forma desconocida: quite la terminación, localice la marca, réstela, y le queda la raíz léxica que hay que buscar."
   },
   "indicatives.as.same-scan-reverse": {
     "fp": "lolliz",
-    "text": "El mismo barrido al revés te dice qué buscar: quita {ἐ‑}, {‑σα‑} y {‑μεν}, y lo que queda, {λυ‑}, es la raíz léxica → {λύω} en el diccionario."
+    "text": "El mismo barrido al revés le dice qué buscar: quite {ἐ‑}, {‑σα‑} y {‑μεν}, y lo que queda, {λυ‑}, es la raíz léxica → {λύω} en el diccionario."
   },
   "indicatives.as.shows-moving-parts": {
     "fp": "gxl38t",
@@ -145,7 +145,7 @@
   },
   "indicatives.cat.conative-2.h": {
     "fp": "b9qbt7",
-    "text": "El intento fracasa, y el contexto lo dice. Contrástalo con el incoativo: el incoativo empieza y continúa; el conativo empieza y no llega."
+    "text": "El intento fracasa, y el contexto lo dice. Contrástelo con el incoativo: el incoativo empieza y continúa; el conativo empieza y no llega."
   },
   "indicatives.cat.conative-2.name": {
     "fp": "bdhq8k",
@@ -185,7 +185,7 @@
   },
   "indicatives.cat.constative.h": {
     "fp": "1nz3pdf",
-    "text": "El aoristo por defecto. Si nada en el contexto subraya el comienzo ni el final, llámalo constativo y sigue adelante."
+    "text": "El aoristo por defecto. Si nada en el contexto subraya el comienzo ni el final, llámelo constativo y siga adelante."
   },
   "indicatives.cat.constative.name": {
     "fp": "17n32n1",
@@ -369,7 +369,7 @@
   },
   "indicatives.cat.historical.h": {
     "fp": "lhqjdt",
-    "text": "Un verbo en presente dentro de una narración claramente pasada, casi siempre un verbo de decir o de venir. Marcos lo usa constantemente; tradúcelo en pasado."
+    "text": "Un verbo en presente dentro de una narración claramente pasada, casi siempre un verbo de decir o de venir. Marcos lo usa constantemente; tradúzcalo en pasado."
   },
   "indicatives.cat.historical.name": {
     "fp": "vw6ft5",
@@ -481,7 +481,7 @@
   },
   "indicatives.cat.iterative-2.h": {
     "fp": "1al2x2v",
-    "text": "Repetición en el pasado: «seguía», «solía». Busca en el contexto un objeto plural o una ocasión repetida."
+    "text": "Repetición en el pasado: «seguía», «solía». Busque en el contexto un objeto plural o una ocasión repetida."
   },
   "indicatives.cat.iterative-2.name": {
     "fp": "zqc434",
@@ -525,7 +525,7 @@
   },
   "indicatives.cat.predictive-future.h": {
     "fp": "16no4i7",
-    "text": "El futuro por defecto: una afirmación simple sobre lo que ocurrirá. Supónlo salvo que el sentido sea de orden o de pregunta."
+    "text": "El futuro por defecto: una afirmación simple sobre lo que ocurrirá. Supóngalo salvo que el sentido sea de orden o de pregunta."
   },
   "indicatives.cat.predictive-future.name": {
     "fp": "11tp407",
@@ -573,7 +573,7 @@
   },
   "indicatives.cat.progressive.h": {
     "fp": "l4hqkj",
-    "text": "Pregúntate si el español pide «está —ndo» en este momento. Es el presente por defecto, así que nombra otra categoría solo si el contexto te obliga."
+    "text": "Pregúntese si el español pide «está —ndo» en este momento. Es el presente por defecto, así que nombre otra categoría solo si el contexto lo obliga."
   },
   "indicatives.cat.progressive.name": {
     "fp": "uh943g",
@@ -961,7 +961,7 @@
   },
   "indicatives.exp.b.intro": {
     "fp": "jhxkr3",
-    "text": "El *indicativo* es el modo del hecho llano — enuncia lo que de verdad ocurre, ocurrió u ocurrirá. Esta pestaña despliega {λύω} («desato») por todos sus tiempos y voces como verbo modelo. En cada forma, fíjate en dos cosas: el *identificador de tiempo* (qué tiempo y qué voz) y la *terminación personal* (quién). {εἰμί} («soy») es irregular y vale la pena memorizarlo aparte."
+    "text": "El *indicativo* es el modo del hecho llano — enuncia lo que de verdad ocurre, ocurrió u ocurrirá. Esta pestaña despliega {λύω} («desato») por todos sus tiempos y voces como verbo modelo. En cada forma, fíjese en dos cosas: el *identificador de tiempo* (qué tiempo y qué voz) y la *terminación personal* (quién). {εἰμί} («soy») es irregular y vale la pena memorizarlo aparte."
   },
   "indicatives.h.ending-subject": {
     "fp": "8huf6a",
@@ -989,7 +989,7 @@
   },
   "indicatives.h.start-english-what": {
     "fp": "67f8c8",
-    "text": "Empieza por el español: lo que carga un verbo"
+    "text": "Empiece por el español: lo que carga un verbo"
   },
   "indicatives.h.tense-machine-identifiers": {
     "fp": "1cjuxt0",
@@ -1013,11 +1013,11 @@
   },
   "indicatives.intro.augment-identifier-reduplication": {
     "fp": "m71a6j",
-    "text": "¿Aumento? ¿Identificador? ¿Reduplicación? Lee la máquina."
+    "text": "¿Aumento? ¿Identificador? ¿Reduplicación? Lea la máquina."
   },
   "indicatives.intro.give-tense-voice": {
     "fp": "lcaif5",
-    "text": "Da el tiempo, la voz, la persona y una traducción. Hazte las tres preguntas: ¿delante? ¿en medio? ¿al final?"
+    "text": "Dé el tiempo, la voz, la persona y una traducción. Hágase las tres preguntas: ¿delante? ¿en medio? ¿al final?"
   },
   "indicatives.intro.prefix-lengthened-opening": {
     "fp": "1t1nyh2",
@@ -1025,11 +1025,11 @@
   },
   "indicatives.intro.read-person-number": {
     "fp": "1b7n456",
-    "text": "Lee la persona y el número directamente en la terminación."
+    "text": "Lea la persona y el número directamente en la terminación."
   },
   "indicatives.intro.tense-system-wild": {
     "fp": "1wsc4z1",
-    "text": "El sistema de tiempos en su hábitat — cada resultado es un verbo real del NT que ya sabes descifrar."
+    "text": "El sistema de tiempos en su hábitat — cada resultado es un verbo real del NT que ya sabe descifrar."
   },
   "indicatives.intro.vocabulary-writes-believe": {
     "fp": "1xb1s01",
@@ -1057,11 +1057,11 @@
   },
   "indicatives.p.aorist-deserves-introduction": {
     "fp": "iqcicq",
-    "text": "El *aoristo* merece una presentación, aunque aquí el español vuelve a echarte una mano: es tu pretérito indefinido. Es el pasado llano — «desaté», la acción vista como un todo simple — y es el tiempo pasado de batalla del Nuevo Testamento. Compáralo con el imperfecto: {ἐλύομεν} «desatábamos» (un proceso desenrollándose) frente a {ἐλύσαμεν} «desatamos» (hecho, entero, un solo suceso). Esa es exactamente la distinción que ya haces entre «desataba» y «desató», y es la razón por la que este par te costará mucho menos que a un angloparlante. Y el *perfecto* es «he desatado» — un acto pasado cuyo resultado sigue en pie; su firma añadida es la *reduplicación*, una consonante inicial doblada: {λέ‑λυκα}."
+    "text": "El *aoristo* merece una presentación, aunque aquí el español vuelve a echarle una mano: es su pretérito indefinido. Es el pasado llano — «desaté», la acción vista como un todo simple — y es el tiempo pasado de batalla del Nuevo Testamento. Compárelo con el imperfecto: {ἐλύομεν} «desatábamos» (un proceso desenrollándose) frente a {ἐλύσαμεν} «desatamos» (hecho, entero, un solo suceso). Esa es exactamente la distinción que ya hace entre «desataba» y «desató», y es la razón por la que este par le costará mucho menos que a un angloparlante. Y el *perfecto* es «he desatado» — un acto pasado cuyo resultado sigue en pie; su firma añadida es la *reduplicación*, una consonante inicial doblada: {λέ‑λυκα}."
   },
   "indicatives.p.aspect-over-time": {
     "fp": "1bu66b9",
-    "text": "*El aspecto por encima del tiempo.* En el indicativo, el tiempo griego marca a la vez momento y [aspect:aspecto], pero el aspecto es la categoría más profunda: el imperfecto pinta un proceso, el aoristo informa de un todo, el perfecto afirma un resultado que permanece. Cuando Marcos escribe {ἐδίδασκεν} («enseñaba»), está montando una escena; cuando cambia a aoristos, los sucesos avanzan a paso de marcha. Ver a un autor alternar imperfecto y aoristo es verlo dirigir tu atención — y tú ya haces esa distinción cada vez que eliges entre «enseñaba» y «enseñó»."
+    "text": "*El aspecto por encima del tiempo.* En el indicativo, el tiempo griego marca a la vez momento y [aspect:aspecto], pero el aspecto es la categoría más profunda: el imperfecto pinta un proceso, el aoristo informa de un todo, el perfecto afirma un resultado que permanece. Cuando Marcos escribe {ἐδίδασκεν} («enseñaba»), está montando una escena; cuando cambia a aoristos, los sucesos avanzan a paso de marcha. Ver a un autor alternar imperfecto y aoristo es verlo dirigir su atención — y usted ya hace esa distinción cada vez que elige entre «enseñaba» y «enseñó»."
   },
   "indicatives.p.caution-tense-choices": {
     "fp": "1gtxxu2",
@@ -1077,23 +1077,23 @@
   },
   "indicatives.p.english-two-voices": {
     "fp": "19mqpfa",
-    "text": "El español tiene dos [voice:voces]: activa («el perro mordió al hombre») y pasiva («el hombre fue mordido»). El griego añade una tercera, la *media*, en la que el sujeto actúa con cierta implicación propia — muchas veces «para sí mismo». (Lo más parecido que tienes es el «se» de «se lavó las manos».) En el presente y el imperfecto la media y la pasiva comparten las mismas formas, así que decide el contexto; en el futuro y el aoristo se separan. Aquí tienes el sistema entero de un vistazo, sobre un verbo en primera persona:"
+    "text": "El español tiene dos [voice:voces]: activa («el perro mordió al hombre») y pasiva («el hombre fue mordido»). El griego añade una tercera, la *media*, en la que el sujeto actúa con cierta implicación propia — muchas veces «para sí mismo». (Lo más parecido que tiene es el «se» de «se lavó las manos».) En el presente y el imperfecto la media y la pasiva comparten las mismas formas, así que decide el contexto; en el futuro y el aoristo se separan. Aquí tiene el sistema entero de un vistazo, sobre un verbo en primera persona:"
   },
   "indicatives.p.greek-packs-all": {
     "fp": "1bc4obh",
-    "text": "El griego mete todo eso _dentro_ del verbo, exactamente como el español. La terminación te dice quién actúa — así que {λύομεν}, una sola palabra, es una oración completa: «desatamos». No hace falta una palabra aparte para «nosotros»; la terminación {‑ομεν} _es_ el «nosotros». Y el tiempo se marca con cambios al principio y en medio de la palabra — un prefijo para el pasado, una marca antes de la terminación para el futuro, y así. Un verbo griego es una pequeña máquina: *raíz* (el significado) + *marcas* (el tiempo) + *terminación* (la persona). Este capítulo te enseña a leer la máquina."
+    "text": "El griego mete todo eso _dentro_ del verbo, exactamente como el español. La terminación le dice quién actúa — así que {λύομεν}, una sola palabra, es una oración completa: «desatamos». No hace falta una palabra aparte para «nosotros»; la terminación {‑ομεν} _es_ el «nosotros». Y el tiempo se marca con cambios al principio y en medio de la palabra — un prefijo para el pasado, una marca antes de la terminación para el futuro, y así. Un verbo griego es una pequeña máquina: *raíz* (el significado) + *marcas* (el tiempo) + *terminación* (la persona). Este capítulo le enseña a leer la máquina."
   },
   "indicatives.p.greek-verbs-mark": {
     "fp": "bu2dkr",
-    "text": "Los verbos griegos marcan seis personas: yo / tú / él-ella, y nosotros / ustedes / ellos. Aquí tienes el presente de {λύω} («desato»), el verbo modelo que usarán todas las tablas de tu libro de texto. Lee las terminaciones, no la raíz — la raíz {λυ‑} no cambia nunca aquí."
+    "text": "Los verbos griegos marcan seis personas: yo / tú / él-ella, y nosotros / ustedes / ellos. Aquí tiene el presente de {λύω} («desato»), el verbo modelo que usarán todas las tablas de su libro de texto. Lea las terminaciones, no la raíz — la raíz {λυ‑} no cambia nunca aquí."
   },
   "indicatives.p.here-payoff-learning": {
     "fp": "10iiksa",
-    "text": "Aquí está la recompensa de haber aprendido los dos paradigmas base: todos los tiempos restantes se construyen insertando un *identificador de tiempo* — una o dos letras que hacen de bandera — entre la raíz y la terminación. Aprende seis banderas y podrás leer el sistema entero:"
+    "text": "Aquí está la recompensa de haber aprendido los dos paradigmas base: todos los tiempos restantes se construyen insertando un *identificador de tiempo* — una o dos letras que hacen de bandera — entre la raíz y la terminación. Aprenda seis banderas y podrá leer el sistema entero:"
   },
   "indicatives.p.historical-present-mark": {
     "fp": "uyftcy",
-    "text": "*El presente histórico.* A Marcos le encanta narrar el pasado en presente — {λέγει αὐτῷ}, «le _dice_» — igual que un narrador entusiasmado se desliza al «y entonces me _dice_…». Tradúcelo en pasado, pero fíjate en la viveza que añade esa elección."
+    "text": "*El presente histórico.* A Marcos le encanta narrar el pasado en presente — {λέγει αὐτῷ}, «le _dice_» — igual que un narrador entusiasmado se desliza al «y entonces me _dice_…». Tradúzcalo en pasado, pero fíjese en la viveza que añade esa elección."
   },
   "indicatives.p.int-aspect-primary": {
     "fp": "116gdoo",
@@ -1109,11 +1109,11 @@
   },
   "indicatives.p.push-verb-into": {
     "fp": "1p9ql17",
-    "text": "Para empujar un verbo al pasado, el griego le pega una {ἐ‑} delante — se llama *aumento*. Piénsalo como la bandera del pasado: {λύομεν} «desatamos» → {ἐλύομεν} «desatábamos». El tiempo *imperfecto* (pasado en curso, «desataba») es exactamente eso: aumento + raíz de presente + un juego de terminaciones ligeramente distinto. Esos dos juegos — presente e imperfecto — son la base de todo lo demás:"
+    "text": "Para empujar un verbo al pasado, el griego le pega una {ἐ‑} delante — se llama *aumento*. Piénselo como la bandera del pasado: {λύομεν} «desatamos» → {ἐλύομεν} «desatábamos». El tiempo *imperfecto* (pasado en curso, «desataba») es exactamente eso: aumento + raíz de presente + un juego de terminaciones ligeramente distinto. Esos dos juegos — presente e imperfecto — son la base de todo lo demás:"
   },
   "indicatives.p.verb-names-action": {
     "fp": "1msgjml",
-    "text": "Un [verb:verbo] nombra una acción o un estado — _escribe, ve, es_. Y aquí el español te da una ventaja enorme sobre el inglés: tus verbos ya hacen lo que hacen los griegos. «Escribo, escribes, escribimos, escriben» — la terminación sola te dice quién actúa, sin necesidad de pronombre. El inglés no puede: tiene que añadir «I», «you», «we» delante, y añadir palabras auxiliares para el tiempo («I _will_ write», «I _was_ writing»)."
+    "text": "Un [verb:verbo] nombra una acción o un estado — _escribe, ve, es_. Y aquí el español le da una ventaja enorme sobre el inglés: sus verbos ya hacen lo que hacen los griegos. «Escribo, escribes, escribimos, escriben» — la terminación sola le dice quién actúa, sin necesidad de pronombre. El inglés no puede: tiene que añadir «I», «you», «we» delante, y añadir palabras auxiliares para el tiempo («I _will_ write», «I _was_ writing»)."
   },
   "indicatives.pa.aorist-active-heard": {
     "fp": "1cszv0x",
@@ -1741,7 +1741,7 @@
   },
   "indicatives.wo.augment-never-appears": {
     "fp": "k9v8n6",
-    "text": "El aumento _nunca_ aparece fuera del indicativo — si te topas con una forma «con aire de pasado» en un mandato o un infinitivo, lo que estás viendo no es un aumento."
+    "text": "El aumento _nunca_ aparece fuera del indicativo — si se topa con una forma «con aire de pasado» en un mandato o un infinitivo, lo que está viendo no es un aumento."
   },
   "indicatives.wo.compound-verbs-augment": {
     "fp": "qub3zm",

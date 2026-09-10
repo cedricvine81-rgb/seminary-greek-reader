@@ -65,7 +65,7 @@
   },
   "basic-verbs.exp.i.intro": {
     "fp": "mzcoac",
-    "text": "La {ο/ε} que va alternando por estas desinencias es la *vocal temática*, y es lo que conviene retener: el imperfecto, el futuro y el aoristo segundo se construyen todos sobre esta misma raíz con esta misma vocal, de modo que lo que aprendes aquí no es un tiempo sino el armazón del que cuelgan los demás. Los verbos en {-έω} tampoco son un segundo sistema: {φιλέ-ω → φιλῶ} son estas mismas desinencias con dos vocales fundidas, y por eso aparece el circunflejo y por eso el léxico sigue dando la forma sin contraer."
+    "text": "La {ο/ε} que va alternando por estas desinencias es la *vocal temática*, y es lo que conviene retener: el imperfecto, el futuro y el aoristo segundo se construyen todos sobre esta misma raíz con esta misma vocal, de modo que lo que aquí se aprende no es un tiempo sino el armazón del que cuelgan los demás. Los verbos en {-έω} tampoco son un segundo sistema: {φιλέ-ω → φιλῶ} son estas mismas desinencias con dos vocales fundidas, y por eso aparece el circunflejo y por eso el léxico sigue dando la forma sin contraer."
   },
   "basic-verbs.h.compounds": {
     "fp": "dam7in",
@@ -93,7 +93,7 @@
   },
   "basic-verbs.ib.body": {
     "fp": "1uqora3",
-    "text": "Da las casillas en orden y luego la forma léxica. {λύομεν} es presente · activo · indicativo · 1.ª persona · plural · de {λύω}, y deberías poder decir qué significan ambas: {λύω} es «desato» y {λύομεν} es «desatamos».¶Ese último paso es el que los estudiantes se saltan. Un análisis que se detiene en las etiquetas no ha demostrado que se entendiera la forma; el significado de la forma flexionada es justamente el objeto del análisis."
+    "text": "Dé las casillas en orden y luego la forma léxica. {λύομεν} es presente · activo · indicativo · 1.ª persona · plural · de {λύω}, y debería poder decir qué significan ambas: {λύω} es «desato» y {λύομεν} es «desatamos».¶Ese último paso es el que los estudiantes se saltan. Un análisis que se detiene en las etiquetas no ha demostrado que se entendiera la forma; el significado de la forma flexionada es justamente el objeto del análisis."
   },
   "basic-verbs.ib.how-to-parse": {
     "fp": "puq68q",
@@ -101,7 +101,7 @@
   },
   "basic-verbs.intro.give-person-number": {
     "fp": "1vw2qrb",
-    "text": "Da la persona y el número, y luego di qué significa."
+    "text": "Dé la persona y el número, y luego diga qué significa."
   },
   "basic-verbs.n.he-does": {
     "fp": "1ukvfjd",
@@ -117,7 +117,7 @@
   },
   "basic-verbs.n.they-cast-out": {
     "fp": "8cwyeb",
-    "text": "«Echan fuera». Es un compuesto: quita ἐκ- y queda βάλλουσιν, que ya conoces."
+    "text": "«Echan fuera». Es un compuesto: quite ἐκ- y queda βάλλουσιν, que ya conoce."
   },
   "basic-verbs.n.they-receive": {
     "fp": "bdkk71",
@@ -145,15 +145,15 @@
   },
   "basic-verbs.p.compound-meaning": {
     "fp": "abirdx",
-    "text": "Lo que el prefijo sí cambia es el sentido, y no siempre de forma previsible. {ἐκβάλλω} es «echar _fuera_», cosa que podrías haber adivinado a partir de {ἐκ} «fuera de» y {βάλλω} «arrojo»; pero {παρακαλέω} —«llamar al lado»— significa exhortar, o consolar. Lee el prefijo como una pista, nunca como una definición."
+    "text": "Lo que el prefijo sí cambia es el sentido, y no siempre de forma previsible. {ἐκβάλλω} es «echar _fuera_», cosa que podría haber adivinado a partir de {ἐκ} «fuera de» y {βάλλω} «arrojo»; pero {παρακαλέω} —«llamar al lado»— significa exhortar, o consolar. Lea el prefijo como una pista, nunca como una definición."
   },
   "basic-verbs.p.compound-prefix": {
     "fp": "1wi9m5c",
-    "text": "Un verbo compuesto es una preposición pegada delante de un verbo, y la unión no cambia nada en las desinencias. {συνάγω} es {σύν} + {ἄγω} y se conjuga exactamente como {ἄγω}: {συνάγω, συνάγεις, συνάγει, συνάγομεν, συνάγετε, συνάγουσι(ν)}. El prefijo simplemente viaja al frente, así que nueve de los once de abajo son verbos que ya has conjugado en este capítulo."
+    "text": "Un verbo compuesto es una preposición pegada delante de un verbo, y la unión no cambia nada en las desinencias. {συνάγω} es {σύν} + {ἄγω} y se conjuga exactamente como {ἄγω}: {συνάγω, συνάγεις, συνάγει, συνάγομεν, συνάγετε, συνάγουσι(ν)}. El prefijo simplemente viaja al frente, así que nueve de los once de abajo son verbos que ya ha conjugado en este capítulo."
   },
   "basic-verbs.p.contract-explained": {
     "fp": "hw2ggx",
-    "text": "Un segundo grupo termina en {-έω} y no en {-ω}, y la ε se encuentra con la vocal de la desinencia y se funde con ella: {φιλέ-ω} se convierte en {φιλῶ}. No ocurre nada nuevo: las desinencias son las que ya conoces, luciendo un circunflejo allí donde dos vocales se han juntado. Son los [contract verb:verbos contractos], y el capítulo de ese nombre recorre las tres clases; estos seis son los que hacen falta ahora."
+    "text": "Un segundo grupo termina en {-έω} y no en {-ω}, y la ε se encuentra con la vocal de la desinencia y se funde con ella: {φιλέ-ω} se convierte en {φιλῶ}. No ocurre nada nuevo: las desinencias son las que ya conoce, luciendo un circunflejo allí donde dos vocales se han juntado. Son los [contract verb:verbos contractos], y el capítulo de ese nombre recorre las tres clases; estos seis son los que hacen falta ahora."
   },
   "basic-verbs.p.eimi-enclitic": {
     "fp": "1gy7qil",
@@ -165,15 +165,15 @@
   },
   "basic-verbs.p.ending-carries-person": {
     "fp": "1havkc",
-    "text": "La diferencia importante con el inglés está en dónde vive la persona. El inglés necesita un pronombre: «_I_ hear», «_we_ hear». El griego la pone en la *desinencia*, así que el pronombre no hace falta: {ἀκούω} ya es «oigo», y {ἀκούομεν} ya es «oímos». El español funciona igual —_oigo_, _oímos_—, así que este rasgo del griego ya te resulta familiar. Aprende las seis desinencias una vez y te sirven para todos los verbos regulares de la lengua."
+    "text": "La diferencia importante con el inglés está en dónde vive la persona. El inglés necesita un pronombre: «_I_ hear», «_we_ hear». El griego la pone en la *desinencia*, así que el pronombre no hace falta: {ἀκούω} ya es «oigo», y {ἀκούομεν} ya es «oímos». El español funciona igual —_oigo_, _oímos_—, así que este rasgo del griego ya le resulta familiar. Aprenda las seis desinencias una vez y le sirven para todos los verbos regulares de la lengua."
   },
   "basic-verbs.p.luo-is-the-model": {
     "fp": "5mwfd5",
-    "text": "Las gramáticas conjugan {λύω} «desato, suelto» en primer lugar, porque es perfectamente regular y su raíz nunca cambia: {λυ-} más una desinencia, seis veces. Aprende esta tabla y tendrás el presente activo de indicativo de todos los verbos regulares."
+    "text": "Las gramáticas conjugan {λύω} «desato, suelto» en primer lugar, porque es perfectamente regular y su raíz nunca cambia: {λυ-} más una desinencia, seis veces. Aprenda esta tabla y tendrá el presente activo de indicativo de todos los verbos regulares."
   },
   "basic-verbs.p.nine-like-luo": {
     "fp": "1xbpp9o",
-    "text": "Nueve verbos se comportan exactamente como {λύω}. Toman las desinencias que acabas de aprender sin un solo cambio —solo difiere la raíz, nunca la desinencia—, de modo que aprender la tabla una vez ya te ha dado los nueve. La cifra indica cuántas veces aparece cada uno en el Nuevo Testamento."
+    "text": "Nueve verbos se comportan exactamente como {λύω}. Toman las desinencias que acaba de aprender sin un solo cambio —solo difiere la raíz, nunca la desinencia—, de modo que aprender la tabla una vez ya le ha dado los nueve. La cifra indica cuántas veces aparece cada uno en el Nuevo Testamento."
   },
   "basic-verbs.p.sentence-needs-verb": {
     "fp": "1lgu6j3",
@@ -377,7 +377,7 @@
   },
   "basic-verbs.t3.note": {
     "fp": "1yqk5gj",
-    "text": "De εἰμί no se da voz: no hay nada sobre lo que actúe, de modo que «activo» no diría nada. Analízalo como presente de indicativo, con la persona y el número."
+    "text": "De εἰμί no se da voz: no hay nada sobre lo que actúe, de modo que «activo» no diría nada. Analícelo como presente de indicativo, con la persona y el número."
   },
   "basic-verbs.t3.title": {
     "fp": "bvzl60",
@@ -617,7 +617,7 @@
   },
   "basic-verbs.t6.note": {
     "fp": "1nvf7wi",
-    "text": "El modelo te dice desde qué tabla conjugarlo: los verbos en -ω toman las desinencias de λύω; los verbos en -έω contraen como φιλέω. προσκυνέω lleva su complemento en dativo y no en acusativo."
+    "text": "El modelo le dice desde qué tabla conjugarlo: los verbos en -ω toman las desinencias de λύω; los verbos en -έω contraen como φιλέω. προσκυνέω lleva su complemento en dativo y no en acusativo."
   },
   "basic-verbs.t6.title": {
     "fp": "dam7in",

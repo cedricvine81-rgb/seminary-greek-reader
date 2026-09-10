@@ -177,7 +177,7 @@
   },
   "parsing.al.read-column-time": {
     "fp": "hxxsbv",
-    "text": "Lee una columna a la vez"
+    "text": "Lea una columna a la vez"
   },
   "parsing.al.tense-aspect-first": {
     "fp": "18hwvd",
@@ -197,11 +197,11 @@
   },
   "parsing.as.ldquo-child-rdquo": {
     "fp": "zfdo9m",
-    "text": "{τὸ τέκνον} («el niño») es neutro y {ἡ ἁμαρτία} («el pecado») es femenino; ninguno de los dos dice nada sobre el referente. El género es una propiedad del sustantivo en el léxico, así que es la única casilla que no siempre puedes leer en la terminación — se aprende junto con la palabra."
+    "text": "{τὸ τέκνον} («el niño») es neutro y {ἡ ἁμαρτία} («el pecado») es femenino; ninguno de los dos dice nada sobre el referente. El género es una propiedad del sustantivo en el léxico, así que es la única casilla que no siempre se puede leer en la terminación — se aprende junto con la palabra."
   },
   "parsing.as.notice-article-agrees": {
     "fp": "1om9qbv",
-    "text": "Fíjate en que el artículo concuerda con su sustantivo en las tres casillas. Eso convierte al artículo en la mejor pista de análisis del idioma: analízalo, y habrás analizado el sustantivo."
+    "text": "Fíjese en que el artículo concuerda con su sustantivo en las tres casillas. Eso convierte al artículo en la mejor pista de análisis del idioma: analícelo, y habrá analizado el sustantivo."
   },
   "parsing.as.only-occurrences-most": {
     "fp": "xx6ef1",
@@ -209,11 +209,11 @@
   },
   "parsing.as.outside-indicative-tense": {
     "fp": "3hmlnm",
-    "text": "Fuera del indicativo, la casilla del tiempo lleva [aspect:aspecto] y no tiempo en absoluto: un subjuntivo aoristo no es pasado. Sigue nombrando el tiempo por su etiqueta — estás informando de la forma, no comprometiéndote con una traducción."
+    "text": "Fuera del indicativo, la casilla del tiempo lleva [aspect:aspecto] y no tiempo en absoluto: un subjuntivo aoristo no es pasado. Siga nombrando el tiempo por su etiqueta — está informando de la forma, no comprometiéndose con una traducción."
   },
   "parsing.as.parse-finished-only": {
     "fp": "1l3tdl4",
-    "text": "Un análisis solo está terminado cuando has nombrado _todas_ las casillas de esa clase de palabra y luego la forma léxica. «Aoristo» no es un análisis. «Aoristo activo indicativo 3.ª singular de {λύω}» sí lo es."
+    "text": "Un análisis solo está terminado cuando ha nombrado _todas_ las casillas de esa clase de palabra y luego la forma léxica. «Aoristo» no es un análisis. «Aoristo activo indicativo 3.ª singular de {λύω}» sí lo es."
   },
   "parsing.as.rare-never-augmented": {
     "fp": "1r8234a",
@@ -233,7 +233,7 @@
   },
   "parsing.as.work-left-right": {
     "fp": "6nyb6f",
-    "text": "Trabaja de izquierda a derecha y dilo como una sola frase. No te detengas en el caso — un análisis a medias («es genitivo») no es una respuesta."
+    "text": "Trabaje de izquierda a derecha y dígalo como una sola frase. No se detenga en el caso — un análisis a medias («es genitivo») no es una respuesta."
   },
   "parsing.cat.contract-lookalikes.d": {
     "fp": "yv8wwf",
@@ -249,7 +249,7 @@
   },
   "parsing.cat.contract-lookalikes.h": {
     "fp": "620fim",
-    "text": "Fíjate en la última consonante de la raíz. Raíz líquida con circunflejo es un futuro; cualquier otra cosa de esa forma es un presente contracto."
+    "text": "Fíjese en la última consonante de la raíz. Raíz líquida con circunflejo es un futuro; cualquier otra cosa de esa forma es un presente contracto."
   },
   "parsing.cat.contract-lookalikes.name": {
     "fp": "1sc4o3w",
@@ -269,7 +269,7 @@
   },
   "parsing.cat.first-decl-gen-acc.h": {
     "fp": "iqyozi",
-    "text": "Analiza primero el artículo. {τῆς} te da el genitivo singular y {τάς} el acusativo plural; la desinencia del sustantivo por sí sola no puede."
+    "text": "Analice primero el artículo. {τῆς} le da el genitivo singular y {τάς} el acusativo plural; la desinencia del sustantivo por sí sola no puede."
   },
   "parsing.cat.first-decl-gen-acc.name": {
     "fp": "16i80v9",
@@ -289,7 +289,7 @@
   },
   "parsing.cat.middle-passive.h": {
     "fp": "nfnswd",
-    "text": "Busca un agente: {ὑπό} con genitivo lo resuelve como pasiva. Si no, deciden los hábitos del propio verbo, así que mira si el diccionario lo registra como medio."
+    "text": "Busque un agente: {ὑπό} con genitivo lo resuelve como pasiva. Si no, deciden los hábitos del propio verbo, así que mire si el diccionario lo registra como medio."
   },
   "parsing.cat.middle-passive.name": {
     "fp": "1sk9pbg",
@@ -309,7 +309,7 @@
   },
   "parsing.cat.neuter-nom-acc.h": {
     "fp": "1vs67mb",
-    "text": "La forma nunca te lo dirá: busca el verbo. Si el neutro realiza la acción es nominativo, y si la recibe, acusativo; y recuerda que un sujeto neutro plural lleva verbo en singular."
+    "text": "La forma nunca se lo dirá: busque el verbo. Si el neutro realiza la acción es nominativo, y si la recibe, acusativo; y recuerde que un sujeto neutro plural lleva verbo en singular."
   },
   "parsing.cat.neuter-nom-acc.name": {
     "fp": "a9g9x",
@@ -409,7 +409,7 @@
   },
   "parsing.ct5.c0.2": {
     "fp": "1838di0",
-    "text": "El neutro nunca distingue los dos — busca el verbo y pregúntate si esto hace la acción o la recibe."
+    "text": "El neutro nunca distingue los dos — busque el verbo y pregúntese si esto hace la acción o la recibe."
   },
   "parsing.ct5.c1.1": {
     "fp": "uhzak9",
@@ -433,7 +433,7 @@
   },
   "parsing.ct5.c3.2": {
     "fp": "nt5hv2",
-    "text": "Compáralo con ἀνθρώπους (acusativo plural): una letra de diferencia al oído, y una función completamente distinta."
+    "text": "Compárelo con ἀνθρώπους (acusativo plural): una letra de diferencia al oído, y una función completamente distinta."
   },
   "parsing.ct5.h0": {
     "fp": "1hf0yuf",
@@ -481,7 +481,7 @@
   },
   "parsing.ct7.title": {
     "fp": "czrcal",
-    "text": "Casillas del participio: elige una de cada columna"
+    "text": "Casillas del participio: elija una de cada columna"
   },
   "parsing.ct8.h0": {
     "fp": "u6mgsi",
@@ -501,7 +501,7 @@
   },
   "parsing.ct8.title": {
     "fp": "8myj6r",
-    "text": "Casillas del infinitivo: elige una de cada columna"
+    "text": "Casillas del infinitivo: elija una de cada columna"
   },
   "parsing.d1.o0": {
     "fp": "x6d8s5",
@@ -885,7 +885,7 @@
   },
   "parsing.ga.nominative-singular-masculine": {
     "fp": "185hu34",
-    "text": "{ὁ} = artículo nominativo singular masculino; {λόγος} = nominativo singular masculino de {λόγος}. Concuerdan en las tres casillas, que es como sabes que van juntos. El nominativo significa que este es el sujeto."
+    "text": "{ὁ} = artículo nominativo singular masculino; {λόγος} = nominativo singular masculino de {λόγος}. Concuerdan en las tres casillas, que es como sabe que van juntos. El nominativo significa que este es el sujeto."
   },
   "parsing.ga.preposition-indeclinable-slots": {
     "fp": "8dsml5",
@@ -913,11 +913,11 @@
   },
   "parsing.h.before-forms-learn": {
     "fp": "9jyac9",
-    "text": "Antes de las formas: aprende cómo es una respuesta"
+    "text": "Antes de las formas: aprenda cómo es una respuesta"
   },
   "parsing.h.conventions-will-meet": {
     "fp": "eph9vr",
-    "text": "Convenciones que te encontrarás en otros sitios"
+    "text": "Convenciones que encontrará en otros sitios"
   },
   "parsing.h.four-patterns-which": {
     "fp": "10bp6ty",
@@ -945,15 +945,15 @@
   },
   "parsing.intro.every-one-these": {
     "fp": "1xlu928",
-    "text": "Cada una de estas casillas está etiquetada en el Nuevo Testamento griego. Busca una casilla y lee formas reales — este es el mismo análisis que harás durante todo el año."
+    "text": "Cada una de estas casillas está etiquetada en el Nuevo Testamento griego. Busque una casilla y lea formas reales — este es el mismo análisis que hará durante todo el año."
   },
   "parsing.intro.give-all-five": {
     "fp": "1jj6m91",
-    "text": "Da las cinco casillas en orden: tiempo, voz, modo, persona, número."
+    "text": "Dé las cinco casillas en orden: tiempo, voz, modo, persona, número."
   },
   "parsing.intro.give-all-three": {
     "fp": "fy5afx",
-    "text": "Da las tres casillas en orden: caso, número, género. (Las formas léxicas te las damos; lo que estás nombrando son las casillas, no el paradigma.)"
+    "text": "Dé las tres casillas en orden: caso, número, género. (Las formas léxicas se las damos; lo que está nombrando son las casillas, no el paradigma.)"
   },
   "parsing.le.aorist-indicative": {
     "fp": "15f8ld3",
@@ -1005,15 +1005,15 @@
   },
   "parsing.p.can-now-read": {
     "fp": "1wxan8f",
-    "text": "Ya puedes leer las letras griegas en voz alta. Lo siguiente que hay que aprender no es un paradigma: es qué aspecto tiene una respuesta correcta. [parse:Analizar] una palabra es decir qué función está cumpliendo, y el griego dice esa función en voz alta en la terminación de la palabra. El español se apoya sobre todo en el orden y en las preposiciones: «el perro mordió al hombre» y «el hombre mordió al perro» usan las mismas palabras y significan lo contrario. El griego puede barajar las palabras a su antojo, porque son las terminaciones, y no el orden, las que dicen quién hizo qué."
+    "text": "Ya puede leer las letras griegas en voz alta. Lo siguiente que hay que aprender no es un paradigma: es qué aspecto tiene una respuesta correcta. [parse:Analizar] una palabra es decir qué función está cumpliendo, y el griego dice esa función en voz alta en la terminación de la palabra. El español se apoya sobre todo en el orden y en las preposiciones: «el perro mordió al hombre» y «el hombre mordió al perro» usan las mismas palabras y significan lo contrario. El griego puede barajar las palabras a su antojo, porque son las terminaciones, y no el orden, las que dicen quién hizo qué."
   },
   "parsing.p.case-number-gender": {
     "fp": "tirl9r",
-    "text": "*Caso-número-género frente a género-número-caso.* El orden que se enseña aquí — el caso primero — es el habitual de las gramáticas introductorias (Mounce, Black, Croy) y el de este curso. La _Greek Grammar Beyond the Basics_ de Wallace y varias guías de análisis lo invierten a género-número-caso. Ambos nombran las mismas tres casillas; lo único que cambia es el orden de recitación. Usa caso-número-género en este curso, y que no te descoloque encontrar en un comentario «masculino singular nominativo»."
+    "text": "*Caso-número-género frente a género-número-caso.* El orden que se enseña aquí — el caso primero — es el habitual de las gramáticas introductorias (Mounce, Black, Croy) y el de este curso. La _Greek Grammar Beyond the Basics_ de Wallace y varias guías de análisis lo invierten a género-número-caso. Ambos nombran las mismas tres casillas; lo único que cambia es el orden de recitación. Use caso-número-género en este curso, y que no lo descoloque encontrar en un comentario «masculino singular nominativo»."
   },
   "parsing.p.every-greek-word": {
     "fp": "1s93t4c",
-    "text": "Así que cada palabra griega que te encuentres plantea la misma lista corta de preguntas, y las respuestas vienen siempre en el mismo orden fijo. Aprende el orden ahora y cada capítulo posterior será solo rellenar opciones para las que ya tienes casillas."
+    "text": "Así que cada palabra griega que se encuentre plantea la misma lista corta de preguntas, y las respuestas vienen siempre en el mismo orden fijo. Aprenda el orden ahora y cada capítulo posterior será solo rellenar opciones para las que ya tiene casillas."
   },
   "parsing.p.every-noun-adjective": {
     "fp": "1gfxbk1",
@@ -1025,19 +1025,19 @@
   },
   "parsing.p.int-honest": {
     "fp": "kwyday",
-    "text": "*Nombrar la ambigüedad es la respuesta.* Un análisis que escoge una opción en silencio no está hecho; uno que dice «nominativo o acusativo plural neutro, y lo decide el verbo» sí lo está. El hábito importa sobre todo justo en los lugares donde una traducción ya ha escogido por ti."
+    "text": "*Nombrar la ambigüedad es la respuesta.* Un análisis que escoge una opción en silencio no está hecho; uno que dice «nominativo o acusativo plural neutro, y lo decide el verbo» sí lo está. El hábito importa sobre todo justo en los lugares donde una traducción ya ha escogido por usted."
   },
   "parsing.p.int-lead": {
     "fp": "1ocpmgw",
-    "text": "Una desinencia griega no siempre identifica una sola casilla. Varias sirven a dos o tres, y ninguna cantidad de morfología las separará: tiene que hacerlo la oración. Saber exactamente _cuáles_ formas son ambiguas es lo que convierte el análisis en lectura, porque te dice dónde dejar de consultar el paradigma y empezar a consultar el contexto."
+    "text": "Una desinencia griega no siempre identifica una sola casilla. Varias sirven a dos o tres, y ninguna cantidad de morfología las separará: tiene que hacerlo la oración. Saber exactamente _cuáles_ formas son ambiguas es lo que convierte el análisis en lectura, porque le dice dónde dejar de consultar el paradigma y empezar a consultar el contexto."
   },
   "parsing.p.last-row-worth": {
     "fp": "obljuv",
-    "text": "Vale la pena detenerse en esa última fila. El análisis te dice la _forma_; no te dice la _función_. «Genitivo singular femenino» es un análisis; «genitivo de origen» es una afirmación exegética que necesita un argumento. Mantener las dos cosas separadas es casi todo lo que separa la exégesis cuidadosa de citar versículos a la medida con un léxico en la mano."
+    "text": "Vale la pena detenerse en esa última fila. El análisis le dice la _forma_; no le dice la _función_. «Genitivo singular femenino» es un análisis; «genitivo de origen» es una afirmación exegética que necesita un argumento. Mantener las dos cosas separadas es casi todo lo que separa la exégesis cuidadosa de citar versículos a la medida con un léxico en la mano."
   },
   "parsing.p.mood-traditional-paradigms": {
     "fp": "g4koy8",
-    "text": "*Modo, ¿o no?* Los paradigmas tradicionales colocan el infinitivo y el participio junto a los cuatro modos, lo cual resulta cómodo para analizar y es incorrecto como gramática: ninguno de los dos es un modo, ya que ninguno hace una afirmación. Di «participio» en la casilla del modo, pero no concluyas que lo sea."
+    "text": "*Modo, ¿o no?* Los paradigmas tradicionales colocan el infinitivo y el participio junto a los cuatro modos, lo cual resulta cómodo para analizar y es incorrecto como gramática: ninguno de los dos es un modo, ya que ninguno hace una afirmación. Diga «participio» en la casilla del modo, pero no concluya que lo sea."
   },
   "parsing.p.there-only-four": {
     "fp": "1jyo5p1",

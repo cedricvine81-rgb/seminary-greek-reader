@@ -5,7 +5,7 @@
   },
   "imperatives.as.imperative-gives-command": {
     "fp": "xt1vdm",
-    "text": "El imperativo da una orden. Aprende primero las formas de segunda persona."
+    "text": "El imperativo da una orden. Aprenda primero las formas de segunda persona."
   },
   "imperatives.as.let-him-translation": {
     "fp": "11vza3",
@@ -93,7 +93,7 @@
   },
   "imperatives.cat.proh-aorist-subj.h": {
     "fp": "bmb2su",
-    "text": "{μή} con subjuntivo aoristo en vez de imperativo, porque en segunda persona no existe el imperativo aoristo. Léelo como una orden normal, no como una más suave."
+    "text": "{μή} con subjuntivo aoristo en vez de imperativo, porque en segunda persona no existe el imperativo aoristo. Léalo como una orden normal, no como una más suave."
   },
   "imperatives.cat.proh-aorist-subj.name": {
     "fp": "1egqpfu",
@@ -149,7 +149,7 @@
   },
   "imperatives.cat.proh-ou-me.d": {
     "fp": "o59gyh",
-    "text": "no es una prohibición sino una negación enfática: el hablante descarta la cosa por completo. Léelo «de ningún modo», nunca «no hagas»"
+    "text": "no es una prohibición sino una negación enfática: el hablante descarta la cosa por completo. Léalo «de ningún modo», nunca «no hagas»"
   },
   "imperatives.cat.proh-ou-me.e0": {
     "fp": "6gn1g",
@@ -185,7 +185,7 @@
   },
   "imperatives.cat.proh-present-imv.h": {
     "fp": "1vl584w",
-    "text": "{μή} con imperativo presente. Pregúntate si los oyentes ya lo están haciendo: si es así, «deja de»; si no, «no acostumbres a»."
+    "text": "{μή} con imperativo presente. Pregúntese si los oyentes ya lo están haciendo: si es así, «deja de»; si no, «no acostumbres a»."
   },
   "imperatives.cat.proh-present-imv.name": {
     "fp": "qjibm1",
@@ -449,11 +449,11 @@
   },
   "imperatives.exp.p.imperative-command-mood": {
     "fp": "919cnn",
-    "text": "El *imperativo* es el modo del mandato («¡Suelta!» «¡Cree!»). El griego tiene imperativos de 2.ª persona («tú, haz esto») y de 3.ª persona (literalmente «que él haga esto»), que el español expresa con «que…». Sobre todo memorizas las formas de 2.ª persona más las desinencias {‑τω} (3.ª sg.) y {‑τωσαν} (3.ª pl.). Los imperativos aoristos llevan la {σ} pero no el aumento."
+    "text": "El *imperativo* es el modo del mandato («¡Suelta!» «¡Cree!»). El griego tiene imperativos de 2.ª persona («tú, haz esto») y de 3.ª persona (literalmente «que él haga esto»), que el español expresa con «que…». Sobre todo se memorizan las formas de 2.ª persona más las desinencias {‑τω} (3.ª sg.) y {‑τωσαν} (3.ª pl.). Los imperativos aoristos llevan la {σ} pero no el aumento."
   },
   "imperatives.exp.p.present-aorist-imperative": {
     "fp": "17onqnx",
-    "text": "Presente frente a aoristo en el imperativo es *aspecto*: el presente = continuado o general («haz de ello tu práctica»), el aoristo = una acción concreta y entera («hazlo»). El aoristo es el más frecuente de los dos, así que fíjate cuando se elige el _presente_. Estas son sus *categorías sintácticas esenciales* (según Wallace)."
+    "text": "Presente frente a aoristo en el imperativo es *aspecto*: el presente = continuado o general («haz de ello tu práctica»), el aoristo = una acción concreta y entera («hazlo»). El aoristo es el más frecuente de los dos, así que fíjese cuando se elige el _presente_. Estas son sus *categorías sintácticas esenciales* (según Wallace)."
   },
   "imperatives.h.forms-you'll-meet": {
     "fp": "13c4osc",
@@ -489,7 +489,7 @@
   },
   "imperatives.intro.full-commands-compare": {
     "fp": "5pe21p",
-    "text": "El NT está lleno de órdenes: compara cómo se sienten el presente y el aoristo en su contexto."
+    "text": "El NT está lleno de órdenes: compare cómo se sienten el presente y el aoristo en su contexto."
   },
   "imperatives.intro.identify-person-number": {
     "fp": "q1xe8x",
@@ -521,7 +521,7 @@
   },
   "imperatives.p.int-aspect-caution": {
     "fp": "uo1eyc",
-    "text": "*La regla que encontrarás, y por qué conviene sostenerla con soltura.* Las gramáticas antiguas enseñan que {μή} con presente significa «deja de hacer lo que estás haciendo» y con aoristo «no empieces». Es una primera aproximación útil, y no es una ley. Mateo prohíbe la ansiedad con imperativo de presente en 6:25 —{μὴ μεριμνᾶτε}— y con subjuntivo de aoristo seis versículos después, en 6:31 —{μὴ οὖν μεριμνήσητε}—, dentro de un mismo argumento seguido, ante un mismo auditorio y sobre una misma cosa. Si los aspectos tuvieran la fuerza tajante que la regla pretende, eso sería incoherente. El par de Duff es la manera más segura de sostenerlo: el presente es el aspecto de _proceso_ y el aoristo el _por defecto_, y ninguno de los dos lleva en sí «deja de» ni «no empieces». Deja que decida el contexto, no el paradigma, si «deja de» está justificado."
+    "text": "*La regla que encontrará, y por qué conviene sostenerla con soltura.* Las gramáticas antiguas enseñan que {μή} con presente significa «deja de hacer lo que estás haciendo» y con aoristo «no empieces». Es una primera aproximación útil, y no es una ley. Mateo prohíbe la ansiedad con imperativo de presente en 6:25 —{μὴ μεριμνᾶτε}— y con subjuntivo de aoristo seis versículos después, en 6:31 —{μὴ οὖν μεριμνήσητε}—, dentro de un mismo argumento seguido, ante un mismo auditorio y sobre una misma cosa. Si los aspectos tuvieran la fuerza tajante que la regla pretende, eso sería incoherente. El par de Duff es la manera más segura de sostenerlo: el presente es el aspecto de _proceso_ y el aoristo el _por defecto_, y ninguno de los dos lleva en sí «deja de» ni «no empieces». Deje que decida el contexto, no el paradigma, si «deja de» está justificado."
   },
   "imperatives.p.int-ou-me": {
     "fp": "1o2azx6",
@@ -549,7 +549,7 @@
   },
   "imperatives.p.third-person-builds": {
     "fp": "16hd1a5",
-    "text": "La tercera persona se construye sobre dos desinencias que conviene memorizar a fondo: {‑τω} (singular, «que él…») y {‑τωσαν} (plural, «que ellos…»). Los paradigmas completos están en Minimums 7; aquí tienes la forma general del asunto:"
+    "text": "La tercera persona se construye sobre dos desinencias que conviene memorizar a fondo: {‑τω} (singular, «que él…») y {‑τωσαν} (plural, «que ellos…»). Los paradigmas completos están en Minimums 7; aquí tiene la forma general del asunto:"
   },
   "imperatives.pa.give-today-aorist": {
     "fp": "1czft2j",
@@ -565,7 +565,7 @@
   },
   "imperatives.pa.judge-stop-judging": {
     "fp": "1u7qpy1",
-    "text": "«No juzguéis / dejad de juzgar» — μή + imperativo presente (Mateo 7:1): no hagas del juzgar tu costumbre."
+    "text": "«No juzguen / dejen de juzgar» — μή + imperativo presente (Mateo 7:1): no hagan del juzgar su costumbre."
   },
   "imperatives.pa.let-one-who": {
     "fp": "15q7bk8",

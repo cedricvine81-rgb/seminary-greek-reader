@@ -1,7 +1,7 @@
 {
   "deponents.as.deponent-looks-middle": {
     "fp": "8c9c9y",
-    "text": "Un *deponente* parece medio o pasivo (termina en {‑ομαι}) pero significa algo _activo_. Tradúcelo sin más en activa: la forma media o pasiva es su única forma."
+    "text": "Un *deponente* parece medio o pasivo (termina en {‑ομαι}) pero significa algo _activo_. Tradúzcalo sin más en activa: la forma media o pasiva es su única forma."
   },
   "deponents.as.oddities-worth-knowing": {
     "fp": "1ar5sqd",
@@ -45,7 +45,7 @@
   },
   "deponents.cat.indirect-middle.h": {
     "fp": "19w63q4",
-    "text": "Añade «para sí» y observa si el sentido se afina. Es el medio por defecto, así que pruébalo antes que ningún otro."
+    "text": "Añada «para sí» y observe si el sentido se afina. Es el medio por defecto, así que pruébelo antes que ningún otro."
   },
   "deponents.cat.indirect-middle.name": {
     "fp": "19xnago",
@@ -265,7 +265,7 @@
   },
   "deponents.d1.o0": {
     "fp": "1mey7mk",
-    "text": "Deponente — tradúcelo en activa"
+    "text": "Deponente — tradúzcalo en activa"
   },
   "deponents.d1.o1": {
     "fp": "4d09c2",
@@ -297,7 +297,7 @@
   },
   "deponents.exp.hook.vast-majority-time": {
     "fp": "y0t0ru",
-    "text": "La inmensa mayoría de las veces que encuentres una forma *media*, será sencillamente un verbo deponente con significado activo: piensa primero en «deponente»."
+    "text": "La inmensa mayoría de las veces que encuentre una forma *media*, será sencillamente un verbo deponente con significado activo: piense primero en «deponente»."
   },
   "deponents.exp.p.deponent-verb-looks": {
     "fp": "1uzsr26",
@@ -305,7 +305,7 @@
   },
   "deponents.exp.p.parse-deponent-exactly": {
     "fp": "1611wyd",
-    "text": "Analiza un deponente exactamente como analizarías cualquier forma media o pasiva (tiempo, persona, número), pero traduce con la glosa _activa_ que da tu léxico. Unos son medios en futuro y aoristo; otros son pasivos en el aoristo ({ἀποκρίνομαι → ἀπεκρίθην})."
+    "text": "Analice un deponente exactamente como analizaría cualquier forma media o pasiva (tiempo, persona, número), pero traduzca con la glosa _activa_ que da su léxico. Unos son medios en futuro y aoristo; otros son pasivos en el aoristo ({ἀποκρίνομαι → ἀπεκρίθην})."
   },
   "deponents.h.going-deeper-deponent": {
     "fp": "esz4c8",
@@ -345,7 +345,7 @@
   },
   "deponents.intro.four-deponents-cannot": {
     "fp": "8liinp",
-    "text": "Cuatro deponentes sin los cuales no puedes leer una página."
+    "text": "Cuatro deponentes sin los cuales no se puede leer una página."
   },
   "deponents.intro.middle-passive-form": {
     "fp": "ygr3aa",
@@ -385,11 +385,11 @@
   },
   "deponents.p.deponents-split-which": {
     "fp": "14fnfdq",
-    "text": "Los deponentes se dividen según qué formas no activas usan en el aoristo. Los *deponentes medios* toman aoristos medios: {ἐδεξάμην} «recibí». Los *deponentes pasivos* toman aoristos de aspecto pasivo — con la marca {θη} —, y aun así significan en activa: {ἀπεκρίθη} «respondió», {ἐπορεύθην} «fui». Así que una forma en {θη} no es automáticamente pasiva de significado: comprueba si el verbo es deponente antes de traducir «fue …ado»."
+    "text": "Los deponentes se dividen según qué formas no activas usan en el aoristo. Los *deponentes medios* toman aoristos medios: {ἐδεξάμην} «recibí». Los *deponentes pasivos* toman aoristos de aspecto pasivo — con la marca {θη} —, y aun así significan en activa: {ἀπεκρίθη} «respondió», {ἐπορεύθην} «fui». Así que una forma en {θη} no es automáticamente pasiva de significado: compruebe si el verbo es deponente antes de traducir «fue …ado»."
   },
   "deponents.p.dictionary-form-tells": {
     "fp": "oeqr5b",
-    "text": "Te lo dice la forma de diccionario. La forma léxica de un verbo normal termina en {‑ω} ({λύω}); la de un deponente, en {‑ομαι} ({ἔρχομαι, γίνομαι, δύναμαι}). Y la frecuencia juega a tu favor: un puñado de deponentes está entre los verbos más comunes de todo el Nuevo Testamento:"
+    "text": "Se lo dice la forma de diccionario. La forma léxica de un verbo normal termina en {‑ω} ({λύω}); la de un deponente, en {‑ομαι} ({ἔρχομαι, γίνομαι, δύναμαι}). Y la frecuencia juega a su favor: un puñado de deponentes está entre los verbos más comunes de todo el Nuevo Testamento:"
   },
   "deponents.p.english-verbs-whose": {
     "fp": "1pz22j6",
@@ -401,7 +401,7 @@
   },
   "deponents.p.greek-whole-club": {
     "fp": "y58dp0",
-    "text": "El griego tiene todo un club así: verbos que llevan *desinencias medias o pasivas* (su forma de diccionario termina en {‑ομαι}, no en {‑ω}) pero cargan un significado *activo* sin más. {ἔρχομαι} _parece_ «soy venido»: significa sencillamente «vengo / voy». Son los verbos *deponentes*, del latín «dejar de lado»: han dejado de lado sus formas activas. Tu tarea es simple: analiza la forma como la media o pasiva que es, y luego traduce con el significado activo que da el léxico. No hay ninguna pasividad escondida que buscar."
+    "text": "El griego tiene todo un club así: verbos que llevan *desinencias medias o pasivas* (su forma de diccionario termina en {‑ομαι}, no en {‑ω}) pero cargan un significado *activo* sin más. {ἔρχομαι} _parece_ «soy venido»: significa sencillamente «vengo / voy». Son los verbos *deponentes*, del latín «dejar de lado»: han dejado de lado sus formas activas. Su tarea es simple: analice la forma como la media o pasiva que es, y luego traduce con el significado activo que da el léxico. No hay ninguna pasividad escondida que buscar."
   },
   "deponents.p.int-deponency-lead": {
     "fp": "uwqpcd",
@@ -409,7 +409,7 @@
   },
   "deponents.p.int-deponency-practice": {
     "fp": "5t03jb",
-    "text": "*Qué hacer con eso en la práctica.* Analiza la forma que ves —media o pasiva, según diga la desinencia— y traduce el sentido que el verbo realmente tiene. Donde la idea media sea visible, déjala verse: {ἀπεκρίθη} no es solo «respondió», sino una respuesta en la que el sujeto está comprometido. Donde no lo sea, no la fabriques; algunos de estos verbos se han aplanado en piezas léxicas corrientes, y una teología levantada sobre una desinencia media en la que el autor no estaba pensando es una teología levantada sobre nada."
+    "text": "*Qué hacer con eso en la práctica.* Analice la forma que ve —media o pasiva, según diga la desinencia— y traduzca el sentido que el verbo realmente tiene. Donde la idea media sea visible, déjela verse: {ἀπεκρίθη} no es solo «respondió», sino una respuesta en la que el sujeto está comprometido. Donde no lo sea, no la fabrique; algunos de estos verbos se han aplanado en piezas léxicas corrientes, y una teología levantada sobre una desinencia media en la que el autor no estaba pensando es una teología levantada sobre nada."
   },
   "deponents.p.int-middle-lead": {
     "fp": "qje8s9",

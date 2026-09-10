@@ -53,7 +53,7 @@
   },
   "liquids.cat.aorist-no-sigma.h": {
     "fp": "132nly3",
-    "text": "Aumento y desinencias en {α}, pero sin {σ}. Busca la compensación en la raíz: una vocal alargada, o una consonante doble simplificada."
+    "text": "Aumento y desinencias en {α}, pero sin {σ}. Busque la compensación en la raíz: una vocal alargada, o una consonante doble simplificada."
   },
   "liquids.cat.aorist-no-sigma.name": {
     "fp": "ut5u23",
@@ -77,7 +77,7 @@
   },
   "liquids.cat.frequency.h": {
     "fp": "17xc3on",
-    "text": "Vale la pena aprenderlos como clase y no como excepciones: solo {μένω}, {ἀποστέλλω}, {ἐγείρω} y {κρίνω} te saldrán al paso en casi cada página."
+    "text": "Vale la pena aprenderlos como clase y no como excepciones: solo {μένω}, {ἀποστέλλω}, {ἐγείρω} y {κρίνω} le saldrán al paso en casi cada página."
   },
   "liquids.cat.frequency.name": {
     "fp": "1nesnpv",
@@ -97,7 +97,7 @@
   },
   "liquids.cat.future-contract.h": {
     "fp": "o07srr",
-    "text": "Comprueba si la raíz termina en {λ μ ν ρ}. Si es así, una forma con aspecto de presente en {-έω} puede ser el futuro, y el circunflejo es su única marca."
+    "text": "Compruebe si la raíz termina en {λ μ ν ρ}. Si es así, una forma con aspecto de presente en {-έω} puede ser el futuro, y el circunflejo es su única marca."
   },
   "liquids.cat.future-contract.name": {
     "fp": "eh1x77",
@@ -273,7 +273,7 @@
   },
   "liquids.exp.i.main": {
     "fp": "u2a8g2",
-    "text": "El alargamiento de la raíz ({μεν → μειν}) es un _alargamiento compensatorio_: el peso de la σ perdida se conserva en la vocal. Distingue el aoristo primero líquido ({ἔκρινα}, desinencias en α) del imperfecto ({ἔκρινον}) por la vocal de la desinencia."
+    "text": "El alargamiento de la raíz ({μεν → μειν}) es un _alargamiento compensatorio_: el peso de la σ perdida se conserva en la vocal. Distinga el aoristo primero líquido ({ἔκρινα}, desinencias en α) del imperfecto ({ἔκρινον}) por la vocal de la desinencia."
   },
   "liquids.h.aorist": {
     "fp": "be4ym9",
@@ -305,7 +305,7 @@
   },
   "liquids.intro.watch-accents-and": {
     "fp": "1uqmzzp",
-    "text": "Fíjate en los acentos y en los alargamientos de la raíz. Vocabulario: {καρπός} «fruto» · {νεκρός} «muerto»."
+    "text": "Fíjese en los acentos y en los alargamientos de la raíz. Vocabulario: {καρπός} «fruto» · {νεκρός} «muerto»."
   },
   "liquids.le.intro": {
     "fp": "1sthvr9",
@@ -341,7 +341,7 @@
   },
   "liquids.p.flow": {
     "fp": "1iduifd",
-    "text": "Pronuncia en voz alta «λ, μ, ν, ρ» — _l, m, n, r_. Fluyen; los gramáticos antiguos las llamaron consonantes *líquidas*. Ahora intenta pronunciar un futuro griego formado del modo normal: {μεν + σω} — «men-so». El oído griego rechazaba la combinación: las líquidas sencillamente *no se colocan junto a σ*. El español también tiene manías de este tipo: piensa en cómo la «y» se vuelve _e_ en «padre e hijo», en lugar de admitir un áspero «y hijo»."
+    "text": "Pronuncie en voz alta «λ, μ, ν, ρ» — _l, m, n, r_. Fluyen; los gramáticos antiguos las llamaron consonantes *líquidas*. Ahora intente pronunciar un futuro griego formado del modo normal: {μεν + σω} — «men-so». El oído griego rechazaba la combinación: las líquidas sencillamente *no se colocan junto a σ*. El español también tiene manías de este tipo: piense en cómo la «y» se vuelve _e_ en «padre e hijo», en lugar de admitir un áspero «y hijo»."
   },
   "liquids.p.future": {
     "fp": "ref8rl",
@@ -493,7 +493,7 @@
   },
   "liquids.wo.4": {
     "fp": "1xgens1",
-    "text": "La pasiva {ἠγέρθη} de {ἐγείρω} («fue levantado») está entre las formas de mayor peso teológico del NT: analízala con cuidado."
+    "text": "La pasiva {ἠγέρθη} de {ἐγείρω} («fue levantado») está entre las formas de mayor peso teológico del NT: analícela con cuidado."
   },
   "parseframe.case.0": {
     "fp": "ts6un5",
