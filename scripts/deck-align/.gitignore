@@ -4,3 +4,4 @@ packs.json
 audit.json
 before.json
 *.pkl
+__pycache__/
