@@ -5,10 +5,11 @@ import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Wrench } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
+import { useFinePointer } from '@/lib/use-fine-pointer'
 
 // The header "Tools" destination with a hover menu, matching TextsNavMenu — same open/close
-// timing, same panel styling, same behaviour on touch (no hover: tapping the item just goes to
-// /tools, where the page itself lists them). Tools needs only one level, so there are no
+// timing, same panel styling, same pointer gate (no hover: the menu is not built, and tapping
+// the item just goes to /tools, where the page itself lists them). Tools needs only one level, so there are no
 // fly-outs: the whole point of the menu is that three tools which used to be buried are now
 // one hover away.
 //
@@ -24,6 +25,7 @@ const TOOLS = [
 
 export function ToolsNavMenu() {
   const t = useT()
+  const fine = useFinePointer()
   const [open, setOpen] = useState(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -33,6 +35,7 @@ export function ToolsNavMenu() {
   const [anchor, setAnchor] = useState<{ top: number; right: number }>({ top: 0, right: 0 })
 
   const openNow = () => {
+    if (!fine) return
     if (closeTimer.current) clearTimeout(closeTimer.current)
     const r = wrapRef.current?.getBoundingClientRect()
     if (r) setAnchor({ top: r.bottom, right: Math.max(8, window.innerWidth - r.right) })
@@ -54,7 +57,7 @@ export function ToolsNavMenu() {
       {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap.
           Outside the wrapper via the portal, so it carries its own enter/leave handlers. */}
       {open && typeof document !== 'undefined' && createPortal(
-        <div className="hidden md:block fixed pt-1 z-50" style={{ top: anchor.top, right: anchor.right }}
+        <div className="fixed pt-1 z-50" style={{ top: anchor.top, right: anchor.right }}
           onMouseEnter={openNow} onMouseLeave={closeSoon}>
           <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
             {TOOLS.map(tool => (

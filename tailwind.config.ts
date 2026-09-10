@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
 
 const config: Config = {
   content: [
@@ -87,7 +88,16 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Pointer-capability variants. `fine:` is the device that can hover (mouse, trackpad);
+    // `coarse:` is the one that cannot (finger, stylus). Width breakpoints are NOT a proxy for
+    // either — an iPad in landscape is 1194px wide with no hover — so anything that depends on
+    // hovering or on the size of a fingertip must ask about the pointer, not about the viewport.
+    plugin(({ addVariant }) => {
+      addVariant('fine', '@media (hover: hover) and (pointer: fine)')
+      addVariant('coarse', '@media (pointer: coarse)')
+    }),
+  ],
 }
 
 export default config

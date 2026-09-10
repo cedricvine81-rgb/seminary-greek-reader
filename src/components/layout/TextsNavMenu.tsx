@@ -5,15 +5,22 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Library, ChevronLeft } from 'lucide-react'
 import { useT, useLocale } from '@/lib/i18n/LocaleProvider'
+import { useFinePointer } from '@/lib/use-fine-pointer'
 import { TEXT_CATEGORIES, groupWorksByAuthor, type CatalogWork } from '@/lib/texts-catalog'
 import { textCategoryLabel, textAuthorLabel } from '@/lib/i18n/text-names'
 import { localizedWorkTitle, localizedWorkName } from '@/lib/i18n/text-catalog-labels'
 
-// The header "Texts" destination with a hover mega-menu (desktop): hovering the item opens the
-// category list; hovering a category flies its AUTHORS out to the left; hovering a multi-work
-// author (Plato, Homer, …) opens its BOOKS in a third panel; clicking a work opens it at
-// /texts?work=<id>. On touch (no hover) the menu is hidden — tapping the item just goes to
-// /texts, where the in-page menu picks a work.
+// The header "Texts" destination with a hover mega-menu: hovering the item opens the category
+// list; hovering a category flies its AUTHORS out to the left; hovering a multi-work author
+// (Plato, Homer, …) opens its BOOKS in a third panel; clicking a work opens it at
+// /texts?work=<id>. Without a hovering pointer the menu is not built at all — the item is then
+// just a link to /texts, whose own picker is a tap-driven drill-down.
+//
+// That gate is `useFinePointer`, NOT a width breakpoint. This used to be `hidden md:block`,
+// which let the mega-menu through to an iPad in landscape — 1194px wide and no hover — where
+// the only way to open a category is to hover it. Worse, TextsReader hides its own picker at
+// md+ as "redundant with the header menu", so on that device a reader who opened a work had
+// no working way left to open another.
 //
 // The books panel is rendered in a PORTAL (fixed-positioned): the author panel scrolls
 // (overflow-y-auto), which also clips horizontal overflow, so an in-flow third flyout got cut
@@ -43,6 +50,7 @@ function inTriangle(p: Pt, a: Pt, b: Pt, c: Pt): boolean {
 export function TextsNavMenu() {
   const t = useT()
   const locale = useLocale()
+  const fine = useFinePointer()
   const [open, setOpen] = useState(false)      // category list shown
   const [cat, setCat] = useState<string | null>(null)          // category whose authors show
   const [sub, setSub] = useState<{ author: string; works: CatalogWork[]; top: number; left: number; onLeft: boolean; rowTop: number; rowBottom: number } | null>(null)
@@ -66,6 +74,9 @@ export function TextsNavMenu() {
   const [anchor, setAnchor] = useState<{ top: number; right: number }>({ top: 0, right: 0 })
 
   const openNow = () => {
+    // Nothing hover-driven exists on a touch device: no panels, and no mousemove listener for
+    // the aim guard. A tap on the header item therefore does what it looks like it does.
+    if (!fine) return
     if (closeTimer.current) clearTimeout(closeTimer.current)
     const r = wrapRef.current?.getBoundingClientRect()
     if (r) setAnchor({ top: r.bottom, right: Math.max(8, window.innerWidth - r.right) })
@@ -238,7 +249,7 @@ export function TextsNavMenu() {
           pt-1 keeps the panel hover-connected across the gap; since the portal is outside
           the wrapper div, it needs its own enter/leave handlers to hold the menu open. */}
       {open && typeof document !== 'undefined' && createPortal(
-        <div className="hidden md:block fixed pt-1 z-50" style={{ top: anchor.top, right: anchor.right }}
+        <div className="fixed pt-1 z-50" style={{ top: anchor.top, right: anchor.right }}
           onMouseEnter={openNow} onMouseLeave={closeSoon}>
           <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
             {TEXT_CATEGORIES.map(c => (

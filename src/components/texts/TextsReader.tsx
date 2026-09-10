@@ -1281,14 +1281,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // own. Level 1 lists the categories; clicking one drills into its works (with a back row),
   // since flat would be unusable (Philo 36, Mishnah 40).
   const textsMenu = (
-    // Redundant with the header's Texts mega-menu on desktop once a work is open, so hidden there.
-    // Kept on mobile (the header menu is hover-only / hidden) and in the empty state (the labeled
-    // entry point, and the empty-state hint points at it) so a work is always reachable.
-    <div ref={catRowRef} className={`relative flex-none ${work ? 'md:hidden' : ''}`}>
+    // Redundant with the header's Texts mega-menu once a work is open, so hidden where that menu
+    // exists. `fine:md:hidden`, not `md:hidden`: the header menu is built only for a pointer that
+    // hovers, so on an iPad in landscape — wide enough for md, no hover — the width test alone
+    // hid this picker and left the reader with no working way to open another work. Kept in the
+    // empty state either way (the labeled entry point the hint points at).
+    <div ref={catRowRef} className={`relative flex-none ${work ? 'fine:md:hidden' : ''}`}>
       <button
         type="button"
         onClick={() => { setMenuOpen(o => !o); setMenuAuthor(null); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
-        className={`inline-flex items-center gap-1 rounded border px-2.5 py-1 text-xs font-medium transition-colors ${
+        className={`inline-flex items-center gap-1 rounded border px-2.5 py-1 coarse:py-2.5 text-xs font-medium transition-colors ${
           menuOpen ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
       >
         {t('nav.texts')}
@@ -1306,7 +1308,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                   type="button"
                   disabled={cat.comingSoon}
                   onClick={() => { setMenuAuthor(null); setMenuCat(cat.id) }}
-                  className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left transition-colors ${
+                  className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 coarse:py-3 text-sm text-left transition-colors ${
                     cat.comingSoon ? 'text-gray-300 cursor-default'
                     : isActive ? 'text-brand-700 font-medium hover:bg-brand-50'
                     : 'text-gray-700 hover:bg-gray-50'}`}
@@ -1328,7 +1330,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                   <button
                     type="button"
                     onClick={() => setMenuAuthor(null)}
-                    className="w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
+                    className="w-full flex items-center gap-1.5 px-3 py-1.5 coarse:py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
                   >
                     <ChevronDown size={13} className="rotate-90 text-gray-400" /> {textCategoryLabel(cat.id, locale, cat.label)} › {textAuthorLabel(menuAuthor, locale)}
                   </button>
@@ -1337,7 +1339,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                       key={w.id}
                       type="button"
                       onClick={() => { openWork(w); setMenuOpen(false) }}
-                      className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
+                      className={`w-full text-left px-3 py-1.5 coarse:py-3 text-sm transition-colors ${
                         work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                     >
                       {localizedWorkTitle(w, locale)}
@@ -1352,7 +1354,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 <button
                   type="button"
                   onClick={() => setMenuCat(null)}
-                  className="w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
+                  className="w-full flex items-center gap-1.5 px-3 py-1.5 coarse:py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
                 >
                   <ChevronDown size={13} className="rotate-90 text-gray-400" /> {textCategoryLabel(cat.id, locale, cat.label)}
                 </button>
@@ -1361,7 +1363,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     key={g.author}
                     type="button"
                     onClick={() => setMenuAuthor(g.author)}
-                    className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left transition-colors ${
+                    className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 coarse:py-3 text-sm text-left transition-colors ${
                       work && g.works.some(w => w.id === work.id) ? 'text-brand-700 font-medium hover:bg-brand-50' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
                     <span>{textAuthorLabel(g.author!, locale)}</span>
@@ -1372,7 +1374,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     key={g.works[0].id}
                     type="button"
                     onClick={() => { openWork(g.works[0]); setMenuOpen(false) }}
-                    className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
+                    className={`w-full text-left px-3 py-1.5 coarse:py-3 text-sm transition-colors ${
                       work?.id === g.works[0].id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                   >
                     {localizedWorkName(g.works[0], locale)}

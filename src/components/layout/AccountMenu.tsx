@@ -107,7 +107,7 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
               so search was missing from both surfaces at once. */}
           <button
             onClick={() => { setOpen(false); openMasterSearch() }}
-            className="lg:hidden flex w-full items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100"
+            className="lg:hidden flex w-full items-center gap-2.5 px-4 py-2 coarse:py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100"
           >
             <Search size={15} className="text-gray-400 shrink-0" /> {t('account.search')}
           </button>
@@ -125,7 +125,7 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
               <Link
                 key={href}
                 href={href}
-                className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2.5 px-4 py-2 coarse:py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 onClick={() => setOpen(false)}
               >
                 <Icon size={15} className="text-gray-400 shrink-0" />
@@ -155,7 +155,7 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
                     <Link
                       key={href}
                       href={href}
-                      className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2 coarse:py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setOpen(false)}
                     >
                       <Icon size={15} className="text-gray-400 shrink-0" />
@@ -169,7 +169,7 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
               {/* Settings + sign out */}
               <Link
                 href="/settings"
-                className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2.5 px-4 py-2 coarse:py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 onClick={() => setOpen(false)}
               >
                 <Settings size={15} className="text-gray-400 shrink-0" />
@@ -177,7 +177,7 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
               </Link>
               <button
                 onClick={handleSignOut}
-                className="flex w-full items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                className="flex w-full items-center gap-2.5 px-4 py-2 coarse:py-3 text-sm text-red-600 hover:bg-red-50 transition-colors"
               >
                 <LogOut size={15} className="shrink-0" />
                 {t('account.signOut')}
@@ -187,14 +187,14 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
             <>
               <Link
                 href="/auth/sign-in"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                className="flex items-center gap-2 px-4 py-2 coarse:py-3 text-sm text-gray-700 hover:bg-gray-50"
                 onClick={() => setOpen(false)}
               >
                 <LogIn size={15} /> {t('account.signIn')}
               </Link>
               <Link
                 href="/auth/sign-up"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                className="flex items-center gap-2 px-4 py-2 coarse:py-3 text-sm text-gray-700 hover:bg-gray-50"
                 onClick={() => setOpen(false)}
               >
                 <UserPlus size={15} /> {t('account.signUp')}
