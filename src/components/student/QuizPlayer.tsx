@@ -1,12 +1,12 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { CheckCircle2, XCircle, Clock, RotateCcw } from 'lucide-react'
+import { CheckCircle2, XCircle, Clock, RotateCcw, MinusCircle, Check, X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Select } from '@/components/ui/Select'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
 import { isAnswerCorrect, isMultipleChoiceCorrect } from '@/lib/answer-matching'
-import { acceptableParses, bestReading } from '@/lib/morph-ambiguity'
+import { morphFieldMap, parseDetail, type ParseDetail } from '@/lib/morph-feedback'
 import { hasGreek, hasHebrew, scriptProps } from '@/lib/script-detect'
 import {
   HEBREW_STEMS, HEBREW_CONJUGATIONS, HEBREW_PERSONS, HEBREW_GENDERS,
@@ -97,6 +97,9 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   const [morphDraft, setMorphDraft] = useState<Record<string, string>>({})
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [clientCorrect, setClientCorrect] = useState<Record<string, boolean>>({})
+  // Per-field verdict for parsing questions, so the feedback can say WHICH slot was missed
+  // instead of painting a two-of-three answer entirely red.
+  const [clientDetail, setClientDetail] = useState<Record<string, ParseDetail | null>>({})
   const [phase, setPhase] = useState<Phase>('answering')
   const [timeLeft, setTimeLeft] = useState<number | null>(timePerQuestion ?? null)
   const [timedOut, setTimedOut] = useState(false)
@@ -184,20 +187,16 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         : (override ?? draft)
 
     let correct = false
+    let detail: ParseDetail | null = null
     if (!expired && answer) {
       if (type === 'MORPHOLOGY_QUIZ') {
-        try {
-          const correctObj = JSON.parse(q.correctAnswer ?? '{}')
-          const studentObj = JSON.parse(answer)
-          const fields = Object.keys(correctObj).filter(k => correctObj[k])
-          // Any valid reading of the form counts, exactly as the server's grader counts it —
-          // πνεῦμα is nominative or accusative and no form of it can say which. Comparing
-          // against the answer key alone put a red cross on an answer the mark then counted
-          // as right.
-          const { matches } = bestReading(
-            acceptableParses(q.prompt, correctObj), studentObj, fields)
-          correct = fields.length > 0 && matches === fields.length
-        } catch { correct = false }
+        // ONE call, not two. Any valid reading of the form counts, exactly as the server's
+        // grader counts it — πνεῦμα is nominative or accusative and no form of it can say
+        // which. The verdict and the field-by-field detail now come from the same evaluation
+        // in the same module the server grades with, so the cross the student sees and the
+        // mark the gradebook keeps cannot disagree, and "2 of 3" is the 2/3 recorded.
+        detail = parseDetail(q.prompt, q.correctAnswer ?? '', answer, t)
+        correct = !!detail && detail.total > 0 && detail.matches === detail.total
       } else if (q.type === 'MULTIPLE_CHOICE') {
         // Whole-option match — never comma-split (a gloss may contain a comma)
         correct = isMultipleChoiceCorrect(answer, q.correctAnswer ?? '')
@@ -212,10 +211,11 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
     setAnswers(prev => ({ ...prev, [q.id]: answer }))
     setClientCorrect(prev => ({ ...prev, [q.id]: correct }))
+    setClientDetail(prev => ({ ...prev, [q.id]: detail }))
     setTimedOut(expired)
     setTimeLeft(null)
     setPhase('feedback')
-  }, [draft, morphDraft, q, type])
+  }, [draft, morphDraft, q, type, t])
 
   function handleNext() {
     if (idx < total - 1) {
@@ -417,6 +417,19 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           <CheckCircle2 size={40} className="text-green-500 mx-auto mb-2" />
           <p className="text-4xl font-bold text-brand-700">{result.percentage}%</p>
           <p className="text-gray-600 mt-1">{t('quiz.correctSubmitted', { n: result.correctAnswers, total: result.totalQuestions })}</p>
+          {/* "N of M correct" counts only the fully correct, so a quiz can read 12/20 while the
+              percentage is well above 60 — the missing marks are the partly-right parses. Say so,
+              or the percentage looks arbitrary. */}
+          {(() => {
+            const partly = (result.breakdown ?? []).filter(b => {
+              if (b.isCorrect) return false
+              const d = parseDetail(b.prompt, b.correctAnswer, b.yourAnswer, t)
+              return !!d && d.matches > 0
+            }).length
+            return partly > 0
+              ? <p className="text-sm text-amber-700 mt-1">{t('quiz.partlyCorrectCount', { count: partly })}</p>
+              : null
+          })()}
           {/* A practice score must never read as a mark. It says so plainly, and the
               best-score and attempts-remaining lines are withheld: neither moved. */}
           {result.practice ? (
@@ -460,6 +473,14 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                     </p>
                   )}
                   {result.breakdown.map(b => {
+                    // Same three-state read as the mid-quiz feedback, recomputed from the same
+                    // module the server graded with — so the colour on the card and the mark in
+                    // the gradebook cannot disagree.
+                    const detail = parseDetail(b.prompt, b.correctAnswer, b.yourAnswer, t)
+                    const partial = !b.isCorrect && !!detail && detail.matches > 0
+                    const tone = b.isCorrect
+                      ? 'bg-green-50 border-green-200'
+                      : partial ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200'
                     const canAppealThis = appealsEnabled
                       && !b.isCorrect
                       && !!b.responseId
@@ -468,20 +489,44 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                       && remainingAppeals > 0
                     const alreadyAppealed = b.responseId && appealedIds.has(b.responseId)
                     return (
-                      <div key={b.questionId} className={`p-3 rounded-xl border text-sm ${b.isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                      <div key={b.questionId} className={`p-3 rounded-xl border text-sm ${tone}`}>
                         <div className="flex items-start gap-2">
                           {b.isCorrect
                             ? <CheckCircle2 size={15} className="text-green-600 mt-0.5 shrink-0" />
-                            : <XCircle size={15} className="text-red-500 mt-0.5 shrink-0" />
+                            : partial
+                              ? <MinusCircle size={15} className="text-amber-600 mt-0.5 shrink-0" />
+                              : <XCircle size={15} className="text-red-500 mt-0.5 shrink-0" />
                           }
                           <div className="flex-1 min-w-0">
                             <span {...scriptProps(b.prompt)} className={`${scriptProps(b.prompt).className} text-base`}>{b.prompt}</span>
-                            {b.yourAnswer ? (
+                            {partial && (
+                              <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                                {t('quiz.partialCredit', { n: detail!.matches, total: detail!.total })}
+                              </span>
+                            )}
+                            {detail ? (
+                              /* A parse is a set of slots. Showing b.yourAnswer here printed the
+                                 stored JSON, and struck the whole thing through even when only
+                                 one slot was wrong. */
+                              <div className="mt-1 flex flex-wrap gap-1.5">
+                                {detail.fields.map(f => (
+                                  <span key={f.key}
+                                    className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-xs ${f.ok
+                                      ? 'border-green-200 bg-green-50 text-green-700'
+                                      : 'border-red-200 bg-red-50 text-red-600'}`}>
+                                    {f.ok ? <Check size={11} /> : <X size={11} />}
+                                    <span className="font-semibold uppercase tracking-wide text-[10px] opacity-70">{f.label}</span>
+                                    <span className={f.ok ? 'font-medium' : 'line-through'}>{f.given || '—'}</span>
+                                    {!f.ok && <span className="font-medium text-green-700">{f.expected}</span>}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : b.yourAnswer ? (
                               <p className="mt-0.5">{t('quiz.yourAnswer')}<span dir={scriptProps(b.yourAnswer).dir} className={`${scriptProps(b.yourAnswer).className} ${b.isCorrect ? 'text-green-700 font-medium' : 'text-red-600 line-through'}`}>{b.yourAnswer}</span></p>
                             ) : (
                               <p className="mt-0.5 text-gray-400 italic">{t('quiz.noAnswer')}</p>
                             )}
-                            {!b.isCorrect && (
+                            {!b.isCorrect && !detail && (
                               <p>{t('quiz.correctIs')}<span dir={scriptProps(b.correctAnswer).dir} className={`${scriptProps(b.correctAnswer).className} text-green-700 font-medium`}>{formatCorrectAnswer(b.correctAnswer)}</span></p>
                             )}
                             {appealsEnabled && !b.isCorrect && !!b.responseId && (
@@ -673,35 +718,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           let correctObj: Record<string, string | null> = {}
           try { correctObj = JSON.parse(q.correctAnswer ?? '{}') } catch {}
           const pos = correctObj.partOfSpeech
-          // Fields to show as dropdowns (non-null fields except partOfSpeech which is shown as label)
-          // Which fields get a dropdown, and what may be chosen in each.
-          //
-          // This MUST cover every field the generators can put in an answer key: a field
-          // with no entry here renders no input at all, so the student cannot answer it and
-          // is marked wrong automatically. Hebrew parses on stem/conjugation/state rather
-          // than tense/voice/mood, and its gender/number carry values Greek does not have
-          // (Common, Both, Dual) — hence a separate map rather than a shared one.
-          const isHeb = hasHebrew(q.prompt)
-          const FIELD_MAP: Record<string, { label: string; opts: string[] }> = isHeb
-            ? {
-                stem:        { label: t('morph.stem'),        opts: HEBREW_STEMS },
-                conjugation: { label: t('morph.conjugation'), opts: HEBREW_CONJUGATIONS },
-                person:      { label: t('morph.person'),      opts: HEBREW_PERSONS },
-                gender:      { label: t('morph.gender'),      opts: HEBREW_GENDERS },
-                number:      { label: t('morph.number'),      opts: HEBREW_NUMBERS },
-                state:       { label: t('morph.state'),       opts: HEBREW_STATES },
-                type:        { label: t('quiz.pronounType'),  opts: HEBREW_PRONOUN_TYPES },
-              }
-            : {
-                tense:  { label: t('morph.tense'),  opts: MORPH_OPTIONS.tense  },
-                voice:  { label: t('morph.voice'),  opts: MORPH_OPTIONS.voice  },
-                mood:   { label: t('morph.mood'),   opts: MORPH_OPTIONS.mood   },
-                person: { label: t('morph.person'), opts: MORPH_OPTIONS.person },
-                number: { label: t('morph.number'), opts: MORPH_OPTIONS.number },
-                casus:  { label: t('morph.case'),   opts: MORPH_OPTIONS.case   },
-                gender: { label: t('morph.gender'), opts: MORPH_OPTIONS.gender },
-                pronounType: { label: t('quiz.pronounType'), opts: MORPH_OPTIONS.pronounType },
-              }
+          const FIELD_MAP = morphFieldMap(t, hasHebrew(q.prompt))
           const activeFields = Object.keys(FIELD_MAP).filter(f => correctObj[f])
           const requiredFilled = activeFields.every(f => morphDraft[f])
           return (
@@ -741,23 +758,60 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         })()}
 
         {/* Feedback */}
-        {phase === 'feedback' && (
-          <div className={`rounded-xl p-4 space-y-2 ${clientCorrect[q.id] ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+        {phase === 'feedback' && (() => {
+          // THREE states, not two. The grader has always awarded matches/fields — a noun with
+          // the case wrong already scores 2/3 — but every surface collapsed that to a boolean,
+          // so partial credit arrived as a red cross and a struck-through answer and students
+          // reported "one slip and the word is worth nothing". Amber says what the mark says.
+          const detail = clientDetail[q.id]
+          const ok = clientCorrect[q.id]
+          const partial = !ok && !!detail && detail.matches > 0
+          const tone = ok
+            ? { box: 'bg-green-50 border-green-200', text: 'text-green-700' }
+            : partial
+              ? { box: 'bg-amber-50 border-amber-200', text: 'text-amber-800' }
+              : { box: 'bg-red-50 border-red-200', text: 'text-red-600' }
+          return (
+          <div className={`rounded-xl p-4 space-y-2 border ${tone.box}`}>
             <div className="flex items-center gap-2">
-              {clientCorrect[q.id]
+              {ok
                 ? <CheckCircle2 size={18} className="text-green-600 shrink-0" />
-                : <XCircle size={18} className="text-red-500 shrink-0" />
+                : partial
+                  ? <MinusCircle size={18} className="text-amber-600 shrink-0" />
+                  : <XCircle size={18} className="text-red-500 shrink-0" />
               }
-              <span className={`text-sm font-semibold ${clientCorrect[q.id] ? 'text-green-700' : 'text-red-600'}`}>
-                {timedOut ? t('quiz.timesUp') : clientCorrect[q.id] ? t('quiz.correct') : t('quiz.incorrect')}
+              <span className={`text-sm font-semibold ${tone.text}`}>
+                {timedOut
+                  ? t('quiz.timesUp')
+                  : ok
+                    ? t('quiz.correct')
+                    : partial
+                      ? t('quiz.partialCredit', { n: detail!.matches, total: detail!.total })
+                      : t('quiz.incorrect')}
               </span>
             </div>
-            {answers[q.id] && (
+            {/* A parse is a set of slots, so show the slots. Rendering the raw answer here
+                printed the stored JSON at the student. */}
+            {detail ? (
+              <div className="flex flex-wrap gap-1.5">
+                {detail.fields.map(f => (
+                  <span key={f.key}
+                    className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-xs ${f.ok
+                      ? 'border-green-200 bg-green-50 text-green-700'
+                      : 'border-red-200 bg-red-50 text-red-600'}`}>
+                    {f.ok ? <Check size={11} /> : <X size={11} />}
+                    <span className="font-semibold uppercase tracking-wide text-[10px] opacity-70">{f.label}</span>
+                    <span className={f.ok ? 'font-medium' : 'line-through'}>{f.given || '—'}</span>
+                    {!f.ok && <span className="font-medium text-green-700">{f.expected}</span>}
+                  </span>
+                ))}
+              </div>
+            ) : answers[q.id] ? (
               <p className="text-sm text-gray-600">
-                {t('quiz.yourAnswer')}<span dir={scriptProps(answers[q.id]).dir} className={`${scriptProps(answers[q.id]).className} ${clientCorrect[q.id] ? 'text-green-700 font-medium' : 'text-red-600 font-medium'}`}>{answers[q.id]}</span>
+                {t('quiz.yourAnswer')}<span dir={scriptProps(answers[q.id]).dir} className={`${scriptProps(answers[q.id]).className} ${ok ? 'text-green-700 font-medium' : 'text-red-600 font-medium'}`}>{answers[q.id]}</span>
               </p>
-            )}
-            {!clientCorrect[q.id] && (
+            ) : null}
+            {!ok && !detail && (
               <p className="text-sm text-gray-600">
                 {t('quiz.correctAnswerLabel')}<span dir={scriptProps(q.correctAnswer).dir} className={`${scriptProps(q.correctAnswer).className} text-green-700 font-medium`}>{formatCorrectAnswer(q.correctAnswer ?? '')}</span>
               </p>
@@ -802,7 +856,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                 )
               })()}
           </div>
-        )}
+          )
+        })()}
       </div>
 
       {/* Navigation */}

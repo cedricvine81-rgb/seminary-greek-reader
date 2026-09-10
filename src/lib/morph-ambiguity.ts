@@ -132,3 +132,20 @@ export function bestReading(
   }
   return best
 }
+
+/**
+ * The fields a parse is actually graded on.
+ *
+ * `partOfSpeech` is carried in every answer key so the runner can SAY "Parse this Verb" — the
+ * student is told it and the runner copies it into their answer verbatim, so counting it would
+ * hand out one free field (a five-field verb scoring 1/6 for knowing nothing). It is kept only
+ * when it is the ONLY field, so a bare what-part-of-speech question stays gradable.
+ *
+ * This lived inside the server's grader while the quiz's instant feedback used the raw key list.
+ * The boolean they each derived agreed by luck — partOfSpeech always matches, so it changed no
+ * verdict — but the COUNTS did not, and the counts are now shown to the student ("2 of 3").
+ */
+export function gradableFields(correct: MorphParse): string[] {
+  const fields = Object.keys(correct).filter(k => correct[k])
+  return fields.length > 1 ? fields.filter(k => k !== 'partOfSpeech') : fields
+}

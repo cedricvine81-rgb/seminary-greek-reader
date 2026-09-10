@@ -1,7 +1,7 @@
 import { prisma } from './db'
 import type { QuestionType } from '@/types/assignment'
 import { isAnswerCorrect, isMultipleChoiceCorrect, fuzzyMatch, normalise } from './answer-matching'
-import { acceptableParses, bestReading } from '@/lib/morph-ambiguity'
+import { acceptableParses, bestReading, gradableFields } from '@/lib/morph-ambiguity'
 
 /**
  * Look up curated English synonyms for a Greek lemma. Returns [] if the lemma
@@ -83,15 +83,7 @@ export async function gradeResponse(
     try {
       const correct = JSON.parse(question.correctAnswer)
       const student = JSON.parse(studentAnswer)
-      let fields = Object.keys(correct).filter(k => correct[k])
-      // partOfSpeech is carried in every answer key so the runner can SAY "Parse this
-      // Verb" — the student is told it, never asked it, and the runner copies it into
-      // their answer verbatim. Counting it as a graded field handed every student one
-      // free field: a five-field verb question scored 1/6 of its points for knowing
-      // nothing, and each real field weighed 5/6 instead of 1. Grade only what was
-      // asked. (Kept when it is the ONLY field, so a bare what-part-of-speech question
-      // would still be gradable.)
-      if (fields.length > 1) fields = fields.filter(k => k !== 'partOfSpeech')
+      const fields = gradableFields(correct)
       // Guard against malformed questions with no gradable fields (avoids 0/0 = NaN score)
       if (fields.length === 0) {
         return { isCorrect: false, score: 0, correctAnswer: question.correctAnswer }

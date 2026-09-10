@@ -1261,6 +1261,12 @@ const en: Catalogue = {
   'quiz.timesUp': 'Time’s up!',
   'quiz.noQuestionsHelp': 'Open the assignment’s builder and click {generate}, then return here.',
   'quiz.correctSubmitted': '{n} / {total} correct — submitted for grading',
+  // Partial credit on a parse. The grader has always awarded matches/fields — a noun with
+  // the case wrong scores 2/3 — but every surface showed it as a plain red cross, so
+  // students reported getting nothing for the word. These two say what the mark says.
+  'quiz.partialCredit': '{n} of {total} correct — partial credit',
+  'quiz.partlyCorrectCount': { one: '{count} more was partly correct and earned part of its mark',
+    other: '{count} more were partly correct and earned part of their marks' },
   'quiz.bestScore': 'Best score: {pct}%',
   'quiz.attemptOf': 'Attempt {n} of {max}',
   'quiz.retakesRemaining': { one: '{count} retake remaining', other: '{count} retakes remaining' },
@@ -4421,6 +4427,9 @@ const es: Catalogue = {
   'quiz.timesUp': '¡Se acabó el tiempo!',
   'quiz.noQuestionsHelp': 'Abra el editor de la tarea, pulse {generate} y vuelva aquí.',
   'quiz.correctSubmitted': '{n} / {total} correctas — entregado para calificación',
+  'quiz.partialCredit': '{n} de {total} correctas — crédito parcial',
+  'quiz.partlyCorrectCount': { one: '{count} más fue parcialmente correcta y obtuvo parte de su puntaje',
+    other: '{count} más fueron parcialmente correctas y obtuvieron parte de su puntaje' },
   'quiz.bestScore': 'Mejor puntuación: {pct} %',
   'quiz.attemptOf': 'Intento {n} de {max}',
   'quiz.retakesRemaining': { one: 'Queda {count} repetición', other: 'Quedan {count} repeticiones' },
