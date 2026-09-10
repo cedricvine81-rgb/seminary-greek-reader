@@ -133,7 +133,20 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Apostles have a gospel.",
         note: "From the slides: 1. Lesson 3 (2nd Declension), slide 21.",
       },
-    ],
+          { words: [
+        { w: "πιστευομεν.", parsing: "Pres Act Ind 1 Pl — πιστεύω", gloss: "believe in, have faith in, trust" },
+      ],
+        translation: "We believe.",
+        note: "From the slides: 1. Lesson 3 (2nd Declension), slide 21.",
+      },
+      { words: [
+        { w: "λαμβανεις", parsing: "Pres Act Ind 2 Sg — λαμβάνω", gloss: "receive, take" },
+        { w: "υἱους.", parsing: "Acc Pl Masc — υἱός", gloss: "son, descendent" },
+      ],
+        translation: "You (s.) are receiving sons.",
+        note: "From the slides: 1. Lesson 3 (2nd Declension), slide 21.",
+      },
+],
   },
   {
     id: "l3-slides-lesson-3-2nd-declension-b",
@@ -204,6 +217,13 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         note: "From the slides: 1. Lesson 3 (2nd Declension), slide 27.",
       },
       { words: [
+        { w: "ἐχω", parsing: "Pres Act Ind 1 Sg — ἔχω", gloss: "have, hold" },
+        { w: "ἀδελφον.", parsing: "Acc Sg Masc — ἀδελφός", gloss: "brother" },
+      ],
+        translation: "I have a brother.",
+        note: "From the slides: 1. Lesson 3 (2nd Declension), slide 27.",
+      },
+      { words: [
         { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
         { w: "ἀνθρωπος", parsing: "Nom Sg Masc — ἄνθρωπος", gloss: "man" },
         { w: "ἀκουει", parsing: "Pres Act Ind 3 Sg — ἀκούω", gloss: "hear" },
@@ -243,7 +263,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "The Lord receives the brothers.",
         note: "From the slides: 1. Lesson 3 (2nd Declension), slide 27.",
       },
-    ],
+],
   },
   {
     id: "l3-slides-lesson-3-2nd-declension-d",
@@ -635,12 +655,10 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides: 2. Lesson 3 (1st Declension) — A",
     sentences: [
       { words: [
-        { w: "αὐτος", parsing: "Nom Sg Masc — αὐτός", gloss: "he" },
-        { w: "αὐτος", parsing: "Nom Sg Masc — αὐτός", gloss: "he" },
-        { w: "γινωσκω", parsing: "Pres Act Ind 1 Sg — γινώσκω", gloss: "know" },
-        { w: "αὐτον.", parsing: "Acc Sg Masc — αὐτός", gloss: "he" },
+        { w: "γινωσκω", parsing: "Pres Act Ind 1 Sg — γινώσκω", gloss: "know, learn" },
+        { w: "αὐτον.", parsing: "Acc Sg Masc — αὐτός", gloss: "he, she, it; same" },
       ],
-        translation: "He himself — I know him.",
+        translation: "I know him.",
         note: "From the slides: 2. Lesson 3 (1st Declension), slide 27.",
       },
       { words: [
@@ -650,6 +668,13 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         { w: "ἀκουομεν.", parsing: "Pres Act Ind 1 Pl — ἀκούω", gloss: "hear" },
       ],
         translation: "We hear her words.",
+        note: "From the slides: 2. Lesson 3 (1st Declension), slide 27.",
+      },
+      { words: [
+        { w: "ἐχει", parsing: "Pres Act Ind 3 Sg — ἔχω", gloss: "have, hold" },
+        { w: "αὐτο.", parsing: "Acc Sg Neut — αὐτός", gloss: "he, she, it; same" },
+      ],
+        translation: "He has it.",
         note: "From the slides: 2. Lesson 3 (1st Declension), slide 27.",
       },
       { words: [
@@ -670,7 +695,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Jesus loves them.",
         note: "From the slides: 2. Lesson 3 (1st Declension), slide 27.",
       },
-    ],
+],
   },
   {
     id: "l3-slides-lesson-3-1st-declension-b",
@@ -678,13 +703,11 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides: 2. Lesson 3 (1st Declension) — B",
     sentences: [
       { words: [
-        { w: "αὐτος", parsing: "Nom Sg Masc — αὐτός", gloss: "he" },
-        { w: "αὐτος", parsing: "Nom Sg Masc — αὐτός", gloss: "he" },
         { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
-        { w: "κυριος", parsing: "Nom Sg Masc — κύριος", gloss: "lord" },
-        { w: "γινωσκει", parsing: "Pres Act Ind 3 Sg — γινώσκω", gloss: "know" },
+        { w: "κυριος", parsing: "Nom Sg Masc — κύριος", gloss: "lord, master, the Lord" },
+        { w: "γινωσκει", parsing: "Pres Act Ind 3 Sg — γινώσκω", gloss: "know, learn" },
         { w: "τας", parsing: "Article — Acc Pl Fem", gloss: "the" },
-        { w: "καρδιας.", parsing: "Gen Sg Fem — καρδία", gloss: "heart" },
+        { w: "καρδιας.", parsing: "Acc Pl Fem — καρδία", gloss: "heart" },
       ],
         translation: "The Lord knows the hearts.",
         note: "From the slides: 2. Lesson 3 (1st Declension), slide 29.",
@@ -729,7 +752,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "You (pl.) have the love of God.",
         note: "From the slides: 2. Lesson 3 (1st Declension), slide 29.",
       },
-    ],
+],
   },
   {
     id: "l3-slides-lesson-3-1st-declension-c",
@@ -936,6 +959,17 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         note: "From the slides: 2. Lesson 3 (1st Declension), slide 33.",
       },
       { words: [
+        { w: "αὐτων", parsing: "Gen Pl Masc — αὐτός", gloss: "he, she, it; same" },
+        { w: "ἐστιν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "am, exist" },
+        { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
+        { w: "βασιλεια", parsing: "Nom Sg Fem — βασιλεία", gloss: "kingdom, reign" },
+        { w: "των", parsing: "Article — Gen Pl Masc", gloss: "the" },
+        { w: "οὐρανων.", parsing: "Gen Pl Masc — οὐρανός", gloss: "sky, heaven" },
+      ],
+        translation: "Theirs is the kingdom of the heavens.",
+        note: "From the slides: 2. Lesson 3 (1st Declension), slide 33.",
+      },
+      { words: [
         { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
         { w: "φωνη", parsing: "Nom Sg Fem — φωνή", gloss: "sound" },
         { w: "του", parsing: "Article — Gen Sg Masc", gloss: "the" },
@@ -948,7 +982,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "The voice of God speaks to their hearts.",
         note: "From the slides: 2. Lesson 3 (1st Declension), slide 33.",
       },
-    ],
+],
   },
   {
     id: "l3-slides-lesson-3-1st-declension-f",
@@ -1045,6 +1079,13 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides: 3. Lesson 3 (Adjectives) — B",
     sentences: [
       { words: [
+        { w: "ἐστε", parsing: "Pres Act Ind 2 Pl — εἰμί", gloss: "am, exist" },
+        { w: "πιστοι;", parsing: "Nom Pl Masc — πιστός", gloss: "trustworthy, faithful, believing" },
+      ],
+        translation: "Are you (pl.) faithful?",
+        note: "From the slides: 3. Lesson 3 (Adjectives), slide 17.",
+      },
+      { words: [
         { w: "δικαιος", parsing: "Nom Sg Masc — δίκαιος", gloss: "just" },
         { w: "ἐστιν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "am" },
         { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
@@ -1083,7 +1124,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Is the holy gospel eternal?",
         note: "From the slides: 3. Lesson 3 (Adjectives), slide 17.",
       },
-    ],
+],
   },
   {
     id: "l3-slides-lesson-3-adjectives-c",
@@ -1512,6 +1553,15 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides: 5. Lesson 3 (Pronouns) · Demonstratives",
     sentences: [
       { words: [
+        { w: "αὑτη", parsing: "Nom Sg Fem — οὗτος", gloss: "this" },
+        { w: "ἐστιν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "am, exist" },
+        { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
+        { w: "ἡμερα.", parsing: "Nom Sg Fem — ἡμέρα", gloss: "day" },
+      ],
+        translation: "This is the day.",
+        note: "From the slides: 5. Lesson 3 (Pronouns), slide 11.",
+      },
+      { words: [
         { w: "ἁγια", parsing: "Acc Pl Neut — ἅγιος", gloss: "holy" },
         { w: "τα", parsing: "Article — Acc Pl Neut", gloss: "the" },
         { w: "ἐργα", parsing: "Acc Pl Neut — ἔργον", gloss: "work" },
@@ -1558,7 +1608,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Those prophets are faithful.",
         note: "From the slides: 5. Lesson 3 (Pronouns), slide 11.",
       },
-    ],
+],
   },
   {
     id: "l3-slides-lesson-3-pronouns-pronouns-a",
@@ -1739,6 +1789,15 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides: Lesson 4 (3rd Declension) — C",
     sentences: [
       { words: [
+        { w: "τίς", parsing: "Nom Sg Masc — τίς", gloss: "who, which, what" },
+        { w: "πιστευει", parsing: "Pres Act Ind 3 Sg — πιστεύω", gloss: "believe in, have faith in, trust" },
+        { w: "τῳ", parsing: "Article — Dat Sg Masc", gloss: "the" },
+        { w: "λογῳ;", parsing: "Dat Sg Masc — λόγος", gloss: "word, speech" },
+      ],
+        translation: "Who believes the word?",
+        note: "From the slides: Lesson 4 (3rd Declension), slide 28.",
+      },
+      { words: [
         { w: "θελω", parsing: "Pres Act Ind 1 Sg — θέλω", gloss: "will" },
         { w: "ὑδωρ", parsing: "Acc Sg Neut — ὕδωρ", gloss: "water" },
         { w: "τι.", parsing: "Acc Sg Neut — τὶς", gloss: "who" },
@@ -1772,7 +1831,14 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Some believe the king.",
         note: "From the slides: Lesson 4 (3rd Declension), slide 28.",
       },
-    ],
+      { words: [
+        { w: "τίνα", parsing: "Acc Sg Masc — τίς", gloss: "who, which, what" },
+        { w: "γινωσκετε;", parsing: "Pres Act Ind 2 Pl — γινώσκω", gloss: "know, learn" },
+      ],
+        translation: "Whom do you know?",
+        note: "From the slides: Lesson 4 (3rd Declension), slide 28.",
+      },
+],
   },
   {
     id: "l4-slides-lesson-4-3rd-declension-d",
@@ -1844,10 +1910,9 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides: Lesson 4 (3rd Declension) — E",
     sentences: [
       { words: [
-        { w: "εἰς", parsing: "Preposition", gloss: "into" },
-        { w: "οὐδεις", parsing: "Nom Sg Masc — οὐδείς", gloss: "no one" },
-        { w: "ἐστιν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "am" },
-        { w: "ἁγιος;", parsing: "Nom Sg Masc — ἅγιος", gloss: "holy" },
+        { w: "οὐδεις", parsing: "Nom Sg Masc — οὐδείς", gloss: "no one, nothing" },
+        { w: "ἐστιν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "am, exist" },
+        { w: "ἁγιος;", parsing: "Nom Sg Masc — ἅγιος", gloss: "holy, sacred" },
       ],
         translation: "Is no one holy?",
         note: "From the slides: Lesson 4 (3rd Declension), slide 62.",
@@ -1889,7 +1954,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "One Lord, one faith, one body.",
         note: "From the slides: Lesson 4 (3rd Declension), slide 62.",
       },
-    ],
+],
   },
   {
     id: "l5-slides-lesson-5-basic-verb-forms-a",
@@ -1981,6 +2046,15 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides: Lesson 5 (Basic Verb Forms) — C",
     sentences: [
       { words: [
+        { w: "ἁγιοι", parsing: "Nom Pl Masc — ἅγιος", gloss: "holy, sacred" },
+        { w: "ἠσαν", parsing: "Impf Act Ind 3 Pl — εἰμί", gloss: "am, exist" },
+        { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+        { w: "προφηται.", parsing: "Nom Pl Masc — προφήτης", gloss: "prophet" },
+      ],
+        translation: "The prophets were holy.",
+        note: "From the slides: Lesson 5 (Basic Verb Forms), slide 55.",
+      },
+      { words: [
         { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
         { w: "Ἰωαννης", parsing: "Nom Sg Masc — Ἰωάννης", gloss: "John" },
         { w: "ἠν", parsing: "Impf Act Ind 3 Sg — εἰμί", gloss: "am" },
@@ -2017,7 +2091,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "The last will be first.",
         note: "From the slides: Lesson 5 (Basic Verb Forms), slide 55.",
       },
-    ],
+],
   },
   {
     id: "l5-slides-lesson-5-basic-verb-forms-d",
@@ -2155,6 +2229,13 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         note: "From the slides: 1. Lesson 6 (Tense Identifiers), slide 49.",
       },
       { words: [
+        { w: "τί", parsing: "Acc Sg Neut — τίς", gloss: "who, which, what" },
+        { w: "γεγραφας;", parsing: "Perf Act Ind 2 Sg — γράφω", gloss: "write" },
+      ],
+        translation: "What have you written?",
+        note: "From the slides: 1. Lesson 6 (Tense Identifiers), slide 49.",
+      },
+      { words: [
         { w: "σεσωμαι", parsing: "Perf Mid/Pass Ind 1 Sg — σῴζω", gloss: "I have been saved" },
         { w: "δια", parsing: "Preposition + genitive", gloss: "through" },
         { w: "της", parsing: "Article — Gen Sg Fem", gloss: "the" },
@@ -2173,7 +2254,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "The Son of Man has been glorified.",
         note: "From the slides: 1. Lesson 6 (Tense Identifiers), slide 49.",
       },
-    ],
+],
   },
   {
     id: "l6-slides-lesson-6-tense-identifiers-c",
@@ -2282,6 +2363,20 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides: 2. Lesson 7 (Using Participles) — A",
     sentences: [
       { words: [
+        { w: "λαλουντες", parsing: "Pres Act Ptc Nom Pl Masc — λαλέω", gloss: "speak, say" },
+        { w: "ὑπηγον.", parsing: "Impf Act Ind 3 Pl — ὑπάγω", gloss: "go away, depart" },
+      ],
+        translation: "As they spoke they were going away.",
+        note: "From the slides: 2. Lesson 7 (Using Participles), slide 26.",
+      },
+      { words: [
+        { w: "ἀπεκριθη", parsing: "Aor Mid Ind 3 Sg — ἀποκρίνομαι", gloss: "answer, reply" },
+        { w: "λεγων.", parsing: "Pres Act Ptc Nom Sg Masc — λέγω", gloss: "say, tell" },
+      ],
+        translation: "He answered (while) saying.",
+        note: "From the slides: 2. Lesson 7 (Using Participles), slide 26.",
+      },
+      { words: [
         { w: "ἀκουσας", parsing: "Aor Act Ptc Nom Sg Masc — ἀκούω", gloss: "hear" },
         { w: "λεγει", parsing: "Pres Act Ind 3 Sg — λέγω", gloss: "say" },
         { w: "αὐτοις.", parsing: "Dat Pl Masc — αὐτός", gloss: "he" },
@@ -2310,6 +2405,13 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         note: "From the slides: 2. Lesson 7 (Using Participles), slide 26.",
       },
       { words: [
+        { w: "μετανοησαντες", parsing: "Aor Act Ptc Nom Pl Masc — μετανοέω", gloss: "repent" },
+        { w: "ἐπιστευσαν.", parsing: "Aor Act Ind 3 Pl — πιστεύω", gloss: "believe in, have faith in, trust" },
+      ],
+        translation: "When they repented, they believed.",
+        note: "From the slides: 2. Lesson 7 (Using Participles), slide 26.",
+      },
+      { words: [
         { w: "ἀκουσαντες", parsing: "Aor Act Ptc Nom Pl Masc — ἀκούω", gloss: "hear" },
         { w: "την", parsing: "Article — Acc Sg Fem", gloss: "the" },
         { w: "φωνην", parsing: "Acc Sg Fem — φωνή", gloss: "sound" },
@@ -2334,7 +2436,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "While teaching the disciples, the Lord was watching the crowd.",
         note: "From the slides: 2. Lesson 7 (Using Participles), slide 28.",
       },
-    ],
+],
   },
   {
     id: "l7-slides-lesson-7-using-participles-b",
@@ -2502,11 +2604,28 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         note: "From the slides: 1. Lesson 8 (Subjunctive), slide 34.",
       },
       { words: [
+        { w: "μη", parsing: "Negative particle", gloss: "not" },
+        { w: "φοβηθητε.", parsing: "Aor Pass Subj 2 Pl — φοβέομαι", gloss: "fear, be afraid" },
+      ],
+        translation: "Do not be afraid.",
+        note: "From the slides: 1. Lesson 8 (Subjunctive), slide 34.",
+      },
+      { words: [
         { w: "οὐ", parsing: "Particle", gloss: "no" },
         { w: "μη", parsing: "Particle", gloss: "not" },
         { w: "εἰσελθωσιν.", parsing: "2Aor Act Subj 3 Pl — εἰσέρχομαι", gloss: "go into" },
       ],
         translation: "They will certainly not enter.",
+        note: "From the slides: 1. Lesson 8 (Subjunctive), slide 34.",
+      },
+      { words: [
+        { w: "ζητωμεν", parsing: "Pres Act Subj 1 Pl — ζητέω", gloss: "let us seek" },
+        { w: "την", parsing: "Article — Acc Sg Fem", gloss: "the" },
+        { w: "βασιλειαν", parsing: "Acc Sg Fem — βασιλεία", gloss: "kingdom" },
+        { w: "του", parsing: "Article — Gen Sg Masc", gloss: "the" },
+        { w: "θεου.", parsing: "Gen Sg Masc — θεός", gloss: "god" },
+      ],
+        translation: "Let us seek the kingdom of God.",
         note: "From the slides: 1. Lesson 8 (Subjunctive), slide 34.",
       },
       { words: [
@@ -2528,23 +2647,23 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "What shall we say to the king?",
         note: "From the slides: 1. Lesson 8 (Subjunctive), slide 34.",
       },
-      { words: [
-        { w: "ζητωμεν", parsing: "Pres Act Subj 1 Pl — ζητέω", gloss: "let us seek" },
-        { w: "την", parsing: "Article — Acc Sg Fem", gloss: "the" },
-        { w: "βασιλειαν", parsing: "Acc Sg Fem — βασιλεία", gloss: "kingdom" },
-        { w: "του", parsing: "Article — Gen Sg Masc", gloss: "the" },
-        { w: "θεου.", parsing: "Gen Sg Masc — θεός", gloss: "god" },
-      ],
-        translation: "Let us seek the kingdom of God.",
-        note: "From the slides: 1. Lesson 8 (Subjunctive), slide 34.",
-      },
-    ],
+],
   },
   {
     id: "l9-slides-lesson-9-mi-verbs-a",
     chapter: "mi-verbs",
     title: "Slides: Lesson 9 (Mi Verbs)",
     sentences: [
+      { words: [
+        { w: "διδοασιν", parsing: "Pres Act Ind 3 Pl — δίδωμι", gloss: "offer, give" },
+        { w: "τον", parsing: "Article — Acc Sg Masc", gloss: "the" },
+        { w: "ἀρτον", parsing: "Acc Sg Masc — ἄρτος", gloss: "bread" },
+        { w: "τοις", parsing: "Article — Dat Pl Masc", gloss: "the" },
+        { w: "τεκνοις.", parsing: "Dat Pl Neut — τέκνον", gloss: "child, descendent" },
+      ],
+        translation: "They give the bread to the children.",
+        note: "From the slides: Lesson 9 (Mi Verbs), slide 40.",
+      },
       { words: [
         { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
         { w: "θεος", parsing: "Nom Sg Masc — θεός", gloss: "god" },
@@ -2569,7 +2688,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "We stood with the disciples in the temple.",
         note: "From the slides: Lesson 9 (Mi Verbs), slide 40.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-adjectives-and-pronouns-a",
@@ -2632,16 +2751,6 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides (Int.): Adjectives and Pronouns — B",
     sentences: [
       { words: [
-        { w: "ἐκβαλλει", parsing: "Pres Act Ind 3 Sg — ἐκβάλλω", gloss: "throw out" },
-        { w: "τα", parsing: "Article — Acc Pl Neut", gloss: "the" },
-        { w: "δαιμονια", parsing: "Acc Pl Neut — δαιμόνιον", gloss: "demon" },
-        { w: "τα", parsing: "Article — Acc Pl Neut", gloss: "the" },
-        { w: "πονηρα.", parsing: "Acc Pl Neut — πονηρός", gloss: "evil" },
-      ],
-        translation: "She is casting out the wicked demons.",
-        note: "From the slides: Adjectives and Pronouns, slide 13.",
-      },
-      { words: [
         { w: "καλειτε", parsing: "Pres Act Ind 2 Pl — καλέω", gloss: "call" },
         { w: "τας", parsing: "Article — Acc Pl Fem", gloss: "the" },
         { w: "ἀγαθος", parsing: "Nom Sg Masc — ἀγαθός", gloss: "good" },
@@ -2649,6 +2758,13 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
       ],
         translation: "You (pl.) are calling the good sisters.",
         note: "From the slides: Adjectives and Pronouns, slide 13.",
+      },
+      { words: [
+        { w: "ἐστε", parsing: "Pres Act Ind 2 Pl — εἰμί", gloss: "am, exist" },
+        { w: "ἀγαθοι;", parsing: "Nom Pl Masc — ἀγαθός", gloss: "good" },
+      ],
+        translation: "Are you (pl.) good?",
+        note: "From the slides: Adjectives and Pronouns, slide 18.",
       },
       { words: [
         { w: "ἁγιος", parsing: "Nom Sg Masc — ἅγιος", gloss: "holy" },
@@ -2689,7 +2805,17 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Is the holy Jerusalem eternal?",
         note: "From the slides: Adjectives and Pronouns, slide 18.",
       },
-    ],
+      { words: [
+        { w: "ἐκβαλλει", parsing: "Pres Act Ind 3 Sg — ἐκβάλλω", gloss: "throw out" },
+        { w: "τα", parsing: "Article — Acc Pl Neut", gloss: "the" },
+        { w: "δαιμονια", parsing: "Acc Pl Neut — δαιμόνιον", gloss: "demon" },
+        { w: "τα", parsing: "Article — Acc Pl Neut", gloss: "the" },
+        { w: "πονηρα.", parsing: "Acc Pl Neut — πονηρός", gloss: "evil" },
+      ],
+        translation: "She is casting out the wicked demons.",
+        note: "From the slides: Adjectives and Pronouns, slide 13.",
+      },
+],
   },
   {
     id: "l10-slides-adjectives-and-pronouns-c",
@@ -2875,11 +3001,10 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides (Int.): Nouns System 1",
     sentences: [
       { words: [
-        { w: "αὐτος", parsing: "Nom Sg Masc — αὐτός", gloss: "he" },
-        { w: "φιλω", parsing: "Pres Act Ind 1 Sg — φιλέω", gloss: "love" },
-        { w: "αὐτον.", parsing: "Acc Sg Masc — αὐτός", gloss: "he" },
+        { w: "φιλω", parsing: "Pres Act Ind 1 Sg — φιλέω", gloss: "love, like" },
+        { w: "αὐτον.", parsing: "Acc Sg Masc — αὐτός", gloss: "he, she, it; same" },
       ],
-        translation: "I myself love him.",
+        translation: "I love him.",
         note: "From the slides: Nouns System 1, slide 20.",
       },
       { words: [
@@ -2889,6 +3014,13 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         { w: "διδασκει.", parsing: "Pres Act Ind 3 Sg — διδάσκω", gloss: "teach" },
       ],
         translation: "He teaches his words.",
+        note: "From the slides: Nouns System 1, slide 20.",
+      },
+      { words: [
+        { w: "ἐχουσιν", parsing: "Pres Act Ind 3 Pl — ἔχω", gloss: "have, hold" },
+        { w: "αὐτο.", parsing: "Acc Sg Neut — αὐτός", gloss: "he, she, it; same" },
+      ],
+        translation: "They have it.",
         note: "From the slides: Nouns System 1, slide 20.",
       },
       { words: [
@@ -2909,7 +3041,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Paul calls them.",
         note: "From the slides: Nouns System 1, slide 20.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-nouns-system-2-a",
@@ -2979,11 +3111,10 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides (Int.): Nouns System 2 — B",
     sentences: [
       { words: [
-        { w: "πας", parsing: "Nom Sg Masc — πᾶς", gloss: "all" },
-        { w: "παντες", parsing: "Nom Pl Masc — πᾶς", gloss: "all" },
+        { w: "παντες", parsing: "Nom Pl Masc — πᾶς", gloss: "all, every" },
         { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
-        { w: "πατερες", parsing: "Nom Pl Masc — πατήρ", gloss: "father" },
-        { w: "ἀπεθανον.", parsing: "2Aor Act Ind 3 Pl — ἀποθνήσκω", gloss: "am dying" },
+        { w: "πατερες", parsing: "Nom Pl Masc — πατήρ", gloss: "father, ancestor" },
+        { w: "ἀπεθανον.", parsing: "2Aor Act Ind 3 Pl — ἀποθνήσκω", gloss: "am dying, die" },
       ],
         translation: "All the fathers died.",
         note: "From the slides: Nouns System 2, slide 25.",
@@ -3020,7 +3151,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "The saviour of all is praying.",
         note: "From the slides: Nouns System 2, slide 25.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-nouns-system-2-c",
@@ -3028,9 +3159,8 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides (Int.): Nouns System 2 — C",
     sentences: [
       { words: [
-        { w: "εἰς", parsing: "Preposition", gloss: "into" },
-        { w: "οὐδεις", parsing: "Nom Sg Masc — οὐδείς", gloss: "no one" },
-        { w: "ἐστιν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "am" },
+        { w: "οὐδεις", parsing: "Nom Sg Masc — οὐδείς", gloss: "no one, nothing" },
+        { w: "ἐστιν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "am, exist" },
         { w: "ἀγαθος;", parsing: "Nom Sg Masc — ἀγαθός", gloss: "good" },
       ],
         translation: "Is no one good?",
@@ -3081,7 +3211,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "I have one sheep.",
         note: "From the slides: Nouns System 2, slide 30.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-participles-a",
@@ -3311,6 +3441,30 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides (Int.): 3. Verbs (2nd Aorists and Liquids)",
     sentences: [
       { words: [
+        { w: "ἀπεστειλαν.", parsing: "Aor Act Ind 3 Pl — ἀποστέλλω", gloss: "send away, dismiss, send out" },
+      ],
+        translation: "They sent.",
+        note: "From the slides: 3. Verbs (2nd Aorists and Liquids), slide 23.",
+      },
+      { words: [
+        { w: "μενοῦμεν.", parsing: "Fut Act Ind 1 Pl — μένω (liquid future)", gloss: "remain" },
+      ],
+        translation: "We will remain.",
+        note: "From the slides: 3. Verbs (2nd Aorists and Liquids), slide 23.",
+      },
+      { words: [
+        { w: "ἠγειρεν.", parsing: "Aor Act Ind 3 Sg — ἐγείρω", gloss: "raise" },
+      ],
+        translation: "He raised.",
+        note: "From the slides: 3. Verbs (2nd Aorists and Liquids), slide 23.",
+      },
+      { words: [
+        { w: "ἐκριναν.", parsing: "Aor Act Ind 3 Pl — κρίνω", gloss: "judge" },
+      ],
+        translation: "They judged.",
+        note: "From the slides: 3. Verbs (2nd Aorists and Liquids), slide 23.",
+      },
+      { words: [
         { w: "ἐγερεῖ", parsing: "Fut Act Ind 3 Sg — ἐγείρω", gloss: "raise" },
         { w: "τους", parsing: "Article — Acc Pl Masc", gloss: "the" },
         { w: "νεκρους.", parsing: "Acc Pl Masc — νεκρός", gloss: "dead" },
@@ -3318,7 +3472,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "He will raise the dead.",
         note: "From the slides: 3. Verbs (2nd Aorists and Liquids), slide 23.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-verbs-moods-a",
@@ -3326,11 +3480,30 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides (Int.): 4. Verbs (Moods)",
     sentences: [
       { words: [
+        { w: "ἐκβαλλε.", parsing: "Pres Act Impv 2 Sg — ἐκβάλλω", gloss: "cast out, send out" },
+      ],
+        translation: "Throw out! (continuously)",
+        note: "From the slides: 4. Verbs (Moods), slide 8.",
+      },
+      { words: [
+        { w: "μετανοησον.", parsing: "Aor Act Impv 2 Sg — μετανοέω", gloss: "repent, am converted" },
+      ],
+        translation: "Repent! (default)",
+        note: "From the slides: 4. Verbs (Moods), slide 8.",
+      },
+      { words: [
         { w: "τηρειτε", parsing: "Pres Act Impv 2 Pl — τηρέω", gloss: "keep" },
         { w: "τον", parsing: "Article — Acc Sg Masc", gloss: "the" },
         { w: "νομον.", parsing: "Acc Sg Masc — νόμος", gloss: "law" },
       ],
         translation: "Keep the law!",
+        note: "From the slides: 4. Verbs (Moods), slide 8.",
+      },
+      { words: [
+        { w: "γραψον", parsing: "Aor Act Impv 2 Sg — γράφω", gloss: "write" },
+        { w: "αὐτῃ.", parsing: "Dat Sg Fem — αὐτός", gloss: "he, she, it; same" },
+      ],
+        translation: "Write to her! (default)",
         note: "From the slides: 4. Verbs (Moods), slide 8.",
       },
       { words: [
@@ -3341,7 +3514,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Hear the voice!",
         note: "From the slides: 4. Verbs (Moods), slide 8.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-prepositions-a",
@@ -3418,6 +3591,20 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
     title: "Slides (Int.): 1. Participles (overview) — A",
     sentences: [
       { words: [
+        { w: "ἀκουοντες", parsing: "Pres Act Ptc Nom Pl Masc — ἀκούω", gloss: "hear, listen" },
+        { w: "ἐπιστευσαν.", parsing: "Aor Act Ind 3 Pl — πιστεύω", gloss: "believe in, have faith in, trust" },
+      ],
+        translation: "While they listened, they believed.",
+        note: "From the slides: 1. Participles (overview), slide 32.",
+      },
+      { words: [
+        { w: "ἀποκριθεις", parsing: "Aor Pass Ptc Nom Sg Masc — ἀποκρίνομαι", gloss: "answer, reply" },
+        { w: "εἰπεν.", parsing: "2Aor Act Ind 3 Sg — λέγω", gloss: "say, tell" },
+      ],
+        translation: "Having answered, he spoke.",
+        note: "From the slides: 1. Participles (overview), slide 32.",
+      },
+      { words: [
         { w: "ἐλθων", parsing: "2Aor Act Ptc Nom Sg Masc — ἔρχομαι", gloss: "come" },
         { w: "λεγει", parsing: "Pres Act Ind 3 Sg — λέγω", gloss: "say" },
         { w: "αὐτῳ.", parsing: "Dat Sg Masc — αὐτός", gloss: "he" },
@@ -3431,6 +3618,20 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         { w: "αὐτον.", parsing: "Acc Sg Masc — αὐτός", gloss: "he" },
       ],
         translation: "They were remaining, seeking him.",
+        note: "From the slides: 1. Participles (overview), slide 32.",
+      },
+      { words: [
+        { w: "ἀκουσας", parsing: "Aor Act Ptc Nom Sg Masc — ἀκούω", gloss: "hear, listen" },
+        { w: "ἐπιστευσεν.", parsing: "Aor Act Ind 3 Sg — πιστεύω", gloss: "believe in, have faith in, trust" },
+      ],
+        translation: "After he heard, he believed.",
+        note: "From the slides: 1. Participles (overview), slide 32.",
+      },
+      { words: [
+        { w: "πιστευσαντες", parsing: "Aor Act Ptc Nom Pl Masc — πιστεύω", gloss: "believe in, have faith in, trust" },
+        { w: "ἐμειναν.", parsing: "Aor Act Ind 3 Pl — μένω", gloss: "remain, abide, stay" },
+      ],
+        translation: "When they believed, they remained.",
         note: "From the slides: 1. Participles (overview), slide 32.",
       },
       { words: [
@@ -3483,13 +3684,22 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Teaching the people, he remained in the house.",
         note: "From the slides: 1. Participles (overview), slide 34.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-participles-overview-b",
     chapter: "participles",
     title: "Slides (Int.): 1. Participles (overview) — B",
     sentences: [
+      { words: [
+        { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+        { w: "πεμψας", parsing: "Aor Act Ptc Nom Sg Masc — πέμπω", gloss: "send" },
+        { w: "αὐτον", parsing: "Acc Sg Masc — αὐτός", gloss: "he" },
+        { w: "σωζει.", parsing: "Pres Act Ind 3 Sg — σώζω", gloss: "save" },
+      ],
+        translation: "The one who sent him saves.",
+        note: "From the slides: 1. Participles (overview), slide 42.",
+      },
       { words: [
         { w: "ἀγαθος", parsing: "Nom Sg Masc — ἀγαθός", gloss: "good" },
         { w: "ἐστιν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "am" },
@@ -3499,6 +3709,14 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         { w: "κυριον.", parsing: "Acc Sg Masc — κύριος", gloss: "lord" },
       ],
         translation: "Good is the one who sees the Lord.",
+        note: "From the slides: 1. Participles (overview), slide 42.",
+      },
+      { words: [
+        { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+        { w: "ζητουντες", parsing: "Pres Act Ptc Nom Pl Masc — ζητέω", gloss: "seek" },
+        { w: "εὑρησουσιν.", parsing: "Fut Act Ind 3 Pl — εὑρίσκω", gloss: "find" },
+      ],
+        translation: "The ones who seek will find.",
         note: "From the slides: 1. Participles (overview), slide 42.",
       },
       { words: [
@@ -3547,13 +3765,27 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "He was seeking those who hear the word.",
         note: "From the slides: 1. Participles (overview), slide 43.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-subjunctive-a",
     chapter: "subjunctives",
     title: "Slides (Int.): Subjunctive — A",
     sentences: [
+      { words: [
+        { w: "ὁπου", parsing: "Adverb", gloss: "where, since, insofar as" },
+        { w: "ἐλθω;", parsing: "2Aor Act Subj 1 Sg — ἔρχομαι", gloss: "come, go" },
+      ],
+        translation: "Where shall I go?",
+        note: "From the slides: Subjunctive, slide 30.",
+      },
+      { words: [
+        { w: "μη", parsing: "Negative particle", gloss: "not" },
+        { w: "ἐξελθητε.", parsing: "2Aor Act Subj 2 Pl — ἐξέρχομαι", gloss: "go out, come out" },
+      ],
+        translation: "Do not go out.",
+        note: "From the slides: Subjunctive, slide 30.",
+      },
       { words: [
         { w: "οὐ", parsing: "Particle", gloss: "no" },
         { w: "μη", parsing: "Particle", gloss: "not" },
@@ -3589,7 +3821,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Let us seek a holy life.",
         note: "From the slides: Subjunctive, slide 30.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-subjunctive-b",
@@ -3725,7 +3957,14 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "Whenever you go, I am afraid.",
         note: "From the slides: Subjunctive, slide 58.",
       },
-    ],
+          { words: [
+        { w: "ὁπου", parsing: "Adverb", gloss: "where, since, insofar as" },
+        { w: "πορευονται;", parsing: "Pres Mid Ind 3 Pl — πορεύομαι", gloss: "go, proceed" },
+      ],
+        translation: "Where are they going?",
+        note: "From the slides: Subjunctive, slide 58.",
+      },
+],
   },
   {
     id: "l10-slides-subjunctive-d",
@@ -3837,6 +4076,22 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         note: "From the slides: Subjunctive, slide 61.",
       },
       { words: [
+        { w: "λεγει", parsing: "Pres Act Ind 3 Sg — λέγω", gloss: "says" },
+        { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "—" },
+        { w: "μητηρ", parsing: "Nom Sg Fem — μήτηρ (3rd decl.)", gloss: "mother" },
+        { w: "αὐτου", parsing: "Gen Sg Masc — αὐτός", gloss: "his" },
+        { w: "τοις", parsing: "Article — Dat Pl Masc", gloss: "to the" },
+        { w: "διακονοις∙", parsing: "Dat Pl Masc — διάκονος", gloss: "servants" },
+        { w: "Ὁ τι", parsing: "Acc Sg Neut — ὅστις (indefinite relative)", gloss: "whatever" },
+        { w: "ἀν", parsing: "Particle (+ subjunctive = indefinite)", gloss: "-ever" },
+        { w: "λεγῃ", parsing: "Pres Act Subj 3 Sg — λέγω", gloss: "he says" },
+        { w: "ὑμιν", parsing: "Dat Pl — σύ", gloss: "to you" },
+        { w: "ποιησατε.", parsing: "Aor Act Impv 2 Pl — ποιέω", gloss: "do!" },
+      ],
+        translation: "His mother says to the servants, “Whatever he says to you, do.”",
+        note: "From the slides: Subjunctive, slide 61.",
+      },
+      { words: [
         { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
         { w: "δε", parsing: "Conjunction", gloss: "but" },
         { w: "εἰπαν∙", parsing: "2Aor Act Ind 3 Pl — λέγω", gloss: "say" },
@@ -3925,7 +4180,7 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
         translation: "The one believing in the Son has eternal life; but the one denying the Son will not see life — rather, the wrath of God remains on him.",
         note: "From the slides: Subjunctive, slide 61.",
       },
-    ],
+],
   },
   {
     id: "l10-slides-infinitives-a",
