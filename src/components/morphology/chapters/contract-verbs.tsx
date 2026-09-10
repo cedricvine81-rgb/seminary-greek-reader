@@ -101,7 +101,7 @@ export const CONTRACT_VERBS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="contract-verbs.h.outside-present-vowel">Outside the present: the vowel grows up</SectionHeading>
+    <SectionHeading id="contract-verbs.h.outside-present-vowel">Outside the present: the stem vowel lengthens</SectionHeading>
     <P id="contract-verbs.p.contraction-only-happens">
       Contraction only happens where stem-vowel meets connecting vowel — the present and imperfect. In
       every other tense, the stem vowel simply <strong>lengthens</strong> before the tense marker

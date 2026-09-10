@@ -120,7 +120,7 @@ export const DEPONENTS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="deponents.h.two-sub-clubs">Two sub-clubs: middle and passive deponents</SectionHeading>
+    <SectionHeading id="deponents.h.two-sub-clubs">Two subgroups: middle and passive deponents</SectionHeading>
     <P id="deponents.p.deponents-split-which">
       Deponents split by which non-active forms they use in the aorist. <strong>Middle deponents</strong> take
       middle aorists: <Gk>ἐδεξάμην</Gk> "I received." <strong>Passive deponents</strong> take passive-looking

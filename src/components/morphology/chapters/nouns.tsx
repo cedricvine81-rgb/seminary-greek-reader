@@ -39,10 +39,10 @@ export const NOUNS_CONTENT = (
       <SectionHeading id="nouns.h.start-english-how">Start with English: how do you know who did what?</SectionHeading>
       <P id="nouns.p.read-sentence-dog">
         Read this sentence: <em>"The dog bit the man."</em> Now this one: <em>"The man bit the dog."</em>
-        Same four words — completely different (and more newsworthy) event. How did you know who did the
-        biting? <strong>Word order.</strong> In English, whatever comes before the verb is the one acting,
-        and whatever comes after is the one acted on. That is the rule you have been using your whole life
-        without ever being taught it.
+        Same four words, an entirely different event. What identifies who did the
+        biting? <strong>Word order.</strong> In English, whatever precedes the verb is the one acting,
+        and whatever follows it is the one acted upon. That rule operates constantly in ordinary
+        English, and is rarely stated explicitly.
       </P>
       <P id="nouns.p.greek-plays-game">
         Greek plays the game differently. Instead of fixing the word order, Greek changes the <Term t="ending">endings</Term> of
@@ -51,7 +51,7 @@ export const NOUNS_CONTENT = (
         called <Term t="case">case</Term>.
       </P>
       <P id="nouns.p.english-actually-kept">
-        English actually kept a small souvenir of this system — in its <Term t="pronoun">pronouns</Term>:
+        English retains a remnant of this system in its <Term t="pronoun">pronouns</Term>:
       </P>
       <TableAside
         beginning={<>
@@ -239,7 +239,7 @@ export const NOUNS_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="nouns.h.best-friend-article">Your best friend: the article</SectionHeading>
+    <SectionHeading id="nouns.h.best-friend-article">The article: the clearest signal of case</SectionHeading>
     <P id="nouns.p.greek's-word-article">
       Greek's word for "the" — the <Term t="article">article</Term> — changes form to match its noun
       in gender, case, and number. That makes it a free answer key: even when a noun's ending is ambiguous,
@@ -348,8 +348,8 @@ export const NOUNS_CONTENT = (
 
     <SectionHeading id="nouns.h.third-family-declension">The third family: 3rd declension</SectionHeading>
     <P id="nouns.p.declension-looks-irregular">
-      The 3rd declension looks irregular but is actually a very consistent family — the trick is
-      that its true <Term t="stem">stem</Term> hides. Find it by dropping <Gk>‒ος</Gk> from
+      The 3rd declension appears irregular, but is in fact a highly consistent family; the difficulty
+      is that its true <Term t="stem">stem</Term> is concealed. Find it by dropping <Gk>‒ος</Gk> from
       the <em>genitive</em>: <Gk>σάρξ, σαρκός</Gk> → stem <Gk>σαρκ‑</Gk>. Then the endings below attach cleanly.
     </P>
     <TableAside
@@ -652,13 +652,14 @@ export const NOUNS_CONTENT = (
 
     {/* ── 7 · Together (guided practice) ─────────────────── */}
     <LevelOnly level="beginning">
-    <SectionHeading id="nouns.h.together-let's-work">Together: let's work through two</SectionHeading>
+    <SectionHeading id="nouns.h.together-let's-work">Practice examples</SectionHeading>
     <P id="nouns.p.before-fly-solo">
-      Before you fly solo, work these with me. Answer each prompt in your head (or out loud — this is a
-      language), then tap <em>Show</em> to check yourself before the next prompt appears.
+      Work through these examples before attempting the exercises below. Answer each prompt first —
+      aloud where possible, since this is a spoken language — then tap <em>Show</em> to check the
+      analysis before moving on.
     </P>
     <GuidedExample
-      title={<Tr id="nouns.ge.work-it-through">Together: work it through</Tr>}
+      title={<Tr id="nouns.ge.work-it-through">Worked example</Tr>}
       sentence={<>τὸν λόγον τοῦ θεοῦ ἀκούει ὁ μαθητής.</>}
       steps={[
         { prompt: <Tr id="nouns.gp.step-find-the">Step 1 — find the cases. What does <span className="normal-case">τόν</span> tell you about <span className="normal-case">λόγον</span>?</Tr>,
@@ -673,7 +674,7 @@ export const NOUNS_CONTENT = (
       translation={<Tr id="nouns.gt.the-disciple-hears">"The disciple hears the word of God." — and the fronted τὸν λόγον spotlights <em>what</em> is heard.</Tr>}
     />
     <GuidedExample
-      title={<Tr id="nouns.ge.together-now-real">Together: now a real confession</Tr>}
+      title={<Tr id="nouns.ge.together-now-real">Worked example: a confession</Tr>}
       sentence={<>σὺ εἶ ὁ υἱὸς τοῦ θεοῦ</>}
       source={{ ref: 'John 1:49', label: <Tr id="nouns.src.john-1-49">John 1:49 (Nathanael to Jesus)</Tr> }}
       steps={[

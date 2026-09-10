@@ -288,7 +288,7 @@ export const PARSING_CONTENT = (
 
     {/* ── 7 · Guided ─────────────────────────────────────── */}
     <GuidedExample
-      title={<Tr id="parsing.ge.together-parse-every">Together: parse every word of John 1:1a</Tr>}
+      title={<Tr id="parsing.ge.together-parse-every">Worked example: parsing John 1:1a</Tr>}
       sentence={<Gk>ἐν ἀρχῇ ἦν ὁ λόγος</Gk>}
       source={{ ref: 'John 1:1', label: <Tr id="parsing.src.john-1-1">John 1:1</Tr> }}
       translation="“In the beginning was the Word.”"

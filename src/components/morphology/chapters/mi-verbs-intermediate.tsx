@@ -36,7 +36,7 @@ export const MI_VERBS_INTERMEDIATE_CONTENT = (
     <P id="mi-verbs.p.int-caution">
       <strong>Where it bites.</strong> <Gk>παραδίδωμι</Gk> — “hand over” — is the verb of the betrayal and of the delivering up of the Son, and it is the same word in both. Reading the <Gk>-μι</Gk> forms fluently is the difference between noticing that and not.
     </P>
-    <SectionHeading id="mi-verbs.h.going-deeper-small">Going deeper: small club, heavy theology</SectionHeading>
+    <SectionHeading id="mi-verbs.h.going-deeper-small">Going deeper: a small group of high theological weight</SectionHeading>
     <P id="mi-verbs.p.stative-perfect-because">
       <strong>ἵστημι's stative perfect.</strong> Because its perfect <Gk>ἕστηκα</Gk> denotes the
       <em> state</em> of standing, it translates as an English present: <Gk>ἰδοὺ ἕστηκα ἐπὶ τὴν θύραν</Gk>,

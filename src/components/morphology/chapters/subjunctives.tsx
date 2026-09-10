@@ -102,7 +102,7 @@ export const SUBJUNCTIVES_CONTENT = (
       ]}
     />
 
-    <SectionHeading id="subjunctives.h.how-you'll-actually">How you'll actually meet it: flag words</SectionHeading>
+    <SectionHeading id="subjunctives.h.how-you'll-actually">Recognising it in practice: flag words</SectionHeading>
     <P id="subjunctives.p.subjunctive-rarely-walks">
       The subjunctive rarely walks alone. In practice, a small set of "flag words" announces it a word or
       two in advance — see one of these, and expect a subjunctive verb to follow:

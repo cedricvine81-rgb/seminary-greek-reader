@@ -90,7 +90,8 @@ export const CONJUNCTIONS_CONTENT = (
     <P id="conditionals.p.still-indicative-past">
       Still <Gk>εἰ</Gk> + indicative (past tenses), but now the apodosis carries <Gk>ἄν</Gk> — and the
       speaker signals that the "if" is <em>not</em> the case: "if you had liked Greek, you would have
-      learnt it" (you didn't, alas). English's tell is "would"; Greek's is that little <Gk>ἄν</Gk>.
+      learnt it" — the implication being that the condition did not hold. The English marker is
+      "would"; the Greek marker is <Gk>ἄν</Gk>.
     </P>
     <TableAside
       beginning={<>
