@@ -17,6 +17,9 @@
 // is erased at compile time, so the two do not form a runtime cycle.
 
 import { SLIDE_HOMEWORK_SETS } from './grammar-homework-slides'
+// A leaf module with no imports of its own — importing homework-vocab here instead would be a
+// runtime cycle, since that file imports GRAMMAR_HOMEWORK_SETS back.
+import { grammarLessonForSet } from '@/lib/grammar-lesson'
 
 export interface HomeworkWord {
   w: string
@@ -2368,10 +2371,18 @@ const HAND_WRITTEN_SETS: HomeworkSet[] = [
 // The hand-written packs above, then every exercise the lesson decks point at but the app
 // never had — see grammar-homework-slides.ts. One list, so the Assignment Builder, the
 // /api/grammar-homework route and the unlearned-vocab helper all see the same sets.
+// Ordered BY LESSON, so a chapter lists its sets in the order the course teaches them —
+// Lesson 3's exercises before Lesson 4's (instructor, 2026-09-10). Concatenating the two
+// arrays put every hand-written set first regardless of lesson, so the Nouns chapter opened
+// with "Homework A — Nouns & adjectives (Lesson 4)" and only then reached Lesson 3's slides.
+//
+// The sort is STABLE (ES2019 guarantees it), which is what keeps each deck's own sets in the
+// order its slides present them — that order was restored deliberately and must survive this.
+// A set whose id carries no lesson sorts last rather than disappearing to the front.
 export const GRAMMAR_HOMEWORK_SETS: HomeworkSet[] = [
   ...HAND_WRITTEN_SETS,
   ...SLIDE_HOMEWORK_SETS,
-]
+].sort((a, b) => (grammarLessonForSet(a.id) ?? 99) - (grammarLessonForSet(b.id) ?? 99))
 
 export function getHomeworkSet(id: string): HomeworkSet | undefined {
   return GRAMMAR_HOMEWORK_SETS.find(s => s.id === id)

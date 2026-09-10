@@ -15,6 +15,7 @@
 // items the decks introduce directly, and are never reported.
 
 import { GREEK_DECK } from './vocab-decks'
+import { grammarLessonForSet } from './grammar-lesson'
 import { GRAMMAR_HOMEWORK_SETS, type HomeworkSet, type HomeworkWord } from '@/data/grammar-homework'
 
 /** BGVB rank a student has reached by the end of each grammar lesson (docs/curriculum-map.md). */
@@ -49,19 +50,9 @@ const CLOSED_CLASS = new Set([
   'μετα', 'περι', 'υπερ', 'υπο', 'συν', 'παρα', 'επι', 'ανα', 'αντι', 'προ', 'εαυτου',
 ])
 
-/**
- * The grammar lesson a set belongs to, from its id: `l3-…` = Lesson 3, `l34-…` = Lessons
- * 3–4, `l58-…` = Lessons 5 and 8. A set spanning two lessons is done AFTER the later one,
- * so the later lesson sets the cap.
- */
-export function grammarLessonForSet(setId: string): number | null {
-  const m = /^l(\d+)-/.exec(setId)
-  if (!m) return null
-  const digits = m[1]
-  // '10' is a single lesson; any other multi-digit id is a list of single-digit lessons
-  if (digits === '10') return 10
-  return Math.max(...digits.split('').map(Number))
-}
+// Moved to lib/grammar-lesson.ts so data/grammar-homework.ts can order by lesson without
+// importing this file, which imports the set array back. Re-exported: callers are unchanged.
+export { grammarLessonForSet } from './grammar-lesson'
 
 const GREEK_LETTER = /[Ͱ-Ͽἀ-῿]/
 
