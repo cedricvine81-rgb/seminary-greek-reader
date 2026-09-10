@@ -28,9 +28,13 @@ export interface ParadigmTarget {
   chapter: string
   /** MorphTable id, rendered into the DOM as an anchor (see MorphTable in shared.tsx). */
   tableId: string
-  /** Short human label for the link ("2nd declension endings"). An i18n key, not display text. */
-  labelKey: string
 }
+
+// No label field here on purpose. A target names a table, and the table already carries its own
+// title: the panel renders PARADIGM_TABLE_DATA[...].title (the chapter's own words, so the two
+// agree), and the chapter link is labelled t('morph.par.seeTable'). An i18n key per target
+// duplicated that, went unrendered, and — because scripts/i18n-guard.mjs reads every
+// dotted string literal as a key reference — failed the production build for keys nothing used.
 
 /**
  * Nouns and adjectives whose ending lies about their declension.
@@ -105,9 +109,9 @@ export function classifyDeclension(lexeme: string): Declension {
 
 /** First and second declension share one endings table; the third has its own. */
 const NOMINAL_TABLE: Record<Declension, ParadigmTarget> = {
-  '1st': { chapter: 'nouns', tableId: 'nouns.t3', labelKey: 'morph.par.firstSecond' },
-  '2nd': { chapter: 'nouns', tableId: 'nouns.t3', labelKey: 'morph.par.firstSecond' },
-  '3rd': { chapter: 'nouns', tableId: 'nouns.t5', labelKey: 'morph.par.third' },
+  '1st': { chapter: 'nouns', tableId: 'nouns.t3' },
+  '2nd': { chapter: 'nouns', tableId: 'nouns.t3' },
+  '3rd': { chapter: 'nouns', tableId: 'nouns.t5' },
 }
 
 /**
@@ -116,17 +120,17 @@ const NOMINAL_TABLE: Record<Declension, ParadigmTarget> = {
  * pattern the others are taught against.
  */
 const PRONOUN_TABLE: Record<string, ParadigmTarget> = {
-  'αὐτός':   { chapter: 'pronouns',       tableId: 'pronouns.t1',       labelKey: 'morph.par.autos' },
-  'ἐγώ':     { chapter: 'pronouns',       tableId: 'pronouns.t2',       labelKey: 'morph.par.person12' },
-  'σύ':      { chapter: 'pronouns',       tableId: 'pronouns.t2',       labelKey: 'morph.par.person12' },
-  'ἡμεῖς':   { chapter: 'pronouns',       tableId: 'pronouns.t2',       labelKey: 'morph.par.person12' },
-  'ὑμεῖς':   { chapter: 'pronouns',       tableId: 'pronouns.t2',       labelKey: 'morph.par.person12' },
-  'οὐδείς':  { chapter: 'pronouns',       tableId: 'pronouns.t3',       labelKey: 'morph.par.oudeis' },
-  'μηδείς':  { chapter: 'pronouns',       tableId: 'pronouns.t4',       labelKey: 'morph.par.medeis' },
-  'τις':     { chapter: 'pronouns',       tableId: 'pronouns.t5',       labelKey: 'morph.par.indefinite' },
-  'τίς':     { chapter: 'pronouns',       tableId: 'pronouns.t6',       labelKey: 'morph.par.interrogative' },
-  'οὗτος':   { chapter: 'demonstratives', tableId: 'demonstratives.t1', labelKey: 'morph.par.houtos' },
-  'ἐκεῖνος': { chapter: 'demonstratives', tableId: 'demonstratives.t2', labelKey: 'morph.par.ekeinos' },
+  'αὐτός':   { chapter: 'pronouns',       tableId: 'pronouns.t1' },
+  'ἐγώ':     { chapter: 'pronouns',       tableId: 'pronouns.t2' },
+  'σύ':      { chapter: 'pronouns',       tableId: 'pronouns.t2' },
+  'ἡμεῖς':   { chapter: 'pronouns',       tableId: 'pronouns.t2' },
+  'ὑμεῖς':   { chapter: 'pronouns',       tableId: 'pronouns.t2' },
+  'οὐδείς':  { chapter: 'pronouns',       tableId: 'pronouns.t3' },
+  'μηδείς':  { chapter: 'pronouns',       tableId: 'pronouns.t4' },
+  'τις':     { chapter: 'pronouns',       tableId: 'pronouns.t5' },
+  'τίς':     { chapter: 'pronouns',       tableId: 'pronouns.t6' },
+  'οὗτος':   { chapter: 'demonstratives', tableId: 'demonstratives.t1' },
+  'ἐκεῖνος': { chapter: 'demonstratives', tableId: 'demonstratives.t2' },
 }
 const PRONOUN_FALLBACK: ParadigmTarget = PRONOUN_TABLE['αὐτός']
 
