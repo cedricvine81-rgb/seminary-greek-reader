@@ -652,7 +652,7 @@ export const NOUNS_CONTENT = (
 
     {/* ── 7 · Together (guided practice) ─────────────────── */}
     <LevelOnly level="beginning">
-    <SectionHeading id="nouns.h.together-let's-work">Worked examples</SectionHeading>
+    <SectionHeading id="nouns.h.together-let's-work">Practice examples</SectionHeading>
     <P id="nouns.p.before-fly-solo">
       Work through these examples before attempting the exercises below. Answer each prompt first —
       aloud where possible, since this is a spoken language — then tap <em>Show</em> to check the
