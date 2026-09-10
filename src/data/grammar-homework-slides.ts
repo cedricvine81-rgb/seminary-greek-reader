@@ -2031,6 +2031,17 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
       },
       { words: [
         { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+        { w: "μαθηται", parsing: "Nom Pl Masc — μαθητής", gloss: "disciples" },
+        { w: "ἐξερχονται", parsing: "Pres Dep Ind 3 Pl — ἐξέρχομαι", gloss: "go out" },
+        { w: "ἐκ", parsing: "Preposition + genitive", gloss: "out of" },
+        { w: "του", parsing: "Article — Gen Sg Neut", gloss: "the" },
+        { w: "ἱερου.", parsing: "Gen Sg Neut — ἱερόν", gloss: "temple" },
+      ],
+        translation: "The disciples are going out of the temple.",
+        note: "From the slides: Lesson 5 (Basic Verb Forms), slide 42.",
+      },
+      { words: [
+        { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
         { w: "γραμματεις", parsing: "Nom Pl Masc — γραμματεύς", gloss: "scribe" },
         { w: "θελουσιν", parsing: "Pres Act Ind 3 Pl — θέλω", gloss: "will" },
         { w: "λαλειν.", parsing: "Pres Act Inf — λαλέω", gloss: "speak" },

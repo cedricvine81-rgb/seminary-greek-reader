@@ -90,7 +90,13 @@ for title, pack in packs.items():
 
 json.dump([{'pack': r[0], 'chapter': r[1], 'status': r[2], 'on_deck_not_in_app': r[3],
             'in_app_not_on_deck': r[4], 'decks': sorted(decks_by_pack.get(r[0], []))}
-           for r in report], open('audit.json', 'w'), ensure_ascii=False, indent=1)
+           for r in report],
+          # BESIDE THIS SCRIPT, not in the cwd: the README says the audit runs from anywhere,
+          # and a bare 'audit.json' drops a generated 26KB file into whatever directory you
+          # happened to be in — the repo root, where only scripts/deck-align/.gitignore
+          # covers it and the next `git add -A` sweeps it in.
+          open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'audit.json'), 'w'),
+          ensure_ascii=False, indent=1)
 
 unnamed = [r for r in report if r[2] != 'ok']
 miss = sum(len(r[3]) for r in report); stale = sum(len(r[4]) for r in report)
