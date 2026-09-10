@@ -4,20 +4,36 @@ Grouping by pack rather than by slide handles both documented artefacts for free
 that runs over several slides, and the answer slide that repeats its question slide — because a
 set union absorbs the repeat and collects the continuation.
 """
-import json, os, glob, re, collections, unicodedata
+import json, os, glob, re, collections, unicodedata, subprocess
 import deckread
 from compare import norm, BASE, DECK_DIRS, GREEK
 
 # Places where the app DELIBERATELY differs from the slides, keyed deck-text -> app-text (both
 # normalised). Without these the audit reports the correction as a gap in both directions every
 # time it runs, and the obvious "fix" is to undo it.
-KNOWN_DIVERGENCES = {
-    # Adjectives and Pronouns s13/s14: the deck's ἀγαθος does not agree with ἀδελφας. Corrected
-    # in the app at the instructor's direction, 2026-09-10; the slides still read ἀγαθος.
-    'καλειτε τας αγαθος αδελφας': 'καλειτε τας αγαθας αδελφας',
-}
+# Empty, and that is the goal: the app should not differ from the decks. The one entry this ever
+# held (ἀγαθος -> ἀγαθας in Adjectives and Pronouns) was removed once the SLIDE was corrected too,
+# so the check is live again rather than permanently suppressed.
+KNOWN_DIVERGENCES: dict[str, str] = {}
 
-packs = {p['title']: p for p in json.load(open('packs.json'))}
+def _packs_path():
+    """packs.json is generated FROM the .ts files by dump_packs.mjs — regenerate it if it is
+    missing or stale, so `python3 scripts/deck-align/audit.py` works from a clean checkout.
+    (The .ts files cannot simply be imported: tsx reports "does not provide an export named
+    GRAMMAR_HOMEWORK_SETS", which is why the dump exists at all.)"""
+    here = os.path.dirname(os.path.abspath(__file__))
+    out = os.path.join(here, 'packs.json')
+    src = [os.path.join(here, '..', '..', 'src', 'data', f)
+           for f in ('grammar-homework.ts', 'grammar-homework-slides.ts')]
+    stale = (not os.path.exists(out)
+             or any(os.path.getmtime(f) > os.path.getmtime(out) for f in src if os.path.exists(f)))
+    if stale:
+        subprocess.run(['node', 'dump_packs.mjs'], cwd=here, check=True,
+                       stdout=subprocess.DEVNULL)
+    return out
+
+
+packs = {p['title']: p for p in json.load(open(_packs_path()))}
 deck_by_pack = collections.defaultdict(set)
 raw_by_pack = collections.defaultdict(dict)
 slides_by_pack = collections.defaultdict(set)

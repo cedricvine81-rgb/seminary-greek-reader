@@ -42,28 +42,29 @@ def deck_greek_paras(shapes):
                 out.append(m)
     return out
 
-packs = {p['title']: p for p in json.load(open('packs.json'))}
-rows = []
-for d in DECK_DIRS:
-    for path in sorted(glob.glob(os.path.join(d, '**', '*.pptx'), recursive=True)):
-        if os.path.basename(path).startswith('~$'):
-            continue
-        deck = os.path.basename(path)[:-5]
-        slides = dict(deckread.deck_slides(path))
-        for slide_no, chapter, title, _ in deckread.markers(path):
-            if not title:
+if __name__ == '__main__':
+    packs = {p['title']: p for p in json.load(open('packs.json'))}
+    rows = []
+    for d in DECK_DIRS:
+        for path in sorted(glob.glob(os.path.join(d, '**', '*.pptx'), recursive=True)):
+            if os.path.basename(path).startswith('~$'):
                 continue
-            pack = packs.get(title)
-            if pack is None:
-                rows.append((deck, slide_no, title, 'NO SUCH PACK', [], []))
-                continue
-            deck_sents = {norm(x) for x in deck_greek_paras(slides.get(slide_no, [])) if len(norm(x).split()) >= 2}
-            app_sents = {norm(x) for x in pack_sentences(pack)}
-            missing = [s for s in deck_sents if s and s not in app_sents]
-            rows.append((deck, slide_no, title, 'ok', sorted(missing), []))
-json.dump([{'deck': r[0], 'slide': r[1], 'pack': r[2], 'status': r[3], 'deck_only': r[4]} for r in rows],
-          open('compare.json', 'w'), ensure_ascii=False, indent=1)
-bad = [r for r in rows if r[3] != 'ok']
-print('marked slides naming a pack:', len(rows))
-print('markers naming a pack that does not exist:', len(bad))
-for r in bad[:10]: print('   ', r[0], 's'+str(r[1]), '->', r[2])
+            deck = os.path.basename(path)[:-5]
+            slides = dict(deckread.deck_slides(path))
+            for slide_no, chapter, title, _ in deckread.markers(path):
+                if not title:
+                    continue
+                pack = packs.get(title)
+                if pack is None:
+                    rows.append((deck, slide_no, title, 'NO SUCH PACK', [], []))
+                    continue
+                deck_sents = {norm(x) for x in deck_greek_paras(slides.get(slide_no, [])) if len(norm(x).split()) >= 2}
+                app_sents = {norm(x) for x in pack_sentences(pack)}
+                missing = [s for s in deck_sents if s and s not in app_sents]
+                rows.append((deck, slide_no, title, 'ok', sorted(missing), []))
+    json.dump([{'deck': r[0], 'slide': r[1], 'pack': r[2], 'status': r[3], 'deck_only': r[4]} for r in rows],
+              open('compare.json', 'w'), ensure_ascii=False, indent=1)
+    bad = [r for r in rows if r[3] != 'ok']
+    print('marked slides naming a pack:', len(rows))
+    print('markers naming a pack that does not exist:', len(bad))
+    for r in bad[:10]: print('   ', r[0], 's'+str(r[1]), '->', r[2])

@@ -10,7 +10,11 @@ and the two sides join on that title.
 
 ## Auditing
 
-    python3 audit.py          # per pack: deck sentences missing from the app, and vice versa
+    python3 scripts/deck-align/audit.py    # runs from anywhere; regenerates packs.json if stale
+
+Per pack: deck sentences missing from the app, and app sentences no longer on a deck. `compare.py`
+is an importable MODULE (its own comparison sits under a main guard) — it used to run on import,
+which printed a wall of unrelated output every time anything imported `norm`.
 
 `deckread.py` is the ONE canonical slide reader — import it rather than re-rolling a join.
 Join runs within a shape with nothing, shapes with a newline, count `graphicFrame` as a shape,
@@ -59,3 +63,27 @@ the corpus, not by error.
 presentation order. `dump_packs.mjs` reads the packs — **`npx tsx` cannot import those files**
 ("does not provide an export named GRAMMAR_HOMEWORK_SETS"), so it slices the array literal out
 and evals it; anchor on the DECLARATION, since the identifier also appears in the file header.
+
+
+## What the markers mean now (2026-09-10)
+
+The BEGINNING decks carry the app-exercise markers; the **Intermediate `Lessons (seminarygreek)`
+decks carry none** — all 93 were stripped, because that course is taught on NT passages rather
+than on these exercises, and its 24 packs were removed from the app. Backup of the decks as they
+were: `Classes/4. Greek Admin/Pre-marker-strip backups (Int + Adjectives, 2026-09-10).zip`.
+
+A marker is a self-contained shape **named "App exercise marker"**. Match on the shape NAME, not
+on its text — that is what makes removing the whole `<p:sp>` safe.
+
+⚠ **Greek text is split across runs.** `ἀγαθος` is stored as `<a:t>ἀ</a:t><a:t>γαθος </a:t>`
+because the breathing sits in its own run, so replacing the whole word matches NOTHING and fails
+silently. Edit the run, and verify by re-reading the deck afterwards.
+
+## Expected residue in a clean audit
+
+- **1 "missing" sentence** in `Homework A — Subjunctives (Lesson 8)`: the deck line welds two
+  sentences the app holds separately. Not a gap.
+- **~15 app-only sentences**: hand-written Homework packs draw on the NT directly, and some
+  sentences only ever appeared on an Intermediate slide (whose markers are now gone).
+- **12 packs no slide names**: the hand-written Homework A/B sets. The instructor's decision is
+  that these stay as they are.
