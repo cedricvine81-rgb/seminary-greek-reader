@@ -1397,6 +1397,25 @@ function fmtDeadline(iso: string) {
   return new Date(iso).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
 }
 
+/**
+ * Local end of today, for a class exercise activated by its tick box alone.
+ *
+ * `Assignment.dueDate` is NOT NULL, so a class exercise still needs a date even though it is
+ * never graded. It must be in the FUTURE: an assignment whose deadline has passed shows the
+ * student an "Overdue" badge, and one that arrived overdue would be a poor way to start the
+ * lesson. End of the day the instructor turns it on is the honest answer — the work is done in
+ * that class — and the instructor can still set any other date and press Update.
+ */
+function endOfToday() {
+  const d = new Date()
+  d.setHours(23, 59, 0, 0)
+  return d
+}
+
+const ACTIVATE_ON_TICK_HELP =
+  'Tick to activate this straight away as a class exercise — no deadline needed, and it stays '
+  + 'out of the gradebook. For a graded assignment, set the due date and press Activate instead.'
+
 export function HomeworkAssignments({ chapter }: { chapter: string }) {
   const t = useT()
   const level = useContext(LevelContext)
@@ -1541,11 +1560,43 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                     className={fieldCls}
                   />
                 </label>
-                <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600" title={t('morph.hw.classExerciseHelp')}>
+                {/* Ticking this on a set that is NOT yet active activates it there and then, as a
+                    class exercise (instructor, 2026-09-10). A class exercise is worked in the
+                    room and carries no grade, so making the instructor fill in a deadline before
+                    the Activate button would even enable was the whole friction. Graded
+                    activation is unchanged: due date first, then Activate.
+                    On a set that IS active this stays a plain toggle — ticking it off marks the
+                    assignment graded, which the Update button then applies. */}
+                <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600" title={existing ? t('morph.hw.classExerciseHelp') : ACTIVATE_ON_TICK_HELP}>
                   <input
                     type="checkbox"
                     checked={classExVal}
-                    onChange={e => setClassEx(prev => ({ ...prev, [key]: e.target.checked }))}
+                    disabled={busy === key}
+                    onChange={e => {
+                      const on = e.target.checked
+                      if (on && !existing) {
+                        // No optimistic tick: the box reflects what the server actually has, so a
+                        // failed activation leaves it clear rather than showing a set as a class
+                        // exercise that was never created.
+                        act(key, () => fetch('/api/assignments', {
+                          method: 'POST', headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            courseId, title: set.title, type: 'TRANSLATION_EXERCISE',
+                            weekNumber: 1,
+                            // dueDate is NOT NULL in the schema, so a class exercise still needs
+                            // one. End of today, not now: a date already past would show the
+                            // student an "Overdue" badge the moment it appeared.
+                            dueDate: endOfToday().toISOString(),
+                            level: course.level,
+                            homeworkSet: set.id, isPublished: true,
+                            maxRetakes: 0,
+                            assessed: false,
+                          }),
+                        }))
+                        return
+                      }
+                      setClassEx(prev => ({ ...prev, [key]: on }))
+                    }}
                     className="h-3.5 w-3.5 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                   />
                   {t('morph.hw.classExercise')}
