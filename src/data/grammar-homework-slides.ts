@@ -2753,11 +2753,15 @@ export const SLIDE_HOMEWORK_SETS: HomeworkSet[] = [
       { words: [
         { w: "καλειτε", parsing: "Pres Act Ind 2 Pl — καλέω", gloss: "call" },
         { w: "τας", parsing: "Article — Acc Pl Fem", gloss: "the" },
-        { w: "ἀγαθος", parsing: "Nom Sg Masc — ἀγαθός", gloss: "good" },
+        // The deck reads ἀγαθος, which does not agree with ἀδελφας; corrected here at the
+        // instructor's direction (2026-09-10). The slides still carry the original, so the
+        // alignment audit reports this one word as a divergence ON PURPOSE — it is listed in
+        // KNOWN_DIVERGENCES in scripts/deck-align/audit.py. Do not "restore" it from the deck.
+        { w: "ἀγαθας", parsing: "Acc Pl Fem — ἀγαθός", gloss: "good" },
         { w: "ἀδελφας.", parsing: "Acc Pl Fem — ἀδελφή", gloss: "sister" },
       ],
         translation: "You (pl.) are calling the good sisters.",
-        note: "From the slides: Adjectives and Pronouns, slide 13.",
+        note: "From the slides: Adjectives and Pronouns, slide 13 (deck has ἀγαθος; corrected).",
       },
       { words: [
         { w: "ἐστε", parsing: "Pres Act Ind 2 Pl — εἰμί", gloss: "am, exist" },

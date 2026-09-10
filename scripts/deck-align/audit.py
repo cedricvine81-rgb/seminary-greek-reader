@@ -8,6 +8,15 @@ import json, os, glob, re, collections, unicodedata
 import deckread
 from compare import norm, BASE, DECK_DIRS, GREEK
 
+# Places where the app DELIBERATELY differs from the slides, keyed deck-text -> app-text (both
+# normalised). Without these the audit reports the correction as a gap in both directions every
+# time it runs, and the obvious "fix" is to undo it.
+KNOWN_DIVERGENCES = {
+    # Adjectives and Pronouns s13/s14: the deck's ἀγαθος does not agree with ἀδελφας. Corrected
+    # in the app at the instructor's direction, 2026-09-10; the slides still read ἀγαθος.
+    'καλειτε τας αγαθος αδελφας': 'καλειτε τας αγαθας αδελφας',
+}
+
 packs = {p['title']: p for p in json.load(open('packs.json'))}
 deck_by_pack = collections.defaultdict(set)
 raw_by_pack = collections.defaultdict(dict)
@@ -57,7 +66,9 @@ for title, pack in packs.items():
     if deck is None:
         report.append((title, pack['chapter'], 'NO SLIDE NAMES THIS PACK', [], list(app.values())))
         continue
-    missing = [raw_by_pack[title][k] for k in deck - set(app)]
+    # Fold each known correction into the deck side, so neither half is reported.
+    deck = {KNOWN_DIVERGENCES.get(k, k) for k in deck}
+    missing = [raw_by_pack[title][k] for k in deck - set(app) if k in raw_by_pack[title]]
     stale   = [app[k] for k in set(app) - deck]
     report.append((title, pack['chapter'], 'ok', sorted(missing), sorted(stale)))
 
