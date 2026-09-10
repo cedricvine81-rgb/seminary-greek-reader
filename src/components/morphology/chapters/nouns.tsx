@@ -15,7 +15,7 @@
 
 import {
   HomeworkAssignments,
-  MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
+  MorphTable, Interlinear, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, GuidedExample, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,  Tr,
 } from '../shared'
@@ -465,11 +465,15 @@ export const NOUNS_CONTENT = (
     <TableAside
       beginning={<>
         <AsideLabel><Tr id="nouns.al.step-step">Step by step</Tr></AsideLabel>
-        <p><Tr id="nouns.as.says-accusative-object"><strong>1.</strong> <Gk>τὸν ἄνθρωπον</Gk> — τόν says accusative: the object. <Gk>ὁ θεός</Gk> — ὁ says
-        nominative: the subject.</Tr></p>
-        <p><Tr id="nouns.as.god-doing-seeing"><strong>2.</strong> So God is doing the seeing, and the man is being seen — even though "the man"
-        came first.</Tr></p>
-        <p><Tr id="nouns.as.english-order-god"><strong>3.</strong> English order: <em>"God sees the man."</em></Tr></p>
+        {/* The three steps are NAMED for what they are (instructor, 2026-09-10) — parsing,
+            syntax, translation — so the worked example uses the same vocabulary the rest of the
+            course does. Step 1 keeps to the FORM alone; naming the case's job ("the object")
+            belonged in step 2, which is what syntax means. */}
+        <p><Tr id="nouns.as.says-accusative-object"><strong>1. Parsing</strong> — <Gk>τὸν ἄνθρωπον</Gk>: τόν says accusative. <Gk>ὁ θεός</Gk>: ὁ says
+        nominative.</Tr></p>
+        <p><Tr id="nouns.as.god-doing-seeing"><strong>2. Syntax</strong> — the accusative is the object, the nominative the subject. So God is doing
+        the seeing, and the man is being seen — even though "the man" came first.</Tr></p>
+        <p><Tr id="nouns.as.english-order-god"><strong>3. Translation</strong> — <em>"God sees the man."</em></Tr></p>
         <p><Tr id="nouns.as.greek-fronted-emphasis">Greek fronted <Gk>τὸν ἄνθρωπον</Gk> for emphasis — something like "it's the <em>man</em> God sees."
         The cases carry the grammar; the order carries the spotlight.</Tr></p>
       </>}
@@ -479,13 +483,23 @@ export const NOUNS_CONTENT = (
         available only to someone reading the Greek.</Tr></p>
       </>}
     >
-      <MorphTable id="nouns.t6" tCols={[1, 2]} flush title="Worked example — τὸν ἄνθρωπον βλέπει ὁ θεός" headers={['Word','Case','Job']} firstColIsData
-        rows={[
-          ['τὸν ἄνθρωπον', 'accusative', 'direct object'],
-          ['βλέπει', '— (verb)', '“sees”'],
-          ['ὁ θεός', 'nominative', 'subject'],
+      {/* Read ACROSS, not down (instructor, 2026-09-10): the sentence keeps its own word order —
+          which is the very thing this section is about — and each word's parsing and then its
+          syntax hang beneath it. */}
+      <Interlinear
+        title={<Tr id="nouns.wx.title">Worked example — <Gk>τὸν ἄνθρωπον βλέπει ὁ θεός</Gk></Tr>}
+        words={[
+          { gk: <Gk>τὸν ἄνθρωπον</Gk>,
+            parsing: <Tr id="nouns.wx.p1">accusative</Tr>,
+            syntax: <Tr id="nouns.wx.s1">direct object</Tr> },
+          { gk: <Gk>βλέπει</Gk>,
+            parsing: <Tr id="nouns.wx.p2">verb</Tr>,
+            syntax: <Tr id="nouns.wx.s2">“sees”</Tr> },
+          { gk: <Gk>ὁ θεός</Gk>,
+            parsing: <Tr id="nouns.wx.p3">nominative</Tr>,
+            syntax: <Tr id="nouns.wx.s3">subject</Tr> },
         ]}
-        note="Translation: “God sees the man.” — not “the man sees God”!"
+        note={<Tr id="nouns.wx.note">Translation: “God sees the man.” — not “the man sees God”!</Tr>}
       />
     </TableAside>
 

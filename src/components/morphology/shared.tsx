@@ -470,6 +470,44 @@ function XlitLine({ text }: { text: string }) {
   return <span dir="ltr" className="mt-0.5 block font-sans text-[11px] italic leading-tight text-gray-500">{transliterate(clean)}</span>
 }
 
+/**
+ * A worked sentence read ACROSS, with each word's analysis stacked beneath it.
+ *
+ * The alternative — a table with a row per word — turns the sentence on its side, and a reader
+ * has to reassemble the Greek from a vertical column before the point about word order can even
+ * land (instructor, 2026-09-10). Here the Greek stays a sentence, in its own order, and the
+ * analysis hangs under each word: form first, then what that form is DOING, which is the
+ * parsing → syntax sequence the chapter teaches.
+ *
+ * Same idiom as the interlinear chips in GrammarHomework and the Exegesis syntax page, minus
+ * the interactivity: this one is read, not filled in.
+ */
+export function Interlinear({ title, words, note }: {
+  title?: React.ReactNode
+  words: { gk: React.ReactNode; parsing?: React.ReactNode; syntax?: React.ReactNode }[]
+  note?: React.ReactNode
+}) {
+  return (
+    <div className="mb-5">
+      {title && (
+        <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-brand-700">{title}</p>
+      )}
+      {/* items-start keeps the stacks top-aligned, so the Greek forms all sit on one line even
+          when one word's analysis wraps onto two. */}
+      <div className="flex flex-wrap items-start gap-x-5 gap-y-3 rounded-xl border border-gray-200 bg-surface px-3.5 py-3">
+        {words.map((w, i) => (
+          <div key={i} className="flex flex-col items-center text-center">
+            <span className="font-reading text-lg leading-snug text-gray-900">{w.gk}</span>
+            {w.parsing && <span className="mt-1 text-[11px] leading-tight text-gray-500">{w.parsing}</span>}
+            {w.syntax && <span className="text-[11px] font-medium leading-tight text-brand-700">{w.syntax}</span>}
+          </div>
+        ))}
+      </div>
+      {note && <p className="mt-1.5 text-xs italic text-gray-500">{note}</p>}
+    </div>
+  )
+}
+
 export function MorphTable({ id, tCols, hCols, title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false, speakCols }: MorphTableProps) {
   const divSet = new Set(dividerRows)
   const tm = useTm()
@@ -1412,6 +1450,9 @@ function endOfToday() {
   return d
 }
 
+const CHOOSE_COURSE = 'Choose a course…'
+const CHOOSE_COURSE_FIRST = 'Choose a course first — nothing is activated until you pick one.'
+
 const ACTIVATE_ON_TICK_HELP =
   'Tick to activate this straight away as a class exercise — no deadline needed, and it stays '
   + 'out of the gradebook. For a graded assignment, set the due date and press Activate instead.'
@@ -1510,8 +1551,17 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
       </p>
       <div className="space-y-3">
         {data.sets.map(set => {
-          const courseId = selected[set.id] ?? data.courses[0].id
-          const course = data.courses.find(c => c.id === courseId)!
+          // NO default course (instructor, 2026-09-10). This used to fall back to
+          // data.courses[0], so a set could be activated against whichever course happened to
+          // sort first — and now that one tick activates a class exercise outright, a silent
+          // default is a wrong-course assignment waiting to happen. The instructor picks.
+          //
+          // The exception is a set that is ALREADY active: showing it as unassigned until the
+          // right course is chosen would hide live assignments, so the select opens on the
+          // course it is active for.
+          const activeOn = data.assignments.find(a => a.setId === set.id)
+          const courseId = selected[set.id] ?? activeOn?.courseId ?? ''
+          const course = data.courses.find(c => c.id === courseId)
           const key = `${set.id}:${courseId}`
           const existing = data.assignments.find(a => a.setId === set.id && a.courseId === courseId)
           const dtVal = dates[key] ?? (existing ? toLocalInput(existing.dueDate) : '')
@@ -1548,6 +1598,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                     onChange={e => setSelected(prev => ({ ...prev, [set.id]: e.target.value }))}
                     className={fieldCls}
                   >
+                    {!courseId && <option value="" disabled>{CHOOSE_COURSE}</option>}
                     {data.courses.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                 </label>
@@ -1567,11 +1618,12 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                     activation is unchanged: due date first, then Activate.
                     On a set that IS active this stays a plain toggle — ticking it off marks the
                     assignment graded, which the Update button then applies. */}
-                <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600" title={existing ? t('morph.hw.classExerciseHelp') : ACTIVATE_ON_TICK_HELP}>
+                <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600"
+                  title={existing ? t('morph.hw.classExerciseHelp') : (courseId ? ACTIVATE_ON_TICK_HELP : CHOOSE_COURSE_FIRST)}>
                   <input
                     type="checkbox"
                     checked={classExVal}
-                    disabled={busy === key}
+                    disabled={busy === key || (!existing && !courseId)}
                     onChange={e => {
                       const on = e.target.checked
                       if (on && !existing) {
@@ -1587,7 +1639,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                             // one. End of today, not now: a date already past would show the
                             // student an "Overdue" badge the moment it appeared.
                             dueDate: endOfToday().toISOString(),
-                            level: course.level,
+                            level: course!.level,
                             homeworkSet: set.id, isPublished: true,
                             maxRetakes: 0,
                             assessed: false,
@@ -1646,12 +1698,12 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                   {!existing ? (
                     <button
                       type="button"
-                      disabled={busy === key || !dtVal || r2Invalid || (r2On && !r2Val)}
+                      disabled={busy === key || !courseId || !dtVal || r2Invalid || (r2On && !r2Val)}
                       onClick={() => act(key, () => fetch('/api/assignments', {
                         method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                           courseId, title: set.title, type: 'TRANSLATION_EXERCISE',
-                          weekNumber: 1, dueDate: new Date(dtVal).toISOString(), level: course.level,
+                          weekNumber: 1, dueDate: new Date(dtVal).toISOString(), level: course!.level,
                           homeworkSet: set.id, isPublished: true,
                           maxRetakes: 0,   // one Round 1 submission; corrections go through their own endpoint
                           assessed: !classExVal,
