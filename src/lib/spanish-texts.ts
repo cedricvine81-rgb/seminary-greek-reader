@@ -302,6 +302,13 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // al griego, así que pone a Pionio en 22:3 donde el inglés lo pone en 22:4; y 22:4 no existe en la
   // recensión griega, de modo que es la única sección traducida del inglés. El capítulo lo explica.
   'af-mart-polycarp': 'apostolic-fathers/mart-polycarp',
+  // ⚠ A DIOGNETO. Su GRIEGO está dañado y no hay otro: la obra no existe ni en First1KGreek ni en
+  // Perseus, así que el corpus depende del Wikisource griego, al que le faltan 2:4, 2:8, 4:3 y 8:10
+  // enteras y que funde 7:3-5 en una frase sin sentido (más erratas y ditografías sueltas). El español
+  // trae TODAS las secciones canónicas: las que el griego perdió se tradujeron del inglés de Lightfoot,
+  // de modo que en esos capítulos el español muestra un número que la columna griega no tiene. El
+  // archivo de cada capítulo lo dice. Las lagunas de 7:6-7 y 10:1/10:8 son del manuscrito, no nuestras.
+  'af-diognetus': 'apostolic-fathers/diognetus',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
