@@ -31,11 +31,13 @@ const instructorNav: NavItem[] = [
   { label: 'nav.assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
   { label: 'nav.appeals',     href: '/instructor/appeals',       icon: <Gavel size={16} /> },
   { label: 'nav.materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
-  // Instructors asked to see the self-study tracks their students see. Rather than a
-  // second way into those pages, this uses the preview mode that already exists — so
-  // they land in the student view proper, with the amber banner and its way back.
-  { label: 'nav.selfStudy',   href: '/api/preview?mode=enter&redirect=/student/self-study',
-    icon: <GraduationCap size={16} />, desc: 'nav.desc.selfStudyInstructor', hard: true },
+  // Instructors work the self-study tracks AS THEMSELVES — they are learning the language
+  // too, and their progress has always been saved to their own account. This used to route
+  // through preview mode, which handed them the student sidebar and captioned their own work
+  // "you are viewing the student experience". It is a direct link now; preview is still there
+  // for an instructor who wants to check what a STUDENT sees.
+  { label: 'nav.selfStudy',   href: '/student/self-study',
+    icon: <GraduationCap size={16} />, desc: 'nav.desc.selfStudyInstructor' },
   { label: 'nav.reports',     href: '/instructor/reports',       icon: <BarChart2 size={16} /> },
   { label: 'nav.archive',     href: '/instructor/archive',       icon: <Archive size={16} /> },
 ]

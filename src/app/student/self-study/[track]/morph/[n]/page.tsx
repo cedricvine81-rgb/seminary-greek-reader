@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { PracticeMorphQuiz } from '@/components/student/PracticeMorphQuiz'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { canViewStudentPages, studentPageEntry } from '@/lib/preview'
+import { canUseSelfStudy, selfStudyShellRole, studentPageEntry } from '@/lib/preview'
 import { safeInternalPath } from '@/lib/safe-path'
 import { selfStudyTrack } from '@/lib/self-study'
 import { morphQuizFor } from '@/lib/self-study-morph'
@@ -36,7 +36,7 @@ export default function SelfStudyMorphQuizPage(
 
   // An instructor arriving from a Grammar chapter's "Practise these forms" is signed in but
   // not in preview mode; send them through it and back, not to a sign-in screen.
-  if (!canViewStudentPages(payload)) {
+  if (!canUseSelfStudy(payload)) {
     redirect(studentPageEntry(payload,
       `/student/self-study/${params.track}/morph/${params.n}?practice=1`
       + (backTo ? `&back=${encodeURIComponent(backTo.href)}` : '')))
@@ -48,7 +48,7 @@ export default function SelfStudyMorphQuizPage(
   if (!def || !Number.isInteger(lessonNo) || !morphQuizFor(def.id, lessonNo)) notFound()
 
   return (
-    <DashboardShell role="STUDENT" pageTitle={t(def.levelKey)}>
+    <DashboardShell role={selfStudyShellRole(payload)} pageTitle={t(def.levelKey)}>
       <PracticeMorphQuiz
         trackId={def.id}
         lessonNo={lessonNo}
