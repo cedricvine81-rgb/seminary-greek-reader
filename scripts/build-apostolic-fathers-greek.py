@@ -79,6 +79,15 @@ WORKS = {
 MERGES = {
     ('barnabas', '1'): {'7': 2},
     ('barnabas', '9'): {'2': 2},
+    # 1 Clement: Lightfoot merges Greek sections at these points, found by reading both columns.
+    ('1clement', '5'):  {'5': 2},             # EN 5:5 = GRC 5:5+5:6 (Paul's seven imprisonments)
+    ('1clement', '15'): {'6': 2},             # EN 15:6 = GRC 15:6+15:7
+    ('1clement', '18'): {'3': 2, '4': 2, '8': 2},   # Psalm 51, which the Greek versifies far finer
+    ('1clement', '44'): {'2': 2},             # EN 44:2 = GRC 44:2+44:3
+    ('1clement', '50'): {'2': 2},             # EN 50:2 = GRC 50:2+50:3
+    # NOT 1 Clement 8: there the English SPLITS one Greek section across three verses
+    # (…μετὰ ὅρκου: / Ζῶ γὰρ ἐγώ… / προστιθεὶς… + §3). Re-dividing the Greek is not something
+    # a table should do silently, so chapter 8 stays without a Greek column.
 }
 
 
