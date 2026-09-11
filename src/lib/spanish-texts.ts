@@ -309,6 +309,11 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // de modo que en esos capítulos el español muestra un número que la columna griega no tiene. El
   // archivo de cada capítulo lo dice. Las lagunas de 7:6-7 y 10:1/10:8 son del manuscrito, no nuestras.
   'af-diognetus': 'apostolic-fathers/diognetus',
+  // 2 CLEMENTE — la homilía cristiana más antigua que se conserva. Sus citas bíblicas NO coinciden con
+  // el texto canónico ni con los Setenta (2:4, 5:2-4, 8:5, 12:2, 13:4, 17:4 citan dichos que no están
+  // así en ningún evangelio), así que se traducen tal como 2 Clemente las da, sin ajustarlas a ninguna
+  // versión española. 20:5 conserva la suscripción del manuscrito, que el inglés de Lightfoot omite.
+  'af-2clement': 'apostolic-fathers/2clement',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
