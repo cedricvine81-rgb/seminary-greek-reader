@@ -80,6 +80,11 @@ def parse(raw: bytes):
     # …and leaves typesetting control codes of the form ®LA1¯ in the running text
     # (one survivor, Didache 4:1, found 2026-09-11 while translating it into Spanish).
     t = re.sub(r'\s*®[^¯]{0,20}¯\s*', ' ', t)
+    # A stray scanning artifact sits on its own line in Barnabas 9:2 ("~y"); and a handful of
+    # places are DOUBLE-escaped ("&amp;gt;"), so one unescape leaves a literal "&gt;" that the
+    # reader shows as those four characters (2 Clement 14:4, 16:4). Both found 2026-09-11.
+    t = re.sub(r'(?<!\S)~[A-Za-z]?(?!\S)', ' ', t)
+    t = t.replace('&gt;', '').replace('&lt;', '')
     markers = list(MARKER_RE.finditer(t))
     by_ch: dict = {}
     cur_ch = 0
@@ -87,6 +92,10 @@ def parse(raw: bytes):
         end = markers[i + 1].start() if i + 1 < len(markers) else len(t)
         text = TRAIL_JUNK_RE.sub('', t[m.end():end])
         text = re.sub(r'\s+', ' ', text).strip()
+        # Stripping <I>…</I> leaves a space before the punctuation that followed the tag
+        # ("receive</I>," -> "receive ,"). The shipped corpus has no such spaces, so an
+        # earlier build did not hit this; a rebuild today would introduce them everywhere.
+        text = re.sub(r'\s+([,;.:!?])', r'\1', text)
         ch, vs = int(m.group(1)), int(m.group(2))
         # The source mis-numbers a run of markers in Diognetus: after 7:2 it prints
         # "2:3 … 2:9" for what is plainly 7:3–7:9 (they continue the sentence of 7:2 and

@@ -65,6 +65,37 @@ WORKS = {
 }
 
 
+# Where Lightfoot's English merges two of the Greek's sections into one verse, the strict
+# rule in apply_greek() skips the WHOLE chapter and the reader gets no Greek at all. Barnabas 1
+# and 9 are the only two such chapters in the corpus: every other chapter of every work matches
+# the Greek's numbering exactly (checked 2026-09-11). Both merge points were found by reading
+# the two columns side by side — the English verse plainly contains both Greek sections:
+#   EN Barn. 1:7 ends "...But I, not as though I were a teacher..."  = GRC 1:7 + 1:8
+#   EN Barn. 9:2 continues "...And again He saith; Hear, O heaven..." = GRC 9:2 + 9:3
+# Without this, 15 sections of Barnabas show no Greek whatsoever.
+# Value = {our verse number: how many consecutive Greek sections that verse absorbs}. The plan
+# is then built by walking our verses in order and consuming the Greek's sections in order, so
+# the shift AFTER a merge falls out for free: in ch. 9 our verse 3 is the Greek's section 4.
+MERGES = {
+    ('barnabas', '1'): {'7': 2},
+    ('barnabas', '9'): {'2': 2},
+}
+
+
+def merge_plan(gsec, verses, merge):
+    """{our verse -> [greek section numbers]}, or None if it does not consume the chapter exactly."""
+    remaining = sorted(gsec, key=int)
+    plan, i = {}, 0
+    for v in verses:
+        n = str(v['number'])
+        take = merge.get(n, 1)
+        if i + take > len(remaining):
+            return None
+        plan[n] = remaining[i:i + take]
+        i += take
+    return plan if i == len(remaining) else None
+
+
 def fetch(rel, no_cache):
     CACHE.mkdir(parents=True, exist_ok=True)
     cached = CACHE / rel.replace('/', '_')
@@ -151,9 +182,14 @@ def apply_greek(slug, greek):
         gsec = by_ch.get(ch, {})
         our_nums = {str(v['number']) for v in chap['verses']}
         # Strict: identical numbering, so section N unambiguously belongs to verse N.
+        plan = None
         if gsec and our_nums == set(gsec):
+            plan = {n: [n] for n in our_nums}
+        elif gsec and (slug, ch) in MERGES:
+            plan = merge_plan(gsec, chap['verses'], MERGES[(slug, ch)])
+        if plan is not None:
             for v in chap['verses']:
-                g = gsec[str(v['number'])]
+                g = ' '.join(gsec[n] for n in plan[str(v['number'])] if gsec.get(n))
                 if g:
                     # Polycarp 10-12/14 and Hermas 107:5/109-114 survive only in Latin, and the
                     # TEI stores that Latin TRANSLITERATED INTO GREEK LETTERS ("ιν ηις εργο
