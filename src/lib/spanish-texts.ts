@@ -285,11 +285,17 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'af-ign-smyrnaeans': 'apostolic-fathers/ign-smyrnaeans',
   'af-ign-polycarp': 'apostolic-fathers/ign-polycarp',
   // ⚠ POLICARPO. El griego se interrumpe tras el cap. 9 (y 13): los caps. 10–12 y 14 sobreviven
-  // SOLO EN LATÍN, y el corpus guarda ese latín TRANSLITERADO A LETRAS GRIEGAS («ιν ηις εργο
-  // στατε» = «in his ergo state»), así que la columna griega los muestra como griego sin sentido.
-  // El español de esos capítulos se hizo del LATÍN, el testigo primario. Lo mismo pasa en Hermas
-  // 107:5 y 109–114 (23 secciones más). Son 34 secciones en total; ver scripts/build-apostolic-fathers-greek.py.
+  // SOLO EN LATÍN, y el español de esos capítulos se hizo del LATÍN, el testigo primario. Lo mismo
+  // pasa en Hermas 107:5 y 109–114 (23 secciones más): 34 secciones en total. El TEI de origen
+  // escribía ese latín con letras griegas («ιν ηις εργο στατε» = «in his ergo state»);
+  // scripts/fix-af-latin.py lo devolvió al alfabeto latino y le puso `lang: 'la'`, así que ahora
+  // se muestra como latín y no se le ofrece al lector un análisis morfológico inventado.
   'af-polycarp': 'apostolic-fathers/polycarp',
+  // LA DIDACHÉ. Es de nivel CAPÍTULO (una fila = un capítulo, AF_CHAPTER_LEVEL en prose-texts.ts):
+  // el griego lleva los números de sección intercalados en el texto y el inglés de Lightfoot NO.
+  // El español SÍ los lleva, en los mismos puntos que el griego, porque una cita como «Did. 8.2»
+  // resuelve al capítulo entero y sin ellos el lector no tendría cómo localizar la sección.
+  'af-didache': 'apostolic-fathers/didache',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
