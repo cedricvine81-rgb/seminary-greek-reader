@@ -84,6 +84,11 @@ def section_text(div):
 def parse_sections(xml_bytes, epistle=None, fold_praef=False):
     """Return {(chapter, section): greek} for a work, restricted to one epistle if given."""
     xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    # …and <bibl>, the editors' marginal scripture citations. Most sit inside a <note> and
+    # went with it; one in 2 Clement does not, and itertext() fused it to the Greek that
+    # follows — "Mt. 7, 21Μὴ μόνον οὖν…" (found 2026-09-11). A <bibl> is a citation by
+    # definition and never carries running text in these TEIs; verified across all works.
+    xml = re.sub(r'(?is)<bibl\b.*?</bibl>', '', xml)
     root = ET.fromstring(xml)
     out = {}
 
