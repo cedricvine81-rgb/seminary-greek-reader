@@ -276,6 +276,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'herodotus-histories-6': 'greco/herodotus-histories-6',
   'herodotus-histories-7': 'greco/herodotus-histories-7',
   'herodotus-histories-8': 'greco/herodotus-histories-8',
+  'herodotus-histories-9': 'greco/herodotus-histories-9',
   // APOLODORO, Biblioteca. Three books, 209 sections, translated straight from the Perseus Greek
   // (Frazer's Loeb text). The Greek carries a handful of scribal wounds we did NOT silently mend:
   // the daggers at 3.1.1 and 3.4.4 and the lacuna at 2.5.11 are mirrored, while pure conversion
