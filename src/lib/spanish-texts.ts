@@ -264,6 +264,13 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // MARCO AURELIO. Greek-only in the reader — there is no English column to lean on, so the
   // Spanish is translated straight from the Perseus Greek, as Plato's and Aristotle's were.
   'marcus-aurelius-meditations': 'greco/marcus-aurelius-meditations',
+  // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
+  // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
+  // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
+  // sueltos con ratio baja (874, 1057, 397, 307, 357, 565): la palabra que falta está en la
+  // línea vecina, como en el griego. Los versos 1–5 son EXACTAMENTE los de la colección
+  // "Pagan Sources Quoted in the New Testament" (Hch 17:28) — si se tocan, tocar los dos.
+  'aratus-phaenomena': 'greco/aratus-phaenomena',
   // LUCIANO. Both works ship the Fowler & Fowler English (1905, PD) as their second column,
   // so unlike Marcus these are not greekOnly and the registry line is the whole change.
   'lucian-peregrinus': 'greco/lucian-peregrinus',
