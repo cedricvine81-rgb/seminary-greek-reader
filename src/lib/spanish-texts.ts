@@ -321,6 +321,14 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // 2026-09-11 (el inglés funde 1:7+1:8 y 9:2+9:3): ya lo tienen y se tradujeron del griego.
   // 21:9 conserva la suscripción del manuscrito, que el inglés de Lightfoot omite.
   'af-barnabas': 'apostolic-fathers/barnabas',
+  // 1 CLEMENTE — la obra más larga de la colección después de Hermas (393 secciones). Sus citas siguen
+  // los Setenta y a veces se apartan de ellos; se traducen COMO LAS DA, sin ajustarlas a ninguna
+  // versión española. ⚠ El cap. 8 aparece SIN columna griega porque el inglés PARTE una sección griega
+  // en tres versículos (re-dividir el griego es juicio editorial, no tabla): aun así su español se
+  // hizo del griego. ⚠ En el cap. 18 (Salmo 51) el griego versifica más fino, y en 18:11-12 el corte
+  // cae en distinto punto que en inglés: el español sigue al griego. 65:2 conserva la suscripción del
+  // manuscrito, que el inglés de Lightfoot omite; 59:3 abre con una laguna real del manuscrito.
+  'af-1clement': 'apostolic-fathers/1clement',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
