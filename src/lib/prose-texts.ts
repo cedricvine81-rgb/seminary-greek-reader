@@ -1859,7 +1859,9 @@ export const GRECO_CATALOG = GRECO.map(w => ({
 // The dialogues, from Perseus's canonical TEI (Greek: Burnet; English: the public-domain Loeb),
 // built by scripts/build-perseus.py. Cited by STEPHANUS PAGE (the standard reference), so a
 // chapter is a page (172–223 for the Symposium); the reader queues the real page numbers via
-// chapterNumbers and heads each with "Stephanus 172". "Plato, Symp. 189DE" → page 189.
+// chapterNumbers and heads each with "Page 172" — the heading does NOT name Stephanus, because
+// the proper name means nothing to a student; the page+letter markers (172a) carry the citation.
+// "Plato, Symp. 189DE" → page 189.
 const PLATO_ATTRIB = 'Text: the Loeb Classical Library translation (Plato in Twelve Volumes), public domain; Greek: J. Burnet’s edition. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
 
 const platoCite = (abbrevs: string[]) => (text: string): { chapter: number; verse?: number } | null => {
@@ -1895,7 +1897,7 @@ const PLATO_WORKS: ProseWork[] = PLATO.map(w => ({
   chapters: w.last - w.first + 1,
   attribution: PLATO_ATTRIB,
   parseCitation: platoCite(w.abbrevs),
-  chapterLabel: (ch: number) => `Stephanus ${ch}`,
+  chapterLabel: (ch: number) => `Page ${ch}`,
 }))
 
 // Ids/names the catalog needs; chapterNumbers carries the real (non-1-based) page numbers.
