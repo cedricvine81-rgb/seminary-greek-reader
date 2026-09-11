@@ -82,11 +82,22 @@ def parse(raw: bytes):
     t = re.sub(r'\s*®[^¯]{0,20}¯\s*', ' ', t)
     markers = list(MARKER_RE.finditer(t))
     by_ch: dict = {}
+    cur_ch = 0
     for i, m in enumerate(markers):
         end = markers[i + 1].start() if i + 1 < len(markers) else len(t)
         text = TRAIL_JUNK_RE.sub('', t[m.end():end])
         text = re.sub(r'\s+', ' ', text).strip()
         ch, vs = int(m.group(1)), int(m.group(2))
+        # The source mis-numbers a run of markers in Diognetus: after 7:2 it prints
+        # "2:3 … 2:9" for what is plainly 7:3–7:9 (they continue the sentence of 7:2 and
+        # chapter 2 already ended fifty markers earlier). Taken literally, those markers
+        # overwrite the REAL Diognetus 2:3–2:9 — seven sections of Lightfoot silently
+        # deleted — and leave chapter 7 stopping dead at 7:2. So: a marker that jumps
+        # BACK to an earlier chapter, onto a verse already filled, while the chapter it
+        # would continue has no such verse, is a typo for the chapter in hand.
+        if ch < cur_ch and vs in by_ch.get(ch, {}) and vs not in by_ch.get(cur_ch, {}):
+            ch = cur_ch
+        cur_ch = ch
         by_ch.setdefault(ch, {})[vs] = text
 
     # Fold the Ignatian salutation (chapter 0) into the opening of chapter 1.
