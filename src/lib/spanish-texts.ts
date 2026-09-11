@@ -264,6 +264,20 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // MARCO AURELIO. Greek-only in the reader — there is no English column to lean on, so the
   // Spanish is translated straight from the Perseus Greek, as Plato's and Aristotle's were.
   'marcus-aurelius-meditations': 'greco/marcus-aurelius-meditations',
+
+  // ── LOS PADRES APOSTÓLICOS ───────────────────────────────────────────────────────────
+  // Inglés de Lightfoot–Harmer (1891) + griego de First1KGreek. El español se hace DEL GRIEGO,
+  // salvo donde el corpus no lo tiene: scripts/build-apostolic-fathers-greek.py solo adjunta el
+  // griego a un capítulo cuando la numeración de secciones coincide EXACTAMENTE con la nuestra,
+  // de modo que 99 de las 1.742 secciones (5,7 %) quedaron sin griego a propósito, para no
+  // desalinearlo. Esas se traducen del inglés y el archivo del capítulo lo dice, como 2 Esdras.
+  // Capítulos enteros sin griego: 1 Clem. 5, 8, 15, 18, 44, 50 · Bern. 1, 9 · Hermas 39, 67, 70,
+  // 108 · Ign. Pol. 2 · Ign. Esmirn. 4.
+  // ⚠ Ignacio cambia de número: escribe a Policarpo en «tú» (caps. 1–5) y a su iglesia en
+  // «ustedes» (caps. 6–8), y los mezcla dentro de 8:1. El registro sigue al pronombre griego
+  // cláusula por cláusula, no una vez por carta.
+  'af-ign-polycarp': 'apostolic-fathers/ign-polycarp',
+  'af-ign-trallians': 'apostolic-fathers/ign-trallians',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
