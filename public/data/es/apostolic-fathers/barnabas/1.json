@@ -1,0 +1,13 @@
+{
+  "_source": "Traducción propia del griego (Epístola de Bernabé). El inglés que acompaña es el de Lightfoot–Harmer; el español se hizo del griego de First1KGreek (tlg1216). Las citas bíblicas se traducen COMO LAS DA Bernabé, que cita de memoria, combina pasajes y atribuye a un profeta lo que está en otro; no se ajustaron a ninguna versión española. ⚠ Los caps. 1 y 9 no tuvieron griego en esta aplicación hasta 2026-09-11: el griego los divide una sección más finamente que el inglés de Lightfoot, que funde 1:7+1:8 y 9:2+9:3 en un solo versículo, y el constructor descartaba el capítulo entero. Ya está resuelto (scripts/fix-barnabas-greek.py), y estas secciones SÍ se tradujeron del griego.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "¡Salud, hijos e hijas, en el nombre del Señor que nos amó, en paz!",
+    "2": "Siendo grandes y ricos los preceptos de Dios para con ustedes, me alegro sobremanera y con exceso por sus espíritus bienaventurados y gloriosos: tan connatural es la gracia del don espiritual que han recibido.",
+    "3": "Por eso también me felicito más a mí mismo, esperando salvarme, porque de veras veo derramado sobre ustedes, desde la rica fuente del Señor, el Espíritu. ¡Hasta tal punto me dejó atónito respecto de ustedes el rostro suyo, tan anhelado por mí!",
+    "4": "Persuadido, pues, de esto, y consciente de que, habiendo hablado mucho entre ustedes, sé que el Señor me acompañó en el camino de la justicia, me veo del todo obligado también yo a esto: a amarlos más que a mi propia vida, porque una gran fe y un gran amor habitan en ustedes, en la esperanza de la vida de él.",
+    "5": "Considerando, pues, esto —que si me ocupo de comunicarles alguna parte de lo que recibí, me servirá de recompensa el haber servido a tales espíritus—, me apresuré a enviarles esta pequeñez, para que junto con su fe tengan también perfecto el conocimiento.",
+    "6": "Tres son, pues, los preceptos del Señor: esperanza de vida, principio y fin de nuestra fe; y justicia, principio y fin del juicio; y amor de alegría y de júbilo, testimonio de las obras de justicia.",
+    "7": "Porque el Soberano nos dio a conocer por medio de los profetas lo pasado y lo presente, y dándonos primicias del gusto de lo venidero; y viendo que cada una de esas cosas se cumple tal como él habló, debemos ofrecer más rica y más altamente a su temor. Y yo, no como maestro, sino como uno de ustedes, les mostraré unas pocas cosas con las cuales se alegrarán en las circunstancias presentes."
+  }
+}

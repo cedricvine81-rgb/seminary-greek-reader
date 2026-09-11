@@ -314,6 +314,13 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // así en ningún evangelio), así que se traducen tal como 2 Clemente las da, sin ajustarlas a ninguna
   // versión española. 20:5 conserva la suscripción del manuscrito, que el inglés de Lightfoot omite.
   'af-2clement': 'apostolic-fathers/2clement',
+  // BERNABÉ. Cita de memoria, funde pasajes y atribuye a un profeta lo que está en otro (4:3 cita a
+  // «Enoc» lo que no está en Enoc); se traduce COMO LO DA, sin ajustarlo a ninguna versión española.
+  // ⚠ El cap. 19 («Camino de la luz») está en SEGUNDA PERSONA DEL SINGULAR, a diferencia del resto de
+  // la carta; el español lo respeta. ⚠ Los caps. 1 y 9 no tenían griego en la aplicación hasta
+  // 2026-09-11 (el inglés funde 1:7+1:8 y 9:2+9:3): ya lo tienen y se tradujeron del griego.
+  // 21:9 conserva la suscripción del manuscrito, que el inglés de Lightfoot omite.
+  'af-barnabas': 'apostolic-fathers/barnabas',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
