@@ -77,6 +77,9 @@ def parse(raw: bytes):
     t = html.unescape(re.sub(r'<[^>]+>', ' ', h))
     t = t.replace('{', ' ').replace('}', ' ')      # Lightfoot brace-marks OT quotations
     t = t.replace('_', '')                          # …and _underscores_ for italic quotations
+    # …and leaves typesetting control codes of the form ®LA1¯ in the running text
+    # (one survivor, Didache 4:1, found 2026-09-11 while translating it into Spanish).
+    t = re.sub(r'\s*®[^¯]{0,20}¯\s*', ' ', t)
     markers = list(MARKER_RE.finditer(t))
     by_ch: dict = {}
     for i, m in enumerate(markers):
