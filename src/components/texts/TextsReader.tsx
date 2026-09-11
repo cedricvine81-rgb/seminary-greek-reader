@@ -1753,13 +1753,19 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 // a column of dashes that reads as a broken page. So when NOTHING in the chapter is
                 // translated, say so once at the top and leave the rest of the column empty.
                 const sectionUntranslated = !section.rows.some(r => !!r.english)
+                // Empty means the work wants no heading at all (Plato: the page number is
+                // already the verse marker, so a heading would only repeat it). Skip the
+                // element rather than rendering a blank one, which would still take space.
+                const blockHeading = blockHeadingFor(work, section, t)
                 return (
                   <div key={section.key} ref={el => { if (el) sectionRefs.current[section.key] = el }}>
                     {/* Daf sides are written lowercase ("28b"), so the Talmud opts out of the
                         heading's uppercasing — "28B" is not how anyone cites it. */}
-                    <p className={`text-xs font-semibold tracking-wide text-gray-400 mb-2 ${hebrewProse ? 'normal-case' : 'uppercase'}`}>
-                      {blockHeadingFor(work, section, t)}
-                    </p>
+                    {blockHeading && (
+                      <p className={`text-xs font-semibold tracking-wide text-gray-400 mb-2 ${hebrewProse ? 'normal-case' : 'uppercase'}`}>
+                        {blockHeading}
+                      </p>
+                    )}
                     {/* Sparse verse numbers read as missing data until you know the recension.
                         Both these books are one chapter long, so this shows exactly once. */}
                     {work.osisId && OLD_GREEK_BOOKS.has(work.osisId) && (

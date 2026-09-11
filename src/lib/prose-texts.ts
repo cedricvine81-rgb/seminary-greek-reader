@@ -17,6 +17,8 @@ export interface ProseWork {
   parseCitation: (text: string) => { chapter: number; verse?: number } | null
   // Traditional reference for a chapter, shown in the reader's chapter headings — for works
   // whose chapters carry a second, structural numbering (Hermas: "Vision 3.6" for chapter 14).
+  // Return '' to suppress the heading entirely (Plato: the chapter IS the page number, and the
+  // verse markers already show it, so a heading would only say "17" above a line marked 17a).
   chapterLabel?: (chapter: number) => string
   // 'hebrew' for the Bavli and Tosefta: their text is right-to-left, and it lives in the
   // verse's `greek` field (the parallel-original slot) rather than `text`.
@@ -1859,8 +1861,8 @@ export const GRECO_CATALOG = GRECO.map(w => ({
 // The dialogues, from Perseus's canonical TEI (Greek: Burnet; English: the public-domain Loeb),
 // built by scripts/build-perseus.py. Cited by STEPHANUS PAGE (the standard reference), so a
 // chapter is a page (172–223 for the Symposium); the reader queues the real page numbers via
-// chapterNumbers and heads each with "Page 172" — the heading does NOT name Stephanus, because
-// the proper name means nothing to a student; the page+letter markers (172a) carry the citation.
+// chapterNumbers. These blocks get NO heading: the page+letter markers beside the text (172a,
+// 172b) already carry the citation, so a heading could only repeat the number above it.
 // "Plato, Symp. 189DE" → page 189.
 const PLATO_ATTRIB = 'Text: the Loeb Classical Library translation (Plato in Twelve Volumes), public domain; Greek: J. Burnet’s edition. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
 
@@ -1897,7 +1899,7 @@ const PLATO_WORKS: ProseWork[] = PLATO.map(w => ({
   chapters: w.last - w.first + 1,
   attribution: PLATO_ATTRIB,
   parseCitation: platoCite(w.abbrevs),
-  chapterLabel: (ch: number) => `Page ${ch}`,
+  chapterLabel: () => '',    // no heading: the verse markers (17a, 17b) already carry the page
 }))
 
 // Ids/names the catalog needs; chapterNumbers carries the real (non-1-based) page numbers.
