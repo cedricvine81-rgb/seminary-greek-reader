@@ -151,6 +151,8 @@ const en: Catalogue = {
   'texts.onlyLabel': '{label} only',
   'texts.englishBy': 'English — {who}',
   'texts.greekCol': 'Greek',
+  // Shown inline where a work's original is Latin, not Greek (Polycarp 10-12, end of Hermas).
+  'texts.latinHere': 'Latin',
   'texts.englishCol': 'English',
   'texts.greekPlus2': '{primary} + {lang}',
   // ── Sources & credits (settings) ────────────────────────────────────────────────────
@@ -3397,6 +3399,7 @@ const es: Catalogue = {
   'texts.onlyLabel': 'Solo {label}',
   'texts.englishBy': 'Inglés — {who}',
   'texts.greekCol': 'Griego',
+  'texts.latinHere': 'Latín',
   'texts.englishCol': 'Inglés',
   'texts.greekPlus2': '{primary} + {lang}',
   // ── Fuentes y créditos (ajustes) ────────────────────────────────────────────────────

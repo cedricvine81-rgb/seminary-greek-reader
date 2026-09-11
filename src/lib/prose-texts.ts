@@ -2605,6 +2605,8 @@ export function matchProseCitation(text: string): { work: ProseWork; ref: { chap
 // `heading` is an editorial section label for a paragraph, shown above it in the reader —
 // for works whose source runs as unbroken prose (Theon) and would otherwise be a wall of
 // text. Ours, not the ancient author's.
-export interface ProseVerse { number: number; ref?: string; text: string; greek?: string; heading?: string }
+// `lang: 'la'` marks a verse whose ORIGINAL is Latin, not Greek — Polycarp 10-12/14 and the
+// end of Hermas, where the Greek does not survive. The reader must not parse these as Greek.
+export interface ProseVerse { number: number; ref?: string; text: string; greek?: string; heading?: string; lang?: 'la' }
 export interface ProseChapter { number: number; verses: ProseVerse[] }
 export interface ProseDoc { work: string; attribution: string; greek?: boolean; chapters: ProseChapter[] }

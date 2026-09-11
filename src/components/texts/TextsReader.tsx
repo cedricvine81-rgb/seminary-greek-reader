@@ -60,7 +60,7 @@ type MorphEntry = [string, string] | null
 // number — Plato's Stephanus page+letter ("172a"), Aristotle's Bekker number ("1094a"),
 // Plutarch's Moralia Stephanus page ("351c"). Shown as the verse marker and used in citations;
 // `num` stays the stable integer that anchors notes/highlights.
-type Row = { num: number; ref?: string; tokens?: WordToken[]; greek?: string; english?: string; morph?: MorphEntry[]; heading?: string }
+type Row = { num: number; ref?: string; tokens?: WordToken[]; greek?: string; english?: string; morph?: MorphEntry[]; heading?: string; lang?: 'la' }
 
 // A single chapter (or, for Josephus, book+chapter) worth of loaded rows.
 type QueueItem = { book?: number; chapter: number }
@@ -824,12 +824,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     }
     // 2 Esdras / 1 Enoch / Jubilees / 2 Baruch / 2 Enoch — plain English prose stored as
     // chapter→verses; the registry knows where each one's JSON lives.
-    const d = await fetchWorkJson(findProseWork(w.source)!.dataUrl) as { chapters?: { number: number; verses?: { number: number; ref?: string; text: string; greek?: string; heading?: string }[] }[] } | null
+    const d = await fetchWorkJson(findProseWork(w.source)!.dataUrl) as { chapters?: { number: number; verses?: { number: number; ref?: string; text: string; greek?: string; heading?: string; lang?: 'la' }[] }[] } | null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
     const morph = await loadProseMorph(w)
     const enEs = translationIdRef.current === 'es' ? await loadEnglishProseEs(w.id, item.chapter!) : null
-    return (ch?.verses ?? []).map((v: { number: number; ref?: string; text: string; greek?: string; heading?: string }) =>
-      ({ num: v.number, ref: v.ref, english: enEs ? (enEs[String(v.number)] ?? v.text) : v.text, greek: v.greek, heading: v.heading, morph: morph?.[`${item.chapter}.${v.number}`] }))
+    return (ch?.verses ?? []).map((v: { number: number; ref?: string; text: string; greek?: string; heading?: string; lang?: 'la' }) =>
+      ({ num: v.number, ref: v.ref, english: enEs ? (enEs[String(v.number)] ?? v.text) : v.text, greek: v.greek, heading: v.heading, lang: v.lang, morph: morph?.[`${item.chapter}.${v.number}`] }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -1894,6 +1894,17 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                     </span>
                                   )
                                 }) })()}
+                              </span>
+                            ) : greekProse && row.lang === 'la' ? (
+                              /* Polycarp 10-12/14 and the end of Hermas survive only in LATIN.
+                                 Show it as Latin and say so: no Greek font, and above all no
+                                 GreekWords, which would hand the reader invented parses. */
+                              <span className="font-reading" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
+                                {...verseAnchorProps(noteBook, section.chapter, row.num, 'grc')}>
+                                <span className="mr-1.5 align-middle rounded bg-amber-100 px-1 py-px text-[10px] font-semibold uppercase tracking-wide text-amber-800">
+                                  {t('texts.latinHere')}
+                                </span>
+                                {row.greek}
                               </span>
                             ) : greekProse ? (
                               <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}

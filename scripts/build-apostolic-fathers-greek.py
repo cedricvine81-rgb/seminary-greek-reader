@@ -15,6 +15,7 @@ chapter that doesn't match is left English-only. The report prints per-work cove
 
 Usage:  python3 scripts/build-apostolic-fathers-greek.py [--no-cache]   (run from the repo root)
 """
+import importlib.util
 import json
 import re
 import ssl
@@ -27,6 +28,12 @@ from pathlib import Path
 RAW = 'https://raw.githubusercontent.com/OpenGreekAndLatin/First1KGreek/master/data/'
 CACHE = Path('/tmp/first1k')
 DATA = Path('public/data/apostolic-fathers')
+
+# The Latin-in-Greek-letters repair lives in its stand-alone fix script; import it rather than
+# copy the letter table. (Hyphenated filename, so it has to come in through importlib.)
+_spec = importlib.util.spec_from_file_location('fix_af_latin', Path(__file__).with_name('fix-af-latin.py'))
+_latin = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_latin)
 NS = {'t': 'http://www.tei-c.org/ns/1.0'}
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
 
@@ -130,6 +137,7 @@ def apply_greek(slug, greek):
 
     matched_ch = 0
     matched_v = 0
+    latin_v = 0
     total_v = 0
     skipped = []
     for chap in doc['chapters']:
@@ -142,6 +150,20 @@ def apply_greek(slug, greek):
             for v in chap['verses']:
                 g = gsec[str(v['number'])]
                 if g:
+                    # Polycarp 10-12/14 and Hermas 107:5/109-114 survive only in Latin, and the
+                    # TEI stores that Latin TRANSLITERATED INTO GREEK LETTERS ("ιν ηις εργο
+                    # στατε" = "in his ergo state"). Turn it back into Latin on the way in and
+                    # mark the verse, or the reader shows it as nonsense Greek and tries to
+                    # parse it. Same transform as scripts/fix-af-latin.py, imported from there
+                    # so the letter table has exactly one home.
+                    if _latin.looks_transliterated(g):
+                        g, v['lang'] = _latin.decode(g), 'la'
+                        latin_v += 1
+                    else:
+                        head, tail = _latin.split_tail(g)
+                        if tail:
+                            g = f'{head} {_latin.decode(tail)}'
+                            latin_v += 1
                     v['greek'] = g
                     matched_v += 1
             matched_ch += 1
@@ -159,6 +181,8 @@ def apply_greek(slug, greek):
     if GREEK_SRC not in doc['attribution']:
         doc['attribution'] = doc['attribution'].rstrip() + ' ' + GREEK_SRC
     path.write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    if latin_v:
+        print(f'  {slug}: {latin_v} verse(s) were Latin transliterated into Greek letters — decoded and marked lang=la')
     return {'slug': slug, 'greek': True, 'matched_v': matched_v, 'total_v': total_v,
             'matched_ch': matched_ch, 'skipped': skipped}
 
