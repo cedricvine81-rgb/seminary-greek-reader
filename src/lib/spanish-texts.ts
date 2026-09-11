@@ -269,6 +269,7 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // untranslated section falls back to the English silently, so a half-registered book would
   // read as finished.
   'herodotus-histories-1': 'greco/herodotus-histories-1',
+  'herodotus-histories-2': 'greco/herodotus-histories-2',
   // APOLODORO, Biblioteca. Three books, 209 sections, translated straight from the Perseus Greek
   // (Frazer's Loeb text). The Greek carries a handful of scribal wounds we did NOT silently mend:
   // the daggers at 3.1.1 and 3.4.4 and the lacuna at 2.5.11 are mirrored, while pure conversion
