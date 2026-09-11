@@ -262,6 +262,13 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // so unlike Marcus these are not greekOnly and the registry line is the whole change.
   'lucian-peregrinus': 'greco/lucian-peregrinus',
   'lucian-alexander': 'greco/lucian-alexander',
+  // HERÓDOTO, Historias. Nine books, each its own catalogue work with the BARE slug (like
+  // Xenophon above, not Diogenes). Translated straight from the Perseus Greek; Godley's English
+  // is a crib only — it turns Herodotus's indirect discourse into quoted direct speech, and the
+  // Spanish keeps the infinitives. Registered a BOOK AT A TIME, as each one is finished: an
+  // untranslated section falls back to the English silently, so a half-registered book would
+  // read as finished.
+  'herodotus-histories-1': 'greco/herodotus-histories-1',
   // APOLODORO, Biblioteca. Three books, 209 sections, translated straight from the Perseus Greek
   // (Frazer's Loeb text). The Greek carries a handful of scribal wounds we did NOT silently mend:
   // the daggers at 3.1.1 and 3.4.4 and the lacuna at 2.5.11 are mirrored, while pure conversion
