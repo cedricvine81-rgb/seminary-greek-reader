@@ -276,8 +276,14 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // ⚠ Ignacio cambia de número: escribe a Policarpo en «tú» (caps. 1–5) y a su iglesia en
   // «ustedes» (caps. 6–8), y los mezcla dentro de 8:1. El registro sigue al pronombre griego
   // cláusula por cláusula, no una vez por carta.
-  'af-ign-polycarp': 'apostolic-fathers/ign-polycarp',
+  // Las siete cartas de Ignacio (recensión media), completas.
+  'af-ign-ephesians': 'apostolic-fathers/ign-ephesians',
+  'af-ign-magnesians': 'apostolic-fathers/ign-magnesians',
   'af-ign-trallians': 'apostolic-fathers/ign-trallians',
+  'af-ign-romans': 'apostolic-fathers/ign-romans',
+  'af-ign-philadelphians': 'apostolic-fathers/ign-philadelphians',
+  'af-ign-smyrnaeans': 'apostolic-fathers/ign-smyrnaeans',
+  'af-ign-polycarp': 'apostolic-fathers/ign-polycarp',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
