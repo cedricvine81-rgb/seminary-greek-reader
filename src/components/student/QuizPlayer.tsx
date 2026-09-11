@@ -91,7 +91,15 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   // Per-attempt randomised order (and shuffled MC options). Reshuffled on each retake
   // so the quiz is different every time. Grading is unaffected (keyed by question id).
-  const [orderedQuestions, setOrderedQuestions] = useState<QuizQuestion[]>(() => shuffleQuiz(questions, questionsPerAttempt))
+  //
+  // The draw happens AFTER MOUNT, never in the initialiser. Math.random() in a useState
+  // initialiser runs once on the server and again on the client and disagrees, so React
+  // hydrated a quiz whose first question was not the one the server had sent — "Text content
+  // did not match. Server: πνεῦμα Client: λόγου" — and threw the server HTML away. The order
+  // below is the prop order, which both sides agree on; `shuffled` holds the quiz back until
+  // the real draw lands, so the unshuffled order is never actually painted.
+  const [orderedQuestions, setOrderedQuestions] = useState<QuizQuestion[]>(questions)
+  const [shuffled, setShuffled] = useState(false)
   const [idx, setIdx] = useState(0)
   const [draft, setDraft] = useState('')
   const [morphDraft, setMorphDraft] = useState<Record<string, string>>({})
@@ -130,8 +138,18 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   const q = orderedQuestions[idx]
   const total = orderedQuestions.length
-  const correctCount = Object.values(clientCorrect).filter(Boolean).length
   const answeredSoFar = Object.keys(clientCorrect).length
+  // CREDIT, not a headcount. The server scores a parse matches/fields, so a two-of-three
+  // answer is worth 0.67 of a question — counting only the perfect ones made every running
+  // figure disagree with the mark the student was about to be given, and made a partly-right
+  // answer look like it had earned nothing. Non-parsing questions are still 1 or 0.
+  const creditEarned = Object.entries(clientCorrect).reduce((sum, [qid, ok]) => {
+    if (ok) return sum + 1
+    const d = clientDetail[qid]
+    return d && d.total > 0 ? sum + d.matches / d.total : sum
+  }, 0)
+  // One decimal only when there is a fraction to show, so a clean run still reads "3 / 3".
+  const fmtCredit = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(1))
 
   // Focus text input when question changes
   useEffect(() => {
@@ -325,6 +343,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     }
   }
 
+  // Draw this attempt's order once, on the client. See the note on `shuffled` above.
+  useEffect(() => {
+    setOrderedQuestions(shuffleQuiz(questions, questionsPerAttempt))
+    setShuffled(true)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Auto-submit when all questions are answered ──
   // Prevents work from being lost if the student closes the tab before clicking Submit.
   useEffect(() => {
@@ -332,6 +356,18 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
       handleSubmit()
     }
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Hold the quiz back for the one frame between hydration and the draw. This sits after
+  // every hook deliberately: `shuffled` flips between renders, so an early return above the
+  // effects would change the hook count and break the rules of hooks.
+  if (!shuffled) {
+    return (
+      <div className="max-w-2xl animate-pulse space-y-4" aria-hidden>
+        <div className="h-2 rounded-full bg-gray-100" />
+        <div className="h-48 rounded-2xl bg-gray-50" />
+      </div>
+    )
+  }
 
   // ── Timer bar ──────────────────────────────────────────────────────────────
   const timerPct = timePerQuestion && timeLeft !== null
@@ -367,7 +403,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     if (answeredSoFar === 0) return null
     return (
       <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
-        <span className="text-green-600 font-bold">{correctCount}</span>
+        <span className="text-green-600 font-bold">{fmtCredit(creditEarned)}</span>
         <span>/</span>
         <span>{answeredSoFar}</span>
         <span>correct so far</span>
@@ -379,14 +415,14 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   // Correct answers are intentionally withheld here; they appear on the submitted
   // screen once the attempt is committed to the database.
   if (phase === 'complete') {
-    const finalPct = total > 0 ? Math.round((correctCount / total) * 100) : 0
+    const finalPct = total > 0 ? Math.round((creditEarned / total) * 100) : 0
     return (
       <div className="space-y-6 max-w-2xl">
         <div className="text-center py-8 border border-gray-100 rounded-2xl bg-gray-50">
           <p className={`text-5xl font-bold ${finalPct >= 70 ? 'text-green-600' : 'text-red-600'}`}>
             {finalPct}%
           </p>
-          <p className="text-gray-600 mt-1">{correctCount} / {total} correct</p>
+          <p className="text-gray-600 mt-1">{fmtCredit(creditEarned)} / {total} correct</p>
         </div>
 
         {submitError ? (
@@ -884,7 +920,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         ) : (
           <>
             <span className="text-sm text-gray-500">
-              {correctCount} / {answeredSoFar} correct
+              {fmtCredit(creditEarned)} / {answeredSoFar} correct
             </span>
             {/* Only show the Next button for typed/open-ended answers; multiple-choice auto-advances (per-question) */}
             {(q.type !== 'MULTIPLE_CHOICE' || !(Array.isArray(q.options) && q.options.length > 0)) ? (
