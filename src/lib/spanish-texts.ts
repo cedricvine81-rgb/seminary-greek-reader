@@ -296,6 +296,12 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // El español SÍ los lleva, en los mismos puntos que el griego, porque una cita como «Did. 8.2»
   // resuelve al capítulo entero y sin ellos el lector no tendría cómo localizar la sección.
   'af-didache': 'apostolic-fathers/didache',
+  // ⚠ MARTIRIO DE POLICARPO. En el cap. 22 las dos columnas NO cuentan lo mismo, y no es un fallo de
+  // alineación: el griego trae el colofón breve (Gayo → Sócrates → Pionio) y el inglés de Lightfoot el
+  // largo del manuscrito de Moscú (digresión sobre Ireneo, «Isócrates» por «Sócrates»). El español sigue
+  // al griego, así que pone a Pionio en 22:3 donde el inglés lo pone en 22:4; y 22:4 no existe en la
+  // recensión griega, de modo que es la única sección traducida del inglés. El capítulo lo explica.
+  'af-mart-polycarp': 'apostolic-fathers/mart-polycarp',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
