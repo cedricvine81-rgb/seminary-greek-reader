@@ -43,6 +43,12 @@ export const ES_PROSE_WORKS: Record<string, string> = {
  */
 export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   '2esdras': 'apocrypha/2esdras',
+  // The four pagan lines the NT quotes (Aratus, Cleanthes, Menander, Epimenides). All four are
+  // VERSE, so the Spanish keeps one line per Greek line and carries Aratus' enjambment across
+  // 1–2 and 3–4 exactly as the Greek does. Rendered so the NT quotations stay recognizable to a
+  // Spanish reader — "de él también somos linaje" (Hch 17:28), "las malas compañías corrompen
+  // las buenas costumbres" (1 Co 15:33), "los cretenses, siempre mentirosos" (Tit 1:12).
+  'nt-pagan-sources': 'greco/nt-pagan-sources',
   // Pseudepigrapha. The ones that survive IN GREEK are translated from that Greek, one remove
   // from the source like everything else here — they land in this registry rather than
   // ES_PROSE_WORKS only because they are addressed by chapter + verse, not book + section.
