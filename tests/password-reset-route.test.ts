@@ -4,7 +4,9 @@
  * The invariants worth holding here are the ones a reset flow is usually got wrong on:
  *
  *   - the request step must answer identically for a real address, an unknown one and a
- *     rate-limited caller, or the form becomes an account-enumeration oracle
+ *     caller throttled by the PER-ADDRESS limit, or the form becomes an account-enumeration
+ *     oracle. The PER-IP limit is deliberately loud (429): it describes the caller's network,
+ *     not any account, and a campus NAT that trips it needs to be told so
  *   - the plaintext token must never be what is stored
  *   - an expired or already-spent ticket must not redeem
  *   - redeeming one ticket must spend every other outstanding ticket for that user, so a
@@ -55,7 +57,7 @@ jest.mock('@/lib/email', () => ({
   escapeHtml: (s: string) => s,
 }))
 jest.mock('@/lib/app-settings', () => ({ instructorNotifyRecipients: jest.fn() }))
-jest.mock('@/lib/logger', () => ({ logError: jest.fn() }))
+jest.mock('@/lib/logger', () => ({ logError: jest.fn(), logWarn: jest.fn(), persist: jest.fn().mockResolvedValue(undefined) }))
 jest.mock('next/headers', () => ({ cookies: () => ({ delete: jest.fn(), set: jest.fn(), get: jest.fn() }) }))
 
 import { POST } from '@/app/api/auth/route'
@@ -78,20 +80,33 @@ beforeEach(() => {
 })
 
 describe('request-password-reset', () => {
-  it('answers the same for a known address, an unknown one, and a throttled caller', async () => {
+  it('answers the same for a known address, an unknown one, and an address-throttled caller', async () => {
     userFindUnique.mockResolvedValue({ id: 'u1', firstName: 'Ada', deletedAt: null })
     const known = await POST(req({ action: 'request-password-reset', email: 'ada@x.edu' }))
 
     userFindUnique.mockResolvedValue(null)
     const unknown = await POST(req({ action: 'request-password-reset', email: 'nobody@x.edu' }))
 
-    rateLimit.mockReturnValue({ ok: false, retryAfter: 60 })
+    // Only the per-ADDRESS limit trips: the caller must not be able to tell.
+    rateLimit.mockImplementation((key: string) =>
+      key.startsWith('reset-email:') ? { ok: false, retryAfter: 60 } : { ok: true, retryAfter: 0 })
     const throttled = await POST(req({ action: 'request-password-reset', email: 'ada@x.edu' }))
 
     expect([known.status, unknown.status, throttled.status]).toEqual([200, 200, 200])
     const bodies = await Promise.all([known.json(), unknown.json(), throttled.json()])
     expect(bodies[0]).toEqual(bodies[1])
     expect(bodies[1]).toEqual(bodies[2])
+  })
+
+  it('is loud when the per-IP limit trips, with a Retry-After', async () => {
+    rateLimit.mockImplementation((key: string) =>
+      key.startsWith('reset-ip:') ? { ok: false, retryAfter: 120 } : { ok: true, retryAfter: 0 })
+    const res = await POST(req({ action: 'request-password-reset', email: 'ada@x.edu' }))
+    expect(res.status).toBe(429)
+    expect(res.headers.get('Retry-After')).toBe('120')
+    expect(await res.json()).toEqual({ error: 'rate_limited' })
+    expect(tokenCreate).not.toHaveBeenCalled()
+    expect(sendEmail).not.toHaveBeenCalled()
   })
 
   it('sends nothing for an unknown address', async () => {

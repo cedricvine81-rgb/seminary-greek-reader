@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { citationsFor, type CitationTarget } from '@/lib/style-citations'
+import { getPayload } from '@/lib/auth'
 
 // POST /api/register/citations
 //   { units: [{ id, corpus, work } | { id, corpus, book, fromCh, toCh }], features: [], lemmas: [] }
@@ -23,6 +24,11 @@ interface UnitSpec {
 }
 
 export async function POST(req: NextRequest) {
+  // Middleware only DECODES the token for role routing; it does not verify the
+  // signature — each handler must. These corpus profilers were the only routes
+  // relying on the decode alone, so a forged token passed. Verify like every other
+  // authenticated route.
+  if (!getPayload()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
     const body = await req.json() as {
       units?: UnitSpec[]; features?: string[]; lemmas?: string[]; limit?: number

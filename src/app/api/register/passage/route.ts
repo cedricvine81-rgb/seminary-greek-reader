@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { parseRefPart, profilePassage } from '@/lib/style-passage'
+import { getPayload } from '@/lib/auth'
 
 // GET /api/register/passage?corpus=GNT&book=Luke&from=1&to=2
 // Profiles one passage for the Register tool. `from` and `to` are "chapter" or "chapter:verse".
@@ -9,6 +10,11 @@ import { parseRefPart, profilePassage } from '@/lib/style-passage'
 // cache construct search uses); the browser only ever receives the finished profile, which is
 // a few hundred bytes.
 export async function GET(req: NextRequest) {
+  // Middleware only DECODES the token for role routing; it does not verify the
+  // signature — each handler must. These corpus profilers were the only routes
+  // relying on the decode alone, so a forged token passed. Verify like every other
+  // authenticated route.
+  if (!getPayload()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { searchParams } = req.nextUrl
   const corpus = (searchParams.get('corpus') ?? 'GNT').toUpperCase()
   const book = (searchParams.get('book') ?? '').trim()

@@ -79,7 +79,7 @@ describe('AssignmentList', () => {
     expect(screen.getByText(/Your instructor hasn/)).toBeInTheDocument()
     unmount()
     wrap('es', <AssignmentList assignments={[]} />)
-    expect(screen.getByText(/Tu profesor a/)).toBeInTheDocument()
+    expect(screen.getByText(/Su profesor a/)).toBeInTheDocument()
   })
 })
 

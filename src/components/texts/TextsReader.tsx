@@ -283,6 +283,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // The single "Texts" dropdown (replaced the row of category chips to give the reading panes
   // more height): menuOpen shows the category list; menuCat drills into one category's works.
   const [menuOpen, setMenuOpen] = useState(false)
+  // The assembled sources-&-copyright line. Reported up via onAttribution where a parent
+  // tools menu shows it (Exegesis); rendered by our own display menu when standalone —
+  // /texts passes no onAttribution, and CC BY-SA sources require the credit to REACH the
+  // reader, not just be computed.
+  const [attribution, setAttribution] = useState('')
   const [menuCat, setMenuCat] = useState<string | null>(null)
   // Drill level inside a category: an author whose works are being listed (e.g. Plato → its
   // dialogues). null = show the author list itself. Only used for categories that group by author.
@@ -687,7 +692,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
   useEffect(() => {
-    if (!work) { onAttribution?.(''); return }
+    if (!work) { setAttribution(''); onAttribution?.(''); return }
     const parts = work.source === 'lxx' ? ['Greek text: Swete’s Septuagint (Cambridge, 1887–1912) via nathans/lxx-swete and First1KGreek (CC BY-SA 4.0); morphology machine-generated. Nestle 1904 is public domain.'] : []
     const ownEnglish = work.osisId ? ENGLISH_BY_WORK[work.osisId] : undefined
     if (work.english === 'brenton') parts.push(ownEnglish?.attribution
@@ -703,7 +708,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       parts.push(t('reader.oldGreekNote'))
       if (translationId === 'brenton') parts.push(t('reader.oldGreekBrenton'))
     }
-    onAttribution?.(parts.join(' '))
+    const assembled = parts.join(' ')
+    setAttribution(assembled)
+    onAttribution?.(assembled)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [work, translationId, onAttribution])
 
@@ -1694,6 +1701,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                       </button>
                     </div>
                     <TextSizeSlider options={FONT_SIZES} value={fontSize} onChange={pickFontSize} />
+                    {attribution && (
+                      <details className="border-t border-gray-100 pt-2">
+                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">{t('texts.sourcesCopyright')}</summary>
+                        <p className="text-xs text-gray-600 mt-2">{attribution}</p>
+                      </details>
+                    )}
                   </div>
                 )}
               </div>
