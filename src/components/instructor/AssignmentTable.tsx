@@ -131,7 +131,7 @@ export function AssignmentTable({
                       <th className="px-3 py-3 text-xs font-semibold text-gray-600 text-center whitespace-nowrap">{t('at.colSubmitted')}</th>
                       <th className="px-3 py-3 text-xs font-semibold text-brand-700 text-center whitespace-nowrap bg-brand-50">{t('at.colAvgScore')}</th>
                       <th className="px-3 py-3 text-xs font-semibold text-gray-600 whitespace-nowrap">{t('at.colStatus')}</th>
-                      <th className="px-3 py-3" />
+                      <th className="px-3 py-3"><span className="sr-only">{t('at.colActions')}</span></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">

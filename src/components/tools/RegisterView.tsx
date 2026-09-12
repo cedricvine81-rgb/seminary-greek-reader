@@ -660,6 +660,7 @@ export function RegisterView() {
                                 naming the unit over them is the only thing that tells a reader
                                 what "6.9" is. It was a footnote under the table before. */}
                             <tr className="text-xs uppercase tracking-wide text-gray-500">
+                              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label -- corner spacer; the column's visible header is in the next row */}
                               <th />
                               <th colSpan={4} className="pb-1 text-right font-semibold">
                                 <ColumnHint label={t('reg.per1000')} hint="reg.hint.per1000" />

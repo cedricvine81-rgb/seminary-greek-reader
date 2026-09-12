@@ -12,7 +12,7 @@ import { setNoteEditing } from '@/lib/note-editing'
  * so the caret never jumps while typing.
  */
 export function NoteComposer({
-  initialHtml, onChange, onBlur, autoFocus, fontScale, onFontScale, lineScale, minHeight = 56, maxHeight = 320,
+  initialHtml, onChange, onBlur, autoFocus, fontScale, onFontScale, lineScale, minHeight = 56, maxHeight = 320, ariaLabel = 'Note',
 }: {
   initialHtml: string
   onChange: (html: string) => void
@@ -23,6 +23,8 @@ export function NoteComposer({
   lineScale?: number
   minHeight?: number
   maxHeight?: number
+  /** Accessible name for the editing surface; pass a localized string where t() is in scope. */
+  ariaLabel?: string
 }) {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -74,14 +76,14 @@ export function NoteComposer({
     <div>
       <div className="flex items-center gap-0.5 mb-1">
         {/* onMouseDown preventDefault keeps the editor selection while clicking. */}
-        <button type="button" title="Bold" onMouseDown={e => e.preventDefault()} onClick={() => exec('bold')} className={btn}><Bold size={13} /></button>
-        <button type="button" title="Italic" onMouseDown={e => e.preventDefault()} onClick={() => exec('italic')} className={btn}><Italic size={13} /></button>
-        <button type="button" title="Bullet list" onMouseDown={e => e.preventDefault()} onClick={() => exec('insertUnorderedList')} className={btn}><List size={13} /></button>
+        <button type="button" title="Bold" aria-label="Bold" onMouseDown={e => e.preventDefault()} onClick={() => exec('bold')} className={btn}><Bold size={13} /></button>
+        <button type="button" title="Italic" aria-label="Italic" onMouseDown={e => e.preventDefault()} onClick={() => exec('italic')} className={btn}><Italic size={13} /></button>
+        <button type="button" title="Bullet list" aria-label="Bullet list" onMouseDown={e => e.preventDefault()} onClick={() => exec('insertUnorderedList')} className={btn}><List size={13} /></button>
         {onFontScale && (
           <span className="ml-auto flex items-center gap-0.5">
-            <button type="button" title="Smaller text" onMouseDown={e => e.preventDefault()} disabled={idx <= 0}
+            <button type="button" title="Smaller text" aria-label="Smaller text" onMouseDown={e => e.preventDefault()} disabled={idx <= 0}
               onClick={() => onFontScale(NOTE_FONT_SCALES[Math.max(0, idx - 1)])} className={`${btn} disabled:opacity-30`}><Minus size={13} /></button>
-            <button type="button" title="Larger text" onMouseDown={e => e.preventDefault()} disabled={idx >= NOTE_FONT_SCALES.length - 1}
+            <button type="button" title="Larger text" aria-label="Larger text" onMouseDown={e => e.preventDefault()} disabled={idx >= NOTE_FONT_SCALES.length - 1}
               onClick={() => onFontScale(NOTE_FONT_SCALES[Math.min(NOTE_FONT_SCALES.length - 1, idx + 1)])} className={`${btn} disabled:opacity-30`}><Plus size={13} /></button>
           </span>
         )}
@@ -89,6 +91,7 @@ export function NoteComposer({
       <div
         ref={ref}
         contentEditable
+        aria-label={ariaLabel}
         suppressContentEditableWarning
         onInput={emit}
         onBlur={onBlur}

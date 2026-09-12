@@ -97,10 +97,10 @@ export function AdminCoursesTable() {
                 {editId === c.id ? (
                   <>
                     <td className="py-2 pr-4" colSpan={2}>
-                      <input className="input w-64" value={editData.name} onChange={e => setEditData(d => ({ ...d, name: e.target.value }))} />
+                      <input className="input w-64" aria-label="Course name" value={editData.name} onChange={e => setEditData(d => ({ ...d, name: e.target.value }))} />
                     </td>
                     <td className="py-2 pr-4">
-                      <input className="input w-48" value={editData.description} onChange={e => setEditData(d => ({ ...d, description: e.target.value }))} placeholder="Description" />
+                      <input className="input w-48" aria-label="Description" value={editData.description} onChange={e => setEditData(d => ({ ...d, description: e.target.value }))} placeholder="Description" />
                     </td>
                     <td className="py-2 pr-4">
                       <label className="flex items-center gap-2 text-xs">
@@ -111,8 +111,8 @@ export function AdminCoursesTable() {
                     <td className="py-2 pr-4 text-gray-400 text-xs">{c._count.enrollments} / {c._count.assignments}</td>
                     <td className="py-2">
                       <div className="flex gap-1">
-                        <Button size="sm" onClick={() => saveEdit(c.id)} loading={saving}><Check size={13} /></Button>
-                        <Button size="sm" variant="secondary" onClick={() => setEditId(null)}><X size={13} /></Button>
+                        <Button size="sm" aria-label="Save" onClick={() => saveEdit(c.id)} loading={saving}><Check size={13} /></Button>
+                        <Button size="sm" variant="secondary" aria-label="Cancel" onClick={() => setEditId(null)}><X size={13} /></Button>
                       </div>
                     </td>
                   </>
@@ -125,8 +125,8 @@ export function AdminCoursesTable() {
                     <td className="py-2 pr-4 text-gray-400 text-xs">{c._count.enrollments} / {c._count.assignments}</td>
                     <td className="py-2">
                       <div className="flex gap-1">
-                        <Button size="sm" variant="secondary" onClick={() => startEdit(c)}><Pencil size={13} /></Button>
-                        <Button size="sm" variant="danger" onClick={() => deleteCourse(c.id, c.name)}><Trash2 size={13} /></Button>
+                        <Button size="sm" variant="secondary" aria-label="Edit course" onClick={() => startEdit(c)}><Pencil size={13} /></Button>
+                        <Button size="sm" variant="danger" aria-label="Delete course" onClick={() => deleteCourse(c.id, c.name)}><Trash2 size={13} /></Button>
                       </div>
                     </td>
                   </>

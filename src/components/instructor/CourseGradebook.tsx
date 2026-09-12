@@ -230,7 +230,7 @@ export async function CourseGradebook({ courseId }: Props) {
         <thead className="sticky top-0 z-20">
           {/* Row 1: group headers */}
           <tr className="border-b border-gray-200">
-            <th className="sticky left-0 z-30 bg-gray-50 px-4 py-2" rowSpan={2} />
+            <th className="sticky left-0 z-30 bg-gray-50 px-4 py-2" rowSpan={2}><span className="sr-only">{t('gb.student')}</span></th>
             {activeGroups.map(g => (
               <th
                 key={g.type}
@@ -267,6 +267,8 @@ export async function CourseGradebook({ courseId }: Props) {
                 </th>
               </Fragment>
             ))}
+            {/* Sub-header spacer under the visible "Overall" group header above it. */}
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <th className="px-2 py-2 bg-brand-50 border-l border-gray-200" />
           </tr>
         </thead>

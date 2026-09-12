@@ -30,6 +30,7 @@ export function HighlightSwatches({ activeColor, onPick, onRemove, copyValue }: 
           key={c}
           type="button"
           title={HIGHLIGHT_COLORS[c].label}
+          aria-label={HIGHLIGHT_COLORS[c].label}
           onClick={() => onPick(c)}
           className={`h-6 w-6 rounded-full ${HIGHLIGHT_COLORS[c].swatch} transition-shadow hover:ring-2 hover:ring-offset-1 hover:ring-gray-400 ${
             activeColor === c ? 'ring-2 ring-offset-1 ring-gray-500' : ''}`}

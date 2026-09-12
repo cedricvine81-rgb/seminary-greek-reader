@@ -261,6 +261,8 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
       {/* Sentence list */}
       <div className="space-y-2">
         {questions.map((qq, i) => (
+          // Named by its own text children (the sentence preview) — the lint rule cannot see expression children.
+          // eslint-disable-next-line jsx-a11y/control-has-associated-label
           <button
             key={qq.id}
             type="button"

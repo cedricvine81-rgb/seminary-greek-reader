@@ -540,33 +540,33 @@ export function AdminUsersTable({ initialPendingOnly = false }: { initialPending
                   <>
                     <td className="py-2 pr-4">
                       <div className="flex gap-1">
-                        <input className="input w-24" value={editData.firstName ?? ''} onChange={e => setEditData(d => ({ ...d, firstName: e.target.value }))} placeholder="First" />
-                        <input className="input w-24" value={editData.surname ?? ''} onChange={e => setEditData(d => ({ ...d, surname: e.target.value }))} placeholder="Last" />
+                        <input className="input w-24" aria-label="First name" value={editData.firstName ?? ''} onChange={e => setEditData(d => ({ ...d, firstName: e.target.value }))} placeholder="First" />
+                        <input className="input w-24" aria-label="Surname" value={editData.surname ?? ''} onChange={e => setEditData(d => ({ ...d, surname: e.target.value }))} placeholder="Last" />
                       </div>
                     </td>
                     <td className="py-2 pr-4">
-                      <input className="input w-44" value={editData.email ?? ''} onChange={e => setEditData(d => ({ ...d, email: e.target.value }))} />
+                      <input className="input w-44" aria-label="Email" value={editData.email ?? ''} onChange={e => setEditData(d => ({ ...d, email: e.target.value }))} />
                     </td>
                     <td className="py-2 pr-4">
-                      <select className="input w-32" value={editData.role ?? u.role} onChange={e => setEditData(d => ({ ...d, role: e.target.value as User['role'] }))}>
+                      <select className="input w-32" aria-label="Role" value={editData.role ?? u.role} onChange={e => setEditData(d => ({ ...d, role: e.target.value as User['role'] }))}>
                         <option value="STUDENT">Student</option>
                         <option value="INSTRUCTOR">Instructor</option>
                         <option value="ADMIN">Admin</option>
                       </select>
                     </td>
                     <td className="py-2 pr-4">
-                      <input className="input w-36" value={editData.institution ?? ''} onChange={e => setEditData(d => ({ ...d, institution: e.target.value }))} placeholder="Institution" />
+                      <input className="input w-36" aria-label="Institution" value={editData.institution ?? ''} onChange={e => setEditData(d => ({ ...d, institution: e.target.value }))} placeholder="Institution" />
                     </td>
                     <td className="py-2 pr-4">
                       <Badge variant={u.approved ? 'green' : 'gray'}>{u.approved ? 'Approved' : 'Pending'}</Badge>
                     </td>
                     <td className="py-2 pr-4">
-                      <input className="input w-32" type="password" value={editData.password ?? ''} onChange={e => setEditData(d => ({ ...d, password: e.target.value }))} placeholder="New password" />
+                      <input className="input w-32" type="password" aria-label="New password" value={editData.password ?? ''} onChange={e => setEditData(d => ({ ...d, password: e.target.value }))} placeholder="New password" />
                     </td>
                     <td className="py-2">
                       <div className="flex gap-1">
-                        <Button size="sm" onClick={() => saveEdit(u.id)} loading={saving}><Check size={13} /></Button>
-                        <Button size="sm" variant="secondary" onClick={() => setEditId(null)}><X size={13} /></Button>
+                        <Button size="sm" aria-label="Save" onClick={() => saveEdit(u.id)} loading={saving}><Check size={13} /></Button>
+                        <Button size="sm" variant="secondary" aria-label="Cancel" onClick={() => setEditId(null)}><X size={13} /></Button>
                       </div>
                     </td>
                   </>

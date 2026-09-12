@@ -682,12 +682,12 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete, lockedNote }:
         placeholder={t('notes.folderName')} className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
       <div className="flex items-center gap-1">
         {NOTE_COLOR_KEYS.map(c => (
-          <button key={c} title={NOTE_COLORS[c].label} onClick={() => onChange({ ...value, color: c })}
+          <button key={c} title={NOTE_COLORS[c].label} aria-label={NOTE_COLORS[c].label} onClick={() => onChange({ ...value, color: c })}
             className={`h-5 w-5 rounded-full ${NOTE_COLORS[c].dot} ${value.color === c ? 'ring-2 ring-offset-1 ring-gray-500' : ''}`} />
         ))}
       </div>
       <button onClick={onSave} className="inline-flex items-center gap-1 rounded-lg bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700"><Check size={13} /> Save</button>
-      <button onClick={onCancel} className="text-gray-400 hover:text-gray-600"><X size={16} /></button>
+      <button onClick={onCancel} aria-label={t('notes.cancel')} className="text-gray-400 hover:text-gray-600"><X size={16} /></button>
       {onDelete
         ? <button onClick={onDelete} className="ml-auto inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-800"><Trash2 size={13} /> Delete folder</button>
         : lockedNote ? <span className="ml-auto text-[11px] text-gray-400 max-w-[16rem]">{lockedNote}</span> : null}

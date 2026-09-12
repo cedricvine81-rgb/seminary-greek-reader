@@ -574,8 +574,13 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
       </div>
       )}
 
+      {/* role="application" is the right semantic for a keyboard-driven drag canvas, but the
+          lint rule's interactive-role list doesn't include it — the tabIndex is deliberate. */}
+      {/* eslint-disable jsx-a11y/no-noninteractive-tabindex */}
       <div
         ref={canvasRef}
+        role="application"
+        aria-label={t('phr.diagramCanvas')}
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onCanvasDown}
@@ -584,6 +589,7 @@ export function DiagramCanvas({ words, rtl = false, initialData, onSave, readOnl
         className={`relative w-full rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-brand-300 print:border-gray-300 ${mode === 'line' || mode === 'bracket' ? 'cursor-crosshair' : mode === 'label' ? 'cursor-text' : ''}`}
         style={{ height: canvasH, touchAction: 'none' }}
       >
+      {/* eslint-enable jsx-a11y/no-noninteractive-tabindex */}
         {/* Annotation lines under the chips. Hit-testing only in move mode. */}
         <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }} aria-hidden>
           <defs>

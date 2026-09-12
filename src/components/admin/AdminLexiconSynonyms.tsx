@@ -187,7 +187,7 @@ export function AdminLexiconSynonyms() {
                   <th className="pb-2 pr-3">Primary gloss</th>
                   <th className="pb-2 pr-3 text-right">Freq.</th>
                   <th className="pb-2 pr-3">Accepted synonyms</th>
-                  <th className="pb-2 w-32"></th>
+                  <th className="pb-2 w-32"><span className="sr-only">Actions</span></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">

@@ -152,6 +152,8 @@ export function InkPad({ value, onChange, height = 220 }: {
       </div>
       <div ref={wrapRef} className="rounded-lg border border-gray-200 bg-surface">
         <canvas
+          role="img"
+          aria-label={t('ann.inkArea')}
           ref={canvasRef}
           onPointerDown={onDown}
           onPointerMove={onMove}

@@ -84,7 +84,7 @@ export function StudentGradebook({ studentName, rows, weights = null }: { studen
         <thead>
           {/* Row 1: group headers */}
           <tr className="border-b border-gray-200">
-            <th className="sticky left-0 z-10 bg-gray-50 px-4 py-2" rowSpan={2} />
+            <th className="sticky left-0 z-10 bg-gray-50 px-4 py-2" rowSpan={2}><span className="sr-only">{t('gb.student')}</span></th>
             {activeGroups.map(g => (
               <th
                 key={g.type}
@@ -118,6 +118,8 @@ export function StudentGradebook({ studentName, rows, weights = null }: { studen
                 <th className="px-2 py-2 text-center font-semibold text-gray-600 bg-gray-100 border-l border-gray-200">{t('student.avg')}</th>
               </Fragment>
             ))}
+            {/* Sub-header spacer under the visible "Overall" group header above it. */}
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <th className="px-2 py-2 bg-brand-50 border-l border-gray-200" />
           </tr>
         </thead>

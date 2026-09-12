@@ -295,6 +295,8 @@ export function AnnotationLayer({ page, surface = 'morphology', children }: {
             <ul className="mt-2 space-y-1.5 rounded-lg border border-gray-200 bg-surface p-2.5">
               {items.filter(hasNote).map(a => (
                 <li key={a.id}>
+                  {/* Named by its own text children (quote + note body) — the lint rule cannot see expression children. */}
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <button
                     type="button"
                     onClick={() => {

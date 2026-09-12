@@ -228,6 +228,7 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
                   <td className="px-3 py-2 text-center bg-brand-50/30">
                     <PctBadge pct={data.runningPct} />
                   </td>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label -- decorative spacer in the totals row */}
                   {isTranslation && <td colSpan={2} />}
                 </tr>
               </tfoot>

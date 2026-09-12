@@ -239,6 +239,7 @@ export function RegisterReport({
               <table className="w-full text-[10px]">
                 <thead>
                   <tr className="text-left text-[9px]">
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label -- corner spacer; the column's visible header is in the next row */}
                     <th />
                     <th colSpan={4} className="text-right font-semibold uppercase tracking-wide">{t('reg.per1000')}</th>
                   </tr>
