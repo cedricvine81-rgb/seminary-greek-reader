@@ -138,9 +138,12 @@ def build_book(nlp, path):
 def build_prose(nlp, path):
     # Greco-Roman prose file (chapters → verses); verses restart per chapter, so key "ch.verse".
     d = json.loads(path.read_text())
+    # `lang: 'la'` marks a verse whose original is LATIN, not Greek (Polycarp 10-12/14, the end
+    # of Hermas). Feeding Latin to the Greek analyzer yields confident nonsense, and the reader
+    # already shows those verses as Latin without a parsing pane — so skip them.
     units = [(f"{ch['number']}.{v['number']}", v['greek'])
              for ch in d.get('chapters', []) for v in ch.get('verses', [])
-             if v.get('greek')]
+             if v.get('greek') and v.get('lang') != 'la']
     return analyze_units(nlp, units) if units else None
 
 

@@ -30,8 +30,14 @@ import re
 import ssl
 import sys
 import urllib.request
+import importlib.util
 import xml.etree.ElementTree as ET
 from pathlib import Path
+
+_spec = importlib.util.spec_from_file_location(
+    '_af_latin', Path(__file__).resolve().parent / 'fix-af-latin.py')
+_latin = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_latin)
 
 ECW = 'https://www.earlychristianwritings.com/text/shepherd-lightfoot.html'
 TEI = ('https://raw.githubusercontent.com/OpenGreekAndLatin/First1KGreek/master/'
@@ -66,6 +72,31 @@ def fetch(url, name, no_cache):
 
 # ── Greek: TEI → {continuous chapter: {'label', 'sections': {n: text}}} ─────────────────────
 
+# Where Lightfoot's English merges two of the Greek's sections into one verse, the strict
+# match below would skip the whole chapter and the reader would get no Greek at all. Value =
+# {our verse: how many consecutive Greek sections it absorbs}; the plan is built by consuming
+# sections in order, so the shift after a merge falls out for free. Found by reading both
+# columns (2026-09-11); these are the only such chapters in Hermas.
+MERGES = {
+    39: {8: 2},              # EN 39:8 = GRC 39:8+39:9 ("See to this doubtful-mindedness...")
+    67: {10: 2, 11: 2},      # EN 67:10 = GRC 10+11, EN 67:11 = GRC 12+13
+    70: {3: 2},              # EN 70:3 = GRC 70:3+70:4
+}
+
+
+def merge_plan(sections, verses, merge):
+    """{our verse -> [greek section numbers]}, or None if it does not consume the chapter."""
+    remaining = sorted(sections, key=int)
+    plan, i = {}, 0
+    for v in verses:
+        take = merge.get(v, 1)
+        if i + take > len(remaining):
+            return None
+        plan[v] = remaining[i:i + take]
+        i += take
+    return plan if i == len(remaining) else None
+
+
 def unit_label(book):
     if book <= 5:
         return 'Vision', book
@@ -98,7 +129,13 @@ def parse_greek(xml_bytes):
 # ── English: ECW HTML → [(continuous chapter, verse, text)] with healed markers ─────────────
 
 def parse_english(html):
-    paras = re.findall(r'<P>\s*(\d+)(?:\[(\d+)\])?:(\d+)\b(.*?)</P>', html, re.I | re.S)
+    # The transcription also typos a stray letter into the bracket for Similitude 9.31.4-6,
+    # writing "27[104]a:4" and "27[104a]:5/:6" where it means "31[108]:4/:5/:6". The old
+    # pattern matched neither form, so those three paragraphs of Lightfoot were DROPPED
+    # ENTIRELY (found 2026-09-11). Tolerate the letter; the healing below then files them
+    # under chapter 108, because their verse numbers continue 108's and do not reset.
+    paras = re.findall(r'<P>\s*(\d+)(?:\s*\[\s*(\d+)\s*[a-z]?\s*\]\s*[a-z]?)?\s*:\s*(\d+)\b(.*?)</P>',
+                       html, re.I | re.S)
     out = []
     cont = 0          # healed continuous chapter
     prev_verse = 0
@@ -111,6 +148,9 @@ def parse_english(html):
             cont += 1                                    # typo'd marker: verse reset ⇒ next chapter
         prev_verse = verse
         text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', body)).strip()
+        # Stripping <I>…</I> leaves a space before the punctuation that followed the tag
+        # ("the vine</I>?" -> "the vine ?"). Same latent bug as build-apostolic-fathers.py.
+        text = re.sub(r'\s+([,;.:!?])', r'\1', text)
         out.append((cont, verse, text))
     return out
 
@@ -140,12 +180,28 @@ def main():
     docs = []
     for cont in sorted(chapters):
         g = greek.get(cont, {'label': f'Chapter {cont}', 'sections': {}})
-        match = set(chapters[cont]) == set(g['sections'])
+        plan = None
+        if g['sections']:
+            if set(chapters[cont]) == set(g['sections']):
+                plan = {v: [v] for v in chapters[cont]}
+            elif cont in MERGES:
+                plan = merge_plan(g['sections'], sorted(chapters[cont]), MERGES[cont])
         verses = []
         for v in sorted(chapters[cont]):
             row = {'number': v, 'text': chapters[cont][v]}
-            if match and v in g['sections']:
-                row['greek'] = g['sections'][v]
+            if plan is not None and v in plan:
+                grc = ' '.join(g['sections'][n] for n in plan[v])
+                # The end of Hermas survives only in LATIN, and the TEI stores that Latin
+                # TRANSLITERATED INTO GREEK LETTERS. Decode it and mark the verse, exactly as
+                # build-apostolic-fathers-greek.py does, or the reader shows nonsense Greek and
+                # the parsing pane invents analyses for it.
+                if _latin.looks_transliterated(grc):
+                    grc, row['lang'] = _latin.decode(grc), 'la'
+                else:
+                    head, tail = _latin.split_tail(grc)
+                    if tail:
+                        grc = f'{head} {_latin.decode(tail)}'
+                row['greek'] = grc
             verses.append(row)
         docs.append({'number': cont, 'label': g['label'], 'verses': verses})
 
