@@ -210,9 +210,11 @@ def apply_greek(slug, greek):
                         g, v['lang'] = _latin.decode(g), 'la'
                         latin_v += 1
                     else:
-                        head, tail = _latin.split_tail(g)
-                        if tail:
-                            g = f'{head} {_latin.decode(tail)}'
+                        # Some verses interleave the two languages — the switch can even fall
+                        # mid-sentence — so decode chunk by chunk, not just a trailing run.
+                        mixed = _latin.fix_mixed(g)
+                        if mixed != g:
+                            g = mixed
                             latin_v += 1
                     v['greek'] = g
                     matched_v += 1

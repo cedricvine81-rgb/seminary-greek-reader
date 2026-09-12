@@ -1,0 +1,11 @@
+{
+  "_source": "Traducción propia del LATÍN (El Pastor de Hermas). En este capítulo el griego se acaba: 107:3 mezcla las dos lenguas y 107:5 solo existe en latín; el resto se tradujo del griego. El griego de Hermas se interrumpe en 107:4: de ahí al final la obra solo sobrevive en la versión LATINA (la llamada Vulgata palatina), y de ella se hizo el español. El latín del corpus llega transliterado en letras griegas desde la fuente y esta aplicación lo restituye (scripts/fix-af-latin.py); sus erratas —«ceter» por ceteris, «pernianere» por permanere— son de la fuente, no de la traducción.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "«Escucha —dice— también acerca de todo esto. Las piedras quitadas de la llanura y puestas en la edificación de la torre en lugar de las desechadas son las raíces del monte blanco.",
+    "2": "Puesto, pues, que los que creyeron del monte blanco fueron hallados todos inocentes, mandó el señor de la torre que estas, de las raíces de este monte, fueran echadas en la edificación de la torre; porque supo que, si estas piedras iban a la edificación de la torre, permanecerían resplandecientes y ninguna de ellas se ennegrecería.",
+    "3": "Y si hubiera añadido de los demás montes, habría tenido que visitar otra vez aquella torre y purificarla. Pero todos estos fueron hallados blancos: los que han creído y los que van a creer, porque son del mismo linaje. Dichoso este linaje, porque es inocente.",
+    "4": "Escucha ahora también acerca de las piedras redondas y resplandecientes. También todas ellas son del monte blanco. Y escucha por qué fueron halladas redondas: sus riquezas las oscurecieron un poco apartándolas de la verdad y las ofuscaron; pero de Dios nunca se apartaron, ni salió de su boca ninguna palabra mala, sino toda equidad y virtud de la verdad.",
+    "5": "Viendo, pues, el Señor su mente, que podían ser favorables a la verdad y permanecer también buenos, mandó que sus bienes les fueran recortados, pero no quitados del todo, para que pudieran hacer algún bien con lo que se les dejaba, y vivirán para Dios, puesto que son de buen linaje. Por eso, pues, fueron recortados un poco y puestos en la edificación de esta torre»."
+  }
+}

@@ -198,9 +198,9 @@ def main():
                 if _latin.looks_transliterated(grc):
                     grc, row['lang'] = _latin.decode(grc), 'la'
                 else:
-                    head, tail = _latin.split_tail(grc)
-                    if tail:
-                        grc = f'{head} {_latin.decode(tail)}'
+                    # Three verses interleave the two languages (107:3, 113:3, 113:5) — the
+                    # switch even falls mid-sentence — so decode chunk by chunk, not just the tail.
+                    grc = _latin.fix_mixed(grc)
                 row['greek'] = grc
             verses.append(row)
         docs.append({'number': cont, 'label': g['label'], 'verses': verses})

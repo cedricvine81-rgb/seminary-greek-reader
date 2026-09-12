@@ -1,0 +1,11 @@
+{
+  "_source": "Traducción propia del LATÍN (El Pastor de Hermas). 113:1-2 solo existen en LATÍN, 113:3 y 113:5 mezclan las dos lenguas y 113:4 es griego. El griego de Hermas se interrumpe en 107:4: de ahí al final la obra solo sobrevive en la versión LATINA (la llamada Vulgata palatina), y de ella se hizo el español. El latín del corpus llega transliterado en letras griegas desde la fuente y esta aplicación lo restituye (scripts/fix-af-latin.py); sus erratas —«ceter» por ceteris, «pernianere» por permanere— son de la fuente, no de la traducción.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "Y te he enviado estas vírgenes para que habiten contigo; porque he visto que te son afables. Las tienes, pues, como ayudantes, para que mejor puedas guardar sus mandamientos; porque no puede ser que sin estas vírgenes se guarden estos mandamientos. Y veo que ellas están a gusto contigo; pero yo les mandaré que de ninguna manera se aparten de tu casa.",
+    "2": "Tú solamente limpia tu casa; porque en casa limpia habitarán de buena gana, pues son limpias y castas y laboriosas y todas tienen gracia ante el Señor. Por tanto, si encuentran pura tu casa, permanecerán contigo; pero si ocurre la más mínima suciedad, al instante se apartarán de tu casa; porque estas vírgenes no aman suciedad alguna».",
+    "3": "Le digo: «Espero, señor, agradarles, de modo que habiten siempre de buena gana en mi casa». Y así como este, a quien me entregaste, no me reprocha nada, tampoco ellas me reprocharán.",
+    "4": "Le dice al pastor: «Sé que el siervo de Dios quiere vivir y guardará estos mandamientos y pondrá a las vírgenes en pureza».",
+    "5": "Diciendo esto, me entregó otra vez al pastor y, llamando a las vírgenes, les dice: «Puesto que veo que habitan de buena gana en la casa de este, se lo encomiendo a él y a su casa, para que de su casa no se aparten en absoluto». Y ellas oyeron de buena gana estas palabras."
+  }
+}

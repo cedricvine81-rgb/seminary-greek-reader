@@ -60,6 +60,36 @@ def split_tail(s: str):
     return s, ''
 
 
+# Where the Greek runs out mid-verse the two languages interleave in any order: Latin first
+# then Greek (Hermas 107:3, 113:3), Greek first then Latin (107:4), and — in 107:3 and 113:5 —
+# the switch falls INSIDE a sentence, after a comma or a colon. split_tail() sees only the
+# trailing case, so mixed verses need a pass that classifies each chunk on its own.
+CHUNK = re.compile(r'(?<=[.;:·])\s+')
+
+
+def _decode_leading_run(chunk: str) -> str:
+    """`chunk` carries real Greek, but may OPEN with a transliterated Latin run."""
+    toks = chunk.split(' ')
+    k = next((i for i, t in enumerate(toks) if ACCENTED.search(t)), None)
+    if k is None or k < 3:
+        return chunk
+    head = ' '.join(toks[:k])
+    if not looks_transliterated(head):
+        return chunk
+    return decode(head) + ' ' + ' '.join(toks[k:])
+
+
+def fix_mixed(s: str) -> str:
+    """Decode every transliterated stretch of a verse that is part Latin, part Greek.
+    Returns `s` unchanged unless at least one chunk is unmistakably Latin, so a verse of
+    plain Greek — accents or not — is never touched."""
+    parts = CHUNK.split(s)
+    if not any(looks_transliterated(p) for p in parts):
+        return s
+    return ' '.join(decode(p) if not ACCENTED.search(p) else _decode_leading_run(p)
+                    for p in parts)
+
+
 def main() -> None:
     write = '--write' in sys.argv
     whole = partial = 0
@@ -80,16 +110,16 @@ def main() -> None:
                     touched = True
                     print(f'  {path.stem:10s} {ch["number"]}:{v["number"]}  LATIN  {v["greek"][:64]}…')
                 else:
-                    head, tail = split_tail(g)
-                    if tail:
-                        v['greek'] = f'{head} {decode(tail)}'
+                    mixed = fix_mixed(g)
+                    if mixed != g:
+                        v['greek'] = mixed
                         partial += 1
                         touched = True
-                        print(f'  {path.stem:10s} {ch["number"]}:{v["number"]}  tail   …{decode(tail)[:56]}…')
+                        print(f'  {path.stem:10s} {ch["number"]}:{v["number"]}  mixed  {mixed[:64]}…')
         if touched and write:
             with path.open('w', encoding='utf-8') as f:
                 json.dump(doc, f, ensure_ascii=False)
-    print(f'\n{whole} verses are wholly Latin (marked lang=la); {partial} carry a Latin tail.')
+    print(f'\n{whole} verses are wholly Latin (marked lang=la); {partial} mix Latin with Greek.')
     print('WROTE the corpus.' if write else 'Dry run — pass --write to apply.')
 
 

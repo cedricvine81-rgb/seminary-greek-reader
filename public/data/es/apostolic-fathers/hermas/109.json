@@ -1,0 +1,11 @@
+{
+  "_source": "Traducción propia del LATÍN (El Pastor de Hermas). El griego de Hermas se interrumpe en 107:4: de ahí al final la obra solo sobrevive en la versión LATINA (la llamada Vulgata palatina), y de ella se hizo el español. El latín del corpus llega transliterado en letras griegas desde la fuente y esta aplicación lo restituye (scripts/fix-af-latin.py); sus erratas —«ceter» por ceteris, «pernianere» por permanere— son de la fuente, no de la traducción.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "Remédiense, pues, ustedes mientras todavía se edifica la torre.",
+    "2": "El Señor habita en los hombres que aman la paz; porque a él la paz le es querida; pero de los pendencieros y de los perdidos en la malicia está lejos. Devuélvanle, pues, el espíritu íntegro, tal como lo recibieron.",
+    "3": "Porque si das al batanero una prenda nueva e íntegra y quieres recibirla otra vez íntegra, pero el batanero te la devuelve rasgada, ¿la recibirás así? ¿No te encenderás al instante y lo perseguirás con reproches, diciendo: «Una prenda íntegra te di; ¿por qué la rasgaste y la dejaste inservible? Y por el rasgón que le hiciste no puede usarse»? ¿No le dirás todas estas palabras al batanero por el rasgón que hizo en tu prenda?",
+    "4": "Si, pues, así te duele tu prenda y te quejas de no recibirla íntegra, ¿qué piensas que te hará el Señor, que te dio el espíritu íntegro, y tú lo dejaste del todo inservible, de modo que no pueda servir de nada a su Señor? Porque su uso empezó a ser inútil cuando fue corrompido por ti. ¿No te castigará, pues, con la muerte el Señor de ese espíritu por esta obra tuya?».",
+    "5": "«Ciertamente —digo—, a todos aquellos a quienes halle permaneciendo en el recuerdo de las ofensas los castigará». «No pisoteen —dice— su clemencia, sino más bien hónrenlo, porque es tan paciente con las faltas de ustedes y no es como ustedes. Practiquen, pues, el arrepentimiento que les es provechoso»."
+  }
+}

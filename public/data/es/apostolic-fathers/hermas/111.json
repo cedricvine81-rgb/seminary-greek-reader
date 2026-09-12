@@ -1,0 +1,9 @@
+{
+  "_source": "Traducción propia del LATÍN (El Pastor de Hermas). El griego de Hermas se interrumpe en 107:4: de ahí al final la obra solo sobrevive en la versión LATINA (la llamada Vulgata palatina), y de ella se hizo el español. El latín del corpus llega transliterado en letras griegas desde la fuente y esta aplicación lo restituye (scripts/fix-af-latin.py); sus erratas —«ceter» por ceteris, «pernianere» por permanere— son de la fuente, no de la traducción.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "Después de haber escrito por completo este libro, vino aquel mensajero que me había entregado a este pastor, a la casa donde yo estaba, y se sentó sobre el lecho, y este pastor se puso de pie a su derecha. Luego me llamó y me dijo esto:",
+    "2": "«Te entregué —dice— a ti y a tu casa a este pastor, para que por él pudieras ser protegido». «Así es —digo—, señor». «Si quieres, pues —dice—, ser protegido de toda vejación y de toda crueldad, y tener éxito en toda obra y palabra buena y toda virtud de equidad, anda en los mandamientos de este que te he dado, y podrás dominar toda maldad.",
+    "3": "Porque, si guardas sus mandamientos, te estará sometida toda codicia y dulzura de este siglo, y el éxito te seguirá en todo buen negocio. Acoge en ti su gravedad y su modestia, y di a todos que él goza de gran honor y dignidad ante el Señor y que preside una gran potestad y es poderoso en su oficio. Solo a él, en todo el orbe, le ha sido conferida la potestad sobre el arrepentimiento. ¿No te parece que es poderoso? Pero ustedes desprecian su gravedad y el respeto que les tiene»."
+  }
+}

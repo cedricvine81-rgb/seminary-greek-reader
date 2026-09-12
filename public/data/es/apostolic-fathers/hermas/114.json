@@ -1,0 +1,11 @@
+{
+  "_source": "Traducción propia del LATÍN (El Pastor de Hermas). El griego de Hermas se interrumpe en 107:4: de ahí al final la obra solo sobrevive en la versión LATINA (la llamada Vulgata palatina), y de ella se hizo el español. El latín del corpus llega transliterado en letras griegas desde la fuente y esta aplicación lo restituye (scripts/fix-af-latin.py); sus erratas —«ceter» por ceteris, «pernianere» por permanere— son de la fuente, no de la traducción.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "Luego me dijo: «Condúcete varonilmente en este ministerio, anuncia a todo hombre las grandezas del Señor, y tendrás gracia en este ministerio. Todo el que, pues, ande en estos mandamientos, vivirá y será feliz en su vida; pero el que los descuide, no vivirá y será infeliz en su vida.",
+    "2": "Di a todos los que puedan obrar rectamente que no cesen; practicar buenas obras les es provechoso. Y digo que a todo hombre hay que arrancarlo de las penurias; porque el que padece necesidad y sufre penurias en la vida diaria está en gran tormento y aprieto.",
+    "3": "El que, pues, arranca de la necesidad a un alma así, gana para sí gran gozo. Porque el que es afligido por semejante penuria se atormenta con igual tormento y se retuerce como el que está en cadenas. Porque muchos, por calamidades semejantes, no pudiendo soportarlas, se dan muerte a sí mismos. El que, pues, conoce la calamidad de un hombre así y no lo arranca de ella, comete un gran pecado y se hace reo de su sangre.",
+    "4": "Hagan, pues, buenas obras, cuantos han recibido del Señor, no sea que, mientras tardan en hacerlas, se acabe la edificación de la torre. Porque por causa de ustedes se ha interrumpido la obra de su edificación. Si, pues, no se apresuran a obrar rectamente, se acabará la torre y quedarán fuera».",
+    "5": "Y después de hablar conmigo, se levantó del lecho y, tomando consigo al pastor y a las vírgenes, se fue, diciéndome que me devolvería a aquel pastor y a las vírgenes a mi casa."
+  }
+}

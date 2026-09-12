@@ -1,0 +1,10 @@
+{
+  "_source": "Traducción propia del LATÍN (El Pastor de Hermas). El griego de Hermas se interrumpe en 107:4: de ahí al final la obra solo sobrevive en la versión LATINA (la llamada Vulgata palatina), y de ella se hizo el español. El latín del corpus llega transliterado en letras griegas desde la fuente y esta aplicación lo restituye (scripts/fix-af-latin.py); sus erratas —«ceter» por ceteris, «pernianere» por permanere— son de la fuente, no de la traducción.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "Le digo: «Pregúntale a él mismo, señor, si desde que está en mi casa he hecho algo fuera de orden con lo que lo haya ofendido».",
+    "2": "«También yo —dice— sé que no has hecho nada fuera de orden ni lo vas a hacer. Y por eso hablo contigo esto, para que perseveres; porque él ha dado buen informe de ti ante mí. Y tú dirás estas palabras a los demás, para que también aquellos que se han arrepentido o van a arrepentirse sientan lo mismo que tú, y él dé buen informe de ellos ante mí, y yo ante el Señor».",
+    "3": "«También yo —digo—, señor, anuncio a todo hombre las grandezas del Señor; y espero que todos los que antes pecaron, si oyen esto, se arrepentirán de buena gana y recobrarán la vida».",
+    "4": "«Permanece, pues —dice—, en este ministerio y llévalo a término. Porque todos los que cumplen sus mandamientos tendrán vida, y este tendrá gran honor ante el Señor. Pero todos los que no guardan sus mandamientos huyen de su propia vida y se le oponen; y no siguen sus mandamientos, sino que se entregan a la muerte, y cada uno de ellos se hace reo de su propia sangre. Y a ti te digo que sirvas a estos mandamientos, y tendrás remedio de tus pecados."
+  }
+}

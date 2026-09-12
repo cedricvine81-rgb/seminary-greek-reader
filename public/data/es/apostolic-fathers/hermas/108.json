@@ -1,0 +1,12 @@
+{
+  "_source": "Traducción propia del LATÍN (El Pastor de Hermas). 108:1-4 solo existen en LATÍN; 108:5-6 conservan griego (y 108:6 termina en latín). El griego de Hermas se interrumpe en 107:4: de ahí al final la obra solo sobrevive en la versión LATINA (la llamada Vulgata palatina), y de ella se hizo el español. El latín del corpus llega transliterado en letras griegas desde la fuente y esta aplicación lo restituye (scripts/fix-af-latin.py); sus erratas —«ceter» por ceteris, «pernianere» por permanere— son de la fuente, no de la traducción.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "«Y las demás, las que todavía quedaron redondas y no fueron ajustadas en aquella edificación, porque aún no han recibido el sello, fueron devueltas a su lugar; porque fueron halladas muy redondas.",
+    "2": "Pero es necesario que se les recorte este siglo y las vanidades de sus riquezas, y entonces encajarán en el reino de Dios. Porque es necesario que entren en el reino de Dios; pues a este linaje inocente lo bendijo el Señor. De este linaje, pues, no se perderá nadie. Y aunque alguno de ellos, tentado por el perversísimo diablo, cometa alguna falta, pronto volverá corriendo a su Señor.",
+    "3": "Dichosos los juzgo a todos ustedes, yo el mensajero del arrepentimiento, cuantos son inocentes como niños, porque la parte de ustedes es buena y honrada ante Dios.",
+    "4": "Y les digo a todos ustedes, cuantos han recibido este sello: tengan sencillez y no guarden memoria de las ofensas ni permanezcan en su malicia o en el recuerdo amargo de las ofensas; háganse un solo espíritu y curen estas malas grietas y quítenlas de entre ustedes, para que el dueño de los rebaños se alegre por ellas.",
+    "5": "Y se alegrará si halla todo sano y que nada de ello se ha descarriado. Pero si se halla que algo de ello se ha descarriado, ¡ay de los pastores!",
+    "6": "Y si los pastores mismos se hallan descarriados, ¿qué dirán al dueño del rebaño? ¿Que se descarriaron por causa de las ovejas? No se les creerá; porque cosa increíble es que un pastor padezca algo por parte de las ovejas; antes bien serán castigados por su mentira. Y yo soy pastor, y muy estrechamente me toca dar cuenta de ustedes."
+  }
+}

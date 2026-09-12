@@ -1,0 +1,9 @@
+{
+  "_source": "Traducción propia del LATÍN (El Pastor de Hermas). El griego de Hermas se interrumpe en 107:4: de ahí al final la obra solo sobrevive en la versión LATINA (la llamada Vulgata palatina), y de ella se hizo el español. El latín del corpus llega transliterado en letras griegas desde la fuente y esta aplicación lo restituye (scripts/fix-af-latin.py); sus erratas —«ceter» por ceteris, «pernianere» por permanere— son de la fuente, no de la traducción.",
+  "_note": "Traducción al español hecha para esta aplicación.",
+  "verses": {
+    "1": "Todo esto que arriba está escrito, yo el pastor, mensajero del arrepentimiento, lo he mostrado y lo he hablado a los siervos de Dios. Si, pues, creen y oyen mis palabras y andan en ellas y enderezan sus caminos, podrán vivir. Pero si permanecen en la malicia y en el recuerdo de las ofensas, ninguno de esa clase vivirá para Dios. Todo lo que yo debía decir les ha sido dicho.",
+    "2": "Me dijo el pastor mismo: «¿Me has preguntado todo?». Y dije: «Sí, señor». «¿Por qué, pues, no me preguntaste sobre la forma de las piedras repuestas en la edificación, cuando rellenamos las huellas?». Y dije: «Se me olvidó, señor».",
+    "3": "«Escucha ahora —dice— acerca de ellas. Estos son los que ahora han oído mis mandamientos y se han arrepentido de todo corazón. Y cuando vio el Señor que su arrepentimiento era bueno y puro y que podían permanecer en él, mandó que sus pecados anteriores fueran borrados. Porque estas huellas eran sus pecados, y fueron emparejadas para que no aparecieran»."
+  }
+}

@@ -329,6 +329,19 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // cae en distinto punto que en inglés: el español sigue al griego. 65:2 conserva la suscripción del
   // manuscrito, que el inglés de Lightfoot omite; 59:3 abre con una laguna real del manuscrito.
   'af-1clement': 'apostolic-fathers/1clement',
+  // EL PASTOR DE HERMAS — la obra más larga de la colección (114 capítulos / 723 secciones) y la
+  // única cuyo original se acaba a mitad de camino: el griego se interrumpe en 107:4 y de ahí al
+  // final solo sobrevive la versión LATINA (Vulgata palatina), de la que se hizo el español de
+  // 107:5, 108:1-4, 109-112, 113:1-2 y 114. Tres secciones mezclan las dos lenguas dentro de una
+  // misma frase (107:3, 113:3, 113:5). ⚠ Ese latín llega de la fuente TRANSLITERADO EN LETRAS
+  // GRIEGAS; scripts/fix-af-latin.py lo restituye y marca lang:'la'. Sus erratas («ceter» por
+  // ceteris, «pernianere» por permanere) son de la fuente, no de la traducción.
+  // Términos fijos: διψυχία = «doblez de ánimo», δίψυχος = «de doble ánimo»; ὁ ποιμήν = «el pastor»;
+  // κυρία = «señora». Los nombres de las doce vírgenes y de las doce mujeres de negro (92:2-3)
+  // siguen los que ya usa la Visión 3 (Ἐγκράτεια = «Dominio propio», Ἀκακία = «Inocencia»…).
+  // ⚠ El griego cuenta VEINTE piedras en 81:3 y VEINTICINCO en 92:4; el inglés armoniza las dos en
+  // veinticinco. El español sigue al griego en cada sitio, porque es el que se muestra al lado.
+  'af-hermas': 'apostolic-fathers/hermas',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
