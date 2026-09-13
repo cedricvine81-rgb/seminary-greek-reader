@@ -376,6 +376,9 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   'lys-against-the-corn-dealers': 'greco/lys-against-the-corn-dealers',
   'lys-on-the-scrutiny-of-evandros': 'greco/lys-on-the-scrutiny-of-evandros',
   'lys-defense-against-a-charge-of-taking-bribes': 'greco/lys-defense-against-a-charge-of-taking-bribes',
+  'lys-against-alcibiades-2': 'greco/lys-against-alcibiades-2',
+  'lys-against-pancleon': 'greco/lys-against-pancleon',
+  'lys-on-the-confiscation-of-the-property-of-the-b': 'greco/lys-on-the-confiscation-of-the-property-of-the-b',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
