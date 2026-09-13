@@ -348,6 +348,17 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // Orígenes (funde Mateo 26-27 de memoria); «Discurso verdadero» = el título del libro de
   // Celso. Los libros I-VIII del Contra Celso son otra obra (origen-celsus-N) y siguen sin español.
   'origen-celsus-praef': 'fathers/origen-celsus-praef',
+  // LISIAS — los discursos, uno por uno según se completan (un discurso a medias mostraría
+  // español para unos §§ e inglés para el resto sin avisar). Español del griego de Perseus;
+  // Lamb (Loeb 1930) es solo apoyo. Fórmulas fijas: ὦ ἄνδρες = «señores»; ὦ ἄνδρες δικασταί =
+  // «señores jueces»; ὦ ἄνδρες Ἀθηναῖοι = «atenienses»; ὦ βουλή = «señores del Consejo»;
+  // δοκιμασία = «escrutinio». LEY/TESTIGOS en versalitas marcan documentos leídos en el juicio
+  // que no se conservan. El § y el capítulo coinciden (una sección por capítulo).
+  'lys-on-the-murder-of-eratosthenes': 'greco/lys-on-the-murder-of-eratosthenes',
+  'lys-against-simon': 'greco/lys-against-simon',
+  'lys-on-a-wound-by-premeditation': 'greco/lys-on-a-wound-by-premeditation',
+  'lys-for-callias': 'greco/lys-for-callias',
+  'lys-against-theomnestus-2': 'greco/lys-against-theomnestus-2',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
