@@ -105,14 +105,48 @@ const nextConfig = {
       { source: '/favicon.png', destination: '/icon.svg', permanent: false },
     ]
   },
-  // Baseline security headers. Deliberately NO Content-Security-Policy here — a CSP
-  // must be scoped against Paddle.js / Supabase / fonts and tested before enabling,
-  // so it's handled separately. None of these affect what resources the app loads.
+  // Baseline security headers, plus the Content-Security-Policy in REPORT-ONLY mode.
+  //
+  // The CSP names every place a page may load or run content from; the browser refuses the
+  // rest. Report-Only means nothing is blocked yet — browsers POST would-be violations to
+  // /api/csp-report (rows land in ErrorLog, scope 'csp-report'). After a quiet week of real
+  // classroom traffic, rename the key to 'Content-Security-Policy' and it becomes binding.
+  //
+  // The origin inventory (2026-09-13, audited from src/):
+  //   fonts.googleapis.com / fonts.gstatic.com — the three reading faces in layout.tsx
+  //   *.paddle.com — cdn.paddle.com serves paddle.js; the checkout overlay iframes and its
+  //     API calls use sibling subdomains (buy., checkout-service., …), so the wildcard
+  //   NEXT_PUBLIC_SUPABASE_URL — FileManager uploads straight to Storage signed URLs
+  // Everything else external in the codebase is server-side (bolls.life, getbible.net,
+  // resend) or a plain hyperlink (Perseus, Sefaria attributions) — neither needs a grant.
+  //
+  // script-src carries 'unsafe-inline' for Next's own bootstrap inline scripts. The stricter
+  // per-request-nonce setup is a later tightening (it needs middleware to mint the nonce);
+  // even without it, this policy closes external script origins, exfiltration targets
+  // (connect-src), rogue frames, plugins (object-src) and <base> hijacks.
   async headers() {
+    const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://*.paddle.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' data: https://fonts.gstatic.com",
+      "img-src 'self' data: blob: https://*.paddle.com",
+      `connect-src 'self' https://*.paddle.com${supabase ? ' ' + supabase : ''}`,
+      "frame-src https://*.paddle.com",
+      "media-src 'self' blob:",
+      "worker-src 'self' blob:",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'self'",
+      'report-uri /api/csp-report',
+    ].join('; ')
     return [
       {
         source: '/:path*',
         headers: [
+          { key: 'Content-Security-Policy-Report-Only', value: csp },
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },

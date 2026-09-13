@@ -27,6 +27,7 @@ const AUTH_PATTERN =
 const PUBLIC_ROUTES: Record<string, string> = {
   'allusions':             'read-only LXX allusion search over corpus files',
   'construct/lemmas':      'read-only lexeme lookup for construct search',
+  'csp-report':            'browser CSP violation reports — rate-limited, always 204, like client-error',
   'lexicon':               'read-only lexicon lookup',
   'profile/institutions':  'institution list for the sign-up dropdown',
   'reader':                'read-only Bible text',

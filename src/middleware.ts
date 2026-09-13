@@ -32,6 +32,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/preview',
   '/api/profile/institutions', // institution list for the sign-up dropdown (public, non-sensitive)
   '/api/client-error', // browser error reports — errors happen signed out too; rate-limited in the route
+  '/api/csp-report', // browser CSP violation reports — same trust model as client-error
   '/api/webhooks/paddle', // Paddle calls this with no session cookie — trust is via HMAC signature instead
 ]
 
