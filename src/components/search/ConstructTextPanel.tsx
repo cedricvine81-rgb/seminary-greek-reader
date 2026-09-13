@@ -201,6 +201,7 @@ export function ConstructTextPanel({ target, onClose }: { target: ConstructTextT
   const markedNum = target.verse
 
   // Greek rendered as clickable tokens (biblical) so a word can be parsed where it sits.
+  // eslint-disable-next-line react/display-name -- a memoized render helper, not a component
   const renderTokens = useMemo(() => (row: Row, refLabel: string) => (
     <p className="greek-text leading-relaxed block text-gray-900">
       {(row.tokens ?? []).map((tok, i) => {

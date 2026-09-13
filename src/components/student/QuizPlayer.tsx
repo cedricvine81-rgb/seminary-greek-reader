@@ -121,22 +121,11 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   // Actual appeals are POSTed after the quiz submits (responseIds don't exist mid-quiz).
   const [markedForAppeal, setMarkedForAppeal] = useState<Set<string>>(new Set())
 
-  // Guard against an empty question set (e.g. quiz created but no questions
-  // generated yet). The rest of the component assumes `q` is defined.
-  if (questions.length === 0) {
-    return (
-      <div className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-8 text-center space-y-2">
-        <p className="text-base font-semibold text-amber-900">{t('quiz.noQuestions')}</p>
-        <p className="text-sm text-amber-800">
-          {rich(t('quiz.noQuestionsHelp'), {
-            generate: <strong>{t('quiz.generateQuestions')}</strong>,
-          })}
-        </p>
-      </div>
-    )
-  }
-
-  const q = orderedQuestions[idx]
+  // `q` is undefined while the question set is empty; every hook below guards for it, and
+  // the empty-set return lives AFTER the hooks (next to the !shuffled one) — an early return
+  // up here changed the hook count between renders and crashed the quiz with "Rendered more
+  // hooks than during the previous render" whenever an empty set gained questions.
+  const q = orderedQuestions[idx] as QuizQuestion | undefined
   const total = orderedQuestions.length
   const answeredSoFar = Object.keys(clientCorrect).length
   // CREDIT, not a headcount. The server scores a parse matches/fields, so a two-of-three
@@ -162,6 +151,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   // MC items in a mixed quiz still auto-advance; typed items keep the Next button)
   useEffect(() => {
     if (phase !== 'feedback') return
+    if (!q) return
     const isMultipleChoice = q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
     if (!isMultipleChoice) return // keep "Next" button for typed answers
     const t = setTimeout(() => handleNext(), 1200)
@@ -188,6 +178,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   }, [timeLeft, phase])
 
   const handleCheck = useCallback((expired = false, override?: string) => {
+    if (!q) return
     let morphAnswer = morphDraft
     // Auto-include partOfSpeech from correct answer for focused parse questions
     if (!expired && type === 'MORPHOLOGY_QUIZ' && q.type !== 'MULTIPLE_CHOICE') {
@@ -356,6 +347,22 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
       handleSubmit()
     }
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Guard against an empty question set (e.g. quiz created but no questions generated
+  // yet). Sits after every hook, same as the !shuffled return below and for the same
+  // reason: hook count must not depend on the data.
+  if (questions.length === 0 || !q) {
+    return (
+      <div className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-8 text-center space-y-2">
+        <p className="text-base font-semibold text-amber-900">{t('quiz.noQuestions')}</p>
+        <p className="text-sm text-amber-800">
+          {rich(t('quiz.noQuestionsHelp'), {
+            generate: <strong>{t('quiz.generateQuestions')}</strong>,
+          })}
+        </p>
+      </div>
+    )
+  }
 
   // Hold the quiz back for the one frame between hydration and the draw. This sits after
   // every hook deliberately: `shuffled` flips between renders, so an early return above the

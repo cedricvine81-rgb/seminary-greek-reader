@@ -1,11 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // The repo had no ESLint config until 2026-09, so `next build` never linted; adding
-  // .eslintrc.json silently turned build-time linting ON and 66 pre-existing errors
-  // (jsx-key in static teaching arrays, conditional hooks in QuizPlayer) broke the
-  // Production deploy. Keep builds as they always were — lint runs as its own command
-  // (`npx next lint`) and in review, not as a deploy gate, until those files are clean.
-  eslint: { ignoreDuringBuilds: true },
   experimental: {
     serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
     // The Phrase Explorer's per-book trees and the verse-by-verse commentary are

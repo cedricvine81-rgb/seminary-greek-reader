@@ -23,5 +23,15 @@
         ]
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/components/morphology/chapters/*.tsx"
+      ],
+      "rules": {
+        "react/jsx-key": "off"
+      }
+    }
+  ]
 }
