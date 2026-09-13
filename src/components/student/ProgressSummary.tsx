@@ -7,9 +7,9 @@ interface ProgressSummaryProps {
   stats: ProgressStats
 }
 
-export function ProgressSummary({ stats }: ProgressSummaryProps) {
-  const t = getServerT()
-  const locale = getServerLocale()
+export async function ProgressSummary({ stats }: ProgressSummaryProps) {
+  const t = await getServerT()
+  const locale = await getServerLocale()
   return (
     <div className="space-y-6">
       {/* Overall */}

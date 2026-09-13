@@ -10,11 +10,12 @@ const NOT_FOUND = 'Activity log assignment not found'
 
 // Instructor grading view for an ACTIVITY_LOG assignment: every enrolled student's weekly
 // reports, how many they have made, and the Pass/Fail this earns them.
-export async function GET(_req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
     return NextResponse.json(await getActivityLogGrading(params.assignmentId))
@@ -38,11 +39,12 @@ async function bustGradebook(assignmentId: string) {
 // POST { userId, grade?, gradeNote? } — save one student's Pass/Fail override (grade is
 // 100, 0, or null to fall back to the computed result).
 // POST { applyAuto: true } — accept the computed Pass/Fail for everyone not already graded.
-export async function POST(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
 

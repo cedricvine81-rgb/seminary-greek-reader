@@ -8,9 +8,10 @@ import { saveMyContribution, attestMyContribution, submitMyContribution, reopenM
 // student's action on their OWN section of their group's presentation. 'submit' and
 // 'reopen' affect only the caller's section, never a teammate's. All membership/deadline
 // checks live in the lib.
-export async function POST(req: NextRequest, { params }: { params: { groupId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ groupId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const b = await req.json()

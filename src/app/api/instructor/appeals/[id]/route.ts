@@ -23,9 +23,10 @@ export const dynamic = 'force-dynamic'
  *    4. Forward the appeal to the admin queue with adminDecision='PENDING'.
  *    5. Audit-log everything.
  */
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

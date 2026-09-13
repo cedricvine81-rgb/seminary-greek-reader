@@ -6,8 +6,8 @@ export const metadata: Metadata = { title: 'Notes' }
 
 // Public standalone Notes page (like the Exegesis workspace it was lifted from): anyone can
 // open it; the notebook itself asks signed-out visitors to sign in to see their notes.
-export default function NotesPage() {
-  const token = getTokenFromCookies()
+export default async function NotesPage() {
+  const token = await getTokenFromCookies()
   const isAuthenticated = !!(token && verifyToken(token))
 
   return (

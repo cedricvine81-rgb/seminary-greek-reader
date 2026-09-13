@@ -17,14 +17,16 @@ export const metadata: Metadata = { title: 'Parsing Quiz' }
 // ?practice=1 runs the same quiz FORMATIVELY: identical questions, nothing recorded, and an
 // end-of-session report naming what to work on with links into the grammar. It is the same
 // recipe as the graded attempt, which is the point — students asked to rehearse the real thing.
-export default function SelfStudyMorphQuizPage(
-  { params, searchParams }: {
-    params: { track: string; n: string }
-    searchParams?: { practice?: string; back?: string }
-  },
+export default async function SelfStudyMorphQuizPage(
+  props: {
+    params: Promise<{ track: string; n: string }>
+    searchParams?: Promise<{ practice?: string; back?: string }>
+  }
 ) {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+  const searchParams = await props.searchParams;
+  const params = await props.params;
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
 
   // ?back= lets a drill opened from a grammar chapter return there instead of to a self-study
@@ -48,7 +50,7 @@ export default function SelfStudyMorphQuizPage(
   if (!def || !Number.isInteger(lessonNo) || !morphQuizFor(def.id, lessonNo)) notFound()
 
   return (
-    <DashboardShell role={selfStudyShellRole(payload)} pageTitle={t(def.levelKey)}>
+    <DashboardShell role={await selfStudyShellRole(payload)} pageTitle={t(def.levelKey)}>
       <PracticeMorphQuiz
         trackId={def.id}
         lessonNo={lessonNo}

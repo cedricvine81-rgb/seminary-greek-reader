@@ -13,13 +13,13 @@ type Auth = { error: NextResponse; payload?: never } | { error?: never; payload:
 // through Preview as Student — they can read it (their own, always empty) but not write, so a
 // preview never leaves work behind.
 async function authorize(assignmentId: string): Promise<Auth> {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload) return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
   const gate = await requireStudentAccess(payload)
   if (gate) return { error: gate }
 
   if (payload.role === 'INSTRUCTOR') {
-    if (!await isAuthorizedForAssignment(assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(assignmentId, payload.sub))) {
       return { error: NextResponse.json({ error: 'Not found' }, { status: 404 }) }
     }
     return { payload }
@@ -38,7 +38,8 @@ async function authorize(assignmentId: string): Promise<Auth> {
 }
 
 // GET — the assignment's search + settings and this student's saved work.
-export async function GET(_req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
     const auth = await authorize(params.assignmentId)
     if (auth.error) return auth.error
@@ -53,7 +54,8 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
 }
 
 // POST { findings, notes, submit } — save a draft, or hand the find-list in.
-export async function POST(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
     const auth = await authorize(params.assignmentId)
     if (auth.error) return auth.error

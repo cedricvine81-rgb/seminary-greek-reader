@@ -15,11 +15,14 @@ export const metadata: Metadata = { title: 'Exegesis Workspace' }
 // RhetoricView is several levels down, so a prop would have to cross components that have
 // nothing to do with i18n. An English reader is given the empty catalogue and downloads no
 // translation at all.
-export default async function PublicExegesisPage({ searchParams }: { searchParams: { tab?: string; open?: string; ref?: string } }) {
-  const token = getTokenFromCookies()
+export default async function PublicExegesisPage(
+  props: { searchParams: Promise<{ tab?: string; open?: string; ref?: string }> }
+) {
+  const searchParams = await props.searchParams;
+  const token = await getTokenFromCookies()
   const isAuthenticated = !!(token && verifyToken(token))
 
-  const rhetoric = await loadContent(getServerLocale(), 'rhetoric')
+  const rhetoric = await loadContent(await getServerLocale(), 'rhetoric')
 
   return (
     <main className="flex flex-col h-[calc(100vh-3.5rem)] overflow-hidden print:h-auto print:overflow-visible w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">

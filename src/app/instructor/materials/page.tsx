@@ -8,7 +8,7 @@ import { prisma } from '@/lib/db'
 export const metadata: Metadata = { title: 'Materials' }
 
 export default async function InstructorMaterialsPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

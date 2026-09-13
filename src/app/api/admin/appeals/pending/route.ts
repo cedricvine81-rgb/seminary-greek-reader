@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 /** GET /api/admin/appeals/pending — count of appeals awaiting admin decision */
 export async function GET() {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

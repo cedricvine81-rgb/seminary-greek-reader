@@ -11,8 +11,8 @@ import {
 } from '@/lib/email-change-notice'
 import { rateLimit } from '@/lib/rate-limit'
 
-function getAdmin() {
-  const token = getTokenFromCookies()
+async function getAdmin() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   return payload?.role === 'ADMIN' ? payload : null
 }
@@ -21,12 +21,10 @@ function getAdmin() {
 const SENSITIVE_FIELDS = ['email', 'role', 'approved', 'password'] as const
 
 // PATCH /api/admin/users/[userId] — edit user fields
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ userId: string }> }) {
+  const params = await props.params;
   try {
-    const admin = getAdmin()
+    const admin = await getAdmin()
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const body = await req.json()
@@ -149,12 +147,10 @@ export async function PATCH(
 
 // DELETE /api/admin/users/[userId]
 // Soft-delete: sets `deletedAt`. Reversible by clearing the column. Never physically drops the row.
-export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function DELETE(_req: NextRequest, props: { params: Promise<{ userId: string }> }) {
+  const params = await props.params;
   try {
-    const admin = getAdmin()
+    const admin = await getAdmin()
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     if (params.userId === admin.sub) {
       return NextResponse.json({ error: 'Cannot delete your own admin account' }, { status: 400 })

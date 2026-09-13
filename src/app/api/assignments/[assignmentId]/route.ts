@@ -14,12 +14,10 @@ import { requireStudentAccess } from '@/lib/subscription'
 import { realignMorphologyVocabCap, realignCourseMorphologyCaps } from '@/lib/morph-cap-realign'
 
 // GET /api/assignments/[assignmentId] — fetch a single assignment (students can read published ones)
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { assignmentId: string } }
-) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 
@@ -57,17 +55,15 @@ export async function GET(
 }
 
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { assignmentId: string } }
-) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+  if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
@@ -231,17 +227,15 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: { assignmentId: string } }
-) {
+export async function DELETE(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+  if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 

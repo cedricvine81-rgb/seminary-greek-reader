@@ -7,7 +7,7 @@ import { requireStudentAccess } from '@/lib/subscription'
 // GET /api/messages/unread — count of unread messages for the current user (for nav badge)
 export async function GET() {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 

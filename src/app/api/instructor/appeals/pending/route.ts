@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 /** GET /api/instructor/appeals/pending — number of pending appeals for this instructor */
 export async function GET() {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

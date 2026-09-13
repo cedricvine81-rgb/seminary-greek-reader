@@ -8,7 +8,7 @@ import { logError } from '@/lib/logger'
 // Settings page's "Manage subscription" panel.
 export async function GET() {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'STUDENT') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

@@ -34,13 +34,14 @@ async function groupsWithMembers(courseId: string, onlyUserId?: string) {
 // GET /api/courses/[courseId]/groups
 //   Instructor of the course → every group (with members).
 //   Enrolled student → only the group they belong to (with members), so they can message it.
-export async function GET(req: NextRequest, { params }: { params: { courseId: string } }) {
+export async function GET(req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { courseId } = params
 
-    if (payload.role === 'INSTRUCTOR' && await isInstructorOfCourse(courseId, payload.sub)) {
+    if (payload.role === 'INSTRUCTOR' && (await isInstructorOfCourse(courseId, payload.sub))) {
       return NextResponse.json({ groups: await groupsWithMembers(courseId) })
     }
 
@@ -57,12 +58,13 @@ export async function GET(req: NextRequest, { params }: { params: { courseId: st
 }
 
 // POST /api/courses/[courseId]/groups — create a new (empty) group. Instructor only.
-export async function POST(req: NextRequest, { params }: { params: { courseId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { courseId } = params
-    if (!await isInstructorOfCourse(courseId, payload.sub)) {
+    if (!(await isInstructorOfCourse(courseId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
     const { name } = await req.json()

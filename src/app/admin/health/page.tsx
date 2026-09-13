@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic'
 // live here; everything visual is in HealthView, which takes the readings as a prop so the layout
 // can be rendered and checked against real data without an admin session.
 export default async function AdminHealthPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'ADMIN') redirect('/auth/sign-in')
 

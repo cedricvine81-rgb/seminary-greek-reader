@@ -17,8 +17,9 @@ import { ArrowLeft } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Grade Assignment' }
 
-export default async function GradeAssignmentPage({ params }: { params: { assignmentId: string } }) {
-  const token = getTokenFromCookies()
+export default async function GradeAssignmentPage(props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
@@ -26,7 +27,7 @@ export default async function GradeAssignmentPage({ params }: { params: { assign
     where: { id: params.assignmentId },
     select: { id: true, title: true, type: true, weekNumber: true, isPublished: true, courseId: true, reference: true, course: { select: { id: true, name: true } }, questions: { orderBy: { position: 'asc' }, take: 1, select: { options: true } } },
   })
-  if (!assignment || !await isAuthorizedForAssignment(params.assignmentId, payload.sub)) notFound()
+  if (!assignment || !(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) notFound()
 
   return (
     <DashboardShell role="INSTRUCTOR" pageTitle={`Grade: ${assignment.title}`}>

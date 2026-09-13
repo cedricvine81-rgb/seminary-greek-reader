@@ -7,7 +7,7 @@ import type { CourseLevel } from '@/types/course'
 
 export async function GET(req: NextRequest) {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const courses = await prisma.course.findMany({
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = req.nextUrl

@@ -29,11 +29,12 @@ function noteRef(names: Map<string, string>, n: { book: string | null; chapter: 
 // GET /api/assignments/[assignmentId]/course-notes — instructor grading view: every
 // enrolled student with their submission status and the live notes in their submission
 // folder. Notes stay editable, so this always reflects the folder's current contents.
-export async function GET(_req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
 
@@ -106,11 +107,12 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
 }
 
 // POST { userId, grade, gradeNote } — save a student's grade (0–100) + feedback.
-export async function POST(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
     const b = await req.json()

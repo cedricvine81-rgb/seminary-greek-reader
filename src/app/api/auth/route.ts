@@ -120,10 +120,10 @@ export async function POST(req: NextRequest) {
       }
 
       const token = signToken({ sub: user.id, email: user.email, role: user.role as Role })
-      setAuthCookie(token)
+      await setAuthCookie(token)
       // A fresh sign-in starts a fresh session: drop any instructor-preview flag left by a
       // previous account in this browser, so a student never inherits preview mode.
-      cookies().delete('instructor_preview')
+      ;(await cookies()).delete('instructor_preview')
       return NextResponse.json({ user: { id: user.id, email, role: user.role }, token })
     }
 
@@ -290,10 +290,10 @@ export async function POST(req: NextRequest) {
       }
 
       const token = signToken({ sub: user.id, email: user.email, role: user.role as Role })
-      setAuthCookie(token)
+      await setAuthCookie(token)
       // A fresh sign-in starts a fresh session: drop any instructor-preview flag left by a
       // previous account in this browser, so a student never inherits preview mode.
-      cookies().delete('instructor_preview')
+      ;(await cookies()).delete('instructor_preview')
       return NextResponse.json({
         user: { id: user.id, email, role: user.role },
         token,
@@ -314,7 +314,7 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -340,6 +340,6 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE() {
-  clearAuthCookie()
+  await clearAuthCookie()
   return NextResponse.json({ ok: true })
 }

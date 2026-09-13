@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { Users, BookOpen, Building2, Settings, UserCheck, Activity } from 'lucide-react'
 
 export default async function AdminDashboard() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'ADMIN') redirect('/auth/sign-in')
 

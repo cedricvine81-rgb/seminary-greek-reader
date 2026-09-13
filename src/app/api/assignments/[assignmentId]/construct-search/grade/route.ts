@@ -8,11 +8,12 @@ import { getConstructGrading, gradeConstructSubmission, reopenConstructSubmissio
 
 // Instructor grading view for a CONSTRUCT_SEARCH assignment: every enrolled student's
 // find-list, whether they handed it in, and their grade.
-export async function GET(_req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
     return NextResponse.json(await getConstructGrading(params.assignmentId))
@@ -36,11 +37,12 @@ async function bustGradebook(assignmentId: string) {
 
 // POST { userId, grade?, gradeNote? } — save a grade; { userId, reopen: true } — hand a
 // submitted find-list back to that one student.
-export async function POST(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
 

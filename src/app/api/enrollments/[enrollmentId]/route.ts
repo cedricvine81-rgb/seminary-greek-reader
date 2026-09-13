@@ -5,12 +5,10 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 
 // PATCH /api/enrollments/[enrollmentId] — instructor approves or rejects
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { enrollmentId: string } }
-) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ enrollmentId: string }> }) {
+  const params = await props.params;
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }

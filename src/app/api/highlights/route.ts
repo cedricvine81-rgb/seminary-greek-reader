@@ -7,7 +7,7 @@ import { requireStudentAccess } from '@/lib/subscription'
 // GET: highlights for a passage — ?book=&chapter=&verseStart=&verseEnd=
 export async function GET(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const p = req.nextUrl.searchParams
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const b = await req.json()
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const id = req.nextUrl.searchParams.get('id')
@@ -67,7 +67,7 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const id = req.nextUrl.searchParams.get('id')

@@ -9,7 +9,7 @@ import { logError } from '@/lib/logger'
 // Admin-only; sends to the signed-in admin's own address, never to input from the request.
 export async function POST() {
   try {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (!payload || payload.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

@@ -8,7 +8,7 @@ import { prisma } from '@/lib/db'
 export const metadata: Metadata = { title: 'Calendar' }
 
 export default async function InstructorCalendarPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

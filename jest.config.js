@@ -13,6 +13,9 @@ const config = {
   // every suite runs twice — and jest-haste-map warns about the "duplicate" package.json
   // and mocks it finds in them.
   testPathIgnorePatterns: ['/node_modules/', '/.claude/', '/.next/'],
+  // Haste also scans worktrees under .claude/ and reports name collisions on the mocks;
+  // testPathIgnorePatterns alone doesn't stop the module map from seeing them.
+  modulePathIgnorePatterns: ['<rootDir>/.claude/', '<rootDir>/.next/'],
   transform: {
     // jsx: the project tsconfig uses Next's 'preserve', which ts-jest can't emit — component tests
     // need real JSX output. testEnvironment stays 'node' for the library tests; component tests opt

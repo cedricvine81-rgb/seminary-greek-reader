@@ -67,6 +67,22 @@ describe('API route auth inventory', () => {
     expect(unverified).toEqual(Object.keys(PUBLIC_ROUTES).sort())
   })
 
+it('no auth helper is called without await (a bare Promise is always truthy)', () => {
+    // After Next 16 made cookies() async, every auth helper returns a Promise. A call left
+    // un-awaited in a truthiness test — `if (!getPayload())` — would ALWAYS pass, silently
+    // disabling that route's check. tsc cannot catch the truthiness form; this does.
+    const offenders: string[] = []
+    const helperCall = /(?<!await )(?<!\.)\b(getPayload|getCurrentUser|requireRole|getTokenFromCookies|isPreviewMode|canViewStudentPages)\(/
+    for (const f of files) {
+      const src = readFileSync(f, 'utf8')
+      for (const [i, line] of src.split('\n').entries()) {
+        if (/^\s*(\*|\/\/|import\b)|function /.test(line)) continue
+        if (helperCall.test(line)) offenders.push(`${relative(API_ROOT, f)}:${i + 1}`)
+      }
+    }
+    expect(offenders).toEqual([])
+  })
+
   it('client-error keeps its flood guard', () => {
     // /api/client-error is on the middleware public list (errors happen signed out); it
     // calls verifyToken only to ATTRIBUTE reports, so it passes the check above, but its

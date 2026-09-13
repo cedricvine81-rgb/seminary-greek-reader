@@ -11,10 +11,10 @@ import { getServerT } from '@/lib/i18n/server'
 export const metadata: Metadata = { title: 'Grades' }
 
 export default async function StudentScoresPage() {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
   const me = await prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } })

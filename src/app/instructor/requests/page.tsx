@@ -9,7 +9,7 @@ import { prisma } from '@/lib/db'
 export const metadata: Metadata = { title: 'Enrollment Requests' }
 
 export default async function RequestsPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

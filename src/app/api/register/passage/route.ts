@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   // signature — each handler must. These corpus profilers were the only routes
   // relying on the decode alone, so a forged token passed. Verify like every other
   // authenticated route.
-  if (!getPayload()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!await getPayload()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { searchParams } = req.nextUrl
   const corpus = (searchParams.get('corpus') ?? 'GNT').toUpperCase()
   const book = (searchParams.get('book') ?? '').trim()

@@ -9,7 +9,7 @@ import { getCourseReport } from '@/lib/reports'
 export const metadata: Metadata = { title: 'Students' }
 
 export default async function InstructorStudentsPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

@@ -5,7 +5,7 @@ import { getPayload } from '@/lib/auth'
 
 export async function GET() {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const user = await prisma.user.findUnique({
@@ -24,7 +24,7 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { firstName, surname, title, institution } = await req.json()

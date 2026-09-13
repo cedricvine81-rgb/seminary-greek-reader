@@ -8,11 +8,12 @@ import { getGroupPresentationGrading, gradeGroupPresentation, gradeGroupMember, 
 
 // GET — instructor grading view for a GROUP_PRESENTATION: every group, each member's
 // contribution + attestation, submission status, and the group grade.
-export async function GET(_req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) return NextResponse.json({ error: 'Not found' }, { status: 404 })
     return NextResponse.json(await getGroupPresentationGrading(params.assignmentId))
   } catch (err) {
     if (err instanceof Error && err.message === 'Assignment not found') return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -33,11 +34,12 @@ async function bustGradebook(assignmentId: string) {
 // POST { groupId, grade?, gradeNote?, lateApproved? } — grade a group, or approve/revoke
 // a post-deadline submission. Presence of `lateApproved` routes to late approval;
 // otherwise it's a grade save.
-export async function POST(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
     const b = await req.json()
     const groupId = String(b.groupId ?? '')

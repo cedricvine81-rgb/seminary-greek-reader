@@ -29,8 +29,8 @@ export function verifyToken(token: string): JWTPayload | null {
   }
 }
 
-export function setAuthCookie(token: string) {
-  cookies().set('sg_token', token, {
+export async function setAuthCookie(token: string) {
+  ;(await cookies()).set('sg_token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -39,12 +39,12 @@ export function setAuthCookie(token: string) {
   })
 }
 
-export function clearAuthCookie() {
-  cookies().delete('sg_token')
+export async function clearAuthCookie() {
+  ;(await cookies()).delete('sg_token')
 }
 
-export function getTokenFromCookies(): string | null {
-  return cookies().get('sg_token')?.value ?? null
+export async function getTokenFromCookies(): Promise<string | null> {
+  return (await cookies()).get('sg_token')?.value ?? null
 }
 
 /**
@@ -52,8 +52,8 @@ export function getTokenFromCookies(): string | null {
  * or null if absent/invalid. Use this in API route handlers instead of
  * redefining a local `getPayload()` in every file.
  */
-export function getPayload(): JWTPayload | null {
-  const token = getTokenFromCookies()
+export async function getPayload(): Promise<JWTPayload | null> {
+  const token = await getTokenFromCookies()
   return token ? verifyToken(token) : null
 }
 
@@ -61,13 +61,13 @@ export function getPayload(): JWTPayload | null {
  * Resolve the payload and assert a required role. Returns the payload when
  * authorized, or null when unauthenticated / wrong role. Callers return 401.
  */
-export function requireRole(role: JWTPayload['role']): JWTPayload | null {
-  const payload = getPayload()
+export async function requireRole(role: JWTPayload['role']): Promise<JWTPayload | null> {
+  const payload = await getPayload()
   return payload && payload.role === role ? payload : null
 }
 
-export function getCurrentUser(): AuthUser | null {
-  const token = getTokenFromCookies()
+export async function getCurrentUser(): Promise<AuthUser | null> {
+  const token = await getTokenFromCookies()
   if (!token) return null
   const payload = verifyToken(token)
   if (!payload) return null

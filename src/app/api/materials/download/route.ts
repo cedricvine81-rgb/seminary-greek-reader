@@ -13,7 +13,7 @@ import { getDownloadUrl } from '@/lib/storage'
 export async function GET(req: NextRequest) {
   const text = (msg: string, status: number) => new NextResponse(msg, { status, headers: { 'content-type': 'text/plain' } })
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return text('Please sign in.', 401)
     if (payload.role === 'STUDENT' && !(await studentHasAccess(payload.sub))) return text('A subscription is required.', 402)
     const id = req.nextUrl.searchParams.get('id')

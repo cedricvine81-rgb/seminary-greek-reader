@@ -36,18 +36,16 @@ async function parseAssignmentReference(ref: string): Promise<{
   return { bookOsisId: book.osisId, chapter, verseStart, verseEnd }
 }
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { assignmentId: string } }
-) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+  if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
@@ -219,12 +217,10 @@ export async function GET(
 // Instructor un-submits a student's translation-exercise submission: clears the
 // submitted state, snapshot, and grade, and removes the sentinel Response so the
 // student can finish (e.g. Round 2) and resubmit. The student's work is preserved.
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { assignmentId: string } }
-) {
+export async function DELETE(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (!payload || payload.role !== 'INSTRUCTOR') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -238,7 +234,7 @@ export async function DELETE(
       )
     }
 
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
 

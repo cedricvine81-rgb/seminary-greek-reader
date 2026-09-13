@@ -12,10 +12,10 @@ import { vocabSubsectionsFor, vocabLangFor } from '@/lib/assignment-vocab'
 export const metadata: Metadata = { title: 'Assignments' }
 
 export default async function StudentAssignmentsPage() {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
   const enrollments = await prisma.enrollment.findMany({

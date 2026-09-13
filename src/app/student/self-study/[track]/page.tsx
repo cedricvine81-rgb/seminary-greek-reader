@@ -11,9 +11,10 @@ export const metadata: Metadata = { title: 'Self-study' }
 
 // One self-study track (Beginning/Intermediate Greek or Hebrew): the instructor-free
 // pathway through the grammar chapters and vocabulary sets, with self-marked progress.
-export default function SelfStudyTrackPage({ params }: { params: { track: string } }) {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+export default async function SelfStudyTrackPage(props: { params: Promise<{ track: string }> }) {
+  const params = await props.params;
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!canUseSelfStudy(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
@@ -22,7 +23,7 @@ export default function SelfStudyTrackPage({ params }: { params: { track: string
   if (!def) notFound()
 
   return (
-    <DashboardShell role={selfStudyShellRole(payload)} pageTitle={t(def.levelKey)}>
+    <DashboardShell role={await selfStudyShellRole(payload)} pageTitle={t(def.levelKey)}>
       <SelfStudyTrackView trackId={def.id} />
     </DashboardShell>
   )

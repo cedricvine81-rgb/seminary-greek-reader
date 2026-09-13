@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   // signature — each handler must. These corpus profilers were the only routes
   // relying on the decode alone, so a forged token passed. Verify like every other
   // authenticated route.
-  if (!getPayload()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!await getPayload()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
     const body = await req.json() as {
       units?: UnitSpec[]; features?: string[]; lemmas?: string[]; limit?: number

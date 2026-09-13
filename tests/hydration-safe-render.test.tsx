@@ -17,6 +17,9 @@ import '@testing-library/jest-dom'
 // jsdom ships no TextEncoder, which react-dom/server needs on import.
 import { TextEncoder, TextDecoder } from 'node:util'
 Object.assign(globalThis, { TextEncoder, TextDecoder })
+// React 19's react-dom/server schedules through MessageChannel, which jsdom doesn't provide.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+Object.assign(globalThis, { MessageChannel: require('node:worker_threads').MessageChannel })
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { renderToString } = require('react-dom/server') as typeof import('react-dom/server')
 import { render, screen, waitFor } from '@testing-library/react'

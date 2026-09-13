@@ -7,8 +7,8 @@ import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Choose a new password' }
 
-export default function ResetPasswordPage() {
-  const t = getServerT()
+export default async function ResetPasswordPage() {
+  const t = await getServerT()
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center p-4 bg-parchment-50">
       <div className="w-full max-w-md">

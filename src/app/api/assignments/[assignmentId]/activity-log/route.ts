@@ -13,13 +13,13 @@ type Auth = { error: NextResponse; payload?: never } | { error?: never; payload:
 // too, through Preview as Student — they can read it (their own, always empty) but not
 // write, so a preview never leaves work behind.
 async function authorize(assignmentId: string): Promise<Auth> {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload) return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
   const gate = await requireStudentAccess(payload)
   if (gate) return { error: gate }
 
   if (payload.role === 'INSTRUCTOR') {
-    if (!await isAuthorizedForAssignment(assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(assignmentId, payload.sub))) {
       return { error: NextResponse.json({ error: 'Not found' }, { status: 404 }) }
     }
     return { payload }
@@ -40,7 +40,8 @@ async function authorize(assignmentId: string): Promise<Auth> {
 const NOT_FOUND = 'Activity log assignment not found'
 
 // GET — the activity's requirements and schedule, plus this student's weekly reports.
-export async function GET(_req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
     const auth = await authorize(params.assignmentId)
     if (auth.error) return auth.error
@@ -57,7 +58,8 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
 // POST { entries, notes } — save the weekly reports. There is no separate hand-in step: the
 // log IS the submission and stays editable all run, so unlike the other types this never
 // rejects a save as ALREADY_SUBMITTED.
-export async function POST(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
     const auth = await authorize(params.assignmentId)
     if (auth.error) return auth.error

@@ -25,11 +25,12 @@ import { constructCorpusLabel, constructLinkFromReference } from '@/lib/construc
 
 export const metadata: Metadata = { title: 'Assignment' }
 
-export default async function StudentAssignmentPage({ params }: { params: { assignmentId: string } }) {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+export default async function StudentAssignmentPage(props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
   const [assignment, attemptCount, bestAttempt, existingSession, priorResponses] = await Promise.all([
@@ -77,7 +78,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   // case the type, so send them to the right place instead of an empty quiz.
   if (assignment.type === 'GROUP_PRESENTATION') redirect('/student/group-presentations')
 
-  const previewMode = isPreviewMode() && payload.role === 'INSTRUCTOR'
+  const previewMode = await isPreviewMode() && payload.role === 'INSTRUCTOR'
 
   // Determine submission window.
   // Two-round passage exercises stay open until the Round 2 (corrections) deadline —

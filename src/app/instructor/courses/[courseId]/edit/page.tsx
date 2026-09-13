@@ -15,8 +15,9 @@ import { format } from 'date-fns'
 
 export const metadata: Metadata = { title: 'Edit Course' }
 
-export default async function EditCoursePage({ params }: { params: { courseId: string } }) {
-  const token = getTokenFromCookies()
+export default async function EditCoursePage(props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

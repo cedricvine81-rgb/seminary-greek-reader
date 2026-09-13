@@ -9,9 +9,9 @@ import { prisma } from '@/lib/db'
 export const metadata: Metadata = { title: 'Accuracy' }
 
 export default async function StudentProgressPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
   const enrollments = await prisma.enrollment.findMany({

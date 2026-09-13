@@ -1,18 +1,18 @@
 import { cookies } from 'next/headers'
 
-export function isPreviewMode(): boolean {
+export async function isPreviewMode(): Promise<boolean> {
   try {
-    return cookies().get('instructor_preview')?.value === '1'
+    return (await cookies()).get('instructor_preview')?.value === '1'
   } catch {
     return false
   }
 }
 
 /** Returns true if the user is a student, OR an instructor viewing in preview mode. */
-export function canViewStudentPages(payload: { role: string } | null): boolean {
+export async function canViewStudentPages(payload: { role: string } | null): Promise<boolean> {
   if (!payload) return false
   if (payload.role === 'STUDENT') return true
-  if (payload.role === 'INSTRUCTOR' && isPreviewMode()) return true
+  if (payload.role === 'INSTRUCTOR' && await isPreviewMode()) return true
   return false
 }
 
@@ -40,8 +40,8 @@ export function canUseSelfStudy(payload: { role: string } | null): boolean {
  * like someone else's screen. In preview mode the student shell is the whole point, so it
  * stays.
  */
-export function selfStudyShellRole(payload: { role: string } | null): 'INSTRUCTOR' | 'STUDENT' {
-  return payload?.role === 'INSTRUCTOR' && !isPreviewMode() ? 'INSTRUCTOR' : 'STUDENT'
+export async function selfStudyShellRole(payload: { role: string } | null): Promise<'INSTRUCTOR' | 'STUDENT'> {
+  return payload?.role === 'INSTRUCTOR' && !(await isPreviewMode()) ? 'INSTRUCTOR' : 'STUDENT'
 }
 
 /**

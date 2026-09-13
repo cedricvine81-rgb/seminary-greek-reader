@@ -32,7 +32,7 @@ jest.mock('@/lib/logger', () => ({ logError: jest.fn() }))
 import { PATCH } from '@/app/api/admin/users/[userId]/route'
 
 const req = (body: unknown) => ({ json: async () => body }) as unknown as import('next/server').NextRequest
-const call = (body: unknown) => PATCH(req(body), { params: { userId: 'u1' } })
+const call = (body: unknown) => PATCH(req(body), { params: Promise.resolve({ userId: 'u1' }) })
 
 const BEFORE = {
   id: 'u1', email: 'old@example.edu', role: 'STUDENT', approved: true,

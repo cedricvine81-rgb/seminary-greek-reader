@@ -448,7 +448,10 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   }
 
   // Verses of the current chapter present in the chosen version's cache, in order.
-  const verses = useMemo(() => {
+// Hoisted for the hooks analyzer: complex expressions are not valid dependency entries.
+  const settledSize = settled.current.size
+  const cachedText = textCache.current[version]
+    const verses = useMemo(() => {
     if (!parsed) return [] as { verse: number; text: string; tokens?: WordToken[] }[]
     const tmap = textCache.current[version] ?? {}; const wmap = wordCache.current[version] ?? {}
     const prefix = `${parsed.osis}.${parsed.chapter}.`
@@ -458,7 +461,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
       .sort((a, b) => a.verse - b.verse)
     // settled is bumped via setTick, which re-runs this memo through a render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parsed, version, settled.current.size, textCache.current[version]])
+  }, [parsed, version, settledSize, cachedText])
 
   const isGreek = version === 'gnt' || version === 'na1904'
   const isHebrew = version === 'mt'

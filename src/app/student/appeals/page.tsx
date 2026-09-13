@@ -21,10 +21,10 @@ export const metadata: Metadata = { title: 'Appeals' }
  * quiet footnote when it succeeded, never as a second verdict on the student's work.
  */
 export default async function StudentAppealsPage() {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
   const appeals = await prisma.vocabAppeal.findMany({

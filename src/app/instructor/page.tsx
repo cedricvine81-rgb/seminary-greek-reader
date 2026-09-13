@@ -16,8 +16,8 @@ import { EnrollmentRequests } from '@/components/instructor/EnrollmentRequests'
 export const metadata: Metadata = { title: 'Instructor Dashboard' }
 
 export default async function InstructorPage() {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

@@ -27,6 +27,7 @@ export default function GlobalError({
             >
               Try again
             </button>
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- global-error renders when the app shell is broken; <Link> depends on that shell */}
             <a
               href="/"
               style={{ padding: '0.5rem 1.25rem', background: '#f3f4f6', color: '#374151', borderRadius: 8, textDecoration: 'none', fontSize: '0.875rem', fontWeight: 500 }}

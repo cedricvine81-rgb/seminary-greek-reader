@@ -1,7 +1,7 @@
 'use client'
 
 // A CLIENT component, and it has to be: it is rendered both by the server page /student/scores
-// and by StudentCourseCard, which is 'use client'. getServerT() reaches for next/headers, which
+// and by StudentCourseCard, which is 'use client'. await getServerT() reaches for next/headers, which
 // cannot exist in a client bundle — importing it here broke the build for EVERY route, not just
 // this one. A presentational component shared across the boundary must use the hook.
 import { Fragment } from 'react'

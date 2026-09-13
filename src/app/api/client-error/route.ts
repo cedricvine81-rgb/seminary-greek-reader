@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       { message?: string; stack?: string; url?: string; scope?: string; digest?: string } | null
     if (!body?.message) return NextResponse.json({ ok: true })
 
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
 
     // The digest is how a server render error is matched to the hosting platform's log,

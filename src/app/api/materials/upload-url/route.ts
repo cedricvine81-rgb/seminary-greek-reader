@@ -7,7 +7,7 @@ import { buildStoragePath, createSignedUpload, MAX_FILE_BYTES } from '@/lib/stor
 // Storage (bypassing the serverless request-body size limit).
 export async function POST(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { fileName, size } = await req.json()
     if (!fileName) return NextResponse.json({ error: 'Missing fileName' }, { status: 400 })

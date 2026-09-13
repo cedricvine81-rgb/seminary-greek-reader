@@ -6,8 +6,8 @@ import { recordAudit } from '@/lib/audit'
 
 export const dynamic = 'force-dynamic'
 
-function getAdmin() {
-  const token = getTokenFromCookies()
+async function getAdmin() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   return payload?.role === 'ADMIN' ? payload : null
 }
@@ -19,9 +19,10 @@ function getAdmin() {
  * Admin-only. Sets the curated synonym list for a single lexeme. Audited.
  * Does not touch any student data — only the lexicon row itself.
  */
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
-    const admin = getAdmin()
+    const admin = await getAdmin()
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { acceptedAnswers } = await req.json()

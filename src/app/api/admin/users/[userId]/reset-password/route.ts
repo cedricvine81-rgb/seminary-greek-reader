@@ -9,8 +9,8 @@ import {
   CREDENTIALS_SUBJECT, credentialsText, credentialsHtml, type Credentials,
 } from '@/lib/credentials-email'
 
-function getAdmin() {
-  const token = getTokenFromCookies()
+async function getAdmin() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   return payload?.role === 'ADMIN' ? payload : null
 }
@@ -48,12 +48,10 @@ function generateTempPassword(): string {
  * is not configured, the admin must be able to read the password off the screen and pass it on
  * some other way. It is the only copy that will ever exist.
  */
-export async function POST(
-  _req: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function POST(_req: NextRequest, props: { params: Promise<{ userId: string }> }) {
+  const params = await props.params;
   try {
-    const admin = getAdmin()
+    const admin = await getAdmin()
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     // Daily budget: at most 100 password resets per admin in 24h. Generous enough to

@@ -8,7 +8,7 @@ import { requireStudentAccess } from '@/lib/subscription'
 // (scoped to folders/files shared with their enrolled courses).
 export async function GET(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const folderId = req.nextUrl.searchParams.get('folderId')

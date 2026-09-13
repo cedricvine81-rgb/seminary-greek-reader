@@ -9,16 +9,14 @@ import { revalidatePath } from 'next/cache'
 
 // PATCH /api/courses/[courseId] — update course settings (currently the final-grade
 // category weights). Only the course's instructor (or a co-instructor) may change them.
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { courseId: string } }
-) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-    if (!await isInstructorOfCourse(params.courseId, payload.sub)) {
+    if (!(await isInstructorOfCourse(params.courseId, payload.sub))) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
     const body = await req.json()
@@ -39,12 +37,10 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { courseId: string } }
-) {
+export async function DELETE(req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -68,7 +64,7 @@ export async function DELETE(
     where: { id: payload.sub },
     select: { password: true },
   })
-  if (!user || !await verifyPassword(password, user.password)) {
+  if (!user || !(await verifyPassword(password, user.password))) {
     return NextResponse.json({ error: 'Incorrect password' }, { status: 403 })
   }
 

@@ -56,10 +56,11 @@ export function PracticeVocabQuiz({ trackId, lessonNo, embedded }: {
   // Review quizzes span several selection keys and cap each attempt at a random sample.
   const selections = step?.quiz ? (Array.isArray(step.quiz.selection) ? step.quiz.selection : [step.quiz.selection]) : []
   const sample = step?.quiz?.sample
-  const words = useMemo(
+const selectionsKey = selections.join(',')
+    const words = useMemo(
     () => (step?.quiz ? deckWordsForSelection(deck, selections, []) : []),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selections.join(','), hebrew],
+    [selectionsKey, hebrew],
   )
 
   const [round, setRound] = useState(0)

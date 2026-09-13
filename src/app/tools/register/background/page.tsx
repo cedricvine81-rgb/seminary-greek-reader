@@ -14,8 +14,8 @@ export const metadata: Metadata = { title: 'Register — the background' }
 // Rendered on the server so the translation is chosen there — an English reader is handed the
 // empty catalogue and downloads nothing.
 export default async function RegisterBackgroundPage() {
-  const t = getServerT()
-  const cat = await loadContent(getServerLocale(), 'registerBackground')
+  const t = await getServerT()
+  const cat = await loadContent(await getServerLocale(), 'registerBackground')
   const say = (key: string, english: string) => content(cat, key, english)
 
   return (

@@ -9,9 +9,12 @@ export const metadata: Metadata = { title: 'Search' }
 // (all via MasterSearchProvider → router.push('/search?…')). `q` pre-fills the query, `in` the
 // scope (e.g. greek:GNT, trans:en, bg:josephus). The morphology facet (in=morph:<corpus>, +features)
 // is its own isolated page component.
-export default function SearchPage({ searchParams }: { searchParams: { q?: string; in?: string; mode?: string; books?: string; from?: string; features?: string; strongs?: string } }) {
+export default async function SearchPage(
+  props: { searchParams: Promise<{ q?: string; in?: string; mode?: string; books?: string; from?: string; features?: string; strongs?: string }> }
+) {
+  const searchParams = await props.searchParams;
   // Signed-in readers get the highlighter row in the results' right-click menu.
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const isAuthenticated = !!(token && verifyToken(token))
 
   if (searchParams?.in?.startsWith('morph:')) {

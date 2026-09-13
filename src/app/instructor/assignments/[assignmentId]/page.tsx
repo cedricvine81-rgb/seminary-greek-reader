@@ -21,9 +21,10 @@ import { normalizeActivityConfig } from '@/lib/activity-log'
 
 export const metadata: Metadata = { title: 'Edit Assignment' }
 
-export default async function AssignmentDetailPage({ params }: { params: { assignmentId: string } }) {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+export default async function AssignmentDetailPage(props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
@@ -31,7 +32,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
     where: { id: params.assignmentId },
     include: { questions: { orderBy: { position: 'asc' } }, course: { select: { id: true, name: true } } },
   })
-  if (!assignment || !await isAuthorizedForAssignment(params.assignmentId, payload.sub)) notFound()
+  if (!assignment || !(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) notFound()
 
   return (
     <DashboardShell

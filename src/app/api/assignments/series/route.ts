@@ -55,7 +55,7 @@ async function authorise(assignmentIds: string[], userId: string) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -271,7 +271,7 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

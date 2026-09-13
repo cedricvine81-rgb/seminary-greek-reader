@@ -7,7 +7,7 @@ import { shareFile, unshareFile, shareFolder, unshareFolder } from '@/lib/materi
 // Body: { type: 'file'|'folder', id, courseId, action: 'add'|'remove' }
 export async function POST(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { type, id, courseId, action } = await req.json()
     if (!id || !courseId || !['file', 'folder'].includes(type) || !['add', 'remove'].includes(action)) {

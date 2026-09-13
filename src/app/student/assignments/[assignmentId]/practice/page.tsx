@@ -16,10 +16,11 @@ export const metadata: Metadata = { title: 'Practice' }
 // It is a page of its own rather than a panel on the assignment because practice and the real
 // attempt should never share a screen: a student mid-quiz must not be one mis-click from a
 // session that looks the same but does not count.
-export default async function AssignmentPracticePage({ params }: { params: { assignmentId: string } }) {
-  const token = getTokenFromCookies()
+export default async function AssignmentPracticePage(props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) {
+  if (!await canViewStudentPages(payload)) {
     redirect(studentPageEntry(payload, `/student/assignments/${params.assignmentId}/practice`))
   }
   if (!payload) redirect('/auth/sign-in')
@@ -33,10 +34,10 @@ export default async function AssignmentPracticePage({ params }: { params: { ass
   })
   if (!assignment || assignment.type !== 'MORPHOLOGY_QUIZ') notFound()
   const allowed = payload.role === 'STUDENT'
-    ? assignment.isPublished && !!await prisma.enrollment.findFirst({
+    ? assignment.isPublished && !!(await prisma.enrollment.findFirst({
         where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
         select: { id: true },
-      })
+      }))
     : payload.role === 'INSTRUCTOR'
       ? await isInstructorOfCourse(assignment.courseId, payload.sub)
       : payload.role === 'ADMIN'

@@ -4,7 +4,7 @@ import { AdminInstitutionsTable } from '@/components/admin/AdminInstitutionsTabl
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
 export default async function AdminInstitutionsPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'ADMIN') redirect('/auth/sign-in')
 

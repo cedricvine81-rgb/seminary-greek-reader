@@ -10,9 +10,9 @@ interface StudentDashboardProps {
   dueSoonCount: number
 }
 
-export function StudentDashboard({ studentName, courses, dueSoonCount }: StudentDashboardProps) {
+export async function StudentDashboard({ studentName, courses, dueSoonCount }: StudentDashboardProps) {
   // Server component: the translator comes from the cookie, not a hook.
-  const t = getServerT()
+  const t = await getServerT()
   return (
     <div className="space-y-6">
       {/* Header */}

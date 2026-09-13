@@ -6,8 +6,8 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
 export const metadata: Metadata = { title: 'Notifications' }
 
-export default function AdminSettingsPage() {
-  const token = getTokenFromCookies()
+export default async function AdminSettingsPage() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'ADMIN') redirect('/auth/sign-in')
 

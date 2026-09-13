@@ -10,9 +10,10 @@ import { requireStudentAccess } from '@/lib/subscription'
 
 // GET /api/exegesis/[id] — load a session
 // Students load their own; instructors can load any session linked to their assignment
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 
@@ -22,7 +23,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     if (payload.role === 'INSTRUCTOR') {
       // Instructor may only view sessions linked to assignments they own
       if (!session.assignmentId) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-      if (!await isAuthorizedForAssignment(session.assignmentId, payload.sub)) {
+      if (!(await isAuthorizedForAssignment(session.assignmentId, payload.sub))) {
         return NextResponse.json({ error: 'Not found' }, { status: 404 })
       }
     } else {
@@ -38,9 +39,10 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
 }
 
 // PATCH /api/exegesis/[id] — update annotations (student) or grade (instructor)
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 
@@ -55,7 +57,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       // can adopt the session (link it) at grade time. This keeps the results GET read-only.
       const targetAssignmentId: string | null = existing.assignmentId ?? (body.assignmentId ?? null)
       if (!targetAssignmentId) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-      if (!await isAuthorizedForAssignment(targetAssignmentId, payload.sub)) {
+      if (!(await isAuthorizedForAssignment(targetAssignmentId, payload.sub))) {
         return NextResponse.json({ error: 'Not found' }, { status: 404 })
       }
       const { grade, gradeNote, passageGrades } = body
@@ -197,7 +199,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         // Only set startedAt once (never overwrite)
         ...(startedAt && !existing.startedAt && { startedAt: new Date(startedAt) }),
         // Allow patching assignmentId if not yet set — validate the assignment exists and student is enrolled
-        ...(patchAssignmentId && !existing.assignmentId && await (async () => {
+        ...(patchAssignmentId && !existing.assignmentId && (await (async () => {
           const asgn = await prisma.assignment.findUnique({
             where: { id: patchAssignmentId },
             select: { courseId: true, type: true },
@@ -207,7 +209,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
             where: { courseId: asgn.courseId, userId: payload.sub, status: 'APPROVED' },
           })
           return enroll ? { assignmentId: patchAssignmentId } : {}
-        })()),
+        })())),
       },
     })
     return NextResponse.json({ session: updated })
@@ -218,9 +220,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 // DELETE /api/exegesis/[id] — delete a session (student only, their own)
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 

@@ -8,7 +8,7 @@ import { PaddleCheckout } from '@/components/subscribe/PaddleCheckout'
 export const metadata: Metadata = { title: 'Subscribe' }
 
 export default async function SubscribePage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload) redirect('/auth/sign-in')
   // Only students are ever paywalled — instructors/admins have no business here.

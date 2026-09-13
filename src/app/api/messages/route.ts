@@ -17,7 +17,7 @@ const MAX_LIST = 500      // most recent messages considered when building the t
 
 export async function GET(_req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 
@@ -101,7 +101,7 @@ export async function GET(_req: NextRequest) {
 //   recipientId omitted/null → broadcast to all APPROVED students in the course
 export async function POST(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 

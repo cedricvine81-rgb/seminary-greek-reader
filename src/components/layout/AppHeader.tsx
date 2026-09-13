@@ -19,11 +19,11 @@ interface AppHeaderProps {
 
 // The `.app-header` class hooks the mobile auto-hide behavior in globals.css;
 // the reader toggles html[data-immersive] as the user scrolls. See GreekReader.
-export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHeaderProps) {
-  const t = getServerT()
+export async function AppHeader({ isAuthenticated = false, userRole, userName }: AppHeaderProps) {
+  const t = await getServerT()
   // Which brand this render wears — Seminary Greek or Seminary Hebrew. Read from the track
   // cookie on the server so the name is right on the first paint. See src/lib/track.ts.
-  const brand = getServerBrand()
+  const brand = await getServerBrand()
   // Brand/logo sends signed-in users to their dashboard, not the Reader at "/".
   const brandHref = isAuthenticated
     ? userRole === 'INSTRUCTOR' ? '/instructor'

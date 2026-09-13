@@ -8,12 +8,13 @@ import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Change Password' }
 
-export default function ChangePasswordPage({ searchParams }: { searchParams: { required?: string } }) {
-  const token = getTokenFromCookies()
+export default async function ChangePasswordPage(props: { searchParams: Promise<{ required?: string }> }) {
+  const searchParams = await props.searchParams;
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload) redirect('/auth/sign-in')
   const required = searchParams?.required === '1'
-  const t = getServerT()
+  const t = await getServerT()
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center p-4 bg-parchment-50">
       <div className="w-full max-w-md">

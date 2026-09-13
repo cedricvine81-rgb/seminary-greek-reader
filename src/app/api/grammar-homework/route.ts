@@ -26,7 +26,7 @@ import { GRAMMAR_HOMEWORK_SETS } from '@/data/grammar-homework'
 
 export async function GET(req: NextRequest) {
   try {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (!payload) return NextResponse.json({ role: 'none', entries: [] })
 
@@ -125,7 +125,7 @@ export async function GET(req: NextRequest) {
 // and no second QuizAttempt is created (maxRetakes stays 0).
 export async function POST(req: NextRequest) {
   try {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 

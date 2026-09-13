@@ -13,8 +13,8 @@ export const metadata: Metadata = { title: 'Register' }
 // The name is deliberate: REGISTER, the level and texture of the Greek, is what this measures.
 // It is not authorship, and the page says so above the results — Hebrews ranks first to Romans
 // on function words, which is genre, not Paul.
-export default function RegisterPage() {
-  const t = getServerT()
+export default async function RegisterPage() {
+  const t = await getServerT()
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-5 print:hidden">

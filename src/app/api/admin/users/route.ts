@@ -6,8 +6,8 @@ import { logError } from '@/lib/logger'
 // Reads live DB; never pre-render
 export const dynamic = 'force-dynamic'
 
-function getAdmin() {
-  const token = getTokenFromCookies()
+async function getAdmin() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   return payload?.role === 'ADMIN' ? payload : null
 }

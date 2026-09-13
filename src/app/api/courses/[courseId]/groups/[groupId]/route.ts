@@ -7,7 +7,7 @@ import { logError } from '@/lib/logger'
 import { syncGroupSubmittedForGroup } from '@/lib/group-presentations'
 
 async function authorize(courseId: string, groupId: string, userId: string) {
-  if (!await isInstructorOfCourse(courseId, userId)) return false
+  if (!(await isInstructorOfCourse(courseId, userId))) return false
   const group = await prisma.courseGroup.findFirst({ where: { id: groupId, courseId }, select: { id: true } })
   return !!group
 }
@@ -15,12 +15,16 @@ async function authorize(courseId: string, groupId: string, userId: string) {
 // PATCH /api/courses/[courseId]/groups/[groupId] — rename and/or set the membership.
 // Body: { name?: string, memberIds?: string[] }. Instructor only. A student can belong to
 // at most one group per course, so adding a student here removes them from other groups.
-export async function PATCH(req: NextRequest, { params }: { params: { courseId: string; groupId: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  props: { params: Promise<{ courseId: string; groupId: string }> }
+) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { courseId, groupId } = params
-    if (!await authorize(courseId, groupId, payload.sub)) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    if (!(await authorize(courseId, groupId, payload.sub))) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
     const { name, memberIds, assignmentId } = await req.json()
     const ops = []
@@ -85,12 +89,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
 }
 
 // DELETE /api/courses/[courseId]/groups/[groupId] — remove a group (and its memberships).
-export async function DELETE(req: NextRequest, { params }: { params: { courseId: string; groupId: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  props: { params: Promise<{ courseId: string; groupId: string }> }
+) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { courseId, groupId } = params
-    if (!await authorize(courseId, groupId, payload.sub)) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    if (!(await authorize(courseId, groupId, payload.sub))) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
     await prisma.courseGroup.delete({ where: { id: groupId } })
     revalidatePath(`/instructor/courses/${courseId}`)

@@ -9,7 +9,7 @@ import { requireStudentAccess } from '@/lib/subscription'
 // GET: every diagram the user has in a chapter — ?book=&chapter=
 export async function GET(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const p = req.nextUrl.searchParams
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
 // PUT: upsert one sentence's diagram — { book, chapter, verseStart, verseEnd, data }
 export async function PUT(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const b = await req.json()
@@ -56,7 +56,7 @@ export async function PUT(req: NextRequest) {
 // DELETE: reset one sentence's diagram — ?book=&chapter=&verseStart=&verseEnd=
 export async function DELETE(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const p = req.nextUrl.searchParams

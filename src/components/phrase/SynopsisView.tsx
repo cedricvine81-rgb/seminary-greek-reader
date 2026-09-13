@@ -229,6 +229,8 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
 
   // Per-verse personal notes across every column (signed-in users). Keyed "book.chapter.verse".
   const [notedKeys, setNotedKeys] = useState<Set<string>>(new Set())
+// Hoisted for the hooks analyzer: complex expressions are not valid dependency entries.
+  const columnsKey = columns.join('|')
   const refreshNotes = useCallback(async () => {
     if (!isAuthenticated || books.length === 0) { setNotedKeys(new Set()); return }
     const chapters = new Map<string, { book: string; chapter: number }>()
@@ -245,7 +247,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       } catch { /* ignore */ }
     }))
     setNotedKeys(keys)
-  }, [isAuthenticated, books, columns.join('|')]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, books, columnsKey]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { refreshNotes() }, [refreshNotes])
   useEffect(() => onNotesChanged(refreshNotes), [refreshNotes])
 
@@ -574,7 +576,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     srcFlat.map.forEach((m, k) => { srcFlatOf[`${m.vi}.${m.ti}`] = k })
     return { sourceIdx, perCol, omitByVerse, srcFlatOf, srcPos: srcFlat.map, omittedByAll: struck }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isGreek, sourceIdx, columns.join('|'), version, ver, books, pericopes, bestGospel?.title])
+  }, [isGreek, sourceIdx, columnsKey, version, ver, books, pericopes, bestGospel?.title])
 
   // Every position that aligns with the hovered word, keyed "col.verse.token" — the word
   // itself plus its counterpart in each other column. Hovering anywhere in the chain

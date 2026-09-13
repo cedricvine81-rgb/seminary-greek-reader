@@ -61,11 +61,11 @@ async function getPendingRequestCount(instructorId: string): Promise<number> {
 export async function DashboardShell({
   role, children, pageTitle, pageDescription, actions, pendingCount,
 }: DashboardShellProps) {
-  const t = getServerT()
+  const t = await getServerT()
   // Force users who must change their password (admin-created accounts) through the
   // password-change screen before they can access any dashboard page. This is the
   // single chokepoint — every authenticated page renders inside DashboardShell.
-  const shellToken = getTokenFromCookies()
+  const shellToken = await getTokenFromCookies()
   const shellPayload = shellToken ? verifyToken(shellToken) : null
   if (shellPayload && await userMustChangePassword(shellPayload.sub)) {
     redirect('/auth/change-password?required=1')
@@ -82,7 +82,7 @@ export async function DashboardShell({
 
   // Only query if the page didn't supply the count
   if (role === 'INSTRUCTOR' && pendingCount === undefined) {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (payload?.role === 'INSTRUCTOR') {
       pendingRequests = await getPendingRequestCount(payload.sub)

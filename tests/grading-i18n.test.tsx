@@ -83,8 +83,9 @@ describe('StudentProgressTable', () => {
     completedAssignments: 3, totalAssignments: 5, averageScore: 88,
   }]
 
-  it('renders its headers in Spanish', () => {
-    render(<LocaleProvider locale="es"><StudentProgressTable students={STUDENTS} /></LocaleProvider>)
+  it('renders its headers in Spanish', async () => {
+    // Async server component (Next 16 made getServerT async): call it and render its output.
+    render(<LocaleProvider locale="es">{await StudentProgressTable({ students: STUDENTS })}</LocaleProvider>)
     expect(screen.getByText('Nombre')).toBeInTheDocument()
     expect(screen.getByText('Avance')).toBeInTheDocument()
     expect(screen.getByText('Puntaje promedio')).toBeInTheDocument()

@@ -7,14 +7,15 @@ import { canViewStudentPages } from '@/lib/preview'
 
 export const metadata: Metadata = { title: 'Exegesis Workspace' }
 
-export default function ExegesisPage({
-  searchParams,
-}: {
-  searchParams: { assignmentId?: string }
-}) {
-  const token = getTokenFromCookies()
+export default async function ExegesisPage(
+  props: {
+    searchParams: Promise<{ assignmentId?: string }>
+  }
+) {
+  const searchParams = await props.searchParams;
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
 
   return (
     <DashboardShell role="STUDENT" pageTitle="Exegesis Workspace">

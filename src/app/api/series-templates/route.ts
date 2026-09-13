@@ -11,14 +11,14 @@ import { prisma } from '@/lib/db'
  * DELETE { id }  → remove
  */
 
-function auth() {
-  const token = getTokenFromCookies()
+async function auth() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   return payload && payload.role === 'INSTRUCTOR' ? payload : null
 }
 
 export async function GET() {
-  const payload = auth()
+  const payload = await auth()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const templates = await prisma.seriesTemplate.findMany({
     where: { ownerId: payload.sub },
@@ -29,7 +29,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const payload = auth()
+  const payload = await auth()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { name, quizType, config } = await req.json()
   if (!name?.trim() || !quizType || !config) {
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const payload = auth()
+  const payload = await auth()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await req.json()
   const t = await prisma.seriesTemplate.findUnique({ where: { id } })

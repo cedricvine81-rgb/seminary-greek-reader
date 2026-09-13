@@ -30,7 +30,7 @@ const inter = Inter({ subsets: ['latin'] })
 // bookmarks say "Seminary Hebrew". generateMetadata (not a static export) because it has to
 // read the cookie. The icon is deliberately shared: it identifies the app, not the track.
 export async function generateMetadata(): Promise<Metadata> {
-  const brand = brandFor(getServerTrack())
+  const brand = brandFor(await getServerTrack())
   return {
     title: { default: brand.name, template: `%s | ${brand.name}` },
     description: brand.description,
@@ -50,7 +50,7 @@ export const viewport: Viewport = {
 
 async function getHeaderProps() {
   try {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     if (!token) return { isAuthenticated: false }
     const payload = verifyToken(token)
     if (!payload) return { isAuthenticated: false }
@@ -72,17 +72,17 @@ async function getHeaderProps() {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const headerProps = await getHeaderProps()
 
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   const isInstructorPreview =
     payload?.role === 'INSTRUCTOR' &&
-    cookies().get('instructor_preview')?.value === '1'
+    (await cookies()).get('instructor_preview')?.value === '1'
 
   // Display theme: rendered server-side from the cookie so there's no flash of
   // the default theme and no hydration mismatch (see src/lib/theme.ts). Sepia is
   // the default for anyone who hasn't chosen a scheme; an explicit 'light' choice
   // removes the attribute so :root (light) applies.
-  const themeCookie = cookies().get('display-theme')?.value
+  const themeCookie = (await cookies()).get('display-theme')?.value
   const dataTheme =
     themeCookie === 'light' ? undefined
     : themeCookie === 'dim' || themeCookie === 'dark' ? themeCookie
@@ -90,16 +90,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   // App-wide text size, same cookie-before-paint reasoning as the theme. 'md' (or no
   // cookie) stamps nothing, leaving the browser's own default font size in charge.
-  const scaleCookie = cookies().get('text-scale')?.value
+  const scaleCookie = (await cookies()).get('text-scale')?.value
   const dataTextScale =
     scaleCookie === 'sm' || scaleCookie === 'lg' || scaleCookie === 'xl' ? scaleCookie : undefined
 
   // Interface language, from its own cookie for the same reason as the theme: rendered
   // server-side so the first paint is already in the student's language. Drives <html lang>,
   // which is what selects the CJK font stack and the screen-reader voice.
-  const locale = getServerLocale()
+  const locale = await getServerLocale()
   // Which brand this render wears. A view preference only — see src/lib/track.ts.
-  const track = getServerTrack()
+  const track = await getServerTrack()
 
   return (
     <html lang={HTML_LANG[locale]} data-theme={dataTheme} data-text-scale={dataTextScale}>

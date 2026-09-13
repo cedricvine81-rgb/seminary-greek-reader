@@ -31,9 +31,10 @@ import { isInstructorOfCourse } from '@/lib/course-auth'
 
 const PRACTICE_QUESTIONS = 15
 
-export async function GET(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function GET(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     // Practice is a paywalled student surface like every other: the pages redirect a lapsed
@@ -58,10 +59,10 @@ export async function GET(req: NextRequest, { params }: { params: { assignmentId
     // instructor OF THAT COURSE looking at what their students get. Any instructor used to
     // pass, which handed one instructor another's title and generation recipe.
     const allowed = payload.role === 'STUDENT'
-      ? assignment.isPublished && !!await prisma.enrollment.findFirst({
+      ? assignment.isPublished && !!(await prisma.enrollment.findFirst({
           where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
           select: { id: true },
-        })
+        }))
       : payload.role === 'INSTRUCTOR'
         ? await isInstructorOfCourse(assignment.courseId, payload.sub)
         : payload.role === 'ADMIN'

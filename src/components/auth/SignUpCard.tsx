@@ -8,12 +8,12 @@ import { getServerT } from '@/lib/i18n/server'
 // role-specific /auth/sign-up/student and /auth/sign-up/instructor pages (lockedRole set).
 // Headings arrive as KEYS, not text: as plain strings they were three English literals sitting
 // in three page files, invisible to anything that looks for translatable text.
-export function SignUpCard({ headingKey, subheadingKey, lockedRole }: {
+export async function SignUpCard({ headingKey, subheadingKey, lockedRole }: {
   headingKey: string
   subheadingKey: string
   lockedRole?: Role
 }) {
-  const t = getServerT()
+  const t = await getServerT()
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center p-4 bg-parchment-50">
       <div className="w-full max-w-lg">

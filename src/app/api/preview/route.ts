@@ -5,7 +5,7 @@ import { safeInternalPath } from '@/lib/safe-path'
 const PREVIEW_COOKIE = 'instructor_preview'
 
 export async function GET(req: NextRequest) {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
 
   const mode = req.nextUrl.searchParams.get('mode')

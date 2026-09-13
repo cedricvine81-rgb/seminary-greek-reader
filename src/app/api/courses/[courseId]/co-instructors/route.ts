@@ -11,12 +11,10 @@ async function verifyPrimaryInstructor(courseId: string, userId: string) {
   return course?.instructorId === userId ? course : null
 }
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { courseId: string } }
-) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -35,12 +33,10 @@ export async function GET(
   }
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { courseId: string } }
-) {
+export async function POST(req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -83,12 +79,10 @@ export async function POST(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { courseId: string } }
-) {
+export async function DELETE(req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }

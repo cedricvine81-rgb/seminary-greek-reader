@@ -12,8 +12,9 @@ export const metadata: Metadata = { title: 'Themes' }
 // The curated prose is translated per string (src/lib/i18n/es/themes.json). The catalogue for
 // the reader's language is loaded HERE, on the server, and passed down — an English reader gets
 // the empty one, so no translation is shipped to a browser that will not display it.
-export default async function ThemesPage({ searchParams }: { searchParams: { topic?: string } }) {
-  const translations = await loadContent(getServerLocale(), 'themes')
+export default async function ThemesPage(props: { searchParams: Promise<{ topic?: string }> }) {
+  const searchParams = await props.searchParams;
+  const translations = await loadContent(await getServerLocale(), 'themes')
   return (
     <main className="w-full">
       <ThemesView topicId={searchParams?.topic ?? 'resurrection'} translations={translations} />

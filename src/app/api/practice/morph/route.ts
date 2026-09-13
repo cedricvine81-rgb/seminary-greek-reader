@@ -61,7 +61,7 @@ const cleanFields = (raw: unknown) =>
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     // Practice is a paywalled student surface like every other: the pages redirect a lapsed
     // student to /subscribe, and without this the endpoint behind them would still answer.

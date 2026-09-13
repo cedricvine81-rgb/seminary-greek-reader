@@ -8,7 +8,7 @@ import { requireStudentAccess } from '@/lib/subscription'
 // submission status). Provisions any missing folders as a side effect.
 export async function GET() {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const entries = await getCourseNotesForStudent(payload.sub)
@@ -22,7 +22,7 @@ export async function GET() {
 // POST { assignmentId }: submit (or resubmit) the student's notes folder for grading.
 export async function POST(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const b = await req.json()

@@ -7,7 +7,7 @@ import { requireStudentAccess } from '@/lib/subscription'
 // GET /api/enrollments/mine — returns the current student's enrollment statuses
 export async function GET() {
   try {
-    const token = getTokenFromCookies()
+    const token = await getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (!payload || payload.role !== 'STUDENT') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

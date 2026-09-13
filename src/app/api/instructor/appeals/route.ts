@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic'
  */
 export async function GET(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

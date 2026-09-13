@@ -7,12 +7,10 @@ import { logError } from '@/lib/logger'
 // GET /api/courses/[courseId]/classmates — coursemates a student is allowed to
 // message directly: approved, opted-in (messagingConsent) students in the same
 // course, excluding the caller. Only reachable by students enrolled in the course.
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { courseId: string } }
-) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'STUDENT') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

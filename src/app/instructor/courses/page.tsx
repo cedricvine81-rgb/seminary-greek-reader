@@ -11,7 +11,7 @@ import { Plus } from 'lucide-react'
 export const metadata: Metadata = { title: 'Courses' }
 
 export default async function InstructorCoursesPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

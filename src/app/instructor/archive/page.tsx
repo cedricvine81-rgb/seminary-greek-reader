@@ -15,8 +15,8 @@ import { Users, ClipboardList } from 'lucide-react'
 export const metadata: Metadata = { title: 'Course Archive' }
 
 export default async function ArchivePage() {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

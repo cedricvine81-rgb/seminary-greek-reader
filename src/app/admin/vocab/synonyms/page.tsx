@@ -7,7 +7,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 export const metadata: Metadata = { title: 'Vocab Synonyms' }
 
 export default async function AdminVocabSynonymsPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'ADMIN') redirect('/auth/sign-in')
 

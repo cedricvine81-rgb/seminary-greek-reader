@@ -8,9 +8,9 @@ import { canViewStudentPages } from '@/lib/preview'
 export const metadata: Metadata = { title: 'Materials' }
 
 export default async function StudentMaterialsPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
   return (

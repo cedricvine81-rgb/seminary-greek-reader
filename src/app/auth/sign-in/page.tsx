@@ -6,8 +6,8 @@ import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Sign In' }
 
-export default function SignInPage() {
-  const t = getServerT()
+export default async function SignInPage() {
+  const t = await getServerT()
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center p-4 bg-parchment-50">
       <div className="w-full max-w-md">

@@ -7,10 +7,10 @@ import { canViewStudentPages } from '@/lib/preview'
 
 export const metadata: Metadata = { title: 'Group Presentations' }
 
-export default function StudentGroupPresentationsPage() {
-  const token = getTokenFromCookies()
+export default async function StudentGroupPresentationsPage() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
 
   return (
     <DashboardShell role="STUDENT" pageTitle="Group Presentations">

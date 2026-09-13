@@ -7,7 +7,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 export const metadata: Metadata = { title: 'Messages' }
 
 export default async function InstructorMessagesPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

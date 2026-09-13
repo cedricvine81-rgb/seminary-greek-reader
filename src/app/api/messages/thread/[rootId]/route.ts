@@ -6,9 +6,10 @@ import { requireStudentAccess } from '@/lib/subscription'
 
 // GET /api/messages/thread/[rootId] — full conversation, and mark messages addressed
 // to the current user as read. rootId = the thread's root message id.
-export async function GET(_req: NextRequest, { params }: { params: { rootId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ rootId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const me = payload.sub
@@ -66,9 +67,10 @@ export async function GET(_req: NextRequest, { params }: { params: { rootId: str
 
 // DELETE /api/messages/thread/[rootId] — remove a conversation (or a class broadcast)
 // from the current user's view only. Per-user soft delete: the other party keeps it.
-export async function DELETE(_req: NextRequest, { params }: { params: { rootId: string } }) {
+export async function DELETE(_req: NextRequest, props: { params: Promise<{ rootId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const me = payload.sub

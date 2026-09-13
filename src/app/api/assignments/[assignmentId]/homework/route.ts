@@ -12,16 +12,17 @@ import { compareStudentsByName } from '@/lib/sort-students'
 // question-based translation-exercise path (sum of Response.score / points),
 // and the student's QuizAttempt percentage is kept in sync.
 
-function auth() {
-  const token = getTokenFromCookies()
+async function auth() {
+  const token = await getTokenFromCookies()
   return token ? verifyToken(token) : null
 }
 
-export async function GET(_req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = auth()
+    const payload = await auth()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
@@ -73,11 +74,12 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { assignmentId: string } }) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = auth()
+    const payload = await auth()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 

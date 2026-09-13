@@ -49,8 +49,9 @@ const typeVariant: Record<string, 'blue' | 'purple' | 'green' | 'gray'> = {
   ACTIVITY_LOG: 'green',
 }
 
-export default async function CourseDetailPage({ params }: { params: { courseId: string } }) {
-  const token = getTokenFromCookies()
+export default async function CourseDetailPage(props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

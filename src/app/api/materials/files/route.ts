@@ -6,7 +6,7 @@ import { createFileRecord, deleteFile } from '@/lib/materials'
 // Record a file after the browser has uploaded its bytes directly to storage.
 export async function POST(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const body = await req.json()
     if (!body.storagePath || !body.title) return NextResponse.json({ error: 'Missing file info' }, { status: 400 })
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const id = req.nextUrl.searchParams.get('id')
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })

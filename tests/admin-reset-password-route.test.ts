@@ -39,7 +39,7 @@ jest.mock('@/lib/logger', () => ({ logError: jest.fn() }))
 
 import { POST } from '@/app/api/admin/users/[userId]/reset-password/route'
 
-const call = () => POST({} as never, { params: { userId: 'u1' } })
+const call = () => POST({} as never, { params: Promise.resolve({ userId: 'u1' }) })
 const STUDENT = {
   id: 'u1', email: 'sam@example.edu', role: 'STUDENT', deletedAt: null,
   firstName: 'Sam', surname: 'Student',

@@ -9,8 +9,8 @@ import { getServerT } from '@/lib/i18n/server'
 export const metadata: Metadata = { title: 'Edit Profile' }
 
 export default async function ProfilePage() {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload) redirect('/auth/sign-in')
 

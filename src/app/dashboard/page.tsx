@@ -2,10 +2,10 @@ import Link from 'next/link'
 import { BookOpen, GraduationCap, FlipHorizontal, BarChart2 } from 'lucide-react'
 import { getServerBrand, getServerTrack } from '@/lib/track-server'
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   // Marketing page — wears whichever brand the visitor arrived under.
-  const brand = getServerBrand()
-  const hebrew = getServerTrack() === 'hebrew'
+  const brand = await getServerBrand()
+  const hebrew = await getServerTrack() === 'hebrew'
   const features = [
     {
       icon: <BookOpen size={24} className="text-brand-600" />,

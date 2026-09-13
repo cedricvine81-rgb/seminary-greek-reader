@@ -10,8 +10,8 @@ import crypto from 'crypto'
 // Writes to live DB; never pre-render
 export const dynamic = 'force-dynamic'
 
-function getAdmin() {
-  const token = getTokenFromCookies()
+async function getAdmin() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   return payload?.role === 'ADMIN' ? payload : null
 }
@@ -27,7 +27,7 @@ function getAdmin() {
  */
 export async function POST(req: NextRequest) {
   try {
-    const admin = getAdmin()
+    const admin = await getAdmin()
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     // Throttle the whole feature to prevent runaway scripts.

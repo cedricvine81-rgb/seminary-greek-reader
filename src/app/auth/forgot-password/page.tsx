@@ -7,8 +7,8 @@ import { emailConfigured } from '@/lib/email'
 
 export const metadata: Metadata = { title: 'Reset your password' }
 
-export default function ForgotPasswordPage() {
-  const t = getServerT()
+export default async function ForgotPasswordPage() {
+  const t = await getServerT()
   // Checked on the server: with no mail keys the reset link can never arrive, so the page says
   // so plainly instead of showing a form that would end in an empty inbox. Set RESEND_API_KEY
   // and EMAIL_FROM and the form appears on its own — no code change.

@@ -12,11 +12,11 @@ export const metadata: Metadata = { title: 'Build a Drill' }
 // Tier 3 of the practice work: the student describes the drill themselves — part of speech,
 // what they will be asked, which forms to draw from — and sees how many forms match before
 // they start. Formative, like every other practice surface: nothing is recorded.
-export default function CustomPracticePage() {
-  const t = getServerT()
-  const token = getTokenFromCookies()
+export default async function CustomPracticePage() {
+  const t = await getServerT()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) {
+  if (!await canViewStudentPages(payload)) {
     redirect(studentPageEntry(payload, '/student/practice/morphology'))
   }
 
@@ -24,7 +24,7 @@ export default function CustomPracticePage() {
   // revising Greek is one click away everywhere else in the app too.
   return (
     <DashboardShell role="STUDENT" pageTitle={t('pr.b.title')}>
-      <CustomMorphBuilder defaultLang={getServerTrack() === 'hebrew' ? 'hebrew' : 'greek'} />
+      <CustomMorphBuilder defaultLang={await getServerTrack() === 'hebrew' ? 'hebrew' : 'greek'} />
     </DashboardShell>
   )
 }

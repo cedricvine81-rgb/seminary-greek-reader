@@ -4,19 +4,17 @@ import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { recordAudit } from '@/lib/audit'
 
-function getAdmin() {
-  const token = getTokenFromCookies()
+async function getAdmin() {
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   return payload?.role === 'ADMIN' ? payload : null
 }
 
 // PATCH /api/admin/courses/[courseId]
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { courseId: string } }
-) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-    if (!getAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!await getAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const body = await req.json()
     const { name, description, isPublished } = body
     const data: Record<string, unknown> = {}
@@ -35,12 +33,10 @@ export async function PATCH(
 }
 
 // DELETE /api/admin/courses/[courseId]
-export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: { courseId: string } }
-) {
+export async function DELETE(_req: NextRequest, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-    const admin = getAdmin()
+    const admin = await getAdmin()
     if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     // Snapshot for audit before destruction
     const existing = await prisma.course.findUnique({

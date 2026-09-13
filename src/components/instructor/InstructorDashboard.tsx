@@ -25,8 +25,8 @@ interface InstructorDashboardProps {
   instructorName: string
 }
 
-export function InstructorDashboard({ stats, recentCourses, instructorName }: InstructorDashboardProps) {
-  const t = getServerT()
+export async function InstructorDashboard({ stats, recentCourses, instructorName }: InstructorDashboardProps) {
+  const t = await getServerT()
   const statCards = [
     { label: t('inst.stat.courses'), value: stats.totalCourses, icon: <BookOpen size={20} />, color: 'text-blue-600 bg-blue-50', href: '/instructor/courses' },
     { label: t('inst.stat.students'), value: stats.totalStudents, icon: <Users size={20} />, color: 'text-green-600 bg-green-50', href: '/instructor/students' },

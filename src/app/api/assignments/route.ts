@@ -29,7 +29,7 @@ export const maxDuration = 120
 
 export async function GET(req: NextRequest) {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const gate = await requireStudentAccess(payload); if (gate) return gate
 
@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()

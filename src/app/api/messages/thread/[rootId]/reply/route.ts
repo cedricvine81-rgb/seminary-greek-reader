@@ -10,9 +10,10 @@ import { requireStudentAccess } from '@/lib/subscription'
 // Either participant (the instructor or the student) may reply.
 const MAX_BODY = 20_000
 
-export async function POST(req: NextRequest, { params }: { params: { rootId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ rootId: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const me = payload.sub

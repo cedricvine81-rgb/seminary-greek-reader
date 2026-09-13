@@ -16,9 +16,9 @@ import { vocabSubsectionsFor, vocabLangFor } from '@/lib/assignment-vocab'
 export const metadata: Metadata = { title: 'Student Dashboard' }
 
 export default async function StudentPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
   const [user, enrollments, completedIds, exegesisSessions, bestAttempts, submissionGrades] = await Promise.all([
@@ -101,7 +101,7 @@ export default async function StudentPage() {
     startDate: e.course.startDate, endDate: e.course.endDate,
   })).flatMap(g => g.items)
 
-  const locale = getServerLocale()
+  const locale = await getServerLocale()
   const courses = orderedEnrollments.slice(0, 5).map(e => {
     const published = e.course.assignments.filter(a => a.isPublished).slice().sort((a, b) => a.weekNumber - b.weekNumber)
     return {

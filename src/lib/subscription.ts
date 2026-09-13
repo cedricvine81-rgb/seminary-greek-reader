@@ -21,7 +21,7 @@ export async function studentHasAccess(userId: string): Promise<boolean> {
  * previewing student pages carries their real INSTRUCTOR role in the JWT.
  *
  * Returns a NextResponse to short-circuit the handler when access is denied, or null
- * to continue. Call right after the handler's existing `getPayload()` null-check:
+ * to continue. Call right after the handler's existing `await getPayload()` null-check:
  *
  *   const gate = await requireStudentAccess(payload)
  *   if (gate) return gate

@@ -34,11 +34,11 @@ const courseIncludes = {
 } as const
 
 export default async function StudentCoursesPage() {
-  const t = getServerT()
-  const locale = getServerLocale()
-  const token = getTokenFromCookies()
+  const t = await getServerT()
+  const locale = await getServerLocale()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!await canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
   const student = await prisma.user.findUnique({
@@ -52,7 +52,7 @@ export default async function StudentCoursesPage() {
   // Role-gated, like the assignment page: the instructor_preview cookie survives switching
   // accounts in the same browser, and without the role check a real STUDENT who signs in
   // after an instructor previewed gets "Enrollment disabled in preview mode" on every course.
-  const preview = isPreviewMode() && payload.role === 'INSTRUCTOR'
+  const preview = await isPreviewMode() && payload.role === 'INSTRUCTOR'
 
   const [approvedEnrollments, pendingEnrollments, openCourses, institutionCourses] = await Promise.all([
     // Approved enrollments

@@ -17,9 +17,10 @@ export const dynamic = 'force-dynamic'
  *   - REJECTED: leaves the lexicon untouched. The student's grade still stands
  *     (instructor already updated it). Admin's role is global-lexicon only.
  */
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
-    const admin = getPayload()
+    const admin = await getPayload()
     if (!admin || admin.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

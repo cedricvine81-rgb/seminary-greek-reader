@@ -9,7 +9,7 @@ import { rateLimit } from '@/lib/rate-limit'
 // GET /api/enrollments — available courses (for students, filtered by institution)
 export async function GET() {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -49,7 +49,7 @@ export async function GET() {
 // POST /api/enrollments — student requests to join a course (PENDING)
 export async function POST(req: NextRequest) {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
 // DELETE /api/enrollments — student withdraws enrollment request
 export async function DELETE(req: NextRequest) {
   try {
-  const payload = getPayload()
+  const payload = await getPayload()
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }

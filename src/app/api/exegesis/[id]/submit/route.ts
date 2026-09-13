@@ -7,9 +7,10 @@ import { rateLimit } from '@/lib/rate-limit'
 import { requireStudentAccess } from '@/lib/subscription'
 
 // POST /api/exegesis/[id]/submit — mark an exegesis session as submitted for its assignment
-export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
-    const payload = getPayload()
+    const payload = await getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
 

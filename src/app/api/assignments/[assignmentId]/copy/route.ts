@@ -4,18 +4,16 @@ import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { isAuthorizedForAssignment, isInstructorOfCourse } from '@/lib/course-auth'
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { assignmentId: string } }
-) {
+export async function POST(req: NextRequest, props: { params: Promise<{ assignmentId: string }> }) {
+  const params = await props.params;
   try {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+  if (!(await isAuthorizedForAssignment(params.assignmentId, payload.sub))) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
@@ -28,7 +26,7 @@ export async function POST(
   const body = await req.json()
   const { targetCourseId, weekNumber, dueDate } = body
 
-  if (!await isInstructorOfCourse(targetCourseId, payload.sub)) {
+  if (!(await isInstructorOfCourse(targetCourseId, payload.sub))) {
     return NextResponse.json({ error: 'Target course not found' }, { status: 404 })
   }
 

@@ -15,8 +15,8 @@ interface StudentProgressTableProps {
   students: StudentRow[]
 }
 
-export function StudentProgressTable({ students }: StudentProgressTableProps) {
-  const t = getServerT()
+export async function StudentProgressTable({ students }: StudentProgressTableProps) {
+  const t = await getServerT()
   return (
     <Table
       keyField="userId"

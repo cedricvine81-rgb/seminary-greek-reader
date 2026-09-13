@@ -11,7 +11,7 @@ import type { Role } from '@/types/auth'
 export const metadata: Metadata = { title: 'Settings' }
 
 export default async function SettingsPage() {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload) redirect('/auth/sign-in')
 

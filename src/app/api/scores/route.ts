@@ -6,7 +6,7 @@ import { requireStudentAccess } from '@/lib/subscription'
 
 export async function GET(req: NextRequest) {
   try {
-  const token = getTokenFromCookies()
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const gate = await requireStudentAccess(payload); if (gate) return gate

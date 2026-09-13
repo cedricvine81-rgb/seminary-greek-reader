@@ -7,12 +7,13 @@ import { prisma } from '@/lib/db'
 
 export const metadata: Metadata = { title: 'New Assignment' }
 
-export default async function NewAssignmentPage({
-  searchParams,
-}: {
-  searchParams: { courseId?: string }
-}) {
-  const token = getTokenFromCookies()
+export default async function NewAssignmentPage(
+  props: {
+    searchParams: Promise<{ courseId?: string }>
+  }
+) {
+  const searchParams = await props.searchParams;
+  const token = await getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 

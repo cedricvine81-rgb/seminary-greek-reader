@@ -8,11 +8,11 @@ import { getServerT } from '@/lib/i18n/server'
 // account" buttons hit the same sign-up form, where the role is chosen. Signed-in
 // visitors never see this — src/app/page.tsx sends them straight to the Reader. Price is
 // stated exactly as the Paddle checkout charges it.
-export function LandingHero() {
-  const t = getServerT()
+export async function LandingHero() {
+  const t = await getServerT()
   // The headline follows the language track — this is the first thing a visitor arriving
   // from seminaryhebrew.app reads, and "the Greek Bible" would be the wrong promise.
-  const hebrew = getServerTrack() === 'hebrew'
+  const hebrew = await getServerTrack() === 'hebrew'
   return (
     <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       <div className="text-center max-w-2xl mx-auto mb-10">

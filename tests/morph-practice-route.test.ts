@@ -64,7 +64,7 @@ const GREEK = {
   morphSubtype: 'VERB_PARSING', morphConfig: RECIPE, vocabThruLesson: 8,
 }
 
-const call = () => GET({} as never, { params: { assignmentId: 'a1' } })
+const call = () => GET({} as never, { params: Promise.resolve({ assignmentId: 'a1' }) })
 
 function setup(assignment: unknown = GREEK) {
   jest.clearAllMocks()
