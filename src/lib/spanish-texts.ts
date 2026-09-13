@@ -342,6 +342,12 @@ export const ES_ENGLISH_PROSE_WORKS: Record<string, string> = {
   // ⚠ El griego cuenta VEINTE piedras en 81:3 y VEINTICINCO en 92:4; el inglés armoniza las dos en
   // veinticinco. El español sigue al griego en cada sitio, porque es el que se muestra al lado.
   'af-hermas': 'apostolic-fathers/hermas',
+  // ORÍGENES, Contra Celso — PREFACIO (6 secciones largas). greekOnly: la aplicación no
+  // muestra columna inglesa para este texto, así que nuestro español es la ÚNICA traducción
+  // que el lector ve, hecha directamente del griego. Las citas bíblicas van COMO LAS DA
+  // Orígenes (funde Mateo 26-27 de memoria); «Discurso verdadero» = el título del libro de
+  // Celso. Los libros I-VIII del Contra Celso son otra obra (origen-celsus-N) y siguen sin español.
+  'origen-celsus-praef': 'fathers/origen-celsus-praef',
   // ARATO, Fenómenos — 1.155 hexámetros, VERSO, y el segundo greekOnly de la casa: no hay
   // inglés en la aplicación, así que el español se hizo del griego sin intermediario alguno.
   // Una línea española por línea griega, respetando su encabalgamiento; por eso hay versos
